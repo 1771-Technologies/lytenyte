@@ -121,14 +121,14 @@ export default function PivotDemo() {
         label: "Column Pivots",
         type: "column-pivots",
         pills: colPivotPills,
-        accepts: ["row-pivots"],
+        // accepts: ["row-pivots"],
       },
       {
         id: "row-pivots",
         label: "Row Pivots",
         type: "row-pivots",
         pills: rowPivotPills,
-        accepts: ["column-pivots"],
+        // accepts: ["column-pivots"],
       },
     ];
   }, [colPivots, rowPivots]);

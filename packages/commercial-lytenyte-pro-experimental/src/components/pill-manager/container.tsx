@@ -30,17 +30,21 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       setOver(false);
       return;
     }
+
     const { item: dragged, id } = ds.pill.data;
+
+    // The current drag is from the current row.
     if (id === row.id) return;
+
+    const bb = container.getBoundingClientRect();
+
+    const isOver = bb.left < x && bb.right > x && bb.top < y && bb.bottom > y;
 
     const thisRow = rows.findIndex((x) => x.id === row.id);
     const originalRow = rows[thisRow];
 
-    const bb = container.getBoundingClientRect();
-    if (bb.left < x && bb.right > x && bb.top < y && bb.bottom > y) {
-      // I am inside
+    if (isOver) {
       if (row.pills.find((x) => x.id === dragged.id)) return;
-
       if (!row.accepts || !dragged.tags || dragged.tags.every((x) => !row.accepts?.includes(x))) return;
 
       setOver(true);

@@ -21,7 +21,6 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     setCloned,
     cloned,
     rows,
-    dragState,
 
     onPillItemThrown,
     onPillItemActiveChange,
@@ -36,9 +35,7 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     placeholder,
     props: dragProps,
   } = useDraggable({
-    data: {
-      pill: { data: { item, id: row.id }, kind: "site" },
-    },
+    data: { pill: { data: { item, id: row.id }, kind: "site" } },
 
     onUnhandledDrop: () => {
       onPillItemThrown?.({
@@ -47,10 +44,12 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
         row: rows.find((x) => x.id === row.id)!,
       });
     },
+
     onDragStart: () => {
       setDragState({ activeId: item.id, activeRow: row.id, activeType: row.type ?? "" });
       setCloned([...rows]);
     },
+
     onDragEnd: () => {
       prevRowId.current = null;
       prevSwapId.current = null;
@@ -60,10 +59,7 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
       });
 
       if (changed.length) {
-        onPillRowChange({
-          changed,
-          full: clonedRef.current!,
-        });
+        onPillRowChange({ changed, full: clonedRef.current! });
       }
 
       setDragState(null);
@@ -78,7 +74,10 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     const ds = getDragData() as { pill?: { data: { id: string; item: PillItemSpec } } } | null;
     if (!ds?.pill?.data) return;
 
-    const { item: dragged } = ds.pill.data;
+    const { item: dragged, id: dragRowId } = ds.pill.data;
+
+    const accepts = new Set([...(row.accepts ?? []), row.id]);
+    if (!accepts.has(dragRowId) && !item.tags?.some((x) => accepts.has(x))) return;
 
     const hasId = row.pills.find((x) => x.id === dragged.id);
 
@@ -211,22 +210,13 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     },
   });
 
-  const isActive = dragState?.activeId === item.id;
-  const type = isActive ? dragState.activeType : row.type;
-
   return (
     <div
-      data-ln-pill-type={type}
+      data-ln-pill-type={row.type}
       data-ln-pill-item-container
       data-ln-pill-active={item.active}
       data-ln-draggable={item.movable}
       data-ln-drag-active={isDragActive}
-      style={{
-        userSelect: "none",
-        msUserSelect: "none",
-        WebkitUserSelect: "none",
-        position: "relative",
-      }}
       onDragLeave={(e) => {
         e.stopPropagation();
         e.preventDefault();
