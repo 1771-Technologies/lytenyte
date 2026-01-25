@@ -74,6 +74,11 @@
       "import": "./src/load-data.ts",
       "require": "./src/load-data.ts"
     },
+    "./sales-data": {
+      "types": "./src/sales-data.ts",
+      "import": "./src/sales-data.ts",
+      "require": "./src/sales-data.ts"
+    },
     "./bank-data": {
       "types": "./src/bank-data.ts",
       "import": "./src/bank-data.ts",

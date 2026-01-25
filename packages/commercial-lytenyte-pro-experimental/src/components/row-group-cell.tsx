@@ -14,6 +14,7 @@ export const RowGroupCell = <Spec extends GridSpec = GridSpec>({
   return (
     <div
       data-ln-component-group-cell={row.kind}
+      data-ln-component-group-cell-depth={depth}
       data-ln-component-group-cell-expanded={api.rowIsGroup(row) && row.expanded}
       data-ln-component-group-cell-expandable={api.rowIsGroup(row) ? row.expandable : undefined}
       style={{ "--ln-row-depth": depth } as CSSProperties}
