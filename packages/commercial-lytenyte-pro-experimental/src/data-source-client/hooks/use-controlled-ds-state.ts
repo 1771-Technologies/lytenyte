@@ -6,10 +6,8 @@ export type SourceState = ReturnType<typeof useSourceState>;
 
 export function useSourceState({
   onRowGroupExpansionChange,
-  onPivotRowGroupExpansionChange,
   rowGroupExpansions,
   rowGroupDefaultExpansion = false,
-  pivotRowGroupDefaultExpansion = rowGroupDefaultExpansion,
   pivotStateRef,
 }: UseClientDataSourceParams<any>) {
   const [expansions, setExpansions] = useControlled({
@@ -39,8 +37,7 @@ export function useSourceState({
   );
 
   const onPivotExpansionsChange = useEvent((delta: Record<string, boolean | undefined>) => {
-    setPivotRowGroupExpansions({ ...expansions, ...delta });
-    onPivotRowGroupExpansionChange?.({ ...expansions, ...delta });
+    setPivotRowGroupExpansions({ ...pivotRowGroupExpansions, ...delta });
   });
 
   const pivotExpandedFn = useCallback(
@@ -48,11 +45,11 @@ export function useSourceState({
       const s = pivotRowGroupExpansions[id];
       if (s != null) return s;
 
-      if (typeof pivotRowGroupDefaultExpansion === "boolean") return pivotRowGroupDefaultExpansion;
+      if (typeof rowGroupDefaultExpansion === "boolean") return rowGroupDefaultExpansion;
 
-      return pivotRowGroupDefaultExpansion >= depth;
+      return rowGroupDefaultExpansion >= depth;
     },
-    [pivotRowGroupDefaultExpansion, pivotRowGroupExpansions],
+    [pivotRowGroupExpansions, rowGroupDefaultExpansion],
   );
 
   return {

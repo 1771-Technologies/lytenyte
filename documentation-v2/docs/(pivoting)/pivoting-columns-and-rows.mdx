@@ -2,17 +2,122 @@
 title: Row & Column Pivots
 pro: true
 step: Learn how to apply pivot columns and rows to the grid.
-description: F
+description: Configure the pivot rows and columns in the client data source to create views that
+  allow you reveal specific aspects about your data.
 ---
+
+:::note
+
+All the demos in this guide will use a single **measure** column, the **Profit** column.
+This is to simplify the code examples, such that the main focus is
+the row and column configuration of pivoting. For information on configuring measures
+see the [Measures guide](/docs/pivoting-measures).
+
+:::
 
 ## Pivot Columns
 
+Set the `columns` property on the `pivotModel` of the client data source to configure the
+columns that should be used to dynamically generate pivot columns. The values of the cells in the
+`columns` property will be used to create pivot columns definitions.
+
+The demo below demonstrates selecting different columns to pivot on. Try using different pivot
+column combinations to get a feel of the pivot functionality.
+
+::demo[Pivot Columns="./demos/pivot-columns"]
+
+Notice that each pivot applied results in the column hierarchy being extended with further by the
+new pivot. Adding more pivots causes the number of columns created to increase exponentially. LyteNyte Grid
+does not impose a cap on the number of pivots you may apply. Your application should restrict the number of
+pivots in a way the is most specific to your data.
+
+Since there are no pivot rows applied, LyteNyte Grid will aggregate all the rows under a single total row.
+See the **Pivot Rows** section of this guide for adding pivot rows to the view.
+
+:::note
+
+The demo above, and subsequent demos, use the [Pill Manager component](/docs/component-pill-manager) to
+manage pivot configuration. This is not a requirement for working with pivots and you can use any component
+that matches your application's needs.
+
+:::
+
 ### Pivot Column Group Expansions
 
-### Pivot Column Processor
+When there is more than a single column pivot, a column group hierarchy is created.
+Since these columns are created by pivots the columns are not provided by your state.
+
+The client row source manages the column group expansions internally. Column groups
+can be collapsed using the grid's [`api.columnToggleGroup`](/docs/reference) method.
+
+The demo below demonstrates this. The grid is pivoted on **Age Group** and **Gender**.
+A custom header group render is provided to allow column groups to be collapsed. Notice that
+the **Total** columns remain visible, even when the group is collapsed.
+
+::demo[Pivot Column Groups="./demos/pivot-columns-expansions"]
+
+### Pivot Column Updates
+
+Pivot columns are created dynamically by the LyteNyte Grid client data source. The client
+data source will handle any updates to the pivot columns internally. This makes it possible to
+move or resize the generated pivot columns.
+
+The demo below allows you to resize or move pivot columns within the grid. The state is managed
+by LyteNyte Grid's client data source.
+
+::demo[Pivot Column State="./demos/pivot-columns-state"]
+
+### Pivot Column Creation
+
+LyteNyte Grid will dynamically create pivot columns based on the column configuration provided.
+Set the `pivotColumnProcessor` property on the `useClientDataSource` hook to modify the columns
+before LyteNyte Grid uses them for display purposes.
+
+Using the `pivotColumnProcessor` you can modify the dynamically created columns in any way
+that suites your application. It is possible to re-order or remove columns, or change any
+property on the created columns.
+
+The demo below demonstrates the `pivotColumnProcessor` by removing the **Total** columns created
+by the column pivots.
+
+::demo[Remove Totals="./demos/pivot-columns-process"]
+
+The code for the pivot processor is shown below. The processor simply returns a new set of
+columns, based on the generated columns of the grid.
+
+```ts
+const ds = useClientDataSource<GridSpec>({
+  data: salesData,
+  pivotMode: true,
+  //!next 3
+  pivotColumnProcessor: (columns) => {
+    return columns.filter((x) => !x.id.includes("total"));
+  },
+  pivotModel: {
+    columns: [{ id: "ageGroup" }, { id: "customerGender" }],
+    measures: [
+      {
+        dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 120 },
+        fn: "sum",
+      },
+    ],
+  },
+  aggregateFns: { sum: aggSum },
+});
+```
 
 ## Pivot Rows
 
-### Pivot Row Group Expansions
+You can add row groups to pivots to extend the pivot view in another dimension. By setting the
+`rows` property on the pivot model, LyteNyte Grid will group rows before measuring them.
+
+Pivot row groups differ from normal row groups in one important way. The final level of a pivot
+row group cannot be expanded. This is due to the way pivot aggregations work, and is an expected
+outcome of pivoting.
+
+The demo below shows row pivots in action. Each pivot row creates a grouping level. LyteNyte Grid
+allows the same column to be used as both a pivot column and row.
+
+::demo[Row Pivots="./demos/pivot-rows"]
 
 ## Next Steps
