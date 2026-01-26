@@ -1,5 +1,5 @@
 import { type Grid } from "@1771technologies/lytenyte-pro-experimental";
-import type { GridSpec } from "./demo.js";
+import type { GridSpec } from "./demo";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
 import { countryFlags } from "@1771technologies/grid-sample-data/loan-data";

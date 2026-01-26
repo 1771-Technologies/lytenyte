@@ -2,7 +2,7 @@ import { type Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo.js";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
-import { countryFlags } from "@1771technologies/grid-sample-data/loan-data";
+import { countryFlags, nameToAvatar } from "@1771technologies/grid-sample-data/loan-data";
 import { useId, useMemo } from "react";
 import { format, isValid, parse } from "date-fns";
 
@@ -34,12 +34,11 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
   );
 }
 
-export function NameCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
-  if (!api.rowIsLeaf(row) || !row.data) return;
+export function NameCell({ row }: Grid.T.CellRendererParams<GridSpec>) {
+  const name = row.data.name as string;
 
-  const url = row.data?.avatar;
-
-  const name = row.data.name;
+  if (typeof name !== "string") return "-";
+  const url = nameToAvatar[name];
 
   return (
     <div className="flex h-full w-full items-center gap-2">
@@ -49,6 +48,12 @@ export function NameCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
       </div>
     </div>
   );
+}
+
+export function AgeCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? `${formatter.format(field)}` : `${field ?? "-"}`;
 }
 
 export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {

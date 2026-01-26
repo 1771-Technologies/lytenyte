@@ -2,7 +2,6 @@
 import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import { sum, uniq } from "es-toolkit";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import {
   computeField,
   Grid,
@@ -16,15 +15,25 @@ import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
 import { useMemo, useState } from "react";
 import { FloatingFilter } from "./filter.js";
+import {
+  AgeCell,
+  CountryCell,
+  CustomerRating,
+  DateCell,
+  DurationCell,
+  NameCell,
+  NumberCell,
+  OverdueCell,
+} from "./components.jsx";
+import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
 
 export type FilterModel = Record<
   string,
   { kind: "gt" | "lt" | "eq" | "neq" | "ge" | "le"; value: null | string }
 >;
 
-export type BankData = (typeof bankDataSmall)[number];
 export interface GridSpec {
-  readonly data: BankData;
+  readonly data: LoanDataItem;
   readonly column: { agg: string; allowedAggs: string[] };
   readonly api: {
     filterModel: PieceWritable<FilterModel>;
@@ -33,20 +42,13 @@ export interface GridSpec {
 
 const initialColumns: Grid.Column<GridSpec>[] = [
   {
-    name: "Job",
-    id: "job",
-    width: 120,
-    hide: true,
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
-  },
-  {
     name: "Age",
     id: "age",
+    width: 80,
     type: "number",
-    width: 120,
-    cellRenderer: NumberCell,
+    cellRenderer: AgeCell,
     floatingCellRenderer: FloatingFilter,
+
     agg: "avg",
     allowedAggs: ["avg", "sum", "count"],
   },
@@ -54,41 +56,92 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     name: "Balance",
     id: "balance",
     type: "number",
-    cellRenderer: BalanceCell,
+    cellRenderer: NumberCell,
     floatingCellRenderer: FloatingFilter,
     agg: "avg",
     allowedAggs: ["avg", "sum", "count"],
   },
   {
-    name: "Education",
-    id: "education",
-    hide: true,
+    name: "Name",
+    id: "name",
+    cellRenderer: NameCell,
+    width: 110,
     agg: "onlyOneUnique",
     allowedAggs: ["onlyOneUnique", "first", "last"],
+  },
+  {
+    name: "Country",
+    id: "country",
+    width: 150,
+    cellRenderer: CountryCell,
+    agg: "onlyOneUnique",
+    allowedAggs: ["onlyOneUnique", "first", "last"],
+  },
+  {
+    name: "Loan Amount",
+    id: "loanAmount",
+    width: 150,
+    type: "number",
+    cellRenderer: NumberCell,
+    agg: "avg",
+    allowedAggs: ["avg", "sum", "count"],
+  },
+  {
+    name: "Customer Rating",
+    id: "customerRating",
+    type: "number",
+    width: 160,
+    cellRenderer: CustomerRating,
+
+    agg: "avg",
+    allowedAggs: ["avg"],
   },
   {
     name: "Marital",
     id: "marital",
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
-  },
-  {
-    name: "Default",
-    id: "default",
 
     agg: "onlyOneUnique",
     allowedAggs: ["onlyOneUnique", "first", "last"],
   },
   {
-    name: "Housing",
-    id: "housing",
+    name: "Education",
+    id: "education",
+    hide: true,
 
     agg: "onlyOneUnique",
     allowedAggs: ["onlyOneUnique", "first", "last"],
   },
   {
-    name: "Loan",
-    id: "loan",
+    name: "Job",
+    id: "job",
+    width: 120,
+    hide: true,
+
+    agg: "onlyOneUnique",
+    allowedAggs: ["onlyOneUnique", "first", "last"],
+  },
+  {
+    name: "Overdue",
+    id: "overdue",
+    cellRenderer: OverdueCell,
+
+    agg: "onlyOneUnique",
+    allowedAggs: ["onlyOneUnique", "first", "last"],
+  },
+  {
+    name: "Duration",
+    id: "duration",
+    type: "number",
+    cellRenderer: DurationCell,
+
+    agg: "avg",
+    allowedAggs: ["avg", "sum", "count"],
+  },
+  {
+    name: "Date",
+    id: "date",
+    width: 110,
+    cellRenderer: DateCell,
 
     agg: "onlyOneUnique",
     allowedAggs: ["onlyOneUnique", "first", "last"],
@@ -99,31 +152,6 @@ const initialColumns: Grid.Column<GridSpec>[] = [
 
     agg: "onlyOneUnique",
     allowedAggs: ["onlyOneUnique", "first", "last"],
-  },
-  {
-    name: "Day",
-    id: "day",
-    type: "number",
-    cellRenderer: NumberCell,
-    floatingCellRenderer: FloatingFilter,
-    agg: "avg",
-    allowedAggs: ["avg", "sum", "count"],
-  },
-  {
-    name: "Month",
-    id: "month",
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
-  },
-  {
-    name: "Duration",
-    id: "duration",
-    type: "number",
-    cellRenderer: DurationCell,
-    floatingCellRenderer: FloatingFilter,
-
-    agg: "avg",
-    allowedAggs: ["avg", "sum", "count"],
   },
 ];
 
@@ -210,7 +238,7 @@ export default function GridTheming() {
   }, [columns]);
 
   const ds = useClientDataSource<GridSpec>({
-    data: bankDataSmall,
+    data: loanData,
     group: [{ id: "job" }, { id: "education" }],
     having: havingFn, //!
     aggregate: aggModel,
@@ -241,36 +269,6 @@ export default function GridTheming() {
 }
 
 //#start
-
-const formatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 0,
-});
-export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-
-  const prefix = column.agg === "count" && row.kind === "branch" ? "" : "$";
-
-  if (typeof field === "number") {
-    if (field < 0) return `-${prefix}${formatter.format(Math.abs(field))}`;
-
-    return prefix + formatter.format(field);
-  }
-
-  return `${field ?? "-"}`;
-}
-export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-  const suffix = column.agg === "count" && row.kind === "branch" ? "" : "days";
-
-  return typeof field === "number" ? `${formatter.format(field)} ${suffix}` : `${field ?? "-"}`;
-}
-
-export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-
-  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
-}
 
 export function HeaderCell({ api, column }: Grid.T.HeaderParams<GridSpec>) {
   return (

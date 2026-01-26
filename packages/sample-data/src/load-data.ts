@@ -826,3 +826,5 @@ export const loanData = [
     customerRating: 5,
   },
 ];
+
+export const nameToAvatar = Object.fromEntries(loanData.map((x) => [x.name, x.avatar]));

@@ -1,27 +1,37 @@
 //#start
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import { sum, uniq } from "es-toolkit";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, RowGroupCell, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
+import {
+  AgeCell,
+  CountryCell,
+  CustomerRating,
+  DateCell,
+  DurationCell,
+  NameCell,
+  NumberCell,
+  OverdueCell,
+} from "./components.js";
 
-export type BankData = (typeof bankDataSmall)[number];
-interface GridSpec {
-  readonly data: BankData;
+export interface GridSpec {
+  readonly data: LoanDataItem;
 }
 
 const columns: Grid.Column<GridSpec>[] = [
-  { name: "Job", id: "job", width: 120, hide: true },
-  { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
-  { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
-  { name: "Education", id: "education", hide: true },
+  { name: "Name", id: "name", cellRenderer: NameCell, width: 110 },
+  { name: "Country", id: "country", width: 150, cellRenderer: CountryCell },
+  { name: "Loan Amount", id: "loanAmount", width: 120, type: "number", cellRenderer: NumberCell },
+  { name: "Balance", id: "balance", type: "number", cellRenderer: NumberCell },
+  { name: "Customer Rating", id: "customerRating", type: "number", width: 125, cellRenderer: CustomerRating },
   { name: "Marital", id: "marital" },
-  { name: "Default", id: "default" },
-  { name: "Housing", id: "housing" },
-  { name: "Loan", id: "loan" },
-  { name: "Contact", id: "contact" },
-  { name: "Day", id: "day", type: "number", cellRenderer: NumberCell },
-  { name: "Month", id: "month" },
+  { name: "Education", id: "education", hide: true },
+  { name: "Job", id: "job", width: 120, hide: true },
+  { name: "Overdue", id: "overdue", cellRenderer: OverdueCell },
   { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
+  { name: "Date", id: "date", width: 110, cellRenderer: DateCell },
+  { name: "Age", id: "age", width: 80, type: "number", cellRenderer: AgeCell },
+  { name: "Contact", id: "contact" },
 ];
 
 const base: Grid.ColumnBase<GridSpec> = { width: 100 };
@@ -34,38 +44,40 @@ const group: Grid.RowGroupColumn<GridSpec> = {
 //#end
 
 const aggFn: Grid.T.AggregationFn<GridSpec["data"]> = (data) => {
-  const job = uniq(data.map((x) => x.data.job)).length === 1 ? data[0].data.job : null;
-  const age = sum(data.map((x) => x.data.age)) / data.length;
+  const name = uniq(data.map((x) => x.data.name)).length === 1 ? data[0].data.name : null;
+  const country = uniq(data.map((x) => x.data.country)).length === 1 ? data[0].data.country : null;
+  const loanAmount = sum(data.map((x) => x.data.loanAmount)) / data.length;
   const balance = sum(data.map((x) => x.data.balance)) / data.length;
-  const education = uniq(data.map((x) => x.data.education)).length === 1 ? data[0].data.education : null;
+  const customerRating = sum(data.map((x) => x.data.customerRating)) / data.length;
   const marital = uniq(data.map((x) => x.data.marital)).length === 1 ? data[0].data.marital : null;
-  const housing = uniq(data.map((x) => x.data.housing)).length === 1 ? data[0].data.housing : null;
-  const default_ = uniq(data.map((x) => x.data.default)).length === 1 ? data[0].data.default : null;
-  const loan = uniq(data.map((x) => x.data.loan)).length === 1 ? data[0].data.loan : null;
-  const contact = uniq(data.map((x) => x.data.contact)).length === 1 ? data[0].data.contact : null;
-  const day = sum(data.map((x) => x.data.day)) / data.length;
-  const month = uniq(data.map((x) => x.data.month)).length === 1 ? data[0].data.month : null;
+  const education = uniq(data.map((x) => x.data.education)).length === 1 ? data[0].data.education : null;
+  const job = uniq(data.map((x) => x.data.job)).length === 1 ? data[0].data.job : null;
+  const overdue = uniq(data.map((x) => x.data.overdue)).length === 1 ? data[0].data.overdue : null;
   const duration = sum(data.map((x) => x.data.duration)) / data.length;
+  const date = uniq(data.map((x) => x.data.date)).length === 1 ? data[0].data.date : null;
+  const age = sum(data.map((x) => x.data.age)) / data.length;
+  const contact = uniq(data.map((x) => x.data.contact)).length === 1 ? data[0].data.contact : null;
 
   return {
-    job,
-    age,
-    housing,
+    name,
+    country,
+    loanAmount,
     balance,
-    education,
+    customerRating,
     marital,
-    default: default_,
-    loan,
-    contact,
-    day,
-    month,
+    education,
+    job,
+    overdue,
     duration,
+    date,
+    age,
+    contact,
   };
 };
 
 export default function GridTheming() {
   const ds = useClientDataSource<GridSpec>({
-    data: bankDataSmall,
+    data: loanData,
     group: [{ id: "job" }, { id: "education" }],
     aggregate: aggFn,
     rowGroupDefaultExpansion: true,
@@ -79,30 +91,3 @@ export default function GridTheming() {
 }
 
 //#start
-
-const formatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 0,
-});
-export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-
-  if (typeof field === "number") {
-    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
-
-    return "$" + formatter.format(field);
-  }
-
-  return `${field ?? "-"}`;
-}
-export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-
-  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
-}
-
-export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-
-  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
-}

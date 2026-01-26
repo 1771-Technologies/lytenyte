@@ -1,27 +1,35 @@
 //#start
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, RowGroupCell, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
+import {
+  CountryCell,
+  CustomerRating,
+  DateCell,
+  DurationCell,
+  NameCell,
+  NumberCell,
+  OverdueCell,
+} from "./components.js";
 
-export type BankData = (typeof bankDataSmall)[number];
-
-interface GridSpec {
-  readonly data: BankData;
+export interface GridSpec {
+  readonly data: LoanDataItem;
 }
 
 const columns: Grid.Column<GridSpec>[] = [
   { name: "Job", id: "job", width: 120, hide: true },
-  { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
-  { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
-  { name: "Education", id: "education", hide: true },
+  { name: "Name", id: "name", cellRenderer: NameCell, width: 110 },
+  { name: "Country", id: "country", width: 150, cellRenderer: CountryCell },
+  { name: "Loan Amount", id: "loanAmount", width: 120, type: "number", cellRenderer: NumberCell },
+  { name: "Balance", id: "balance", type: "number", cellRenderer: NumberCell },
+  { name: "Customer Rating", id: "customerRating", type: "number", width: 125, cellRenderer: CustomerRating },
   { name: "Marital", id: "marital" },
-  { name: "Default", id: "default" },
-  { name: "Housing", id: "housing" },
-  { name: "Loan", id: "loan" },
-  { name: "Contact", id: "contact" },
-  { name: "Day", id: "day", type: "number", cellRenderer: NumberCell },
-  { name: "Month", id: "month" },
+  { name: "Education", id: "education", hide: true },
+  { name: "Overdue", id: "overdue", cellRenderer: OverdueCell },
   { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
+  { name: "Date", id: "date", width: 110, cellRenderer: DateCell },
+  { name: "Age", id: "age", width: 80, type: "number" },
+  { name: "Contact", id: "contact" },
 ];
 
 const base: Grid.ColumnBase<GridSpec> = { width: 100 };
@@ -47,14 +55,26 @@ const group: Grid.RowGroupColumn<GridSpec> = {
   width: 200,
 };
 
-let seen = false;
-// Keep only one row with education primary and unemployed
-const data = bankDataSmall.filter((x) => {
-  if (x.job === "Unemployed") {
-    if (seen) return false;
+let seenSecondary = false;
+let seenTertiary = false;
+let seenBlueCollar = false;
 
-    seen = true;
-    return true;
+// keep only one row when group is admin and education is not primary. Keep only one blue collar job.
+const data = loanData.filter((x) => {
+  if (x.job === "Blue-Collar") {
+    if (seenBlueCollar) return false;
+    seenBlueCollar = true;
+  }
+
+  if (x.job === "Administration" && x.education !== "Primary") {
+    if (x.education === "Tertiary") {
+      if (seenTertiary) return false;
+      seenTertiary = true;
+    }
+    if (x.education === "Secondary") {
+      if (seenSecondary) return false;
+      seenSecondary = true;
+    }
   }
 
   return true;
@@ -79,33 +99,4 @@ export default function ClientSourceDemo() {
       <Grid rowSource={ds} columns={columns} columnBase={base} rowGroupColumn={group} />
     </div>
   );
-}
-
-//#start
-
-const formatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 0,
-});
-export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-
-  if (typeof field === "number") {
-    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
-
-    return "$" + formatter.format(field);
-  }
-
-  return `${field ?? "-"}`;
-}
-export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-
-  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
-}
-
-export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const field = api.columnField(column, row);
-
-  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
 }

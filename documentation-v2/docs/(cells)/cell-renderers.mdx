@@ -59,23 +59,31 @@ To simplify cell value retrieval, LyteNyte Grid provides the `columnField` API m
 the value of a cell for a given row. The demo below demonstrates this. The **Balance** column's cell renderer
 uses the `columnField` API to retrieve the cell value.
 
-::demo[Cell Value="./demos/cell-value"]
+::demo[Cell Value="../(client-source)/demos/client-row-aggregation-fn"]
 
 Notice that the **Balance** cell renderer calls `api.columnField` to retrieve the value of the cell. Since the
 renderer uses the `columnField` API method, the renderer does not need to distinguish which row type it is rendering.
 The code is shown below.
 
 ```tsx
-export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row); //!
 
-  if (typeof field === "number") {
-    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+  if (typeof field !== "number") return "-";
 
-    return "$" + formatter.format(field);
-  }
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
 
-  return `${field ?? "-"}`;
+  return (
+    <div
+      className={tw(
+        "flex h-full w-full items-center justify-end tabular-nums",
+        field < 0 && "text-red-600 dark:text-red-300",
+        field > 0 && "text-green-600 dark:text-green-300",
+      )}
+    >
+      {formatted}
+    </div>
+  );
 }
 ```
 

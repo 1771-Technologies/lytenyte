@@ -4,41 +4,49 @@ import "./demo.css";
 import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { BalanceCell, DurationCell, NumberCell } from "./components.js";
+import {
+  CountryCell,
+  CustomerRating,
+  DateCell,
+  DurationCell,
+  NameCell,
+  NumberCell,
+  OverdueCell,
+} from "./components.js";
 import { useCallback, useMemo, useState } from "react";
+import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
 
-type BankData = (typeof bankDataSmall)[number];
 export interface GridSpec {
-  readonly data: BankData;
+  readonly data: LoanDataItem;
 }
 
 const columns: Grid.Column<GridSpec>[] = [
-  { name: "Job", id: "job", width: 120 },
-  { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
-  { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
-  { name: "Education", id: "education" },
+  { name: "Name", id: "name", cellRenderer: NameCell, width: 110 },
+  { name: "Country", id: "country", width: 150, cellRenderer: CountryCell },
+  { name: "Loan Amount", id: "loanAmount", width: 120, type: "number", cellRenderer: NumberCell },
+  { name: "Balance", id: "balance", type: "number", cellRenderer: NumberCell },
+  { name: "Customer Rating", id: "customerRating", type: "number", width: 125, cellRenderer: CustomerRating },
   { name: "Marital", id: "marital" },
-  { name: "Default", id: "default" },
-  { name: "Housing", id: "housing" },
-  { name: "Loan", id: "loan" },
-  { name: "Contact", id: "contact" },
-  { name: "Day", id: "day", type: "number", cellRenderer: NumberCell },
-  { name: "Month", id: "month" },
+  { name: "Education", id: "education", hide: true },
+  { name: "Job", id: "job", width: 120, hide: true },
+  { name: "Overdue", id: "overdue", cellRenderer: OverdueCell },
   { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
+  { name: "Date", id: "date", width: 110, cellRenderer: DateCell },
+  { name: "Age", id: "age", width: 80, type: "number" },
+  { name: "Contact", id: "contact" },
 ];
 
 const base = { width: 100 };
 
 export default function Clipboard() {
-  const [data, setData] = useState(bankDataSmall);
+  const [data, setData] = useState(loanData);
   const ds = useClientDataSource({
     data: data,
     onRowDataChange: (p) => {
       setData((prev) => {
         const next = [...prev];
         p.center.forEach((v, i) => {
-          next[i] = v as BankData;
+          next[i] = v as LoanDataItem;
         });
 
         return next;
@@ -97,7 +105,13 @@ export default function Clipboard() {
           // Our selection has more columns than we are updating so we can skip.
           if (colI - rect.columnStart >= updates[rowI - rect.rowStart].length) break;
 
-          columnUpdates.push({ column: colI, value: updates[rowI - rect.rowStart][colI - rect.columnStart] });
+          const column = columns[colI];
+          const rawValue = updates[rowI - rect.rowStart][colI - rect.columnStart];
+
+          let value = column.type === "number" ? Number.parseFloat(rawValue as string) : rawValue;
+          if (column.type === "number" && Number.isNaN(value)) value = null;
+
+          columnUpdates.push({ column: colI, value: value });
         }
 
         map.set(rowI, columnUpdates);
