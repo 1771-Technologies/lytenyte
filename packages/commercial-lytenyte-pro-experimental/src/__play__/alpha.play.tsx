@@ -42,7 +42,6 @@ export default function Experimental() {
     data: bankDataSmall,
     rowGroupDefaultExpansion: true,
     group: [{ id: "marital" }, { id: "contact" }, { id: "age" }],
-    pivotRowGroupDefaultExpansion: false,
     pivotMode,
     pivotGrandTotals: "bottom",
     pivotModel: {

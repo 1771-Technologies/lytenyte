@@ -15,18 +15,35 @@ import {
   CountryCell,
   DateCell,
   GenderCell,
-  Header,
   NumberCell,
   ProfitCell,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
 import { useMemo, useState } from "react";
+import { Header } from "./filter.jsx";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
   readonly api: {
-    sorts: PieceWritable<{ id: string; dir: "asc" | "desc" } | null>;
+    readonly filterModel: PieceWritable<Record<string, GridFilter>>;
   };
+}
+
+export type FilterNumberOperator =
+  | "greater_than"
+  | "greater_than_or_equals"
+  | "less_than"
+  | "less_than_or_equals"
+  | "equals"
+  | "not_equals";
+
+export interface FilterNumber {
+  readonly operator: FilterNumberOperator;
+  readonly value: number;
+}
+
+export interface GridFilter {
+  readonly left: FilterNumber;
 }
 
 export const columns: Grid.Column<GridSpec>[] = [
@@ -49,7 +66,6 @@ export const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
-  headerRenderer: Header,
   cellRenderer: RowGroupCell,
   width: 200,
 };
@@ -60,19 +76,38 @@ const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
 };
 
 export default function PivotDemo() {
-  const [pivotSorts, setPivotSorts] = useState<{ id: string; dir: "asc" | "desc" } | null>({
-    id: "25-34-->profit",
-    dir: "desc",
-  });
-  const sorts = usePiece(pivotSorts, setPivotSorts);
+  const [filter, setFilter] = useState<Record<string, GridFilter>>({});
+  const filterModel = usePiece(filter, setFilter);
 
-  const sortDimension = useMemo(() => {
-    if (!pivotSorts) return null;
+  const filterFn = useMemo<Grid.T.HavingFilterFn>(() => {
+    const entries = Object.entries(filter);
 
-    return [
-      { dim: { id: pivotSorts.id }, descending: pivotSorts.dir === "desc" },
-    ] satisfies Grid.T.DimensionSort<GridSpec["data"]>[];
-  }, [pivotSorts]);
+    const evaluateNumberFilter = (operator: FilterNumberOperator, compare: number, value: number) => {
+      if (operator === "equals") return value === compare;
+      if (operator === "greater_than") return compare > value;
+      if (operator === "greater_than_or_equals") return compare >= value;
+      if (operator === "less_than") return compare < value;
+      if (operator === "less_than_or_equals") return compare <= value;
+      if (operator === "not_equals") return value !== compare;
+
+      return false;
+    };
+
+    return (row) => {
+      for (const [column, filter] of entries) {
+        const value = row.data[column as keyof GridSpec["data"]];
+
+        // We are only working with number filters, so lets filter out none number
+        if (typeof value !== "number") return false;
+
+        const compareValue = value;
+
+        if (!evaluateNumberFilter(filter.left.operator, compareValue, filter.left.value)) return false;
+      }
+
+      return true;
+    };
+  }, [filter]);
 
   const ds = useClientDataSource<GridSpec>({
     data: salesData,
@@ -80,6 +115,7 @@ export default function PivotDemo() {
     pivotModel: {
       columns: [{ id: "ageGroup" }],
       rows: [{ id: "country" }, { id: "productCategory" }],
+      filter: filterFn,
       measures: [
         {
           dim: {
@@ -93,19 +129,17 @@ export default function PivotDemo() {
           fn: "sum",
         },
       ],
-      sort: sortDimension,
     },
     rowGroupDefaultExpansion: true,
     aggregateFns: { sum: aggSum },
   });
 
   const pivotProps = ds.usePivotProps();
-  const apiExtension = useMemo(() => ({ sorts }), [sorts]);
   return (
     <>
       <div className="ln-grid" style={{ height: 500 }}>
         <Grid
-          apiExtension={apiExtension}
+          apiExtension={useMemo(() => ({ filterModel }), [filterModel])}
           columns={columns}
           rowSource={ds}
           columnBase={base}

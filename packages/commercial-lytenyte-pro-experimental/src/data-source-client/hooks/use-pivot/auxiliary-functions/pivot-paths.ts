@@ -9,16 +9,22 @@ export function pivotPaths<Spec extends GridSpec>(
   leafs: RowLeaf<Spec["data"]>[],
   columns: Required<PivotModel<Spec>>["columns"],
   measures: PivotModel<Spec>["measures"],
+  labelFilter: PivotModel<Spec>["colLabelFilter"],
 ) {
   const pathSet = new Set<string>();
   for (let i = 0; i < filtered.length; i++) {
     const row = leafs[filtered[i]];
     const current: string[] = [];
-    for (const c of columns) {
+    for (let j = 0; j < columns.length; j++) {
+      const c = columns[j];
+      const filterFn = labelFilter?.[j];
+
       const field = c.field ?? (c as any).id;
       const value = field ? computeField(field, row) : null;
 
+      if (filterFn && !filterFn(value === null ? value : String(value))) continue;
       const pivotKey = value == null ? "ln__blank__" : String(value);
+
       current.push(pivotKey as string);
     }
 

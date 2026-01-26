@@ -85,7 +85,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       });
     }
 
-    const paths = pivotPaths(filtered, leafs, columns, measures);
+    const paths = pivotPaths(filtered, leafs, columns, measures, model?.colLabelFilter);
 
     const lookup = Object.fromEntries((measures ?? []).map((x) => [x.dim.id, x]));
     const cols = paths.map((path) => {
@@ -161,7 +161,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
     });
 
     return cols;
-  }, [pivotMode, measures, columns, filtered, leafs, stateRef]);
+  }, [pivotMode, measures, columns, filtered, leafs, model?.colLabelFilter, stateRef]);
 
   const pivotColumnsWithState = useMemo(() => {
     if (!pivotColumns) return null;

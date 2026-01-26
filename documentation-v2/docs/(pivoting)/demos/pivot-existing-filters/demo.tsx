@@ -6,8 +6,6 @@ import {
   Grid,
   RowGroupCell,
   useClientDataSource,
-  usePiece,
-  type PieceWritable,
 } from "@1771technologies/lytenyte-pro-experimental";
 import {
   AgeGroup,
@@ -15,18 +13,13 @@ import {
   CountryCell,
   DateCell,
   GenderCell,
-  Header,
   NumberCell,
   ProfitCell,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
-import { useMemo, useState } from "react";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
-  readonly api: {
-    sorts: PieceWritable<{ id: string; dir: "asc" | "desc" } | null>;
-  };
 }
 
 export const columns: Grid.Column<GridSpec>[] = [
@@ -49,7 +42,6 @@ export const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
-  headerRenderer: Header,
   cellRenderer: RowGroupCell,
   width: 200,
 };
@@ -60,20 +52,6 @@ const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
 };
 
 export default function PivotDemo() {
-  const [pivotSorts, setPivotSorts] = useState<{ id: string; dir: "asc" | "desc" } | null>({
-    id: "25-34-->profit",
-    dir: "desc",
-  });
-  const sorts = usePiece(pivotSorts, setPivotSorts);
-
-  const sortDimension = useMemo(() => {
-    if (!pivotSorts) return null;
-
-    return [
-      { dim: { id: pivotSorts.id }, descending: pivotSorts.dir === "desc" },
-    ] satisfies Grid.T.DimensionSort<GridSpec["data"]>[];
-  }, [pivotSorts]);
-
   const ds = useClientDataSource<GridSpec>({
     data: salesData,
     pivotMode: true,
@@ -88,30 +66,22 @@ export default function PivotDemo() {
             type: "number",
             cellRenderer: ProfitCell,
             width: 140,
-            headerRenderer: Header,
           },
           fn: "sum",
         },
       ],
-      sort: sortDimension,
     },
+    pivotApplyExistingFilter: true, //!
+    filter: (row) => row.data.country === "United States" || row.data.country === "Germany", //!
     rowGroupDefaultExpansion: true,
     aggregateFns: { sum: aggSum },
   });
 
   const pivotProps = ds.usePivotProps();
-  const apiExtension = useMemo(() => ({ sorts }), [sorts]);
   return (
     <>
       <div className="ln-grid" style={{ height: 500 }}>
-        <Grid
-          apiExtension={apiExtension}
-          columns={columns}
-          rowSource={ds}
-          columnBase={base}
-          rowGroupColumn={group}
-          {...pivotProps}
-        />
+        <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />
       </div>
     </>
   );
