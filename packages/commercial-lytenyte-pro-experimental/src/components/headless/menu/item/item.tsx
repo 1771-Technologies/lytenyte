@@ -37,6 +37,8 @@ function ItemImpl({ onAction, closeOnAction, disabled, ...props }: Item.Props, r
         props.onClick?.(ev);
         if (ev.isPropagationStopped()) return;
         onAction?.();
+        ev.stopPropagation();
+        ev.preventDefault();
         if (closeOnAction === false) return;
         d?.onOpenChange(false);
       }}
@@ -44,6 +46,8 @@ function ItemImpl({ onAction, closeOnAction, disabled, ...props }: Item.Props, r
         if (ev.key === "ArrowUp" || ev.key === "ArrowDown") handleVerticalNavigation(ev);
         if (ev.key === " " || ev.key === "Enter") {
           onAction?.();
+          ev.stopPropagation();
+          ev.preventDefault();
           if (closeOnAction === false) return;
           d?.onOpenChange(false);
         }

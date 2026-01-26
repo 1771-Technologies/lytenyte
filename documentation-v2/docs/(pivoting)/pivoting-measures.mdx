@@ -24,9 +24,9 @@ by LyteNyte Grid for two purposes:
 
 1. Aggregate row data based on the row pivot and column pivot dimensions.
 2. If the measure dimension is a column, it will be used as a reference for the
-   columns created by the applied column pivot dimensions.
+   columns created from the pivot configuration.
 
-The demo below shows a measure that will aggregated the **Profit** column. The grid is
+The demo below shows a measure that will aggregate the **Profit** column. The grid is
 row pivoted on the **Country** column and column pivoted on the **Age Group** column.
 
 The view can be understood as the profit breakdown per country, split out by age groups.
@@ -65,16 +65,65 @@ const ds = useClientDataSource<GridSpec>({
 ### Multiple Measures
 
 You can apply multiple measures to the pivot configuration by providing more dimensions. The order of
-measures applied to the grid does not matter, though the order will influence the initial column
+measures applied to the grid does not matter, though the measure order will influence the initial column
 order when pivots are applied.
 
 The demo below demonstrates multiple measures in action. You can also update the measure function
-by clicking the measure function name and selecting a new measure for that column.
+by clicking the function name in the pill and selecting a new measure for that column.
 
-Each measure results in the additional columns being created when pivots are presented. If a column
-pivot results in 20 dynamic columns being created, then for each measure roughly 20 columns will be
+::demo[Multiple Measures="./demos/pivot-measures-updates"]
+
+Each measure results in the additional columns being created. If a column
+pivot results in 20 dynamic columns being created, then for each measure 20 columns will be
 added. If you have two measures, there will be 40 columns, 3 measures will have 60 columns, and so on.
 
 ## Single Column Multiple Measures
 
+The same column may be used as a measure more than once. This allows you to measure on the same
+column using different measure functions.
+
+The demo below demonstrates this by measuring the **Profit** column by **sum** and by **avg**.
+From LyteNyte Grid's perspective each measure is distinct, despite sharing the same column.
+
+::demo[Single Column Multiple Measures="./demos/pivot-measures-multiple"]
+
+Since LyteNyte Grid identifies measures by `id`, when applying multiple measures for the same column,
+a unique ID for each measure must be provided. The code for this is shown below:
+
+```ts
+const ds = useClientDataSource<GridSpec>({
+  pivotModel: {
+    columns: [{ id: "ageGroup" }],
+    rows: [{ id: "country" }],
+    measures: [
+      {
+        dim: {
+          ...columns.find((x) => x.id === "profit")!,
+          id: "Profit (sum)", //!
+          field: "profit",
+          name: "Profit (sum)",
+          width: 100,
+        },
+        fn: "sum",
+      },
+      {
+        dim: {
+          ...columns.find((x) => x.id === "profit")!,
+          id: "Profit (avg)", //!
+          field: "profit",
+          name: "Profit (avg)",
+          width: 100,
+        },
+        fn: "avg",
+      },
+    ],
+  },
+  aggregateFns: { sum: aggSum, avg: aggAvg },
+});
+```
+
 ## Next Steps
+
+::next[/docs/pivoting-columns-and-rows]
+::next[/docs/pivoting-grand-totals]
+::next[/docs/pivoting-sorting]

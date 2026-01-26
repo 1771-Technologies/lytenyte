@@ -116,6 +116,11 @@
       padding-inline-start: var(--ln-space-02);
     }
 
+    &[data-ln-pill-type="measures"] [data-ln-pill-item] {
+      background-color: var(--ln-measures-fill);
+      border: 1px solid var(--ln-measures-stroke);
+    }
+
     &[data-ln-pill-type="columns"] [data-ln-pill-item] {
       background-color: var(--ln-column-fill);
       border: 1px solid var(--ln-column-stroke);

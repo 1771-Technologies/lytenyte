@@ -71,7 +71,7 @@ export interface PivotModel<Spec extends GridSpec = GridSpec> {
   readonly rows?: (Column<Spec> | PivotField<Spec>)[];
   readonly measures?: { dim: Column<Spec>; fn: Aggregator<Spec["data"]> | string }[];
 
-  readonly sort?: SortFn<Spec["data"]>;
+  readonly sort?: SortFn<Spec["data"]> | DimensionSort<Spec["data"]>[] | null;
   readonly filter?: HavingFilterFn | (HavingFilterFn | null)[];
   readonly rowLabelFilter?: (LabelFilter | null)[];
   readonly colLabelFilter?: (LabelFilter | null)[];

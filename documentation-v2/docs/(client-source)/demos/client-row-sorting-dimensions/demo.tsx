@@ -138,7 +138,7 @@ export default function ColumnBase() {
           rowSource={ds}
           events={{
             headerCell: {
-              keyDown: (column, ev) => {
+              keyDown: ({ event: ev, column }) => {
                 if (ev.key === "Enter") {
                   const nextSort = column.sort === "asc" ? null : column.sort === "desc" ? "asc" : "desc";
                   apiExtension.sortColumn(column.id, nextSort);

@@ -2,13 +2,14 @@ import { forwardRef, memo, type JSX, type ReactNode } from "react";
 import { useSlot, type SlotComponent } from "../../hooks/use-slot/index.js";
 import type { PillRowSpec, PillState } from "./types.js";
 import { usePillRow } from "./pill-row.context.js";
-import { ColumnPivots, Columns, Icon, RowGroups, RowPivots } from "./icons.js";
+import { ColumnPivots, Columns, Icon, Measure, RowGroups, RowPivots } from "./icons.js";
 
 const typeToIcon: Record<string, (props: JSX.IntrinsicElements["svg"]) => ReactNode> = {
   columns: Columns,
   "row-groups": RowGroups,
   "row-pivots": RowPivots,
   "column-pivots": ColumnPivots,
+  measures: Measure,
 };
 
 function PillBase({ render, ...props }: PillLabel.Props, forwarded: PillLabel.Props["ref"]) {

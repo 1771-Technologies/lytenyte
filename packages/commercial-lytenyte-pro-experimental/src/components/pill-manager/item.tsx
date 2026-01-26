@@ -1,6 +1,6 @@
-import { forwardRef, memo, useRef, useState, type JSX } from "react";
-import { useSlot, type SlotComponent } from "../../hooks/use-slot/index.js";
-import type { PillItemSpec, PillRowSpec, PillState } from "./types.js";
+import { forwardRef, memo, useRef, useState, type JSX, type ReactNode } from "react";
+import { useSlot } from "../../hooks/use-slot/index.js";
+import type { PillItemSpec, PillRowSpec } from "./types.js";
 import { usePillRow } from "./pill-row.context.js";
 import {
   getDragData,
@@ -12,7 +12,7 @@ import { DragDots } from "./icons.js";
 import { usePillRoot } from "./root.context.js";
 import { equal, moveRelative, type Writable } from "@1771technologies/lytenyte-shared";
 
-function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.Props["ref"]) {
+function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillItem.Props["ref"]) {
   const { expandToggle, expanded, row } = usePillRow();
   const {
     prevRowId,
@@ -188,7 +188,7 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     onPillItemActiveChange({ index, item: nextPill, row: nextRow });
   };
 
-  const s = render ?? (
+  const s = (
     <div
       tabIndex={-1}
       onClick={onItemClick}
@@ -213,13 +213,14 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
         </div>
       )}
       <div>{item.name ?? item.id}</div>
+      {elementEnd}
     </div>
   );
 
   const slot = useSlot({
     props: [item.movable ? dragProps : {}, props, { "data-ln-pill-item": true }],
     ref,
-    slot: render ?? s,
+    slot: s,
     state: {
       item,
       expanded,
@@ -251,6 +252,6 @@ export const PillItem = memo(forwardRef(PillItemBase));
 
 export namespace PillItem {
   export type Props = JSX.IntrinsicElements["div"] & { item: PillItemSpec } & {
-    readonly render?: SlotComponent<PillState & { item: PillItemSpec }>;
+    elementEnd?: ReactNode;
   };
 }
