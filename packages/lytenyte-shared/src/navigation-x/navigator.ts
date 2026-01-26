@@ -7,6 +7,7 @@ import { handleHorizontal } from "./key-handler/handle-horizontal.js";
 import { handleVertical } from "./key-handler/handle-vertical.js";
 import { handleHomeEnd } from "./key-handler/handle-home-end.js";
 import { handlePageKeys } from "./key-handler/handle-page-keys.js";
+import { canMoveInInput } from "./can-move-in-input.js";
 
 export interface NavigatorParams {
   readonly viewport: HTMLElement;
@@ -67,7 +68,7 @@ export function navigator({
     // If the user is pressing tab, then we should skip the remaining cells and move to the next
     // element. This is slightly different than what may be expected, but makes the most sense.
     // A grid will have 1000s of cells, tabbing through them is not feasible.
-    if (ev.key === "Tab") {
+    if (ev.key === "Tab" && !isTextInputFocused()) {
       viewport.inert = true;
       setTimeout(() => (viewport.inert = false));
       ev.stopPropagation();
@@ -128,7 +129,10 @@ export function navigator({
 
     if (key === nextKey || key == prevKey) {
       if (isTextInputFocused() && !ignoreInputFocus) {
-        return;
+        const input = document.activeElement as HTMLInputElement;
+        const move = canMoveInInput(input);
+
+        if ((nextKey === key && !move.end) || (key === prevKey && !move.start)) return;
       }
 
       const isBack = key === prevKey;
