@@ -1,14 +1,175 @@
 ---
 title: Pivot Filters
 pro: true
+step: Filter rows before or after pivoting.
+description: Once a pivot view has been created, you can apply filters to reduce the number of
+  rows displayed. Pivots can be filtering by labels or by predicate conditions.
 ---
+
+:::note
+
+This guide assumes you are familiar with general filtering using the client data source. Before
+reading on, ensure you have read the following guides:
+
+- [Client Row Filtering](/docs/client-source-filtering)
+- [Client Row Having Filters](/docs/client-source-having-filters)
+- [Client Row Label Filters](/docs/client-source-label-filters)
+
+You should also be familiar with the content of the **Filtering** section, in particular
+the [Filtering Numbers guide](/docs/filtering-numbers).
+
+:::
 
 ## Filtering Pivots
 
-## Filter Before Pivot Creation
+Pivot data will always result in group rows being created. This is because pivots are aggregated.
+To apply filters to the pivot data, set the `filter` property on the pivot model. The `filter`
+property accepts [`HavingFilterFn`](/docs/reference) filter function or an
+array of [`HavingFilterFn`](/docs/reference) filter functions.
+
+The demo below demonstrates the having filter functions in action. You can update the filter applied
+to the pivot column by clicking the funnel icon on the header.
+
+Since the [`HavingFilterFn`] is applied as a single function, all the rows will be checked. You can
+filter at particular level by providing an array instead. See the [Client Row Having Filters guide](/docs/client-source-having-filters)
+for more details.
+
+::demo[Filtering Pivots="./demos/pivot-filtering"]
+
+The code that applies the filters is relatively straightforward. The LyteNyte API is extended with a filter model,
+and the state of that model is converted into a filter function. The filter function is then applied to the
+pivot model of the client source, as the code below shows:
+
+```ts
+const [filter, setFilter] = useState<Record<string, GridFilter>>({}); //!
+const filterModel = usePiece(filter, setFilter); //!
+
+const filterFn = useMemo<Grid.T.HavingFilterFn>(() => {
+  //#start
+  const entries = Object.entries(filter);
+
+  const evaluateNumberFilter = (operator: FilterNumberOperator, compare: number, value: number) => {
+    if (operator === "equals") return value === compare;
+    if (operator === "greater_than") return compare > value;
+    if (operator === "greater_than_or_equals") return compare >= value;
+    if (operator === "less_than") return compare < value;
+    if (operator === "less_than_or_equals") return compare <= value;
+    if (operator === "not_equals") return value !== compare;
+
+    return false;
+  };
+
+  return (row) => {
+    for (const [column, filter] of entries) {
+      const value = row.data[column as keyof GridSpec["data"]];
+
+      // We are only working with number filters, so lets filter out none number
+      if (typeof value !== "number") return false;
+
+      const compareValue = value;
+
+      if (!evaluateNumberFilter(filter.left.operator, compareValue, filter.left.value)) return false;
+    }
+
+    return true;
+  };
+  //#end
+}, [filter]);
+
+const ds = useClientDataSource<GridSpec>({
+  data: salesData,
+  pivotMode: true,
+  pivotModel: {
+    columns: [{ id: "ageGroup" }],
+    rows: [{ id: "country" }, { id: "productCategory" }],
+    filter: filterFn, //!
+    measures: [
+      //#start
+      {
+        dim: {
+          id: "profit",
+          name: "Profit",
+          type: "number",
+          cellRenderer: ProfitCell,
+          width: 140,
+          headerRenderer: Header,
+        },
+        fn: "sum",
+      },
+    ],
+    //#end
+  },
+  rowGroupDefaultExpansion: true,
+  aggregateFns: { sum: aggSum },
+});
+```
+
+### Filter Before Pivot Creation
+
+By default, when pivoting LyteNyte Grid will ignore the normal filters applied to rows.
+This means all the rows provided will be used to create pivot columns.
+
+You can set the `pivotApplyExistingFilter` function to apply the normal row filters before
+pivoting on the grid.
+
+In the demo below, the rows are filtered to only keep rows that have **United States** or
+**Germany** as a country. See the [Client Row Filtering guide](/docs/client-source-filtering)
+for more details on filtering rows.
+
+::demo[Filter Before Pivot Creation="./demos/pivot-existing-filters"]
 
 ## Label Filters
 
-## Filter Model State
+The process of pivoting results in the creation of labels for both rows and columns.
+You can use the `rowLabelFilter` and `colLabelFilter` to filter rows based on the
+row and column labels respectively.
+
+Label filters allow you to exclude or include specific identifiers from the resulting
+pivot set. See the [Client Row Label Filters guide](/docs/client-source-label-filters) for
+more details.
+
+The demo below applies two label, one for columns and one for rows. The row labels will
+filter out any label that does not have **United State** or **Germany** as a country.
+The column label will filter out the **Under 25** category.
+
+::demo[Pivot Label Filters="./demos/pivot-label-filters"]
+
+Label filters are always applied as an array. Each item in the array will filter the
+labels at the depth of the index of the item. This means the first item in the array
+will filter the top most labels, and so on. The code below shows the label filters
+for the demo.
+
+```ts
+const ds = useClientDataSource<GridSpec>({
+  data: salesData,
+  pivotMode: true,
+  pivotModel: {
+    colLabelFilter: [(s) => s !== "Under 25"], //!
+    rowLabelFilter: [(s) => s === "Germany" || s === "United States"], //!
+    columns: [{ id: "ageGroup" }],
+    rows: [{ id: "country" }, { id: "productCategory" }],
+    //#start
+    measures: [
+      {
+        dim: {
+          id: "profit",
+          name: "Profit",
+          type: "number",
+          cellRenderer: ProfitCell,
+          width: 140,
+        },
+        fn: "sum",
+      },
+    ],
+    //#end
+  },
+  rowGroupDefaultExpansion: true,
+  aggregateFns: { sum: aggSum },
+});
+```
 
 ## Next Steps
+
+::next[/docs/pivoting-sorting]
+::next[/docs/pivoting-columns-and-rows]
+::next[/docs/pivoting-measures]

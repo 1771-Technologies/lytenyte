@@ -19,6 +19,7 @@ export function useFlattenedGroups<T>(
   sort: SortFn<T> | null | undefined,
   expandedFn: (id: string, depth: number) => boolean,
   suppressLeafExpansion: boolean,
+  ignoreIsLast: boolean = false,
 ) {
   const flat = useMemo<UseFlattenedGroupsReturn<T>>(() => {
     if (!root) return [null, 0];
@@ -42,7 +43,7 @@ export function useFlattenedGroups<T>(
     ) {
       maxDepth = Math.max(depth + 1, maxDepth);
 
-      const rows = nodeChildrenToRows(node, agg, leafs, workingSet, sort, isLast);
+      const rows = nodeChildrenToRows(node, agg, leafs, workingSet, sort, isLast && !ignoreIsLast);
 
       let offset = 0;
 
@@ -76,7 +77,7 @@ export function useFlattenedGroups<T>(
     processRowsBetter(root!.children, null, 0, root.maxDepth <= 1);
 
     return [flatList, maxDepth];
-  }, [agg, expandedFn, leafs, root, sort, suppressLeafExpansion, workingSet]);
+  }, [agg, expandedFn, ignoreIsLast, leafs, root, sort, suppressLeafExpansion, workingSet]);
 
   return flat;
 }

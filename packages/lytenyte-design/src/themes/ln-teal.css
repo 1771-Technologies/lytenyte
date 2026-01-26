@@ -76,6 +76,8 @@
   --ln-text-hyperlink: var(--ln-primary-50);
   --ln-text-primary-button: var(--ln-gray-00);
 
+  --ln-measures-fill: hsla(58, 99%, 68%, 0.09);
+  --ln-measures-stroke: hsla(58, 99%, 68%, 0.28);
   --ln-row-pivot-fill: hsla(160, 100%, 43%, 0.14);
   --ln-row-pivot-stroke: hsla(158, 100%, 55%, 0.35);
   --ln-column-pivot-fill: hsla(259, 100%, 61%, 0.18);

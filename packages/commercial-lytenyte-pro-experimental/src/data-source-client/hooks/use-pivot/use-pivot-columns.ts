@@ -85,7 +85,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       });
     }
 
-    const paths = pivotPaths(filtered, leafs, columns, measures);
+    const paths = pivotPaths(filtered, leafs, columns, measures, model?.colLabelFilter);
 
     const lookup = Object.fromEntries((measures ?? []).map((x) => [x.dim.id, x]));
     const cols = paths.map((path) => {
@@ -109,7 +109,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       if (name === "ln__total") name = "Total";
 
       const group = (
-        parts.length === 1
+        parts.length === 1 && measures?.length === 1
           ? undefined
           : !measures?.length || measures.length === 1
             ? parts.slice(0, -1)
@@ -120,8 +120,13 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       const column: Column<Spec> = applyReferenceColumn(
         {
           id: path,
-          name,
-          groupPath: group,
+          name: group ? (measureRef?.name ?? name) : name,
+          groupPath: group?.map((x) => {
+            if (x === "ln__grand_total") return "Grand Total";
+            if (x === "ln__total") return "Total";
+
+            return x;
+          }),
           groupVisibility: path.includes("ln__total") || path.includes("ln__grand_total") ? "always" : "open",
           field: ({ row }) => {
             // If the value is a group then we can simply grab the aggregated value.
@@ -156,7 +161,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
     });
 
     return cols;
-  }, [pivotMode, measures, columns, filtered, leafs, stateRef]);
+  }, [pivotMode, measures, columns, filtered, leafs, model?.colLabelFilter, stateRef]);
 
   const pivotColumnsWithState = useMemo(() => {
     if (!pivotColumns) return null;

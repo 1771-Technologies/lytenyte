@@ -13,6 +13,7 @@ import { usePivotAggFunction } from "./use-agg-model.js";
 import {
   useFilterFn,
   usePiece,
+  useSortFn,
   type LeafNodeTuple,
 } from "@1771technologies/lytenyte-core-experimental/internal";
 
@@ -25,6 +26,8 @@ export function usePivotData<Spec extends GridSpec>(
 ) {
   const model = props.pivotModel;
   const pivotMode = props.pivotMode ?? false;
+
+  const sortFn = useSortFn(model?.sort);
 
   const filterFn = useFilterFn(props.filter);
   const filter = props.pivotApplyExistingFilter ? filterFn : null;
@@ -73,14 +76,14 @@ export function usePivotData<Spec extends GridSpec>(
     aggFn,
   );
 
-  const groupSort = Array.isArray(model?.sort) ? (model.sort.length ? model.sort : null) : model?.sort;
   const [groupFlat, maxDepth] = useFlattenedGroups(
     tree,
     aggFn,
     leafs,
     filtered,
-    groupSort,
+    sortFn,
     c.pivotExpandedFn,
+    true,
     true,
   );
 

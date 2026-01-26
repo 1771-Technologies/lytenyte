@@ -13,6 +13,7 @@ function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
 
   const prevSwapId = useRef<string | null>(null);
   const prevRowId = useRef<string | null>(null);
+  const movedRef = useRef<{ id: string; pillId: string } | null>(null);
 
   const value = useMemo<PillRootContext>(() => {
     return {
@@ -26,6 +27,7 @@ function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
       dragState,
       setDragState,
 
+      movedRef,
       prevSwapId,
       prevRowId,
 

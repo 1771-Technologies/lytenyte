@@ -42,7 +42,7 @@
 
       padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth));
 
-      &[data-ln-component-group-cell-expandable="false"] {
+      &[data-ln-component-group-cell-expandable="false"]:not([data-ln-component-group-cell-depth="0"]) {
         /* space 60 for the icon and 8px for the gap. */
         padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth) + var(--ln-space-60));
       }

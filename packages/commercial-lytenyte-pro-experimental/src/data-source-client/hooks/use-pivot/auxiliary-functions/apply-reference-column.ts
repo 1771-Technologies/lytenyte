@@ -1,23 +1,30 @@
 import type { Column, GridSpec } from "../../../../types/index.js";
 
+const omitKeys = [
+  "id",
+  "name",
+  "groupVisibility",
+  "groupPath",
+  "pin",
+  "hide",
+  "field",
+  "colSpan",
+  "rowSpan",
+  "editOnPrintable",
+  "editRenderer",
+  "editable",
+  "editSetter",
+];
+
 export function applyReferenceColumn<Spec extends GridSpec>(
   pivotColumn: Column<Spec>,
   reference: Omit<Column<Spec>, "id"> | undefined,
 ) {
-  Object.assign(pivotColumn, {
-    headerRenderer: reference?.headerRenderer,
-    cellRenderer: reference?.cellRenderer,
-    autosizeCellFn: reference?.autosizeCellFn,
-    autosizeHeaderFn: reference?.autosizeHeaderFn,
-    floatingCellRenderer: reference?.floatingCellRenderer,
-    movable: reference?.movable,
-    resizable: reference?.resizable,
-    type: reference?.type,
-    width: reference?.width,
-    widthMin: reference?.widthMin,
-    widthMax: reference?.widthMax,
-    widthFlex: reference?.widthFlex,
-  });
+  if (!reference) return pivotColumn;
+
+  const final = Object.fromEntries(Object.entries(reference).filter((x) => !omitKeys.includes(x[0])));
+
+  Object.assign(pivotColumn, final);
 
   return pivotColumn;
 }

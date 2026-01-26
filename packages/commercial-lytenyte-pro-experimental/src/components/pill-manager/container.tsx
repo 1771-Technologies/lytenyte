@@ -1,4 +1,4 @@
-import { forwardRef, memo, useEffect, useState, type JSX } from "react";
+import { forwardRef, memo, useEffect, useRef, useState, type JSX } from "react";
 import { usePillRoot } from "./root.context.js";
 import { usePillRow } from "./pill-row.context.js";
 import {
@@ -12,7 +12,7 @@ import type { PillItemSpec } from "./types.js";
 import { getFocusables } from "@1771technologies/lytenyte-shared";
 
 function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Props["ref"]) {
-  const { setCloned, orientation, rows } = usePillRoot();
+  const { setCloned, orientation, rows, movedRef } = usePillRoot();
   const { row } = usePillRow();
 
   const [over, setOver] = useState(false);
@@ -22,6 +22,7 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
 
   const [container, setContainer] = useState<HTMLElement | null>(null);
 
+  const wasOver = useRef(false);
   useEffect(() => {
     if (!container) return;
 
@@ -30,17 +31,24 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       setOver(false);
       return;
     }
+
     const { item: dragged, id } = ds.pill.data;
-    if (id === row.id) return;
+
+    const bb = container.getBoundingClientRect();
+    const isOver = bb.left < x && bb.right > x && bb.top < y && bb.bottom > y;
+
+    // The current drag is from the current row.
+    if (id === row.id) {
+      movedRef.current = !isOver ? { id: row.id, pillId: dragged.id } : null;
+      return;
+    }
 
     const thisRow = rows.findIndex((x) => x.id === row.id);
     const originalRow = rows[thisRow];
 
-    const bb = container.getBoundingClientRect();
-    if (bb.left < x && bb.right > x && bb.top < y && bb.bottom > y) {
-      // I am inside
+    if (isOver) {
+      wasOver.current = true;
       if (row.pills.find((x) => x.id === dragged.id)) return;
-
       if (!row.accepts || !dragged.tags || dragged.tags.every((x) => !row.accepts?.includes(x))) return;
 
       setOver(true);
@@ -61,6 +69,18 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
         return newDef;
       });
     } else {
+      if (wasOver.current) {
+        setCloned((prev) => {
+          if (!prev) return prev;
+
+          const next = [...prev];
+          next[thisRow] = structuredClone(originalRow);
+
+          return next;
+        });
+        wasOver.current = false;
+      }
+
       setOver(false);
       // The original row has the dragged pill as an ID so we can safely skip it.
       if (originalRow.pills.find((x) => x.id === dragged.id)) return;
@@ -78,7 +98,7 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
         return newDef;
       });
     }
-  }, [container, row, rows, setCloned, x, y]);
+  }, [container, movedRef, over, row, rows, setCloned, x, y]);
 
   const combined = useCombinedRefs(forwarded, setContainer);
 

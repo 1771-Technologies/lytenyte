@@ -1,10 +1,47 @@
 ---
 title: Pivot Sorting
 pro: true
+step: Provide custom ordering for the rows after pivoting.
+description: Column's create by pivoting may be sorted. You can sort rows in ascending or
+  descending order. Any pivot row may be sorted.
 ---
+
+:::note
+
+You should be familiar with how sorting works in the client data source before reading this
+guide. The sort functionality for pivots works in identical fashion to normal client sorts,
+except sorts are applied to pivot model.
+
+See the [Client Row Sorting guide](/docs/client-source-row-sorting) for more details.
+
+:::
 
 ## Sorting Pivots
 
-## Sort Model State
+To sort the pivot columns set `sort` property on the pivot model. The demo below demonstrates this
+by allowing you to sort on any column by clicking the header of the column.
+
+::demo[Pivot Sorting="./demos/pivot-sorting"]
+
+Sorting pivot rows is identical to sorting normal grid rows. The only difference is the sort model
+is applied to the pivot property of the client source. However, dimensions sorts are performed by
+referencing a column. With pivots the columns are dynamically generated.
+
+LyteNyte Grid generates IDs for pivot columns based on the pivot data. For example, the demo
+above the ID of the **25-34** column will be `"25-34-->profit"`. The first part is the value of
+cell in the **Age Group** column, and the second part is the id of the measure applied, in this
+case the **Profit** column.
+
+If you need predicable IDs, you can use the `pivotColumnProcessor` property on the client data source
+to alter the column IDs before the pivot columns are returned.
+
+You should only try to set the pivot sort values ahead of time if you have a
+controlled view and requirement specific columns to be sorted ahead of time. If you are
+attempting to persist pivot state, LyteNyte Grid offers a better approach. See the
+[Pivot State Persistence guide] for details.
 
 ## Next Steps
+
+::next[/docs/pivoting-filtering]
+::next[/docs/pivoting-state-persistence]
+::next[/docs/pivoting-measures]

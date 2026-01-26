@@ -19,5 +19,5 @@ export interface PillRowSpec {
   readonly pills: PillItemSpec[];
   readonly accepts?: string[];
   readonly label?: string;
-  readonly type?: "columns" | "row-groups" | "row-pivots" | "column-pivots" | ({} & string);
+  readonly type?: "columns" | "row-groups" | "row-pivots" | "column-pivots" | "measures" | ({} & string);
 }

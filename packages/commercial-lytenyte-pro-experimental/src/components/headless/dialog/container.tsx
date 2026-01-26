@@ -197,7 +197,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
 
     if (shouldMount && lightDismiss != false) {
       document.addEventListener(
-        "pointerdown",
+        "click",
         (ev) => {
           const bb = dialog.getBoundingClientRect();
           if (ev.button !== 0) return;

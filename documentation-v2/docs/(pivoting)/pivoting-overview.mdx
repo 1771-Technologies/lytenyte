@@ -1,11 +1,11 @@
 ---
 title: Pivoting Overview
 pro: true
-description: LyteNyte's pivot functionality let's you create rotated views of your grid data, allowing
+description: LyteNyte's pivot functionality let's you create rotated views, allowing
   you to see comparisons, patterns and trends in your data.
 ---
 
-Pivoting allows you to take the cell values of a particular column and create dynamic columns out of the
+Pivoting takes the cell values of a particular column and creates dynamic columns out of the
 columns. You can then apply measures that will summarize data of a different column allowing you to break
 out the aggregation into the parts that contribute the pivot column.
 
@@ -23,8 +23,103 @@ possible to unambiguously pivot data for these sources.
 
 ## Pivot Mode
 
-## Row Data Source and Pivots
+LyteNyte Grid does not contain any state. The grid will render exactly the props provided. This means it has no
+direct knowledge of the current pivot state. Instead the pivot state is maintained in the client row source.
 
-## Client Source Pivot Model
+To enable pivoting you must do the following:
+
+- See the `pivotMode` property to `true` on the client data source
+- Provide a `pivotModel` value.
+- Call the `usePivotProps` hook on the client data source and set these props on the
+  grid.
+
+The code below shows the bare minimum configuration necessary.
+
+```tsx
+function PivotGrid() {
+  const ds = useClientDataSource<Spec>({
+    pivotMode: true,
+    pivotModel: {},
+  });
+
+  const pivotProps = ds.usePivotProps();
+
+  return <Grid {...pivotProps} />;
+}
+```
+
+The demo below shows pivots in action. You can toggle the pivot mode on and off. The grid below is hard coded
+to pivot on the **Age Group** column, group by the **Country** column, and measure the **Profit** column.
+
+::demo[Basic Pivoting="./demos/pivot-basic"]
+
+The rows are grouped by **Country**, however you cannot expand to reveal the sub-rows of each grouping. This
+is part of the way pivots work. Data is always displayed in an aggregated form. All the rows are group rows, and
+the final level will not be expandable.
+
+The code below shows the pivot configuration for the demo. Take special note of the `measures` value. LyteNyte
+Grid will use the `measure` value a reference for the columns created by the pivot. In this case the **Profit**
+column is being used as a base for the new columns being created. The code overrides the header to make the generated
+headers look similar to the un-pivoted cell value of the **Age Group** column.
+
+```ts
+const ds = useClientDataSource<GridSpec>({
+  data: salesData,
+  pivotMode: pivotMode,
+  pivotModel: {
+    //!next 12
+    columns: [{ id: "ageGroup" }],
+    rows: [{ id: "country" }],
+    measures: [
+      {
+        dim: {
+          ...columns.find((x) => x.id === "profit")!,
+          headerRenderer: AgeGroupPivotHeader,
+          width: 120,
+        },
+        fn: "sum",
+      },
+    ],
+  },
+});
+```
+
+### Client Source Pivot Model
+
+The `pivotModel` property of the `useClientDataSource` hook determines how LyteNyte Grid should display
+pivoted rows. The interface is shown below.
+
+```ts
+interface PivotModel<Spec extends GridSpec = GridSpec> {
+  readonly columns?: (Column<Spec> | PivotField<Spec>)[];
+  readonly rows?: (Column<Spec> | PivotField<Spec>)[];
+  readonly measures?: { dim: Column<Spec>; fn: Aggregator<Spec["data"]> | string }[];
+
+  readonly sort?: SortFn<Spec["data"]>;
+  readonly filter?: HavingFilterFn | (HavingFilterFn | null)[];
+  readonly rowLabelFilter?: (LabelFilter | null)[];
+  readonly colLabelFilter?: (LabelFilter | null)[];
+}
+```
+
+Notice that all the properties are optional. The `columns`, `rows`, and `measures` properties
+are used to create a pivot view. Their behavior is as follows:
+
+- If you provide no values for the `columns`, `rows`, and `measures` properties that pivot view will be blank.
+- If `columns` is set to one or more columns, then the values of the cells in those columns will be used to create
+  dynamic pivot columns.
+- If `rows` is set to one or more columns, the output of the `measures` will be grouped by the `rows` value.
+- If `measures` is set, LyteNyte Grid will aggregate the rows of the grid by the given measure. Measures can
+  further be broken down into:
+  1. If only measures are provided, LyteNyte Grid will create columns for each measure and aggregate all the rows. There will be
+     at most one row as a result. This row will be a totals row.
+  2. If measures and columns are provided, LyteNyte Grid will aggregate measures for each column created from the column pivots.
+  3. If measures and groups are provided, LyteNyte Grid will aggregate measures for each row group.
+  4. Finally, if measures, groups, and columns are provided, LyteNyte Grid will aggregate measures for each row group split out by each column
+     created by the pivots.
 
 ## Next Steps
+
+::next[/docs/pivoting-columns-and-rows]
+::next[/docs/pivoting-filtering]
+::next[/docs/pivoting-sorting]

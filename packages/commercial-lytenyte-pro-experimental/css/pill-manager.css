@@ -99,6 +99,9 @@
       border-radius: var(--ln-radius);
       padding-block: var(--ln-space-05);
       padding-inline: var(--ln-space-10);
+      height: 30px;
+      min-height: 30px;
+      max-height: 30px;
       border: 1px solid transparent;
       cursor: pointer;
 
@@ -111,6 +114,11 @@
 
     &[data-ln-draggable="true"] [data-ln-pill-item] {
       padding-inline-start: var(--ln-space-02);
+    }
+
+    &[data-ln-pill-type="measures"] [data-ln-pill-item] {
+      background-color: var(--ln-measures-fill);
+      border: 1px solid var(--ln-measures-stroke);
     }
 
     &[data-ln-pill-type="columns"] [data-ln-pill-item] {
@@ -127,7 +135,7 @@
     }
 
     &[data-ln-drag-active="true"] [data-ln-pill-item] {
-      border: 1px solid var(--ln-primary-50);
+      transform: scale(1.1);
     }
   }
 

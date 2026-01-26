@@ -77,6 +77,8 @@
   --ln-text-hyperlink: var(--accent-foreground);
   --ln-text-primary-button: var(--accent-foreground);
 
+  --ln-measures-fill: hsla(58, 99%, 68%, 0.09);
+  --ln-measures-stroke: hsla(58, 99%, 68%, 0.28);
   --ln-row-pivot-fill: hsla(179, 92%, 10%, 1);
   --ln-row-pivot-stroke: hsla(176, 76%, 18%, 1);
   --ln-column-pivot-fill: hsla(262, 78%, 23%, 1);

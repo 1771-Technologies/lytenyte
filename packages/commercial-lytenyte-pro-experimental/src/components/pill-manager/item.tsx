@@ -1,6 +1,6 @@
-import { forwardRef, memo, useRef, type JSX } from "react";
-import { useSlot, type SlotComponent } from "../../hooks/use-slot/index.js";
-import type { PillItemSpec, PillRowSpec, PillState } from "./types.js";
+import { forwardRef, memo, useRef, useState, type JSX, type ReactNode } from "react";
+import { useSlot } from "../../hooks/use-slot/index.js";
+import type { PillItemSpec, PillRowSpec } from "./types.js";
 import { usePillRow } from "./pill-row.context.js";
 import {
   getDragData,
@@ -10,18 +10,18 @@ import {
 } from "@1771technologies/lytenyte-core-experimental/internal";
 import { DragDots } from "./icons.js";
 import { usePillRoot } from "./root.context.js";
-import { equal, moveRelative } from "@1771technologies/lytenyte-shared";
+import { equal, moveRelative, type Writable } from "@1771technologies/lytenyte-shared";
 
-function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.Props["ref"]) {
+function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillItem.Props["ref"]) {
   const { expandToggle, expanded, row } = usePillRow();
   const {
     prevRowId,
     prevSwapId,
+    movedRef,
     setDragState,
     setCloned,
     cloned,
     rows,
-    dragState,
 
     onPillItemThrown,
     onPillItemActiveChange,
@@ -36,9 +36,7 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     placeholder,
     props: dragProps,
   } = useDraggable({
-    data: {
-      pill: { data: { item, id: row.id }, kind: "site" },
-    },
+    data: { pill: { data: { item, id: row.id }, kind: "site" } },
 
     onUnhandledDrop: () => {
       onPillItemThrown?.({
@@ -47,23 +45,32 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
         row: rows.find((x) => x.id === row.id)!,
       });
     },
+
     onDragStart: () => {
       setDragState({ activeId: item.id, activeRow: row.id, activeType: row.type ?? "" });
-      setCloned([...rows]);
+      setCloned(structuredClone(rows));
     },
+
     onDragEnd: () => {
       prevRowId.current = null;
       prevSwapId.current = null;
+
+      const full = clonedRef.current!;
+
+      if (movedRef.current) {
+        const move = movedRef.current;
+        const movedPill = full
+          .find((x) => x.id === move.id)
+          ?.pills.find((x) => x.id === move.pillId) as Writable<PillItemSpec>;
+        if (movedPill) movedPill.active = false;
+      }
 
       const changed = clonedRef.current!.filter((x, i) => {
         return !equal(x, rows[i]);
       });
 
       if (changed.length) {
-        onPillRowChange({
-          changed,
-          full: clonedRef.current!,
-        });
+        onPillRowChange({ changed, full: clonedRef.current! });
       }
 
       setDragState(null);
@@ -71,6 +78,7 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     },
   });
 
+  const [_, force] = useState({});
   const handleDragEnter = useEvent((ev) => {
     ev.preventDefault();
     ev.stopPropagation();
@@ -78,17 +86,26 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     const ds = getDragData() as { pill?: { data: { id: string; item: PillItemSpec } } } | null;
     if (!ds?.pill?.data) return;
 
-    const { item: dragged } = ds.pill.data;
+    const { item: dragged, id: dragRowId } = ds.pill.data;
 
-    const hasId = row.pills.find((x) => x.id === dragged.id);
+    const accepts = new Set([...(row.accepts ?? []), row.id]);
+    if (!accepts.has(dragRowId) && !item.tags?.some((x) => accepts.has(x))) return;
 
-    if (dragged.id === item.id) return;
+    const hasPill = row.pills.find((x) => x.id === dragged.id);
 
-    if (hasId) {
+    if (dragged.id === item.id) {
+      if (dragRowId !== row.id) (hasPill as any).active = dragged.active;
+      force({});
+      return;
+    }
+
+    if (hasPill) {
       const draggedIndex = row.pills.findIndex((x) => x.id === dragged.id);
       const overIndex = row.pills.findIndex((x) => x.id === item.id);
 
       const newPills = moveRelative(row.pills, draggedIndex, overIndex);
+
+      if (dragRowId !== row.id) (hasPill as any).active = dragged.active;
 
       const [horizontal] = getDragDirection();
 
@@ -171,7 +188,7 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     onPillItemActiveChange({ index, item: nextPill, row: nextRow });
   };
 
-  const s = render ?? (
+  const s = (
     <div
       tabIndex={-1}
       onClick={onItemClick}
@@ -196,13 +213,14 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
         </div>
       )}
       <div>{item.name ?? item.id}</div>
+      {elementEnd}
     </div>
   );
 
   const slot = useSlot({
     props: [item.movable ? dragProps : {}, props, { "data-ln-pill-item": true }],
     ref,
-    slot: render ?? s,
+    slot: s,
     state: {
       item,
       expanded,
@@ -211,22 +229,13 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     },
   });
 
-  const isActive = dragState?.activeId === item.id;
-  const type = isActive ? dragState.activeType : row.type;
-
   return (
     <div
-      data-ln-pill-type={type}
+      data-ln-pill-type={row.type}
       data-ln-pill-item-container
       data-ln-pill-active={item.active}
       data-ln-draggable={item.movable}
       data-ln-drag-active={isDragActive}
-      style={{
-        userSelect: "none",
-        msUserSelect: "none",
-        WebkitUserSelect: "none",
-        position: "relative",
-      }}
       onDragLeave={(e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -243,6 +252,6 @@ export const PillItem = memo(forwardRef(PillItemBase));
 
 export namespace PillItem {
   export type Props = JSX.IntrinsicElements["div"] & { item: PillItemSpec } & {
-    readonly render?: SlotComponent<PillState & { item: PillItemSpec }>;
+    elementEnd?: ReactNode;
   };
 }
