@@ -1,39 +1,50 @@
 ---
 title: Pivoting Overview
 pro: true
-description: LyteNyte's pivot functionality let's you create rotated views, allowing
-  you to see comparisons, patterns and trends in your data.
+description: LyteNyte's pivot functionality lets you create rotated views, allowing
+  you to see comparisons, patterns, and trends in your data.
 ---
 
-Pivoting takes the cell values of a particular column and creates dynamic columns out of the
-columns. You can then apply measures that will summarize data of a different column allowing you to break
-out the aggregation into the parts that contribute the pivot column.
+Pivoting takes the cell values of a particular column and creates dynamic columns from those values.
+You can then apply measures that summarize data from a different column, allowing you to break
+the aggregation into the parts that contribute to the pivot column.
 
 :::note
 
-The guides in this section will cover pivoting using the
-[client row data source](/docs/client-source-overview). For server side pivoting see the
+The guides in this section cover pivoting using the
+[client row data source](/docs/client-source-overview). For server-side pivoting, see the
 [Server Data Pivoting guide](/docs/server-data-loading-pivoting).
 
-For the other row data sources, such as the [tree data source](/docs/tree-source-overview) and the
-[paginated data source](/docs/paginated-rs-overview), pivoting is not supported, since it is not
+For other row data sources, such as the [tree data source](/docs/tree-source-overview) and the
+[paginated data source](/docs/paginated-rs-overview), pivoting is not supported because it is not
 possible to unambiguously pivot data for these sources.
 
 :::
 
+## Full Example
+
+The demo below shows a complete, working pivoting example that you can use as a reference implementation.
+The remaining guides in the pivoting section focus on specific parts of the pivot configuration that
+LyteNyte Grid offers.
+
+::demo[Pivot Demo="./demos/pivot-full"]
+
+The remainder of this section explains how to enable basic pivots and provides the foundational knowledge
+required to understand the other guides in the pivoting section.
+
 ## Pivot Mode
 
-LyteNyte Grid does not contain any state. The grid will render exactly the props provided. This means it has no
-direct knowledge of the current pivot state. Instead the pivot state is maintained in the client row source.
+LyteNyte Grid does not maintain internal state. The grid renders exactly the props you provide.
+As a result, the grid has no direct knowledge of the current pivot state. Instead, the client row
+data source maintains the pivot state.
 
-To enable pivoting you must do the following:
+To enable pivoting, you must do the following:
 
-- See the `pivotMode` property to `true` on the client data source
+- Set the `pivotMode` property to `true` on the client data source.
 - Provide a `pivotModel` value.
-- Call the `usePivotProps` hook on the client data source and set these props on the
-  grid.
+- Call the `usePivotProps` hook on the client data source and pass the returned props to the grid.
 
-The code below shows the bare minimum configuration necessary.
+The code below shows the minimum configuration required.
 
 ```tsx
 function PivotGrid() {
@@ -48,19 +59,21 @@ function PivotGrid() {
 }
 ```
 
-The demo below shows pivots in action. You can toggle the pivot mode on and off. The grid below is hard coded
-to pivot on the **Age Group** column, group by the **Country** column, and measure the **Profit** column.
+The demo below shows pivoting in action. You can toggle pivot mode on and off.
+The grid is hard-coded to pivot on the **Age Group** column, group by the **Country** column,
+and measure the **Profit** column.
 
 ::demo[Basic Pivoting="./demos/pivot-basic"]
 
-The rows are grouped by **Country**, however you cannot expand to reveal the sub-rows of each grouping. This
-is part of the way pivots work. Data is always displayed in an aggregated form. All the rows are group rows, and
-the final level will not be expandable.
+The rows are grouped by **Country**. However, you cannot expand the groups to reveal sub-rows.
+This behavior is inherent to pivoting. Pivoted data is always displayed in an aggregated form.
+All displayed rows are group rows, and the final level is not expandable.
 
-The code below shows the pivot configuration for the demo. Take special note of the `measures` value. LyteNyte
-Grid will use the `measure` value a reference for the columns created by the pivot. In this case the **Profit**
-column is being used as a base for the new columns being created. The code overrides the header to make the generated
-headers look similar to the un-pivoted cell value of the **Age Group** column.
+The code below shows the pivot configuration used in the demo. Pay close attention to the
+`measures` value. LyteNyte Grid uses the `measure` definition as a reference when creating
+pivot-generated columns. In this example, the **Profit** column serves as the base column
+for the newly created pivot columns. The code overrides the column header to make the generated
+headers resemble the unpivoted **Age Group** cell values.
 
 ```ts
 const ds = useClientDataSource<GridSpec>({
@@ -86,7 +99,7 @@ const ds = useClientDataSource<GridSpec>({
 
 ### Client Source Pivot Model
 
-The `pivotModel` property of the `useClientDataSource` hook determines how LyteNyte Grid should display
+The `pivotModel` property of the `useClientDataSource` hook defines how LyteNyte Grid renders
 pivoted rows. The interface is shown below.
 
 ```ts
@@ -102,21 +115,22 @@ interface PivotModel<Spec extends GridSpec = GridSpec> {
 }
 ```
 
-Notice that all the properties are optional. The `columns`, `rows`, and `measures` properties
-are used to create a pivot view. Their behavior is as follows:
+All properties in the pivot model are optional. The `columns`, `rows`, and `measures` properties
+determine the structure of the pivot view. Their behavior is as follows:
 
-- If you provide no values for the `columns`, `rows`, and `measures` properties that pivot view will be blank.
-- If `columns` is set to one or more columns, then the values of the cells in those columns will be used to create
-  dynamic pivot columns.
-- If `rows` is set to one or more columns, the output of the `measures` will be grouped by the `rows` value.
-- If `measures` is set, LyteNyte Grid will aggregate the rows of the grid by the given measure. Measures can
-  further be broken down into:
-  1. If only measures are provided, LyteNyte Grid will create columns for each measure and aggregate all the rows. There will be
-     at most one row as a result. This row will be a totals row.
-  2. If measures and columns are provided, LyteNyte Grid will aggregate measures for each column created from the column pivots.
-  3. If measures and groups are provided, LyteNyte Grid will aggregate measures for each row group.
-  4. Finally, if measures, groups, and columns are provided, LyteNyte Grid will aggregate measures for each row group split out by each column
-     created by the pivots.
+- If you provide no values for `columns`, `rows`, or `measures`, the pivot view will be blank.
+- If `columns` contains one or more entries, LyteNyte Grid uses the cell values from those columns
+  to generate dynamic pivot columns.
+- If `rows` contains one or more entries, LyteNyte Grid groups the measure output by the specified rows.
+- If `measures` is provided, LyteNyte Grid aggregates grid rows using the defined measures. Measure behavior
+  depends on which other properties are present:
+  1. If only `measures` are provided, LyteNyte Grid creates one column per measure and aggregates all rows,
+     resulting in at most one totals row.
+  2. If `measures` and `columns` are provided, LyteNyte Grid aggregates measures for each dynamically
+     generated pivot column.
+  3. If `measures` and `rows` are provided, LyteNyte Grid aggregates measures for each row group.
+  4. If `measures`, `rows`, and `columns` are all provided, LyteNyte Grid aggregates measures for each row
+     group, split across the dynamically generated pivot columns.
 
 ## Next Steps
 

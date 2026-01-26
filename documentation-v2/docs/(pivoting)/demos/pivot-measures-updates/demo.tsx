@@ -147,7 +147,6 @@ export default function PivotDemo() {
         }}
       >
         {(row) => {
-          console.log(row.pills);
           return (
             <PillManager.Row row={row}>
               <PillManager.Label row={row} />

@@ -7,8 +7,7 @@
     "pivoting-sorting",
     "pivoting-filtering",
     "pivoting-grand-totals",
-    "pivoting-state-persistence",
-    "pivoting-complete-example"
+    "pivoting-state-persistence"
   ],
   "defaultOpen": true
 }
