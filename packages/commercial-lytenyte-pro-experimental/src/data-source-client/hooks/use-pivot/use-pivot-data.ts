@@ -16,6 +16,7 @@ import {
   useSortFn,
   type LeafNodeTuple,
 } from "@1771technologies/lytenyte-core-experimental/internal";
+import { type ControlledPivotState } from "./use-pivot-state.js";
 
 const empty: RowLeaf<any>[] = [];
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
@@ -23,6 +24,7 @@ export function usePivotData<Spec extends GridSpec>(
   props: UseClientDataSourceParams<Spec>,
   [, leafs, , pinMap]: LeafNodeTuple<Spec["data"]>,
   c: SourceState,
+  controlled: ControlledPivotState,
 ) {
   const model = props.pivotModel;
   const pivotMode = props.pivotMode ?? false;
@@ -50,13 +52,13 @@ export function usePivotData<Spec extends GridSpec>(
   const measures = model?.measures;
   const rows = model?.rows;
 
-  const { pivotColumns, setPivotState, setPivotGroupState, pivotGroupState } = usePivotColumns(
+  const pivotColumns = usePivotColumns(
     pivotMode,
+    controlled,
     model,
     leafs,
     filtered,
     props.pivotColumnProcessor,
-    props.pivotStateRef,
   );
   const aggFn = usePivotAggFunction(pivotColumns, model, props.aggregateFns);
 
@@ -109,7 +111,7 @@ export function usePivotData<Spec extends GridSpec>(
   });
 
   const pivotPiece = usePiece(pivotColumns);
-  const pivotGroupPiece = usePiece(pivotGroupState);
+  const pivotGroupPiece = usePiece(controlled.pivotGroupState);
 
   const trueMaxDepth = useMemo(() => {
     if (!model?.rows?.length) return 0;
@@ -136,8 +138,6 @@ export function usePivotData<Spec extends GridSpec>(
     sorted: filtered,
     pivotPiece,
     pivotGroupPiece,
-    setPivotState,
-    setPivotGroupState,
     groupFn,
   };
 }

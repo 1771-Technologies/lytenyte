@@ -1,10 +1,11 @@
-import { useMemo, useRef, useState, type RefObject } from "react";
+import { useMemo, useRef } from "react";
 import type { PivotModel } from "../../use-client-data-source";
 import type { Column, GridSpec } from "../../../types/index.js";
 import { computeField } from "@1771technologies/lytenyte-core-experimental/internal";
 import { equal, type ColumnPin, type RowLeaf, itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
 import { pivotPaths } from "./auxiliary-functions/pivot-paths.js";
 import { applyReferenceColumn } from "./auxiliary-functions/apply-reference-column.js";
+import type { ControlledPivotState } from "./use-pivot-state";
 
 export interface PivotState {
   columnState: {
@@ -18,32 +19,14 @@ export interface PivotState {
 
 export function usePivotColumns<Spec extends GridSpec = GridSpec>(
   pivotMode: boolean,
+  pivotControlled: ControlledPivotState,
   model: PivotModel<Spec> | undefined,
   leafs: RowLeaf<Spec["data"]>[],
   filtered: number[],
   processor: null | undefined | ((columns: Column<any>[]) => Column<any>[]),
-  stateRef?: RefObject<PivotState>,
 ) {
   const measures = model?.measures;
   const columns = model?.columns;
-
-  const [pivotState, setPivotState] = useState<{ value: PivotState["columnState"] }>({
-    value: stateRef?.current.columnState ?? { ordering: [], pinning: {}, resizing: {} },
-  });
-  const [pivotGroupState, setPivotGroupState] = useState<{ value: PivotState["columnGroupState"] }>({
-    value: stateRef?.current.columnGroupState ?? {},
-  });
-
-  if (stateRef) {
-    stateRef.current.columnGroupState = pivotGroupState.value;
-    stateRef.current.columnState = pivotState.value;
-  }
-
-  const pivotStateRef = useRef(pivotState);
-  pivotStateRef.current = pivotState;
-
-  const pivotGroupStateRef = useRef(pivotGroupState);
-  pivotGroupStateRef.current = pivotGroupState;
 
   const prevMeasuresRef = useRef(measures);
   const prevColumnsRef = useRef(columns);
@@ -57,13 +40,11 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
 
     // If the measures or columns have changed, then the pivot state should be reset.
     if (!equal(prevMeasures, measures) || !equal(prevColumns, columns)) {
-      pivotStateRef.current.value = { ordering: [], pinning: {}, resizing: {} };
-      pivotGroupStateRef.current.value = {};
-
-      if (stateRef) {
-        stateRef.current.columnGroupState = pivotGroupStateRef.current.value;
-        stateRef.current.columnState = pivotStateRef.current.value;
-      }
+      pivotControlled.setState((prev) => ({
+        ...prev,
+        columnState: { ordering: [], pinning: {}, resizing: {} },
+        columnGroupState: {},
+      }));
 
       prevColumnsRef.current = columns;
       prevMeasuresRef.current = measures;
@@ -161,12 +142,12 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
     });
 
     return cols;
-  }, [pivotMode, measures, columns, filtered, leafs, model?.colLabelFilter, stateRef]);
+  }, [pivotMode, measures, columns, filtered, leafs, model?.colLabelFilter, pivotControlled]);
 
   const pivotColumnsWithState = useMemo(() => {
     if (!pivotColumns) return null;
 
-    const state = pivotState.value;
+    const state = pivotControlled.pivotColumnState;
     const byId = itemsWithIdToMap(pivotColumns);
     const ordering = state.ordering.filter((x) => byId.has(x));
 
@@ -192,7 +173,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
     });
 
     return withBlanks as Column<Spec>[];
-  }, [pivotColumns, pivotState.value]);
+  }, [pivotColumns, pivotControlled.pivotColumnState]);
 
   const processedColumns = useMemo(() => {
     if (!processor || !pivotColumnsWithState) return pivotColumnsWithState;
@@ -200,5 +181,5 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
     return processor(pivotColumnsWithState) as Column<Spec>[];
   }, [pivotColumnsWithState, processor]);
 
-  return { pivotColumns: processedColumns, setPivotState, setPivotGroupState, pivotGroupState };
+  return processedColumns;
 }
