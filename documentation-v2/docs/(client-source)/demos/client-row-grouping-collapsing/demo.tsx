@@ -55,20 +55,30 @@ const group: Grid.RowGroupColumn<GridSpec> = {
   width: 200,
 };
 
-let seen = false;
+let seenSecondary = false;
+let seenTertiary = false;
+let seenBlueCollar = false;
 
-// Keep only one row with education primary and unemployed
+// keep only one row when group is admin and education is not primary. Keep only one blue collar job.
 const data = loanData.filter((x) => {
-  if (x.job === "Unemployed") {
-    if (seen) return false;
+  if (x.job === "Blue-Collar") {
+    if (seenBlueCollar) return false;
+    seenBlueCollar = true;
+  }
 
-    seen = true;
-    return true;
+  if (x.job === "Administration" && x.education !== "Primary") {
+    if (x.education === "Tertiary") {
+      if (seenTertiary) return false;
+      seenTertiary = true;
+    }
+    if (x.education === "Secondary") {
+      if (seenSecondary) return false;
+      seenSecondary = true;
+    }
   }
 
   return true;
 });
-
 //#end
 
 const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {
