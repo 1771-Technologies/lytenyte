@@ -1,7 +1,6 @@
 //#start
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
-import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
 import {
@@ -49,7 +48,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
           style={{ transform: row.expanded ? "rotate(90deg)" : undefined }}
           onClick={() => api.rowGroupToggle(row)} //!
         >
-          <ChevronRightIcon />
+          <CaretRight />
         </button>
 
         <div>{row.key}</div>
@@ -63,8 +62,12 @@ const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {
   return [row.data.job, row.data.education];
 };
 
-export default function GridTheming() {
-  const [expansions, setExpansions] = useState<Record<string, boolean | undefined>>({}); //!
+export default function GroupingDemo() {
+  //!next 4
+  const [expansions, setExpansions] = useState<Record<string, boolean | undefined>>({
+    Administration: true,
+    "Administration->Primary": true,
+  });
   const ds = useClientDataSource<GridSpec>({
     data: loanData,
     group: groupFn,
@@ -76,5 +79,13 @@ export default function GridTheming() {
     <div className="ln-grid" style={{ height: 500 }}>
       <Grid rowSource={ds} columns={columns} columnBase={base} rowGroupColumn={group} />
     </div>
+  );
+}
+
+function CaretRight() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" viewBox="0 0 256 256">
+      <path d="M181.66,133.66l-80,80A8,8,0,0,1,88,208V48a8,8,0,0,1,13.66-5.66l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+    </svg>
   );
 }
