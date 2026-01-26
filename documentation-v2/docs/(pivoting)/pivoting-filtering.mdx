@@ -3,13 +3,13 @@ title: Pivot Filters
 pro: true
 step: Filter rows before or after pivoting.
 description: Once a pivot view has been created, you can apply filters to reduce the number of
-  rows displayed. Pivots can be filtering by labels or by predicate conditions.
+  rows displayed. Pivots can be filtered by labels or by predicate conditions.
 ---
 
 :::note
 
 This guide assumes you are familiar with general filtering using the client data source. Before
-reading on, ensure you have read the following guides:
+continuing, ensure you have read the following guides:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Client Row Having Filters](/docs/client-source-having-filters)
@@ -22,23 +22,23 @@ the [Filtering Numbers guide](/docs/filtering-numbers).
 
 ## Filtering Pivots
 
-Pivot data will always result in group rows being created. This is because pivots are aggregated.
-To apply filters to the pivot data, set the `filter` property on the pivot model. The `filter`
-property accepts [`HavingFilterFn`](/docs/reference) filter function or an
-array of [`HavingFilterFn`](/docs/reference) filter functions.
+Pivoting data always creates [group rows](/docs/row-overview) because pivots aggregate data.
+To apply filters to pivoted data, set the `filter` property on the pivot model. The `filter`
+property accepts either a single [`HavingFilterFn`](/docs/reference) or an array of
+[`HavingFilterFn`](/docs/reference) functions.
 
-The demo below demonstrates the having filter functions in action. You can update the filter applied
-to the pivot column by clicking the funnel icon on the header.
+The demo below demonstrates having filter functions in action. You can update the filter applied
+to the pivot column by clicking the funnel icon in the column header.
 
-Since the [`HavingFilterFn`] is applied as a single function, all the rows will be checked. You can
-filter at particular level by providing an array instead. See the [Client Row Having Filters guide](/docs/client-source-having-filters)
-for more details.
+When you provide a single [`HavingFilterFn`], the grid evaluates all rows using that function.
+To filter at a specific pivot level, provide an array of filter functions instead. See the
+[Client Row Having Filters guide](/docs/client-source-having-filters) for more details.
 
 ::demo[Filtering Pivots="./demos/pivot-filtering"]
 
-The code that applies the filters is relatively straightforward. The LyteNyte API is extended with a filter model,
-and the state of that model is converted into a filter function. The filter function is then applied to the
-pivot model of the client source, as the code below shows:
+The code that applies the filters is relatively straightforward. The LyteNyte API extends the grid
+with a filter model, and the state of that model is converted into a filter function. The grid then
+applies this filter function to the pivot model of the client data source, as shown below:
 
 ```ts
 const [filter, setFilter] = useState<Record<string, GridFilter>>({}); //!
@@ -63,7 +63,7 @@ const filterFn = useMemo<Grid.T.HavingFilterFn>(() => {
     for (const [column, filter] of entries) {
       const value = row.data[column as keyof GridSpec["data"]];
 
-      // We are only working with number filters, so lets filter out none number
+      // This example only supports number filters, so exclude non-number values
       if (typeof value !== "number") return false;
 
       const compareValue = value;
@@ -106,38 +106,36 @@ const ds = useClientDataSource<GridSpec>({
 
 ### Filter Before Pivot Creation
 
-By default, when pivoting LyteNyte Grid will ignore the normal filters applied to rows.
-This means all the rows provided will be used to create pivot columns.
+By default, LyteNyte Grid ignores standard row filters when pivoting.
+As a result, the grid uses all provided rows to create pivot columns.
 
-You can set the `pivotApplyExistingFilter` function to apply the normal row filters before
-pivoting on the grid.
+To apply standard row filters before pivoting, set the `pivotApplyExistingFilter` option.
+This causes the grid to filter rows first and then generate the pivoted data.
 
-In the demo below, the rows are filtered to only keep rows that have **United States** or
-**Germany** as a country. See the [Client Row Filtering guide](/docs/client-source-filtering)
-for more details on filtering rows.
+In the demo below, the grid filters rows to include only entries where the country is
+**United States** or **Germany**. See the
+[Client Row Filtering guide](/docs/client-source-filtering) for more details on row filtering.
 
 ::demo[Filter Before Pivot Creation="./demos/pivot-existing-filters"]
 
 ## Label Filters
 
-The process of pivoting results in the creation of labels for both rows and columns.
-You can use the `rowLabelFilter` and `colLabelFilter` to filter rows based on the
-row and column labels respectively.
+Pivoting creates labels for both rows and columns. You can use `rowLabelFilter` and
+`colLabelFilter` to filter pivot results based on row and column labels, respectively.
 
-Label filters allow you to exclude or include specific identifiers from the resulting
-pivot set. See the [Client Row Label Filters guide](/docs/client-source-label-filters) for
-more details.
+Label filters allow you to include or exclude specific identifiers from the resulting
+pivot set. See the [Client Row Label Filters guide](/docs/client-source-label-filters) for more details.
 
-The demo below applies two label, one for columns and one for rows. The row labels will
-filter out any label that does not have **United State** or **Germany** as a country.
-The column label will filter out the **Under 25** category.
+The demo below applies two label filters: one for columns and one for rows. The row label
+filter excludes any country other than **United States** or **Germany**. The column label
+filter excludes the **Under 25** category.
 
 ::demo[Pivot Label Filters="./demos/pivot-label-filters"]
 
-Label filters are always applied as an array. Each item in the array will filter the
-labels at the depth of the index of the item. This means the first item in the array
-will filter the top most labels, and so on. The code below shows the label filters
-for the demo.
+Label filters are always applied as an array. Each item in the array filters labels at the
+depth corresponding to its index. This means the first item filters the top-level labels,
+the second item filters the next level, and so on. The code below shows the label filters
+used in the demo.
 
 ```ts
 const ds = useClientDataSource<GridSpec>({

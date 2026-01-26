@@ -140,6 +140,7 @@ export namespace Grid {
     export type LabelFilter = LnTypes.LabelFilter;
     export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
     export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
+    export type PivotState = LnTypes.PivotState;
     export type PopoverFrame<Spec extends GridSpec> = LnTypes.PopoverFrame<Spec>;
     export type PopoverFrameProps<Spec extends GridSpec> = LnTypes.PopoverFrameProps<Spec>;
     export type VirtualTarget = LnTypes.VirtualTarget;

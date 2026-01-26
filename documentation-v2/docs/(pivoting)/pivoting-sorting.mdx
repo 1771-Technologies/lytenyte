@@ -2,15 +2,15 @@
 title: Pivot Sorting
 pro: true
 step: Provide custom ordering for the rows after pivoting.
-description: Column's create by pivoting may be sorted. You can sort rows in ascending or
-  descending order. Any pivot row may be sorted.
+description: Columns created by pivoting can be sorted. You can sort rows in ascending or
+  descending order. Any pivot column can be sorted.
 ---
 
 :::note
 
 You should be familiar with how sorting works in the client data source before reading this
-guide. The sort functionality for pivots works in identical fashion to normal client sorts,
-except sorts are applied to pivot model.
+guide. Pivot sorting works in the same way as normal client sorting, except that sorts are
+applied to the pivot model.
 
 See the [Client Row Sorting guide](/docs/client-source-row-sorting) for more details.
 
@@ -18,27 +18,23 @@ See the [Client Row Sorting guide](/docs/client-source-row-sorting) for more det
 
 ## Sorting Pivots
 
-To sort the pivot columns set `sort` property on the pivot model. The demo below demonstrates this
-by allowing you to sort on any column by clicking the header of the column.
+To sort pivot columns, set the `sort` property on the pivot model. The demo below demonstrates
+this by allowing you to sort any column by clicking its header.
 
 ::demo[Pivot Sorting="./demos/pivot-sorting"]
 
-Sorting pivot rows is identical to sorting normal grid rows. The only difference is the sort model
-is applied to the pivot property of the client source. However, dimensions sorts are performed by
-referencing a column. With pivots the columns are dynamically generated.
+The demo applies the sort configuration to the pivot model state. As a result, rows are
+sorted based on the generated pivot columns. If the pivot columns change, the sort is
+removed because the sorted field no longer exists.
 
-LyteNyte Grid generates IDs for pivot columns based on the pivot data. For example, the demo
-above the ID of the **25-34** column will be `"25-34-->profit"`. The first part is the value of
-cell in the **Age Group** column, and the second part is the id of the measure applied, in this
-case the **Profit** column.
+LyteNyte Grid generates IDs for pivot columns based on pivot data. For example, in the demo
+above, the ID of the **25-34** column is `"25-34-->profit"`. The first segment represents the
+cell value from the **Age Group** column, and the second segment represents the ID of the
+applied measure, in this case **Profit**. Use this generated sort ID when defining a sort
+function for pivoted rows.
 
-If you need predicable IDs, you can use the `pivotColumnProcessor` property on the client data source
-to alter the column IDs before the pivot columns are returned.
-
-You should only try to set the pivot sort values ahead of time if you have a
-controlled view and requirement specific columns to be sorted ahead of time. If you are
-attempting to persist pivot state, LyteNyte Grid offers a better approach. See the
-[Pivot State Persistence guide] for details.
+If you need predictable column IDs, use the `pivotColumnProcessor` property on the client
+data source to modify column IDs before the pivot columns are returned.
 
 ## Next Steps
 

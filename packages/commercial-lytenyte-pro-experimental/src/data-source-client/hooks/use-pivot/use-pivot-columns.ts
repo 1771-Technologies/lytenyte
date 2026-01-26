@@ -8,13 +8,13 @@ import { applyReferenceColumn } from "./auxiliary-functions/apply-reference-colu
 import type { ControlledPivotState } from "./use-pivot-state";
 
 export interface PivotState {
-  columnState: {
+  readonly columnState: {
     readonly ordering: string[];
     readonly resizing: Record<string, number>;
     readonly pinning: Record<string, ColumnPin>;
   };
-  columnGroupState: Record<string, boolean>;
-  rowGroupExpansions: Record<string, boolean | undefined>;
+  readonly columnGroupState: Record<string, boolean>;
+  readonly rowGroupExpansions: Record<string, boolean | undefined>;
 }
 
 export function usePivotColumns<Spec extends GridSpec = GridSpec>(

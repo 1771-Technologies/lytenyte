@@ -2,29 +2,29 @@
 title: Grand Totals
 pro: true
 step: Display a grand total row for your pivot measures.
-description: Display a grand total row, which will summarize aggregations across all the pivots.
-  The grand totals row may be display at the bottom or top of the grid viewport.
+description: Display a grand total row, which summarizes aggregations across all pivots.
+  The grand totals row may be displayed at the bottom or top of the grid viewport.
 ---
 
 ## Grand Total Row
 
 To display the grand totals row for pivots, set the `pivotGrandTotals` property on the client row data
-source. The `pivotGrandTotals` property takes one of two values:
+source. The `pivotGrandTotals` property accepts one of two values:
 
-- `"top"`: The grand totals row will be pinned to the top of the viewport.
-- `"bottom"`: The grand totals row will be pinned to the bottom of the viewport.
+- `"top"`: Pins the grand totals row to the top of the viewport.
+- `"bottom"`: Pins the grand totals row to the bottom of the viewport.
 
 The grand totals row is an [aggregation row](/docs/row-overview). Aggregation rows summarize data but
-do not contain any children. In the case of pivots the grand total row will aggregate all the rows
-in the view.
+do not contain any children. In the case of pivots, the grand totals row aggregates all rows
+in the current view.
 
-The demo below shows the grand total row in action. The row is positioned at the bottom of the
+The demo below shows the grand totals row in action. The row is positioned at the bottom of the
 viewport.
 
 ::demo[Grand Totals="./demos/pivot-grand-totals"]
 
-The code below shows the setting on the client data source that enables the grand totals row.
-To compute the grand total row aggregations the grid will use the measures provided in the `pivotModel`
+The code below shows the client data source configuration that enables the grand totals row.
+To compute the grand totals row aggregations, the grid uses the measures defined in the `pivotModel`
 property.
 
 ```ts

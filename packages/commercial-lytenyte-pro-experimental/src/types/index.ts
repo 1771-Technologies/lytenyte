@@ -9,6 +9,8 @@ export type {
   PivotModel,
   LabelFilter,
 } from "../data-source-client/use-client-data-source.js";
+export type { PivotState } from "../data-source-client/hooks/use-pivot/use-pivot-columns.js";
+
 export type {
   SortFn,
   GroupFn,
