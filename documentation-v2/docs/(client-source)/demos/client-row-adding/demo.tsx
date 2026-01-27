@@ -62,25 +62,39 @@ export default function Demo() {
     <>
       <div className="border-ln-border flex gap-4 border-b px-4 py-3">
         <button
-          data-ln-button="tertiary"
+          data-ln-button="website"
           data-ln-size="md"
+          disabled={addIndex === initialData.length}
           onClick={() => {
             ds.rowAdd([initialData[addIndex]], "start");
-            addIndex = (addIndex + 1) % initialData.length;
+            addIndex = addIndex + 1;
           }}
         >
-          Add to Top
+          Add Top Top
         </button>
         <button
-          data-ln-button="tertiary"
+          data-ln-button="website"
           data-ln-size="md"
+          disabled={addIndex === initialData.length}
           onClick={() => {
             ds.rowAdd([initialData[addIndex]], "end");
-            addIndex = (addIndex + 1) % initialData.length;
+            addIndex = addIndex + 1;
           }}
         >
-          Add to Bottom
+          Add Bottom Bottom
         </button>
+        {addIndex >= initialData.length && (
+          <button
+            data-ln-button="website"
+            data-ln-size="md"
+            onClick={() => {
+              setData([initialData[0]]);
+              addIndex = 1;
+            }}
+          >
+            Reset Rows
+          </button>
+        )}
       </div>
 
       <div className="ln-grid" style={{ height: 500 }}>

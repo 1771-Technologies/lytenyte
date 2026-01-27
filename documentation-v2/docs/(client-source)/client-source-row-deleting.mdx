@@ -1,7 +1,8 @@
 ---
 title: Client Row Deleting
 step: Explore how to delete rows and sync changes to client data.
-description: Delete rows using LyteNyte Grid's row data source and propagate the deletion to your client data.
+description: Delete rows using LyteNyte Grid's row data source
+  and ensure the deletion updates your client data.
 ---
 
 The `useClientDataSource` hook returns a row source that can delete rows by calling the
@@ -14,17 +15,10 @@ any index. To handle row deletions, provide the `useClientDataSource` hook with 
 
 ## Deleting Rows
 
-In the demo below, click the **trash icon** to delete a row from the grid. When you delete a row,
-the grid calls the `onRowsDeleted` callback you provided to `useClientDataSource`. The client data
-source passes two values to `onRowsDeleted`: the rows to delete, and the source indices for those rows.
-
-:::info
-
-A **source index** is the array index in the original data used to create the row node. A source index
-is not the same as a **row index**, because the row index can change based on the grid's sort, grouping,
-and filter state, whilst a source index is a stable lookup to the original row data.
-
-:::
+In the demo below, click the **trash icon** to delete a row from the grid.
+When you delete a row, the grid calls the `onRowsDeleted` callback that you pass
+to `useClientDataSource`. The client data source calls `onRowsDeleted` with two
+arguments: the rows to delete and their source indices.
 
 ::demo[Deleting Rows="./demos/client-row-deleting"]
 
@@ -39,6 +33,14 @@ setData((prev) => {
   return next;
 });
 ```
+
+:::info
+
+A **source index** is the array index in the original data used to create the row node. A source index
+is not the same as a **row index**, because the row index can change based on the grid's sort, grouping,
+and filter state, whilst a source index is a stable lookup to the original row data.
+
+:::
 
 ## Next Steps
 
