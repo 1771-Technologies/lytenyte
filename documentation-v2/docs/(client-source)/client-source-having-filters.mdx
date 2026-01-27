@@ -29,7 +29,7 @@ Review the [Client Row Grouping](/docs/client-source-row-grouping) and
 To apply a **having** filter, set the having property on the client
 data source using one of two formats:
 
-- **Having Filter Function (`HavingFilterFn`):** Filters all group rows globally
+- **Having Filter Function (`HavingFilterFn`):** Filters all group rows globally.
 - **Having Filter Array (`(HavingFilterFn | null)[]`):** Filters rows by depth. The
   array index maps to the group depth; null entries skip filtering for that level.
 
@@ -55,6 +55,10 @@ component that allows users to modify the model's value.
 Type **500** into the **Balance** column's floating filter and test the result.
 Notice that the filter is applied at both the Job and Education
 row group levels, regardless of depth.
+
+For example, set **Balance** to be aggregated using avg and filtered to < 0.
+Notice the Administration row group has been filtered out because the **having**
+filter applies at all group levels.
 
 ::demo[Having Filter Function="./demos/client-row-having"]
 
@@ -99,6 +103,9 @@ only to group nodes at a specific depth.
 The demo below demonstrates this by providing the `having` property with an array of two items. The first item
 is `null`, so the filter skips the top-most group level. The second item is a filter function, so the filter
 applies to the second grouping level.
+
+For example, set **Balance** to be aggregated using avg and filtered to < 0.
+The Administration row group remains visible. In the previous demo, that row group was hidden.
 
 ::demo[Having Filter Array="./demos/client-row-having-array"]
 
