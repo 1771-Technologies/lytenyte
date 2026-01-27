@@ -18,6 +18,7 @@ import {
   NameCell,
   NumberCell,
   OverdueCell,
+  tw,
 } from "./components.js";
 
 export interface GridSpec {
@@ -121,7 +122,10 @@ function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
 
   return (
     <div
-      className="relative flex h-full w-full cursor-pointer items-center text-sm transition-colors"
+      className={tw(
+        "relative flex h-full w-full cursor-pointer items-center text-sm transition-colors",
+        column.id === "overdue" && "justify-center",
+      )}
       style={{
         justifyContent: column.type === "number" ? "flex-end" : undefined,
       }}
