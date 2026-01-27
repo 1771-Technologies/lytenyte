@@ -26,6 +26,7 @@ import {
   OverdueCell,
 } from "./components.jsx";
 import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
+import { CheckIcon } from "@radix-ui/react-icons";
 
 export type FilterModel = Record<
   string,
@@ -40,17 +41,19 @@ export interface GridSpec {
   };
 }
 
+const numberAllowed = ["first", "last", "count", "min", "max", "avg", "sum"];
+const stringAllowed = ["first", "last", "count", "same"];
+
 const initialColumns: Grid.Column<GridSpec>[] = [
   {
-    name: "Age",
-    id: "age",
-    width: 80,
+    name: "Loan Amount",
+    id: "loanAmount",
+    width: 150,
     type: "number",
-    cellRenderer: AgeCell,
-    floatingCellRenderer: FloatingFilter,
-
+    cellRenderer: NumberCell,
     agg: "avg",
-    allowedAggs: ["avg", "sum", "count"],
+    allowedAggs: numberAllowed,
+    floatingCellRenderer: FloatingFilter,
   },
   {
     name: "Balance",
@@ -59,57 +62,48 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     cellRenderer: NumberCell,
     floatingCellRenderer: FloatingFilter,
     agg: "avg",
-    allowedAggs: ["avg", "sum", "count"],
+    allowedAggs: numberAllowed,
   },
   {
     name: "Name",
     id: "name",
     cellRenderer: NameCell,
     width: 110,
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
+    agg: "same",
+    allowedAggs: stringAllowed,
   },
   {
     name: "Country",
     id: "country",
     width: 150,
     cellRenderer: CountryCell,
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
-  },
-  {
-    name: "Loan Amount",
-    id: "loanAmount",
-    width: 150,
-    type: "number",
-    cellRenderer: NumberCell,
-    agg: "avg",
-    allowedAggs: ["avg", "sum", "count"],
+    agg: "same",
+    allowedAggs: stringAllowed,
   },
   {
     name: "Customer Rating",
     id: "customerRating",
     type: "number",
-    width: 160,
+    width: 175,
     cellRenderer: CustomerRating,
 
     agg: "avg",
-    allowedAggs: ["avg"],
+    allowedAggs: numberAllowed,
   },
   {
     name: "Marital",
     id: "marital",
 
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
+    agg: "same",
+    allowedAggs: stringAllowed,
   },
   {
     name: "Education",
     id: "education",
     hide: true,
 
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
+    agg: "same",
+    allowedAggs: stringAllowed,
   },
   {
     name: "Job",
@@ -117,16 +111,16 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     width: 120,
     hide: true,
 
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
+    agg: "same",
+    allowedAggs: stringAllowed,
   },
   {
     name: "Overdue",
     id: "overdue",
     cellRenderer: OverdueCell,
 
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
+    agg: "same",
+    allowedAggs: stringAllowed,
   },
   {
     name: "Duration",
@@ -135,7 +129,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     cellRenderer: DurationCell,
 
     agg: "avg",
-    allowedAggs: ["avg", "sum", "count"],
+    allowedAggs: numberAllowed,
   },
   {
     name: "Date",
@@ -143,15 +137,25 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     width: 110,
     cellRenderer: DateCell,
 
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
+    agg: "same",
+    allowedAggs: stringAllowed,
+  },
+  {
+    name: "Age",
+    id: "age",
+    width: 80,
+    type: "number",
+    cellRenderer: AgeCell,
+
+    agg: "avg",
+    allowedAggs: numberAllowed,
   },
   {
     name: "Contact",
     id: "contact",
 
-    agg: "onlyOneUnique",
-    allowedAggs: ["onlyOneUnique", "first", "last"],
+    agg: "same",
+    allowedAggs: stringAllowed,
   },
 ];
 
@@ -171,7 +175,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
 
 const avg: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   const values = data.map((x) => computeField<number>(field, x));
-  return sum(values) / values.length;
+  return Math.round(sum(values) / values.length);
 };
 const sumAgg: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   const values = data.map((x) => computeField<number>(field, x));
@@ -180,8 +184,14 @@ const sumAgg: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
 const count: Grid.T.Aggregator<GridSpec["data"]> = (_, data) => {
   return data.length;
 };
+const max: Grid.T.Aggregator<GridSpec["data"]> = (f, data) => {
+  return Math.max(...data.map((x) => computeField<number>(f, x)));
+};
+const min: Grid.T.Aggregator<GridSpec["data"]> = (f, data) => {
+  return Math.min(...data.map((x) => computeField<number>(f, x)));
+};
 
-const onlyOneUnique: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
+const same: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   const values = uniq(data.map((x) => computeField(field, x)));
   return values.length === 1 ? values[0] : null;
 };
@@ -219,7 +229,7 @@ export default function GridTheming() {
         const compare = Number.parseFloat(f.value!);
         if (value == null || typeof value !== "number") return false;
 
-        if (f.kind === "eq" && value != compare) return false;
+        if (f.kind === "eq" && value !== compare) return false;
         else if (f.kind === "neq" && value === compare) return false;
         else if (f.kind === "ge" && value < compare) return false;
         else if (f.kind === "le" && value > compare) return false;
@@ -248,9 +258,11 @@ export default function GridTheming() {
       first,
       last,
       sum: sumAgg,
-      onlyOneUnique,
+      same,
+      min,
+      max,
     },
-    rowGroupDefaultExpansion: true,
+    rowGroupDefaultExpansion: 0,
   });
 
   return (
@@ -282,7 +294,7 @@ export function HeaderCell({ api, column }: Grid.T.HeaderParams<GridSpec>) {
       {column.agg && (
         <Menu>
           <Menu.Trigger className="text-ln-primary-50 hover:bg-ln-bg-strong cursor-pointer rounded px-1 py-1 text-[10px] transition-colors">
-            ({column.agg === "onlyOneUnique" ? "only1" : column.agg})
+            ({column.agg})
           </Menu.Trigger>
           <Menu.Popover>
             <Menu.Arrow />
@@ -295,8 +307,9 @@ export function HeaderCell({ api, column }: Grid.T.HeaderParams<GridSpec>) {
               >
                 {column.allowedAggs.map((x) => {
                   return (
-                    <Menu.RadioItem key={x} value={x}>
-                      {x === "onlyOneUnique" ? "only1" : x}
+                    <Menu.RadioItem key={x} value={x} className="flex items-center justify-between gap-1">
+                      {x}
+                      {column.agg === x && <CheckIcon className="text-ln-primary-50" />}
                     </Menu.RadioItem>
                   );
                 })}

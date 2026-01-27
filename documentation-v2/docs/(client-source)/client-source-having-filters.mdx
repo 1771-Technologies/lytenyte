@@ -1,46 +1,42 @@
 ---
 title: Client Row Having Filters
 step: Use client-side filters to exclude rows after row grouping.
-description: Having Filters can exclude group rows from the final row set that LyteNyte Grid
-  displays. Having Filters can apply to all group rows or only to group rows at a particular depth.
+description: Having filters exclude group rows and their children after
+  the grid performs grouping. Apply these filters to all groups or target specific depths.
 pro: true
 ---
 
-A **having** filter is a filter that is applied after row groups have been created. These filters
-are used to filter group rows. When a group row is filtered out, the group row's child rows are also removed.
+**Having filters** run after the grid creates row groups. If a filter excludes
+a group row, the grid also removes all associated child rows.
 
-This guide covers the functionality of **having** filters in LyteNyte Grid's client data source, but it does not
-go in depth on the different types of filters. For thorough coverage of client-side filtering, see the various
-filter guides, starting with [Filter Text](/docs/filtering-text).
+This guide covers having filters in the client data source,
+not filter types. For client-side filtering, see the [Filter Text](/docs/filtering-text).
 
 :::info
 
-**Having** filters get their name from the `HAVING` clause in SQL, which applies post-grouping filters to rows
-that have been aggregated. Although SQL knowledge is not a prerequisite, familiarity with the `HAVING` clause
-will help you understand this guide. See this [PostgreSQL HAVING guide](https://neon.com/postgresql/postgresql-tutorial/postgresql-having)
-for more guidance on the `HAVING` clause.
+**Having** filters derives from the SQL **HAVING** clause, which filters
+grouped results after aggregation. For conceptual background, refer to
+the [PostgreSQL HAVING guide](https://neon.com/postgresql/postgresql-tutorial/postgresql-having).
 
 :::
 
-Since **having** filters apply to group rows and are intended to filter out aggregated rows, you must
-be familiar with grouping and aggregation in LyteNyte Grid's client data source. If you
-haven't already, read the [Client Row Grouping](/docs/client-source-row-grouping)
-and [Client Row Aggregations](/docs/client-source-aggregations) guides before reading the rest of this guide.
+## Applying Having Filters
 
-## Having Filter Functions
+**Having** filters target aggregated group rows in the client data source.
+Review the [Client Row Grouping](/docs/client-source-row-grouping) and
+[Client Row Aggregations](/docs/client-source-aggregations) guides for prerequisite knowledge.
 
-To apply a **having** filter, set the `having` property on the client data source. The `having` property can be set to one of
-two types:
+To apply a **having** filter, set the having property on the client
+data source using one of two formats:
 
-- A `HavingFilterFn` function, which filters all group rows regardless of group depth.
-- An array of `HavingFilterFn` functions or `null`, which filters group rows based on depth. The index in the array corresponds to the
-  group depth, and `null` values skip group levels.
+- **Having Filter Function (`HavingFilterFn`):** Filters all group rows globally
+- **Having Filter Array (`(HavingFilterFn | null)[]`):** Filters rows by depth. The
+  array index maps to the group depth; null entries skip filtering for that level.
 
-This section covers providing a function to the `having` property.
-Read the next section to learn how **having** filters behave when you provide an array.
+### Having Filter Functions
 
-The demo below demonstrates a having filter function. To support the filter,
-the [grid's API was extended](/docs/grid-api-extensions) with a `filterModel`, as the interface below shows:
+The demo implements a `HavingFilterFn`. The [grid API extension](/docs/grid-api-extensions)
+provides the `filterModel` defined in this interface
 
 ```ts
 export interface GridSpec {
@@ -52,10 +48,13 @@ export interface GridSpec {
 }
 ```
 
-The filter model lets you build a representation of a filter before producing a filter function from the model.
-The demo allows users to adjust the value in the model via a custom
-[floating header row](/docs/column-floating-header) component. Try it by typing `40` into the **Age** column's
-floating filter.
+The filter model lets you build a filter representation before generating
+the filter function from it. The demo uses a custom [floating header row](/docs/column-floating-header)
+component that allows users to modify the model's value.
+
+Type **500** into the **Balance** column's floating filter and test the result.
+Notice that the filter is applied at both the Job and Education
+row group levels, regardless of depth.
 
 ::demo[Having Filter Function="./demos/client-row-having"]
 
@@ -91,7 +90,7 @@ const havingFn = useMemo(() => {
 }, [filterModel]);
 ```
 
-## Having Filter Arrays
+### Having Filter Arrays
 
 When you provide the client data source with a filter function for the `having` property, the filter applies
 to every group row. This is generally desirable. However, it is sometimes useful to apply a **having** filter
@@ -103,12 +102,10 @@ applies to the second grouping level.
 
 ::demo[Having Filter Array="./demos/client-row-having-array"]
 
-One important behavior to understand is that **having** filters do not impact a row's aggregation values.
-In particular, if a **having** filter removes some child rows, the parent row's aggregation remains unchanged.
-
-To understand why, imagine a **having** filter that removes any group row with a value less than 100. If filtering
-changed the parent aggregation, removing child rows could make the parent's aggregated value drop below 100,
-which would remove the parent, and so on. That recursive behavior could remove all rows.
+Having filters do not recalculate or impact aggregation values. If a having
+filter excludes child rows, the parent's aggregated value remains unchanged. This
+prevents a recursive filtering loop in which decreasing aggregate totals
+would continually trigger further exclusions until all rows are removed.
 
 ## Next Steps
 
