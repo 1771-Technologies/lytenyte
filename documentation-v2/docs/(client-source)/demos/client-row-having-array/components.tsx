@@ -19,14 +19,16 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
 
   if (typeof field !== "number") return "-";
 
-  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
+  const prefix = api.rowIsGroup(row) && column.agg === "count" ? "" : "$";
+
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : prefix + formatter.format(field);
 
   return (
     <div
       className={tw(
         "flex h-full w-full items-center justify-end tabular-nums",
-        field < 0 && "text-red-600 dark:text-red-300",
-        field > 0 && "text-green-600 dark:text-green-300",
+        prefix && field < 0 && "text-red-600 dark:text-red-300",
+        prefix && field > 0 && "text-green-600 dark:text-green-300",
       )}
     >
       {formatted}
@@ -34,17 +36,30 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
   );
 }
 
-export function NameCell({ row }: Grid.T.CellRendererParams<GridSpec>) {
-  const name = row.data.name as string;
+export function TextCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (typeof name !== "string") return "-";
-  const url = nameToAvatar[name];
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
+  return String(field);
+}
+
+export function NameCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
+  if (typeof field !== "string") return "-";
+
+  const url = nameToAvatar[field];
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <img className="border-ln-border-strong h-7 w-7 rounded-full border" src={url} alt={name} />
+      <img className="border-ln-border-strong h-7 w-7 rounded-full border" src={url} alt={field} />
       <div className="text-ln-text-dark flex flex-col gap-0.5">
-        <div>{name}</div>
+        <div>{field}</div>
       </div>
     </div>
   );
@@ -59,11 +74,16 @@ export function AgeCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec
 export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
-  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
+  const prefix = api.rowIsGroup(row) && column.agg === "count" ? "" : "days";
+
+  return typeof field === "number" ? `${formatter.format(field)} ${prefix}` : `${field ?? "-"}`;
 }
 
 export function CountryCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
+
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
 
   const flag = countryFlags[field as keyof typeof countryFlags];
   if (!flag) return "-";
@@ -79,6 +99,9 @@ export function CountryCell({ api, row, column }: Grid.T.CellRendererParams<Grid
 export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
   if (typeof field !== "string") return "-";
 
   const dateField = parse(field as string, "yyyy-MM-dd", new Date());
@@ -91,6 +114,10 @@ export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpe
 
 export function OverdueCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
+
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
   if (field !== "Yes" && field !== "No") return "-";
 
   return (
@@ -109,6 +136,10 @@ export function OverdueCell({ api, row, column }: Grid.T.CellRendererParams<Grid
 export function CustomerRating({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
   if (typeof field !== "number") return String(field ?? "-");
+
+  if (api.rowIsGroup(row) && column.agg !== "avg") {
+    return <div className="flex items-center justify-end">{field}</div>;
+  }
 
   return (
     <div className="flex justify-center text-yellow-300">

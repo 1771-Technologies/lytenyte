@@ -88,7 +88,7 @@ const sortByChange24: Grid.T.SortFn<GridSpec["data"]> = (left, right) => {
 };
 
 export default function ColumnBase() {
-  const [sort, setSort] = useState<Grid.T.SortFn<GridSpec["data"]> | null>(() => sortByChange24);
+  const [sort, setSort] = useState<Grid.T.SortFn<GridSpec["data"]> | null>(null);
 
   const ds = useClientDataSource<GridSpec>({ data, sort }); //!
 
@@ -96,22 +96,22 @@ export default function ColumnBase() {
     <>
       <div className="border-ln-border flex gap-4 border-b px-4 py-3">
         <button
-          data-ln-button="tertiary"
+          data-ln-button="website"
+          data-ln-size="md"
+          onClick={() => {
+            setSort(() => sortByChange24);
+          }}
+        >
+          Sort: 24H % Chng.
+        </button>
+        <button
+          data-ln-button="website"
           data-ln-size="md"
           onClick={() => {
             setSort(null);
           }}
         >
           Remove Sort
-        </button>
-        <button
-          data-ln-button="tertiary"
-          data-ln-size="md"
-          onClick={() => {
-            setSort(() => sortByChange24);
-          }}
-        >
-          Sort By Change 24
         </button>
       </div>
       <div

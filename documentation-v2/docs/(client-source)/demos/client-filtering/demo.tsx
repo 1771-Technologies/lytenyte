@@ -38,16 +38,7 @@ export default function ColumnBase() {
     <>
       <div className="border-ln-border flex gap-4 border-b px-4 py-3">
         <button
-          data-ln-button="tertiary"
-          data-ln-size="md"
-          onClick={() => {
-            setFilter(null);
-          }}
-        >
-          No Filter
-        </button>
-        <button
-          data-ln-button="tertiary"
+          data-ln-button="website"
           data-ln-size="md"
           onClick={() => {
             setFilter(
@@ -58,13 +49,22 @@ export default function ColumnBase() {
           Mastercard
         </button>
         <button
-          data-ln-button="tertiary"
+          data-ln-button="website"
           data-ln-size="md"
           onClick={() => {
             setFilter(() => (row: Grid.T.RowLeaf<GridSpec["data"]>) => row.data.paymentMethod === "Visa");
           }}
         >
-          VISA
+          Visa
+        </button>
+        <button
+          data-ln-button="website"
+          data-ln-size="md"
+          onClick={() => {
+            setFilter(null);
+          }}
+        >
+          No Filter
         </button>
       </div>
 

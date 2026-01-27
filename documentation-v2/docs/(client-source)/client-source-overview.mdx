@@ -1,28 +1,26 @@
 ---
 title: Client Row Overview
 step: Visualize client row data and perform advanced operations such as filtering and sorting.
-description: LyteNyte Grid's client data source can display, edit, group, sort, and
-  filter row data that is available in the browser.
+description: Learn how to handle client-side data to deliver a seamless user experience.
+  LyteNyte Grid allows you to display, edit, sort, group, and filter row data directly in the browser.
 ---
 
-Client data, in the context of LyteNyte Grid, refers to row data that is available in the browser
-in its entirety. Use client data when you can load all the rows that the grid will use into the browser.
-In practice, this is usually up to 10,000 rows of data, though the actual limit depends on your network
-bandwidth and your user's network bandwidth.
+Client data in LyteNyte Grid refers to the complete set of row data available in the browser.
+Use client data when you can load all the grid's rows directly into the browser.
+A common upper bound is around 10,000 rows, but the practical limit depends on available
+network bandwidth for both your server and your users.
 
 ## Client Row Source
 
-LyteNyte provides the `useClientDataSource` hook, which you can use to create a grid row source
-for client data. A **row source** is an object that implements the LyteNyte Grid `RowSource` interface
-shown below. The interface has quite a few properties, but as a developer you do not need to implement
-the interface directly because LyteNyte Grid provides hooks for different types of row sources.
+LyteNyte Grid exposes the `useClientDataSource` hook to create a grid **row source**
+for client data. A row source is an object that implements the `RowSource` interface shown below.
+You don't implement `RowSource` directly; LyteNyte Grid provides
+hooks that generate row sources for each supported data source type.
 
-This guide covers the client row source. LyteNyte also provides the following row sources:
+This guide covers the **Client Row Source**. LyteNyte also includes these row sources:
 
-- [Server row source](/docs/server-data-loading-overview): Used for partially loading massive data sets
-  on demand from your backend servers.
-- [Tree row source](/docs/tree-source-overview): A client data source that you can use when the
-  data provided to the grid is an object instead of an array.
+- [Server Row Source](/docs/server-data-loading-overview): Partially loading large datasets on demand from your backend.
+- [Tree Row Source](/docs/tree-source-overview): A client row source for row data stored as an object instead of an array.
 
 ```ts
 export interface RowSource<T = any> {
@@ -59,12 +57,15 @@ export interface RowSource<T = any> {
 }
 ```
 
-## Using the Client Row Source
+## Using Client Row Source
 
-The `useClientDataSource` hook requires an array of `data`. Each item in the array becomes a row in the grid.
-Updates to the `data` property declaratively update the row source. The client row source is therefore
-derived state. The demo below is a minimal example of using the client row source. The remaining guides
-in this section cover the different capabilities of LyteNyte Grid's client data source.
+The `useClientDataSource` hook requires an array of **data**. Each item in the array
+becomes a row in the grid. Updates to the data property declaratively update the
+row source. The client row source is therefore **derived state**.
+
+The demo below provides a simple example of how to use the client row source.
+The remaining guides in this section explore the different
+capabilities of LyteNyte Grid's client data source.
 
 ::demo[Client Row Data Source="./demos/client-overview"]
 
@@ -73,4 +74,3 @@ in this section cover the different capabilities of LyteNyte Grid's client data 
 ::next[/docs/client-source-data]
 ::next[/docs/client-source-filtering]
 ::next[/docs/client-source-row-sorting]
-::next[/docs/client-source-row-pinning]

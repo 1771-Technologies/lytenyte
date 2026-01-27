@@ -827,4 +827,20 @@ export const loanData = [
   },
 ];
 
+loanData.sort((l, r) => {
+  const leftJob = l.job;
+  const rightJob = r.job;
+
+  if (leftJob < rightJob) return -1;
+  if (rightJob > leftJob) return 1;
+
+  const leftEdu = l.education;
+  const rightEdu = r.education;
+
+  if (leftEdu < rightEdu) return -1;
+  if (leftEdu > rightEdu) return 1;
+
+  return 0;
+});
+
 export const nameToAvatar = Object.fromEntries(loanData.map((x) => [x.name, x.avatar]));

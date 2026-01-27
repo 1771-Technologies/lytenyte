@@ -100,7 +100,7 @@ export default function RowGrouping() {
           ]}
         />
       </div>
-      <div className="ln-grid" style={{ height: 500 }}>
+      <div className="ln-grid ln-header:data-[ln-colid=overdue]:justify-center" style={{ height: 500 }}>
         <Grid rowSource={ds} columns={columnsWithHide} columnBase={base} rowGroupColumn={group} />
       </div>
     </>

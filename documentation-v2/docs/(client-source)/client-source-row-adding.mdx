@@ -1,8 +1,8 @@
 ---
 title: Client Row Adding
-step: Add rows anywhere in the dataset.
-description: Add new rows to an existing dataset using LyteNyte Grid's
-  client data source. You can insert new rows at any position.
+step: Learning how to add new rows to an existing dataset.
+description: Learn how to add rows to an existing dataset using
+  LyteNyte Grid's client data source. Insert rows at any position.
 ---
 
 The `useClientDataSource` hook returns a row source that can add new rows by
@@ -13,19 +13,19 @@ You can use the `rowAdd` method to create new rows and add them to your existing
 to the top, bottom, or between other rows. Provide the `useClientDataSource` hook with a
 callback for the `onRowsAdded` parameter to handle row additions.
 
-:::note
+:::info
 
-This guide covers adding new rows to the client data source. The most common use case for adding
-rows is editing rows. For guidance on row editing, see the [cell editing guides](/docs/cell-editing).
+This guide explains how to add new rows to the client data source.
+If you're adding rows as part of editing, see the [Cell Editing guide](/docs/cell-editing).
 
 :::
 
 ## Adding Rows
 
-In the demo below, click the **Add to Top** button to add a new row to the top of the grid, and
-click the **Add to Bottom** button to add a new row after all other rows.
+In the demo below, click **Add Top Row** to insert a new row at the
+top of the grid, or **Add Bottom Row** to add a new row at the bottom.
 
-::demo[Adding Rows="./demos/client-row-adding"]
+::demo[Adding Client Rows="./demos/client-row-adding"]
 
 Handling new row additions is straightforward. Store the existing row data in React state,
 then update the state via the `onRowsAdded` callback, as shown below.

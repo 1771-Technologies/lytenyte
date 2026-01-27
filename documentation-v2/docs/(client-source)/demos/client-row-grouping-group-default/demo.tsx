@@ -53,7 +53,7 @@ export default function GridTheming() {
   });
 
   return (
-    <div className="ln-grid" style={{ height: 500 }}>
+    <div className="ln-grid ln-header:data-[ln-colid=overdue]:justify-center" style={{ height: 500 }}>
       <Grid rowSource={ds} columns={columns} columnBase={base} rowGroupColumn={group} />
     </div>
   );

@@ -1,9 +1,9 @@
 ---
 title: Client Row Grouping
-step: Group rows by one or more dimensions.
-description: Group rows by one or more dimensions to create a hierarchical representation of
-  your data. Row groups can be uniform, with an equal number of dimensions,
-  or non-uniform, with a varying number of dimensions.
+step: Create a hierarchical representation of your data by grouping rows.
+description: Group rows by one or more dimensions to create a hierarchical representation
+  of your data. Row groups can be uniform, with equal dimensions, or
+  non-uniform, with varying dimensions.
 ---
 
 The `group` property on the `useClientDataSource` hook accepts one of two
@@ -12,24 +12,25 @@ value types:
 - A **function** that returns a group path array.
 - An array of grouping **dimensions**.
 
-LyteNyte Grid's client source uses the `group` property to create a hierarchical row
-structure. When grouping is enabled, the source creates two row types: leaf rows and
-group rows. If you are unfamiliar with the different row node types in LyteNyte Grid,
-see the [Row Overview guide](/docs/row-overview).
+Use the group property to create a hierarchical row structure. When
+grouping is enabled, the client source creates two row types: **leaf** and **group** rows.
 
-:::note
+If you are unfamiliar with the different row node types in LyteNyte Grid, see
+the [Row Overview guide-(/docs/row-overview).
 
-This guide covers the grouping functionality available in LyteNyte Grid for the
-client row source. Grouping goes hand-in-hand with row aggregations. We highly recommend
-reading the [Client Row Aggregations guide](/docs/client-source-aggregations)
-after you finish reading this guide.
+:::info
+
+This guide covers the client row source's grouping functionality.
+Grouping is often used with row aggregations.
+Review the [Client Row Aggregations guide](/docs/client-source-aggregations)
+for more details.
 
 :::
 
 ## Grouping Function
 
-Provide the `useClientDataSource` hook with a function that returns an array of path
-values to group by. A path value is any `string` value or `null`.
+Provide `useClientDataSource` with a function that returns an array of path values to group by.
+A path value is any `string` or `null` value.
 
 The demo below uses a grouping function to group rows by **Job** and **Education**.
 
@@ -52,19 +53,18 @@ array. When a group function returns `null`, the row is not grouped and instead 
 top level of the view alongside other groups. Furthermore, a grouping function can return
 group paths of varying lengths.
 
-The demo below demonstrates a non-uniform group. Notice that any row with `"Secondary"` education
-is not grouped, and any row with **Marital** status equal to **"Single"** is only grouped by **Job**.
+The demo below demonstrates a non-uniform group. Notice that any row with `"Secondary"` Education is
+not grouped, and any row with **Marital** status equal to **“Single”** is only grouped by Job.
 
-::demo[Non-Uniform Groups="./demos/client-row-grouping-fn-non-uniform"]
+::demo[Non-Uniform Row Groupings="./demos/client-row-grouping-fn-non-uniform"]
 
 :::tip
 
-If you are coming to LyteNyte Grid from other another data grid, you may have seen non-uniform groups
-referred to as **Tree Data**. In LyteNyte Grid, this path-based array of values is simply
-a non-uniform grouping of rows.
+In other data grids, you may have seen non-uniform groups called Tree Data.
+In LyteNyte Grid, this path-based array of values is simply a non-uniform grouping of rows.
 
-LyteNyte Grid provides a [tree data source](/docs/tree-source-overview). However,
-this source is intended for use with object data, not array data.
+LyteNyte Grid provides a [tree data source](/docs/tree-source-overview),
+but it's intended for object data, not array data.
 
 :::
 
@@ -77,9 +77,9 @@ type interface:
 export type Dimension<T> = { name?: string; field: Field<T> } | { id: string; field?: Field<T> };
 ```
 
-This means a dimension is any object with a `field` or `id` property. All valid LyteNyte Grid
-columns conform to the `Dimension` type and may be used as dimensions. The demo below demonstrates
-using dimensions to group rows:
+A dimension is any object with a `field` or `id` property. All valid LyteNyte Grid columns conform
+to the Dimension type and can be used as dimensions. The demo below shows how to
+group rows using dimensions.
 
 ::demo[Row Group Dimensions="./demos/client-row-grouping-dimension"]
 
@@ -88,8 +88,8 @@ grid. However, dimensions always result in uniform groups.
 
 ## Changing Row Groups
 
-Updating row groups is as simple as updating the value of the `group` property. The demo below demonstrates
-this behavior by updating groups using the [Pill Manager component](/docs/component-pill-manager).
+Update row groups by changing the group property value. The demo below updates
+groups using the [Pill Manager component](/docs/component-pill-manager).
 
 ::demo[Change Row Group="./demos/client-row-grouping-dimension-updates"]
 
@@ -126,7 +126,7 @@ setting on the client source or grid API updates the expansion state and calls `
 if provided, on the row data source.
 
 Using `api.rowGroupToggle`, you can create your own group cell renderer to
-expand and collapse rows. The demo below demonstrates this.
+expand and collapse rows. As shown in the demo below.
 
 ::demo[Row Group Expansion="./demos/client-row-grouping-group-expansions"]
 
@@ -156,7 +156,7 @@ with `onRowGroupExpansionChange` to build this functionality.
 The demo below demonstrates this functionality. Click the `+` button instead of the expansion chevron to expand
 all sibling rows for the current group.
 
-::demo[Sibling Expansion="./demos/client-row-grouping-group-siblings"]
+::demo[Sibling Row Group Expansion="./demos/client-row-grouping-group-siblings"]
 
 ## Next Steps
 

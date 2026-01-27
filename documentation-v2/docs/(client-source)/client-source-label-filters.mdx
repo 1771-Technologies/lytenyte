@@ -2,32 +2,37 @@
 title: Client Row Label Filters
 pro: true
 step: Use Row Label Filters to show only row groups with valid grouping labels.
-description: Row Label Filters are a special type of filter that excludes rows
-  with specific row grouping labels. Use these filters when you want
-  to display only row groups with valid labels.
+description: Learn how to use Row Label Filters to display only row groups with valid labels.
 ---
 
-Label filters are specialized filters that are only used when row grouping is enabled
-on the client row source. For more on row grouping, see the
-[Client Row Grouping guide](/docs/client-source-row-grouping).
+Label filters are specialized filters that are used only when row
+grouping is enabled on the client row source. For additional details on row grouping,
+refer to the [Client Row Grouping guide](/docs/client-source-row-grouping).
 
 ## Label Filter Function
 
-The LyteNyte Grid client data source accepts an array of `LabelFilter` functions or `null` values. Label filters
-always apply at a specific group depth. Each index in the array represents the group depth that the label filter
-applies to. When the filter value at a particular index is `null`, the client data source skips label filtering
-for that depth.
+The LyteNyte Grid client data source accepts an array of `LabelFilter` functions or
+null values. The array index maps to a group depth: element
+`n` is applied at depth `n`. If an element is `null`, the client data
+source skips label filtering at that depth.
+
+The demo shows label filters in action. Click a pill to exclude that label from
+the grid. Each pill row maps to a group level:
+
+- The **Job pill row** filters job groups.
+- The **Education pill row** filters education groups.
 
 The demo below shows label filters in action. Clicking a pill disables that label in the grid.
 The pills are arranged in rows to represent the grouping level. For example, the **Job** pills filter
 labels in the job grouping, and the **Education** pills filter labels in the education grouping.
 
-::demo[Label Filters="./demos/client-row-label-filters"]
+::demo[Row Label Filters="./demos/client-row-label-filters"]
 
-To create the label filters, the demo scans the pills and finds any inactive items. For each grouping level
-that has inactive pills, the demo creates a label filter that removes group rows with those labels. The code
-below shows this. For more on the pill manager functionality, see the
-[Pill Manager guide](/docs/component-pill-manager).
+The demo scans pills to identify inactive items. For each grouping level that includes
+inactive pills, it creates label filters to remove rows with those labels.
+This is shown in the code below.
+
+For more on pill manager functionality, see the [Pill Manager guide](/docs/component-pill-manager).
 
 ```ts
 const labelFilter = useMemo(() => {

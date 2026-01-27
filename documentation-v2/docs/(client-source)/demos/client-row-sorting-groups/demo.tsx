@@ -18,6 +18,7 @@ import {
   NameCell,
   NumberCell,
   OverdueCell,
+  tw,
 } from "./components.js";
 
 export interface GridSpec {
@@ -28,11 +29,11 @@ export interface GridSpec {
 const columns: Grid.Column<GridSpec>[] = [
   { name: "Name", id: "name", cellRenderer: NameCell, width: 110 },
   { name: "Country", id: "country", width: 150, cellRenderer: CountryCell },
-  { name: "Loan Amount", id: "loanAmount", width: 120, type: "number", cellRenderer: NumberCell },
+  { name: "Loan Amount", id: "loanAmount", width: 140, type: "number", cellRenderer: NumberCell },
   { name: "Balance", id: "balance", type: "number", cellRenderer: NumberCell },
-  { name: "Customer Rating", id: "customerRating", type: "number", width: 125, cellRenderer: CustomerRating },
+  { name: "Customer Rating", id: "customerRating", type: "number", width: 150, cellRenderer: CustomerRating },
   { name: "Marital", id: "marital" },
-  { name: "Education", id: "education" },
+  { name: "Education", id: "education", width: 120 },
   { name: "Job", id: "job", width: 120 },
   { name: "Overdue", id: "overdue", cellRenderer: OverdueCell },
   { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
@@ -53,6 +54,10 @@ export default function GridTheming() {
     id: "__ln_group__",
     dir: "desc",
   });
+  const [expansions, setExpansions] = useState<Record<string, boolean | undefined>>({
+    Technician: true,
+    "Technician->Tertiary": true,
+  });
 
   const ds = useClientDataSource<GridSpec>({
     data: loanData,
@@ -62,7 +67,8 @@ export default function GridTheming() {
 
       return [{ dim: { id: sort.id }, descending: sort.dir === "desc" }];
     }, [sort]),
-    rowGroupDefaultExpansion: true,
+    rowGroupExpansions: expansions,
+    onRowGroupExpansionChange: setExpansions,
   });
 
   const sort$ = usePiece(sort, setSort);
@@ -116,7 +122,10 @@ function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
 
   return (
     <div
-      className="relative flex h-full w-full cursor-pointer items-center text-sm transition-colors"
+      className={tw(
+        "relative flex h-full w-full cursor-pointer items-center text-sm transition-colors",
+        column.id === "overdue" && "justify-center",
+      )}
       style={{
         justifyContent: column.type === "number" ? "flex-end" : undefined,
       }}

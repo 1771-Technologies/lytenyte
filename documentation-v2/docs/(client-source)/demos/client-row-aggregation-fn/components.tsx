@@ -34,17 +34,30 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
   );
 }
 
-export function NameCell({ row }: Grid.T.CellRendererParams<GridSpec>) {
-  const name = row.data.name as string;
+export function TextCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (typeof name !== "string") return "-";
-  const url = nameToAvatar[name];
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
+  return String(field);
+}
+
+export function NameCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
+  if (typeof field !== "string") return "-";
+
+  const url = nameToAvatar[field];
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <img className="border-ln-border-strong h-7 w-7 rounded-full border" src={url} alt={name} />
+      <img className="border-ln-border-strong h-7 w-7 rounded-full border" src={url} alt={field} />
       <div className="text-ln-text-dark flex flex-col gap-0.5">
-        <div>{name}</div>
+        <div>{field}</div>
       </div>
     </div>
   );
@@ -65,6 +78,9 @@ export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<Gri
 export function CountryCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
   const flag = countryFlags[field as keyof typeof countryFlags];
   if (!flag) return "-";
 
@@ -79,6 +95,9 @@ export function CountryCell({ api, row, column }: Grid.T.CellRendererParams<Grid
 export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
   if (typeof field !== "string") return "-";
 
   const dateField = parse(field as string, "yyyy-MM-dd", new Date());
@@ -91,6 +110,10 @@ export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpe
 
 export function OverdueCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
+
+  if (typeof field === "number")
+    return <div className="flex w-full items-center justify-end px-2">{field}</div>;
+
   if (field !== "Yes" && field !== "No") return "-";
 
   return (

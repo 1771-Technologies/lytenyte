@@ -36,7 +36,7 @@ export function NumberInput({ ...props }: JSX.IntrinsicElements["input"]) {
   return (
     <input
       {...props}
-      className="border-ln-border-field-and-button focus:outline-ln-primary-50 h-6 w-full flex-1 border border-s-transparent focus:outline"
+      className="border-ln-border-field-and-button focus:outline-ln-primary-50 h-6 w-full rounded border focus:outline"
       onChange={(e) => {
         handleNumberInput(e, props.onChange);
       }}
