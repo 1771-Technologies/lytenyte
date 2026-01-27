@@ -95,8 +95,11 @@ export default function ColumnBase() {
       const leftData = left.data as DEXPerformanceData;
       const rightData = right.data as DEXPerformanceData;
 
-      const leftValue = leftData[columnWithSort.id as keyof DEXPerformanceData];
-      const rightValue = rightData[columnWithSort.id as keyof DEXPerformanceData];
+      let leftValue = leftData[columnWithSort.id as keyof DEXPerformanceData];
+      let rightValue = rightData[columnWithSort.id as keyof DEXPerformanceData];
+
+      if (typeof leftValue === "string") leftValue = leftValue.toLowerCase();
+      if (typeof rightValue === "string") rightValue = rightValue.toLowerCase();
 
       const dirChanger = columnWithSort.sort === "asc" ? -1 : 1;
 
@@ -150,7 +153,7 @@ export default function ColumnBase() {
           rowSource={ds}
           events={{
             headerCell: {
-              keyDown: (column, ev) => {
+              keyDown: ({ column, event: ev }) => {
                 if (ev.key === "Enter") {
                   const nextSort = column.sort === "asc" ? null : column.sort === "desc" ? "asc" : "desc";
                   apiExtension.sortColumn(column.id, nextSort);

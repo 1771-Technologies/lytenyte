@@ -1,5 +1,5 @@
 //#start
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { computeField, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import {
@@ -16,9 +16,9 @@ import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { useMemo, useState } from "react";
 
 const initialColumns: Grid.Column<GridSpec>[] = [
-  { id: "symbol", cellRenderer: SymbolCell, width: 250, name: "Symbol", sort: "desc", sortIndex: 2 },
-  { id: "network", cellRenderer: NetworkCell, width: 220, name: "Network" },
-  { id: "exchange", cellRenderer: ExchangeCell, width: 220, name: "Exchange", sort: "asc", sortIndex: 1 },
+  { id: "symbol", cellRenderer: SymbolCell, width: 250, name: "Symbol" },
+  { id: "network", cellRenderer: NetworkCell, width: 220, name: "Network", sort: "desc", sortIndex: 1 },
+  { id: "exchange", cellRenderer: ExchangeCell, width: 220, name: "Exchange", sort: "asc", sortIndex: 2 },
 
   {
     id: "change24h",
@@ -88,12 +88,21 @@ export default function ColumnBase() {
   const [columns, setColumns] = useState(initialColumns);
 
   const sortDimension = useMemo(() => {
-    const columnWithSort = columns.find((x) => x.sort);
-    if (!columnWithSort) return null;
+    const sorts = columns.filter((x) => x.sort).sort((l, r) => (l.sortIndex ?? 0) - (r.sortIndex ?? 0));
 
-    return [
-      { dim: columnWithSort, descending: columnWithSort.sort === "desc" },
-    ] satisfies Grid.T.DimensionSort<GridSpec["data"]>[];
+    return sorts.map((columnWithSort) => {
+      return {
+        dim: {
+          ...columnWithSort,
+          field: (p) => {
+            const value = computeField(columnWithSort.id ?? columnWithSort.field, p.row);
+            if (typeof value === "string") return value.toLowerCase();
+            return value;
+          },
+        },
+        descending: columnWithSort.sort === "desc",
+      } satisfies Grid.T.DimensionSort<GridSpec["data"]>;
+    });
   }, [columns]);
 
   const apiExtension = useMemo<GridSpec["api"]>(() => {
@@ -162,7 +171,7 @@ export default function ColumnBase() {
           rowSource={ds}
           events={{
             headerCell: {
-              keyDown: (column, ev) => {
+              keyDown: ({ column, event: ev }) => {
                 if (ev.key === "Enter") {
                   const nextSort = column.sort === "asc" ? null : column.sort === "desc" ? "asc" : "desc";
                   apiExtension.sortColumn(column.id, nextSort, ev.metaKey || ev.ctrlKey);

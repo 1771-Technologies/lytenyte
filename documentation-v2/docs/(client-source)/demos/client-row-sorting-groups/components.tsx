@@ -35,7 +35,7 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
 }
 
 export function NameCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
-  if (!api.rowIsLeaf(row) || !row.data) return;
+  if (!api.rowIsLeaf(row) || !row.data) return "-";
 
   const url = row.data?.avatar;
 

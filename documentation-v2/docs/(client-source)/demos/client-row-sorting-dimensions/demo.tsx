@@ -1,5 +1,5 @@
 //#start
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { computeField, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import {
@@ -92,7 +92,17 @@ export default function ColumnBase() {
     if (!columnWithSort) return null;
 
     return [
-      { dim: columnWithSort, descending: columnWithSort.sort === "desc" },
+      {
+        dim: {
+          ...columnWithSort,
+          field: (p) => {
+            const value = computeField(columnWithSort.id ?? columnWithSort.field, p.row);
+            if (typeof value === "string") return value.toLowerCase();
+            return value;
+          },
+        },
+        descending: columnWithSort.sort === "desc",
+      },
     ] satisfies Grid.T.DimensionSort<GridSpec["data"]>[];
   }, [columns]);
 
