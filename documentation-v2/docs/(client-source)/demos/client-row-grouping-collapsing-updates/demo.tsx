@@ -20,14 +20,14 @@ export interface GridSpec {
 }
 
 const columns: Grid.Column<GridSpec>[] = [
-  { name: "Job", id: "job", width: 120, hide: true },
   { name: "Name", id: "name", cellRenderer: NameCell, width: 110 },
   { name: "Country", id: "country", width: 150, cellRenderer: CountryCell },
+  { name: "Education", id: "education" },
+  { name: "Job", id: "job", width: 120 },
   { name: "Loan Amount", id: "loanAmount", width: 120, type: "number", cellRenderer: NumberCell },
   { name: "Balance", id: "balance", type: "number", cellRenderer: NumberCell },
   { name: "Customer Rating", id: "customerRating", type: "number", width: 125, cellRenderer: CustomerRating },
   { name: "Marital", id: "marital" },
-  { name: "Education", id: "education", hide: true },
   { name: "Overdue", id: "overdue", cellRenderer: OverdueCell },
   { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
   { name: "Date", id: "date", width: 110, cellRenderer: DateCell },
@@ -43,11 +43,11 @@ const group: Grid.RowGroupColumn<GridSpec> = {
       <RowGroupCell
         {...props}
         leafLabel={(row, api) => {
-          if (!row.parentId) return row.data.education;
+          if (!row.parentId) return <div className="ps-2.5">{row.data.job}</div>;
 
           const parent = api.rowById(row.parentId);
           if (parent?.kind === "branch" && row.depth === 1) {
-            return parent.key ?? "(blank)";
+            return <div className="ps-6.5 font-bold">{row.data.marital ?? "(blank)"}</div>;
           }
 
           return "";
@@ -95,7 +95,7 @@ export default function ClientSourceDemo() {
     data: data,
     group: groupFn,
     rowGroupCollapseBehavior: collapse, //!
-    rowGroupDefaultExpansion: true,
+    rowGroupDefaultExpansion: 0,
   });
 
   return (
@@ -111,9 +111,9 @@ export default function ClientSourceDemo() {
             setCollapse(c as "no-collapse");
           }}
         >
-          <ToggleItem value="no-collapse">No Collapse</ToggleItem>
-          <ToggleItem value="last-only">Last Only</ToggleItem>
           <ToggleItem value="full-tree">Full Tree</ToggleItem>
+          <ToggleItem value="last-only">Last Only</ToggleItem>
+          <ToggleItem value="no-collapse">No Collapse</ToggleItem>
         </ToggleGroup>
       </div>
       <div className="ln-grid ln-header:data-[ln-colid=overdue]:justify-center" style={{ height: 500 }}>

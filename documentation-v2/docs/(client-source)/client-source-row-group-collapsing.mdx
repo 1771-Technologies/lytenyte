@@ -2,17 +2,16 @@
 title: Client Row Group Collapsing
 pro: true
 step: Flatten single-child group rows.
-description: Row grouping creates a tree representation of your row data. LyteNyte Grid
-  can collapse and flatten this tree when a group row has only a single leaf child.
+description: Row grouping transforms row data into a tree structure. LyteNyte Grid flattens this
+  tree if a row group contains only a single leaf child.
 ---
 
-When you group rows in the grid, some groups will have only a single child row.
-You can instruct the client data source to collapse row groups by setting the
-`rowGroupCollapseBehavior`, which accepts one of three values:
+To collapse group rows that contain a single child row automatically,
+set `rowGroupCollapseBehavior` on the client data source to one of the following values:
 
-- `"full-tree"`: Group rows with a single child are collapsed at every depth level.
-- `"last-only"`: Only collapse group rows at the final depth level, and collapse each matching group once.
-- `"no-collapse"`: The client data source does not collapse any row groups. This is the default setting.
+- **"full-tree":** Collapse group rows with a single child at every depth.
+- **"last-only":** Collapse group rows with a single child only at the final depth level.
+- **"no-collapse":** Do not collapse any group rows. This is the default.
 
 ## Full Tree Collapsing
 
@@ -25,7 +24,7 @@ is as flat as possible without losing information.
 :::note
 
 To clearly demonstrate the `"full-tree"` collapse behavior, the sample data includes only
-a single row for the **Unemployed** job category.
+a single row for the **Blue-Collar** job category.
 
 :::
 
@@ -37,14 +36,14 @@ after collapsing the final group, as the demo below shows.
 
 ::demo[Last Row Group Collapsing="./demos/client-row-grouping-collapse-last"]
 
-In the demo, the **Unemployed** group has a single child. However, because the grid uses two grouping levels,
-only the last level is collapsed.
+In the demo, the **Blue-Collar** group has a single child. However, because the grid uses
+two grouping levels, only the last level is collapsed.
 
-## Collapse Setting Update
+## Updating Collapse Settings
 
-You can update `rowGroupCollapseBehavior` at any time. In the demo below, you can
-switch between collapse behaviors to see them in action. To support this, the demo stores the
-collapse behavior in React state using `useState` and updates the value through a toggle group.
+You can update `rowGroupCollapseBehavior` dynamically. In this demo,
+`useState` manages the property value, which updates via
+a toggle group to demonstrate the different behaviors.
 
 ::demo[Updating Collapse Behavior="./demos/client-row-grouping-collapsing-updates"]
 
