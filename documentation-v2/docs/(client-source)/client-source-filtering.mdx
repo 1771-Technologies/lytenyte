@@ -1,36 +1,33 @@
 ---
 title: Client Row Filtering
 step: Explore how to filter rows when using the client row source.
-description: LyteNyte Grid's client row source lets you set custom filters to exclude rows from
-  the view. The grid excludes filtered rows before performing actions such as grouping,
-  sorting, or aggregating.
+description: LyteNyte Grid's client row source lets you to set custom filters to exclude specific rows
+  from view. These filtered rows are omitted before actions such as grouping, sorting, or aggregating are executed.
 ---
 
-:::note
+:::info
 
-This guide covers filters at a high level, with a particular focus on the properties
-of the client row source. See the guides in the **Filtering** section of the
-LyteNyte Grid documentation for more thorough guidance on creating filters for the grid.
-A good place to start is the [Filtering Text guide](/docs/filtering-text).
+For detailed guidance on Filtering, refer to our Filtering Section,
+beginning with the [Filter Text guide](/docs/filtering-text). This guide offers an overview of
+filters, focusing on the client row source properties.
 
 :::
 
-## The Filter Property
+## Filter Property
 
 The `filter` property on the client row source accepts a filter predicate or an
 array of filter predicates. A filter predicate is a function that receives a
 leaf row and returns `true` if the grid should keep the row or `false` if the
 grid should filter the row out.
 
-The demo below demonstrates a basic filter function. Click the **Mastercard** button
-to show only those rows that have Mastercard as a payment method. Similarly, click the
-**Visa** button to show only those rows that have Visa as a payment method.
+A basic filter function is shown below. Click the **Mastercard** button to
+view only Mastercard payments, or the **Visa** button to view only Visa payments.
 
-::demo[Filter Function="./demos/client-filtering"]
+::demo[Client Row Filter Function="./demos/client-filtering"]
 
-The demo creates a filter function and passes it to the client source as shown in the
-code below. This is a minimal approach. However, since filtering is a function,
-you can represent any filter model.
+The demo creates a filter function that is passed to the client source,
+as shown below. This minimal approach supports any filter model, since
+filtering is an arbitrary predicate function.
 
 ```tsx
 //!next
@@ -52,22 +49,20 @@ const ds = useClientDataSource<GridSpec>({ data: data, filter }); //!
 
 ### Filter Array
 
-Providing a single filter function can be awkward when filters come from multiple places.
-
-For example, your application could implement basic
-text searching on a per-column basis. It is much easier to create a filter function
-for each column and provide these functions to the `useClientDataSource` hook.
+Providing a single filter function is cumbersome when filters originate from different sources.
+For example, if you support per-column text search, you can write one filter function
+per column and pass those column filter functions to `useClientDataSource`.
 
 ::demo[Filter Function Array="./demos/client-filtering-array"]
 
-## Filters Apply To Leaf Rows
+## Filter Leaf Rows
 
-The functions you provide through the `filter` property receive leaf rows only. This is because
-filters apply before grouping or aggregation. Keep this in mind when you apply filters to your
-data.
+Filter callbacks passed via the `filter` property receive **leaf rows only**
+because filtering runs **before** grouping or aggregation.
+Apply filters to raw rows, not grouped or aggregated output.
 
-See the [Client Row Having Filter guide](/docs/client-source-having-filters) for
-post-grouping filter capabilities of the client source.
+For post-grouping filtering in the client source, see
+the [Client Row Having Filter guide](/docs/client-source-having-filters).
 
 ## Next Steps
 
