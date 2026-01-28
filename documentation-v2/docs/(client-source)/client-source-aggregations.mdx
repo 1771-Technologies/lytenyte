@@ -15,7 +15,7 @@ the [Client Row Grouping guide](/docs/client-source-row-grouping) if not.
 ## Aggregations
 
 In LyteNyte Grid, an aggregation is a record of key-value pairs, where each key
-is usually a column id, and each value is the result of an aggregation
+is usually a column `id`, and each value is the result of an aggregation
 function such as **sum** or **average**.
 
 This concept of an aggregation is reflected in the data type required by a row group node and row
@@ -154,9 +154,9 @@ free to extend the grid's API or column definitions to include one.
 
 This section guides you on extending the column specification to
 allow columns to specify an aggregation and define a list of allowed aggregations.
-
-Aggregations encompass arbitrary computations over row-level data, including advanced
-statistical and windowed operations such as standard deviation and rolling averages.
+Aggregations encompass arbitrary computations over row-level data,
+including advanced statistical and windowed operations such as
+**standard deviation** and **rolling averages**.
 
 Start by creating an updated column specification. In this example, the fields are mandatory,
 but you can choose a type that matches your use case.

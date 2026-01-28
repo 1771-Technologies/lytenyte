@@ -101,7 +101,7 @@ export default function ColumnBase() {
       if (typeof leftValue === "string") leftValue = leftValue.toLowerCase();
       if (typeof rightValue === "string") rightValue = rightValue.toLowerCase();
 
-      const dirChanger = columnWithSort.sort === "asc" ? -1 : 1;
+      const dirChanger = columnWithSort.sort === "asc" ? 1 : -1;
 
       if (leftValue < rightValue) return -1 * dirChanger;
       if (leftValue > rightValue) return 1 * dirChanger;

@@ -46,6 +46,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 100, headerRenderer: Header };
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 //#end

@@ -102,7 +102,7 @@ export default function ColumnBase() {
             setSort(() => sortByChange24);
           }}
         >
-          Sort: 24H % Chng.
+          Sort by Change 24
         </button>
         <button
           data-ln-button="website"
@@ -111,7 +111,7 @@ export default function ColumnBase() {
             setSort(null);
           }}
         >
-          Remove Sort
+          Clear Sort
         </button>
       </div>
       <div

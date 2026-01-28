@@ -56,6 +56,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
     );
   },
   width: 200,
+  pin: "start",
 };
 
 const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {

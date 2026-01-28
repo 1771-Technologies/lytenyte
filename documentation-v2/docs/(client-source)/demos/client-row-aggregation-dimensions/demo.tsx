@@ -17,6 +17,7 @@ import {
   NameCell,
   NumberCell,
   OverdueCell,
+  TextCell,
 } from "./components.js";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -31,41 +32,44 @@ const columns: Grid.Column<GridSpec>[] = [
   { name: "Loan Amount", id: "loanAmount", width: 145, type: "number", cellRenderer: NumberCell },
   { name: "Balance", id: "balance", type: "number", cellRenderer: NumberCell, width: 120 },
   { name: "Customer Rating", id: "customerRating", type: "number", width: 170, cellRenderer: CustomerRating },
-  { name: "Marital", id: "marital" },
+  { name: "Marital", id: "marital", width: 130 },
   { name: "Education", id: "education", hide: true },
   { name: "Job", id: "job", width: 140, hide: true },
   { name: "Overdue", id: "overdue", width: 120, cellRenderer: OverdueCell },
   { name: "Duration", id: "duration", type: "number", width: 120, cellRenderer: DurationCell },
   { name: "Date", id: "date", width: 140, cellRenderer: DateCell },
   { name: "Age", id: "age", width: 120, type: "number", cellRenderer: AgeCell },
-  { name: "Contact", id: "contact" },
+  { name: "Contact", id: "contact", width: 130 },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 100, headerRenderer: HeaderCell };
+const base: Grid.ColumnBase<GridSpec> = { width: 100, headerRenderer: HeaderCell, cellRenderer: TextCell };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   headerRenderer: () => <div className="flex items-center">Group</div>,
   width: 200,
+  pin: "start",
 };
 
 //#end
 
 const aggModel: Grid.T.DimensionAgg<GridSpec["data"]>[] = [
-  { dim: { id: "name" }, fn: "same" },
+  { dim: { id: "name" }, fn: "count" },
   { dim: { id: "country" }, fn: "same" },
   { dim: { id: "loanAmount" }, fn: "avg" },
   { dim: { id: "balance" }, fn: "avg" },
   { dim: { id: "customerRating" }, fn: "avg" },
-  { dim: { id: "marital" }, fn: "same" },
+  { dim: { id: "marital" }, fn: "count" },
   { dim: { id: "education" }, fn: "same" },
   { dim: { id: "job" }, fn: "same" },
   { dim: { id: "overdue" }, fn: "same" },
   { dim: { id: "duration" }, fn: "avg" },
-  { dim: { id: "date" }, fn: "same" },
+  { dim: { id: "date" }, fn: "count" },
   { dim: { id: "age" }, fn: "avg" },
-  { dim: { id: "contact" }, fn: "same" },
+  { dim: { id: "contact" }, fn: "count" },
 ];
+
+const countCols = ["name", "marital", "date", "contact"];
 
 const avg: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   const values = data.map((x) => computeField<number>(field, x));
@@ -76,6 +80,9 @@ const same: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   const values = uniq(data.map((x) => computeField(field, x)));
   return values.length === 1 ? values[0] : null;
 };
+const count: Grid.T.Aggregator<GridSpec["data"]> = (_, data) => {
+  return data.length;
+};
 
 export default function GridTheming() {
   const ds = useClientDataSource<GridSpec>({
@@ -85,6 +92,7 @@ export default function GridTheming() {
     aggregateFns: {
       avg: avg,
       same: same,
+      count: count,
     },
     rowGroupDefaultExpansion: true,
   });
@@ -105,7 +113,9 @@ export function HeaderCell({ column }: Grid.T.HeaderParams<GridSpec>) {
       )}
     >
       <div>{column.name ?? column.id}</div>
-      <div className="text-ln-primary-50 text-xs">({column.type === "number" ? "same" : "count"})</div>
+      <div className="text-ln-primary-50 text-[10px]">
+        ({countCols.includes(column.id) ? "count" : column.type === "number" ? "avg" : "same"})
+      </div>
     </div>
   );
 }

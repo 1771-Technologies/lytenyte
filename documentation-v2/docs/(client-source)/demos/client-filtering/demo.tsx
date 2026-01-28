@@ -64,7 +64,7 @@ export default function ColumnBase() {
             setFilter(null);
           }}
         >
-          No Filter
+          Clear Filters
         </button>
       </div>
 

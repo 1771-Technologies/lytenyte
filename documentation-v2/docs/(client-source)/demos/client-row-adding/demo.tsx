@@ -70,7 +70,7 @@ export default function Demo() {
             addIndex = addIndex + 1;
           }}
         >
-          Add Top Top
+          Add Top Row
         </button>
         <button
           data-ln-button="website"
@@ -81,7 +81,7 @@ export default function Demo() {
             addIndex = addIndex + 1;
           }}
         >
-          Add Bottom Bottom
+          Add Bottom Row
         </button>
         {addIndex >= initialData.length && (
           <button

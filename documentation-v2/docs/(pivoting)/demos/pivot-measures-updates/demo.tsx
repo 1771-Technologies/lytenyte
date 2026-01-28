@@ -162,7 +162,7 @@ export default function PivotDemo() {
                             <Menu>
                               <Menu.Trigger
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-ln-primary-50 hover:bg-ln-primary-30 cursor-pointer rounded-lg px-0.5 py-0.5"
+                                className="text-ln-primary-50 hover:bg-ln-primary-30 cursor-pointer rounded-lg px-0.5 py-0.5 text-[10px]"
                               >
                                 ({(x.data as string) ?? "sum"})
                               </Menu.Trigger>
@@ -170,7 +170,7 @@ export default function PivotDemo() {
                                 <Menu.Container>
                                   <Menu.Arrow />
 
-                                  {["Sum", "Avg", "Max", "Min"].map((agg) => {
+                                  {["sum", "avg", "max", "min"].map((agg) => {
                                     return (
                                       <Menu.Item
                                         key={agg}
