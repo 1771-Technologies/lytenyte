@@ -26,7 +26,7 @@ the [PostgreSQL HAVING guide](https://neon.com/postgresql/postgresql-tutorial/po
 Review the [Client Row Grouping](/docs/client-source-row-grouping) and
 [Client Row Aggregations](/docs/client-source-aggregations) guides for prerequisite knowledge.
 
-To apply a **having** filter, set the having property on the client
+To apply a **having** filter, set the `having` property on the client
 data source using one of two formats:
 
 - **Having Filter Function (`HavingFilterFn`):** Filters all group rows globally.
@@ -53,12 +53,16 @@ the filter function from it. The demo uses a custom [floating header row](/docs/
 component that allows users to modify the model's value.
 
 Type **500** into the **Balance** column's floating filter and test the result.
-Notice that the filter is applied at both the Job and Education
+Notice that the filter is applied at both the **Job** and **Education**
 row group levels, regardless of depth.
 
-For example, set **Balance** to be aggregated using avg and filtered to < 0.
-Notice the Administration row group has been filtered out because the **having**
+:::info
+
+Another example, set **Balance** to be aggregated using avg and filtered to `< 0`.
+Notice the **Administration** row group has been filtered out because the **having**
 filter applies at all group levels.
+
+:::
 
 ::demo[Having Filter Function="./demos/client-row-having"]
 
@@ -104,12 +108,12 @@ The demo below demonstrates this by providing the `having` property with an arra
 is `null`, so the filter skips the top-most group level. The second item is a filter function, so the filter
 applies to the second grouping level.
 
-For example, set **Balance** to be aggregated using avg and filtered to < 0.
-The Administration row group remains visible. In the previous demo, that row group was hidden.
+For example, set **Balance** to be aggregated using **avg** and filtered to `< 0`.
+The **Administration** row group remains visible. In the previous demo, that row group was hidden.
 
 ::demo[Having Filter Array="./demos/client-row-having-array"]
 
-Having filters do not recalculate or impact aggregation values. If a having
+**Having** filters do not recalculate or impact aggregation values. If a having
 filter excludes child rows, the parent's aggregated value remains unchanged. This
 prevents a recursive filtering loop in which decreasing aggregate totals
 would continually trigger further exclusions until all rows are removed.

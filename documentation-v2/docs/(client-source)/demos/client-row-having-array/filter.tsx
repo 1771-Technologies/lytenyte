@@ -40,7 +40,7 @@ export function FloatingFilter({ api, column }: Grid.T.HeaderParams<GridSpec>) {
           {kind === "ge" && <span className="iconify ph--greater-than-or-equal size-4"></span>}
           {kind === "eq" && <span className="iconify ph--equals size-4"></span>}
           {kind === "neq" && <span className="iconify ph--not-equals size-4"></span>}
-          {filter?.value && <div className="bg-ln-primary-50 absolute -right-1 -top-1 size-3 rounded-full" />}
+          {filter?.value && <div className="bg-ln-primary-50 absolute -right-1 -top-1 size-2 rounded-full" />}
         </Menu.Trigger>
         <Menu.Popover>
           <Menu.Arrow />

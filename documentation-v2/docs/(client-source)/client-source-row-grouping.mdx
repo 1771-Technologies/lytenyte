@@ -16,7 +16,7 @@ Use the group property to create a hierarchical row structure. When
 grouping is enabled, the client source creates two row types: **leaf** and **group** rows.
 
 If you are unfamiliar with the different row node types in LyteNyte Grid, see
-the [Row Overview guide-(/docs/row-overview).
+the [Row Overview guide](/docs/row-overview).
 
 :::info
 
@@ -53,8 +53,8 @@ array. When a group function returns `null`, the row is not grouped and instead 
 top level of the view alongside other groups. Furthermore, a grouping function can return
 group paths of varying lengths.
 
-The demo below demonstrates a non-uniform group. Notice that any row with `"Secondary"` Education is
-not grouped, and any row with **Marital** status equal to **“Single”** is only grouped by Job.
+The demo below demonstrates a non-uniform group. Notice that any row with `"Secondary"` education is
+not grouped, and any row with **Marital** status equal to `“Single”` is only grouped by **Job**.
 
 ::demo[Non-Uniform Row Groupings="./demos/client-row-grouping-fn-non-uniform"]
 
@@ -88,7 +88,7 @@ grid. However, dimensions always result in uniform groups.
 
 ## Changing Row Groups
 
-Update row groups by changing the group property value. The demo below updates
+Update row groups by changing the `group` property value. The demo below updates
 groups using the [Pill Manager component](/docs/component-pill-manager).
 
 ::demo[Change Row Group="./demos/client-row-grouping-dimension-updates"]

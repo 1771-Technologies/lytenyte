@@ -208,7 +208,7 @@ export default function GridTheming() {
   const [columns, setColumns] = useState(initialColumns);
 
   //!next 2
-  const [filterModel, setFilterModel] = useState<FilterModel>({ loanAmount: { kind: "ge", value: "40" } });
+  const [filterModel, setFilterModel] = useState<FilterModel>({});
   const filterModel$ = usePiece(filterModel, setFilterModel);
 
   const apiExtension = useMemo(() => {
