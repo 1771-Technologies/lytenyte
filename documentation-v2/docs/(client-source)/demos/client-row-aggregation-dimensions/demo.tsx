@@ -113,7 +113,7 @@ export function HeaderCell({ column }: Grid.T.HeaderParams<GridSpec>) {
       )}
     >
       <div>{column.name ?? column.id}</div>
-      <div className="text-ln-primary-50 text-xs">
+      <div className="text-ln-primary-50 text-[10px]">
         ({countCols.includes(column.id) ? "count" : column.type === "number" ? "avg" : "same"})
       </div>
     </div>

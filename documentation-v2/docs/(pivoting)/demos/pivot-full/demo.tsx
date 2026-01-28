@@ -19,7 +19,7 @@ import {
   NumberCell,
   ProfitCell,
 } from "./components.jsx";
-import { sum, uniq } from "es-toolkit";
+import { sum } from "es-toolkit";
 import { useMemo, useState } from "react";
 
 export interface GridSpec {
@@ -55,6 +55,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
@@ -73,9 +74,8 @@ const aggMax: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   const values = data.map((x) => computeField<number>(field, x));
   return Math.max(...values);
 };
-const aggCount: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
-  const values = uniq(data.map((x) => computeField<number>(field, x)));
-  return values.length;
+const aggCount: Grid.T.Aggregator<GridSpec["data"]> = (_, data) => {
+  return data.length;
 };
 const aggFirst: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   for (let i = 0; i < data.length; i++) {
@@ -273,7 +273,7 @@ export default function PivotDemo() {
                                 <Menu>
                                   <Menu.Trigger
                                     onClick={(e) => e.stopPropagation()}
-                                    className="text-ln-primary-50 hover:bg-ln-primary-30 cursor-pointer rounded-lg px-0.5 py-0.5"
+                                    className="text-ln-primary-50 hover:bg-ln-primary-30 cursor-pointer rounded-lg px-0.5 py-0.5 text-[10px]"
                                   >
                                     ({(x.data as string) ?? "sum"})
                                   </Menu.Trigger>
@@ -281,7 +281,7 @@ export default function PivotDemo() {
                                     <Menu.Container>
                                       <Menu.Arrow />
 
-                                      {["Sum", "Avg", "Max", "Min", "Last", "First", "Count"].map((agg) => {
+                                      {["sum", "avg", "max", "min", "last", "first", "count"].map((agg) => {
                                         return (
                                           <Menu.Item
                                             key={agg}

@@ -53,6 +53,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
     );
   },
   width: 200,
+  pin: "start",
 };
 
 let seenSecondary = false;

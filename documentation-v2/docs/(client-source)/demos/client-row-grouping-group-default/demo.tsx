@@ -39,6 +39,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 100 };
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {

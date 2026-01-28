@@ -54,6 +54,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
     );
   },
   width: 200,
+  pin: "start",
 };
 
 //#end
