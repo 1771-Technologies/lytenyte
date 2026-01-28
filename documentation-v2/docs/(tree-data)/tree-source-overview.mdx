@@ -1,4 +1,29 @@
 ---
 title: Tree Overview
 pro: true
+description: Represent data the has a parent/children relationship using the tree data source.
+  The tree data source can be used for structured hierarchical data.
 ---
+
+:::info
+
+LyteNyte Grid expects tree data to be provided as an `object`. If you are coming from
+other another data grid, it will have represented tree data as an array of objects with a
+path.
+
+Array based hierarchical data is considered a **non-uniform** row grouping in LyteNyte Grid.
+See the [Client Row Grouping guide](/docs/client-source-row-grouping) for more details.
+
+Tree data is specifically for handling object based data, such as `JSON` responses from a
+server.
+
+:::
+
+## Basic Tree
+
+The `useTreeDataSource` hook may be used to create a LyteNyte Grid data source from an object.
+The `useTreeDataSource` hook accepts a plain JavaScript object as its `data` property. By default,
+the hook will create a tree from the properties of the object provided, creating a branch whenever the
+value of the property is another JavaScript object.
+
+::demo[Basic Tree="./demo/basic-tree"]

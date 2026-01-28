@@ -24,7 +24,7 @@ export function useControlledState<T>({
 
       if (typeof rowGroupDefaultExpansion === "boolean") return rowGroupDefaultExpansion;
 
-      return rowGroupDefaultExpansion <= depth;
+      return depth <= rowGroupDefaultExpansion;
     },
     [expansions, rowGroupDefaultExpansion],
   );
