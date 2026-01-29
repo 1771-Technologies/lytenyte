@@ -1,29 +1,26 @@
 ---
 title: Tree Overview
 pro: true
-description: Represent data the has a parent/children relationship using the tree data source.
-  The tree data source can be used for structured hierarchical data.
+description: Represent parent/child relationships using the tree data
+  source for structured hierarchical data.
 ---
 
 :::info
 
-LyteNyte Grid expects tree data to be provided as an `object`. If you are coming from
-other another data grid, it will have represented tree data as an array of objects with a
-path.
+LyteNyte Grid requires tree data as a nested `object`. Unlike other grids that
+represent hierarchy via arrays with path strings, LyteNyte Grid treats array-based
+data as **non-uniform row grouping**.
 
-Array based hierarchical data is considered a **non-uniform** row grouping in LyteNyte Grid.
-See the [Client Row Grouping guide](/docs/client-source-row-grouping) for more details.
-
-Tree data is specifically for handling object based data, such as `JSON` responses from a
-server.
+For array-based structures, see the [Client Row Grouping guide](/docs/client-source-row-grouping).
+Tree data specifically targets object-based structures, such as `JSON` server responses.
 
 :::
 
 ## Basic Tree
 
-The `useTreeDataSource` hook may be used to create a LyteNyte Grid data source from an object.
-The `useTreeDataSource` hook accepts a plain JavaScript object as its `data` property, as the
-code below shows:
+The `useTreeDataSource` hook transforms a nested JavaScript object into
+a grid data source. Assign your object to the `data` property. The below
+shows one such example:
 
 ```ts
 const data = {
@@ -51,27 +48,27 @@ const data = {
   },
 };
 
-//!next 4
 const ds = useTreeDataSource({
-  data: data,
+  data,
   rowGroupDefaultExpansion: true,
 });
 ```
 
-By default, the `useTreeDataSource` hook will create a tree from the properties of the object provided,
-creating a branch whenever the value of the property is another JavaScript object.
+By default, the hook traverses object properties and creates a
+branch whenever a property value is another object.
 
-The demo below shows the simplest possible tree data view. An object is set on the `data` property.
-LyteNyte Grid's tree source creates the tree from the object.
+The demo below renders a tree from a standard object. While the tree source generates
+the rows, you must still define the columns. Because this structure allows recursion at
+any level, the source treats all rows as [group rows](/docs/row-overview).
 
 ::demo[Basic Tree="./demo/basic-tree"]
 
-Notice in the demo that you still need to define the columns that the grid will use. LyteNyte Grid's
-tree source will create rows from the data. Since the data provided always has the potential of branching,
-all the rows in the tree source are [group rows](/docs/row-overview).
+Define columns manually to display the generated row data. Since the source object is
+object the tree source treats every row as a [group row](/docs/row-overview), as any node
+may contain further children.
 
-The remaining guides in this section will cover the full set of tree data capabilities, including configuring
-the row data creation process and tree data editing.
+The remaining guides in this tree data section will cover advanced configurations,
+including custom row creation and data editing.
 
 ## Next Steps
 

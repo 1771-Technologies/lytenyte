@@ -1,4 +1,4 @@
-export const frontendFileSystem = {
+export const data = {
   name: "root",
   kind: "folder",
   size: 0,

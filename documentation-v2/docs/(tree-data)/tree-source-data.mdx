@@ -1,5 +1,47 @@
 ---
 title: Tree Data
 pro: true
-step: Create and display structured rows from object data.
+step: Generate hierarchical rows from nested object data.
+description: Pass a nested JavaScript object to the tree data source to create a hierarchical grid layout.
 ---
+
+## Data Object
+
+Use the [`useTreeDataSource`](/docs/reference) hook to render a
+nested object as a row set. The `data` property must be a JavaScript object.
+
+Configure these functions within the hook:
+
+- **rowValueFn**: Returns the data associated with a specific row.
+- **rowChildrenFn**: Returns an array of objects to generate child rows.
+
+The demo below uses objects with custom properties and a `children` key to define the hierarchy.
+
+{/* Demo */}
+
+### Root Rows
+
+Define `rowRootFn` to specify the initial root rows. This is required when
+using a wrapper object where the top-level property should not appear as a row.
+
+The following demo uses `rowRootFn` to bypass a `root` property and return
+its nested contents as the starting rows.
+
+{/* Demo */}
+
+### Row IDs
+
+LyteNyte Grid requires a unique ID for every row to manage selection,
+editing, and React reconciliation.
+
+Define `idFn` to return a custom ID for each row. If omitted, the grid uses
+the object's dot-notation path as the default ID. All IDs must be
+unique across the entire data set.
+
+{/* Demo */}
+
+## Next Steps
+
+::next[/docs/tree-source-filtering]
+::next[/docs/tree-source-sorting]
+::next[/docs/tree-source-pinning]
