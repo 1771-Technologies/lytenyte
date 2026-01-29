@@ -1,3 +1,4 @@
+import "@1771technologies/lytenyte-pro-experimental/components.css";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo";
 import {
@@ -32,12 +33,14 @@ import {
   UtilsFolderOpenIcon,
 } from "./icons.js";
 import { useMemo } from "react";
+import { format } from "date-fns";
+import { customerToAvatar } from "@1771technologies/grid-sample-data/orders";
 
 export function GroupCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const expanded = api.rowIsGroup(row) && row.expandable && row.expanded;
   const Icon = useMemo(() => {
     if (!api.rowIsGroup(row)) return null;
     const name = row.key ?? "";
-    const expanded = row.expandable && row.expanded;
 
     if (name.includes(".test")) return TestsIcon;
     if (name.includes(".git")) return GitIcon;
@@ -65,7 +68,7 @@ export function GroupCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 
     if (name.includes(".")) return DocumentIcon;
     return expanded ? FolderBaseOpen : FolderIcon;
-  }, [api, row]);
+  }, [api, expanded, row]);
 
   if (!api.rowIsGroup(row) || !Icon) return null;
 
@@ -74,8 +77,63 @@ export function GroupCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
       className="flex h-full w-full items-center gap-2 text-sm"
       style={{ paddingInlineStart: row.depth * 16 }}
     >
-      <Icon className="size-4 min-h-4 min-w-4" />
+      {row.expandable && (
+        <button
+          onClick={() => api.rowGroupToggle(row.id)}
+          data-ln-button="secondary"
+          data-ln-size="md"
+          data-ln-icon
+        >
+          <Icon className="size-4 min-h-4 min-w-4" />
+        </button>
+      )}
+      {!row.expandable && <Icon className="me-1 size-4 min-h-4 min-w-4" />}
       <div>{row.key}</div>
+    </div>
+  );
+}
+
+const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0, minimumFractionDigits: 0 });
+
+export function SizeCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsGroup(row)) return null;
+
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  return (
+    <div className="flex items-baseline gap-1 tabular-nums">
+      {number.format(field)}
+      <span className="text-ln-text-xlight text-xs font-semibold">kb</span>
+    </div>
+  );
+}
+
+export function ModifiedCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsGroup(row)) return;
+
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "string") return "-";
+
+  return <div className="text-sm tabular-nums">{format(field, "yyyy MMM dd | hh:mm")}</div>;
+}
+
+export function AvatarCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsGroup(row)) return;
+
+  const name = api.columnField(column, row);
+
+  if (typeof name !== "string") return;
+  const url = customerToAvatar[name];
+
+  return (
+    <div className="flex h-full w-full items-center gap-2">
+      <img className="border-ln-border-strong h-7 w-7 rounded-full border" src={url} alt={name} />
+      <div className="text-ln-text-dark flex flex-col gap-0.5">
+        <div>{name}</div>
+      </div>
     </div>
   );
 }

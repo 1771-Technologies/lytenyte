@@ -1,15 +1,15 @@
-export const frontendFileSystem = {
+export const data = {
   root: {
     name: "root",
     kind: "folder",
-    size: 0,
+    size: null,
     modified: "2026-01-22T09:00:00Z",
     "package.json": {
       name: "package.json",
       kind: "file",
       size: 1840,
       modified: "2026-01-21T18:12:00Z",
-      lastEditedBy: "Ava Chen",
+      lastEditedBy: "Joseph Allen",
       permissions: "rw-r--r--",
     },
     "package-lock.json": {
@@ -17,7 +17,7 @@ export const frontendFileSystem = {
       kind: "file",
       size: 92000,
       modified: "2026-01-21T18:12:30Z",
-      lastEditedBy: "Ava Chen",
+      lastEditedBy: "Joseph Allen",
       permissions: "rw-r--r--",
     },
     "README.md": {
@@ -25,7 +25,7 @@ export const frontendFileSystem = {
       kind: "file",
       size: 1240,
       modified: "2026-01-20T10:05:00Z",
-      lastEditedBy: "Samir Patel",
+      lastEditedBy: "Betty Hall",
       permissions: "rw-r--r--",
     },
     ".gitignore": {
@@ -33,7 +33,7 @@ export const frontendFileSystem = {
       kind: "file",
       size: 180,
       modified: "2026-01-19T09:00:00Z",
-      lastEditedBy: "Samir Patel",
+      lastEditedBy: "Betty Hall",
       permissions: "rw-r--r--",
     },
     ".env": {
@@ -41,21 +41,21 @@ export const frontendFileSystem = {
       kind: "file",
       size: 220,
       modified: "2026-01-21T08:30:00Z",
-      lastEditedBy: "Mina Alvarez",
+      lastEditedBy: "Nancy Lewis",
       permissions: "rw-------",
     },
 
     public: {
       name: "public",
       kind: "folder",
-      size: 0,
+      size: null,
       modified: "2026-01-18T12:00:00Z",
       "index.html": {
         name: "index.html",
         kind: "file",
         size: 3420,
         modified: "2026-01-18T12:01:00Z",
-        lastEditedBy: "Noah Brooks",
+        lastEditedBy: "Charles Clark",
         permissions: "rw-r--r--",
       },
       "favicon.ico": {
@@ -63,7 +63,7 @@ export const frontendFileSystem = {
         kind: "file",
         size: 5430,
         modified: "2026-01-18T12:01:30Z",
-        lastEditedBy: "Noah Brooks",
+        lastEditedBy: "Charles Clark",
         permissions: "rw-r--r--",
       },
       "manifest.json": {
@@ -71,20 +71,20 @@ export const frontendFileSystem = {
         kind: "file",
         size: 820,
         modified: "2026-01-18T12:02:00Z",
-        lastEditedBy: "Noah Brooks",
+        lastEditedBy: "Charles Clark",
         permissions: "rw-r--r--",
       },
       assets: {
         name: "assets",
         kind: "folder",
-        size: 0,
+        size: null,
         modified: "2026-01-17T15:40:00Z",
         "logo.svg": {
           name: "logo.svg",
           kind: "file",
           size: 2048,
           modified: "2026-01-17T15:42:00Z",
-          lastEditedBy: "Priya Nair",
+          lastEditedBy: "Richard White",
           permissions: "rw-r--r--",
         },
         "hero.png": {
@@ -92,7 +92,7 @@ export const frontendFileSystem = {
           kind: "file",
           size: 482000,
           modified: "2026-01-17T15:45:00Z",
-          lastEditedBy: "Priya Nair",
+          lastEditedBy: "Richard White",
           permissions: "rw-r--r--",
         },
       },
@@ -101,19 +101,19 @@ export const frontendFileSystem = {
     src: {
       name: "src",
       kind: "folder",
-      size: 0,
+      size: null,
       modified: "2026-01-22T08:30:00Z",
       assets: {
         name: "assets",
         kind: "folder",
-        size: 0,
+        size: null,
         modified: "2026-01-20T14:00:00Z",
         "global.css": {
           name: "global.css",
           kind: "file",
           size: 2140,
           modified: "2026-01-20T14:05:00Z",
-          lastEditedBy: "Jordan Kim",
+          lastEditedBy: "Jennifer Taylor",
           permissions: "rw-r--r--",
         },
         "variables.css": {
@@ -121,26 +121,26 @@ export const frontendFileSystem = {
           kind: "file",
           size: 980,
           modified: "2026-01-20T14:04:00Z",
-          lastEditedBy: "Jordan Kim",
+          lastEditedBy: "Jennifer Taylor",
           permissions: "rw-r--r--",
         },
 
         components: {
           name: "components",
           kind: "folder",
-          size: 0,
+          size: null,
           modified: "2026-01-21T09:30:00Z",
           Button: {
             name: "Button",
             kind: "folder",
-            size: 0,
+            size: null,
             modified: "2026-01-21T09:31:00Z",
             "Button.jsx": {
               name: "Button.jsx",
               kind: "file",
               size: 1620,
               modified: "2026-01-21T09:35:00Z",
-              lastEditedBy: "Lee Beydoun",
+              lastEditedBy: "Sarah Wilson",
               permissions: "rw-r--r--",
             },
             "Button.module.css": {
@@ -148,7 +148,7 @@ export const frontendFileSystem = {
               kind: "file",
               size: 740,
               modified: "2026-01-21T09:34:00Z",
-              lastEditedBy: "Lee Beydoun",
+              lastEditedBy: "Sarah Wilson",
               permissions: "rw-r--r--",
             },
             "Button.test.jsx": {
@@ -156,7 +156,7 @@ export const frontendFileSystem = {
               kind: "file",
               size: 1280,
               modified: "2026-01-21T09:36:00Z",
-              lastEditedBy: "Ava Chen",
+              lastEditedBy: "Joseph Allen",
               permissions: "rw-r--r--",
             },
           },
@@ -164,7 +164,7 @@ export const frontendFileSystem = {
           Modal: {
             name: "Modal",
             kind: "folder",
-            size: 0,
+            size: null,
             modified: "2026-01-21T11:10:00Z",
             children: {
               "Modal.jsx": {
@@ -172,7 +172,7 @@ export const frontendFileSystem = {
                 kind: "file",
                 size: 1980,
                 modified: "2026-01-21T11:15:00Z",
-                lastEditedBy: "Mina Alvarez",
+                lastEditedBy: "Nancy Lewis",
                 permissions: "rw-r--r--",
               },
               "Modal.css": {
@@ -180,7 +180,7 @@ export const frontendFileSystem = {
                 kind: "file",
                 size: 860,
                 modified: "2026-01-21T11:14:00Z",
-                lastEditedBy: "Mina Alvarez",
+                lastEditedBy: "Nancy Lewis",
                 permissions: "rw-r--r--",
               },
             },
@@ -191,14 +191,14 @@ export const frontendFileSystem = {
       hooks: {
         name: "hooks",
         kind: "folder",
-        size: 0,
+        size: null,
         modified: "2026-01-19T16:00:00Z",
         "useAuth.js": {
           name: "useAuth.js",
           kind: "file",
           size: 1320,
           modified: "2026-01-19T16:05:00Z",
-          lastEditedBy: "Samir Patel",
+          lastEditedBy: "Betty Hall",
           permissions: "rw-r--r--",
         },
         "useFetch.js": {
@@ -206,7 +206,7 @@ export const frontendFileSystem = {
           kind: "file",
           size: 1740,
           modified: "2026-01-19T16:06:00Z",
-          lastEditedBy: "Samir Patel",
+          lastEditedBy: "Betty Hall",
           permissions: "rw-r--r--",
         },
       },
@@ -214,14 +214,14 @@ export const frontendFileSystem = {
       context: {
         name: "context",
         kind: "folder",
-        size: 0,
+        size: null,
         modified: "2026-01-20T10:40:00Z",
         "AuthContext.jsx": {
           name: "AuthContext.jsx",
           kind: "file",
           size: 1560,
           modified: "2026-01-20T10:42:00Z",
-          lastEditedBy: "Jordan Kim",
+          lastEditedBy: "Jennifer Taylor",
           permissions: "rw-r--r--",
         },
       },
@@ -229,14 +229,14 @@ export const frontendFileSystem = {
       services: {
         name: "services",
         kind: "folder",
-        size: 0,
+        size: null,
         modified: "2026-01-20T11:30:00Z",
         "api.js": {
           name: "api.js",
           kind: "file",
           size: 980,
           modified: "2026-01-20T11:32:00Z",
-          lastEditedBy: "Noah Brooks",
+          lastEditedBy: "Charles Clark",
           permissions: "rw-r--r--",
         },
         "authService.js": {
@@ -244,7 +244,7 @@ export const frontendFileSystem = {
           kind: "file",
           size: 1420,
           modified: "2026-01-20T11:33:00Z",
-          lastEditedBy: "Noah Brooks",
+          lastEditedBy: "Charles Clark",
           permissions: "rw-r--r--",
         },
       },
@@ -252,14 +252,14 @@ export const frontendFileSystem = {
       utils: {
         name: "utils",
         kind: "folder",
-        size: 0,
+        size: null,
         modified: "2026-01-19T15:10:00Z",
         "constants.js": {
           name: "constants.js",
           kind: "file",
           size: 540,
           modified: "2026-01-19T15:12:00Z",
-          lastEditedBy: "Priya Nair",
+          lastEditedBy: "Richard White",
           permissions: "rw-r--r--",
         },
         "formatDate.js": {
@@ -267,7 +267,7 @@ export const frontendFileSystem = {
           kind: "file",
           size: 620,
           modified: "2026-01-19T15:11:00Z",
-          lastEditedBy: "Priya Nair",
+          lastEditedBy: "Richard White",
           permissions: "rw-r--r--",
         },
       },
@@ -277,7 +277,7 @@ export const frontendFileSystem = {
         kind: "file",
         size: 1240,
         modified: "2026-01-22T08:10:00Z",
-        lastEditedBy: "Lee Beydoun",
+        lastEditedBy: "Sarah Wilson",
         permissions: "rw-r--r--",
       },
       "App.jsx": {
@@ -285,7 +285,7 @@ export const frontendFileSystem = {
         kind: "file",
         size: 2140,
         modified: "2026-01-22T08:20:00Z",
-        lastEditedBy: "Lee Beydoun",
+        lastEditedBy: "Sarah Wilson",
         permissions: "rw-r--r--",
       },
       "main.jsx": {
@@ -293,7 +293,7 @@ export const frontendFileSystem = {
         kind: "file",
         size: 860,
         modified: "2026-01-22T08:25:00Z",
-        lastEditedBy: "Lee Beydoun",
+        lastEditedBy: "Sarah Wilson",
         permissions: "rw-r--r--",
       },
     },
@@ -301,14 +301,14 @@ export const frontendFileSystem = {
     tests: {
       name: "tests",
       kind: "folder",
-      size: 0,
+      size: null,
       modified: "2026-01-21T13:00:00Z",
       "setupTests.js": {
         name: "setupTests.js",
         kind: "file",
         size: 520,
         modified: "2026-01-21T13:01:00Z",
-        lastEditedBy: "Ava Chen",
+        lastEditedBy: "Joseph Allen",
         permissions: "rw-r--r--",
       },
       "App.test.jsx": {
@@ -316,7 +316,7 @@ export const frontendFileSystem = {
         kind: "file",
         size: 1620,
         modified: "2026-01-21T13:02:00Z",
-        lastEditedBy: "Ava Chen",
+        lastEditedBy: "Joseph Allen",
         permissions: "rw-r--r--",
       },
     },
@@ -324,14 +324,14 @@ export const frontendFileSystem = {
     config: {
       name: "config",
       kind: "folder",
-      size: 0,
+      size: null,
       modified: "2026-01-18T17:00:00Z",
       "vite.config.js": {
         name: "vite.config.js",
         kind: "file",
         size: 1120,
         modified: "2026-01-18T17:02:00Z",
-        lastEditedBy: "Samir Patel",
+        lastEditedBy: "Betty Hall",
         permissions: "rw-r--r--",
       },
       "eslint.config.js": {
@@ -339,7 +339,7 @@ export const frontendFileSystem = {
         kind: "file",
         size: 980,
         modified: "2026-01-18T17:01:00Z",
-        lastEditedBy: "Samir Patel",
+        lastEditedBy: "Betty Hall",
         permissions: "rw-r--r--",
       },
     },

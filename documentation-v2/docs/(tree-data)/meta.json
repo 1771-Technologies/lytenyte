@@ -6,7 +6,6 @@
     "tree-source-sorting",
     "tree-source-filtering",
     "tree-source-pinning",
-    "tree-source-data-editing",
-    "tree-source-structure"
+    "tree-source-data-editing"
   ]
 }

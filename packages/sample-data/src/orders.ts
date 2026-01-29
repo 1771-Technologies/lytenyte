@@ -285,3 +285,9 @@ export const data: OrderData[] = [
     email: "joseph.a@datastore.net",
   },
 ];
+
+export const customerToAvatar = Object.fromEntries(
+  data.map((x) => {
+    return [x.customer, x.customerAvatar];
+  }),
+);

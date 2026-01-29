@@ -22,8 +22,59 @@ server.
 ## Basic Tree
 
 The `useTreeDataSource` hook may be used to create a LyteNyte Grid data source from an object.
-The `useTreeDataSource` hook accepts a plain JavaScript object as its `data` property. By default,
-the hook will create a tree from the properties of the object provided, creating a branch whenever the
-value of the property is another JavaScript object.
+The `useTreeDataSource` hook accepts a plain JavaScript object as its `data` property, as the
+code below shows:
+
+```ts
+const data = {
+  root: {
+    name: "root",
+    kind: "folder",
+    size: null,
+    modified: "2026-01-22T09:00:00Z",
+    "package.json": {
+      name: "package.json",
+      kind: "file",
+      size: 1840,
+      modified: "2026-01-21T18:12:00Z",
+      lastEditedBy: "Joseph Allen",
+      permissions: "rw-r--r--",
+    },
+    "package-lock.json": {
+      name: "package-lock.json",
+      kind: "file",
+      size: 92000,
+      modified: "2026-01-21T18:12:30Z",
+      lastEditedBy: "Joseph Allen",
+      permissions: "rw-r--r--",
+    },
+  },
+};
+
+//!next 4
+const ds = useTreeDataSource({
+  data: data,
+  rowGroupDefaultExpansion: true,
+});
+```
+
+By default, the `useTreeDataSource` hook will create a tree from the properties of the object provided,
+creating a branch whenever the value of the property is another JavaScript object.
+
+The demo below shows the simplest possible tree data view. An object is set on the `data` property.
+LyteNyte Grid's tree source creates the tree from the object.
 
 ::demo[Basic Tree="./demo/basic-tree"]
+
+Notice in the demo that you still need to define the columns that the grid will use. LyteNyte Grid's
+tree source will create rows from the data. Since the data provided always has the potential of branching,
+all the rows in the tree source are [group rows](/docs/row-overview).
+
+The remaining guides in this section will cover the full set of tree data capabilities, including configuring
+the row data creation process and tree data editing.
+
+## Next Steps
+
+::next[/docs/tree-source-data]
+::next[/docs/tree-source-sorting]
+::next[/docs/tree-source-data-editing]
