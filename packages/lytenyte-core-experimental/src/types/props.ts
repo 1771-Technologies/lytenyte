@@ -1,4 +1,4 @@
-import type { RowGroupDisplayMode, RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
+import type { RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
 import type { CSSProperties, ReactNode, Ref } from "react";
 import type {
   Column,
@@ -90,8 +90,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly rowHeight?: RowHeight;
   readonly rowAutoHeightGuess?: number;
 
-  readonly rowGroupColumn?: Omit<Column<Spec>, "field" | "id">;
-  readonly rowGroupDisplayMode?: RowGroupDisplayMode;
+  readonly rowGroupColumn?: false | Omit<Column<Spec>, "field" | "id">;
 
   readonly rowFullWidthPredicate?: null | ((params: RowParams<Spec>) => boolean);
   readonly rowFullWidthRenderer?: (props: RowFullWidthRendererParams<Spec>) => ReactNode | null;

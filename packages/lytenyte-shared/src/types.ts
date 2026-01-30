@@ -43,7 +43,6 @@ export type ColumnPin = "start" | "end" | null;
 export type RowPin = "top" | "bottom" | null;
 
 export type ColumnGroupVisibility = "always" | "close" | "open";
-export type RowGroupDisplayMode = "single-column" | "custom";
 
 export interface RowSelectNode {
   readonly id: string;

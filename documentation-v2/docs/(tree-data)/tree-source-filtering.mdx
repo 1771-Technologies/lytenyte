@@ -2,4 +2,27 @@
 title: Tree Filtering
 pro: true
 step: Remove tree data rows by providing a custom filter function.
+description: Filter tree rows by providing a filter function to the tree data source.
+  LyteNyte Grid calls this predicate for each row to determine whether the grid should filter that row out.
 ---
+
+## Filtering Tree Rows
+
+Set the `filter` property on the `useTreeDataSource` hook to filter rows created from the
+object set on the `data` property of the tree data source.
+
+The `filter` property accepts a predicate function that will be given a property of the object
+set on the `data` property. If the function returns `true` the property and any of its children
+will be kept, otherwise they will be removed.
+
+The demo below demonstrates this in action. You can click the **Toggle Hidden Files** switch to
+show or hide hidden files. A hidden file is considered any file that starts with a `.`, such as
+the `.env` file.
+
+{/* Demo */}
+
+## Next Steps
+
+::next[/docs/tree-source-sorting]
+::next[/docs/tree-source-data]
+::next[/docs/tree-source-data-editing]

@@ -2,4 +2,49 @@
 title: Tree Sorting
 pro: true
 step: Sort tree rows in ascending or descending order.
+description: Sort tree rows in ascending or descending order by providing a
+  single sort function or an array of sort dimensions to the hook.
 ---
+
+:::info
+
+You must already by familiar with client row sorting in LyteNyte Grid before reading
+this guide. The tree data source provides identical sort capabilities to the client
+row source.
+
+See the [Client Row Sorting guide](/docs/client-source-row-sorting) for
+more details.
+
+:::
+
+## Sort Function
+
+A sort function compares two rows (of any kind). The tree data source calls the function you pass
+to the `sort` property with two row nodes. The row nodes will be [group row nodes](/docs/row-overview),
+since all the row nodes, except pinned row nodes, are group row nodes.
+
+The demo below shows basic sorting using a sort function. Click the **[Sort: Size]** to sort the rows
+in descending order by their **Size** value.
+
+{/* Demo here */}
+
+## Sort Dimensions
+
+You can set the `sort` property to array of [`DimensionSort`](/docs/reference) object. A dimension
+sort will use the [`field`](/docs/column-field) property of a column to compare rows. The dimension
+can be applied to sort rows in ascending or descending order.
+
+Since an array of `DimensionSort` objects is supplied, LyteNyte Grid can perform a multi-way sort.
+The tree data source will perform comparators in the order they appear in the provided dimension
+array, stopping when a comparator result in not `0`.
+
+The demo below demonstrates dimension sorts in action. Click the header of a column to sort on it.
+To sort on more than one column, hold the Control/Command key and click a column header.
+
+{/* Demo here */}
+
+## Next Steps
+
+::next[/docs/tree-source-filtering]
+::next[/docs/tree-source-data]
+::next[/docs/client-source-row-sorting]
