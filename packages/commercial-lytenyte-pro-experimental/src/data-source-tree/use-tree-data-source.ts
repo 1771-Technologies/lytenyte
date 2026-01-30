@@ -47,7 +47,7 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly onRowGroupExpansionChange?: (state: Record<string, boolean | undefined>) => void;
 
   readonly sort?: SortFn<any> | DimensionSort<any>[] | null;
-  readonly filter?: (data: any) => boolean;
+  readonly filter?: ((data: any) => boolean) | null;
 
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelectKey?: unknown[];
