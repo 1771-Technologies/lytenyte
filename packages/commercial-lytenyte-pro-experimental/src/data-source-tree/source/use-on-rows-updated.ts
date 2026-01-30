@@ -6,7 +6,7 @@ export function useOnRowsUpdated<T>(tree: TreeRoot, p: UseTreeDataSourceParams<T
   const onRowsUpdate: RowSourceTree<any>["onRowsUpdated"] = useEvent((updates) => {
     if (!p.onRowDataChange) return;
 
-    const changes: { next: object; prev: object; parent: object; key: string }[] = [];
+    const changes: { next: object; prev: object; parent: object; key: string; path: string[] }[] = [];
     const top = new Map<number, T>();
     const bottom = new Map<number, T>();
 
@@ -18,8 +18,22 @@ export function useOnRowsUpdated<T>(tree: TreeRoot, p: UseTreeDataSourceParams<T
           console.error(`Attempting to update a node that does not exist: ${row.id}`);
           return;
         }
+        let current = node.parent;
+        const path: string[] = [];
+        while (current.kind !== "root") {
+          path.push(current.key);
+          current = current.parent;
+        }
 
-        changes.push({ key: node.key, next: u, parent: node.data, prev: (node.data as any)[node.key] });
+        path.reverse();
+
+        changes.push({
+          key: node.key,
+          next: u,
+          parent: node?.parent.data,
+          prev: node.data,
+          path,
+        });
         continue;
       }
 

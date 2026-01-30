@@ -35,9 +35,9 @@ type OnTreeRowDataChange = (params: {
 ```
 
 The demo below demonstrates cell editing in action. You can begin an edit by double clicking
-one of the cells.
+on a cell in the **Size** column.
 
-{/* Demo here */}
+::demo[Tree Data Editing="./demos/tree-editing"]
 
 ## Editing The Group Cell
 
@@ -52,7 +52,15 @@ group column. Since this column is part of your definitions, you can set the `ed
 The demo below demonstrates this by replacing the **Group** column with a new custom column
 called **Files**. You can edit the file name by double clicking the cell.
 
-{/* Demo here */}
+::demo[Tree Group Cell Editing="./demos/tree-editing-group"]
+
+:::note
+
+The data in the demo above is sorted by size, since changing the group name value is equivalent
+to changes the branch order when a normal JavaScript object is updated. Sorting by size ensures
+rows maintain a stable order.
+
+:::
 
 ## Next Steps
 

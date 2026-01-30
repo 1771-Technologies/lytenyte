@@ -58,7 +58,7 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
   readonly onRowDataChange?: (params: {
-    readonly changes: { next: object; prev: object; parent: object; key: string }[];
+    readonly changes: { next: any; prev: any; parent: any; key: string; path: string[] }[];
     readonly top: Map<number, T>;
     readonly bottom: Map<number, T>;
   }) => void;
