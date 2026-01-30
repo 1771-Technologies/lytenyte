@@ -39,8 +39,8 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly idFn?: (path: string[], data: any) => string;
 
   readonly rowRootFn?: (x: object) => [key: string, child: object][];
-  readonly rowValueFn?: (x: object, parent: object, key: string) => any;
-  readonly rowChildrenFn?: (x: object, parent: object, key: string) => [key: string, child: object][];
+  readonly rowValueFn?: (x: any, parent: any, key: string) => any;
+  readonly rowChildrenFn?: (x: any, parent: any, key: string) => [key: string, child: object][];
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;

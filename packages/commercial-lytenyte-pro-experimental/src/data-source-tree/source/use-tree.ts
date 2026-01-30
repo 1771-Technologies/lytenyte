@@ -65,6 +65,7 @@ export function useTree<T>({
     };
 
     const rootRows = rowRootFn(data);
+    console.log(rootRows);
     for (const [path, row] of rootRows) {
       groupKeys(root, [path], row, data);
     }

@@ -17,7 +17,7 @@ Configure these functions within the hook:
 
 The demo below uses objects with custom properties and a `children` key to define the hierarchy.
 
-{/* Demo */}
+::demo[Custom Keys="./demos/basic-keys"]
 
 ### Root Rows
 
@@ -27,18 +27,35 @@ using a wrapper object where the top-level property should not appear as a row.
 The following demo uses `rowRootFn` to bypass a `root` property and return
 its nested contents as the starting rows.
 
-{/* Demo */}
+::demo[Root Rows="./demos/basic-root"]
 
-### Row IDs
+Notice in the code that the demo ignores the top most `root` property in the grid's
+data. The `rootFn` function returns the `children` property of the `root` object as
+an array of entries. Each entry becomes a row, and the grid branches from there.
 
-LyteNyte Grid requires a unique ID for every row to manage selection,
-editing, and React reconciliation.
+```ts
+const ds = useTreeDataSource({
+  data: data,
+  rowGroupDefaultExpansion: true,
 
-Define `idFn` to return a custom ID for each row. If omitted, the grid uses
-the object's dot-notation path as the default ID. All IDs must be
-unique across the entire data set.
-
-{/* Demo */}
+  //!next 3
+  rowRootFn: (x) => {
+    return x.children.map((row) => [row.name, row]);
+  },
+  rowChildrenFn: (x) => {
+    if (!x.children) return [];
+    return x.children.map((r: any) => [r.name, r]);
+  },
+  rowValueFn: (x) => ({
+    name: x.name,
+    kind: x.kind,
+    size: x.size || null,
+    modified: x.modified,
+    lastEditedBy: x.lastEditedBy,
+    permissions: x.permissions,
+  }),
+});
+```
 
 ## Next Steps
 

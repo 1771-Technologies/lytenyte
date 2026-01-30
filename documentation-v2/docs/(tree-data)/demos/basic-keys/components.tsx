@@ -1,6 +1,6 @@
 import "@1771technologies/lytenyte-pro-experimental/components.css";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
-import type { GridSpec } from "./demo";
+import type { GridSpec } from "./demo.jsx";
 import {
   ComponentsFolderClose,
   ComponentsFolderOpen,
@@ -31,7 +31,7 @@ import {
   TestsIcon,
   UtilsFolderClosedIcon,
   UtilsFolderOpenIcon,
-} from "./icons.js";
+} from "./icons.jsx";
 import { useMemo } from "react";
 import { format } from "date-fns";
 import { customerToAvatar } from "@1771technologies/grid-sample-data/orders";

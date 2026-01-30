@@ -26,6 +26,19 @@ export default function TreeDemo() {
   const ds = useTreeDataSource({
     data: data,
     rowGroupDefaultExpansion: true,
+
+    rowChildrenFn: (x: any) => {
+      if (!x.children) return [];
+      return x.children.map((r: any) => [r.name, r]);
+    },
+    rowValueFn: (x) => ({
+      name: x.name,
+      kind: x.kind,
+      size: x.size || null,
+      modified: x.modified,
+      lastEditedBy: x.lastEditedBy,
+      permissions: x.permissions,
+    }),
   });
 
   return (
