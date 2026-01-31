@@ -158,6 +158,7 @@ export type {
   RowSourceServer,
 } from "./data-source-server/use-server-data-source.js";
 export { useServerDataSource } from "./data-source-server/use-server-data-source.js";
+export type * from "./data-source-server/types.js";
 
 export type { RowSourceTree, UseTreeDataSourceParams } from "./data-source-tree/use-tree-data-source.js";
 export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";

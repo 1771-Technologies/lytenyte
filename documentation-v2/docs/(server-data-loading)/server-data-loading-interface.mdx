@@ -13,11 +13,11 @@ data interface, i.e. the protocol LyteNyte Grid uses to exchange data.
 This section introduces the server data interface types and provides a high-level
 overview. For a practical guide, see the [Server Row Data guide](/docs/server-data-loading-row-data).
 
-## The Request Interface
+## Request Interface
 
 At the core of the server data interface is the request interface, the API description of which
 may be found in the [API reference](/docs/reference). In plain
-typescript the _ts`DataRequest`_ interface is relatively simple:
+typescript the `DataRequest` interface is relatively simple:
 
 ```ts
 export interface DataRequest {
@@ -43,7 +43,7 @@ An example of the request may look something like:
 }
 ```
 
-The request has an `id` of _ts`"__root__:0-100"`_. Unique `id`s are created for each request by
+The request has an `id` of `"__root__:0-100"`. Unique `id`s are created for each request by
 LyteNyte Grid. LyteNyte Grid makes no guarantees about the construction of the `id`, so do not rely
 on its form for logic in your applications. If two requests share the same `id`, the requests are
 equal from a data-fetching standpoint. In other words, their responses write data for the same rows.
@@ -55,13 +55,13 @@ view or to a group row node (in the case of row groups). An empty `path` value i
 slice requested is for the root. In this example, the data request is for the first 100 rows at the
 root of the view.
 
-<Callout>
+:::info
 
 LyteNyte Grid represents rows as a tree when using the server data source. The tree is flattened,
 and rows are displayed based on the grid's current scroll position. When these docs refer to the
-_view_, they specifically mean the rows that LyteNyte Grid displays to the user.
+**view**, they specifically mean the rows that LyteNyte Grid displays to the user.
 
-</Callout>
+:::
 
 The `rowStartIndex` and `rowEndIndex` provide a projected placement of the returned rows in the
 grid's view. These indices are not strict constraints. They are useful in advanced cases where the
@@ -70,7 +70,7 @@ most servers ignore these properties. They are included for completeness; develo
 worry if `rowStartIndex` or `rowEndIndex` go unused.
 
 When row groups exist, the requested slice may target a group expansion, that is, the child nodes of
-a group. For example, consider a grid grouped by two columns: _ts`"Group A"`_ and _ts`"Group B"`_.
+a group. For example, consider a grid grouped by two columns: `"Group A"` and `"Group B"`.
 A data request in this scenario may look like the following:
 
 ```ts
@@ -95,9 +95,9 @@ A data request in this scenario may look like the following:
 }
 ```
 
-Take the first request object, which has a path of _ts`["Alpha"]`_. The server should interpret this
-as: "fetch the rows where `Group A` has the value _ts`"Alpha"`_." These rows are then grouped by
-`Group B`, with the first group value equal to _ts`"Alpha"`_.
+Take the first request object, which has a path of `["Alpha"]`. The server should interpret this
+as: "fetch the rows where `Group A` has the value `"Alpha"`." These rows are then grouped by
+`Group B`, with the first group value equal to `"Alpha"`.
 
 The second request object, with path _ts`["Alpha", "Beta"]`_, targets the leaf rows. Here, `Group A`
 is _ts`"Alpha"`_ and `Group B` is _ts`"Beta"`_.
@@ -156,7 +156,7 @@ those in the request. An example response is shown below:
 }
 ```
 
-The `kind` property of the `DataResponse` object should always be _ts`"center"`_. LyteNyte Grid uses
+The `kind` property of the `DataResponse` object should always be `"center"`. LyteNyte Grid uses
 this value to determine whether a response is for scrollable or pinned rows.
 
 The `data` property contains the row data returned by the server. Row data may be either a leaf data
@@ -189,7 +189,7 @@ export interface DataResponseLeafItem {
 ```
 
 Like the `DataResponse` type, the `DataResponseLeafItem` also has a `kind` property. This must be
-_ts`"leaf"`_. LyteNyte Grid uses this value to determine if the response data should create a leaf
+`"leaf"`. LyteNyte Grid uses this value to determine if the response data should create a leaf
 row node.
 
 The `id` value maps to the [row node's](/docs/reference) `id` property, and the `data`
@@ -215,7 +215,7 @@ export interface DataResponseBranchItem {
 ```
 
 The `kind` property tells LyteNyte Grid whether the data item creates a row group node. This value
-must always be _ts`"branch"`_ to create group nodes.
+must always be `"branch"` to create group nodes.
 
 The `id` property is used as the `id` for the group node. The `data`, typically the group's
 aggregated data, is set on the group node. The `key` property is also attached to the group node and
@@ -246,13 +246,13 @@ export interface DataResponsePinned {
 
 The pinned response type is simpler than `DataResponse` because pinned rows are always leaf rows.
 
-The `kind` property must be either _ts`"top"`_ or _ts`"bottom"`_, and tells LyteNyte Grid where to
+The `kind` property must be either `"top"` or `"bottom"`, and tells LyteNyte Grid where to
 create the pinned row nodes. Like `DataResponse`, the `data` property contains the row data, and
 the `asOfTime` property resolves conflicts when writing rows to memory.
 
-## The Data Fetcher Function
+## Query Fetcher Function
 
-The LyteNyte Grid server data source requires a `dataFetcher` function. This function is the core of
+The LyteNyte Grid server data source requires a `queryFn` function. This function is the core of
 data loading. The server data source calls it whenever the view changes, passing the data requests
 for the new view.
 
@@ -261,32 +261,32 @@ WebSocket message, and returning the data. A brief code example is shown below:
 
 ```ts
 const ds = useServerDataSource<MyDataType>({
-  dataFetcher: (params: DataFetcherParams<MyDataType>): Promise<(DataResponse | DataResponsePinned)[]> => {
+  queryFn: (params) => {
     return Server(params.requests);
   },
+  queryKey: [], // Required
 });
 ```
 
-The `dataFetcher` function receives a `params` object, which includes more than the data requests for
-the current grid view. This object is described by the `DataFetcherParams` type
-([API reference](/docs/reference), whose TypeScript definition is
+The `queryFn` function receives a `params` object, which includes the data requests for
+the current grid view. This object is described by the `QueryFnParams` type
+(see the [API reference](/docs/reference)), whose TypeScript definition is
 shown below:
 
 ```ts
-export interface DataFetcherParams<T> {
-  readonly grid: Grid<T>;
+export interface QueryFnParams<K extends unknown[]> {
+  readonly queryKey: K;
   readonly requests: DataRequest[];
   readonly reqTime: number;
-  readonly model: DataRequestModel<T>;
+  readonly model: {
+    readonly rowGroupExpansions: Record<string, boolean | undefined>;
+  };
 }
 ```
 
-The `dataFetcher` returns a `Promise` of type _ts`(DataResponse | DataResponsePinned)[]`_. This means
+The `queryFn` returns a `Promise` of type `(DataResponse | DataResponsePinned)[]`. This means
 LyteNyte Grid expects an array of responses, not a single one. This design supports requesting data in
-slices. The `dataFetcher` implementation decides how best to retrieve these items.
-
-The `grid` property is a reference to the current grid state. It is provided as a convenience if the
-`dataFetcher` needs extra context when sending requests, such as the current row selection.
+slices. The `queryFn` implementation decides how best to retrieve these items.
 
 The `requests` property contains the data requests for the current view. It is always an array, not a
 single item. Each request should have at least one matching response, but the server may return
@@ -295,24 +295,9 @@ additional responses to preload data.
 The `reqTime` property is a Unix timestamp of when the request was made. The server may use it to set
 the `asOfTime`, or ignore it if responses define their own freshness rules.
 
-The `model` property describes the grid's configuration state that affects the view, such as filters,
-sorting, or row grouping. The full interface is shown below, but see the
-[API reference](/docs/reference) for details on each property.
-
-```ts
-export interface DataRequestModel<T> {
-  readonly sorts: SortModelItem<T>[];
-  readonly filters: Record<string, FilterModelItem<T>>;
-  readonly filtersIn: Record<string, FilterIn>;
-  readonly quickSearch: string | null;
-  readonly groups: RowGroupModelItem<T>[];
-  readonly groupExpansions: Record<string, boolean | undefined>;
-  readonly aggregations: Record<string, { fn: AggModelFn<T> }>;
-  readonly pivotGroupExpansions: Record<string, boolean | undefined>;
-  readonly pivotMode: boolean;
-  readonly pivotModel: ColumnPivotModel<T>;
-}
-```
+The `model` property describes the grid's view configuration. This contains the current `rowGroupExpansions`
+state. You can use this value to determine if a group is expanded or collapsed when there are row groups
+applied to the grid.
 
 ## Next Steps
 
