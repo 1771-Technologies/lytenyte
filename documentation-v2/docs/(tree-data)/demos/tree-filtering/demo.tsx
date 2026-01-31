@@ -5,7 +5,14 @@ import { AvatarCell, GroupCell, ModifiedCell, SizeCell, SwitchToggle } from "./c
 import { useState } from "react";
 
 export interface GridSpec {
-  readonly data: { kind: string; size: number; modified: string; lastEditedBy: string; permissions: string };
+  readonly data: {
+    kind: string;
+    name: string;
+    size: number;
+    modified: string;
+    lastEditedBy: string;
+    permissions: string;
+  };
 }
 
 const group: Grid.RowGroupColumn<GridSpec> = {

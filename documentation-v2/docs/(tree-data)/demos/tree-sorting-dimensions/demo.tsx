@@ -5,7 +5,14 @@ import { AvatarCell, GroupCell, Header, ModifiedCell, SizeCell } from "./compone
 import { useMemo, useState } from "react";
 
 export interface GridSpec {
-  readonly data: { kind: string; size: number; modified: string; lastEditedBy: string; permissions: string };
+  readonly data: {
+    kind: string;
+    name: string;
+    size: number;
+    modified: string;
+    lastEditedBy: string;
+    permissions: string;
+  };
   readonly column: { sort?: "asc" | "desc"; sortIndex?: number };
   readonly api: {
     sortColumn: (id: string, dir: "asc" | "desc" | null, additive?: boolean) => void;

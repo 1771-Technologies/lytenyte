@@ -5,7 +5,14 @@ import { AvatarCell, GroupCell, ModifiedCell, SizeCell, TextCellEditor } from ".
 import { useState } from "react";
 
 export interface GridSpec {
-  readonly data: { kind: string; size: number; modified: string; lastEditedBy: string; permissions: string };
+  readonly data: {
+    kind: string;
+    name: string;
+    size: number;
+    modified: string;
+    lastEditedBy: string;
+    permissions: string;
+  };
 }
 
 const columns: Grid.Column<GridSpec>[] = [

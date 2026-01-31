@@ -4,7 +4,14 @@ import { data } from "./data.js";
 import { AvatarCell, GroupCell, ModifiedCell, SizeCell } from "./components.jsx";
 
 export interface GridSpec {
-  readonly data: { kind: string; size: number; modified: string; lastEditedBy: string; permissions: string };
+  readonly data: {
+    kind: string;
+    size: number;
+    name: string;
+    modified: string;
+    lastEditedBy: string;
+    permissions: string;
+  };
 }
 
 const group: Grid.RowGroupColumn<GridSpec> = {

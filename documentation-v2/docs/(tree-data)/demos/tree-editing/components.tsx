@@ -38,17 +38,16 @@ import { customerToAvatar } from "@1771technologies/grid-sample-data/orders";
 
 export function GroupCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   const expanded = api.rowIsGroup(row) && row.expandable && row.expanded;
-  const Icon = useMemo(() => {
-    if (!api.rowIsGroup(row)) return null;
-    const name = row.key ?? "";
+  const expandable = api.rowIsGroup(row) && row.expandable;
+  const name = api.rowIsGroup(row) ? (row.key ?? "") : ((row.data.name as string) ?? "");
 
+  const Icon = useMemo(() => {
     if (name.includes(".test")) return TestsIcon;
     if (name.includes(".git")) return GitIcon;
     if (name.includes(".env")) return DotFile;
 
-    if (name === "public") {
-      return expanded ? PublicFolderOpen : PublicFolderClosed;
-    }
+    if (name === "public") return expanded ? PublicFolderOpen : PublicFolderClosed;
+
     if (name === "src") return expanded ? SrcFolderOpen : SrcFolderClosed;
     if (name === "utils") return expanded ? UtilsFolderOpenIcon : UtilsFolderClosedIcon;
     if (name === "components") return expanded ? ComponentsFolderOpen : ComponentsFolderClose;
@@ -66,29 +65,41 @@ export function GroupCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
     if (name.endsWith(".svg")) return SvgIcon;
     if (name.endsWith(".css")) return CSSIcon;
 
-    if (name.includes(".")) return DocumentIcon;
+    if (name.includes(".") || !expandable) return DocumentIcon;
     return expanded ? FolderBaseOpen : FolderIcon;
-  }, [api, expanded, row]);
-
-  if (!api.rowIsGroup(row) || !Icon) return null;
+  }, [expandable, expanded, name]);
 
   return (
     <div
-      className="flex h-full w-full items-center gap-2 text-sm"
-      style={{ paddingInlineStart: row.depth * 16 }}
+      className="relative flex h-full w-full items-center text-sm"
+      style={{ paddingInlineStart: row.depth * 22 }}
     >
-      {row.expandable && (
+      {row.depth > 0 &&
+        Array.from({ length: row.depth }, (_, i) => {
+          return (
+            <div
+              key={i}
+              className="border-ln-gray-30 absolute h-full border-s border-dashed"
+              style={{ left: i === 0 ? 16 : i * 16 + 16 + i * 6 }}
+            />
+          );
+        })}
+      {expandable && (
         <button
           onClick={() => api.rowGroupToggle(row.id)}
           data-ln-button="secondary"
           data-ln-size="md"
           data-ln-icon
         >
-          <Icon className="size-4 min-h-4 min-w-4" />
+          <Icon className="size-4" />
         </button>
       )}
-      {!row.expandable && <Icon className="me-1 size-4 min-h-4 min-w-4" />}
-      <div>{row.key}</div>
+      {!expandable && (
+        <div className="flex size-8 items-center justify-center">
+          <Icon className="size-4" />
+        </div>
+      )}
+      <div>{name}</div>
     </div>
   );
 }
