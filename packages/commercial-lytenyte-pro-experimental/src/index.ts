@@ -163,7 +163,7 @@ export type * from "./data-source-server/types.js";
 export type { RowSourceTree, UseTreeDataSourceParams } from "./data-source-tree/use-tree-data-source.js";
 export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";
 
-export { measureText, moveRelative } from "@1771technologies/lytenyte-shared";
+export { measureText, moveRelative, equal, arrayShallow } from "@1771technologies/lytenyte-shared";
 export { getRowDragData, computeField } from "@1771technologies/lytenyte-core-experimental/internal";
 
 export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";

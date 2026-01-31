@@ -1,4 +1,4 @@
-import type { RowLeaf, RowNode } from "@1771technologies/lytenyte-shared";
+import type { RowAggregated, RowGroup, RowLeaf, RowNode } from "@1771technologies/lytenyte-shared";
 import type { API, CellParamsWithIndex, GridSpec } from "../types";
 import type { CSSProperties, ReactNode, SVGProps } from "react";
 
@@ -6,8 +6,14 @@ export const RowGroupCell = <Spec extends GridSpec = GridSpec>({
   api,
   row,
   leafLabel,
-}: CellParamsWithIndex<Spec> & { leafLabel?: (row: RowLeaf<Spec["data"]>, api: API<Spec>) => ReactNode }) => {
-  const label = getRowLabel(row, api, leafLabel);
+  groupLabel,
+  aggLabel,
+}: CellParamsWithIndex<Spec> & {
+  leafLabel?: (row: RowLeaf<Spec["data"]>, api: API<Spec>) => ReactNode;
+  groupLabel?: (row: RowGroup, api: API<Spec>) => ReactNode;
+  aggLabel?: (row: RowAggregated, api: API<Spec>) => ReactNode;
+}) => {
+  const label = getRowLabel(row, api, leafLabel, groupLabel, aggLabel);
 
   const depth = row.depth;
 
@@ -43,11 +49,14 @@ function getRowLabel(
   row: RowNode<any>,
   api: API<any>,
   leafLabel?: (row: RowLeaf<any>, api: API<any>) => ReactNode,
+  groupLabel?: (row: RowGroup, api: API<any>) => ReactNode,
+  aggLabel?: (row: RowAggregated, api: API<any>) => ReactNode,
 ) {
   if (row.kind === "leaf") return leafLabel?.(row, api) ?? "";
-  if (row.kind === "aggregated") return row.id === "ln-pivot-grand-total" ? "Grand Total" : row.id;
+  if (row.kind === "aggregated")
+    return aggLabel?.(row, api) ?? (row.id === "ln-pivot-grand-total" ? "Grand Total" : row.id);
 
-  return !row.key ? "(blank)" : row.key;
+  return groupLabel?.(row, api) ?? (!row.key ? "(blank)" : row.key);
 }
 
 function CaretRight() {

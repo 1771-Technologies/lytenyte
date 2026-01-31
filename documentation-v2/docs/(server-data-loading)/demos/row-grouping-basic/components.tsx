@@ -1,8 +1,11 @@
-import type { CellRendererParams } from "@1771technologies/lytenyte-pro/types";
-import type { SalaryData } from "./data";
-import type { CSSProperties } from "react";
-import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
-import { tw } from "./ui";
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import { twMerge } from "tailwind-merge";
+import clsx, { type ClassValue } from "clsx";
+import type { GridSpec } from "./demo";
+
+export function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
+}
 
 function SkeletonLoading() {
   return (
@@ -16,22 +19,22 @@ const formatter = new Intl.NumberFormat("en-Us", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
-export function SalaryRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
-  const field = grid.api.columnField(column, row);
+export function SalaryRenderer({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
-  if (typeof field !== "number") return null;
+  if (typeof field !== "number") return "-";
 
   return <div className="flex h-full w-full items-center justify-end">${formatter.format(field)}</div>;
 }
 
-export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
-  const field = grid.api.columnField(column, row);
+export function YearsOfExperienceRenderer({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
-  if (typeof field !== "number") return null;
+  if (typeof field !== "number") return "-";
 
   return (
     <div className="flex w-full items-baseline justify-end gap-1 tabular-nums">
@@ -41,12 +44,12 @@ export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererPar
   );
 }
 
-export function AgeCellRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
-  const field = grid.api.columnField(column, row);
+export function AgeCellRenderer({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
-  if (typeof field !== "number") return null;
+  if (typeof field !== "number") return "-";
 
   return (
     <div className="flex w-full items-baseline justify-end gap-1 tabular-nums">
@@ -56,79 +59,10 @@ export function AgeCellRenderer({ grid, row, column }: CellRendererParams<Salary
   );
 }
 
-export function BaseCellRenderer({ row, column, grid }: CellRendererParams<any>) {
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+export function BaseCellRenderer({ row, column, api }: Grid.T.CellRendererParams<GridSpec>) {
+  if (api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
-  const field = grid.api.columnField(column, row);
+  const field = api.columnField(column, row);
 
-  return <div className="flex h-full w-full items-center">{field as string}</div>;
-}
-
-export function GroupCellRenderer({ row, grid }: CellRendererParams<any>) {
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
-
-  if (grid.api.rowIsLeaf(row)) return <div />;
-
-  const isExpanded = grid.api.rowGroupIsExpanded(row);
-
-  return (
-    <div
-      style={
-        {
-          paddingLeft: row.depth * 16,
-          "--before-offset": `${row.depth * 16 - 5}px`,
-        } as CSSProperties
-      }
-      className={tw(
-        "relative flex h-full w-full items-center gap-2 overflow-hidden text-nowrap",
-        row.depth > 0 &&
-          "before:border-ln-gray-30 before:absolute before:left-[var(--before-offset)] before:top-0 before:h-full before:border-r before:border-dashed",
-      )}
-    >
-      {row.loadingGroup && (
-        <div className="w-5">
-          <LoadingSpinner />
-        </div>
-      )}
-      {!row.loadingGroup && (
-        <button
-          className="hover:bg-ln-gray-10 w-5 cursor-pointer rounded transition-colors"
-          onClick={() => {
-            grid.api.rowGroupToggle(row);
-          }}
-        >
-          <span className="sr-only">Toggle the row group</span>
-          {isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
-        </button>
-      )}
-      <div className="w-full overflow-hidden text-ellipsis">{row.key || "(none)"}</div>
-    </div>
-  );
-}
-
-/**
- * 24x24 SVG loading spinner.
- * - Inherits currentColor.
- * - Use className to control size/color (defaults to 24px via width/height).
- */
-function LoadingSpinner({ ...props }: React.SVGProps<SVGSVGElement> & { title?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="status" {...props}>
-      {/* Track */}
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" opacity="0.2" />
-
-      {/* Spinner arc */}
-      <path d="M21 12a9 9 0 0 1-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-
-      {/* Rotate animation */}
-      <animateTransform
-        attributeName="transform"
-        type="rotate"
-        from="0 12 12"
-        to="360 12 12"
-        dur="0.8s"
-        repeatCount="indefinite"
-      />
-    </svg>
-  );
+  return <div className="flex h-full w-full items-center">{(field as string) ?? "-"}</div>;
 }

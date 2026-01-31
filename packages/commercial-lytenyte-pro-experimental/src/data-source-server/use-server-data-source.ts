@@ -68,6 +68,7 @@ export interface UseServerDataSourceParams<T = any, K extends unknown[] = any[]>
   readonly rowSelectionIdUniverseSubtractions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
   readonly rowSelectKey?: unknown[];
+  readonly hasRowBranches?: "infer" | boolean;
 
   readonly rowUpdateOptimistically?: boolean;
   readonly onRowDataChange?: (params: { readonly rows: Map<RowNode<T>, T> }) => Promise<void>;
@@ -170,6 +171,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
   const rowAdd = useRowAdd(source, props.onRowsAdded, props.rowUpdateOptimistically);
 
   const selection$ = usePiece(selectionState.rowSelectionsRaw);
+  const rowGroupsPresent$ = usePiece(props.hasRowBranches ?? "infer");
 
   const rowSource = useMemo<RowSourceServer<T>>(() => {
     const rowSource: RowSourceServer<T> = {
@@ -220,7 +222,13 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 
         return mappedMemo;
       },
-      useMaxRowGroupDepth: () => maxDepth$.useValue(),
+      useMaxRowGroupDepth: () => {
+        const maxDepth = maxDepth$.useValue();
+        const presence = rowGroupsPresent$.useValue();
+        if (presence === "infer") return maxDepth;
+
+        return presence ? 1 : 0;
+      },
       useSelectionState: selection$.useValue,
 
       rowGroupExpansionChange: (deltaChanges) => {
@@ -277,6 +285,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     rowChildren,
     rowCount$,
     rowDelete,
+    rowGroupsPresent$,
     rowIdToRowIndex,
     rowIndexToRowId,
     rowInvalidate,
