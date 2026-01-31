@@ -48,7 +48,6 @@ export type {
   RowLeaf,
   RowGroup,
   RowAggregated,
-  RowGroupDisplayMode,
   PositionDetailCell,
   PositionFloatingCell,
   PositionFullWidthRow,

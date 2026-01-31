@@ -38,15 +38,16 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly data: Record<string, unknown>;
   readonly idFn?: (path: string[], data: any) => string;
 
-  readonly rowValueFn?: (x: object, parent: object, key: string) => any;
-  readonly rowChildrenFn?: (x: object, parent: object, key: string) => [key: string, child: object][];
+  readonly rowRootFn?: (x: object) => [key: string, child: object][];
+  readonly rowValueFn?: (x: any, parent: any, key: string) => any;
+  readonly rowChildrenFn?: (x: any, parent: any, key: string) => [key: string, child: object][];
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
   readonly onRowGroupExpansionChange?: (state: Record<string, boolean | undefined>) => void;
 
-  readonly sort?: SortFn<T> | DimensionSort<T>[] | null;
-  readonly filter?: (data: any) => boolean;
+  readonly sort?: SortFn<any> | DimensionSort<any>[] | null;
+  readonly filter?: ((data: any) => boolean) | null;
 
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelectKey?: unknown[];
@@ -57,7 +58,7 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
   readonly onRowDataChange?: (params: {
-    readonly changes: { next: object; prev: object; parent: object; key: string }[];
+    readonly changes: { next: any; prev: any; parent: any; key: string; path: string[] }[];
     readonly top: Map<number, T>;
     readonly bottom: Map<number, T>;
   }) => void;

@@ -22,6 +22,7 @@ export function useTree<T>({
   idFn = defaultIdFn,
   rowValueFn = rowValueFnDefault,
   rowChildrenFn = rowChildrenFnDefault,
+  rowRootFn = Object.entries,
 }: UseTreeDataSourceParams<T>) {
   const rowTree = useMemo(() => {
     const root: TreeRoot = {
@@ -63,13 +64,13 @@ export function useTree<T>({
       entries.forEach((x) => groupKeys(node, [...path, x[0]], x[1], row));
     };
 
-    const rootRows = Object.entries(data);
+    const rootRows = rowRootFn(data);
     for (const [path, row] of rootRows) {
       groupKeys(root, [path], row, data);
     }
 
     return root;
-  }, [data, filter, idFn, rowChildrenFn, rowValueFn]);
+  }, [data, filter, idFn, rowChildrenFn, rowRootFn, rowValueFn]);
 
   return rowTree;
 }

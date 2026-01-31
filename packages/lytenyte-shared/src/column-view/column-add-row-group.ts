@@ -1,10 +1,9 @@
 import { GROUP_COLUMN_SINGLE_ID } from "../+constants.js";
-import type { ColumnAbstract, RowGroupDisplayMode } from "../types.js";
+import type { ColumnAbstract } from "../types.js";
 
 interface ColumnHandleGroupColumnArgs {
   readonly columns: ColumnAbstract[];
-  readonly rowGroupTemplate: Omit<ColumnAbstract, "id">;
-  readonly rowGroupDisplayMode: RowGroupDisplayMode;
+  readonly rowGroupTemplate: false | Omit<ColumnAbstract, "id">;
   readonly rowGroupDepth: number;
 }
 
@@ -12,13 +11,8 @@ const baseGroup: Omit<ColumnAbstract, "id"> = {
   name: "Group",
 };
 
-export function columnAddRowGroup({
-  columns,
-  rowGroupDepth,
-  rowGroupDisplayMode,
-  rowGroupTemplate,
-}: ColumnHandleGroupColumnArgs) {
-  const isSingleGroupDisplay = rowGroupDisplayMode === "single-column";
+export function columnAddRowGroup({ columns, rowGroupDepth, rowGroupTemplate }: ColumnHandleGroupColumnArgs) {
+  const isSingleGroupDisplay = rowGroupTemplate !== false;
   const hasGroupColumn = rowGroupDepth > 0 && isSingleGroupDisplay;
 
   if (hasGroupColumn) {

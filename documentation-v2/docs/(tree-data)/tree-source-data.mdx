@@ -1,4 +1,65 @@
 ---
 title: Tree Data
 pro: true
+step: Generate hierarchical rows from nested object data.
+description: Pass a nested JavaScript object to the tree data source to create a hierarchical grid layout.
 ---
+
+## Data Object
+
+Use the [`useTreeDataSource`](/docs/reference) hook to render a
+nested object as a row set. The `data` property must be a JavaScript object.
+
+Configure the following functions within the hook to control how
+rows are created from the source object:
+
+- **rowValueFn**: Returns the data associated with a specific row.
+- **rowChildrenFn**: Returns an array of objects used to generate child rows.
+
+The demo below uses objects with custom properties and a `children` key to define the hierarchy.
+
+::demo[Custom Keys="./demos/basic-keys"]
+
+### Root Rows
+
+Define `rowRootFn` to specify the initial root rows. This function is required when
+using a wrapper object where the top-level property should not appear as a row.
+
+The following demo uses `rowRootFn` to bypass a `root` property and return
+the nested contents as the starting rows.
+
+::demo[Root Rows="./demos/basic-root"]
+
+In this example, the grid ignores the top-level `root` property in the data.
+The `rowRootFn` function returns the `children` property of the `root` object as
+an array of entries. Each entry becomes a row, and the grid branches from there.
+
+```ts
+const ds = useTreeDataSource({
+  data: data,
+  rowGroupDefaultExpansion: true,
+
+  //!next 3
+  rowRootFn: (x) => {
+    return x.children.map((row) => [row.name, row]);
+  },
+  rowChildrenFn: (x) => {
+    if (!x.children) return [];
+    return x.children.map((r: any) => [r.name, r]);
+  },
+  rowValueFn: (x) => ({
+    name: x.name,
+    kind: x.kind,
+    size: x.size || null,
+    modified: x.modified,
+    lastEditedBy: x.lastEditedBy,
+    permissions: x.permissions,
+  }),
+});
+```
+
+## Next Steps
+
+::next[/docs/tree-source-filtering]
+::next[/docs/tree-source-sorting]
+::next[/docs/tree-source-pinning]

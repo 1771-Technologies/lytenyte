@@ -20,7 +20,6 @@ export function useColumnView(
     const colsWithGroup = columnAddRowGroup({
       columns: columns,
       rowGroupDepth: maxRowDepth,
-      rowGroupDisplayMode: props.rowGroupDisplayMode ?? "single-column",
       rowGroupTemplate: props.rowGroupColumn ?? {},
     });
 
@@ -48,7 +47,6 @@ export function useColumnView(
     props.columnGroupJoinDelimiter,
     props.columnMarker,
     props.rowGroupColumn,
-    props.rowGroupDisplayMode,
   ]);
 
   return view;

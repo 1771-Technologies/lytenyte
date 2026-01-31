@@ -1,4 +1,69 @@
 ---
 title: Tree Editing
 pro: true
+step: Edit tree data nodes using LyteNyte Grid's cell editing capabilities.
+description: Edit the data of the object set on the tree data source using LyteNyte Grid's
+  cell editing capabilities.
 ---
+
+:::info
+
+You must already be familiar with LyteNyte Grid's cell editing capabilities before reading
+this guide. Read the [Cell Editing guide](/docs/cell-editing) for more details.
+
+:::
+
+## Editing Tree Cells
+
+To edit a tree cell, make the column for that cell `editable` and provide an `editRenderer`
+component. You must also set the `editMode` property on the grid to `"cell"` or `"row"`.
+
+When a cell is edited, LyteNyte Grid calls the `onRowDataChange` method on the tree data
+source. Set the `onRowDataChange` property on the `useTreeDataSource` hook to handle these
+data updates.
+
+The `onRowDataChange` handler receives the applied cell changes, along with any data changes
+applied to rows pinned to the top or bottom of the grid. The full function interface is shown
+below:
+
+```ts
+type OnTreeRowDataChange = (params: {
+  readonly changes: { next: object; prev: object; parent: object; key: string; path: string[] }[];
+  readonly top: Map<number, T>;
+  readonly bottom: Map<number, T>;
+}) => void;
+```
+
+The demo below demonstrates cell editing in action. You can begin editing by double-clicking
+a cell in the **Size** column.
+
+::demo[Tree Data Editing="./demos/tree-editing"]
+
+## Editing the Group Cell
+
+Replace the LyteNyte **Group** column with a custom group column to make group cells editable.
+Set the `rowGroupColumn` property on the grid to `false` to prevent LyteNyte Grid from creating
+an automatic group column.
+
+Add a new column to your column definitions to replace the automatically generated group
+column. Since this column is part of your definitions, you can set the `editable` and
+`editRenderer` properties to enable editing.
+
+The demo below shows this approach by replacing the **Group** column with a custom column
+called **Files**. You can edit the file name by double-clicking the cell.
+
+::demo[Tree Group Cell Editing="./demos/tree-editing-group"]
+
+:::note
+
+The data in the demo above is sorted by size. Changing the group name value is equivalent to
+changing the branch order when a standard JavaScript object is updated. Sorting by size
+ensures the rows maintain a stable order.
+
+:::
+
+## Next Steps
+
+::next[/docs/cell-editing]
+::next[/docs/tree-source-filtering]
+::next[/docs/tree-source-data]
