@@ -1,39 +1,39 @@
-import type { CellRendererFn } from "@1771technologies/lytenyte-pro/types";
-import type { MovieData } from "./data";
 import { format } from "date-fns";
 import type { JSX } from "react";
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Link1Icon } from "@radix-ui/react-icons";
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo";
 
 function SkeletonLoading() {
   return (
     <div className="h-full w-full p-2">
-      <div className="h-full w-full animate-pulse rounded-xl bg-gray-200 dark:bg-gray-100"></div>
+      <div className="bg-ln-gray-20 h-full w-full animate-pulse rounded-xl"></div>
     </div>
   );
 }
 
-export const NameCellRenderer: CellRendererFn<MovieData> = (params) => {
+export const NameCellRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
   if (params.row.loading && !params.row.data) return <SkeletonLoading />;
 
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   return <div className="overflow-hidden text-ellipsis">{field}</div>;
 };
 
-export const ReleasedRenderer: CellRendererFn<MovieData> = (params) => {
+export const ReleasedRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
   if (params.row.loading && !params.row.data) return <SkeletonLoading />;
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   const formatted = field ? format(field, "dd MMM yyyy") : "-";
 
   return <div>{formatted}</div>;
 };
 
-export const GenreRenderer: CellRendererFn<MovieData> = (params) => {
+export const GenreRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
   if (params.row.loading && !params.row.data) return <SkeletonLoading />;
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   const splits = field ? field.split(",") : [];
 
@@ -42,7 +42,7 @@ export const GenreRenderer: CellRendererFn<MovieData> = (params) => {
       {splits.map((c) => {
         return (
           <div
-            className="border-primary-200 text-primary-700 dark:text-primary-500 bg-primary-200/20 rounded border p-1 px-2 text-xs"
+            className="border-(--primary-200) text-(--primary-700) dark:text-(--primary-500) bg-(--primary-200)/20 rounded border p-1 px-2 text-xs"
             key={c}
           >
             {c}
@@ -83,16 +83,16 @@ const MonitorPlayIcon = (props: JSX.IntrinsicElements["svg"]) => {
   );
 };
 
-export const TypeRenderer: CellRendererFn<MovieData> = (params) => {
+export const TypeRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
   if (params.row.loading && !params.row.data) return <SkeletonLoading />;
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   const isMovie = field === "Movie";
   const Icon = isMovie ? FilmRealIcon : MonitorPlayIcon;
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <span className={isMovie ? "text-primary-500" : "text-accent-500"}>
+      <span className={isMovie ? "text-(--primary-500)" : "text-ln-primary-50"}>
         <Icon />
       </span>
       <span>{field}</span>
@@ -100,9 +100,9 @@ export const TypeRenderer: CellRendererFn<MovieData> = (params) => {
   );
 };
 
-export const RatingRenderer: CellRendererFn<MovieData> = (params) => {
+export const RatingRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
   if (params.row.loading && !params.row.data) return <SkeletonLoading />;
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = params.api.columnField(params.column, params.row) as string;
   const rating = field ? Number.parseFloat(field.split("/")[0]) : null;
   if (rating == null || Number.isNaN(rating)) return "-";
 
@@ -126,12 +126,12 @@ export const RatingRenderer: CellRendererFn<MovieData> = (params) => {
   );
 };
 
-export const LinkRenderer: CellRendererFn<MovieData> = (params) => {
+export const LinkRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
   if (params.row.loading && !params.row.data) return <SkeletonLoading />;
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   return (
-    <a href={field}>
+    <a href={field} className="text-(--primary-500)">
       <Link1Icon />
     </a>
   );

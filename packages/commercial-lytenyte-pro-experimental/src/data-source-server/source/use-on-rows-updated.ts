@@ -4,8 +4,8 @@ import { type RowSourceServer, type UseServerDataSourceParams } from "../use-ser
 
 export function useOnRowsUpdated<T>(
   source: ServerData,
-  onRowDataChange: UseServerDataSourceParams<unknown[]>["onRowDataChange"],
-  optimistic: UseServerDataSourceParams<unknown[]>["rowUpdateOptimistically"],
+  onRowDataChange: UseServerDataSourceParams<any, unknown[]>["onRowDataChange"],
+  optimistic: UseServerDataSourceParams<any, unknown[]>["rowUpdateOptimistically"],
 ) {
   const onRowsUpdated: RowSourceServer<T>["onRowsUpdated"] = useEvent((updates) => {
     if (!onRowDataChange) return;

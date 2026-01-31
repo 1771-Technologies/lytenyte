@@ -53,7 +53,7 @@ export interface RowSourceServer<T> extends RowSource<T> {
   readonly rowUpdate: (rows: Map<RowNode<T>, T>) => void;
 }
 
-export interface UseServerDataSourceParams<K extends unknown[], T = any> {
+export interface UseServerDataSourceParams<T = any, K extends unknown[] = any[]> {
   readonly queryFn: (params: QueryFnParams<K>) => Promise<(DataResponse | DataResponsePinned)[]>;
   readonly queryKey: K;
   readonly blockSize?: number;
@@ -79,7 +79,7 @@ export interface UseServerDataSourceParams<K extends unknown[], T = any> {
 }
 
 export function useServerDataSource<T, K extends unknown[] = unknown[]>(
-  props: UseServerDataSourceParams<K>,
+  props: UseServerDataSourceParams<T, K>,
 ): RowSourceServer<T> {
   const isolatedSelected = props.rowsIsolatedSelection ?? false;
   const state = useSourceState(props);
@@ -194,7 +194,32 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       useTopCount: () => top$.useValue(),
       useRowCount: () => rowCount$.useValue(),
       useBottomCount: () => bot$.useValue(),
-      useRows: () => row$.useValue(),
+      useRows: () => {
+        const rowMap = row$.useValue();
+
+        const rowCount = rowCount$.useValue();
+
+        const mappedMemo = useMemo(() => {
+          return {
+            get: (i: number) => {
+              const row = rowMap.get(i);
+              if (!row && i >= 0 && i < rowCount) {
+                return {
+                  kind: "leaf",
+                  id: `__loading__placeholder__${i}`,
+                  data: {},
+                  depth: 0,
+                } satisfies RowLeaf;
+              }
+
+              return row;
+            },
+            size: rowCount,
+          };
+        }, [rowCount, rowMap]);
+
+        return mappedMemo;
+      },
       useMaxRowGroupDepth: () => maxDepth$.useValue(),
       useSelectionState: selection$.useValue,
 

@@ -23,6 +23,34 @@
   background-color: var(--ln-border);
 }
 
+:root {
+  --primary-950: hsla(177, 91%, 8%, 1);
+  --primary-900: hsla(173, 60%, 15%, 1);
+  --primary-800: hsla(175, 64%, 21%, 1);
+  --primary-700: hsla(173, 73%, 27%, 1);
+  --primary-600: hsla(173, 78%, 34%, 1);
+  --primary-500: hsla(172, 75%, 40%, 1);
+  --primary-400: hsla(171, 61%, 50%, 1);
+  --primary-300: hsla(169, 71%, 64%, 1);
+  --primary-200: hsla(167, 78%, 78%, 1);
+  --primary-100: hsla(166, 78%, 89%, 1);
+  --primary-50: hsla(166, 76%, 97%, 1);
+}
+
+.dark {
+  --primary-950: hsla(166, 76%, 97%, 1);
+  --primary-900: hsla(166, 78%, 89%, 1);
+  --primary-800: hsla(167, 78%, 78%, 1);
+  --primary-700: hsla(169, 71%, 64%, 1);
+  --primary-600: hsla(171, 61%, 50%, 1);
+  --primary-500: hsla(172, 75%, 40%, 1);
+  --primary-400: hsla(173, 78%, 34%, 1);
+  --primary-300: hsla(173, 73%, 27%, 1);
+  --primary-200: hsla(175, 64%, 21%, 1);
+  --primary-100: hsla(173, 60%, 15%, 1);
+  --primary-50: hsla(177, 91%, 8%, 1);
+}
+
 .light {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
