@@ -9,14 +9,14 @@ description: Filter tree rows by providing a filter function to the tree data so
 ## Filtering Tree Rows
 
 Set the `filter` property on the `useTreeDataSource` hook to filter rows created from the
-object set on the `data` property of the tree data source.
+object provided to the `data` property of the tree data source.
 
-The `filter` property accepts a predicate function that will be given a property of the object
-set on the `data` property. If the function returns `true` the property and any of its children
-will be kept, otherwise they will be removed.
+The `filter` property accepts a predicate function that receives each value from the object
+provided to `data`. If the function returns `true`, the value and any of its children
+are kept; otherwise, they are removed.
 
-The demo below demonstrates this in action. You can click the **Toggle Hidden Files** switch to
-show or hide hidden files. A hidden file is considered any file that starts with a `.`, such as
+The demo below demonstrates this behavior. Click the **Toggle Hidden Files** switch to
+show or hide hidden files. A hidden file is any file name that starts with a `.`, such as
 the `.env` file.
 
 ::demo[Filter Hidden Files="./demos/tree-filtering"]

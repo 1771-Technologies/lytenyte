@@ -1,6 +1,6 @@
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import { Grid, useTreeDataSource } from "@1771technologies/lytenyte-pro-experimental";
-import { data as initialData } from "./data.js";
+import { data as initialData } from "./tree.js";
 import {
   AvatarCell,
   getNumberValue,

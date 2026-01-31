@@ -1,7 +1,7 @@
 ---
 title: Tree Editing
 pro: true
-step: Edit trade data nodes using LyteNyte Grid's cell editing capabilities.
+step: Edit tree data nodes using LyteNyte Grid's cell editing capabilities.
 description: Edit the data of the object set on the tree data source using LyteNyte Grid's
   cell editing capabilities.
 ---
@@ -15,50 +15,50 @@ this guide. Read the [Cell Editing guide](/docs/cell-editing) for more details.
 
 ## Editing Tree Cells
 
-To edit a tree cell, make the column for the cell `editable` and provide an `editRenderer`
-component. You will also need to set the `editMode` property on the grid to `"cell"` or `"row"`.
+To edit a tree cell, make the column for that cell `editable` and provide an `editRenderer`
+component. You must also set the `editMode` property on the grid to `"cell"` or `"row"`.
 
-When a cell is edited, LyteNyte Grid will call the `onRowDataChange` method of the tree data
-source. Set the `onRowDataChange` property on the `useTreeDataSource` hook to handle data
-updates.
+When a cell is edited, LyteNyte Grid calls the `onRowDataChange` method on the tree data
+source. Set the `onRowDataChange` property on the `useTreeDataSource` hook to handle these
+data updates.
 
-The `onRowDataChange` change handler will receive the cell changes applied, and any data changes
-applied to the rows that are pinned to the top and bottom of the grid. The full function interface
-is shown below:
+The `onRowDataChange` handler receives the applied cell changes, along with any data changes
+applied to rows pinned to the top or bottom of the grid. The full function interface is shown
+below:
 
 ```ts
 type OnTreeRowDataChange = (params: {
-  readonly changes: { next: object; prev: object; parent: object; key: string }[];
+  readonly changes: { next: object; prev: object; parent: object; key: string; path: string[] }[];
   readonly top: Map<number, T>;
   readonly bottom: Map<number, T>;
 }) => void;
 ```
 
-The demo below demonstrates cell editing in action. You can begin an edit by double clicking
-on a cell in the **Size** column.
+The demo below demonstrates cell editing in action. You can begin editing by double-clicking
+a cell in the **Size** column.
 
 ::demo[Tree Data Editing="./demos/tree-editing"]
 
-## Editing The Group Cell
+## Editing the Group Cell
 
-Replace the LyteNyte **Group** column with your own group column to make the group cells
-editable. Set the `rowGroupColumn` property on the grid to `false` to prevent LyteNyte Grid
-from creating an automatic group column.
+Replace the LyteNyte **Group** column with a custom group column to make group cells editable.
+Set the `rowGroupColumn` property on the grid to `false` to prevent LyteNyte Grid from creating
+an automatic group column.
 
-Add a new column your definitions that will be a replacement for the automatically generated
-group column. Since this column is part of your definitions, you can set the `editable` and
+Add a new column to your column definitions to replace the automatically generated group
+column. Since this column is part of your definitions, you can set the `editable` and
 `editRenderer` properties to enable editing.
 
-The demo below demonstrates this by replacing the **Group** column with a new custom column
-called **Files**. You can edit the file name by double clicking the cell.
+The demo below shows this approach by replacing the **Group** column with a custom column
+called **Files**. You can edit the file name by double-clicking the cell.
 
 ::demo[Tree Group Cell Editing="./demos/tree-editing-group"]
 
 :::note
 
-The data in the demo above is sorted by size, since changing the group name value is equivalent
-to changes the branch order when a normal JavaScript object is updated. Sorting by size ensures
-rows maintain a stable order.
+The data in the demo above is sorted by size. Changing the group name value is equivalent to
+changing the branch order when a standard JavaScript object is updated. Sorting by size
+ensures the rows maintain a stable order.
 
 :::
 

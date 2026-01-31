@@ -1,6 +1,6 @@
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import { Grid, useTreeDataSource } from "@1771technologies/lytenyte-pro-experimental";
-import { data } from "./data.js";
+import { data } from "./tree.js";
 import { AvatarCell, GroupCell, ModifiedCell, SizeCell } from "./components.jsx";
 
 export interface GridSpec {

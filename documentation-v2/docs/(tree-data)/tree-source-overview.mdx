@@ -1,26 +1,29 @@
 ---
 title: Tree Overview
 pro: true
+step: Represent parent/child relationships with structured hierarchical data.
 description: Represent parent/child relationships using the tree data
   source for structured hierarchical data.
 ---
 
 :::info
 
-LyteNyte Grid requires tree data as a nested `object`. Unlike other grids that
-represent hierarchy via arrays with path strings, LyteNyte Grid treats array-based
+LyteNyte Grid requires tree data to be provided as a nested `object`. Unlike other grids
+that represent hierarchy using arrays with path strings, LyteNyte Grid treats array-based
 data as **non-uniform row grouping**.
 
 For array-based structures, see the [Client Row Grouping guide](/docs/client-source-row-grouping).
-Tree data specifically targets object-based structures, such as `JSON` server responses.
+Tree data specifically targets object-based structures, such as `JSON` responses returned
+from a server.
 
 :::
 
 ## Basic Tree
 
 The `useTreeDataSource` hook transforms a nested JavaScript object into
-a grid data source. Assign your object to the `data` property. The below
-shows one such example:
+a row data source. Assign the object to the `data` property of the `useTreeDataSource` hook.
+
+The example below shows one such configuration:
 
 ```ts
 const data = {
@@ -55,19 +58,16 @@ const ds = useTreeDataSource({
 ```
 
 By default, the hook traverses object properties and creates a
-branch whenever a property value is another object.
+branch whenever a property value is itself another object.
 
-The demo below renders a tree from a standard object. While the tree source generates
-the rows, you must still define the columns. Because this structure allows recursion at
-any level, the source treats all rows as [group rows](/docs/row-overview).
+The demo below renders a tree from a standard JavaScript object. While the tree data source
+generates the rows, you must still define the columns. Since this structure allows
+recursion at any level, the data source treats all rows as
+[group rows](/docs/row-overview).
 
 ::demo[Basic Tree="./demos/basic-tree"]
 
-Define columns manually to display the generated row data. Since the source object is
-object the tree source treats every row as a [group row](/docs/row-overview), as any node
-may contain further children.
-
-The remaining guides in this tree data section will cover advanced configurations,
+The remaining guides in this tree data section cover advanced configurations,
 including custom row creation and data editing.
 
 ## Next Steps

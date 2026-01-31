@@ -10,10 +10,11 @@ description: Pass a nested JavaScript object to the tree data source to create a
 Use the [`useTreeDataSource`](/docs/reference) hook to render a
 nested object as a row set. The `data` property must be a JavaScript object.
 
-Configure these functions within the hook:
+Configure the following functions within the hook to control how
+rows are created from the source object:
 
 - **rowValueFn**: Returns the data associated with a specific row.
-- **rowChildrenFn**: Returns an array of objects to generate child rows.
+- **rowChildrenFn**: Returns an array of objects used to generate child rows.
 
 The demo below uses objects with custom properties and a `children` key to define the hierarchy.
 
@@ -21,16 +22,16 @@ The demo below uses objects with custom properties and a `children` key to defin
 
 ### Root Rows
 
-Define `rowRootFn` to specify the initial root rows. This is required when
+Define `rowRootFn` to specify the initial root rows. This function is required when
 using a wrapper object where the top-level property should not appear as a row.
 
 The following demo uses `rowRootFn` to bypass a `root` property and return
-its nested contents as the starting rows.
+the nested contents as the starting rows.
 
 ::demo[Root Rows="./demos/basic-root"]
 
-Notice in the code that the demo ignores the top most `root` property in the grid's
-data. The `rootFn` function returns the `children` property of the `root` object as
+In this example, the grid ignores the top-level `root` property in the data.
+The `rowRootFn` function returns the `children` property of the `root` object as
 an array of entries. Each entry becomes a row, and the grid branches from there.
 
 ```ts
