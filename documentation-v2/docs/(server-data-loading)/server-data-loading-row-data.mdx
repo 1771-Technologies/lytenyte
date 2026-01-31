@@ -17,7 +17,7 @@ import { useServerDataSource } from "@1771technologies/lytenyte-pro";
 Because this function is a React hook, it must follow
 the [Rules of Hooks](https://react.dev/reference/rules/rules-of-hooks).
 
-Provide the `useServerDataSource` hook with a `dataFetcher` callback. The callback retrieves
+Provide the `useServerDataSource` hook with a `queryFn` callback. The callback retrieves
 data from the server. LyteNyte Grid passes it parameters describing the current data
 request and expects a promise that resolves to the data response. The full
 interfaces and request/response cycle are described in the
@@ -26,19 +26,18 @@ interfaces and request/response cycle are described in the
 ```ts
 export default function RowDataFromServer() {
   const ds = useServerDataSource<MovieData>({
-    dataFetcher: (params) => {
+    queryFn: (params) => {
       // See code example for sample implementation
       return Server(params.requests);
     },
+    queryKey: [],
   });
-
-  // Other grid hooks and components
 }
 ```
 
 A complete example of basic server loading is shown below:
 
-!demo:Row Data From Server="./demos/basic-server-data"
+::demo[Row Data From Server="./demos/basic-server-data"]
 
 Even when data loads from the server, cell renderers and grid configuration
 remain client-side. This example demonstrates the simplest form of server
@@ -48,59 +47,34 @@ data loading, only the row data is retrieved from the server.
 
 Sometimes the server defines the column configurations as well. In this case, include the column
 definitions with the server response. The example below extends
-the `dataFetcher` to handle this scenario.
+the `queryFn` to handle this scenario.
 
-!demo:Columns Defined On Server="./demos/server-data-with-columns"
+::demo[Columns Defined On Server="./demos/server-data-with-columns"]
 
 Here, the client doesn't define columns up front. LyteNyte Grid requests the
 initial data, and the server responds with both row data and column
-definitions. The `dataFetcher` then sets the columns on the grid:
+definitions. The `queryFn` then sets the columns on the grid:
 
 ```ts
-dataFetcher: async (params) => {
+const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([]);
+
+const queryFn: UseServerDataSourceParams<GridSpec["data"], []>["queryFn"] = useCallback(async (params) => {
   const res = await Server(params.requests);
 
-  // If no columns are defined yet, set them from the server response
-  if (!params.grid.state.columns.get().length) {
-    params.grid.state.columns.set(res.columns);
+  if (res.columns) {
+    setColumns(
+      res.columns.map((x) => {
+        return {
+          ...x,
+          cellRenderer: cellRenderers[x.id as keyof typeof cellRenderers],
+        } satisfies Grid.Column<GridSpec>;
+      }),
+    );
   }
 
   return res.data;
-};
+}, []);
 ```
-
-When columns are defined on the server, cell renderers can't be
-React components. Instead, use LyteNyte Grid's cell registry system, which resolves
-renderers by string keys. The server specifies each column's `cellRenderer` as a string,
-and the client registers the corresponding components:
-
-```ts
-// Columns defined on the server — excluding unrelated properties
-const columns: Column<MovieData>[] = [
-  { id: "#", cellRenderer: "link" },
-  { id: "name", cellRenderer: "name" },
-  { id: "released_at", cellRenderer: "release" },
-  { id: "genre", cellRenderer: "genre" },
-  { id: "type", cellRenderer: "type" },
-  { id: "imdb_rating", cellRenderer: "rating" },
-];
-
-// Usage on the client
-const grid = Grid.useLyteNyte({
-  // ...other grid props
-  cellRenderers: {
-    link: LinkRenderer,
-    release: ReleasedRenderer,
-    genre: GenreRenderer,
-    name: NameCellRenderer,
-    type: TypeRenderer,
-    rating: RatingRenderer,
-  },
-});
-```
-
-See the [Cell Rendering guide](/docs/cell-renderers) for
-details on renderer registration and behavior.
 
 ## Initial Data Loading State
 
@@ -111,18 +85,17 @@ loading indicators or skeleton placeholders while fetching initial data.
 ```ts
 export default function RowDataFromServer() {
   const ds = useServerDataSource<MovieData>({
-    dataFetcher: (params) => Server(params.requests),
+    queryFn: (params) => Server(params.requests),
   });
 
-  const isLoading = ds.isLoading.useValue();
-  // Other grid hooks and components
+  const isLoading = ds.isLoading.useValue(); //!
 }
 ```
 
 The example below shows this in action.
 **Do not wait for data to appear**, the response from this demo never resolves:
 
-!demo:Initial Loading State="./demos/always-loading"
+::demo[Initial Loading State="./demos/always-loading"]
 
 ## Initial Data Loading Error
 
@@ -135,7 +108,7 @@ This section covers the first case as an introduction to error handling.
 See the [Handling Load Failures guide](/docs/server-data-loading-handling-load-failures)
 for in-depth coverage and best practices.
 
-!demo:Initial Load Error="./demos/error-loading-initial"
+::demo[Initial Load Error="./demos/error-loading-initial"]
 
 When the initial request fails, the server data source sets the
 reactive `loadError` property:
@@ -146,16 +119,16 @@ const ds = useServerDataSource<MovieData>({
 });
 
 // Set when the initial data request fails
-const error = ds.loadError.useValue();
+const error = ds.loadingError.useValue(); //!
 ```
 
-<Callout>
+:::note
 
-LyteNyte Grid can only detect a failed request if the promise returned by the `dataFetcher` rejects.  
+LyteNyte Grid can only detect a failed request if the promise returned by the `queryFn` rejects.  
 If your implementation catches and handles the rejection internally, the grid will not detect the error.  
 This is acceptable when the error is handled intentionally, but it's a common source of confusion.
 
-For example, this `dataFetcher` never reports a failure:
+For example, this `queryFn` never reports a failure:
 
 ```ts
 const neverFailFetcher = async (params) => {
@@ -168,11 +141,11 @@ const neverFailFetcher = async (params) => {
 };
 ```
 
-</Callout>
+:::
 
 ## Next Steps
 
-- [Server Row Sorting](/docs/server-data-loading-row-sorting): Explains server-side sorting and client-side display.
-- [Server Row Filtering](/docs/server-data-loading-row-filtering): Covers server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
-- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handles grouped data and loads group slices.
-- [Handling Load Failures](/docs/server-data-loading-handling-load-failures): Explores all scenarios where data requests may fail.
+::next[/docs/server-data-loading-row-sorting]
+::next[/docs/server-data-loading-row-filtering]
+::next[/docs/server-data-loading-row-grouping-and-aggregation]
+::next[/docs/server-data-loading-handling-load-failures]

@@ -1,22 +1,25 @@
 "use client";
+import "@1771technologies/lytenyte-pro-experimental/components.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
 
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useId, useRef } from "react";
-import { Server } from "./server";
+import { Server } from "./server.js";
 import type { MovieData } from "./data";
 import {
   GenreRenderer,
-  GridButton,
   LinkRenderer,
   NameCellRenderer,
   RatingRenderer,
   ReleasedRenderer,
   TypeRenderer,
-} from "./components";
+} from "./components.js";
+import { useRef } from "react";
 
-const columns: Column<MovieData>[] = [
+export interface GridSpec {
+  readonly data: MovieData;
+}
+
+const columns: Grid.Column<GridSpec>[] = [
   {
     id: "#",
     name: "",
@@ -32,90 +35,47 @@ const columns: Column<MovieData>[] = [
   { id: "type", name: "Type", width: 120, cellRenderer: TypeRenderer },
   { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
 ];
-
 export default function ServerDataFailFirst() {
   // Track a fail ref to simulate network failure but still allow the demo to be reset.
   const shouldFailRef = useRef(true);
   const ds = useServerDataSource<MovieData>({
-    dataFetcher: (params) => {
+    queryFn: (params) => {
       const fail = shouldFailRef.current;
       shouldFailRef.current = false;
       return Server(params.requests, fail);
     },
+    queryKey: [],
     blockSize: 50,
   });
-  const error = ds.loadError.useValue();
-
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-  });
-
-  const view = grid.view.useValue();
+  const error = ds.loadingError.useValue();
+  const isLoading = ds.isLoading.useValue();
 
   return (
-    <div className="lng-grid relative" style={{ height: 500 }}>
+    <div className="ln-grid relative" style={{ height: 500 }}>
       {!!error && (
-        <div className="absolute left-0 top-0 z-[10] flex h-full w-full flex-col items-center justify-center gap-2 bg-red-500/20">
+        <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center gap-2 bg-red-500/20">
           <span>{`${error}`}</span>
-          <GridButton
-            className="bg-gray-ln-10"
+          <button
+            data-ln-button="website"
+            data-ln-size="md"
             onClick={() => {
               ds.reset();
             }}
           >
             Retry - it will work now
-          </GridButton>
+          </button>
         </div>
       )}
 
-      <Grid.Root grid={grid}>
-        <Grid.Viewport style={{ overflowY: "scroll" }}>
-          <Grid.Header>
-            {view.header.layout.map((row, i) => {
-              return (
-                <Grid.HeaderRow key={i} headerRowIndex={i}>
-                  {row.map((c) => {
-                    if (c.kind === "group") return null;
-
-                    return (
-                      <Grid.HeaderCell
-                        key={c.id}
-                        cell={c}
-                        className="flex h-full w-full items-center px-2 text-sm capitalize"
-                      />
-                    );
-                  })}
-                </Grid.HeaderRow>
-              );
-            })}
-          </Grid.Header>
-          <Grid.RowsContainer
-            className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}
-          >
-            <Grid.RowsCenter>
-              {view.rows.center.map((row) => {
-                if (row.kind === "full-width") return null;
-
-                return (
-                  <Grid.Row row={row} key={row.id}>
-                    {row.cells.map((c) => {
-                      return (
-                        <Grid.Cell
-                          key={c.id}
-                          cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
-                        />
-                      );
-                    })}
-                  </Grid.Row>
-                );
-              })}
-            </Grid.RowsCenter>
-          </Grid.RowsContainer>
-        </Grid.Viewport>
-      </Grid.Root>
+      <Grid
+        rowSource={ds}
+        columns={columns}
+        slotViewportOverlay={
+          isLoading && (
+            <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>
+          )
+        }
+      />
     </div>
   );
 }
