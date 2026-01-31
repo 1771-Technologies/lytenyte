@@ -23,43 +23,7 @@ This example pins rows to the top or bottom of the grid. The server implementati
 always responds with data for pinned rows along side the data for the scrollable rows. Pinned rows
 will always be leaf rows.
 
-!demo:Row Pinning="./demos/row-pinned"
-
-## Pinned Component Sections
-
-When using pinned rows, the grid view state includes `top` and `bottom` properties.
-Use these properties to access the layout of the pinned rows:
-
-```ts
-const view = grid.view.useValue();
-
-// access the top rows
-view.rows.top;
-
-// access the bottom rows
-view.rows.bottom;
-```
-
-To display pinned rows, use the _ts`Grid.RowsTop`_ and _ts`Grid.RowsBottom`_ components.
-For example, to display the top rows:
-
-```tsx
-<Grid.RowsTop>
-  {view.rows.top.map((row) => {
-    if (row.kind === "full-width") return null;
-
-    return (
-      <Grid.Row row={row} key={row.id}>
-        {row.cells.map((c) => {
-          return <Grid.Cell key={c.id} cell={c} />;
-        })}
-      </Grid.Row>
-    );
-  })}
-</Grid.RowsTop>
-```
-
-See the Row Pinning demo code above for a full example.
+::demo[Row Pinning="./demos/row-pinned"]
 
 ## Pushing Pinned Row Updates
 
@@ -70,9 +34,10 @@ into the grid programmatically using the `pushResponses` method:
 
 ```ts
 const ds = useServerDataSource<MovieData>({
-  dataFetcher: (params) => {
+  queryFn: (params) => {
     return Server(params.requests);
   },
+  //...
 });
 
 // Push responses
@@ -86,15 +51,13 @@ The example below shows its usage. The **Pin One Top** button pins a single row
 to the top, and the **Remove Pinned** button removes it. Both actions are triggered entirely
 from the client without any server response.
 
-!demo:Pushing Pinned Rows="./demos/row-pinned-pushed"
+::demo[Pushing Pinned Rows="./demos/row-pinned-pushed"]
 
 Using the `pushResponses` method is one way to push data into the grid.
 For more information, see the [Data Pushing and Pulling guide](/docs/server-data-loading-push-and-pull).
 
 ## Next Steps
 
-- [Server Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): Learn how
-  to fetch grouped data and handle row expansion and collapse.
-- [Server Row Sorting](/docs/server-data-loading-row-sorting): Implement and display server-side sorting.
-- [Optimistic Loading](/docs/server-data-loading-optimistic-loading): Use optimistic loading
-  to pre-fetch data and improve responsiveness.
+::next[/docs/server-data-loading-row-grouping-and-aggregation]
+::next[/docs/server-data-loading-row-sorting]
+::next[/docs/server-data-loading-optimistic-loading]

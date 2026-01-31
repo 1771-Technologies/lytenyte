@@ -1,22 +1,30 @@
 "use client";
 
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useId } from "react";
-import { Server } from "./server";
-import { data, type MovieData } from "./data";
+import "@1771technologies/lytenyte-pro-experimental/components.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import {
+  Grid,
+  useServerDataSource,
+  type UseServerDataSourceParams,
+} from "@1771technologies/lytenyte-pro-experimental";
+
+import { useCallback, useMemo } from "react";
+import { Server } from "./server.js";
+import { data, type MovieData } from "./data.js";
 import {
   GenreRenderer,
-  GridButton,
   LinkRenderer,
   NameCellRenderer,
   RatingRenderer,
   ReleasedRenderer,
   TypeRenderer,
-} from "./components";
+} from "./components.js";
 
-const columns: Column<MovieData>[] = [
+export interface GridSpec {
+  readonly data: MovieData;
+}
+
+const columns: Grid.Column<GridSpec>[] = [
   {
     id: "#",
     name: "",
@@ -34,25 +42,24 @@ const columns: Column<MovieData>[] = [
 ];
 
 export default function RowPinningPushed() {
-  const ds = useServerDataSource<MovieData>({
-    dataFetcher: (params) => {
-      return Server(params.requests);
-    },
+  const queryFn: UseServerDataSourceParams<GridSpec["data"], []>["queryFn"] = useCallback((params) => {
+    return Server(params.requests);
+  }, []);
+
+  const ds = useServerDataSource<GridSpec["data"], []>({
+    queryFn,
+    queryKey: [],
     blockSize: 50,
   });
 
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-  });
-
-  const view = grid.view.useValue();
+  const isLoading = ds.isLoading.useValue();
 
   return (
     <>
       <div className="border-b-ln-gray-20 flex gap-2 border-b px-2 py-4">
-        <GridButton
+        <button
+          data-ln-button="website"
+          data-ln-size="md"
           onClick={() => {
             ds.pushResponses([
               {
@@ -64,8 +71,10 @@ export default function RowPinningPushed() {
           }}
         >
           Pin One Top
-        </GridButton>
-        <GridButton
+        </button>
+        <button
+          data-ln-button="website"
+          data-ln-size="md"
           onClick={() => {
             ds.pushResponses([
               {
@@ -77,95 +86,22 @@ export default function RowPinningPushed() {
           }}
         >
           Remove Pinned
-        </GridButton>
+        </button>
       </div>
 
-      <div className="lng-grid" style={{ height: 500 }}>
-        <Grid.Root grid={grid}>
-          <Grid.Viewport style={{ overflowY: "scroll" }}>
-            <Grid.Header>
-              {view.header.layout.map((row, i) => {
-                return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
-
-                      return (
-                        <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm capitalize"
-                        />
-                      );
-                    })}
-                  </Grid.HeaderRow>
-                );
-              })}
-            </Grid.Header>
-            <Grid.RowsContainer
-              className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}
-            >
-              <Grid.RowsTop>
-                {view.rows.top.map((row) => {
-                  if (row.kind === "full-width") return null;
-
-                  return (
-                    <Grid.Row row={row} key={row.id}>
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsTop>
-              <Grid.RowsCenter>
-                {view.rows.center.map((row) => {
-                  if (row.kind === "full-width") return null;
-
-                  return (
-                    <Grid.Row row={row} key={row.id}>
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsCenter>
-
-              <Grid.RowsBottom>
-                {view.rows.bottom.map((row) => {
-                  if (row.kind === "full-width") return null;
-
-                  return (
-                    <Grid.Row row={row} key={row.id}>
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsBottom>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid.Root>
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid
+          rowSource={ds}
+          columns={columns}
+          styles={useMemo(() => {
+            return { viewport: { style: { scrollbarGutter: "stable" } } };
+          }, [])}
+          slotViewportOverlay={
+            isLoading && (
+              <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>
+            )
+          }
+        />
       </div>
     </>
   );

@@ -1,15 +1,9 @@
-import type {
-  DataFetcherFn,
-  DataRequest,
-  DataResponse,
-} from "@1771technologies/lytenyte-pro/types";
-
-import type { MovieData } from "./data";
-import { data as movieData } from "./data";
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
+import { data as movieData } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
-export async function Server(reqs: DataRequest[]): ReturnType<DataFetcherFn<MovieData>> {
+export async function Server(reqs: DataRequest[]): Promise<DataResponse[]> {
   // Simulate latency and server work.
   await sleep();
 
