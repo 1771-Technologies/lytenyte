@@ -6,7 +6,7 @@ import {
   type UseServerDataSourceParams,
 } from "@1771technologies/lytenyte-pro-experimental";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { Server } from "./server.js";
 import type { MovieData } from "./data";
 import {
@@ -57,6 +57,9 @@ export default function ServerDataDemo() {
       <Grid
         rowSource={ds}
         columns={columns}
+        styles={useMemo(() => {
+          return { viewport: { style: { scrollbarGutter: "stable" } } };
+        }, [])}
         slotViewportOverlay={
           isLoading && (
             <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>

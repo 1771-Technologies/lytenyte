@@ -1,12 +1,14 @@
 import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro/types";
 
 import type { MovieData } from "./data";
-import { data as rawData } from "./data";
-import type { CustomSort } from "./custom-sort-context";
+import { data as rawData } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
-export async function Server(reqs: DataRequest[], sortModel: CustomSort | null) {
+export async function Server(
+  reqs: DataRequest[],
+  sortModel: { columnId: string; isDescending: boolean } | null,
+) {
   // Simulate latency and server work.
   await sleep();
 

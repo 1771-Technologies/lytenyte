@@ -1,43 +1,40 @@
-import type {
-  CellRendererFn,
-  HeaderCellRendererParams,
-  SortModelItem,
-} from "@1771technologies/lytenyte-pro/types";
-import type { MovieData } from "./data";
 import { format } from "date-fns";
 import type { JSX } from "react";
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+import { ArrowUpIcon, Link1Icon } from "@radix-ui/react-icons";
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo";
+import { ArrowDownIcon } from "@1771technologies/lytenyte-pro/icons";
 
 function SkeletonLoading() {
   return (
     <div className="h-full w-full p-2">
-      <div className="h-full w-full animate-pulse rounded-xl bg-gray-200 dark:bg-gray-100"></div>
+      <div className="bg-ln-gray-20 h-full w-full animate-pulse rounded-xl"></div>
     </div>
   );
 }
 
-export const NameCellRenderer: CellRendererFn<MovieData> = ({ grid, row, column }) => {
-  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
+export const NameCellRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
 
-  const field = grid.api.columnField(column, row) as string;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   return <div className="overflow-hidden text-ellipsis">{field}</div>;
 };
 
-export const ReleasedRenderer: CellRendererFn<MovieData> = ({ column, grid, row }) => {
-  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
-  const field = grid.api.columnField(column, row) as string;
+export const ReleasedRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   const formatted = field ? format(field, "dd MMM yyyy") : "-";
 
   return <div>{formatted}</div>;
 };
 
-export const GenreRenderer: CellRendererFn<MovieData> = ({ grid, column, row }) => {
-  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
-  const field = grid.api.columnField(column, row) as string;
+export const GenreRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   const splits = field ? field.split(",") : [];
 
@@ -46,7 +43,7 @@ export const GenreRenderer: CellRendererFn<MovieData> = ({ grid, column, row }) 
       {splits.map((c) => {
         return (
           <div
-            className="border-primary-200 text-primary-700 dark:text-primary-500 bg-primary-200/20 rounded border p-1 px-2 text-xs"
+            className="border-(--primary-200) text-(--primary-700) dark:text-(--primary-500) bg-(--primary-200)/20 rounded border p-1 px-2 text-xs"
             key={c}
           >
             {c}
@@ -87,16 +84,16 @@ const MonitorPlayIcon = (props: JSX.IntrinsicElements["svg"]) => {
   );
 };
 
-export const TypeRenderer: CellRendererFn<MovieData> = ({ grid, column, row }) => {
-  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
-  const field = grid.api.columnField(column, row) as string;
+export const TypeRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   const isMovie = field === "Movie";
   const Icon = isMovie ? FilmRealIcon : MonitorPlayIcon;
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <span className={isMovie ? "text-primary-500" : "text-accent-500"}>
+      <span className={isMovie ? "text-(--primary-500)" : "text-ln-primary-50"}>
         <Icon />
       </span>
       <span>{field}</span>
@@ -104,9 +101,9 @@ export const TypeRenderer: CellRendererFn<MovieData> = ({ grid, column, row }) =
   );
 };
 
-export const RatingRenderer: CellRendererFn<MovieData> = ({ column, row, grid }) => {
-  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
-  const field = grid.api.columnField(column, row) as string;
+export const RatingRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
+  const field = params.api.columnField(params.column, params.row) as string;
   const rating = field ? Number.parseFloat(field.split("/")[0]) : null;
   if (rating == null || Number.isNaN(rating)) return "-";
 
@@ -130,53 +127,32 @@ export const RatingRenderer: CellRendererFn<MovieData> = ({ column, row, grid })
   );
 };
 
-export function HeaderRenderer({ column, grid }: HeaderCellRendererParams<MovieData>) {
-  const sort = grid.state.sortModel.useValue().find((c) => c.columnId === column.id);
-
-  const isDescending = sort?.isDescending ?? false;
+export const LinkRenderer = (params: Grid.T.CellRendererParams<GridSpec>) => {
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
+  const field = params.api.columnField(params.column, params.row) as string;
 
   return (
+    <a href={field} className="text-(--primary-500)">
+      <Link1Icon />
+    </a>
+  );
+};
+
+export function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
+  return (
     <div
-      className="hover:bg-ln-gray-10 flex h-full w-full items-center px-2 text-sm transition-all"
+      className="group relative flex h-full w-full cursor-pointer items-center px-1 text-sm transition-colors"
       onClick={() => {
-        const current = grid.api.sortForColumn(column.id);
-
-        if (current == null) {
-          let sort: SortModelItem<MovieData>;
-          const columnId = column.id;
-
-          if (column.type === "datetime") {
-            sort = {
-              columnId,
-              sort: { kind: "date", options: { includeTime: true } },
-            };
-          } else if (column.type === "number") {
-            sort = { columnId, sort: { kind: "number" } };
-          } else {
-            sort = { columnId, sort: { kind: "string" } };
-          }
-
-          grid.state.sortModel.set([sort]);
-          return;
-        }
-        if (!current.sort.isDescending) {
-          grid.state.sortModel.set([{ ...current.sort, isDescending: true }]);
-        } else {
-          grid.state.sortModel.set([]);
-        }
+        const nextSort = column.sort === "asc" ? null : column.sort === "desc" ? "asc" : "desc";
+        api.sortColumn(column.id, nextSort);
       }}
     >
-      {column.name ?? column.id}
+      <div className="sort-button flex w-full items-center justify-between rounded px-1 py-1 transition-colors">
+        {column.name ?? column.id}
 
-      {sort && (
-        <>
-          {!isDescending ? (
-            <ArrowUpIcon className="size-4" />
-          ) : (
-            <ArrowDownIcon className="size-4" />
-          )}
-        </>
-      )}
+        {column.sort === "asc" && <ArrowUpIcon className="text-ln-text-dark size-4" />}
+        {column.sort === "desc" && <ArrowDownIcon className="text-ln-text-dark size-4" />}
+      </div>
     </div>
   );
 }

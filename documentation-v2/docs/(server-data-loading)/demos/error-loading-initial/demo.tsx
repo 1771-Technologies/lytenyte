@@ -13,7 +13,7 @@ import {
   ReleasedRenderer,
   TypeRenderer,
 } from "./components.js";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 
 export interface GridSpec {
   readonly data: MovieData;
@@ -70,6 +70,9 @@ export default function ServerDataFailFirst() {
       <Grid
         rowSource={ds}
         columns={columns}
+        styles={useMemo(() => {
+          return { viewport: { style: { scrollbarGutter: "stable" } } };
+        }, [])}
         slotViewportOverlay={
           isLoading && (
             <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>

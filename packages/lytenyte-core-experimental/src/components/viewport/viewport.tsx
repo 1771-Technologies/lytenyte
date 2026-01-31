@@ -230,7 +230,11 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           <>{typeof ViewportOverlay === "function" ? <ViewportOverlay api={api} /> : ViewportOverlay}</>
         )}
         <EditDriver />
-        {children}
+        {/* Prevents jumps of the first render until we've determined our viewport
+            @Lee - I wonder if this is the best approach. Perhaps there is some raf method we can use 
+            to prevent shifts.
+          */}
+        {vp && dimensions.innerWidth > 0 && children}
       </div>
 
       {shouldCapture && (
