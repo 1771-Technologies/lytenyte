@@ -313,6 +313,9 @@ importers:
       '@1771technologies/lytenyte-doc':
         specifier: workspace:*
         version: link:../packages-auxiliary/lytenyte-doc
+      '@ark-ui/react':
+        specifier: 5.25.0
+        version: 5.25.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@astrojs/mdx':
         specifier: 4.3.13
         version: 4.3.13(astro@5.16.6(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.54.0)(tsx@4.20.3)(typescript@5.9.2)(yaml@2.8.2))

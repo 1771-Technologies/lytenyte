@@ -161,7 +161,12 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
   const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, selectionState, globalSignal, rowParents);
   const setExpansions = state.onExpansionsChange;
 
-  const onRowsUpdated = useOnRowsUpdated(source, props.onRowDataChange, props.rowUpdateOptimistically);
+  const onRowsUpdated = useOnRowsUpdated(
+    source,
+    props.onRowDataChange,
+    props.rowUpdateOptimistically,
+    globalSignal,
+  );
   const rowSiblings = useRowSiblings(source);
 
   const rowDelete = useRowDelete(source, props.onRowsDeleted, props.rowUpdateOptimistically);

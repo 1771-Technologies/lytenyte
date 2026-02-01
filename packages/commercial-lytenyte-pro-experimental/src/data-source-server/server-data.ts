@@ -494,7 +494,7 @@ export class ServerData {
 
     if (centerRow) {
       if (asOf && centerRow.asOf > asOf) return;
-      (centerRow as any).data = { ...centerRow.row, data };
+      (centerRow as any).row = { ...centerRow.row, data };
       return;
     }
 

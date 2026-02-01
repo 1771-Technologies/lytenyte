@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@1771technologies/lytenyte-doc": "workspace:*",
+    "@ark-ui/react": "5.25.0",
     "@astrojs/mdx": "4.3.13",
     "@astrojs/react": "4.4.2",
     "@emotion/cache": "^11.14.0",
