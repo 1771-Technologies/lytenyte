@@ -82,7 +82,7 @@ const first: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
 };
 
 const base: Grid.ColumnMarker<GridSpec> = { headerRenderer: HeaderCell };
-const rowGroupColumn: Grid.RowGroupColumn<GridSpec> = { width: 170, cellRenderer: GroupCell };
+const rowGroupColumn: Grid.RowGroupColumn<GridSpec> = { width: 170, cellRenderer: GroupCell, pin: "start" };
 
 export default function DataPushing() {
   const [data, setData] = useState(initialData);
@@ -98,7 +98,7 @@ export default function DataPushing() {
     <>
       <div className="border-ln-border flex gap-4 border-b px-4 py-3">
         <button
-          data-ln-button="tertiary"
+          data-ln-button="website"
           data-ln-size="md"
           onClick={() => {
             setData(nextData());

@@ -1,9 +1,9 @@
 ---
 title: Cell Renderers
-step: Use custom components to render bespoke content in grid cells.
-description: Cell renderers are custom React components that you assign to a column definition to
-  control what each cell displays. You can set a cell renderer on an individual column, or you can define
-  a renderer on the base (default) column definition to apply the same renderer to all grid cells.
+step: Render custom cell content with React components.
+description: Cell renderers are custom React components you assign to a column definition
+  to control what each cell displays. Assign one to a specific column or set it in the
+  base column definition to apply it to every grid cell.
 ---
 
 ## Defining a Cell Renderer
@@ -12,21 +12,20 @@ Set the `cellRenderer` property on a column to provide the column with a compone
 the content of that cell. The `cellRenderer` property is a React function component that receives a set of props
 from LyteNyte Grid. These props conform to the [`Grid.T.CellRendererParams`](/docs/reference) type.
 
-The demo below uses a custom cell renderer for each column. If you inspect the code by clicking the
-**Expand Code** button on the code frame, you will notice that each column has its `cellRenderer` property
-set. The `components.tsx` file contains all the code for the renderers.
+The demo below assigns a custom cell renderer for each column.
+Click **Expand Code** to see that each column has its `cellRenderer` property set.
+The `components.tsx` file defines the renderer components.
 
 ::demo[Custom Cell Renderers="../(column)/demos/column-overview-demo"]
 
-Cell renderers are arbitrary React components. They are rendered within the React tree and have access to the
-existing context in your React app. The `Grid.T.CellRendererParams` type provides the most common properties
-used for rendering cells. Any other state you require for your cell renderers can either be provided
-by [extending the grid's API](/docs/grid-api-extensions) or by creating a
-[context value](https://react.dev/reference/react/createContext) and using it in the cell.
+Cell renderers are React components. They render within your application's React tree and can
+read any existing React context. The `Grid.T.CellRendererParams` type provides the most common properties
+for cell rendering. Additional state can be provided by [extending the grid's API](/docs/grid-api-extensions)
+or creating a [context value](https://react.dev/reference/react/createContext) for use in the cell.
 
-The code below is for the cell renderer used by the **Product** column in the demo. It is shown here to
-emphasize that cell renderers are normal React components in LyteNyte Grid. No new knowledge is required
-to create them.
+The following code implements the cell renderer for the **Product** column. LyteNyte Grid uses
+standard React components, so **you don't need specialized grid APIs or patterns**.
+You can leverage your existing React expertise without learning a proprietary API.
 
 ```tsx
 export function ProductCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
@@ -50,20 +49,19 @@ export function ProductCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 
 ### Column Field
 
-Every cell in LyteNyte Grid has an associated cell value. Depending on the `field` property of the
-[column](/docs/reference), retrieving the value of a cell may not be straightforward. Furthermore,
-if you are using row groups or aggregated rows, the value of a cell may be retrieved differently
-than it is for a leaf row.
+Each cell derives its value from the column's `field` property. The grid handles
+data retrieval differently for leaf rows than for group or aggregated rows.
+When you define `field` as a [function or path](/docs/column-field), the grid
+resolves the value dynamically rather than accessing the row data via a direct key.
 
-To simplify cell value retrieval, LyteNyte Grid provides the `columnField` API method, which returns
-the value of a cell for a given row. The demo below demonstrates this. The **Balance** column's cell renderer
-uses the `columnField` API to retrieve the cell value.
+To simplify value retrieval, `columnField` returns the cell value for
+a specific row. In the demo below, the **Balance** column's cell renderer calls
+`columnField` to retrieve the cell value.
 
 ::demo[Cell Value="../(client-source)/demos/client-row-aggregation-fn"]
 
-Notice that the **Balance** cell renderer calls `api.columnField` to retrieve the value of the cell. Since the
-renderer uses the `columnField` API method, the renderer does not need to distinguish which row type it is rendering.
-The code is shown below.
+By calling `api.columnField` to retrieve the cell value, the renderer avoids branching on row type.
+See the code below.
 
 ```tsx
 export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
@@ -87,17 +85,15 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
 }
 ```
 
-## Cell Renderer State & Virtualization
+## Cell State and Virtualization
 
-LyteNyte Grid is [virtualized by default](/docs/grid-virtualization). As the user scrolls, elements that
-are not visible are removed from the viewport. Since LyteNyte Grid is built in React, removing elements
-from the viewport entails unmounting those elements from the React Virtual DOM. Any **local state** is
-removed when the component unmounts, and recreated when the component remounts.
+LyteNyte Grid uses [virtualized by default](/docs/grid-virtualization). As you scroll, React
+unmounts off-screen rows and remounts them as they
+re-enter the viewport, resetting any **local state**.
 
-Most of the time, this behavior does not cause issues. However, if your cell renderers need to persist client state,
-move the state above the cell renderer in the React tree.
-For example, instead of creating local state with `useState` (which will not persist when the
-component unmounts), create a context value and use that.
+To persist client state across scrolls, lift that state above
+the cell renderer in the React tree. Use a parent component or a
+context provider rather than `useState` inside the renderer.
 
 ```tsx
 function MyGrid() {
@@ -118,20 +114,18 @@ function MyCustomCell() {
 }
 ```
 
-## Cell Renderer Best Practices
+## Optimizing Cell Renderers
 
-LyteNyte Grid does not impose any restrictions on the content a cell renderer may contain,
-however there are some good practices to follow that will ensure you get the most out of
-LyteNyte Grid:
+LyteNyte Grid supports any cell renderer content. Follow these guidelines to maximize performance and usability:
 
-- Ensure your cell renderers are lightweight and avoid heavy computations in the renderer. LyteNyte
-  Grid can render hundreds, if not thousands, of cells. To maximize grid performance, your cell
-  renderers need to be efficient.
-- Use the provided cell props when your cell renderer displays row state feedback. For example, the
-  `selected` property on the `Grid.T.CellRendererParams` represents the current row selection state
-  for that cell.
-- Ensure the content of your cell renderer fits within the cell bounds. Cells clip
-  overflow, so content cannot overflow the cell.
+- **Keep Renderers Lightweight:** Avoid expensive computations in the render path
+  because they degrade scroll performance. The grid can render thousands of cells
+  per update. Memoize complex calculations where possible.
+- **Derive State From Props:** Use `Grid.T.CellRendererParams` to access row state.
+  For example, use the selected property to render selection feedback
+  rather than tracking state locally.
+- **Respect Cell Boundaries:** Cells clip overflow by default. Ensure content
+  fits within defined dimensions to avoid truncation.
 
 ## Next Steps
 

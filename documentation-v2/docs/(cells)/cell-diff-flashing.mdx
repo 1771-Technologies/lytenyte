@@ -1,28 +1,24 @@
 ---
 title: Cell Diff Flashing
-step: Learn how to create a cell that flashes whenever its value changes.
-description: When the data in the grid changes frequently, it is useful to give users feedback
-  about which cells have updated. One way to do this is by flashing cells that have changed.
+step: Highlight value changes within cells with visual flashes.
+description: Highlight frequent data updates by momentarily flashing modified cells.
+  This visual cue helps users track real-time changes in high-frequency data streams.
 ---
 
 :::note
 
-Cell flashing is not a built-in feature of LyteNyte Grid. Instead, you implement cell flashing by
-providing a custom cell renderer that flashes the cell when the cell value changes.
-This guide covers a few ways to implement that behavior.
-
-This guide assumes familiarity with cell renderers in LyteNyte Grid. For more guidance,
-read the [Cell Renderers guide](/docs/cell-renderers) to learn how LyteNyte Grid displays cell content.
+Implement cell flashing using a custom renderer that triggers a
+CSS animation when the cell value updates. This guide covers several approaches for
+cell flashing. Review the [Cell Renderers guide](/docs/cell-renderers) before you start.
 
 :::
 
 ## Flashing Cells On Change
 
-The easiest way to flash a cell when its value changes is to track the cell's current value and
-previous value. When the values differ, flash the cell. The demo below demonstrates this approach.
-The demo flashes changed cells using CSS. Click **Update Data** to randomly change cell values.
+To flash a cell when its value changes, compare the current and previous values.
+If the values differ, apply a CSS flash animation. Click **Update Data** to randomly change cell values.
 
-::demo[Cell Flashing="./demos/cell-flashing"]
+::demo[Flash Updated Cells="./demos/cell-flashing"]
 
 The cell flashing logic lives in the `NumberCell` component. `NumberCell` is a custom cell renderer that the grid
 columns use. The component tracks the previous value and applies the `"flash"` animation
@@ -61,15 +57,16 @@ export function NumberCell({ api, column, row }: Grid.T.CellRendererParams<GridS
 
 ### Enhanced Flash
 
-Flashing a cell background is a relatively uninteresting indicator of change. The background flash only
-indicates that the value changed, but it does not show how the value changed. A better approach
-is to flash the changed value itself. The demo below demonstrates this approach.
+Flashing the cell background indicates a value changed but doesn't show
+the change's direction or magnitude. To provide context, flash the value
+itself, as shown in the demo below.
 
-::demo[Flash Change Value="./demos/cell-flashing-enhanced"]
+::demo[Flash Value Changes="./demos/cell-flashing-enhanced"]
 
-The change-detection logic is the same as the previous example, but the rendering logic is different.
-Instead of flashing the background, the cell renderer shows the change and then fades
-it out. The code is shown below.
+This demo reuses the change-detection logic from the previous example
+but alters the rendering. Instead of flashing the background, the cell
+renderer highlights the value change and then fades out
+the effect. See the code below.
 
 ```tsx
 export function NumberCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {

@@ -134,7 +134,7 @@ export const HeaderCell = ({ column }: Grid.T.HeaderParams<GridSpec>) => {
     >
       <div>{column.name ?? column.id}</div>
       {aggName && (
-        <span className="focus-visible:ring-ln-primary-50 text-ln-primary-50 rounded px-1 py-1 text-xs focus:outline-none focus-visible:ring-1">
+        <span className="focus-visible:ring-ln-primary-50 text-ln-primary-50 rounded px-1 py-1 text-[10px] text-xs focus:outline-none focus-visible:ring-1">
           ({aggName as string})
         </span>
       )}
