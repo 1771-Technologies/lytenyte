@@ -14,14 +14,14 @@ it's about predicting which data a user is likely to view next and preparing it 
 This approach is common on webpages, where links to other pages are preloaded to speed
 up navigation. We can apply the same principle to loading data slices.
 
-<Callout>
+:::note
 
 Before looking at examples, note that optimistic loading is not a fixed sequence
 of functions. The best approach depends on your application and how users interact
 with it. The examples in this guide introduce common use cases and
 demonstrate how LyteNyte Grid supports optimistic data loading.
 
-</Callout>
+:::
 
 The example below demonstrates how to optimistically load slices in a flat data view.
 This works by tracking the current view and preloading the next slice whenever the
@@ -37,6 +37,7 @@ server data source interface. The full effect is shown and explained here, but c
 of the methods available on the server data source.
 
 ```ts
+// TO Update
 useEffect(() => {
   // Watch for view changes to track the current requests that define the view.
   return ds.requestsForView.watch(() => {
