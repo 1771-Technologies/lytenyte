@@ -78,15 +78,19 @@ const data = Object.fromEntries(
 let r = Object.values(data).flat();
 
 const nextData = () => {
-  const items = symbols; // getRandomItemsFromArray(symbols, 5);
+  const items = symbols;
 
   for (let i = 0; i < items.length; i++) {
     // Randomly update only some symbols
-    if (Math.random() > 0.5) continue;
 
     const s = items[i];
     const rows = data[s];
-    rows.pop();
+    const c = rows.pop()!;
+
+    if (Math.random() > 0.5) {
+      rows.unshift({ ...c });
+      continue;
+    }
 
     const current = rows.at(0)!;
 

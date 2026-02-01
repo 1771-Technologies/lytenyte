@@ -60,8 +60,8 @@ if (import.meta.vitest) {
     await wait(100);
 
     await expect.element(grid).toBeVisible();
-    await wait(); // Give the grid a moment to render
 
+    await wait(200);
     (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
     await wait();
 

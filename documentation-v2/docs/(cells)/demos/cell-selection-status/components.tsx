@@ -20,7 +20,7 @@ export function CompactNumberLabel({ value }: { value: string | number }) {
   const [label, suffix] = typeof value === "number" ? formatCompactNumber(value) : ["-", ""];
 
   return (
-    <div className="flex h-full w-full items-center justify-end gap-1 text-nowrap tabular-nums">
+    <div className="text-ln-text-dark flex h-full w-full items-center justify-end gap-1 text-nowrap tabular-nums">
       <span>{label}</span>
       <span className="font-semibold">{suffix}</span>
     </div>
@@ -63,7 +63,7 @@ function CurrencyCellImpl({ api, row, column }: Grid.T.CellRendererParams<GridSp
 
 export function CurrencyLabel({ value }: { value: number | string }) {
   return (
-    <div className="flex items-baseline gap-1">
+    <div className="text-ln-text-dark flex items-baseline gap-1">
       <span>{typeof value === "number" ? formatter.format(value) : value}</span>
       <span className="text-[9px]">USD</span>
     </div>
@@ -82,7 +82,11 @@ export function PercentLabel({ value }: { value: string | number }) {
   const label = typeof value === "number" ? formatter.format(value) + "%" : "-";
 
   return (
-    <div className={tw("flex h-full w-full items-center justify-end text-nowrap tabular-nums")}>{label}</div>
+    <div
+      className={tw("text-ln-text-dark flex h-full w-full items-center justify-end text-nowrap tabular-nums")}
+    >
+      {label}
+    </div>
   );
 }
 
@@ -95,7 +99,7 @@ function SymbolCellImpl({ api, row, column }: Grid.T.CellRendererParams<GridSpec
   const desc = row.data?.[1];
 
   return (
-    <div className="grid h-full w-full grid-cols-[32px_1fr] items-center gap-3 overflow-hidden text-nowrap">
+    <div className="text-ln-text-dark grid h-full w-full grid-cols-[32px_1fr] items-center gap-3 overflow-hidden text-nowrap">
       <div className="flex h-8 min-h-8 w-8 min-w-8 items-center justify-center overflow-hidden rounded-full">
         <img
           src={logos[symbol]}

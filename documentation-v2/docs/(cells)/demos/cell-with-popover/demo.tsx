@@ -110,11 +110,9 @@ export default function Demo() {
           };
         }, [])}
       />
-      <Popover anchor={anchor} open={!!network} modal={false} focusTrap={false} hide>
+      <Popover anchor={anchor} open={!!network} modal={false} focusTrap={false} hide sideOffset={0}>
         {network && (
-          <Popover.Container className="grid grid-cols-[20px_auto_1fr] items-center gap-1.5">
-            <Popover.Arrow />
-
+          <Popover.Container className="bg-ln-bg-popover border-ln-border-xstrong grid grid-cols-[20px_auto_1fr] items-center gap-1.5 rounded-lg border p-2 text-xs">
             <div>
               <img
                 src={networks[network]}

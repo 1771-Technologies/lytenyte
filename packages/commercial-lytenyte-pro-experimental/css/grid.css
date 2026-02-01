@@ -8,7 +8,7 @@
       box-sizing: border-box;
 
       &[data-ln-cell-selection-is-deselect="true"] {
-        background-color: var(--ln-red-30);
+        background-color: color-mix(in srgb, var(--ln-red-50) 20%, transparent 80%);
 
         &[data-ln-cell-selection-border-top="true"],
         &[data-ln-cell-selection-border-bottom="true"],

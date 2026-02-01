@@ -20,11 +20,11 @@ export const DialogRoot = ({
   focusPreventScroll,
   focusReturn,
   focusTrap,
-  lockScroll,
   lightDismiss,
   modal,
   hide,
 
+  lockScroll = modal ?? true,
   anchor = null,
   placement = "bottom",
   shiftPadding = 8,

@@ -55,7 +55,7 @@ export default function CellSelection() {
           onCellSelectionChange={setRect} //!
         />
       </div>
-      <div className="border-ln-border flex h-12 items-center border-t">
+      <div className="border-ln-border flex h-fit items-center border-t">
         {rect.length > 0 && <StatusBar rect={rect[0]} source={ds} />}
       </div>
     </>
@@ -96,15 +96,14 @@ function StatusBar({ rect, source }: { rect: Grid.T.DataRect; source: RowSourceC
   if (selectedNumberColumns.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-4 px-2 py-2">
-      <div>Averages:</div>
+    <div className="flex w-full flex-wrap items-center justify-center gap-4 px-2 py-2">
       {Object.entries(summedValues).map(([id, values]) => {
         const avg = sum(values) / values.length;
         const column = columns.find((x) => x.id === id)!;
 
         return (
-          <div className="flex items-center gap-1" key={id}>
-            <span className="text-ln-text-dark">{column?.name ?? column.id}</span>
+          <div className="flex items-center justify-center gap-2 text-xs" key={id}>
+            <span className="text-ln-text text-nowrap">Avg. {column?.name ?? column.id}</span>
             {(id === "price" || id === "eps") && <CurrencyLabel value={avg} />}
             {id === "change" && <PercentLabel value={avg} />}
             {id === "volume" && <CompactNumberLabel value={avg} />}
