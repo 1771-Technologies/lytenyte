@@ -36,14 +36,13 @@ export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
         </div>
       </Tooltip.Trigger>
       <Tooltip.Portal>
-        <Tooltip.Content className="border-ln-border bg-ln-bg-popover z-20 grid grid-cols-[20px_1fr] items-center gap-1.5 rounded border p-2">
-          <div>
-            <img
-              src={networks[row.data.network]}
-              alt={`Logo for network ${row.data.network}`}
-              className="h-full w-full overflow-hidden rounded-full"
-            />
-          </div>
+        <Tooltip.Content className="border-ln-border-xstrong bg-ln-bg-popover z-20 grid grid-cols-[auto_20px_1fr] items-center gap-1.5 rounded-lg border p-2 text-xs">
+          <div className="font-bold">Network: </div>
+          <img
+            src={networks[row.data.network]}
+            alt={`Logo for network ${row.data.network}`}
+            className="h-full w-full overflow-hidden rounded-full"
+          />
           <div className="w-full overflow-hidden text-ellipsis">{row.data.network}</div>
         </Tooltip.Content>
       </Tooltip.Portal>

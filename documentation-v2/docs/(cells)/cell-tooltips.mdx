@@ -1,22 +1,20 @@
 ---
-title: Cell Tooltips and Popovers
+title: Cell Tooltips & Popovers
 step: Render custom tooltips or popovers on hover or click.
-description: By using custom cell renderers, you can add tooltips or popovers to cells.
-  LyteNyte Grid is unopinionated about the tooltip or popover library you use and works
-  with your existing components.
+description: Use custom cell renderers to add tooltips or popovers to cells.
+  LyteNyte Grid is unopinionated, allowing direct integration with your existing components.
 ---
 
-## Cells With Tooltips
+## Cell Tooltips
 
-The demo below uses the [Radix UI](https://www.radix-ui.com/primitives/docs/components/tooltip) tooltip
-component to display the network for the symbol whenever a cell in the **Symbol** column is hovered. The
-example is simplistic, but it demonstrates how you can use auxiliary components like tooltips in cells.
+The demo below renders a [Radix UI](https://www.radix-ui.com/primitives/docs/components/tooltip) tooltip component.
+Hover over a cell in the **Symbol** column to view the symbol's network.
+Use this pattern to integrate any auxiliary component into your cells.
 
-::demo[Cells With Tooltips="./demos/cell-with-tooltip"]
+::demo[Cell Tooltips="./demos/cell-with-tooltip"]
 
-The tooltip code is shown below. Notice that the code is identical to the example in the Radix UI
-documentation. LyteNyte Grid does not require any special adjustments for tooltips, so any tooltip
-component will work.
+This implementation matches standard Radix UI documentation. LyteNyte Grid requires
+no wrappers or overrides, ensuring compatibility with any React tooltip component.
 
 ```tsx
 export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
@@ -29,7 +27,7 @@ export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   return (
     //!next 2
     <Tooltip.Root delayDuration={100}>
-      <Tooltip.Trigger asChild className="h-full w-full">
+      <Tooltip.Trigger asChild className="h-ful w-full">
         <div className="grid grid-cols-[20px_auto_1fr] items-center gap-1.5">
           <div>
             <img
@@ -43,17 +41,16 @@ export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
           </div>
           <div className="w-full overflow-hidden text-ellipsis">{symbol.split("/")[0]}</div>
         </div>
-        {/*!next 14 */}
       </Tooltip.Trigger>
+      {/*!next 12 */}
       <Tooltip.Portal>
-        <Tooltip.Content className="border-ln-border bg-ln-bg-popover z-20 grid grid-cols-[20px_1fr] items-center gap-1.5 rounded border p-2">
-          <div>
-            <img
-              src={networks[row.data.network]}
-              alt={`Logo for network ${row.data.network}`}
-              className="h-full w-full overflow-hidden rounded-full"
-            />
-          </div>
+        <Tooltip.Content className="border-ln-border-xstrong bg-ln-bg-popover z-20 grid grid-cols-[auto_20px_1fr] items-center gap-1.5 rounded-lg border p-2 text-xs">
+          <div className="font-bold">Network: </div>
+          <img
+            src={networks[row.data.network]}
+            alt={`Logo for network ${row.data.network}`}
+            className="h-full w-full overflow-hidden rounded-full"
+          />
           <div className="w-full overflow-hidden text-ellipsis">{row.data.network}</div>
         </Tooltip.Content>
       </Tooltip.Portal>
@@ -62,17 +59,22 @@ export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 }
 ```
 
-## Cells With Popovers
+## Cell Popovers
+
+You can also use a popover to show additional details.
+In the demo below, focusing a cell in the **Symbol** column opens
+a popover with the symbol's network.
 
 Another option is to use a popover to display auxiliary content. The demo below uses a popover to display
 the network of a symbol whenever a cell in the **Symbol** column is focused. While you can build a custom
 cell renderer that renders a popover component, the demo takes a slightly different approach.
 
-::demo[Cell With Popovers="./demos/cell-with-popover"]
+::demo[Cell Popovers="./demos/cell-with-popover"]
 
-The demo defines the popover at the same level as the grid. Whenever a cell receives focus, the demo saves
-information about the focused cell (the element and network name) to React state. The demo then displays
-the popover whenever React state contains that information. The code is shown below.
+Instead of rendering the popover within a custom cell renderer,
+this demo renders it as a grid sibling. On cell focus, React state stores the
+focused cell element and network name, and the demo shows
+the popover when that state is set.
 
 ```tsx
 export default function Demo() {
@@ -129,16 +131,16 @@ export default function Demo() {
 }
 ```
 
-The approach shown here is just one of many options. For example, you could extend the grid API with an
-imperative method that shows popovers, or you could provide popover functionality via React context. LyteNyte
-Grid does not recommend a single approach. Use the method that makes the most sense for your use case and
-application.
+To implement popovers, you can also extend the grid API with an
+imperative method or manage popover behavior via React context. LyteNyte Grid
+is unopinionated, supporting the architecture that best fits your requirements.
 
 :::info
 
-The popover component used in the demo is the <ProTag /> component provided by LyteNyte Grid. While the demo
-uses this component, you may use any popover component that is available. For more on LyteNyte Grid's
-popover component, read the [Popover Frame guide](/docs/component-popover-frame).
+The demo uses LyteNyte Grid's popover component, exclusive to
+**LyteNyte Grid PRO**. You can replace it with any popover component.
+For details on the built-in component, see the
+[Popover Frame guide](/docs/component-popover-frame).
 
 :::
 
