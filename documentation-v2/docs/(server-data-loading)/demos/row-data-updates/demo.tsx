@@ -1,102 +1,121 @@
 "use client";
-
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import { useEffect, useId } from "react";
-import { Server } from "./server";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { useEffect, useMemo } from "react";
+import { Server } from "./server.js";
 import type { DataEntry } from "./data";
-import { GroupCell, HeaderCell, NumberCell } from "./components";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
+import { HeaderCell, NumberCell } from "./components.js";
+import { Grid, RowGroupCell, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { logos } from "@1771technologies/grid-sample-data/stock-data-smaller";
 
-const columns: Column<DataEntry>[] = [
+export interface GridSpec {
+  readonly data: DataEntry;
+  readonly column: { agg?: string };
+}
+
+const columns: Grid.Column<GridSpec>[] = [
   {
     id: "bid",
     name: "Bid",
     type: "number",
-    groupVisibility: "always",
     cellRenderer: NumberCell,
     width: 120,
     widthFlex: 1,
+    agg: "avg",
   },
   {
     id: "ask",
     name: "Ask",
     type: "number",
-    groupVisibility: "always",
     cellRenderer: NumberCell,
     width: 120,
     widthFlex: 1,
+    agg: "avg",
   },
   {
     id: "spread",
     name: "Spread",
     type: "number",
-    groupVisibility: "always",
     cellRenderer: NumberCell,
     width: 120,
     widthFlex: 1,
+    agg: "avg",
   },
 
   {
     id: "volatility",
     name: "Volatility",
     type: "number",
-    groupVisibility: "always",
     cellRenderer: NumberCell,
     width: 120,
     widthFlex: 1,
+    agg: "first",
   },
   {
     id: "latency",
     name: "Latency",
     type: "number",
-    groupVisibility: "always",
     cellRenderer: NumberCell,
     width: 120,
     widthFlex: 1,
+    agg: "first",
   },
   {
     id: "symbol",
     name: "Symbol",
     hide: true,
-    groupVisibility: "always",
     type: "number",
+    agg: "first",
   },
 ];
 
+const base: Grid.ColumnBase<GridSpec> = { headerRenderer: HeaderCell };
+const group: Grid.RowGroupColumn<GridSpec> = {
+  cellRenderer: (p) => {
+    return (
+      <RowGroupCell
+        {...p}
+        groupLabel={(row) => {
+          const symbol = row.key;
+
+          return (
+            <div className="flex h-full w-full items-center gap-2 overflow-hidden text-nowrap">
+              <div className="flex h-8 min-h-8 w-8 min-w-8 items-center justify-center overflow-hidden rounded-full">
+                <img
+                  src={logos[symbol!]}
+                  alt={`Logo of ${symbol}`}
+                  className="h-6.5 min-h-6.5 w-6.5 min-w-[26] rounded-full bg-black p-1"
+                />
+              </div>
+              <div className="symbol-cell min-w-15 flex items-center justify-center rounded-2xl bg-teal-600/20 px-1 py-0.5 text-xs">
+                {symbol}
+              </div>
+            </div>
+          );
+        }}
+      />
+    );
+  },
+  pin: "start",
+  width: 170,
+};
+
 export default function RowUpdates() {
   const ds = useServerDataSource<DataEntry>({
-    dataFetcher: (params) => {
-      return Server(params.requests, params.model.groups, params.model.aggregations);
+    queryFn: async (params) => {
+      return await Server(params.requests, ["symbol"], {
+        time: { fn: "first" },
+        volume: { fn: "group" },
+        bid: { fn: "avg" },
+        ask: { fn: "avg" },
+        spread: { fn: "avg" },
+        volatility: { fn: "first" },
+        latency: { fn: "first" },
+        pnl: { fn: "first" },
+        symbol: { fn: "first" },
+      });
     },
+    queryKey: [],
     blockSize: 50,
-  });
-
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns: columns,
-    rowGroupModel: ["symbol"],
-    rowGroupColumn: {
-      width: 170,
-      cellRenderer: GroupCell,
-    },
-
-    columnBase: {
-      headerRenderer: HeaderCell,
-    },
-
-    aggModel: {
-      time: { fn: "first" },
-      volume: { fn: "group" },
-      bid: { fn: "avg" },
-      ask: { fn: "avg" },
-      spread: { fn: "avg" },
-      volatility: { fn: "first" },
-      latency: { fn: "first" },
-      pnl: { fn: "first" },
-      symbol: { fn: "first" },
-    },
   });
 
   useEffect(() => {
@@ -107,50 +126,24 @@ export default function RowUpdates() {
     return () => clearInterval(i);
   }, [ds]);
 
-  const view = grid.view.useValue();
+  const isLoading = ds.isLoading.useValue();
 
   return (
-    <div className="lng-grid" style={{ height: 500 }}>
-      <Grid.Root grid={grid}>
-        <Grid.Viewport style={{ overflowY: "scroll" }}>
-          <Grid.Header>
-            {view.header.layout.map((row, i) => {
-              return (
-                <Grid.HeaderRow key={i} headerRowIndex={i}>
-                  {row.map((c) => {
-                    if (c.kind === "group") return null;
-
-                    return (
-                      <Grid.HeaderCell
-                        key={c.id}
-                        cell={c}
-                        className="flex h-full w-full items-center px-2 text-sm capitalize"
-                      />
-                    );
-                  })}
-                </Grid.HeaderRow>
-              );
-            })}
-          </Grid.Header>
-          <Grid.RowsContainer
-            className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}
-          >
-            <Grid.RowsCenter>
-              {view.rows.center.map((row) => {
-                if (row.kind === "full-width") return null;
-
-                return (
-                  <Grid.Row row={row} key={row.id}>
-                    {row.cells.map((c) => {
-                      return <Grid.Cell key={c.id} cell={c} />;
-                    })}
-                  </Grid.Row>
-                );
-              })}
-            </Grid.RowsCenter>
-          </Grid.RowsContainer>
-        </Grid.Viewport>
-      </Grid.Root>
+    <div className="ln-grid" style={{ height: 500 }}>
+      <Grid
+        rowSource={ds}
+        columns={columns}
+        columnBase={base}
+        rowGroupColumn={group}
+        styles={useMemo(() => {
+          return { viewport: { style: { scrollbarGutter: "stable" } } };
+        }, [])}
+        slotViewportOverlay={
+          isLoading && (
+            <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>
+          )
+        }
+      />
     </div>
   );
 }

@@ -21,14 +21,14 @@ The example below demonstrates this behavior. A `setInterval` polls the server e
 for updates, and the grid refreshes accordingly. The example uses a grouped data view to
 show that update ticking works for both flat and grouped views.
 
-!demo:Data Ticking="./demos/row-data-updates"
+::demo[Data Ticking="./demos/row-data-updates"]
 
 ### Manually Refreshing the Grid
 
 The `refresh` method described above is a convenience wrapper around two other
 methods provided by the LyteNyte Grid server data source:
 
-- `requestsForView`: an atom that returns [Data Request Objects](/docs/reference) for the current view.
+- `requestsForView`: a reactive value that returns [Data Request Objects](/docs/reference) for the current view.
 - `pushRequests`: sends [Data Request Objects](/docs/reference) to the
   server to force an update for the slices described by the requests.
 
@@ -67,14 +67,14 @@ children. For example, if a single expanded row group is in view, the view consi
 - The root data slice containing the group rows
 - The child rows of the expanded group
 
-These represent two separate data requests. LyteNyte Grid's `dataFetcher`
+These represent two separate data requests. LyteNyte Grid's `queryFn`
 provides both slices simultaneously, but if your implementation splits them into
 multiple server requests, the returned data may become out of sync. This can occur if the server
 data ticks between requests. To prevent this, handle refresh requests together to ensure data consistency.
 
 ## Next Steps
 
-- [Unbalanced Rows](/docs/server-data-loading-unbalanced-rows): Handle asymmetric row groups of varying depths.
-- [Optimistic Loading](/docs/server-data-loading-optimistic-loading): Use optimistic loading to prefetch data and improve responsiveness.
-- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handle grouped data and load group slices.
-- [Handling Load Failures](/docs/server-data-loading-handling-load-failures): Explore how to handle failed data requests.
+::next[/docs/server-data-loading-unbalanced-rows]
+::next[/docs/server-data-loading-optimistic-loading]
+::next[/docs/server-data-loading-row-grouping-and-aggregation]
+::next[/docs/server-data-loading-handling-load-failures]

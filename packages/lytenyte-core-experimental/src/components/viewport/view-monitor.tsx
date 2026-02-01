@@ -6,6 +6,11 @@ export function ViewMonitor({ viewport }: { viewport: HTMLElement }) {
   const { source } = useRoot();
   const bounds = useBounds();
 
+  const boundsValue = bounds.useValue();
+  useEffect(() => {
+    source.onViewChange(boundsValue);
+  }, [boundsValue, source]);
+
   useEffect(() => {
     const controller = new AbortController();
 

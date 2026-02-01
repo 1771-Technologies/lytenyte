@@ -197,13 +197,12 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       useRowCount: () => rowCount$.useValue(),
       useBottomCount: () => bot$.useValue(),
       useRows: () => {
-        const rowMap = row$.useValue();
-
         const rowCount = rowCount$.useValue();
 
         const mappedMemo = useMemo(() => {
           return {
             get: (i: number) => {
+              const rowMap = row$.get();
               const row = rowMap.get(i);
               if (!row && i >= 0 && i < rowCount) {
                 return {
@@ -218,7 +217,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
             },
             size: rowCount,
           };
-        }, [rowCount, rowMap]);
+        }, [rowCount]);
 
         return mappedMemo;
       },
