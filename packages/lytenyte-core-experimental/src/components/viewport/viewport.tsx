@@ -34,6 +34,8 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     slotViewportOverlay: ViewportOverlay,
     totalHeaderHeight,
     dimensions,
+    xPositions,
+    yPositions,
   } = useRoot();
 
   const edit = useEdit();
@@ -235,6 +237,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             to prevent shifts.
         */}
         {vp && dimensions.innerWidth > 0 && children}
+        {/* Prevents layouts shifts when the viewport size has not been retrieved. */}
+        {dimensions.innerWidth === 0 && (
+          <div style={{ minWidth: xPositions.at(-1), minHeight: yPositions.at(-1) }} />
+        )}
       </div>
 
       {shouldCapture && (

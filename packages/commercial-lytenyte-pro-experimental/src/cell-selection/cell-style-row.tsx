@@ -48,7 +48,7 @@ export function CellStyleRow({
 
     let y: number | string;
     if (isBot) y = yPositions[rowIndex] - yPositions[firstBotIndex];
-    else if (isTop) y = yPositions[rowIndex] - yPositions[rowTopCount];
+    else if (isTop) y = yPositions[rowIndex];
     else {
       y = `calc(${yPositions[rowIndex] - yPositions[rowTopCount]}px - var(--ln-y-offset, 0px))`;
     }
@@ -59,7 +59,7 @@ export function CellStyleRow({
     const pinnedCell = isStart || isEnd;
 
     const style = {
-      height,
+      height: height - 1, // Minus 1 because the bottom border is not included in cell heights.
       width,
       transform,
       position: "absolute",

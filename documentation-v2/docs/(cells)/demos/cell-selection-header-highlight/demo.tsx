@@ -26,7 +26,11 @@ export default function CellSelection() {
 
   return (
     <div
-      className="ln-grid ln-cell:text-xs ln-cell:font-light ln-header:text-xs ln-cell-marker:border-e ln-cell-marker:border-ln-border-strong ln-header:data-[ln-cell-selected=true]:bg-ln-primary-05"
+      className={[
+        "ln-grid ln-cell:text-xs ln-cell:font-light ln-header:text-xs ln-cell-marker:border-e ln-cell-marker:border-ln-border-strong",
+        "dark:ln-header:data-[ln-cell-selected=true]:bg-[#161D2A]",
+        "ln-header:data-[ln-cell-selected=true]:bg-[#f2f7ff]",
+      ].join(" ")}
       style={{ height: 500 }}
     >
       <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectionMode="range" />
