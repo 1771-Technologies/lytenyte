@@ -1,87 +1,64 @@
 "use client";
 
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useId } from "react";
-import { Server } from "./server";
-import { GroupCellRenderer, LastModified, SizeRenderer, tw } from "./components";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { useMemo, useState } from "react";
+import { Server } from "./server.js";
+import { LastModified, SizeRenderer } from "./components.js";
+import { Grid, RowGroupCell, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
 
-const columns: Column<any>[] = [
-  { id: "name", width: 200, widthFlex: 1, cellRenderer: GroupCellRenderer },
-  { id: "size", cellRenderer: SizeRenderer },
+const columns: Grid.Column<{ data: any }>[] = [
+  {
+    id: "name",
+    name: "Name",
+    width: 200,
+    widthFlex: 1,
+    cellRenderer: (p) => {
+      return (
+        <RowGroupCell
+          {...p}
+          leafLabel={(p) => (
+            <div className="font-bold" style={{ paddingInlineStart: 18 }}>
+              {p.data.name}
+            </div>
+          )}
+        />
+      );
+    },
+  },
+  { id: "size", name: "Size", cellRenderer: SizeRenderer },
   { id: "last_modified", name: "Modified", cellRenderer: LastModified },
   { id: "type", width: 100, name: "Ext" },
 ];
 
 export default function BasicServerData() {
+  const [expansions, setExpansions] = useState<Record<string, boolean | undefined>>({ Documents: true });
   const ds = useServerDataSource<any>({
-    dataFetcher: (params) => {
+    queryFn: (params) => {
       return Server(params.requests);
     },
+    queryKey: [],
+    rowGroupExpansions: expansions,
+    onRowGroupExpansionChange: setExpansions,
     blockSize: 50,
   });
 
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    rowGroupExpansions: { Documents: true },
-    columns,
-  });
-
-  const view = grid.view.useValue();
+  const isLoading = ds.isLoading.useValue();
 
   return (
-    <div className="lng-grid" style={{ height: 500 }}>
-      <Grid.Root grid={grid}>
-        <Grid.Viewport style={{ overflowY: "scroll" }}>
-          <Grid.Header>
-            {view.header.layout.map((row, i) => {
-              return (
-                <Grid.HeaderRow key={i} headerRowIndex={i}>
-                  {row.map((c) => {
-                    if (c.kind === "group") return null;
-
-                    return (
-                      <Grid.HeaderCell
-                        key={c.id}
-                        cell={c}
-                        className={tw(
-                          "flex h-full w-full items-center px-2 text-sm capitalize",
-                          c.column.id === "size" && "justify-end",
-                        )}
-                      />
-                    );
-                  })}
-                </Grid.HeaderRow>
-              );
-            })}
-          </Grid.Header>
-          <Grid.RowsContainer
-            className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}
-          >
-            <Grid.RowsCenter>
-              {view.rows.center.map((row) => {
-                if (row.kind === "full-width") return null;
-
-                return (
-                  <Grid.Row row={row} key={row.id}>
-                    {row.cells.map((c) => {
-                      return (
-                        <Grid.Cell
-                          key={c.id}
-                          cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
-                        />
-                      );
-                    })}
-                  </Grid.Row>
-                );
-              })}
-            </Grid.RowsCenter>
-          </Grid.RowsContainer>
-        </Grid.Viewport>
-      </Grid.Root>
+    <div className="ln-grid" style={{ height: 500 }}>
+      <Grid
+        rowSource={ds}
+        columns={columns}
+        rowGroupColumn={false}
+        styles={useMemo(() => {
+          return { viewport: { style: { scrollbarGutter: "stable" } } };
+        }, [])}
+        slotViewportOverlay={
+          isLoading && (
+            <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>
+          )
+        }
+      />
     </div>
   );
 }
