@@ -86,6 +86,7 @@ if (import.meta.vitest) {
   test("when there are row spans it should be cutoff when the detail is expanded", async () => {
     const screen = await render(<RowDetailWithSpans />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render

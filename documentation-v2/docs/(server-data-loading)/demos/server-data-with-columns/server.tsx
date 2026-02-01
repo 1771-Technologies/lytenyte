@@ -1,7 +1,6 @@
-import type { Column, DataRequest, DataResponse } from "@1771technologies/lytenyte-pro/types";
-
-import type { MovieData } from "./data";
-import { data } from "./data";
+import type { Grid, DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
+import { data } from "./data.js";
+import type { GridSpec } from "./demo.jsx";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
@@ -31,19 +30,11 @@ export async function Server(reqs: DataRequest[]) {
   };
 }
 
-const columns: Column<MovieData>[] = [
-  {
-    id: "#",
-    name: "",
-    width: 30,
-    field: "link",
-    widthMin: 30,
-    widthMax: 30,
-    cellRenderer: "link",
-  },
-  { id: "name", name: "Title", width: 250, widthFlex: 1, cellRenderer: "name" },
-  { id: "released_at", name: "Released", width: 120, cellRenderer: "release" },
-  { id: "genre", name: "Genre", cellRenderer: "genre" },
-  { id: "type", name: "Type", width: 120, cellRenderer: "type" },
-  { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: "rating" },
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "#", name: "", width: 30, field: "link", widthMin: 30, widthMax: 30 },
+  { id: "name", name: "Title", width: 250, widthFlex: 1 },
+  { id: "released_at", name: "Released", width: 120 },
+  { id: "genre", name: "Genre" },
+  { id: "type", name: "Type", width: 120 },
+  { id: "imdb_rating", name: "Rating", width: 120 },
 ];

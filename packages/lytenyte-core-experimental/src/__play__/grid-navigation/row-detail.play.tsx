@@ -96,6 +96,7 @@ if (import.meta.vitest) {
   test("when row details are present it should be possible to navigate across them", async () => {
     const screen = await render(<RowDetail />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render

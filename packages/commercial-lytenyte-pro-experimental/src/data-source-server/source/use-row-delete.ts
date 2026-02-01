@@ -6,7 +6,7 @@ import type { LeafOrParent } from "../async-tree/types";
 
 export function useRowDelete<T>(
   source: ServerData,
-  onRowDelete: UseServerDataSourceParams<unknown[]>["onRowsDeleted"],
+  onRowDelete: UseServerDataSourceParams<any, unknown[]>["onRowsDeleted"],
   optimistic: boolean = false,
 ) {
   const rowDelete: RowSourceServer<T>["rowDelete"] = useEvent((rows) => {

@@ -47,8 +47,13 @@
         padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth) + var(--ln-space-60));
       }
 
-      &[data-ln-component-group-cell-expanded="true"] [data-ln-component-group-cell-expander="true"] {
+      &[data-ln-component-group-cell-expanded="true"]
+        [data-ln-component-group-cell-expander="true"]:not([data-ln-component-group-cell-error="true"]) {
         transform: rotate(90deg);
+      }
+
+      &[data-ln-component-group-cell-expanded="true"] [data-ln-component-group-cell-error="true"] {
+        color: var(--ln-red-50);
       }
 
       & [data-ln-component-group-cell-expander="true"] {

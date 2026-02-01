@@ -1,11 +1,12 @@
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent, type Signal } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { ServerData } from "../server-data";
 import { type RowSourceServer, type UseServerDataSourceParams } from "../use-server-data-source.js";
 
 export function useOnRowsUpdated<T>(
   source: ServerData,
-  onRowDataChange: UseServerDataSourceParams<unknown[]>["onRowDataChange"],
-  optimistic: UseServerDataSourceParams<unknown[]>["rowUpdateOptimistically"],
+  onRowDataChange: UseServerDataSourceParams<any, unknown[]>["onRowDataChange"],
+  optimistic: UseServerDataSourceParams<any, unknown[]>["rowUpdateOptimistically"],
+  globalSignal: Signal<number>,
 ) {
   const onRowsUpdated: RowSourceServer<T>["onRowsUpdated"] = useEvent((updates) => {
     if (!onRowDataChange) return;
@@ -31,6 +32,8 @@ export function useOnRowsUpdated<T>(
       });
       source.flatten();
     });
+
+    globalSignal(Date.now());
   });
 
   return onRowsUpdated;

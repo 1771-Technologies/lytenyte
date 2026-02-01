@@ -1,6 +1,7 @@
 ---
 title: Data Pushing or Pulling
 pro: true
+step: Manually request or push data to the server data source from the client.
 description: The LyteNyte Grid's server data source enables programmatic data exchange
   with the server, giving developers full control over how data is loaded into the
   grid. It also supports hybrid patterns where row data originates from both the
@@ -17,7 +18,7 @@ if the grid resets before a response is received.
 In the example below, clicking the **"Request Data"** button triggers the
 grid to tick, a manual refresh similar to those in many UIs that let users poll for updates.
 
-!demo:Data Pulling="./demos/data-pulling"
+::demo[Data Pulling="./demos/data-pulling"]
 
 The code for pulling data from the server is simple and runs in
 the **"Request Data"** button's `onClick` callback:
@@ -44,7 +45,7 @@ them to the data source. It can also be used to generate data ticks on the clien
 and push the result into the data source as though it were the server that sent the rows.
 This is shown in the example below.
 
-!demo:Data Pushing="./demos/data-pushing"
+::demo[Data Pushing="./demos/data-pushing"]
 
 This example is intentionally simple to highlight the core functionality. Like
 the data-pulling example, the main logic runs in the **"Push Data"** button's `onClick`
@@ -72,7 +73,7 @@ See the [Data Interface guide](/docs/server-data-loading-interface) for more inf
 
 ## Next Steps
 
-- [Server Row Sorting](/docs/server-data-loading-row-sorting): Explains server-side sorting and client-side display.
-- [Server Row Filtering](/docs/server-data-loading-row-filtering): Covers server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
-- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handles grouped data and loads group slices.
-- [Handling Load Failures](/docs/server-data-loading-handling-load-failures): Explores all scenarios where data requests may fail.
+::next[/docs/server-data-loading-row-sorting]
+::next[/docs/server-data-loading-row-filtering]
+::next[/docs/server-data-loading-row-grouping-and-aggregation]
+::next[/docs/server-data-loading-handling-load-failures]

@@ -1,6 +1,6 @@
 import "./component.css";
 import { logos } from "@1771technologies/grid-sample-data/stock-data-smaller";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
@@ -20,13 +20,18 @@ const formatter = new Intl.NumberFormat("en-US", {
 export function NumberCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row) as number;
 
-  const prevRef = useRef(field);
-  const prev = prevRef.current;
+  const prevValue = useRef(field);
+
+  const diff = useMemo(() => {
+    if (prevValue.current === field) return 0;
+
+    const diff = field - prevValue.current;
+    prevValue.current = field;
+
+    return diff;
+  }, [field]);
 
   const value = typeof field === "number" ? formatter.format(field) : "-";
-
-  const diff = field - (prev ?? field);
-  if (prev !== field) prevRef.current = field;
 
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {

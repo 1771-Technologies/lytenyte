@@ -6,7 +6,7 @@ import type { RowNode } from "@1771technologies/lytenyte-shared";
 
 export type SourceState = ReturnType<typeof useSourceState>;
 
-export function useSourceState<K extends unknown[]>(props: UseServerDataSourceParams<K>) {
+export function useSourceState<K extends unknown[]>(props: UseServerDataSourceParams<any, K>) {
   const [rows, setRows] = useState<Map<number, RowNode<any>>>(new Map());
   const [maxDepth, setMaxDepth] = useState(0);
   const [isLoading, setIsLoading] = useState(false);

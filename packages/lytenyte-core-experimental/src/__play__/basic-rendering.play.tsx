@@ -1,6 +1,7 @@
 import "./test.css";
 import { useClientDataSource, Grid } from "../index.js";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 interface Spec {
   readonly data: (typeof bankDataSmall)[number];
@@ -45,6 +46,7 @@ if (import.meta.vitest) {
 
   test("should render without any issues", async () => {
     const screen = await r.render(<BasicRendering />);
+    await wait(100);
 
     const grid = screen.getByRole("grid");
     await expect.element(grid).toBeVisible();

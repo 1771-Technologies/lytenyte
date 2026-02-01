@@ -64,6 +64,7 @@ if (import.meta.vitest) {
   test("when cells have interactive elements they should be navigable", async () => {
     const screen = await render(<CellWithTabbables />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(100); // Give the grid a moment to render

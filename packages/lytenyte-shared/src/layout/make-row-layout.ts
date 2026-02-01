@@ -175,7 +175,11 @@ function handleViewLayout<T>({
     const computed = layout.computed[r];
     if (!computed) continue;
 
-    if (viewCache.has(r)) {
+    const node = rowForIndex(r);
+    if (!node) break;
+
+    const current = viewCache.get(r);
+    if (current && current.id === node.id) {
       const row = viewCache.get(r)!;
       if (onlySpans) {
         if (row.kind === "full-width") continue;
@@ -187,9 +191,6 @@ function handleViewLayout<T>({
         continue;
       }
     }
-
-    const node = rowForIndex(r);
-    if (!node) break;
 
     const rowLastPinTop = n.rowTopEnd - 1 === r ? true : undefined;
     const rowFirstPinBottom = n.rowBotStart === r ? true : undefined;

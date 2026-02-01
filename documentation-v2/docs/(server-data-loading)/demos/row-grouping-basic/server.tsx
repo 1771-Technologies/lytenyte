@@ -1,15 +1,10 @@
-import type {
-  DataRequest,
-  DataResponse,
-  RowGroupModelItem,
-} from "@1771technologies/lytenyte-pro/types";
-
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
 import type { SalaryData } from "./data";
-import { data } from "./data";
+import { data } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
-export async function Server(reqs: DataRequest[], groupModel: RowGroupModelItem<SalaryData>[]) {
+export async function Server(reqs: DataRequest[], groupModel: string[]) {
   // Simulate latency and server work.
   await sleep();
 

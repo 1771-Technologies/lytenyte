@@ -1,12 +1,11 @@
 "use client";
-
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import { useId } from "react";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 
 export default function AlwaysLoading() {
   const ds = useServerDataSource({
-    dataFetcher: async () => {
+    queryKey: [],
+    queryFn: async () => {
       return new Promise((res) => {
         void res;
       });
@@ -14,62 +13,19 @@ export default function AlwaysLoading() {
     blockSize: 50,
   });
 
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns: [],
-  });
-
-  const view = grid.view.useValue();
+  const isLoading = ds.isLoading.useValue();
 
   return (
     <div className="lng-grid" style={{ height: 500 }}>
-      <Grid.Root grid={grid}>
-        <Grid.Viewport style={{ overflowY: "scroll" }}>
-          <Grid.Header>
-            {view.header.layout.map((row, i) => {
-              return (
-                <Grid.HeaderRow key={i} headerRowIndex={i}>
-                  {row.map((c) => {
-                    if (c.kind === "group") return null;
-
-                    return (
-                      <Grid.HeaderCell
-                        key={c.id}
-                        cell={c}
-                        className="flex h-full w-full items-center px-2 text-sm capitalize"
-                      />
-                    );
-                  })}
-                </Grid.HeaderRow>
-              );
-            })}
-          </Grid.Header>
-          <Grid.RowsContainer
-            className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}
-          >
-            <Grid.RowsCenter>
-              {view.rows.center.map((row) => {
-                if (row.kind === "full-width") return null;
-
-                return (
-                  <Grid.Row row={row} key={row.id}>
-                    {row.cells.map((c) => {
-                      return (
-                        <Grid.Cell
-                          key={c.id}
-                          cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
-                        />
-                      );
-                    })}
-                  </Grid.Row>
-                );
-              })}
-            </Grid.RowsCenter>
-          </Grid.RowsContainer>
-        </Grid.Viewport>
-      </Grid.Root>
+      <Grid
+        rowSource={ds}
+        columns={[]}
+        slotViewportOverlay={
+          isLoading && (
+            <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>
+          )
+        }
+      />
     </div>
   );
 }

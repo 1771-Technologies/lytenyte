@@ -6,7 +6,7 @@ import { ROOT_LEAF_PREFIX } from "../async-tree/+constants.async-tree.js";
 
 export function useRowAdd<T>(
   source: ServerData,
-  onRowAdd: UseServerDataSourceParams<unknown[]>["onRowsAdded"],
+  onRowAdd: UseServerDataSourceParams<any, unknown[]>["onRowsAdded"],
   optimistic = false,
 ) {
   const rowAdd: RowSourceServer<T>["rowAdd"] = useEvent((rows, placement = "start") => {

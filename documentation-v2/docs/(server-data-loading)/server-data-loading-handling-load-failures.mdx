@@ -1,6 +1,7 @@
 ---
 title: Handling Load Failures
 pro: true
+step: Explores all scenarios where data requests may fail.
 description: Network requests can fail at any time, that's an inherent part of client-server communication.
   The LyteNyte Grid server data source provides simple mechanisms to recover from request
   errors, making it easy to retry failed requests.
@@ -13,7 +14,7 @@ request fails, LyteNyte Grid can't determine which data slices to re-request bec
 none have loaded. The simplest solution is to reset the grid,
 as shown in the example below.
 
-!demo:Initial Load Error="./demos/error-loading-initial"
+::demo[Initial Load Error="./demos/error-loading-initial"]
 
 Clicking the **"Retry - it will work now"** button calls the `reset` method on
 the server data source, which resends the initial data request to the server.
@@ -29,7 +30,7 @@ In the example below, scroll down a few rows to trigger some failed requests. Cl
 the **"Retry Failed"** button clears the error state and re-requests
 the affected rows. The subsequent requests will succeed.
 
-!demo:Failed Row Slice="./demos/slice-data-failures"
+::demo[Failed Row Slice="./demos/slice-data-failures"]
 
 ### Handling Group Failures
 
@@ -38,7 +39,7 @@ expansion that failed, and all associated errored requests will be retried. In t
 example below, expanding a group triggers a failure. Clicking the exclamation icon
 retries the failed requests, and the subsequent requests succeed.
 
-!demo:Group Expansion Failure="./demos/error-group"
+::demo[Group Expansion Failure="./demos/error-group"]
 
 The `retry` method is invoked in the `GroupCellRenderer` button component:
 
@@ -52,11 +53,8 @@ The `retry` method is invoked in the `GroupCellRenderer` button component:
 </button>
 ```
 
-The TypeScript cast is required because the server data source is a subtype of the general row data source.
-
 ## Next Steps
 
-- [Server Row Data](/docs/server-data-loading-row-data): Shows how to fetch server data in slices.
-- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handle grouped data and load group slices.
-- [Optimistic Loading](/docs/server-data-loading-optimistic-loading): Explores LyteNyte Grid's
-  optimistic loading for pre-fetching data, providing a responsive client-side experience.
+::next[/docs/server-data-loading-row-data]
+::next[/docs/server-data-loading-row-grouping-and-aggregation]
+::next[/docs/server-data-loading-optimistic-loading]
