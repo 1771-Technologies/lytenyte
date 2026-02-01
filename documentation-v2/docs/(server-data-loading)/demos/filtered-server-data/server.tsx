@@ -1,18 +1,12 @@
-import type {
-  DataRequest,
-  DataResponse,
-  FilterModelItem,
-} from "@1771technologies/lytenyte-pro/types";
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro/types";
 
 import type { MovieData } from "./data";
-import { data as movieData } from "./data";
+import { data as movieData } from "./data.js";
+import type { GridFilter } from "./types.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
-export async function Server(
-  reqs: DataRequest[],
-  filterModel: Record<string, FilterModelItem<MovieData>>,
-) {
+export async function Server(reqs: DataRequest[], filterModel: Record<string, GridFilter>) {
   // Simulate latency and server work.
   await sleep();
 
@@ -25,7 +19,7 @@ export async function Server(
           for (const [columnId, filter] of filters) {
             // Our logic here only handles a small subset of the possible filter functionality
             // for ease of implementation.
-            if (filter.kind !== "string" && filter.kind !== "date") return false;
+            if (filter.kind !== "text" && filter.kind !== "date") return false;
 
             const value = row[columnId as keyof MovieData];
             if (!value) return false;
@@ -34,9 +28,7 @@ export async function Server(
               const rating = value ? Math.round(Number.parseFloat(value.split("/")[0]) / 2) : "";
               const v = rating as number;
               const filterV =
-                typeof filter.value === "string"
-                  ? Number.parseInt(filter.value)
-                  : (filter.value as number);
+                typeof filter.value === "string" ? Number.parseInt(filter.value) : (filter.value as number);
 
               if (filter.operator === "equals" && v !== filterV) return false;
               if (filter.operator === "not_equals" && v === filterV) return false;
@@ -54,20 +46,14 @@ export async function Server(
               continue;
             }
 
-            if (
-              (filter.operator === "equals" || filter.operator === "not_equals") &&
-              columnId === "genre"
-            ) {
+            if ((filter.operator === "equals" || filter.operator === "not_equals") && columnId === "genre") {
               const genres = value.split(",").map((x) => x.trim());
 
-              if (filter.operator === "not_equals" && genres.every((x) => x === filter.value))
-                return false;
-              if (filter.operator === "equals" && genres.every((x) => x !== filter.value))
-                return false;
+              if (filter.operator === "not_equals" && genres.every((x) => x === filter.value)) return false;
+              if (filter.operator === "equals" && genres.every((x) => x !== filter.value)) return false;
             }
 
-            if (columnId !== "genre" && filter.operator === "equals" && value !== filter.value)
-              return false;
+            if (columnId !== "genre" && filter.operator === "equals" && value !== filter.value) return false;
             if (columnId !== "genre" && filter.operator === "not_equals" && value === filter.value)
               return false;
             if (filter.operator === "less_than" && value >= filter.value!) return false;
