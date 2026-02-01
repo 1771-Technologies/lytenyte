@@ -61,6 +61,8 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
     isEditing,
     detailExpanded,
     detailExpansions,
+    r?.error,
+    r?.loading,
     r,
     r?.__selected,
     r?.__indeterminate,

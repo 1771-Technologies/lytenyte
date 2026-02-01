@@ -53,7 +53,7 @@ export default function ServerDataFailFirst() {
   return (
     <div className="ln-grid relative" style={{ height: 500 }}>
       {!!error && (
-        <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center gap-2 bg-red-500/20">
+        <div className="z-2 absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-2 bg-red-500/20">
           <span>{`${error}`}</span>
           <button
             data-ln-button="website"

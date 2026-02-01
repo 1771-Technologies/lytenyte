@@ -14,7 +14,7 @@ request fails, LyteNyte Grid can't determine which data slices to re-request bec
 none have loaded. The simplest solution is to reset the grid,
 as shown in the example below.
 
-!demo:Initial Load Error="./demos/error-loading-initial"
+::demo[Initial Load Error="./demos/error-loading-initial"]
 
 Clicking the **"Retry - it will work now"** button calls the `reset` method on
 the server data source, which resends the initial data request to the server.
@@ -30,7 +30,7 @@ In the example below, scroll down a few rows to trigger some failed requests. Cl
 the **"Retry Failed"** button clears the error state and re-requests
 the affected rows. The subsequent requests will succeed.
 
-!demo:Failed Row Slice="./demos/slice-data-failures"
+::demo[Failed Row Slice="./demos/slice-data-failures"]
 
 ### Handling Group Failures
 
@@ -39,7 +39,7 @@ expansion that failed, and all associated errored requests will be retried. In t
 example below, expanding a group triggers a failure. Clicking the exclamation icon
 retries the failed requests, and the subsequent requests succeed.
 
-!demo:Group Expansion Failure="./demos/error-group"
+::demo[Group Expansion Failure="./demos/error-group"]
 
 The `retry` method is invoked in the `GroupCellRenderer` button component:
 

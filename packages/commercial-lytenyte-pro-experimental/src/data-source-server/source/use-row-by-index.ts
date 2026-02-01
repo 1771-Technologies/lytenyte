@@ -76,12 +76,13 @@ export function useRowByIndex<T>(
                 data: null as any,
                 kind: "leaf",
                 loading: true,
-                error: error,
+                error: error?.error,
                 depth: 0,
               };
             }
             const loadingRow = loadingCache.current[i]!;
-            Object.assign(loadingRow, { loading: true, error });
+            Object.assign(loadingRow, { loading: true, error: error?.error });
+
             return loadingRow;
           }
 

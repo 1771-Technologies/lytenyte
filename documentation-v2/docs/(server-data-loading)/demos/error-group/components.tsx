@@ -1,9 +1,11 @@
-import type { CellRendererParams, RowDataSourceServer } from "@1771technologies/lytenyte-pro/types";
-import type { SalaryData } from "./data";
-import type { CSSProperties } from "react";
-import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
-import { tw } from "./ui";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import { twMerge } from "tailwind-merge";
+import clsx, { type ClassValue } from "clsx";
+import type { GridSpec } from "./demo";
+
+export function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
+}
 
 function SkeletonLoading() {
   return (
@@ -17,24 +19,22 @@ const formatter = new Intl.NumberFormat("en-Us", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
-export function SalaryRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
-  const field = grid.api.columnField(column, row);
+export function SalaryRenderer({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
-  if (typeof field !== "number") return null;
+  if (typeof field !== "number") return "-";
 
-  return (
-    <div className="flex h-full w-full items-center justify-end">${formatter.format(field)}</div>
-  );
+  return <div className="flex h-full w-full items-center justify-end">${formatter.format(field)}</div>;
 }
 
-export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
-  const field = grid.api.columnField(column, row);
+export function YearsOfExperienceRenderer({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
-  if (typeof field !== "number") return null;
+  if (typeof field !== "number") return "-";
 
   return (
     <div className="flex w-full items-baseline justify-end gap-1 tabular-nums">
@@ -44,12 +44,12 @@ export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererPar
   );
 }
 
-export function AgeCellRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
-  const field = grid.api.columnField(column, row);
+export function AgeCellRenderer({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
-  if (typeof field !== "number") return null;
+  if (typeof field !== "number") return "-";
 
   return (
     <div className="flex w-full items-baseline justify-end gap-1 tabular-nums">
@@ -59,91 +59,10 @@ export function AgeCellRenderer({ grid, row, column }: CellRendererParams<Salary
   );
 }
 
-export function BaseCellRenderer({ row, column, grid }: CellRendererParams<any>) {
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+export function BaseCellRenderer({ row, column, api }: Grid.T.CellRendererParams<GridSpec>) {
+  if (api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
-  const field = grid.api.columnField(column, row);
+  const field = api.columnField(column, row);
 
-  return <div className="flex h-full w-full items-center">{field as string}</div>;
+  return <div className="flex h-full w-full items-center">{(field as string) ?? "-"}</div>;
 }
-
-export function GroupCellRenderer({ row, grid }: CellRendererParams<any>) {
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
-
-  if (grid.api.rowIsLeaf(row)) return <div />;
-
-  const isExpanded = grid.api.rowGroupIsExpanded(row);
-
-  const hasError = row.errorGroup;
-  return (
-    <div
-      style={
-        {
-          paddingLeft: row.depth * 16,
-          "--before-offset": `${row.depth * 16 - 5}px`,
-        } as CSSProperties
-      }
-      className={tw(
-        "relative flex h-full w-full items-center gap-2 overflow-hidden text-nowrap",
-        row.depth > 0 &&
-          "before:border-ln-gray-30 before:absolute before:left-[var(--before-offset)] before:top-0 before:h-full before:border-r before:border-dashed",
-      )}
-    >
-      {row.loadingGroup && (
-        <div className="w-5">
-          <LoadingSpinner />
-        </div>
-      )}
-      {!!hasError && (
-        <button
-          className="hover:bg-ln-gray-10 w-5 cursor-pointer rounded text-red-400 transition-colors"
-          onClick={() => {
-            (grid.state.rowDataSource.get() as RowDataSourceServer<SalaryData>).retry();
-          }}
-        >
-          <span className="sr-only">Toggle the row group</span>
-          <ExclamationTriangleIcon />
-        </button>
-      )}
-      {!row.loadingGroup && !hasError && (
-        <button
-          className="hover:bg-ln-gray-10 w-5 cursor-pointer rounded transition-colors"
-          onClick={() => {
-            grid.api.rowGroupToggle(row);
-          }}
-        >
-          <span className="sr-only">Toggle the row group</span>
-          {isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
-        </button>
-      )}
-      <div className="w-full overflow-hidden text-ellipsis">{row.key || "(none)"}</div>
-    </div>
-  );
-}
-
-const LoadingSpinner = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <svg
-        className="h-4 w-4 animate-spin text-blue-500"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="8"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-        ></path>
-      </svg>
-    </div>
-  );
-};

@@ -37,7 +37,9 @@ const columns: Grid.Column<GridSpec>[] = [
 
 export default function ServerDataDemo() {
   const ds = useServerDataSource<GridSpec["data"], []>({
-    queryFn: (params) => Server(params.requests),
+    queryFn: async (params) => {
+      return await Server(params.requests);
+    },
     queryKey: [],
     blockSize: 50,
   });
