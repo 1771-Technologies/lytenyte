@@ -114,6 +114,7 @@ export default function RowUpdates() {
         symbol: { fn: "first" },
       });
     },
+    hasRowBranches: true,
     queryKey: [],
     blockSize: 50,
   });

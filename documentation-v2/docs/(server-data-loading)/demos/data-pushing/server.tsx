@@ -4,7 +4,7 @@ import type {
   DataResponse,
   RowGroupModelItem,
 } from "@1771technologies/lytenyte-pro/types";
-import { data, nextData, type DataEntry } from "./data";
+import { data, nextData, type DataEntry } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 50));
 
