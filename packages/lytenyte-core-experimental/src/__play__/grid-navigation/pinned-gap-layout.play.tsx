@@ -21,6 +21,7 @@ if (import.meta.vitest) {
   test("when there columns pinned left and right and there is a gap the navigation should still work", async () => {
     const screen = await render(<PinnedGapLayout rtl />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render

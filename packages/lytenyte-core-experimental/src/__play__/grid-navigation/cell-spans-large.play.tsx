@@ -36,6 +36,7 @@ if (import.meta.vitest) {
   test("when a column span is large navigation should still work", async () => {
     const screen = await render(<CellSpansLarge />);
     const grid = screen.getByRole("grid");
+    await wait(100); // Give the grid a moment to render
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -63,6 +64,7 @@ if (import.meta.vitest) {
   test("when a column span is large navigation should still work rtl", async () => {
     const screen = await render(<CellSpansLarge rtl />);
     const grid = screen.getByRole("grid");
+    await wait(100); // Give the grid a moment to render
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render

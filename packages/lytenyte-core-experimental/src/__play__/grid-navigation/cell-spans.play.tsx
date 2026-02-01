@@ -57,6 +57,7 @@ if (import.meta.vitest) {
   test("when there are column spans the grid should be able to navigate across the cells", async () => {
     const screen = await render(<CellSpans />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -265,6 +266,7 @@ if (import.meta.vitest) {
   test("when there are column spans the grid should be able to navigate across the cells rlt", async () => {
     const screen = await render(<CellSpans rtl />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(100); // Give the grid a moment to render
@@ -473,6 +475,7 @@ if (import.meta.vitest) {
   test("should be able to navigate across column and row spans", async () => {
     const screen = await render(<CellSpans />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -526,6 +529,7 @@ if (import.meta.vitest) {
   test("page up and down should focus the correct cells", async () => {
     const screen = await render(<CellSpans />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -541,6 +545,7 @@ if (import.meta.vitest) {
 
   test("home and end should work as expected", async () => {
     const screen = await render(<CellSpans />);
+    await wait(100);
     const grid = screen.getByRole("grid");
 
     await expect.element(grid).toBeVisible();

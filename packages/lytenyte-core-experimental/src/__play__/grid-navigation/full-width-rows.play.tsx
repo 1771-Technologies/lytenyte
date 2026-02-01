@@ -72,6 +72,7 @@ if (import.meta.vitest) {
   test("full width row navigation should correctly handle the tabbables", async () => {
     const screen = await render(<FullWidthRows />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -114,6 +115,7 @@ if (import.meta.vitest) {
   test("full width row navigation should correctly handle the tabbables rtl", async () => {
     const screen = await render(<FullWidthRows rtl />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -156,6 +158,7 @@ if (import.meta.vitest) {
   test("should be navigate across full width rows", async () => {
     const screen = await render(<FullWidthRows />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render

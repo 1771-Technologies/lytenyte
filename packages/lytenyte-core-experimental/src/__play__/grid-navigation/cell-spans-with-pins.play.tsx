@@ -37,6 +37,7 @@ if (import.meta.vitest) {
   test("when the columns are pinned should be navigate across them", async () => {
     const screen = await render(<CellSpansWithPins />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -67,6 +68,7 @@ if (import.meta.vitest) {
   test("when the columns are pinned should be navigate across them", async () => {
     const screen = await render(<CellSpansWithPins rtl />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render

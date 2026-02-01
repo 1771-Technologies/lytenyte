@@ -73,6 +73,7 @@ if (import.meta.vitest) {
   test("when the grid is rendered tabbing through show skip cells inside", async () => {
     const screen = await render(<NormalLayout />);
     const start = screen.getByText("Top Capture");
+    await wait(100);
 
     await expect.element(start).toBeVisible();
     start.element().focus();
@@ -99,6 +100,7 @@ if (import.meta.vitest) {
   test("when a cell is focused, we can navigate to the start and end", async () => {
     const screen = await render(<NormalLayout />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -147,6 +149,7 @@ if (import.meta.vitest) {
   test("when a cell is focused, we can navigate to the start and end in rtl", async () => {
     const screen = await render(<NormalLayout rtl />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -196,6 +199,7 @@ if (import.meta.vitest) {
   test("should be able to navigate up and down cells", async () => {
     const screen = await render(<NormalLayout center={50} />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -218,6 +222,7 @@ if (import.meta.vitest) {
   test("should be able to navigate up and down cells with pins", async () => {
     const screen = await render(<NormalLayout pinTop={2} pinBot={2} center={50} />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
@@ -244,6 +249,7 @@ if (import.meta.vitest) {
   test("should be able to handle moving to the start or end", async () => {
     const screen = await render(<NormalLayout />);
     const grid = screen.getByRole("grid");
+    await wait(100);
 
     await expect.element(grid).toBeVisible();
     await wait(); // Give the grid a moment to render
