@@ -129,21 +129,23 @@ export default function RowUpdates() {
   const isLoading = ds.isLoading.useValue();
 
   return (
-    <div className="ln-grid" style={{ height: 500 }}>
-      <Grid
-        rowSource={ds}
-        columns={columns}
-        columnBase={base}
-        rowGroupColumn={group}
-        styles={useMemo(() => {
-          return { viewport: { style: { scrollbarGutter: "stable" } } };
-        }, [])}
-        slotViewportOverlay={
-          isLoading && (
-            <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>
-          )
-        }
-      />
-    </div>
+    <>
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid
+          rowSource={ds}
+          columns={columns}
+          columnBase={base}
+          rowGroupColumn={group}
+          styles={useMemo(() => {
+            return { viewport: { style: { scrollbarGutter: "stable" } } };
+          }, [])}
+          slotViewportOverlay={
+            isLoading && (
+              <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>
+            )
+          }
+        />
+      </div>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import "./component.css";
 import { logos } from "@1771technologies/grid-sample-data/stock-data-smaller";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
@@ -21,41 +21,47 @@ const formatter = new Intl.NumberFormat("en-US", {
 export function NumberCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row) as number;
 
-  const prevRef = useRef(field);
-  const prev = prevRef.current;
+  const prevValue = useRef(field);
+
+  const diff = useMemo(() => {
+    if (prevValue.current === field) return 0;
+
+    const diff = field - prevValue.current;
+    prevValue.current = field;
+
+    return diff;
+  }, [field]);
 
   const value = typeof field === "number" ? formatter.format(field) : "-";
-
-  const diff = field - (prev ?? field);
-
-  if (prev !== field) prevRef.current = field;
   const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current || diff === 0) return;
 
     ref.current.style.animation = "none";
     void ref.current.clientHeight; // Forces layout changes to be applied
     requestAnimationFrame(() => {
-      ref.current!.style.animation = "fadeOut 3s ease-out forwards";
+      if (!ref.current) return;
+
+      ref.current.style.animation = "fadeOut 3s ease-out forwards";
     });
   }, [diff]);
 
   return (
     <div className="flex h-full items-center justify-end gap-2 tabular-nums tracking-tighter">
-      {diff !== 0 && (
-        <div
-          ref={ref}
-          className={clsx(
-            "flex items-center rounded px-1 text-[10px]",
-            diff < 0 && "bg-red-800/20 text-red-500",
-            diff > 0 && "bg-green-500/20 text-green-500",
-          )}
-        >
-          {diff < 0 && <ArrowDownIcon width={12} height={12} />}
-          {diff > 0 && <ArrowUpIcon width={12} height={12} />}
-          <span>{diff.toFixed(2)}</span>
-        </div>
-      )}
+      <div
+        ref={ref}
+        className={clsx(
+          "flex items-center rounded px-1 text-[10px]",
+
+          diff < 0 && "bg-red-800/20 text-red-500",
+          diff > 0 && "bg-green-500/20 text-green-500",
+        )}
+      >
+        {diff < 0 && <ArrowDownIcon width={12} height={12} />}
+        {diff > 0 && <ArrowUpIcon width={12} height={12} />}
+        <span>{diff !== 0 && diff.toFixed(2)}</span>
+      </div>
 
       {value}
     </div>

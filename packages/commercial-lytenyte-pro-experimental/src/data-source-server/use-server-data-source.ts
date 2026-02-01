@@ -164,8 +164,6 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
   const onRowsUpdated = useOnRowsUpdated(source, props.onRowDataChange, props.rowUpdateOptimistically);
   const rowSiblings = useRowSiblings(source);
 
-  const row$ = usePiece(state.rows);
-
   const rowDelete = useRowDelete(source, props.onRowsDeleted, props.rowUpdateOptimistically);
 
   const rowAdd = useRowAdd(source, props.onRowsAdded, props.rowUpdateOptimistically);
@@ -202,8 +200,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
         const mappedMemo = useMemo(() => {
           return {
             get: (i: number) => {
-              const rowMap = row$.get();
-              const row = rowMap.get(i);
+              const row = source.flat.rowIndexToRow.get(i);
               if (!row && i >= 0 && i < rowCount) {
                 return {
                   kind: "leaf",
@@ -277,7 +274,6 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     onRowsUpdated,
     onViewChange,
     requestsForView$,
-    row$,
     rowAdd,
     rowById,
     rowByIndex,
