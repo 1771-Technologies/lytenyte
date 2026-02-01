@@ -1,12 +1,8 @@
 "use client";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import {
-  Grid,
-  useServerDataSource,
-  type UseServerDataSourceParams,
-} from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
 
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { Server } from "./server.js";
 import type { MovieData } from "./data";
 import {
@@ -40,12 +36,8 @@ const columns: Grid.Column<GridSpec>[] = [
 ];
 
 export default function ServerDataDemo() {
-  const queryFn: UseServerDataSourceParams<GridSpec["data"], []>["queryFn"] = useCallback((params) => {
-    return Server(params.requests);
-  }, []);
-
   const ds = useServerDataSource<GridSpec["data"], []>({
-    queryFn,
+    queryFn: (params) => Server(params.requests),
     queryKey: [],
     blockSize: 50,
   });

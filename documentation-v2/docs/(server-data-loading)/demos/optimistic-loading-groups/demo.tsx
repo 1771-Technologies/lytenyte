@@ -1,48 +1,61 @@
 "use client";
-import "./component.css";
+import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import {
+  Grid,
+  Menu,
+  PillManager,
+  RowGroupCell,
+  useServerDataSource,
+} from "@1771technologies/lytenyte-pro-experimental";
 
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useId } from "react";
-import { Server } from "./server";
-import type { SalaryData } from "./data";
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
+import { useMemo, useState } from "react";
+import { Server } from "./server.jsx";
+import type { SalaryData } from "./data.js";
 import {
   AgeCellRenderer,
   BaseCellRenderer,
-  GroupCellRenderer,
-  HeaderCell,
   SalaryRenderer,
+  tw,
   YearsOfExperienceRenderer,
-} from "./components";
-import { GroupPills } from "./ui";
+} from "./components.jsx";
+import { CheckIcon } from "@radix-ui/react-icons";
 
-const columns: Column<SalaryData>[] = [
+export interface GridSpec {
+  readonly data: SalaryData;
+  readonly column: { agg: string; allowedAggs: string[] };
+}
+
+const initialColumns: Grid.Column<GridSpec>[] = [
   {
     id: "Gender",
     width: 120,
     widthFlex: 1,
-    uiHints: { rowGroupable: true, aggsAllowed: ["first", "last"] },
     cellRenderer: BaseCellRenderer,
+    agg: "first",
+    allowedAggs: ["first", "last"],
+    headerRenderer: HeaderCell,
   },
   {
     id: "Education Level",
     name: "Education",
     width: 160,
-    widthFlex: 1,
-    uiHints: { rowGroupable: true },
     hide: true,
+    widthFlex: 1,
     cellRenderer: BaseCellRenderer,
+    agg: "first",
+    allowedAggs: ["first", "last"],
+    headerRenderer: HeaderCell,
   },
   {
     id: "Age",
     type: "number",
     width: 100,
     widthFlex: 1,
-    uiHints: { rowGroupable: true, aggsAllowed: ["avg", "first", "last"] },
     cellRenderer: AgeCellRenderer,
+    agg: "avg",
+    allowedAggs: ["avg", "first", "last"],
+    headerRenderer: HeaderCell,
   },
   {
     id: "Years of Experience",
@@ -51,10 +64,9 @@ const columns: Column<SalaryData>[] = [
     width: 100,
     widthFlex: 1,
     cellRenderer: YearsOfExperienceRenderer,
-    uiHints: {
-      rowGroupable: true,
-      aggsAllowed: ["avg", "max", "min", "sum"],
-    },
+    agg: "max",
+    allowedAggs: ["avg", "sum", "max", "min"],
+    headerRenderer: HeaderCell,
   },
   {
     id: "Salary",
@@ -62,118 +74,138 @@ const columns: Column<SalaryData>[] = [
     width: 160,
     widthFlex: 1,
     cellRenderer: SalaryRenderer,
-    uiHints: {
-      aggsAllowed: ["avg", "max", "min", "sum"],
-    },
+    agg: "avg",
+    allowedAggs: ["avg", "sum", "max", "min"],
+    headerRenderer: HeaderCell,
   },
 ];
 
-export default function RowGroupingAggregated() {
-  const ds = useServerDataSource<SalaryData>({
-    dataFetcher: (params) => {
-      return Server(params.requests, params.model.groups, params.model.aggregations);
+const group: Grid.RowGroupColumn<GridSpec> = {
+  cellRenderer: RowGroupCell,
+  width: 200,
+  pin: "start",
+};
+
+export default function RowGroupingBasic() {
+  const [columns, setColumns] = useState(initialColumns);
+  const [rowGroups, setRowGroups] = useState<PillManager.T.PillItem[]>([
+    { name: "Education Level", id: "Education Level", active: true, movable: true },
+    { name: "Gender", id: "Gender", active: false, movable: true },
+    { name: "Age", id: "Age", active: false, movable: true },
+    { name: "YoE", id: "Years of Experience", active: false, movable: true },
+  ]);
+
+  const model = useMemo(() => rowGroups.filter((x) => x.active).map((x) => x.id), [rowGroups]);
+
+  const aggModel = useMemo(() => {
+    return Object.fromEntries(columns.map((x) => [x.id, { fn: x.agg }]));
+  }, [columns]);
+
+  const ds = useServerDataSource({
+    queryFn: (params) => {
+      return Server(params.requests, params.queryKey[0], params.queryKey[1]);
     },
+
+    hasRowBranches: model.length > 0,
+    queryKey: [model, aggModel] as const,
     blockSize: 50,
   });
 
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-
-    aggModel: {
-      Gender: { fn: "first" },
-      Age: { fn: "avg" },
-      Salary: { fn: "avg" },
-      "Years of Experience": { fn: "max" },
-    },
-
-    columnBase: {
-      headerRenderer: HeaderCell,
-    },
-
-    rowGroupColumn: {
-      cellRenderer: GroupCellRenderer,
-      widthFlex: 1,
-    },
-
-    rowGroupModel: ["Education Level"],
-  });
-
-  const view = grid.view.useValue();
+  const isLoading = ds.isLoading.useValue();
 
   return (
     <>
-      <GroupPills grid={grid} />
-      <div className="lng-grid" style={{ height: 500 }}>
-        <Grid.Root grid={grid}>
-          <Grid.Viewport style={{ overflowY: "scroll" }}>
-            <Grid.Header>
-              {view.header.layout.map((row, i) => {
-                return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
+      <PillManager
+        onPillItemActiveChange={(p) => {
+          setRowGroups((prev) => {
+            return [...prev].map((x) => {
+              if (p.item.id === x.id) {
+                return { ...x, active: p.item.active };
+              }
+              return x;
+            });
+          });
+        }}
+        onPillRowChange={(ev) => {
+          setRowGroups(ev.changed[0].pills);
+        }}
+        rows={[
+          {
+            id: "row-groups",
+            label: "Row Groups",
+            type: "row-groups",
+            pills: rowGroups,
+          },
+        ]}
+      />
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid
+          rowSource={ds}
+          columns={columns}
+          rowGroupColumn={group}
+          onColumnsChange={setColumns}
+          events={useMemo<Grid.Events<GridSpec>>(() => {
+            return {
+              row: {
+                mouseEnter: ({ layout: { rowIndex } }) => {
+                  const req = ds.requestForGroup(rowIndex);
+                  if (!req || ds.seenRequests.has(req.id)) return;
 
-                      return (
-                        <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
-                          className={twMerge(
-                            clsx(
-                              "flex h-full w-full items-center px-2 text-sm capitalize",
-                              c.column.type === "number" && "justify-end",
-                            ),
-                          )}
-                        />
-                      );
-                    })}
-                  </Grid.HeaderRow>
-                );
-              })}
-            </Grid.Header>
-            <Grid.RowsContainer
-              className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}
-            >
-              <Grid.RowsCenter>
-                {view.rows.center.map((row) => {
-                  if (row.kind === "full-width") return null;
-
-                  return (
-                    <Grid.Row
-                      row={row}
-                      key={row.id}
-                      onMouseEnter={() => {
-                        const req = ds.requestForGroup(row.rowIndex);
-                        if (!req || ds.seenRequests.has(req.id)) return;
-
-                        // Let's load this
-                        ds.seenRequests.add(req.id);
-                        ds.pushRequests([req]);
-                      }}
-                    >
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className={twMerge(
-                              clsx(
-                                "flex h-full w-full items-center px-2 text-sm capitalize",
-                                c.column.type === "number" && "justify-end tabular-nums",
-                              ),
-                            )}
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsCenter>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid.Root>
+                  // Let's load this
+                  ds.seenRequests.add(req.id);
+                  ds.pushRequests([req]);
+                },
+              },
+            };
+          }, [ds])}
+          slotViewportOverlay={
+            isLoading && (
+              <div className="bg-ln-gray-20/40 absolute left-0 top-0 z-20 h-full w-full animate-pulse"></div>
+            )
+          }
+        />
       </div>
     </>
+  );
+}
+
+//#start
+export function HeaderCell({ api, column }: Grid.T.HeaderParams<GridSpec>) {
+  return (
+    <div
+      className={tw(
+        "flex items-center justify-between gap-2",
+        column.type === "number" && "flex-row-reverse",
+      )}
+    >
+      <div>{column.name ?? column.id}</div>
+      {column.agg && (
+        <Menu>
+          <Menu.Trigger className="text-ln-primary-50 hover:bg-ln-bg-strong cursor-pointer rounded px-1 py-1 text-[10px] transition-colors">
+            ({column.agg})
+          </Menu.Trigger>
+          <Menu.Popover>
+            <Menu.Arrow />
+            <Menu.Container>
+              <Menu.RadioGroup
+                value={column.agg}
+                onChange={(x) => {
+                  api.columnUpdate({ [column.id]: { agg: x } });
+                }}
+              >
+                {column.allowedAggs.map((x) => {
+                  return (
+                    <Menu.RadioItem key={x} value={x} className="flex items-center justify-between gap-1">
+                      {x}
+                      {column.agg === x && <CheckIcon className="text-ln-primary-50" />}
+                    </Menu.RadioItem>
+                  );
+                })}
+              </Menu.RadioGroup>
+            </Menu.Container>
+          </Menu.Popover>
+        </Menu>
+      )}
+    </div>
   );
 }
