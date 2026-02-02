@@ -1,3 +1,96 @@
 ---
 title: Grid Overlays
+step: Display content above the grid rows and viewport.
+description: LyteNyte Grid supports displaying overlay content above the grid's viewport
+  or above the grid's rows.
 ---
+
+LyteNyte Grid supports two properties that allow overlays to be placed within the grid.
+
+- `slotViewportOverlay`: Renders an overlay that is positioned relative to the viewport.
+- `slotRowsOverlay`: Renders an overlay that is positioned relative to the grid's rows container.
+
+The overlay properties must be provided with a React element or a function that returns a React
+element.
+
+## Viewport Overlays
+
+Set the `slotViewportOverlay` property to a React element when you want the overlay to appear
+above all content in the grid. This approach is useful for overlays that prevent mouse
+interaction with the grid.
+
+The demo below demonstrates a loading overlay. The switch toggle displays the overlay when enabled.
+
+::demo[Viewport Overlay="./demos/overlays-viewport"]
+
+The code for the loading overlay is shown below. Since the overlay must sit above all grid content,
+the element uses absolute positioning and spans the full width and height of the viewport.
+
+The overlay also uses a `z-index` of `12`. The overlay is rendered as a child of the **viewport**
+`div` element. The header and rows of the grid are positioned elements, and the maximum `z-index`
+used by grid elements is `11`. As a result, a `z-index` of `12` ensures the overlay appears above
+all grid content.
+
+```tsx
+<Grid
+  rowHeight={50}
+  columns={columns}
+  rowSource={ds}
+  //!next 7
+  slotViewportOverlay={
+    showOverlay ? (
+      <div className="bg-ln-gray-30/30 z-12 absolute left-0 top-0 flex h-full w-full animate-pulse items-center justify-center">
+        Loading...
+      </div>
+    ) : null
+  }
+/>
+```
+
+## Rows Overlay
+
+Set the `slotRowsOverlay` property to a React element when you want the overlay to appear above
+the row content of the grid. The `slotRowsOverlay` element is rendered inside the grid's rows
+container.
+
+The demo below demonstrates the rows overlay in action. It displays the **“No Rows”** indicator
+to the user.
+
+::demo[Empty State Overlay="./demos/overlays-rows"]
+
+The code for the **No Rows** overlay is shown below. The overlay is a positioned element.
+The rows overlay is rendered inside the **rows container** element of the grid.
+
+```tsx
+<Grid
+  rowHeight={50}
+  columns={columns}
+  rowSource={ds}
+  styles={{ viewport: { style: { overflow: "hidden" } } }}
+  //!next 11
+  slotRowsOverlay={
+    <div className="absolute left-0 top-0 flex w-full flex-col items-center justify-center p-12">
+      <div className="dark:hidden">
+        <NoRowsSvgLight />
+      </div>
+      <div className="hidden dark:block">
+        <NoRowsSvgDark />
+      </div>
+      <div className="relative -top-4 text-lg font-bold">No Rows</div>
+    </div>
+  }
+/>
+```
+
+## Viewport Overlay Versus Rows Overlay
+
+Use the viewport overlay to display feedback content instead of the rows overlay unless your
+use case meets one of the following criteria:
+
+- You need the overlay to extend across the full width and height of the scrollable area.
+- Your application logic requires the overlay to be rendered inside the rows container.
+
+The viewport overlay is easier to style and display than the rows overlay, which generally
+results in simpler implementation code.
+
+## Next Steps
