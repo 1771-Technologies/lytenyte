@@ -107,7 +107,7 @@ interface DataRect {
 - **API Method (`api.cellSelections`):** Returns the current selection rectangles.
 - **Property (`cellSelections`):** Controls the selection state.
 
-In controlled selection mode, `api.cellSelections` returns the same value you pass to cellSelections.
+In controlled selection mode, `api.cellSelections` returns the same value you pass to `cellSelections`.
 
 :::
 
@@ -118,7 +118,7 @@ Headers of columns containing selected cells receive the
 those headers. In the demo below, CSS highlights any header
 whose column contains a selected cell.
 
-::demo[Header Highlights="./demos/cell-selection-header-highlight"]
+::demo[Column Header Highlights="./demos/cell-selection-header-highlight"]
 
 The demo uses the [LyteNyte Grid Tailwind plugin](/docs/grid-theming-tailwind) to apply the following
 Tailwind CSS class:
@@ -141,7 +141,7 @@ The [marker column](/docs/marker-column) is an internal column that is automatic
 pinned to the start of the grid. It does not appear in the columns array you pass to the grid.
 
 By default, selection ranges can include the marker column.
-Set `cellSelectionExcludeMarker` to true to prevent selection of this column.
+Set `cellSelectionExcludeMarker` to `true` to prevent selection of this column.
 
 :::tip
 
@@ -211,11 +211,8 @@ state contains a single, continuous selection rectangle.
 Set `cellSelectionMode` to `"multi-range"` to enable multiple selection ranges.
 
 - **Add Range:** Hold **Control** (or **Command**) and drag to add a new range.
-- **Deselect Area:** Hold **Control** (or **Command**) and start a selection inside an existing range to deselect that area.
-
-By setting the `cellSelectionMode` property to `"multi-range"`, LyteNyte Grid allows multiple selection
-ranges. To add a range, hold the Control or Command key before starting a new selection.
-If the user starts a selection within an existing range, the grid begins a deselection instead.
+- **Deselect Area:** Hold **Control** (or **Command**) and start a selection
+  inside an existing range to deselect that area.
 
 ::demo[Multiple Range Selections="./demos/cell-selection-multi-range"]
 

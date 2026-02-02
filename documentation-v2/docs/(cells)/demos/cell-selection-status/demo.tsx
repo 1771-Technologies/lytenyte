@@ -103,7 +103,9 @@ function StatusBar({ rect, source }: { rect: Grid.T.DataRect; source: RowSourceC
 
         return (
           <div className="flex items-center justify-center gap-2 text-xs" key={id}>
-            <span className="text-ln-text text-nowrap">Avg. {column?.name ?? column.id}</span>
+            <span className="text-ln-text-dark text-nowrap font-semibold">
+              Avg. {column?.name ?? column.id}:
+            </span>
             {(id === "price" || id === "eps") && <CurrencyLabel value={avg} />}
             {id === "change" && <PercentLabel value={avg} />}
             {id === "volume" && <CompactNumberLabel value={avg} />}

@@ -1,4 +1,161 @@
 ---
 title: Row Group Cell
 pro: true
+step: Handle row group expansion and collapsing with the row group component.
+description: Effortlessly handle row group expansion and collapsing using
+  LyteNyte Grid's row group cell component.
 ---
+
+## Row Group Component
+
+LyteNyte Grid exports the `RowGroupCell` component to handle row group expansion and collapsing.
+The `RowGroupCell` component provides the following group cell functionality:
+
+- Expand and collapse group nodes.
+- Prevent expansion for group nodes that are not expandable.
+- Display loading indicators while a group expansion is in progress.
+- Display error indicators when a group expansion fails.
+
+While you can implement row group cell functionality in a custom component, LyteNyte Grid's
+`RowGroupCell` component removes this requirement and significantly reduces the amount of code
+you need to write.
+
+The demo below illustrates the `RowGroupCell` component in action. The **Group** column uses the
+`RowGroupCell` component to render group expansion. The `RowGroupCell` component also handles
+group label retrieval out of the box.
+
+::demo[Row Group Cell="../(client-source)/demos/client-row-aggregation-dimensions"]
+
+The code below shows a basic example of configuring a group cell. The `RowGroupCell` component
+is a cell renderer and must be provided with all required cell renderer properties.
+
+```ts
+const group: Grid.RowGroupColumn<GridSpec> = {
+  cellRenderer: RowGroupCell,
+  width: 200,
+  pin: "start",
+};
+```
+
+## Row Group Cell Styling
+
+The `RowGroupCell` component is unstyled by default. You can style the component using the data
+attributes applied to the group cell elements. If you are using one of the
+[prebuilt grid themes](/docs/grid-theming), the group cell styling is already included.
+
+To create or customize group cell styles, refer to the example CSS below. The prebuilt themes
+use this CSS as a reference implementation.
+
+```css
+[data-ln-component-group-cell] {
+  display: flex;
+  //#start
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  gap: 8px;
+
+  padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth));
+  //#end
+
+  &[data-ln-component-group-cell-expandable="false"]:not([data-ln-component-group-cell-depth="0"]) {
+    /* Space 60 for the icon and 8px for the gap. */
+    padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth) + var(--ln-space-60));
+  }
+
+  &[data-ln-component-group-cell-expanded="true"]
+    [data-ln-component-group-cell-expander="true"]:not([data-ln-component-group-cell-error="true"]) {
+    transform: rotate(90deg);
+  }
+
+  &[data-ln-component-group-cell-expanded="true"] [data-ln-component-group-cell-error="true"] {
+    color: var(--ln-red-50);
+  }
+
+  & [data-ln-component-group-cell-expander="true"] {
+    //#start
+    border-radius: var(--ln-radius-field-md);
+    background-color: transparent;
+    border: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ln-space-60);
+    height: var(--ln-space-60);
+    min-width: var(--ln-space-60);
+    min-height: var(--ln-space-60);
+    max-width: var(--ln-space-60);
+    max-height: var(--ln-space-60);
+    margin-inline-start: calc(var(--ln-padding-horizontal-cell) * -1 + 3px);
+
+    &:hover {
+      background-color: var(--ln-bg-button-light);
+      cursor: pointer;
+    }
+    //#end
+  }
+}
+```
+
+## Properties
+
+The `RowGroupCell` component is a [cell renderer](/docs/cell-renderers). To pass additional
+properties, wrap the `RowGroupCell` component in a custom component and forward the properties.
+The custom component must also implement the cell renderer interface.
+
+The example below adds custom leaf row labels to the row group cell.
+
+```tsx
+function MyGroupCell(props: Grid.T.CellRendererParams) {
+  return (
+    <RowGroupCell
+      {...props}
+      leafLabel={(row, api) => {
+        if (!row.parentId) return <div className="ps-2.5">{row.data.job}</div>;
+        const parent = api.rowById(row.parentId);
+        if (parent?.kind === "branch" && row.depth === 1) {
+          return <div className="ps-6.5 font-bold">{row.data.marital ?? "(blank)"}</div>;
+        }
+
+        return "";
+      }}
+    />
+  );
+}
+```
+
+The `RowGroupCell` component extends [`CellParamsWithIndex`](/docs/reference). The properties
+listed below are additional properties supported by the component.
+
+<TypeTable
+  type={[
+    {
+      name: "leafLabel",
+      description: `A function that returns a React element. If provided, this function is
+      called to render the content displayed in the group cell for a leaf row.`,
+      type: "(row: RowLeaf, api: API) => ReactNode",
+    },
+    {
+      name: "groupLabel",
+      description: `A function that returns a React element. If provided, this function is
+      called to render the content displayed in the group cell for a group row. This label
+      excludes the expansion icon. Use the \`expansionSlot\` property to customize the expansion
+      element.`,
+      type: "(row: RowGroup, api: API) => ReactNode",
+    },
+    {
+      name: "aggLabel",
+      description: `A function that returns a React element. If provided, this function is
+      called to render the content displayed in the group cell for an aggregated row.`,
+      type: "(row: RowAggregated, api: API) => ReactNode",
+    },
+    {
+      name: "expansionSlot",
+      description: `A slot component used to render the expansion element of the group cell.
+      You can provide either a React element or a function that returns a React element. When
+      using a function, the row and grid API are passed as arguments.`,
+      type: "SlotComponent",
+    },
+  ]}
+/>

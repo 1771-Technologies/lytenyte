@@ -87,7 +87,7 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
 
 ## Cell State and Virtualization
 
-LyteNyte Grid uses [virtualized by default](/docs/grid-virtualization). As you scroll, React
+LyteNyte Grid uses [virtualization by default](/docs/grid-virtualization). As you scroll, React
 unmounts off-screen rows and remounts them as they
 re-enter the viewport, resetting any **local state**.
 
@@ -122,7 +122,7 @@ LyteNyte Grid supports any cell renderer content. Follow these guidelines to max
   because they degrade scroll performance. The grid can render thousands of cells
   per update. Memoize complex calculations where possible.
 - **Derive State From Props:** Use `Grid.T.CellRendererParams` to access row state.
-  For example, use the selected property to render selection feedback
+  For example, use the `selected` property to render selection feedback
   rather than tracking state locally.
 - **Respect Cell Boundaries:** Cells clip overflow by default. Ensure content
   fits within defined dimensions to avoid truncation.

@@ -2,9 +2,15 @@ import { useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
 import { useCallback, useRef } from "react";
 
 export function useEdgeScroll() {
-  const { viewport, dimensions, totalHeaderHeight } = useRoot();
+  const { viewport, dimensions, totalHeaderHeight, yPositions, source } = useRoot();
+
+  const rowTopCount = source.useTopCount();
+  const rowBottomCount = source.useBottomCount();
+  const bottomHeight = yPositions.at(-1)! - yPositions.at(-1 - rowBottomCount)!;
+  const topHeight = yPositions.at(rowTopCount)!;
 
   const intervalIdX = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const intervalIdY = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const cancelX = useCallback(() => {
@@ -22,32 +28,34 @@ export function useEdgeScroll() {
   }, []);
 
   const edgeScrollY = useCallback(
-    (visualPositionY: number) => {
+    (visualPositionY: number, startY: number) => {
       if (!viewport) return;
 
       const viewportClientHeight = dimensions.innerHeight;
-      const viewportHeight = Math.min(viewportClientHeight * 0.1, 100);
 
-      const buffer = viewportHeight;
-      const topBound = buffer + totalHeaderHeight;
-      const botBound = viewportClientHeight - buffer;
+      const topBound = totalHeaderHeight + topHeight;
+      const botBound = viewportClientHeight - bottomHeight;
+
+      const scrollTop = startY > topBound && visualPositionY <= totalHeaderHeight + 20;
+      const scrollBottom = startY < botBound && visualPositionY >= viewportClientHeight - 20;
 
       const speed = 6;
-      if (visualPositionY < topBound && !intervalIdY.current) {
+      if (scrollTop && !intervalIdY.current) {
         intervalIdY.current = setInterval(() => {
           viewport.scrollBy({ top: -speed });
         }, 6);
-      } else if (visualPositionY > botBound && !intervalIdY.current) {
+      } else if (scrollBottom && !intervalIdY.current) {
         intervalIdY.current = setInterval(() => {
           viewport.scrollBy({ top: speed });
         }, 6);
       }
 
-      if (intervalIdY.current && visualPositionY > topBound && visualPositionY < botBound) {
-        cancelY();
+      if (!scrollBottom && !scrollTop && intervalIdY.current) {
+        clearInterval(intervalIdY.current);
+        intervalIdY.current = null;
       }
     },
-    [cancelY, dimensions.innerHeight, totalHeaderHeight, viewport],
+    [bottomHeight, dimensions.innerHeight, topHeight, totalHeaderHeight, viewport],
   );
 
   const edgeScrollX = useCallback(

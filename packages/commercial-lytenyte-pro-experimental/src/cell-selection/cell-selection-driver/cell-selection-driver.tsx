@@ -27,6 +27,7 @@ function isNormalClick(event: MouseEvent) {
 
 export function CellSelectionDriver() {
   const { rtl, view, source, viewport, focusActive, id } = useRoot();
+
   const {
     cellSelectionMode: mode,
     onCellSelectionChange,
@@ -56,6 +57,8 @@ export function CellSelectionDriver() {
 
     let lastRect: DataRect | null = null;
     let animFrame: number | null = null;
+
+    let startY: number | null = null;
 
     const gridId = id;
     const pointerMove = (event: MouseEvent) => {
@@ -106,7 +109,7 @@ export function CellSelectionDriver() {
 
         edgeScrollX(visualX, isRtl);
         const relativeY = getRelativeYPosition(viewport, clientY);
-        edgeScrollY(relativeY.top);
+        edgeScrollY(relativeY.top, startY!);
         const scrollY = viewport.scrollTop;
 
         if (!isSameRowPin && rowIndex < topCount && scrollY > 0) return;
@@ -189,6 +192,8 @@ export function CellSelectionDriver() {
 
       const rowSpan = position.kind === "full-width" || !position.root ? 1 : position.root.rowSpan;
       const colSpan = position.kind === "full-width" || !position.root ? 1 : position.root.colSpan;
+
+      startY = getRelativeYPosition(viewport, event.clientY).top;
 
       start = {
         columnStart: columnIndex,
