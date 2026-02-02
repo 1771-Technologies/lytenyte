@@ -110,9 +110,19 @@ export default function Demo() {
           };
         }, [])}
       />
-      <Popover anchor={anchor} open={!!network} modal={false} focusTrap={false} hide sideOffset={0}>
+      <Popover
+        anchor={anchor}
+        open={!!network}
+        modal={false}
+        focusTrap={false}
+        hide
+        placement="top"
+        sideOffset={2}
+      >
         {network && (
-          <Popover.Container className="bg-ln-bg-popover border-ln-border-xstrong grid grid-cols-[20px_auto_1fr] items-center gap-1.5 rounded-lg border p-2 text-xs">
+          <Popover.Container className="bg-ln-bg-popover border-ln-border-xstrong grid grid-cols-[auto_20px_1fr] items-center gap-1.5 rounded-lg border p-2 text-xs">
+            <div className="font-bold">Network:</div>
+
             <div>
               <img
                 src={networks[network]}
