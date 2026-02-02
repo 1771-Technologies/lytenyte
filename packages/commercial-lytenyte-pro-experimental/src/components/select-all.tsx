@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSlot, type SlotComponent } from "../hooks/use-slot/index.js";
-import type { GridSpec, HeaderParams } from "../types";
+import type { API, GridSpec } from "../types";
 import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 
 export interface SelectAllProps {
@@ -11,7 +11,10 @@ export interface SelectAllProps {
   }>;
 }
 
-export function SelectAll<Spec extends GridSpec>({ api, slot }: SelectAllProps & HeaderParams<Spec>) {
+export function SelectAll<Spec extends GridSpec>({
+  api,
+  slot,
+}: SelectAllProps & { readonly api: API<Spec> }) {
   const s = api.useSelectionState();
 
   const selected = useMemo(() => {
