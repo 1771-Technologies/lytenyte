@@ -45,7 +45,15 @@ export default function SmartSelect() {
           );
         }}
         trigger={
-          <MultiTrigger render={<button>X</button>}>
+          <MultiTrigger
+            render={
+              <button data-ln-button="website" data-ln-size="md">
+                <div>Select Items</div>
+                <div></div>
+              </button>
+            }
+            className="flex items-center"
+          >
             {value.map((x) => {
               return (
                 <Chip
@@ -54,16 +62,7 @@ export default function SmartSelect() {
                   render={(p) => (
                     <div>
                       {x.label}
-
                       {p.active && "A"}
-
-                      <button
-                        onClick={() => {
-                          p.remove();
-                        }}
-                      >
-                        x
-                      </button>
                     </div>
                   )}
                 />

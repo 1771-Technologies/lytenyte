@@ -25,9 +25,10 @@ function OptionBase<T extends BaseOption>(
         "data-ln-selectable": option.selectable ?? true,
       },
       {
-        onMouseDown: () => {},
-        onClick: () => {
+        onMouseDown: () => {
           onOptionSelect(option);
+        },
+        onClick: () => {
           inputRef.current?.focus();
 
           if (closeOnSelectFinal) onOpenChange(false);

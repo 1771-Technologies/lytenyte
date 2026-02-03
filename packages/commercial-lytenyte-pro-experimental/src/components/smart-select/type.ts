@@ -21,7 +21,7 @@ export type ComboSelect<T extends BaseOption> = {
   readonly value: T | null;
   readonly onOptionChange: (change: T | null) => void;
 
-  readonly queryValue?: string;
+  readonly query?: string;
   readonly onQueryChange?: (change: string) => void;
 
   readonly searchDebounceMs?: number;
@@ -36,7 +36,7 @@ export type MultiComboSelect<T extends BaseOption> = {
   readonly value: T[];
   readonly onOptionChange: (change: T[]) => void;
 
-  readonly queryValue?: string;
+  readonly query?: string;
   readonly onQueryChange?: (change: string) => void;
 
   readonly searchDebounceMs?: number;
