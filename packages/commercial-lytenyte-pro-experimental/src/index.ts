@@ -188,5 +188,6 @@ export type {
   TreeViewChildParams,
   TreeViewSelectAllParams,
 } from "./components/tree-view/index.js";
-export { TreeView } from "./components/tree-view/index.js";
+export type { TreeViewApi } from "./components/tree-view/index.js";
+export { TreeView, TreeChildren } from "./components/tree-view/index.js";
 export { Checkbox } from "./components/checkbox/checkbox.js";

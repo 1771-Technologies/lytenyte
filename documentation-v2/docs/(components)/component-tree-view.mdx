@@ -1,4 +1,218 @@
 ---
 title: Tree View
 pro: true
+step: Learn how to use LyteNyte Grid's tree view component.
+description: The tree view component is a UI component that displays hierarchical data
+  as an expand/collapse list.
 ---
+
+LyteNyte Grid exports a `TreeView` component that you can use for various UI elements,
+such as [tree set filters](/docs/filtering-set-filters). The `TreeView` component
+is a specialized version of LyteNyte Grid that contains a single column. The styling
+and capabilities are augmented to match a standard tree view component.
+
+Since the `TreeView` component shares its implementation with LyteNyte Grid, using
+the `TreeView` component alongside LyteNyte Grid does not increase your application's
+bundle size.
+
+## Basic Tree View
+
+Import the `TreeView` component from LyteNyte Grid to begin using it. The TreeView
+expects an array of path-based objects to be provided through the `items` property.
+Each item must conform to the `TreeViewItem` interface shown below:
+
+```ts
+interface TreeViewItem {
+  readonly id: string;
+  readonly path: string[];
+  readonly name?: string;
+}
+```
+
+The `items` property is a flat array. The `path` property on each item determines the
+resulting tree structure.
+
+The demo below shows a basic tree view in action. As the `TreeView` component is a
+variant of LyteNyte Grid, it requires a [sized container](/docs/grid-container).
+
+::demo[Tree View="./demos/tree-view-demo"]
+
+The code for this tree view example is shown below. The `items` property is set to an
+array of values. You can select rows by clicking the checkbox next to each item.
+
+```tsx
+<TreeView items={items} defaultExpansion={0} />
+```
+
+## Tree Selection
+
+The `TreeView` component always uses [linked row selection](/docs/row-selection). The
+selection behavior matches the standard LyteNyte Grid selection model. You can provide
+a `ref` to the `TreeView` component to access the `TreeView` API, which includes the
+`rowsSelected` method for retrieving selected items.
+
+```tsx
+const ref = useRef<TreeViewAPI | null>(null);
+
+useEffect(() => {
+  ref.rowsSelected();
+}, []);
+
+<TreeView items={items} ref={ref} />;
+```
+
+To control row selection manually, set the `rowSelection` property on the `TreeView`
+component. Provide an `onRowSelectionChange` callback to respond to selection updates.
+
+Since row selection is represented as a linked tree, you must determine which rows
+are selected by traversing the selection tree.
+
+The demo below demonstrates this behavior by tracking which files in the tree are
+selected.
+
+::demo[Tree Selection="./demos/tree-view-selection"]
+
+The code below determines selection by traversing the tree and filtering items based
+on their selection state. This is one simple approach to determining selected rows.
+You should choose an approach that matches your application's requirements.
+
+```tsx
+const [rowsSelected, setSelection] = useState<Grid.T.RowSelectionLinked>({
+  kind: "linked",
+  selected: false,
+  children: new Map([
+    ["src", { id: "src", children: new Map([["src-index", { id: "src-index", selected: true }]]) }],
+  ]),
+});
+
+const selectedRows = useMemo(() => {
+  const selected = items.filter((item) => {
+    const path = item.path;
+
+    let node: Grid.T.RowSelectionLinked | Grid.T.RowSelectNode = rowsSelected;
+    let selection = node.selected;
+
+    // Find the closest matching node for the current path. Path IDs
+    // are joined using '/' in the TreeView. Once the node is found,
+    // check whether it is selected.
+    for (let i = 0; i < path.length; i++) {
+      const p = path.slice(0, i + 1).join("/");
+      const n: Grid.T.RowSelectNode | undefined = node.children?.get(p);
+      if (!n) break;
+
+      node = n;
+      if (node.selected != undefined) selection = node.selected;
+    }
+
+    if (node.children?.get(item.id)?.selected !== undefined)
+      selection = node.children.get(item.id)!.selected!;
+
+    return !!selection;
+  });
+
+  return selected;
+}, [rowsSelected]);
+```
+
+## Children Render Prop
+
+You can customize the rendered output of the `TreeView` component by providing a render
+prop as the `children` value. This render prop receives a set of
+`TreeViewChildParams`, shown below, which you can use to render custom content.
+
+```ts
+export interface TreeViewChildParams<T extends TreeViewItem> {
+  readonly row: RowGroup | RowLeaf<T>;
+  readonly toggle: (b?: boolean) => void;
+
+  readonly selected: boolean;
+  readonly indeterminate: boolean;
+  readonly selectEnabled: boolean;
+  readonly select: (b?: boolean) => void;
+  readonly handleSelect: (params: { readonly target: EventTarget; readonly shiftKey: boolean }) => void;
+}
+```
+
+Using the children render prop, you can add additional functionality to rows, such as
+item removal. The demo below demonstrates this behavior.
+
+::demo[Node Deletion="./demos/tree-view-children"]
+
+## Properties
+
+<TypeTable
+  type={[
+    {
+      name: "items",
+      description: `The leaf tree view items to provide to the \`TreeView\` component. Each item must 
+      include an ID and a path value.`,
+      type: "TreeViewItem",
+    },
+    {
+      name: "children",
+      description: `A render prop that customizes the content rendered by the \`TreeView\` component. 
+      This render prop is used for both group and leaf nodes.`,
+      type: "(props: TreeViewChildParams) => ReactNode",
+    },
+    {
+      name: "selectAllSlot",
+      description: `A render prop that customizes the Select All checkbox. The \`TreeView\` component 
+      only calls this prop when \`rowSelectAllShow\` is enabled.`,
+      type: "(props: TreeViewSelectAllParams) => ReactNode",
+    },
+    {
+      name: "rowHeight",
+      description: "The height of each tree item. This value must be a fixed integer.",
+      type: "number",
+    },
+    {
+      name: "defaultExpansion",
+      description: `Controls the default expansion state of tree nodes. Set this value to \`true\` 
+      to expand all nodes by default. Set this value to a number to expand all nodes with a depth 
+      less than or equal to that number. The default value is \`false\`.`,
+      type: "boolean | number",
+    },
+    {
+      name: "branchJoinSeparator",
+      description: `The delimiter used to join item \`path\` values. The TreeView component uses 
+      the joined value as the ID for branch nodes. The default value is "/".`,
+      type: "string",
+    },
+    {
+      name: "rowSelectAllShow",
+      description:
+        "A flag that determines whether the Select All checkbox is rendered above the tree items. The default value is \`true\`.",
+      type: "boolean",
+    },
+    {
+      name: "rowSelectionEnabled",
+      description: "A flag that determines whether row selection is enabled. The default value is \`true\`.",
+      type: "boolean",
+    },
+    {
+      name: "rowSelection",
+      description: `The row selection state used by the \`TreeView\` component. If not provided, the 
+      \`TreeView\` component uses internal selection state. Provide this value to control selection 
+      externally.`,
+      type: "RowSelectionLinked",
+    },
+    {
+      name: "onRowSelectionChange",
+      description: `A callback invoked whenever a row is selected or deselected.`,
+      type: "(selection: RowSelectionLinked) => void",
+    },
+    {
+      name: "rowGroupExpansions",
+      description: `The expansion state of tree nodes. Provide this value to control which nodes 
+      are expanded or collapsed.`,
+      type: "Record<string, boolean | undefined>",
+    },
+    {
+      name: "onRowGroupExpansionChange",
+      description: `A callback invoked whenever a row is expanded or collapsed.`,
+      type: "(change: Record<string, boolean | undefined>) => void",
+    },
+  ]}
+/>
+
+## Next Steps

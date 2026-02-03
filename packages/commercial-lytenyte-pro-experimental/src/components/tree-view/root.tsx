@@ -17,7 +17,7 @@ export interface TreeViewProps<T extends TreeViewItem> {
   readonly items: T[];
   readonly children?: (props: TreeViewChildParams<T>) => ReactNode;
 
-  readonly renderSelectAll?: (params: TreeViewSelectAllParams) => ReactNode;
+  readonly selectAllSlot?: (params: TreeViewSelectAllParams) => ReactNode;
   readonly rowHeight?: number;
   readonly defaultExpansion?: boolean | number;
 
