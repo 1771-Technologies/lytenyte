@@ -2,8 +2,6 @@
 import { Popover } from "@1771technologies/lytenyte-pro-experimental";
 import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
 //#end
 
 export default function TreeViewDemo() {
@@ -29,8 +27,4 @@ export default function TreeViewDemo() {
       </Popover>
     </div>
   );
-}
-
-export function tw(...c: ClassValue[]) {
-  return twMerge(clsx(...c));
 }

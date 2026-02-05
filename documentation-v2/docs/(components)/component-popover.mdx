@@ -47,82 +47,77 @@ are documented below.
   type={[
     {
       name: "open",
-      description: "Whether the popover should be open.",
+      description: "Whether the popover is open.",
       type: "boolean",
     },
     {
       name: "openInitial",
       description:
-        "Whether the popover should initially be open. Set this value if you want the popover to be open, but do not want to control the open state.",
+        "Whether the popover is initially open. Set this value to open the popover without controlling its open state.",
       type: "boolean",
     },
     {
       name: "onOpenChange",
       description:
-        "Called when the popover requests to change its open state (e.g. trigger click, Escape key, outside interaction). Use this to control `open`.",
+        "Called when the popover requests a change to its open state (for example, on trigger click, Escape key press, or outside interaction). Use this callback to control the `open` state.",
       type: "(open: boolean) => void",
     },
     {
       name: "onOpenChangeComplete",
       description:
-        "Called after the open state change has completed (e.g. after any open/close transition or effects have settled). Receives the final open state.",
+        "Called after the open state change completes, including any open or close transitions. The callback receives the final open state.",
       type: "(open: boolean) => void",
     },
     {
       name: "id",
       description:
-        "Base id for the popover content element. Used to associate aria attributes and to generate related ids when needed.",
+        "Base ID for the popover content element. This ID is used to associate ARIA attributes and to generate related IDs when needed.",
       type: "string",
     },
     {
       name: "titleId",
       description:
-        "Id of the element that labels the popover (typically the title). Used for `aria-labelledby` on the popover content.",
+        "ID of the element that labels the popover, typically the title. Used for `aria-labelledby` on the popover content.",
       type: "string",
     },
     {
       name: "descriptionId",
       description:
-        "Id of the element that describes the popover (typically body text). Used for `aria-describedby` on the popover content.",
+        "ID of the element that describes the popover, typically body text. Used for `aria-describedby` on the popover content.",
       type: "string",
     },
-
     {
       name: "hide",
-      description:
-        "Whether the popover should be hidden when its anchor element is out of view.",
+      description: "Whether the popover is hidden when its anchor element moves out of view.",
       type: "boolean",
     },
-
     {
       name: "lockScroll",
       description:
-        "Whether to lock page scrolling while the popover is open (commonly used with modal behavior).",
+        "Whether to lock page scrolling while the popover is open. This behavior is commonly used with modal popovers.",
       type: "boolean",
     },
     {
       name: "lightDismiss",
       description:
-        "Controls outside click/tap dismissal. Set to `true` to close on outside interaction, `false` to disable, or provide a predicate that returns `true` to allow dismiss for a given interacted element.",
+        "Controls dismissal on outside click or tap. Set this value to `true` to close on outside interaction, `false` to disable dismissal, or provide a predicate function that returns `true` to allow dismissal for a given interacted element.",
       type: "boolean | ((el: HTMLElement) => boolean)",
     },
     {
       name: "modal",
       description:
-        "Whether the popover should behave modally (e.g. block interaction with the rest of the page and typically imply scroll locking and focus trapping).",
+        "Whether the popover behaves modally, blocking interaction with the rest of the page and typically enabling scroll locking and focus trapping.",
       type: "boolean",
     },
-
     {
       name: "focusTrap",
-      description:
-        "Whether to trap focus within the popover while it is open.",
+      description: "Whether focus is trapped within the popover while it is open.",
       type: "boolean",
     },
     {
       name: "focusInitial",
       description:
-        "An element or a function that returns an element to receive initial focus when the popover opens. Set this value to `false` to prevent initial focus.",
+        "An element, or a function that returns an element, to receive initial focus when the popover opens. Set this value to `false` to prevent initial focus.",
       type: "boolean | HTMLElement | (() => HTMLElement | boolean)",
     },
     {
@@ -152,48 +147,44 @@ are documented below.
     {
       name: "focusPreventScroll",
       description:
-        "Whether the focus trap should prevent scroll jumps when focusing an element. Only use this option when the popover is large and scrollable.",
+        "Whether the focus trap prevents scroll jumps when focusing an element. Only use this option when the popover is large and scrollable.",
       type: "boolean",
     },
-
     {
       name: "anchor",
       description:
-        "Anchor element used to position the popover. Accepts a reference element, an element id string, or `null` to disable anchoring.",
+        "Anchor element used to position the popover. Accepts a reference element, an element ID string, or `null` to disable anchoring.",
       type: "HTMLElement | VirtualElement | string | null",
     },
     {
       name: "placement",
       description:
-        "Preferred placement of the popover relative to the anchor (e.g. `bottom`, `top-start`).",
+        "Preferred placement of the popover relative to the anchor (for example, `bottom` or `top-start`).",
       type: "Placement",
     },
     {
       name: "shiftPadding",
       description:
-        "Padding (in px) used when shifting the popover to keep it within viewport boundaries.",
+        "Padding, in pixels, used when shifting the popover to keep it within viewport boundaries.",
       type: "number",
     },
     {
       name: "inline",
       description:
-        "Whether to use inline positioning behavior (useful when the anchor is inline text/ranges).",
+        "Whether to use inline positioning behavior. This option is useful when the anchor is inline text or a text range.",
       type: "boolean",
     },
     {
       name: "sideOffset",
-      description:
-        "Distance (in px) between the popover and the anchor along the main axis.",
+      description: "Distance, in pixels, between the popover and the anchor along the main axis.",
       type: "number",
     },
     {
       name: "alignOffset",
-      description:
-        "Offset (in px) along the cross axis for fine-tuning alignment.",
+      description: "Offset, in pixels, along the cross axis for fine-tuning alignment.",
       type: "number",
     },
-
-]}
+  ]}
 />
 
 ### Popover.Trigger
@@ -203,7 +194,7 @@ are documented below.
     {
       name: "render",
       description:
-        "A render prop used to customize the rendered trigger element. The render props is provided the \`open\` state and a function to change the \`open\` state.",
+        "A render prop used to customize the rendered trigger element. The render prop receives the `open` state and a function to update the `open` state.",
       type: "SlotComponent",
     },
   ]}
@@ -228,7 +219,7 @@ are documented below.
     {
       name: "render",
       description:
-        "A render prop used to customize the rendered close element. The render props is provided the \`open\` state and a function to change the \`open\` state.",
+        "A render prop used to customize the rendered close element. The render prop receives the `open` state and a function to update the `open` state.",
       type: "SlotComponent",
     },
   ]}
@@ -241,7 +232,7 @@ are documented below.
     {
       name: "render",
       description:
-        "A render prop used to customize the rendered title element. The render prop is provided the ID of the title.",
+        "A render prop used to customize the rendered title element. The render prop receives the ID of the title element.",
       type: "SlotComponent",
     },
   ]}
@@ -254,7 +245,7 @@ are documented below.
     {
       name: "render",
       description:
-        "A render prop used to customize the rendered description element. The render prop is provided the ID of the description.",
+        "A render prop used to customize the rendered description element. The render prop receives the ID of the description element.",
       type: "SlotComponent",
     },
   ]}

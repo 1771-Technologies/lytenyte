@@ -1,4 +1,249 @@
 ---
 title: Dialog
 pro: true
+step: Display a dialog that requires the user's attention.
+description: LyteNyte Grid exports a general purpose dialog component that can be
+  used with the grid or within other parts of your application.
 ---
+
+A **dialog** is a transient UI element that appears above the main content to present information
+or request user interaction. A dialog temporarily interrupts the user's workflow to convey critical
+context, prompt a decision, or collect input.
+
+## Dialog Anatomy
+
+LyteNyte Grid's dialog is a headless component composed of several parts that you must assemble
+before use. The example below provides a brief overview of these parts.
+
+```tsx
+<Dialog>
+  <Dialog.Trigger />
+
+  <Dialog.Container>
+    <Dialog.Arrow />
+    <Dialog.Title />
+    <Dialog.Description />
+
+    <Dialog.Close />
+  </Dialog.Container>
+</Dialog>
+```
+
+## Dialog Example
+
+The demo below shows a basic dialog. The displayed content represents the minimum required for a
+fully accessible dialog. You can add additional content as needed to meet your application's
+requirements.
+
+::demo[Dialog="./demos/dialog-demo"]
+
+### Dialog
+
+<TypeTable
+  type={[
+    {
+      name: "open",
+      description: "Whether the dialog is open.",
+      type: "boolean",
+    },
+    {
+      name: "openInitial",
+      description:
+        "Whether the dialog is initially open. Set this value to open the dialog without controlling its open state.",
+      type: "boolean",
+    },
+    {
+      name: "onOpenChange",
+      description:
+        "Called when the dialog requests a change to its open state (for example, on trigger click, Escape key press, or outside interaction). Use this callback to control the `open` state.",
+      type: "(open: boolean) => void",
+    },
+    {
+      name: "onOpenChangeComplete",
+      description:
+        "Called after the open state change completes, including any open or close transitions. The callback receives the final open state.",
+      type: "(open: boolean) => void",
+    },
+    {
+      name: "id",
+      description:
+        "Base ID for the dialog content element. This ID is used to associate ARIA attributes and to generate related IDs when needed.",
+      type: "string",
+    },
+    {
+      name: "titleId",
+      description:
+        "ID of the element that labels the dialog, typically the title. Used for `aria-labelledby` on the dialog content.",
+      type: "string",
+    },
+    {
+      name: "descriptionId",
+      description:
+        "ID of the element that describes the dialog, typically body text. Used for `aria-describedby` on the dialog content.",
+      type: "string",
+    },
+    {
+      name: "hide",
+      description: "Whether the dialog is hidden when its anchor element moves out of view.",
+      type: "boolean",
+    },
+    {
+      name: "lockScroll",
+      description:
+        "Whether to lock page scrolling while the dialog is open. This behavior is commonly used with modal dialogs.",
+      type: "boolean",
+    },
+    {
+      name: "lightDismiss",
+      description:
+        "Controls dismissal on outside click or tap. Set this value to `true` to close on outside interaction, `false` to disable dismissal, or provide a predicate function that returns `true` to allow dismissal for a given interacted element.",
+      type: "boolean | ((el: HTMLElement) => boolean)",
+    },
+    {
+      name: "modal",
+      description:
+        "Whether the dialog behaves modally, blocking interaction with the rest of the page and typically enabling scroll locking and focus trapping.",
+      type: "boolean",
+    },
+    {
+      name: "focusTrap",
+      description: "Whether focus is trapped within the dialog while it is open.",
+      type: "boolean",
+    },
+    {
+      name: "focusInitial",
+      description:
+        "An element, or a function that returns an element, to receive initial focus when the dialog opens. Set this value to `false` to prevent initial focus.",
+      type: "boolean | HTMLElement | (() => HTMLElement | boolean)",
+    },
+    {
+      name: "focusReturn",
+      description:
+        "The element to return focus to when the dialog closes. By default, focus returns to the element that was focused before the dialog opened. Set this value to `false` to prevent focus from returning.",
+      type: "((nodeBeforeActivation: HTMLElement) => HTMLElement | boolean) | HTMLElement | boolean",
+    },
+    {
+      name: "focusFallback",
+      description:
+        "The element to focus when no focusable elements exist inside the dialog container. Use this property to provide a fallback, as the focus trap requires at least one focusable element.",
+      type: "HTMLElement | () => HTMLElement",
+    },
+    {
+      name: "focusCanReturn",
+      description:
+        "A function that returns a `Promise`. The focus trap waits for the promise to resolve before returning focus.",
+      type: "(trigger: HTMLElement) => Promise<void>",
+    },
+    {
+      name: "focusCanTrap",
+      description:
+        "A function that returns a `Promise`. The focus trap waits for the promise to resolve before trapping focus.",
+      type: "(containers: HTMLElement[]) => Promise<void>",
+    },
+    {
+      name: "focusPreventScroll",
+      description:
+        "Whether the focus trap prevents scroll jumps when focusing an element. Only use this option when the dialog is large and scrollable.",
+      type: "boolean",
+    },
+    {
+      name: "anchor",
+      description:
+        "Anchor element used to position the dialog. Accepts a reference element, an element ID string, or `null` to disable anchoring.",
+      type: "HTMLElement | VirtualElement | string | null",
+    },
+    {
+      name: "placement",
+      description:
+        "Preferred placement of the dialog relative to the anchor (for example, `bottom` or `top-start`).",
+      type: "Placement",
+    },
+    {
+      name: "shiftPadding",
+      description: "Padding, in pixels, used when shifting the dialog to keep it within viewport boundaries.",
+      type: "number",
+    },
+    {
+      name: "inline",
+      description:
+        "Whether to use inline positioning behavior. This option is useful when the anchor is inline text or a text range.",
+      type: "boolean",
+    },
+    {
+      name: "sideOffset",
+      description: "Distance, in pixels, between the dialog and the anchor along the main axis.",
+      type: "number",
+    },
+    {
+      name: "alignOffset",
+      description: "Offset, in pixels, along the cross axis for fine-tuning alignment.",
+      type: "number",
+    },
+  ]}
+/>
+
+### Dialog.Trigger
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A render prop used to customize the rendered trigger element. The render prop receives the `open` state and a function to update the `open` state.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Dialog.Arrow
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description: "A render prop used to customize the rendered arrow element.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Dialog.Close
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A render prop used to customize the rendered close element. The render prop receives the `open` state and a function to update the `open` state.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Dialog.Title
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A render prop used to customize the rendered title element. The render prop receives the ID of the title element.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Dialog.Description
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A render prop used to customize the rendered description element. The render prop receives the ID of the description element.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+## Next Steps

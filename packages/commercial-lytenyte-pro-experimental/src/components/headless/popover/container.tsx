@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
-import { Container } from "../dialog/index.parts.js";
+import { DialogContainer } from "../dialog/container.js";
 
-const PopoverContainerBase = (props: Container.Props, ref: Container.Props["ref"]) => {
+const PopoverContainerBase = (props: DialogContainer.Props, ref: DialogContainer.Props["ref"]) => {
   return (
-    <Container
+    <DialogContainer
       {...props}
       ref={ref}
       data-ln-popover={(props as any)["data-ln-menu-popover"] ? undefined : true}
@@ -14,5 +14,5 @@ const PopoverContainerBase = (props: Container.Props, ref: Container.Props["ref"
 export const PopoverContainer = forwardRef(PopoverContainerBase);
 
 export namespace PopoverContainer {
-  export type Props = Container.Props;
+  export type Props = DialogContainer.Props;
 }

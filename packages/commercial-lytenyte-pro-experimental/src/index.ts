@@ -174,7 +174,7 @@ export type { Piece, PieceWritable } from "@1771technologies/lytenyte-core-exper
 export { usePiece } from "@1771technologies/lytenyte-core-experimental";
 
 export { PillManager } from "./components/pill-manager/index.js";
-export { Dialog } from "./components/headless/dialog/index.js";
+export { Dialog } from "./components/headless/dialog/index.parts.js";
 export { Menu } from "./components/headless/menu/index.js";
 export { Popover } from "./components/headless/popover/index.js";
 export { SmartSelect } from "./components/smart-select/index.js";
