@@ -165,6 +165,7 @@ export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";
 
 export { measureText, moveRelative, equal, arrayShallow } from "@1771technologies/lytenyte-shared";
 export { getRowDragData, computeField } from "@1771technologies/lytenyte-core-experimental/internal";
+export { virtualFromXY } from "./components/virtual-from-coordinates.js";
 
 export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
 export { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";

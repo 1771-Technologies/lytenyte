@@ -1,4 +1,69 @@
 ---
 title: Context Menu
 pro: true
+step: Display a menu for actions in the grid with contextual information.
+description: LyteNyte Grid's context menu provides the ability to display menus on
+  right click. Use contextual menus to provide auxiliary actions depending on the active
+  element.
 ---
+
+:::info
+
+This guide assumes you are familiar with the `Menu` component provided by LyteNyte Grid.
+For additional background, read the [Menu Button guide](/docs/component-menu-button).
+
+:::
+
+## Grid Context Menu
+
+Use the `events` property on the grid to set a `contextmenu` event listener on the part
+of the grid that should open a contextual menu.
+
+The demo below shows how to add a context menu to grid cells. Right-click on any cell to
+open the context menu, then select an action to perform.
+
+::demo[Context Menu="./demos/context-menu"]
+
+The demo uses the event code shown below. The grid registers `contextmenu` event handlers
+for both header cells and row cells. Because the browser displays its own context menu on
+right-click, the handlers call `preventDefault` to suppress the native behavior.
+
+Each event handler uses the `virtualFromXY` utility function provided by LyteNyte Grid to
+construct a virtual element. The handler then assigns this virtual element to the anchor
+state. The LyteNyte Grid menu can use the virtual element as a positioning anchor, which
+eliminates the need for a menu trigger.
+
+```tsx
+<Grid
+  rowHeight={50}
+  columns={columns}
+  onColumnsChange={setColumns}
+  ref={setApi}
+  rowSource={ds}
+  //!next 22
+  events={useMemo<Grid.Events<GridSpec>>(() => {
+    return {
+      headerCell: {
+        contextMenu: ({ event, column }) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setAnchor(virtualFromXY(event.clientX, event.clientY));
+
+          setMenu({ column, row: null });
+        },
+      },
+      cell: {
+        contextMenu: ({ event, row, column }) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setAnchor(virtualFromXY(event.clientX, event.clientY));
+
+          setMenu({ row, column });
+        },
+      },
+    };
+  }, [])}
+/>
+```
+
+## Next Steps
