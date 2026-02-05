@@ -1,4 +1,375 @@
 ---
 title: Menu Button
 pro: true
+step: Show a list of actions in a dropdown with full keyboard accessibility.
+description: A menu button displays a list of actions when the user presses the button.
 ---
+
+## Menu Anatomy
+
+LyteNyte Grid exports the `Menu` component as a general-purpose dropdown list of actions.
+The `Menu` component supports nested lists, grouped items, and checkbox items.
+
+The `Menu` component is headless and is composed of multiple parts that must be used together.
+The code block below shows these parts assembled:
+
+```tsx
+<Menu>
+  <Menu.Trigger />
+
+  <Menu.Popover>
+    <Menu.Arrow />
+    <Menu.Container>
+      <Menu.Title className="sr-only" />
+      <Menu.Description className="sr-only" />
+
+      <Menu.Item />
+      <Menu.Item />
+
+      <Menu.Divider />
+      <Menu.RadioGroup>
+        <Menu.RadioItem />
+        <Menu.RadioItem />
+        <Menu.RadioItem />
+      </Menu.RadioGroup>
+
+      <Menu.Divider />
+      <Menu.Group>
+        <Menu.Header />
+
+        <Menu.CheckboxItem />
+        <Menu.CheckboxItem />
+      </Menu.Group>
+
+      <Menu.Submenu>
+        <Menu.SubmenuTrigger />
+        <Menu.SubmenuContainer>
+          <Menu.Item />
+          <Menu.Item />
+        </Menu.SubmenuContainer>
+      </Menu.Submenu>
+    </Menu.Container>
+  </Menu.Popover>
+</Menu>
+```
+
+## Basic Menu
+
+The demo below shows a basic example of the `Menu` component. It demonstrates three
+types of menu items:
+
+- `Menu.Item`: A standard menu item that performs an action when clicked.
+- `Menu.RadioItem`: An exclusive selection radio item. Must be rendered within a `Menu.RadioGroup`.
+- `Menu.CheckboxItem`: An inclusive selection checkbox item that can be used for toggle settings and flags.
+
+::demo[Menu="./demos/menu-demo"]
+
+## Submenu Menu
+
+Use the `Menu.Submenu` component to group related menu items into an expandable list
+of options. The demo below shows a submenu in action.
+
+::demo[Submenu="./demos/menu-submenu-demo"]
+
+## Properties
+
+All `Menu` component parts accept standard HTML element properties. The properties list below
+describes the additional properties provided by the `Menu` components.
+
+### Menu
+
+The `Menu` component is a popover component with additional logic for handling dropdown
+menus. Its properties reflect this.
+
+<TypeTable
+  type={[
+    {
+      name: "open",
+      description: "Whether the menu is open. Set this property to control the menu open state.",
+      type: "boolean",
+    },
+    {
+      name: "openInitial",
+      description:
+        "Whether the menu is initially open. Set this property to define the default open state without controlling it.",
+      type: "boolean",
+    },
+    {
+      name: "onOpenChange",
+      description: "An event callback that fires when the menu open state changes.",
+      type: "(open: boolean) => void",
+    },
+    {
+      name: "onOpenChangeComplete",
+      description: "An event callback that fires when open or close animations complete.",
+      type: "(open: boolean) => void",
+    },
+    {
+      name: "id",
+      description:
+        "The ID to use for the menu trigger. Only set this value if you require a specific ID. If not provided, the component generates an ID using `useId`.",
+      type: "string",
+    },
+    {
+      name: "titleId",
+      description:
+        "The ID to use for the title element. Only set this value if the title element requires a specific ID. If not provided, the component generates an ID using `useId`.",
+      type: "string",
+    },
+    {
+      name: "hide",
+      description: "Whether the menu popover should be hidden when it is out of view. Defaults to `false`.",
+      type: "boolean",
+    },
+    {
+      name: "lockScroll",
+      description:
+        "Whether the page scroll should be locked while the menu is open. Defaults to `true` when the menu is modal, otherwise `false`.",
+      type: "boolean",
+    },
+    {
+      name: "modal",
+      description:
+        "Whether the menu is displayed as a modal. A modal prevents interaction with the rest of the page while open. Defaults to `true`.",
+      type: "boolean",
+    },
+    {
+      name: "focusTrap",
+      description: "Whether the menu traps focus while open. Defaults to `true`.",
+      type: "boolean",
+    },
+    {
+      name: "focusInitial",
+      description:
+        "An element or a function that returns an element to receive initial focus when the menu opens. Set this value to `false` to prevent initial focus.",
+      type: "boolean | HTMLElement | (() => HTMLElement | boolean)",
+    },
+    {
+      name: "focusReturn",
+      description:
+        "The element to return focus to when the menu closes. By default, focus returns to the element that was focused before the menu opened. Set this value to `false` to prevent focus from returning.",
+      type: "((nodeBeforeActivation: HTMLElement) => HTMLElement | boolean) | HTMLElement | boolean",
+    },
+    {
+      name: "focusFallback",
+      description:
+        "The element to focus when no focusable elements exist inside the menu container. Use this property to provide a fallback, as the focus trap requires at least one focusable element.",
+      type: "HTMLElement | () => HTMLElement",
+    },
+    {
+      name: "focusCanReturn",
+      description:
+        "A function that returns a `Promise`. The focus trap waits for the promise to resolve before returning focus.",
+      type: "(trigger: HTMLElement) => Promise<void>",
+    },
+    {
+      name: "focusCanTrap",
+      description:
+        "A function that returns a `Promise`. The focus trap waits for the promise to resolve before trapping focus.",
+      type: "(containers: HTMLElement[]) => Promise<void>",
+    },
+    {
+      name: "focusPreventScroll",
+      description:
+        "Whether the focus trap should prevent scroll jumps when focusing an element. Only use this option when the menu is large and scrollable.",
+      type: "boolean",
+    },
+    {
+      name: "anchor",
+      description:
+        "The element to anchor the menu container to. By default, this is the menu trigger. When a string is provided, it must be a valid query selector.",
+      type: "HTMLElement | VirtualElement | string | null",
+    },
+    {
+      name: "placement",
+      description:
+        "The requested menu position. The menu may be repositioned to avoid clipping by container bounds.",
+      type: "Placement",
+    },
+    {
+      name: "shiftPadding",
+      description:
+        "The spacing, in pixels, applied when shifting the menu away from a container edge. This prevents the menu from sitting directly against the window edge.",
+      type: "number",
+    },
+    {
+      name: "inline",
+      description:
+        "Whether the menu anchor should use inline bounding box calculations. This is useful when the menu button appears within a paragraph of text.",
+      type: "boolean",
+    },
+    {
+      name: "sideOffset",
+      description: "The spacing, in pixels, between the menu and its positioned side.",
+      type: "number",
+    },
+    {
+      name: "alignOffset",
+      description: "The spacing, in pixels, between the menu and its aligned side.",
+      type: "number",
+    },
+  ]}
+/>
+
+### Menu.Item
+
+<TypeTable
+  type={[
+    {
+      name: "disabled",
+      description: "Whether the menu option is disabled.",
+      type: "boolean",
+    },
+    {
+      name: "onAction",
+      description: "An event callback that fires when the menu item is selected.",
+      type: "() => void",
+      required: true,
+    },
+    {
+      name: "closeOnAction",
+      description: "Whether the menu closes when the item action is triggered.",
+      type: "boolean",
+    },
+  ]}
+/>
+
+### Menu.CheckboxItem
+
+<TypeTable 
+  type={[
+    { 
+      name: "disabled",
+      description: "Whether the checkbox is disabled.",
+      type: "boolean"
+    },
+    {
+      name: "checked",
+      description: "Whether the option is checked.",
+      type: "boolean",
+      required: true,
+    },
+    {
+      name: "onCheckChange",
+      description: "An event callback that fires when the option check state changes.",
+      type: "(change: boolean) => void"
+    },
+    {
+      name: "children",
+      description: "A React node or a render prop that receives the current check state and returns a React node.",
+      type: "ReactNode | (state: boolean) => ReactNode"
+    },
+    {
+      name: "closeOnAction",
+      description: "Whether the menu closes when the checkbox state changes.",
+      type: "boolean",
+    },
+  ]}
+
+/>
+
+### Menu.Arrow
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description: "A render prop used to customize the rendered arrow element.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Menu.RadioGroup
+
+<TypeTable
+  type={[
+    {
+      name: "value",
+      description: "The current value of the radio group. This value represents the selected radio option.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "onChange",
+      description: "An event callback that fires when the selected radio option value changes.",
+      type: "(change: string) => void",
+    },
+  ]}
+/>
+
+### Menu.RadioItem
+
+<TypeTable
+  type={[
+    {
+      name: "value",
+      description: "The value of the radio option.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "disabled",
+      description: "Whether the radio option is disabled.",
+      type: "boolean",
+    },
+    {
+      name: "children",
+      description:
+        "A React node or a render prop that receives the option selection state and returns a React node.",
+      type: "ReactNode | (checked: boolean) => ReactNode",
+    },
+    {
+      name: "closeOnAction",
+      description: "Whether the menu closes when the radio value changes.",
+      type: "boolean",
+    },
+  ]}
+/>
+
+### Menu.Submenu
+
+<TypeTable
+  type={[
+    {
+      name: "open",
+      description: "Whether the submenu is open.",
+      type: "boolean",
+    },
+    {
+      name: "onOpenChange",
+      description: "An event callback that fires when the submenu open state changes.",
+      type: "(open: boolean) => void",
+    },
+    {
+      name: "placement",
+      description:
+        "The requested positioning of the submenu. The submenu may be repositioned to avoid clipping by container bounds.",
+      type: "Placement",
+    },
+    {
+      name: "sideOffset",
+      description: "The spacing, in pixels, between the submenu and its positioned side.",
+      type: "number",
+    },
+    {
+      name: "alignOffset",
+      description: "The spacing, in pixels, between the submenu and its aligned side.",
+      type: "number",
+    },
+  ]}
+/>
+
+### Menu.SubmenuTrigger
+
+<TypeTable
+  type={[
+    {
+      name: "disabled",
+      description: "Whether the submenu trigger is disabled.",
+      type: "boolean",
+    },
+  ]}
+/>
+
+## Next Steps

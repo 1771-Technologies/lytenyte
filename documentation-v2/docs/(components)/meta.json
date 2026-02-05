@@ -1,6 +1,7 @@
 {
   "title": "Components",
   "pages": [
+    "component-overview",
     "component-grid-overlays",
     "component-viewport-shadows",
     "component-column-manager",

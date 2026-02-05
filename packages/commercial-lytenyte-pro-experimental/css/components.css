@@ -169,9 +169,9 @@
 
   [data-ln-menu-separator="true"] {
     height: 1px;
-    width: 100%;
-    background-color: var(--ln-border);
+    background-color: var(--ln-border-xstrong);
     margin-block: var(--ln-space-02);
+    margin-inline: calc(var(--ln-space-05) * -1);
   }
 
   [data-ln-menu-item="true"] {
