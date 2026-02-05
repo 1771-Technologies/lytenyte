@@ -8,15 +8,12 @@ import type {
   RowFullWidthRendererParams,
   RowParams,
 } from "./column.js";
-import type { DialogFrame, GridSpec, PopoverFrame } from "./grid.js";
+import type { GridSpec } from "./grid.js";
 import type { API, DataRect } from "./api.js";
 import type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
 import type { GridEvents } from "./events.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
-  readonly dialogFrames?: Record<string, DialogFrame<Spec>>;
-  readonly popoverFrames?: Record<string, PopoverFrame<Spec>>;
-
   readonly cellSelectionMode?: "range" | "multi-range" | "none";
   readonly cellSelections?: DataRect[];
   readonly cellSelectionExcludeMarker?: boolean;

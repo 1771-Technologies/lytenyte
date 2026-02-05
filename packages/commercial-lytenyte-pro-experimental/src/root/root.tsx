@@ -21,9 +21,7 @@ import type { Props as LnProps } from "../types/props.js";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
 import { useProAPI } from "./hooks/use-pro-api.js";
 import { ProRootProvider, type ProContext } from "./context.js";
-import { DialogDriver } from "../frames/dialog-driver.js";
 import { hasAValidLicense, licenseState } from "../license.js";
-import { PopoverDriver } from "../frames/popover-driver.js";
 import { useControlled, useEvent, useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
 import { splitCellSelectionRect } from "../cell-selection/index.js";
 import { CellSelectionDriver } from "../cell-selection/cell-selection-driver/cell-selection-driver.jsx";
@@ -152,9 +150,6 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
       setCellSelectionAdditiveRects,
       cellSelectionIsDeselect,
       cellSelectionSplits,
-
-      popoverFrames: p.popoverFrames ?? {},
-      dialogFrames: p.dialogFrames ?? {},
     };
   }, [
     api,
@@ -162,8 +157,6 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
     openPopoverFrames,
     excludeMarker,
     p.cellSelectionMaintainOnNonCellPosition,
-    p.popoverFrames,
-    p.dialogFrames,
     cellSelectionMode,
     cellSelections,
     cellSelectionPivot,
@@ -185,8 +178,6 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
       )}
     >
       <ProRootProvider value={value}>
-        <DialogDriver />
-        <PopoverDriver />
         {cellSelectionMode !== "none" && <CellSelectionDriver />}
         {children ?? <Fallback />}
       </ProRootProvider>
