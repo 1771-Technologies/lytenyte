@@ -1,0 +1,263 @@
+---
+title: Popover
+pro: true
+step: Display additional content in a popover.
+description: LyteNyte Grid exports a general purpose modern popover component. The popover
+  component may be used in conjunction with the grid or with other components in your application.
+---
+
+A **popover** is a UI component that displays contextual content anchored to another element in the
+interface, typically a button. A popover always appears as a result of a user action.
+
+## Popover Anatomy
+
+LyteNyte Grid's popover is a headless component composed of several parts that you must assemble
+before use. The example below provides a brief overview of these parts.
+
+```tsx
+<Popover>
+  <Popover.Trigger />
+
+  <Popover.Container>
+    <Popover.Arrow />
+    <Popover.Title />
+    <Popover.Description />
+
+    <Popover.Close />
+  </Popover.Container>
+</Popover>
+```
+
+## Popover Example
+
+The demo below shows a basic popover. The displayed content represents the minimum required for a
+fully accessible popover. You can add additional content as needed to meet your application's
+requirements.
+
+::demo[Popover="./demos/popover-demo"]
+
+## Properties
+
+Popover elements accept standard HTML props. Some parts also support additional properties, which
+are documented below.
+
+### Popover
+
+<TypeTable
+  type={[
+    {
+      name: "open",
+      description: "Whether the popover should be open.",
+      type: "boolean",
+    },
+    {
+      name: "openInitial",
+      description:
+        "Whether the popover should initially be open. Set this value if you want the popover to be open, but do not want to control the open state.",
+      type: "boolean",
+    },
+    {
+      name: "onOpenChange",
+      description:
+        "Called when the popover requests to change its open state (e.g. trigger click, Escape key, outside interaction). Use this to control `open`.",
+      type: "(open: boolean) => void",
+    },
+    {
+      name: "onOpenChangeComplete",
+      description:
+        "Called after the open state change has completed (e.g. after any open/close transition or effects have settled). Receives the final open state.",
+      type: "(open: boolean) => void",
+    },
+    {
+      name: "id",
+      description:
+        "Base id for the popover content element. Used to associate aria attributes and to generate related ids when needed.",
+      type: "string",
+    },
+    {
+      name: "titleId",
+      description:
+        "Id of the element that labels the popover (typically the title). Used for `aria-labelledby` on the popover content.",
+      type: "string",
+    },
+    {
+      name: "descriptionId",
+      description:
+        "Id of the element that describes the popover (typically body text). Used for `aria-describedby` on the popover content.",
+      type: "string",
+    },
+
+    {
+      name: "hide",
+      description:
+        "Whether the popover should be hidden when its anchor element is out of view.",
+      type: "boolean",
+    },
+
+    {
+      name: "lockScroll",
+      description:
+        "Whether to lock page scrolling while the popover is open (commonly used with modal behavior).",
+      type: "boolean",
+    },
+    {
+      name: "lightDismiss",
+      description:
+        "Controls outside click/tap dismissal. Set to `true` to close on outside interaction, `false` to disable, or provide a predicate that returns `true` to allow dismiss for a given interacted element.",
+      type: "boolean | ((el: HTMLElement) => boolean)",
+    },
+    {
+      name: "modal",
+      description:
+        "Whether the popover should behave modally (e.g. block interaction with the rest of the page and typically imply scroll locking and focus trapping).",
+      type: "boolean",
+    },
+
+    {
+      name: "focusTrap",
+      description:
+        "Whether to trap focus within the popover while it is open.",
+      type: "boolean",
+    },
+    {
+      name: "focusInitial",
+      description:
+        "An element or a function that returns an element to receive initial focus when the popover opens. Set this value to `false` to prevent initial focus.",
+      type: "boolean | HTMLElement | (() => HTMLElement | boolean)",
+    },
+    {
+      name: "focusReturn",
+      description:
+        "The element to return focus to when the popover closes. By default, focus returns to the element that was focused before the popover opened. Set this value to `false` to prevent focus from returning.",
+      type: "((nodeBeforeActivation: HTMLElement) => HTMLElement | boolean) | HTMLElement | boolean",
+    },
+    {
+      name: "focusFallback",
+      description:
+        "The element to focus when no focusable elements exist inside the popover container. Use this property to provide a fallback, as the focus trap requires at least one focusable element.",
+      type: "HTMLElement | () => HTMLElement",
+    },
+    {
+      name: "focusCanReturn",
+      description:
+        "A function that returns a `Promise`. The focus trap waits for the promise to resolve before returning focus.",
+      type: "(trigger: HTMLElement) => Promise<void>",
+    },
+    {
+      name: "focusCanTrap",
+      description:
+        "A function that returns a `Promise`. The focus trap waits for the promise to resolve before trapping focus.",
+      type: "(containers: HTMLElement[]) => Promise<void>",
+    },
+    {
+      name: "focusPreventScroll",
+      description:
+        "Whether the focus trap should prevent scroll jumps when focusing an element. Only use this option when the popover is large and scrollable.",
+      type: "boolean",
+    },
+
+    {
+      name: "anchor",
+      description:
+        "Anchor element used to position the popover. Accepts a reference element, an element id string, or `null` to disable anchoring.",
+      type: "HTMLElement | VirtualElement | string | null",
+    },
+    {
+      name: "placement",
+      description:
+        "Preferred placement of the popover relative to the anchor (e.g. `bottom`, `top-start`).",
+      type: "Placement",
+    },
+    {
+      name: "shiftPadding",
+      description:
+        "Padding (in px) used when shifting the popover to keep it within viewport boundaries.",
+      type: "number",
+    },
+    {
+      name: "inline",
+      description:
+        "Whether to use inline positioning behavior (useful when the anchor is inline text/ranges).",
+      type: "boolean",
+    },
+    {
+      name: "sideOffset",
+      description:
+        "Distance (in px) between the popover and the anchor along the main axis.",
+      type: "number",
+    },
+    {
+      name: "alignOffset",
+      description:
+        "Offset (in px) along the cross axis for fine-tuning alignment.",
+      type: "number",
+    },
+
+]}
+/>
+
+### Popover.Trigger
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A render prop used to customize the rendered trigger element. The render props is provided the \`open\` state and a function to change the \`open\` state.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Popover.Arrow
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description: "A render prop used to customize the rendered arrow element.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Popover.Close
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A render prop used to customize the rendered close element. The render props is provided the \`open\` state and a function to change the \`open\` state.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Popover.Title
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A render prop used to customize the rendered title element. The render prop is provided the ID of the title.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### Popover.Description
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A render prop used to customize the rendered description element. The render prop is provided the ID of the description.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+## Next Steps
