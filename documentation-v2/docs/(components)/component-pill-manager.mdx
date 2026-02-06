@@ -2,4 +2,370 @@
 title: Pill Manager
 step: A versatile component for creating intuitive grid interactions using label pills.
 pro: true
+description: Manage selection and order through LyteNyte Grid's Pill Manager component. The Mill Manager
+  component is a versatile item list component with drag and drop support.
 ---
+
+LyteNyte Grid exports the `PillManager` component, which is a headless component made up of
+separate parts that can be optionally assembled for manual customization, or rendered in a
+default setup.
+
+The `PillManager` can be used for controlling different aspects of the grid, for example:
+
+- Use the `PillManager` to control [column visibility](/docs/column-visibility) and order by toggling pills and reordering.
+- The `PillManager` can be used to manage and reorder [row groupings](/docs/client-source-row-grouping).
+- Pills can be used to select from a list of labels to support [label filters](/docs/client-source-label-filters).
+- Combine multiple pill rows to create a [column pivot](/docs/pivoting-overview) configuration UI.
+
+A full example is shown below. The remaining sections of this guide will explain the different capabilities of the
+`PillManager` component.
+
+::demo[Pill Manager="./demos/pill-manager-full"]
+
+## Pill Manager Anatomy
+
+The `PillManager` component is a headless component component. Similar to LyteNyte Grid
+it has two modes:
+
+- **Default Mode**: The `PillManager` will be rendered using a default configuration.
+- **Headless Mode**: The `PillManager` will be fully broken out into its component parts for custom configuration.
+
+<Tabs>
+
+<Tab label="Headless Mode">
+
+```tsx
+<PillManager>
+  {(row) => {
+    return (
+      <PillManager.Row row={row}>
+        <PillManager.Label row={row} />
+        <PillManager.Container>
+          {row.pills.map((pill) => {
+            return <PillManager.Pill />;
+          })}
+        </PillManager.Container>
+        <PillManager.Expander />
+      </PillManager.Row>
+    );
+  }}
+</PillManager>
+```
+
+</Tab>
+
+<Tab label="Default Mode">
+
+```tsx
+<PillManager />
+```
+
+</Tab>
+
+</Tabs>
+
+## Pill Row Specification
+
+The `PillManager` requires the `rows` property to be set to an array of `PillRowSpec` objects. The
+`PillRowSpec` interface is shown below. Each item provided will be rendered as a row containing
+pills. Each `PillRowSpec` item provided to the `PillManager` is displayed as a row in the `PillManager`.
+
+```ts
+export interface PillItemSpec {
+  /** A unique id for an individual pill. */
+  readonly id: string;
+  /** Whether the pill is enabled. */
+  readonly active: boolean;
+  /** The display name of the pill. */
+  readonly name?: string;
+  /** Whether the pill can be reordered for moved to another pill row. */
+  readonly movable?: boolean;
+  /** Tags that other pill rows can accept. */
+  readonly tags?: string[];
+  /** Any data to associate with the pill item. */
+  readonly data?: unknown;
+  /** Whether the pill may be removed. */
+  readonly removable?: boolean;
+}
+
+export interface PillRowSpec {
+  /** Unique ID of the row. */
+  readonly id: string;
+  /** The list of pills contained in the pill row. */
+  readonly pills: PillItemSpec[];
+  /** Any external pill tags this will row will accept. */
+  readonly accepts?: string[];
+  /** A human readable name of the pill row. */
+  readonly label?: string;
+  /** A preset style for the pills, or a custom string.*/
+  readonly type?: "columns" | "row-groups" | "row-pivots" | "column-pivots" | "measures" | ({} & string);
+}
+```
+
+## Pill Active State
+
+Every `PillItemSpec` in the `PillRowSpec` must have the `active` state property set. The
+`active` property determine if a pill is enabled. What it means for a pill to be
+active depends on your use case.
+
+For example, it could be used to determine column visibility, as the demo below demonstrates.
+Pills that are not active are dimmed.
+
+::demo[Pill Active State="../(column)/demos/column-visibility"]
+
+When the `active` state of a pill is changed, the `PillManager` will call the `onPillRowChange`
+handler. The interface for the `onPillRowChange` is shown below. You can use these `params`
+provided to update your pill row state.
+
+```ts
+type onPillItemActiveChange = (params: {
+  readonly index: number;
+  readonly item: PillItemSpec;
+  readonly row: PillRowSpec;
+}) => void;
+```
+
+## Pill Reordering
+
+Set the `movable` property on a pill to enable pill reordering. By default a pill may be
+reordered within its own pill row. By setting the `tags` property you can indicate that
+a pill may additionally by moved to another row. For another row to accept a pill, set the
+`accepts` property on the row to include one of the `tags` of the pill being moved.
+
+The demo below demonstrates pill reordering. You can draw pills between sections which
+will active them. Or you can reorder the pills within same row.
+
+::demo[Pill Reordering="../(pivoting)/demos/pivot-rows"]
+
+When pills are reordered the `PillManager` will call the `onPillRowChange` event handler.
+The type for the handler is shown below.
+
+- The `changed` property contains the `PillRowSpec`s that have been updated.
+- The `full` property contains the all the `PillRowSpec`s provided but with their pills updated according
+  to the move that took place.
+
+```ts
+type onPillRowChange = (params: { readonly changed: PillRowSpec[]; readonly full: PillRowSpec[] }) => void;
+```
+
+## Pill Parts
+
+The `PillManager` is a headless component. All the parts are rendered within a render prop
+that must be provided as a render prop to the `PillManager`. The render prop is optional,
+and if not provided, the `PillManager` will use a default implementation.
+
+### Pill Row
+
+The `PillManager.Row` component is a container for each of the pill rows. Each `PillRowSpec` provided
+to the `PillManager` will result in a pill row being rendered. The `PillManager.Row` component
+must be provided a `PillRowSpec`.
+
+```tsx
+<PillManager>
+  {(row) => {
+    return <PillManager.Row row={row} />;
+  }}
+</PillManager>
+```
+
+### Pill Label
+
+The `PillManager.Label` is the labeled displayed for each of the individual rows. If not provided
+a default `PillManager.Label` will be used depending on the pill row's type.
+
+```tsx
+<PillManager>
+  {(row) => {
+    return (
+      <PillManager.Row row={row}>
+        <PillManager.Label row={row} />
+      </PillManager.Row>
+    );
+  }}
+</PillManager>
+```
+
+### Pill Container
+
+The `PillManager.Container` component is used to render all the pills for a given row. It is
+also used as the dropzone for external pills. All `PillManager.Pill` items must be rendered
+in a `PillManager.Container` component.
+
+```tsx
+<PillManager>
+  {(row) => {
+    return (
+      <PillManager.Row row={row}>
+        <PillManager.Label row={row} />
+        <PillManager.Container />
+      </PillManager.Row>
+    );
+  }}
+</PillManager>
+```
+
+### Pill
+
+The `PillManager.Pill` component is used to render a single pill. A pill is the main interaction
+element of the `PillManager`. The `PillManager.Pill` must be rendered within the `PillManager.Container`
+component.
+
+```tsx
+<PillManager>
+  {(row) => {
+    return (
+      <PillManager.Row row={row}>
+        <PillManager.Label row={row} />
+        <PillManager.Container>
+          {row.pills.map((pill) => (
+            <PillManager.Pill key={pill.id} item={pill} />
+          ))}
+        </PillManager.Container>
+      </PillManager.Row>
+    );
+  }}
+</PillManager>
+```
+
+### Pill Expander
+
+The `PillManager.Expander` toggles the display mode of a pill row between displaying a scrollable
+view of pills or wrapping row of pills. When expanded all the pills of the pill row will be visible.
+
+```tsx
+<PillManager>
+  {(row) => {
+    return (
+      <PillManager.Row row={row}>
+        <PillManager.Label row={row} />
+        <PillManager.Container>
+          {row.pills.map((pill) => (
+            <PillManager.Pill key={pill.id} item={pill} />
+          ))}
+        </PillManager.Container>
+        <PillManager.Expander />
+      </PillManager.Row>
+    );
+  }}
+</PillManager>
+```
+
+## Vertical Pills
+
+## Pill Manager Styling
+
+The `PillManager` component is a headless and unstyled by default. You can import
+pre-made styles from the LyteNyte Grid package to match the `PillManager` theme
+with the pre-made LyteNyte Grid styles.
+
+```ts
+import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
+```
+
+The pre-made styles will also provide different pill theming for each of the `PillRowSpec`
+types.
+
+## Properties
+
+All the `PillManager` component parts are rendered as HTML elements, and will accept the
+standard HTML props. This section lists the additional properties each component accepts.
+
+### PillManager
+
+<TypeTable
+  type={[
+    {
+      name: "rows",
+      description: "The rows of pills that will be controlled and managed by the `PillManager`",
+      type: "PillRowSpec[]",
+      required: true,
+    },
+    {
+      name: "orientation",
+      description: "The pill container orientation to use.",
+      type: '"horizontal" | "vertical"',
+    },
+    {
+      name: "children",
+      description: "A render prop that can be used to customize how the pill rows are rendered.",
+      type: "(row: PillRowSpec, ctx: PillRootContext) => ReactNode",
+    },
+    {
+      name: "onPillRowChange",
+      description: "A callback fired when the pill items are reordered or removed.",
+      type: "(params: { changed: PillRowSpec[], full: PillRowSpec[] }) => void",
+    },
+    {
+      name: "onPillItemActiveChange",
+      description: "A callback fired when a pill item's active state is changed.",
+      type: "(params: { index: number, item: PillItemSpec, row: PillRowSpec }) => void",
+    },
+    {
+      name: "onPillItemThrown",
+      description:
+        "A callback fired when a pill item is dragged and dropped outside the pill manager container.",
+      type: "(params: { index: number, item: PillItemSpec, row: PillRowSpec }) => void",
+    },
+  ]}
+/>
+
+### PillManager.Row
+
+<TypeTable
+  type={[
+    {
+      name: "row",
+      description: "The pill row specification that the label belongs to.",
+      type: "PillRowSpec",
+      required: true,
+    },
+  ]}
+/>
+
+### PillManager.Label
+
+<TypeTable
+  type={[
+    {
+      name: "row",
+      description: "The pill row specification that the label belongs to.",
+      type: "PillRowSpec",
+      required: true,
+    },
+    {
+      name: "render",
+      description: "A render prop to customize how the label is rendered",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### PillManager.Pill
+
+<TypeTable
+  type={[
+    {
+      name: "item",
+      description: "The pill definition for the pill component.",
+      type: "PillItemSpec",
+      required: true,
+    },
+    {
+      name: "elementEnd",
+      description: "Additional content to display after the pill's label.",
+      type: "ReactNode",
+    },
+  ]}
+/>
+
+### PillManager.Expander
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description: "A render prop to customize the way the pill row expander is rendered.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
