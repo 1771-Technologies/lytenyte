@@ -1,12 +1,14 @@
 import { forwardRef, useMemo, useState, type JSX, type PropsWithChildren } from "react";
 import { PillRowProvider, type PillRowContext } from "./pill-row.context.js";
 import type { PillRowSpec } from "./types.js";
+import { usePillRoot } from "./root.context.js";
 
 function PillRowBase(
   { row, children, ...props }: PropsWithChildren<PillRow.Props>,
   forwarded: JSX.IntrinsicElements["div"]["ref"],
 ) {
   const [expanded, setExpanded] = useState(false);
+  const { orientation } = usePillRoot();
 
   const value = useMemo<PillRowContext>(() => {
     return {
@@ -21,7 +23,13 @@ function PillRowBase(
 
   return (
     <PillRowProvider value={value}>
-      <div {...props} ref={forwarded} data-ln-pill-row data-ln-expanded={expanded}>
+      <div
+        {...props}
+        ref={forwarded}
+        data-ln-pill-row
+        data-ln-expanded={expanded}
+        data-ln-orientation={orientation}
+      >
         {children}
       </div>
     </PillRowProvider>

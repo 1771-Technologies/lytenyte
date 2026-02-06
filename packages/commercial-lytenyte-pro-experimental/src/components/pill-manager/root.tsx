@@ -53,7 +53,7 @@ function PillRootImpl(
 
   return (
     <PillRootProvider value={value}>
-      <div {...p} ref={ref} data-ln-pill-root>
+      <div {...p} ref={ref} data-ln-pill-root data-ln-orientation={orientation ?? "horizontal"}>
         {rendered}
       </div>
     </PillRootProvider>
