@@ -8,7 +8,12 @@ import {
   type Ref,
 } from "react";
 import { Grid, moveRelative, useClientDataSource, usePiece } from "../../index.js";
-import type { RowGroup, RowLeaf, RowSelectionLinked } from "@1771technologies/lytenyte-shared";
+import {
+  itemsWithIdToMap,
+  type RowGroup,
+  type RowLeaf,
+  type RowSelectionLinked,
+} from "@1771technologies/lytenyte-shared";
 import { TreeChildren } from "./tree-children.js";
 import type { TreeViewChildParams, TreeViewItem, TreeViewSelectAllParams } from "./types.js";
 import { SelectAll } from "./select-all.js";
@@ -67,6 +72,7 @@ function TreeViewBase<T extends TreeViewItem>(
 
     rowGroupExpansions,
     onRowGroupExpansionChange,
+    selectAllSlot,
 
     draggable,
     onItemsReordered,
@@ -109,6 +115,8 @@ function TreeViewBase<T extends TreeViewItem>(
   const [overId, setOverId] = useState<string | null>(null);
   const [isBefore, setIsBefore] = useState<boolean>(false);
 
+  const itemLookup = useMemo(() => itemsWithIdToMap(items), [items]);
+
   const over$ = usePiece(overId);
   const isBefore$ = usePiece(isBefore);
 
@@ -130,11 +138,17 @@ function TreeViewBase<T extends TreeViewItem>(
 
         if (row.id === "__ln_select_all") {
           if (!api) return null;
-          return <SelectAll api={api as any} />;
+          return <SelectAll api={api as any} render={selectAllSlot} />;
         }
+
+        const leafs = () =>
+          row.kind === "branch"
+            ? api.rowLeafs(row.id).map((x) => itemLookup.get(x)!)
+            : [itemLookup.get(row.id)!];
 
         return children({
           row,
+          leafs,
           selectEnabled: rowSelectionEnabled,
           selected,
           indeterminate,
@@ -147,7 +161,7 @@ function TreeViewBase<T extends TreeViewItem>(
         });
       },
     };
-  }, [children, draggable, isBefore$, over$, rowSelectionEnabled]);
+  }, [children, draggable, isBefore$, itemLookup, over$, rowSelectionEnabled, selectAllSlot]);
 
   useImperativeHandle(forwarded, () => {
     return {
@@ -240,4 +254,6 @@ function TreeViewBase<T extends TreeViewItem>(
   );
 }
 
-export const TreeView = forwardRef(TreeViewBase);
+export const TreeView = forwardRef(TreeViewBase) as <T extends TreeViewItem>(
+  props: TreeViewProps<T>,
+) => ReactNode;

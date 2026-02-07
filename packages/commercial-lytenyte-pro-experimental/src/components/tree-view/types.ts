@@ -9,6 +9,7 @@ export interface TreeViewItem {
 
 export interface TreeViewChildParams<T extends TreeViewItem> {
   readonly row: RowGroup | RowLeaf<T>;
+  readonly leafs: () => T[];
   readonly toggle: (b?: boolean) => void;
 
   readonly selected: boolean;

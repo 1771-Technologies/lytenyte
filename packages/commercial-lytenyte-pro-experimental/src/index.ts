@@ -187,4 +187,8 @@ export type {
 } from "./components/tree-view/index.js";
 export type { TreeViewApi } from "./components/tree-view/index.js";
 export { TreeView, TreeChildren } from "./components/tree-view/index.js";
+
+export type { ColumnManagerProps } from "./components/column-manager/column-manager.js";
+export { ColumnManager } from "./components/column-manager/column-manager.js";
+
 export { Checkbox } from "./components/checkbox/checkbox.js";
