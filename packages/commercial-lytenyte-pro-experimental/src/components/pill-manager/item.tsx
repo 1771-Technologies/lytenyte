@@ -203,6 +203,7 @@ function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillI
       onKeyDown={(ev) => {
         if (ev.key === " " && document.activeElement === ev.currentTarget) {
           onItemClick?.();
+          ev.preventDefault();
         }
       }}
     >
