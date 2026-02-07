@@ -23,6 +23,8 @@ function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillI
     cloned,
     rows,
 
+    orientation,
+
     onPillItemThrown,
     onPillItemActiveChange,
     onPillRowChange,
@@ -107,16 +109,22 @@ function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillI
 
       if (dragRowId !== row.id) (hasPill as any).active = dragged.active;
 
-      const [horizontal] = getDragDirection();
+      const [horizontal, vertical] = getDragDirection();
 
       const currentSwapId = row.pills[overIndex].id;
       const currentRowId = row.id;
 
-      if (currentSwapId === prevSwapId.current && currentRowId === prevRowId.current) {
-        if (horizontal === "end" && draggedIndex >= overIndex) return;
-        if (horizontal === "start" && draggedIndex <= overIndex) return;
+      if (orientation === "horizontal") {
+        if (currentSwapId === prevSwapId.current && currentRowId === prevRowId.current) {
+          if (horizontal === "end" && draggedIndex >= overIndex) return;
+          if (horizontal === "start" && draggedIndex <= overIndex) return;
+        }
+      } else {
+        if (currentSwapId === prevSwapId.current && currentRowId === prevRowId.current) {
+          if (vertical === "bottom" && draggedIndex >= overIndex) return;
+          if (vertical === "top" && draggedIndex <= overIndex) return;
+        }
       }
-
       // We are gonna swap these two
       prevSwapId.current = currentSwapId;
       prevRowId.current = currentRowId;
