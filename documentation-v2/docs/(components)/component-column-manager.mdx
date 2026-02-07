@@ -1,4 +1,71 @@
 ---
 title: Column Manager
 pro: true
+step: Manage the visibility and order of columns using the Column Manager.
+description: LyteNyte Grid provides an opinionated Column Manager component that can be
+  used to control the visibility and order of columns in the grid.
 ---
+
+Use the `ColumnManager` component as a simple way to provide a UI for managing columns in the
+grid. The `ColumnManager` is opinionated by design and handles all the boilerplate required
+for a functioning column management interface.
+
+## Column Manager Example
+
+The demo below demonstrates the Column Manager in action. You can toggle the visibility of a
+column by clicking its checkbox. You can reorder columns by dragging them within the
+Column Manager.
+
+::demo[Column Manager="./demos/column-manager"]
+
+Notice from the demo code that configuring the Column Manager is very simple. LyteNyte Grid's
+Column Manager handles the complexity of managing column settings while providing a
+very simple-to-use component.
+
+```tsx
+<ColumnManager columns={columns} onColumnsChange={setColumns} />
+```
+
+:::note
+
+If you are looking for a component that is less opinionated, see the [Pill Manager](/docs/component-pill-manager) or
+[Tree View](/docs/component-tree-view) components. These components are headless and allow
+more flexible configuration.
+
+:::
+
+## Properties
+
+<TypeTable
+  type={[
+    {
+      name: "columns",
+      description: "The columns that are managed by the Column Manager.",
+      type: "Column[]",
+      required: true,
+    },
+    {
+      name: "onColumnsChange",
+      description: "An event callback that fires when the columns change.",
+      type: "(change: Column[]) => void",
+      required: true,
+    },
+    {
+      name: "base",
+      description: "The base column definition, when a base column is used.",
+      type: "ColumnBase",
+    },
+    {
+      name: "endElement",
+      description:
+        "Additional content rendered after the column row content. This is typically used to add a column menu.",
+      type: "(params: { columns: Column[], row: RowNode }) => ReactNode",
+    },
+  ]}
+/>
+
+## Next Steps
+
+::next[/docs/component-pill-manager]
+::next[/docs/component-tree-view]
+::next[/docs/component-menu-button]

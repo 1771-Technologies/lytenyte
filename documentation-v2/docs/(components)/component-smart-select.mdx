@@ -1,4 +1,390 @@
 ---
 title: Smart Select
 pro: true
+step: Learn how to use the Smart Select component as a combobox or select element.
+description: LyteNyte Grid's smart select component is a versatile combobox that supports
+  single and multiple selection and asynchronous loading.
 ---
+
+The `SmartSelect` component is a hybrid, headless combobox and select component. The selection
+list uses a single, unified list box, while the selection trigger can be either a select trigger
+or a combobox trigger.
+
+## Single Select
+
+The simplest variant of the `SmartSelect` component is the single select variant.
+Set the `kind` property to `"basic"` and the `trigger` property to `SmartSelect.BasicTrigger`
+to use the `SmartSelect` component in basic select mode.
+
+The demo below demonstrates this configuration. The `value` and `options` properties are required.
+Each `SmartSelect` option must have a unique ID.
+
+::demo[Basic Single Select="./demos/smart-select-basic-demo"]
+
+## Combo Select
+
+Set the `kind` property to `"combo"` and the `trigger` property to `SmartSelect.ComboTrigger` to
+use the `SmartSelect` component in combobox mode. A combobox allows users to search for an item
+before selecting it.
+
+The demo below shows the `SmartSelect` component used as a combobox. In this demo, the selected
+value is used as the combobox input value, but this behavior is not required. In most cases,
+a combobox is used to update the state of another component based on the selected value.
+
+::demo[Combobox Select="./demos/smart-combo-demo"]
+
+## Multiple Select
+
+Set the `kind` property to `"multi"` and the `trigger` property to `SmartSelect.MultiTrigger` to
+use the `SmartSelect` component in multi-select mode. Multi-select mode allows users to select
+multiple items.
+
+The `value` property must be provided as an array of options, unlike the basic select variant,
+which accepts a single selected value.
+
+The demo below shows multi-select in action. Selected items are rendered as `SmartSelect.Chip`
+components. You must use `SmartSelect.Chip` for selected values to ensure the `SmartSelect`
+component correctly handles keyboard navigation.
+
+::demo[Multiple Select="./demos/smart-select-multi-demo"]
+
+## Multiple Combobox
+
+Set the `kind` property to `"multi-combo"` and the `trigger` property to
+`SmartSelect.MultiComboTrigger` to use the `SmartSelect` component in multi-combobox mode.
+Multi-combobox mode allows users to select multiple items using a combobox input.
+
+The demo below shows multi-combobox in action. Selected items are rendered as
+`SmartSelect.Chip` components. Users can type into the search input to add additional chips
+to the current selection.
+
+::demo[Multi Combobox="./demos/smart-multi-combo-demo"]
+
+## Asynchronous Select
+
+When the `SmartSelect` component uses a combobox trigger, the `options` property can return a
+`Promise`. Returning a `Promise` places the `SmartSelect` component into search mode.
+
+The demo below shows asynchronous searching. This approach is useful when options for a given
+search query must be fetched from a server.
+
+::demo[Asynchronous Multi Combobox="./demos/smart-multi-combo-async"]
+
+## Properties
+
+The `SmartSelect` component is composed of several headless component parts. This section
+describes the properties for headless components that define behavior beyond standard HTML
+element properties.
+
+### SmartSelect
+
+<TypeTable
+  type={[
+    {
+      name: "open",
+      description: "Whether the `SmartSelect` selection list is open.",
+      type: "boolean",
+    },
+    {
+      name: "onOpenChange",
+      description: "An event handler called when the select is opened or closed.",
+      type: "(change: boolean) => void",
+    },
+    {
+      name: "onOpenChangeComplete",
+      description: "An event handler called after open or close animations complete.",
+      type: "(change: boolean) => void",
+    },
+    {
+      name: "openOnClick",
+      description: "Whether clicking the trigger opens the select list.",
+      type: "boolean",
+    },
+    {
+      name: "openKeys",
+      description:
+        "An array of key values that open the select list. Defaults to [' ', 'Enter', 'ArrowDown'].",
+      type: "string[]",
+    },
+    {
+      name: "closeKeys",
+      description: "An array of key values that close the select list. Defaults to ['Escape'].",
+      type: "string[]",
+    },
+    {
+      name: "trigger",
+      description: "The trigger element for the selected mode. This must match the `kind` value.",
+      type: "SlotComponent",
+      required: true,
+    },
+    {
+      name: "container",
+      description:
+        "The container element for the `SmartSelect`. The root element must be `SmartSelect.Container`.",
+      type: "SlotComponent",
+    },
+    {
+      name: "closeOnSelect",
+      description: "Whether the select list closes when an option is selected. Defaults to `true`.",
+      type: "boolean",
+    },
+    {
+      name: "children",
+      description:
+        "A render prop used to display list options. The render function must return elements with `SmartSelect.Option` as the root.",
+      type: "(params: OptionRenderProps) => ReactNode",
+    },
+    {
+      name: "kind",
+      description: "The operating mode of the `SmartSelect` component.",
+      type: '"basic" | "multi" | "combo" | "multi-combo"',
+      required: true,
+    },
+  ]}
+/>
+
+Depending on the `kind` property, additional properties are available.
+
+#### Basic
+
+<TypeTable
+  type={[
+    {
+      name: "value",
+      description: "The currently selected value.",
+      type: "T | null",
+      required: true,
+    },
+    {
+      name: "onOptionChange",
+      description: "An event callback fired when the selected value changes.",
+      type: "(change: T | null) => void",
+      required: true,
+    },
+    {
+      name: "options",
+      description: "The list of available options.",
+      type: "T[]",
+      required: true,
+    },
+  ]}
+/>
+
+#### Multi Select
+
+<TypeTable
+  type={[
+    {
+      name: "value",
+      description: "An array of selected values.",
+      type: "T[]",
+      required: true,
+    },
+    {
+      name: "onOptionChange",
+      description: "An event callback fired when the selected values change.",
+      type: "(change: T[]) => void",
+      required: true,
+    },
+    {
+      name: "options",
+      description: "The list of available options.",
+      type: "T[]",
+      required: true,
+    },
+  ]}
+/>
+
+#### Combo Select
+
+<TypeTable
+  type={[
+    {
+      name: "value",
+      description: "The currently selected value.",
+      type: "T | null",
+      required: true,
+    },
+    {
+      name: "onOptionChange",
+      description: "An event callback fired when the selected value changes.",
+      type: "(change: T | null) => void",
+      required: true,
+    },
+    {
+      name: "query",
+      description:
+        "The current value of the combobox search input. If not provided, the input is uncontrolled.",
+      type: "string",
+    },
+    {
+      name: "onQueryChange",
+      description: "An event callback fired when the search query changes.",
+      type: "(change: string) => void",
+    },
+    {
+      name: "searchDebounceMs",
+      description:
+        "The debounce time, in milliseconds, before calling the `options` function with a new query value.",
+      type: "number",
+    },
+    {
+      name: "clearOnSelect",
+      description: "Whether the query value is cleared when an option is selected.",
+      type: "boolean",
+    },
+    {
+      name: "clearOnQuery",
+      description:
+        "Whether the option list is cleared when the query value changes. Enable this when options are loaded asynchronously to prevent displaying stale results.",
+      type: "boolean",
+    },
+    {
+      name: "options",
+      description:
+        "A search function that receives the current query value and returns a list of options. The function may return a promise for asynchronous loading.",
+      type: "(query: string | null) => Promise<T[]> | T[]",
+    },
+  ]}
+/>
+
+#### Multi-Combo Select
+
+<TypeTable
+  type={[
+    {
+      name: "value",
+      description: "An array of selected values.",
+      type: "T[]",
+      required: true,
+    },
+    {
+      name: "onOptionChange",
+      description: "An event callback fired when the selected values change.",
+      type: "(change: T[]) => void",
+      required: true,
+    },
+    {
+      name: "query",
+      description:
+        "The current value of the combobox search input. If not provided, the input is uncontrolled.",
+      type: "string",
+    },
+    {
+      name: "onQueryChange",
+      description: "An event callback fired when the search query changes.",
+      type: "(change: string) => void",
+    },
+    {
+      name: "searchDebounceMs",
+      description:
+        "The debounce time, in milliseconds, before calling the `options` function with a new query value.",
+      type: "number",
+    },
+    {
+      name: "clearOnSelect",
+      description: "Whether the query value is cleared when an option is selected.",
+      type: "boolean",
+    },
+    {
+      name: "clearOnQuery",
+      description:
+        "Whether the option list is cleared when the query value changes. Enable this when options are loaded asynchronously to prevent displaying stale results.",
+      type: "boolean",
+    },
+    {
+      name: "options",
+      description:
+        "A search function that receives the current query value and returns a list of options. The function may return a promise for asynchronous loading.",
+      type: "(query: string | null) => Promise<T[]> | T[]",
+    },
+  ]}
+/>
+
+### SmartSelect.Chip
+
+<TypeTable
+  type={[
+    {
+      name: "option",
+      description: "The option value represented by the chip.",
+      type: "T",
+      required: true,
+    },
+    {
+      name: "render",
+      description:
+        "A slot component that controls how the chip is rendered. The root element must accept standard HTML element props.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### SmartSelect.MultiTrigger
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A slot component used to render the multi-select trigger input. Chips are rendered before the input.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### SmartSelect.MultiComboTrigger
+
+<TypeTable
+  type={[
+    {
+      name: "renderInput",
+      description:
+        "A slot component used to render the multi-combo trigger input. Chips are rendered before the input.",
+      type: "SlotComponent",
+    },
+  ]}
+/>
+
+### SmartSelect.Option
+
+<TypeTable
+  type={[
+    {
+      name: "render",
+      description:
+        "A slot component used to render a custom option root element. Use this only when you need to replace the default option root.",
+      type: "SlotComponent",
+    },
+    {
+      name: "closeOnSelect",
+      description:
+        "Whether selecting this option closes the select list. This value overrides the root setting.",
+      type: "boolean",
+    },
+    {
+      name: "option",
+      description: "The option value. This value is provided by the `SmartSelect` render prop.",
+      type: "T",
+      required: true,
+    },
+    {
+      name: "active",
+      description: "Whether the option is currently active, meaning it is hovered or keyboard-focused.",
+      type: "boolean",
+      required: true,
+    },
+    {
+      name: "selected",
+      description: "Whether the option is currently selected.",
+      type: "boolean",
+      required: true,
+    },
+  ]}
+/>
+
+## Next Steps
+
+::next[/docs/component-menu-button]
+::next[/docs/component-popover]
+::next[/docs/component-pill-manager]

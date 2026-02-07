@@ -1,0 +1,61 @@
+---
+title: Components Overview
+step: Learn how to use advanced components provided by LyteNyte Grid.
+description: LyteNyte Grid provides a set of additional components that are primarily
+  intended for use with the grid, but can also be used as general-purpose components.
+---
+
+## Prebuilt Theming
+
+The LyteNyte Grid components are unstyled by default. This provides you with an opportunity to add your own
+styling or adopt an existing design system.
+
+LyteNyte Grid provides pre-made styles for all components that leverage the existing LyteNyte Grid theme
+tokens. To use these styles, ensure you import the following CSS file:
+
+```css
+import "@1771technologies/lytenyte-pro-experimental/components.css";
+```
+
+:::note
+All the demos in the components guide use the `components.css` styles.
+:::
+
+### Data Attributes
+
+Like LyteNyte Grid, the components provided by LyteNyte Grid use `data-attributes` to
+expose component state to CSS. You can use these `data-attributes` for your own styling
+and logic.
+
+The best way to determine which `data-attribute` to target is by inspecting the rendered
+elements in the Chrome element inspector (or whichever browser devtools you are using).
+
+## Slots
+
+Many of the LyteNyte Grid components allow one or more props to accept a `SlotComponent`.
+These props act as special render props that merge external props and event handlers with
+internal ones. You can use these props to override how a component is displayed.
+
+For example, the [Select All component](/docs/component-select-all) accepts a `slot` property
+that you can use to override what the `SelectAll` component renders:
+
+```tsx
+<SelectAll slot={<div>My Custom Content</div>} />
+```
+
+The `SlotComponent`s also accept a function variant. When you provide a function, the component
+passes additional state to that function. For example, the `SelectAll` component provides a
+toggle function that changes the selection state.
+
+```tsx
+<SelectAll slot={(p) => <div onClick={() => p.toggle()}>My custom content</div>} />
+```
+
+The `SlotComponent` must be an element that accepts standard HTML props, such as `onClick`, or,
+in the case of function slots, must return an element that accepts standard HTML props.
+
+## Next Steps
+
+::next[/docs/component-pill-manager]
+::next[/docs/component-smart-select]
+::next[/docs/component-menu-button]

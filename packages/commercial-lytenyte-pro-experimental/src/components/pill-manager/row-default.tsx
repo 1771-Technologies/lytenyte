@@ -3,9 +3,11 @@ import { PillRowExpander } from "./expander.js";
 import { PillItem } from "./item.js";
 import { PillLabel } from "./label.js";
 import { PillRow } from "./pill-row.js";
+import type { PillRootContext } from "./root.context.js";
 import type { PillRowSpec } from "./types";
 
-export function PillRowDefault(row: PillRowSpec) {
+export function PillRowDefault(row: PillRowSpec, ctx: PillRootContext) {
+  const orientation = ctx.orientation;
   return (
     // Label
     <PillRow row={row}>
@@ -15,7 +17,7 @@ export function PillRowDefault(row: PillRowSpec) {
           return <PillItem item={x} key={x.id} />;
         })}
       </PillContainer>
-      <PillRowExpander />
+      {orientation === "horizontal" && <PillRowExpander />}
     </PillRow>
   );
 }

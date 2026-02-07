@@ -134,15 +134,11 @@ export namespace Grid {
     // PRO Specific types
 
     export type DataRectSplit = LnTypes.DataRectSplit;
-    export type DialogFrame<Spec extends GridSpec> = LnTypes.DialogFrame<Spec>;
-    export type DialogFrameProps<Spec extends GridSpec> = LnTypes.DialogFrameProps<Spec>;
     export type HavingFilterFn = LnTypes.HavingFilterFn;
     export type LabelFilter = LnTypes.LabelFilter;
     export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
     export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
     export type PivotState = LnTypes.PivotState;
-    export type PopoverFrame<Spec extends GridSpec> = LnTypes.PopoverFrame<Spec>;
-    export type PopoverFrameProps<Spec extends GridSpec> = LnTypes.PopoverFrameProps<Spec>;
     export type VirtualTarget = LnTypes.VirtualTarget;
   }
 }
@@ -165,6 +161,7 @@ export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";
 
 export { measureText, moveRelative, equal, arrayShallow } from "@1771technologies/lytenyte-shared";
 export { getRowDragData, computeField } from "@1771technologies/lytenyte-core-experimental/internal";
+export { virtualFromXY } from "./components/virtual-from-coordinates.js";
 
 export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
 export { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
@@ -177,7 +174,7 @@ export type { Piece, PieceWritable } from "@1771technologies/lytenyte-core-exper
 export { usePiece } from "@1771technologies/lytenyte-core-experimental";
 
 export { PillManager } from "./components/pill-manager/index.js";
-export { Dialog } from "./components/headless/dialog/index.js";
+export { Dialog } from "./components/headless/dialog/index.parts.js";
 export { Menu } from "./components/headless/menu/index.js";
 export { Popover } from "./components/headless/popover/index.js";
 export { SmartSelect } from "./components/smart-select/index.js";
@@ -188,5 +185,10 @@ export type {
   TreeViewChildParams,
   TreeViewSelectAllParams,
 } from "./components/tree-view/index.js";
-export { TreeView } from "./components/tree-view/index.js";
+export type { TreeViewApi } from "./components/tree-view/index.js";
+export { TreeView, TreeChildren } from "./components/tree-view/index.js";
+
+export type { ColumnManagerProps } from "./components/column-manager/column-manager.js";
+export { ColumnManager } from "./components/column-manager/column-manager.js";
+
 export { Checkbox } from "./components/checkbox/checkbox.js";

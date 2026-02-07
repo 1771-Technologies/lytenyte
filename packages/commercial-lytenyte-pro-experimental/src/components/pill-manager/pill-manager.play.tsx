@@ -45,32 +45,63 @@ export default function Demo() {
 
   return (
     <div style={{ display: "flex", gap: 8, flexDirection: "column" }}>
-      <PillManager
-        rows={state}
-        onPillRowChange={(p) => {
-          setState(p.full);
-        }}
-        onPillItemThrown={(x) => {
-          setState((prev) => {
-            const next = [...prev];
-            next[x.index] = {
-              ...next[x.index],
-              pills: next[x.index].pills.filter((item) => item.id !== x.item.id),
-            };
+      <div style={{ height: "200px" }}>
+        <PillManager
+          rows={state}
+          onPillRowChange={(p) => {
+            setState(p.full);
+          }}
+          onPillItemThrown={(x) => {
+            setState((prev) => {
+              const next = [...prev];
+              next[x.index] = {
+                ...next[x.index],
+                pills: next[x.index].pills.filter((item) => item.id !== x.item.id),
+              };
 
-            return next;
-          });
-        }}
-        onPillItemActiveChange={(p) => {
-          console.log("i ran");
-          setState((prev) => {
-            const next = [...prev];
-            next.splice(p.index, 1, p.row);
+              return next;
+            });
+          }}
+          onPillItemActiveChange={(p) => {
+            setState((prev) => {
+              const next = [...prev];
+              next.splice(p.index, 1, p.row);
 
-            return next;
-          });
-        }}
-      />
+              return next;
+            });
+          }}
+        />
+      </div>
+      <div style={{ height: "200px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ width: 400 }}>
+          <PillManager
+            orientation="vertical"
+            rows={state}
+            onPillRowChange={(p) => {
+              setState(p.full);
+            }}
+            onPillItemThrown={(x) => {
+              setState((prev) => {
+                const next = [...prev];
+                next[x.index] = {
+                  ...next[x.index],
+                  pills: next[x.index].pills.filter((item) => item.id !== x.item.id),
+                };
+
+                return next;
+              });
+            }}
+            onPillItemActiveChange={(p) => {
+              setState((prev) => {
+                const next = [...prev];
+                next.splice(p.index, 1, p.row);
+
+                return next;
+              });
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }

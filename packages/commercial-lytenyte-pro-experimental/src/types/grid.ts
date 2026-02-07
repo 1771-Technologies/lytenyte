@@ -1,6 +1,5 @@
 import type { RowSource } from "@1771technologies/lytenyte-shared";
-import type { ReactNode } from "react";
-import type { API, DataRect } from "./api";
+import type { DataRect } from "./api";
 
 export interface GridSpec<
   Data = unknown,
@@ -13,27 +12,6 @@ export interface GridSpec<
   readonly source?: S;
   readonly api?: Ext;
 }
-
-export interface DialogFrame<Spec extends GridSpec = GridSpec> {
-  readonly component: (props: DialogFrameProps<Spec>) => ReactNode;
-}
-export interface DialogFrameProps<Spec extends GridSpec> {
-  readonly api: API<Spec>;
-  readonly context?: unknown;
-  readonly frame: DialogFrame<Spec>;
-}
-
-export interface PopoverFrame<Spec extends GridSpec = GridSpec> {
-  readonly component: (props: PopoverFrameProps<Spec>) => ReactNode;
-}
-
-export interface PopoverFrameProps<Spec extends GridSpec = GridSpec> {
-  readonly api: API<Spec>;
-  readonly context?: unknown;
-  readonly frame: PopoverFrame<Spec>;
-  readonly target: HTMLElement | VirtualTarget;
-}
-
 export interface VirtualTarget {
   readonly getBoundingClientRect: () => Omit<DOMRect, "toJSON">;
   readonly getClientRects?: () => Omit<DOMRect, "toJSON">[];

@@ -1,9 +1,20 @@
-import { Fragment, memo, useMemo, useRef, useState, type ReactNode } from "react";
+import { forwardRef, Fragment, memo, useMemo, useRef, useState, type JSX, type ReactNode } from "react";
 import { PillRootProvider, type PillRootContext } from "./root.context.js";
 import type { PillItemSpec, PillRowSpec } from "./types.js";
 import { PillRowDefault } from "./row-default.js";
 
-function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
+function PillRootImpl(
+  {
+    children = PillRowDefault,
+    rows,
+    orientation,
+    onPillRowChange,
+    onPillItemActiveChange,
+    onPillItemThrown,
+    ...p
+  }: PillManager.Props,
+  ref: PillManager.Props["ref"],
+) {
   const [cloned, setCloned] = useState<PillRowSpec[] | null>(null);
   const [dragState, setDragState] = useState<{
     readonly activeId: string;
@@ -17,12 +28,10 @@ function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
 
   const value = useMemo<PillRootContext>(() => {
     return {
-      orientation: p.orientation ?? "horizontal",
-      wrappedRows: p.wrappedRows ?? true,
-      wrappedRoot: p.wrappedRoot ?? true,
+      orientation: orientation ?? "horizontal",
       cloned,
       setCloned,
-      rows: p.rows,
+      rows: rows,
 
       dragState,
       setDragState,
@@ -31,43 +40,32 @@ function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
       prevSwapId,
       prevRowId,
 
-      onPillItemActiveChange: p.onPillItemActiveChange ?? (() => {}),
-      onPillRowChange: p.onPillRowChange ?? (() => {}),
-      onPillItemThrown: p.onPillItemThrown ?? (() => {}),
+      onPillItemActiveChange: onPillItemActiveChange ?? (() => {}),
+      onPillRowChange: onPillRowChange ?? (() => {}),
+      onPillItemThrown: onPillItemThrown ?? (() => {}),
     };
-  }, [
-    cloned,
-    dragState,
-    p.onPillItemActiveChange,
-    p.onPillItemThrown,
-    p.onPillRowChange,
-    p.orientation,
-    p.rows,
-    p.wrappedRoot,
-    p.wrappedRows,
-  ]);
+  }, [cloned, dragState, onPillItemActiveChange, onPillItemThrown, onPillRowChange, orientation, rows]);
 
   const rendered = useMemo(() => {
-    const rows = cloned ?? p.rows;
-    return rows.map((x, i) => <Fragment key={i}>{children(x, value)}</Fragment>);
-  }, [children, cloned, p.rows, value]);
+    const r = cloned ?? rows;
+    return r.map((x, i) => <Fragment key={i}>{children(x, value)}</Fragment>);
+  }, [children, cloned, rows, value]);
 
   return (
     <PillRootProvider value={value}>
-      {value.wrappedRoot && <div data-ln-pill-root>{rendered}</div>}
-      {!value.wrappedRoot && rendered}
+      <div {...p} ref={ref} data-ln-pill-root data-ln-orientation={orientation ?? "horizontal"}>
+        {rendered}
+      </div>
     </PillRootProvider>
   );
 }
 
-export const PillManager = memo(PillRootImpl);
+export const PillManager = memo(forwardRef(PillRootImpl));
 
 export namespace PillManager {
-  export type Props = {
+  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
     readonly rows: PillRowSpec[];
     readonly orientation?: "horizontal" | "vertical";
-    readonly wrappedRows?: boolean;
-    readonly wrappedRoot?: boolean;
     readonly children?: (row: PillRowSpec, ctx: PillRootContext) => ReactNode;
 
     readonly onPillRowChange?: (params: {

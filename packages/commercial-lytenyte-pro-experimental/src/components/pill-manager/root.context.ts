@@ -1,8 +1,27 @@
 import { createContext, useContext, type Dispatch, type RefObject, type SetStateAction } from "react";
-import type { PillManager } from "./root";
-import type { PillRowSpec } from "./types";
+import type { PillItemSpec, PillRowSpec } from "./types";
 
-export type PillRootContext = Required<Omit<PillManager.Props, "children">> & {
+export type PillRootContext = {
+  readonly rows: PillRowSpec[];
+  readonly orientation: "horizontal" | "vertical";
+
+  readonly onPillRowChange: (params: {
+    readonly changed: PillRowSpec[];
+    readonly full: PillRowSpec[];
+  }) => void;
+
+  readonly onPillItemActiveChange: (params: {
+    readonly index: number;
+    readonly item: PillItemSpec;
+    readonly row: PillRowSpec;
+  }) => void;
+
+  readonly onPillItemThrown?: (params: {
+    readonly index: number;
+    readonly item: PillItemSpec;
+    readonly row: PillRowSpec;
+  }) => void;
+
   readonly cloned: null | PillRowSpec[];
   readonly setCloned: Dispatch<SetStateAction<null | PillRowSpec[]>>;
 

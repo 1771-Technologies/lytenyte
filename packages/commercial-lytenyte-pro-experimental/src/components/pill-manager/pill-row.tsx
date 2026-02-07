@@ -7,8 +7,8 @@ function PillRowBase(
   { row, children, ...props }: PropsWithChildren<PillRow.Props>,
   forwarded: JSX.IntrinsicElements["div"]["ref"],
 ) {
-  const { wrappedRows } = usePillRoot();
   const [expanded, setExpanded] = useState(false);
+  const { orientation } = usePillRoot();
 
   const value = useMemo<PillRowContext>(() => {
     return {
@@ -23,12 +23,15 @@ function PillRowBase(
 
   return (
     <PillRowProvider value={value}>
-      {wrappedRows && (
-        <div {...props} ref={forwarded} data-ln-pill-row data-ln-expanded={expanded}>
-          {children}
-        </div>
-      )}
-      {!wrappedRows && children}
+      <div
+        {...props}
+        ref={forwarded}
+        data-ln-pill-row
+        data-ln-expanded={expanded}
+        data-ln-orientation={orientation}
+      >
+        {children}
+      </div>
     </PillRowProvider>
   );
 }

@@ -1,17 +1,17 @@
 {
   "title": "Components",
   "pages": [
+    "component-overview",
     "component-grid-overlays",
     "component-viewport-shadows",
-    "component-column-manager",
     "component-pill-manager",
-    "component-sort-manager",
-    "component-dialog-frame",
-    "component-popover-frame",
+    "component-dialog",
+    "component-popover",
     "component-menu-button",
     "component-context-menu",
     "component-smart-select",
     "component-tree-view",
+    "component-column-manager",
     "component-select-all",
     "component-row-group-cell"
   ],

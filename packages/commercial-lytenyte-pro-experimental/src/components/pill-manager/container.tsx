@@ -102,6 +102,8 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
 
   const combined = useCombinedRefs(forwarded, setContainer);
 
+  const rtl = useRef<boolean>(null as unknown as false);
+
   return (
     <div
       {...props}
@@ -112,7 +114,18 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       data-ln-pill-type={row.type}
       tabIndex={0}
       onKeyDown={(ev) => {
-        if (ev.key === "ArrowRight") {
+        if (rtl.current == null) {
+          const dir = getComputedStyle(ev.currentTarget).direction;
+          rtl.current = dir === "rtl";
+        }
+
+        const start = rtl.current ? "ArrowRight" : "ArrowLeft";
+        const end = rtl.current ? "ArrowLeft" : "ArrowRight";
+
+        const next = orientation === "horizontal" ? end : "ArrowDown";
+        const prev = orientation === "horizontal" ? start : "ArrowUp";
+
+        if (ev.key === next) {
           const focusables = getFocusables(ev.currentTarget);
           if (!focusables.length) return;
 
@@ -123,7 +136,7 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
             focusables[active + 1].focus();
           }
           ev.preventDefault();
-        } else if (ev.key === "ArrowLeft") {
+        } else if (ev.key === prev) {
           const focusables = getFocusables(ev.currentTarget);
           if (!focusables.length) return;
 
