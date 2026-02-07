@@ -4,7 +4,6 @@
     "component-overview",
     "component-grid-overlays",
     "component-viewport-shadows",
-    "component-column-manager",
     "component-pill-manager",
     "component-dialog",
     "component-popover",
@@ -12,6 +11,7 @@
     "component-context-menu",
     "component-smart-select",
     "component-tree-view",
+    "component-column-manager",
     "component-select-all",
     "component-row-group-cell"
   ],
