@@ -1,5 +1,93 @@
 ---
 title: Piece Utility
 description: Use LyteNyte Grid's piece utility to create a stable reference to
-  reactive state that can be passed as props without resulting in re-renders.
+  reactive state that can be passed as props without causing re-renders.
 ---
+
+## Use Piece
+
+The piece utility is a hook exported by LyteNyte Grid. The basic usage is shown below:
+
+```ts
+const [count, setCount] = useState(0);
+
+const count$ = usePiece(count);
+```
+
+The `usePiece` hook creates a `Piece` value. The `Piece` value updates internally
+whenever the `count` value changes. However, the `count$` reference itself is stable
+and never changes.
+
+As a result, passing `count$` to context values, effects, or as props to a memoized
+component will not cause re-renders. You can retrieve the internal value using one
+of the following methods:
+
+- `count$.get`: Returns the current value non-reactively. Use this method in event
+  callbacks or effects.
+- `count$.useValue`: Subscribes to the value reactively. This method is a hook and
+  must follow the rules of hooks. Calling `useValue` causes the component in which
+  it is used to re-render whenever the `count` value changes.
+
+The `count$.useValue` hook also supports a selector function. When you provide a
+selector, the component only re-renders when the selector's return value changes.
+
+```ts
+const isOdd = count$.useValue((x) => x % 2 === 1);
+```
+
+### Writable Piece
+
+If you provide a setter to the `usePiece` hook, the returned `Piece` becomes writable.
+You can call `set` to update the value.
+
+```ts
+const [count, setCount] = useState(0);
+
+const count$ = usePiece(count, setCount);
+
+// Later in some other component.
+count$.set(23);
+```
+
+Internally, the `set` method calls the `setCount` dispatch function returned by
+`useState` with the value `23`.
+
+## Extending the Grid's API
+
+The primary use case for the `usePiece` hook is to make it easier to extend the grid's
+API reactively. LyteNyte Grid creates its API once and maintains a stable reference.
+Because of this, updates to reactive values are not reflected in the API by default.
+
+The `usePiece` hook wraps a reactive value in a stable reference that can be passed
+to the grid's API as an extension, as shown below. See the
+[API Extension guide](/docs/grid-api-extensions) for more details.
+
+```tsx
+const [count, setCount] = useState(0);
+
+const count$ = usePiece(count, setCount);
+
+return <Grid apiExtension={useMemo(() => ({ count$ }), [])} />;
+```
+
+## Type Interface
+
+The type interface for the `usePiece` hook is shown below.
+
+```ts
+interface Piece<T> {
+  readonly get: () => T;
+  readonly useValue: {
+    (): T;
+    <K>(s: (v: T) => K): K;
+  };
+}
+
+interface PieceWritable<T> extends Piece<T> {
+  readonly set: Dispatch<SetStateAction<T>>;
+}
+
+function usePiece<T>(source: T): Piece<T>;
+function usePiece<T>(source: T, setter: Dispatch<SetStateAction<T>>): PieceWritable<T>;
+function usePiece<T>(source: T, setter?: Dispatch<SetStateAction<T>>): Piece<T> | PieceWritable<T>;
+```

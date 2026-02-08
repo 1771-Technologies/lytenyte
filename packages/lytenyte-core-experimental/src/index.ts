@@ -141,8 +141,9 @@ export namespace Grid {
   }
 }
 
-export { measureText, moveRelative } from "@1771technologies/lytenyte-shared";
+export { measureText, moveRelative, equal, arrayShallow } from "@1771technologies/lytenyte-shared";
 export { getRowDragData } from "./dnd/get-drag-data.js";
+export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";
 
 export type { ViewportShadowsProps } from "./components/viewport/viewport-shadows.js";
 export { ViewportShadows } from "./components/viewport/viewport-shadows.js";
@@ -152,5 +153,3 @@ export type { RowSourceClient, UseClientDataSourceParams } from "./data-source/u
 
 export type { Piece, PieceWritable } from "./hooks/use-piece.js";
 export { usePiece } from "./hooks/use-piece.js";
-
-export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";

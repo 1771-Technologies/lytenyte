@@ -1,3 +1,68 @@
 ---
 title: Utility Functions
+description: LyteNyte Grid exports a small number of utility functions that can be used
+  to enhance the grid's capabilities or within your own application.
 ---
+
+## measureText
+
+The `measureText` function estimates the width, in pixels, of a string.
+It uses an offscreen canvas to compute the result.
+
+```ts
+function measureText(text: string, reference?: HTMLElement | string | undefined | null): TextMetrics;
+
+// Example usage.
+measureText("Check my length.");
+
+// Use the body element’s font settings.
+measureText("Check my length.", document.body);
+```
+
+## moveRelative
+
+The `moveRelative` function reorders items in an array. This function is most useful
+for drag-and-drop operations.
+
+```ts
+function moveRelative<T>(items: T[], srcIndex: number, destIndex: number, additional: number[] = []): T[];
+
+// Example usage
+moveRelative([1, 2, 3, 4, 5], 3, 1, []);
+```
+
+## equal
+
+The `equal` function performs fast deep equality comparisons. This function is a
+customized fork of [React Fast Compare](https://github.com/FormidableLabs/react-fast-compare).
+
+```ts
+export function equal(a: any, b: any, compareFunctionsAsStrings: boolean = false);
+
+// Example usage
+equal({ x: 132 }, { y: 11, x: 23 });
+```
+
+## arrayShallow
+
+The `arrayShallow` function compares two arrays for shallow equality. This comparison
+is faster when you only care about reference equality within the array.
+
+```ts
+export function arrayShallow(left: any[], right: any[]): boolean;
+
+// Example usage
+arrayShallow([2, { x: 122 }], [2, { x: 11 }]);
+```
+
+## virtualFromXY
+
+The `virtualFromXY` function returns a virtual anchor that can be used with the
+[popover component](/docs/component-popover) provided by LyteNyte Grid.
+
+```ts
+function virtualFromXY(x: number, y: number, context?: HTMLElement): VirtualTarget;
+
+// Example usage
+virtualFromXY(132, 33);
+```

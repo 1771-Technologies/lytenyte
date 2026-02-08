@@ -1,4 +1,4 @@
-export function arrayShallow(left: any[], right: any[]) {
+export function arrayShallow(left: any[], right: any[]): boolean {
   if (left.length !== right.length) return false;
 
   for (let i = 0; i < left.length; i++) {
