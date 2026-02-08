@@ -1,3 +1,197 @@
 ---
 title: Server Row Source
+description: LyteNyte Grid's server row source extends the base row source with
+  additional capabilities for server-side data loading.
 ---
+
+Use the server data source when the full row dataset is too large to feasibly load into
+the user's browser. See the [Server Row Overview guide](/docs/server-data-loading-overview)
+for more details.
+
+## Server Source Params
+
+To create a server row source, use the `useServerDataSource` hook exported by LyteNyte Grid.
+This hook accepts parameters that configure the server source view.
+
+<TypeTable
+  type={[
+    {
+      name: "queryFn",
+      description: "An async data fetcher function that retrieves row data in slices.",
+      type: "(params) => Promise<(DataResponse | DataResponsePinned)[]>",
+      required: true,
+    },
+    {
+      name: "queryKey",
+      description:
+        "An array of values provided to the `queryFn`. The keys are shallow-compared for changes. Any change resets the server source.",
+      type: "T[]",
+      required: true,
+    },
+    {
+      name: "blockSize",
+      description: "The number of rows to request for each server round trip.",
+      type: "number",
+    },
+    {
+      name: "rowGroupExpansions",
+      description: "The row group expansion state.",
+      type: "Record<string, boolean | undefined>",
+    },
+    {
+      name: "rowGroupDefaultExpansion",
+      description:
+        "The default row group expansion behavior. If a number is provided, row groups with a depth less than or equal to the number are expanded.",
+      type: "boolean | number",
+    },
+    {
+      name: "onRowGroupExpansionChange",
+      description: "An event callback that fires when row group expansion changes.",
+      type: "(change: Record<string, boolean>) => void",
+    },
+    {
+      name: "rowsIsolatedSelection",
+      description: "Whether the server row source uses isolated row selection instead of linked selection.",
+      type: "boolean",
+    },
+    {
+      name: "rowSelectKey",
+      description: "A custom key that resets row selection when the key changes.",
+      type: "unknown[]",
+    },
+    {
+      name: "rowSelection",
+      description: "The row selection state used by the server row source.",
+      type: "RowSelectionState",
+    },
+    {
+      name: "rowSelectionIdUniverseAdditions",
+      description:
+        "Additional row selection IDs to retain even if they do not correspond to rows in the data.",
+      type: "{ id: string, root: boolean }[]",
+    },
+    {
+      name: "rowSelectionIdUniverseSubtractions",
+      description: "Row IDs that should not be considered selectable.",
+      type: "Set<string>",
+    },
+    {
+      name: "onRowSelectionChange",
+      description: "An event callback that fires when the row selection state changes.",
+      type: "(change: RowSelectionState) => void",
+    },
+    {
+      name: "hasRowBranches",
+      description: "A hint indicating whether the server row source contains row groups.",
+      type: '"infer" | boolean',
+    },
+    {
+      name: "rowUpdateOptimistically",
+      description: "Whether row updates are applied optimistically before the server responds.",
+      type: "boolean",
+    },
+    {
+      name: "onRowDataChange",
+      description: "An event callback that fires when row data is updated in the server source.",
+      type: "(params: { rows: Map<RowNode<T>, T> }) => Promise<void>",
+    },
+    {
+      name: "onRowsDeleted",
+      description: "An event callback that fires when rows are deleted from the server source.",
+      type: "(params: { rows: RowNode<T>[] }) => Promise<void>",
+    },
+    {
+      name: "onRowsAdded",
+      description: "An event callback that fires when rows are added to the server source.",
+      type: '(params: { rows: RowLeaf<T>[], placement: "start" | "end" }) => Promise<void>',
+    },
+  ]}
+/>
+
+## Server Source API Additions
+
+The server row source extends the grid API with the following additional properties.
+
+<TypeTable
+  type={[
+    {
+      name: "isLoading",
+      description:
+        "A piece that can be reactively observed. Tracks the initial loading state of the server source.",
+      type: "Piece<boolean>",
+      required: true,
+    },
+    {
+      name: "loadingError",
+      description: "A piece that can be reactively observed. Tracks the most recent load error.",
+      type: "Piece<unknown>",
+      required: true,
+    },
+    {
+      name: "requestsForView",
+      description: "A piece containing the data requests for the current view.",
+      type: `Piece<DataRequest[]>`,
+      required: true,
+    },
+    {
+      name: "seenRequests",
+      description: "A set that tracks all data requests that have already been sent. This set is mutable.",
+      type: "Set<string>",
+      required: true,
+    },
+    {
+      name: "requestsForGroup",
+      description: "Returns the data request used to retrieve data for a group row.",
+      type: "(row: RowGroup | number) => DataRequest | null",
+      required: true,
+    },
+    {
+      name: "requestForNextSlice",
+      description: "Returns the data request for the next slice of data based on the current request.",
+      type: "(current: DataRequest) => DataRequest | null",
+      required: true,
+    },
+    {
+      name: "refresh",
+      description: "Re-requests all data for the current view.",
+      type: "(onSuccess?: () => void, onError?: (e) => void) => void",
+      required: true,
+    },
+    {
+      name: "pushResponses",
+      description: "Pushes data responses into the server source as if they were returned by a request.",
+      type: "(res: (DataResponse | DataResponsePinned)[]) => void",
+      required: true,
+    },
+    {
+      name: "pushRequests",
+      description: "Submits data requests that trigger execution of the `queryFn`.",
+      type: "(req: DataRequest[], onSuccess?: () => void, onError?: (e) => void) => void",
+      required: true,
+    },
+    {
+      name: "reset",
+      description: "Resets the server data source.",
+      type: "() => void",
+      required: true,
+    },
+    {
+      name: "rowAdd",
+      description: "Adds leaf rows to the top or bottom of the server source.",
+      type: '(rows: RowLeaf[], placement?: "start" | "end")',
+      required: true,
+    },
+    {
+      name: "rowDelete",
+      description: "Deletes rows from the server source.",
+      type: "(rows: RowNode[]) => void",
+      required: true,
+    },
+    {
+      name: "rowUpdate",
+      description: "Updates rows in the server source.",
+      type: "(rows: Map<RowNode, T>) => void",
+      required: true,
+    },
+  ]}
+/>
