@@ -1,3 +1,175 @@
 ---
 title: Column
+description: Columns define how LyteNyte Grid displays content in the grid. This
+  reference covers the column properties supported by LyteNyte Grid.
 ---
+
+## Extending Columns
+
+In addition to the properties LyteNyte Grid supports out of the box, you can extend a column
+definition with additional properties specific to your application. The code below
+shows a brief example:
+
+```ts
+interface GridSpec {
+  readonly column: { sort: "asc" | "desc" | null };
+}
+
+type Column = Grid.Column<GridSpec>;
+
+const columns: Column[] = [
+  { id: "bank", sort: "asc" },
+  // ...
+];
+```
+
+## Properties
+
+<TypeTable
+  type={[
+    {
+      name: "id",
+      description: "A unique identifier for the column.",
+      type: "string",
+      required: true,
+      see: ["/docs/columns"],
+    },
+    {
+      name: "name",
+      description: "A human-friendly display name for the column.",
+      type: "string",
+      see: ["/docs/column-header-name"],
+    },
+    {
+      name: "type",
+      description: `A hint describing the type of data contained in the column cells. The grid uses this value for styling,
+      but it has no functional impact on grid logic.`,
+      type: '"string" | "number" | "date" | "datetime" | ({} & string)',
+      see: ["/docs/columns"],
+    },
+    {
+      name: "width",
+      description: `The width of the column in pixels.`,
+      type: "number",
+      see: ["/docs/column-resizing"],
+    },
+    {
+      name: "widthMax",
+      description: `The maximum width in pixels that the column can take.`,
+      type: "number",
+      see: ["/docs/column-resizing"],
+    },
+    {
+      name: "widthMin",
+      description: `The minimum width in pixels that the column can take.`,
+      type: "number",
+      see: ["/docs/column-resizing"],
+    },
+    {
+      name: "groupVisibility",
+      description: `The visibility behavior of the column when its group expands or collapses.`,
+      type: "ColumnGroupVisibility",
+      see: ["/docs/column-groups"],
+    },
+    {
+      name: "groupPath",
+      description: "The column group path that this column belongs to.",
+      type: "string[]",
+      see: ["/docs/column-groups"],
+    },
+    {
+      name: "pin",
+      description:
+        "The pin configuration for the column. Pinned columns remain visible while the grid scrolls horizontally.",
+      type: '"start" | "end" | null',
+      see: ["/docs/column-pinning"],
+    },
+    {
+      name: "resizable",
+      description: "Whether the column can be resized through the grid.",
+      type: "boolean",
+      see: ["/docs/column-resizing"],
+    },
+    {
+      name: "movable",
+      description: "Whether the column can be moved through the grid.",
+      type: "boolean",
+      see: ["/docs/column-moving"],
+    },
+    {
+      name: "field",
+      description: "Defines how the grid computes cell values for the column.",
+      type: "Field",
+      see: ["/docs/column-field"],
+    },
+    {
+      name: "colSpan",
+      description: `The number of columns that cells in this column span. Providing a number creates a uniform span
+      for every row. Providing a function allows more fine-grained control over column spanning.`,
+      type: "number | (params) => number",
+      see: ["/docs/column-spanning"],
+    },
+    {
+      name: "rowSpan",
+      description: `The number of rows that cells in this column span. Providing a number creates a uniform span
+      for every row. Providing a function allows more fine-grained control over row spanning.`,
+      type: "number | (params) => number",
+      see: ["/docs/row-spanning"],
+    },
+    {
+      name: "autosizeCellFn",
+      description: `A function the grid uses to calculate the ideal width of column cells during autosizing.`,
+      type: "(params) => number",
+      see: ["/docs/column-autosizing"],
+    },
+    {
+      name: "autosizeHeaderFn",
+      description: `A function the grid uses to calculate the ideal width of header cells during autosizing.`,
+      type: "(params) => number",
+      see: ["/docs/column-autosizing"],
+    },
+    {
+      name: "floatingCellRenderer",
+      description: `A renderer the grid uses to display the floating cell content when the floating row is enabled.`,
+      type: "(props) => ReactNode",
+      see: ["/docs/column-floating-header"],
+    },
+    {
+      name: "headerRender",
+      description: `A renderer the grid uses to display the contents of header cells for the column.`,
+      type: "(props) => ReactNode",
+      see: ["/docs/column-header-renderer"],
+    },
+    {
+      name: "cellRenderer",
+      description: `A renderer the grid uses to display the contents of cells in the column.`,
+      type: "(props) => ReactNode",
+      see: ["/docs/cell-renderers"],
+    },
+    {
+      name: "editOnPrintable",
+      description: `Whether cells in the column begin editing when the user presses a printable character key.`,
+      type: "boolean",
+      see: ["/docs/cell-editing-renderers"],
+    },
+    {
+      name: "editRenderer",
+      description: `A renderer the grid uses when cell editing begins for cells in the column.`,
+      type: "(props) => ReactNode",
+      see: ["/docs/cell-editing-renderers"],
+    },
+    {
+      name: "editable",
+      description: `Whether cells in the column are editable.`,
+      type: "boolean | (params) => boolean",
+      see: ["/docs/cell-editing"],
+    },
+    {
+      name: "editSetter",
+      description: `A function the grid calls to update edited cell data for the column.
+      This function must return the updated edit data for the entire row.`,
+      type: "(params) => unknown",
+      see: ["/docs/cell-editing"],
+    },
+  ]}
+/>
