@@ -1,3 +1,223 @@
 ---
 title: Client Row Source
+description: LyteNyte Grid's client row source extends the base row source with
+  additional capabilities for client-side data.
 ---
+
+Use the client row source when the full row dataset is available in the client browser.
+See the [Client Row Overview guide](/docs/client-source-overview) for more details.
+
+## Client Source Params
+
+To create a client row source, use the `useClientDataSource` hook exported by LyteNyte Grid.
+This hook accepts parameters that configure the client source view.
+
+<TypeTable
+  type={[
+    {
+      name: "data",
+      description: "The row data available on the client.",
+      type: "T[]",
+      required: true,
+    },
+    {
+      name: "topData",
+      description: "The row data for rows pinned to the top of the viewport.",
+      type: "T[]",
+    },
+    {
+      name: "botData",
+      description: "The row data for rows pinned to the bottom of the viewport.",
+      type: "T[]",
+    },
+    {
+      name: "pivotMode",
+      description: "Whether the client row source operates in pivot mode.",
+      type: "boolean",
+      pro: true,
+    },
+    {
+      name: "pivotModel",
+      description: "The pivot configuration for the client row source.",
+      type: "PivotModel",
+      pro: true,
+    },
+    {
+      name: "pivotGrandTotals",
+      description:
+        "Whether to include a grand totals row at the top or bottom of the viewport. Use \`null\` to disable the grand totals row.",
+      type: '"top" | "bottom" | null',
+      pro: true,
+    },
+    {
+      name: "pivotColumnProcessor",
+      description: "A function that modifies generated pivot columns before the grid displays them.",
+      type: "(columns: Column[]) => Column[]",
+      pro: true,
+    },
+    {
+      name: "pivotState",
+      description: "The pivot state applied to generated pivot columns.",
+      type: "PivotState",
+      pro: true,
+    },
+    {
+      name: "onPivotStateChange",
+      description: "An event callback that fires when the pivot state changes.",
+      type: "(state: PivotState) => void",
+      pro: true,
+    },
+    {
+      name: "pivotApplyExistingFilter",
+      description:
+        "Whether the client row source applies existing row filters before creating pivot columns.",
+      type: "boolean",
+      pro: true,
+    },
+    {
+      name: "rowGroupExpansions",
+      description: "The row group expansion state.",
+      type: "Record<string, boolean | undefined>",
+    },
+    {
+      name: "rowGroupDefaultExpansion",
+      description:
+        "The default row group expansion behavior. If a number is provided, row groups with a depth less than or equal to the number are expanded.",
+      type: "number | boolean",
+    },
+    {
+      name: "rowGroupCollapseBehavior",
+      description: "The behavior the client row source uses when collapsing groups with a single child.",
+      type: `"no-collapse" | "last-only" | "full-tree"`,
+      pro: true,
+    },
+    {
+      name: "rowGroupSuppressLeafExpansion",
+      description: "Whether the last row group node is expandable.",
+      type: "boolean",
+      pro: true,
+    },
+    {
+      name: "onRowGroupExpansionChange",
+      description: "An event callback that fires when row group expansion changes.",
+      type: "(change: Record<string, boolean | undefined>) => void",
+    },
+    {
+      name: "sort",
+      description: "The sort configuration for the client row source.",
+      type: "SortFn | DimensionSort[] | null",
+    },
+    {
+      name: "group",
+      description: "The group configuration for the client row source.",
+      type: "GroupFn | Dimension[]",
+    },
+    {
+      name: "filter",
+      description: "The filter configuration for the client row source.",
+      type: "FilterFn | FilterFn[] | null",
+    },
+    {
+      name: "aggregate",
+      description: "The aggregation configuration for the client row source.",
+      type: "AggregationFn | DimensionAgg[]",
+    },
+    {
+      name: "aggregateFns",
+      description: "Predefined aggregation functions that can be referenced by name.",
+      type: "Record<string, Aggregator>",
+    },
+    {
+      name: "having",
+      description: "The having filter configuration used to filter group rows.",
+      type: "HavingFilterFn | (HavingFilterFn | null)[] | null",
+      pro: true,
+    },
+    {
+      name: "leafIdFn",
+      description:
+        "A leaf row ID generator. This function must return a unique ID for every data item provided to the client row source.",
+      type: "LeafIdFn",
+    },
+    {
+      name: "groupIdFn",
+      description: "A group row ID generator. This function must return a unique ID for every group row.",
+      type: "GroupIdFn",
+    },
+    {
+      name: "labelFilter",
+      description: "The label filter configuration used to filter rows by label.",
+      type: "(LabelFilter | null)[] | null",
+    },
+    {
+      name: "rowsIsolatedSelection",
+      description: "Whether the client row source uses isolated row selection instead of linked selection.",
+      type: "boolean",
+    },
+    {
+      name: "rowSelectKey",
+      description: "A custom key that resets row selection when the key changes.",
+      type: "unknown[]",
+    },
+    {
+      name: "rowSelection",
+      description: "The row selection state used by the client row source.",
+      type: "RowSelectionState",
+    },
+    {
+      name: "rowSelectionIdUniverseAdditions",
+      description:
+        "Additional row selection IDs to retain even if they do not correspond to rows in the data.",
+      type: "{ id: string, root: boolean }[]",
+    },
+    {
+      name: "rowSelectionIdUniverseSubtractions",
+      description: "Row IDs that should not be considered selectable.",
+      type: "Set<string>",
+    },
+    {
+      name: "onRowSelectionChange",
+      description: "An event callback that fires when the row selection state changes.",
+      type: "(change: RowSelectionState) => void",
+    },
+    {
+      name: "onRowsAdded",
+      description: "An event callback that fires when rows are added to the grid.",
+      type: "(params) => void",
+    },
+    {
+      name: "onRowsDeleted",
+      description: "An event callback that fires when rows are deleted from the grid.",
+      type: "(params) => void",
+    },
+    {
+      name: "onRowDataChange",
+      description: "An event callback that fires when row data is updated.",
+      type: "(params) => void",
+    },
+  ]}
+/>
+
+## Client Source API Additions
+
+The client row source extends the grid API with the following additional properties.
+
+<TypeTable
+  type={[
+    {
+      name: "rowUpdate",
+      description: "Updates a set of rows in the client data source.",
+      type: "(rows: Map<RowNode, T>) => void",
+    },
+    {
+      name: "rowDelete",
+      description: "Deletes a set of rows from the client data source.",
+      type: "(rows: RowNode[]) => void",
+    },
+    {
+      name: "rowAdd",
+      description: "Adds a set of rows to the client data source.",
+      type: `(rows: T[], placement?: "start" | "end" | number) => void`,
+    },
+  ]}
+/>
