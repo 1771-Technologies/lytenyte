@@ -1,3 +1,133 @@
 ---
 title: Tree Row Source
+pro: true
+description: LyteNyte Grid's tree row source extends the base row source with
+  additional capabilities for viewing object-based data.
 ---
+
+Use the tree data source when the data the grid should render is a hierarchical
+object. See the [Tree Overview guide](/docs/tree-source-overview) for more details.
+
+## Tree Source Params
+
+To create a tree row source, use the `useTreeDataSource` hook exported by LyteNyte Grid.
+This hook accepts parameters that configure the tree source view.
+
+<TypeTable
+  type={[
+    {
+      name: "topData",
+      description: "The rows pinned to the top of the tree view.",
+      type: "(RowLeaf | RowAggregated)[]",
+    },
+    {
+      name: "botData",
+      description: "The rows pinned to the bottom of the tree view.",
+      type: "(RowLeaf | RowAggregated)[]",
+    },
+    {
+      name: "data",
+      description: "The data object used to generate tree view rows.",
+      type: "Record<string, unknown>",
+      required: true,
+    },
+    {
+      name: "idFn",
+      description:
+        "A function that receives the path of a tree node and its associated data, and returns a unique ID for the row.",
+      type: "(path: string[], data: any) => string",
+    },
+    {
+      name: "rowRootFn",
+      description: "A function that receives the root data object and returns the entries for the root rows.",
+      type: "(row: object) => [key: string, child: object][]",
+    },
+    {
+      name: "rowValueFn",
+      description:
+        "A function that receives the data object for a row and returns the data associated with that row.",
+      type: "(x: any, parent: any, key: string) => any",
+    },
+    {
+      name: "rowChildrenFn",
+      description: "A function that receives a row object and returns the entries for its child rows.",
+      type: "(x: any, parent: any, key: string) => [key: string, child: object]",
+    },
+    {
+      name: "rowGroupExpansions",
+      description: "The row group expansion state.",
+      type: "Record<string, boolean | undefined>",
+    },
+    {
+      name: "rowGroupDefaultExpansion",
+      description:
+        "The default row group expansion behavior. If a number is provided, row groups with a depth less than or equal to the number are expanded.",
+      type: "boolean | number",
+    },
+    {
+      name: "onRowGroupExpansionChange",
+      description: "An event callback that fires when row group expansion changes.",
+      type: "(change: Record<string, boolean>) => void",
+    },
+    {
+      name: "sort",
+      description: "The sort configuration for the tree row source.",
+      type: "SortFn | DimensionSort[] | null",
+    },
+    {
+      name: "filter",
+      description: "The filter configuration for the tree row source.",
+      type: "((data: any) => boolean) | null",
+    },
+    {
+      name: "rowsIsolatedSelection",
+      description: "Whether the tree row source uses isolated row selection instead of linked selection.",
+      type: "boolean",
+    },
+    {
+      name: "rowSelectKey",
+      description: "A custom key that resets row selection when the key changes.",
+      type: "unknown[]",
+    },
+    {
+      name: "rowSelection",
+      description: "The row selection state used by the tree row source.",
+      type: "RowSelectionState",
+    },
+    {
+      name: "rowSelectionIdUniverseAdditions",
+      description:
+        "Additional row selection IDs to retain even if they do not correspond to rows in the data.",
+      type: "{ id: string, root: boolean }[]",
+    },
+    {
+      name: "rowSelectionIdUniverseSubtractions",
+      description: "Row IDs that should not be considered selectable.",
+      type: "Set<string>",
+    },
+    {
+      name: "onRowSelectionChange",
+      description: "An event callback that fires when the row selection state changes.",
+      type: "(change: RowSelectionState) => void",
+    },
+    {
+      name: "onRowDataChange",
+      description: "An event callback that fires when tree row data is updated.",
+      type: "(params) => void",
+    },
+  ]}
+/>
+
+## Tree Source API Additions
+
+The tree row source extends the grid API with the following additional properties.
+
+<TypeTable
+  type={[
+    {
+      name: "rowUpdate",
+      description: "Updates the value of rows in the tree data source.",
+      type: "(rows: Map<RowNode<T>, T>) => void",
+    },
+  ]}
+/>
