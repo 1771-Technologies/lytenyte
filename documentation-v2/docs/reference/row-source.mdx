@@ -1,3 +1,160 @@
 ---
 title: Row Source
+description: This section provides a reference for the base row source type used by LyteNyte Grid.
+  All row sources in the grid extend this type.
 ---
+
+The `RowSource` type is an interface implemented by all grid row sources. Each row source adds
+additional methods and properties specific to its behavior. When you provide a row source to
+the grid, the grid exposes it through the grid API.
+
+## Properties
+
+<TypeTable
+  type={[
+    {
+      name: "useRowCount",
+      description: "A hook that returns the current row count of the source.",
+      type: "() => number",
+      required: true,
+    },
+    {
+      name: "useTopCount",
+      description: "A hook that returns the top row count of the source.",
+      type: "() => number",
+      required: true,
+    },
+    {
+      name: "useBottomCount",
+      description: "A hook that returns the bottom row count of the source.",
+      type: "() => number",
+      required: true,
+    },
+    {
+      name: "useRows",
+      description: "A hook that returns a mapping of the rows in the source.",
+      type: "() => { get: (i: number) => RowNode | null | undefined, size: number }",
+      required: true,
+    },
+    {
+      name: "useMaxRowGroupDepth",
+      description: `A hook that returns the maximum row group depth. Do not use this hook directly.
+      This hook must return a positive number if the source contains group rows. Otherwise, it must return 0.`,
+      type: "() => number",
+      required: true,
+    },
+    {
+      name: "rowIndexToRowId",
+      description: "Returns the row ID for a given row index, or \`null\` if the row is not found.",
+      type: "(i: number) => string | null | undefined",
+      required: true,
+    },
+    {
+      name: "rowIdToRowIndex",
+      description: "Returns the row index for a given row ID, or \`null\` if the row is not found.",
+      type: "(id: string) => number | null | undefined",
+      required: true,
+    },
+    {
+      name: "rowByIndex",
+      description:
+        "Returns a row node atom for the given row index. You can use this atom to reactively observe the row.",
+      type: "(i: number) => RowAtom<RowNode> | null",
+      required: true,
+    },
+    {
+      name: "rowById",
+      description: "Returns the row node for the given row ID, or \`null\` if the row is not found.",
+      type: "(id: string) => RowNode | null",
+      required: true,
+    },
+    {
+      name: "rowParents",
+      description: "Returns the IDs of the parent rows for the given row ID.",
+      type: "(id: string) => string[]",
+      required: true,
+    },
+    {
+      name: "rowSiblings",
+      description: "Returns the sibling row IDs for the given row ID.",
+      type: "(id: string) => string[]",
+      required: true,
+    },
+    {
+      name: "rowIsSelected",
+      description: "Checks whether the row with the given ID is selected.",
+      type: "(id: string) => boolean",
+      required: true,
+    },
+    {
+      name: "rowChildren",
+      description: "Returns the child row IDs for the given parent row.",
+      type: "(id: string) => string[]",
+      required: true,
+    },
+    {
+      name: "rowLeafs",
+      description: "Returns the leaf rows for the given parent row.",
+      type: "(id: string) => string[]",
+      required: true,
+    },
+    {
+      name: "rowsBetween",
+      description: "Returns the IDs of all rows between the given start and end row IDs.",
+      type: "(start: string, end: string) => string[]",
+      required: true,
+    },
+    {
+      name: "rowInvalidate",
+      description:
+        "Refreshes the given row if an index is provided. If no index is provided, this method refreshes all rows and causes cells to re-render.",
+      type: "(row?: number) => void",
+      required: true,
+    },
+    {
+      name: "rowsSelected",
+      description: "Returns the current row selection state and all selected rows.",
+      type: "() => { state: RowSelectionState, rows: RowNode[] }",
+      required: true,
+    },
+    {
+      name: "rowSelectionState",
+      description: "Returns the current row selection state.",
+      type: "() => RowSelectionState",
+      required: true,
+    },
+    {
+      name: "rowGroupExpansionChange",
+      description:
+        "Updates row group expansion state by merging the provided changes into the existing expansion state. LyteNyte Grid calls this method.",
+      type: "(deltaChanges: Record<string, boolean>) => void",
+      required: true,
+    },
+    {
+      name: "useSelectionState",
+      description: "A hook that reactively returns the current row selection state.",
+      type: "() => RowSelectionState",
+      required: true,
+    },
+    {
+      name: "onViewChange",
+      description:
+        "An event callback that fires when the grid view changes. LyteNyte Grid calls this method.",
+      type: "(view: SpanLayout) => void",
+      required: true,
+    },
+    {
+      name: "onRowsUpdated",
+      description: "An event callback that fires when rows are updated. LyteNyte Grid calls this method.",
+      type: "(rows: Map<RowNode<T>, T>) => void",
+      required: true,
+    },
+    {
+      name: "onRowsSelected",
+      description:
+        "An event callback that fires when row selection changes. LyteNyte Grid calls this method.",
+      type: "(params) => void",
+      required: true,
+    },
+  ]}
+/>

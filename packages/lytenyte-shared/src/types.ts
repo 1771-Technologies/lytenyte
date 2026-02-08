@@ -120,6 +120,7 @@ export interface RowSource<T = any> {
   readonly rowInvalidate: (row?: number) => void;
   readonly rowsSelected: () => { state: RowSelectionState; rows: RowNode<T>[] };
   readonly rowSelectionState: () => RowSelectionState;
+
   readonly rowGroupExpansionChange: (deltaChanges: Record<string, boolean>) => void;
   readonly useSelectionState: () => RowSelectionState;
 
