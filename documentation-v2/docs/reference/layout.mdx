@@ -1,18 +1,18 @@
 ---
 title: Layout
-description: LyteNyte Grid is a headless data grid. The cells and headers of the grid
-  are positioned based a layout description. This section describes the different types
-  that make up the layout description of the grid.
+description: LyteNyte Grid is a headless data grid. The grid positions cells and headers
+  based on a layout description. This section describes the types that make up the grid
+  layout description.
 ---
 
-For more details on working with LyteNyte Grid as a headless grid see
+For more details on working with LyteNyte Grid as a headless grid, see
 the [Headless Component Parts guide](/docs/grid-headless-parts).
 
 ## Row Layouts
 
-Two types are necessary to describe the layout of a row in LyteNyte, since a row
-may either be a full width row or a row with individual cells. The row layout is described by a type
-called `LayoutRow`, which is a union of the cells layout or full width layout types:
+Two types are necessary to describe the layout of a row in LyteNyte Grid, since a row
+may be either a full width row or a row with individual cells. The row layout is described by a type
+called `LayoutRow`, which is a union of the cell layout and full width layout types:
 
 ```ts
 type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
@@ -24,7 +24,7 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
   type={[
     {
       name: "kind",
-      description: "A type discriminant to distinguish the full width layout row from other layout types.",
+      description: "A type discriminant that distinguishes a full width layout row from other layout types.",
       type: '"full-width"',
       required: true,
     },
@@ -42,7 +42,7 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
     },
     {
       name: "rowPin",
-      description: "The pin state of the row",
+      description: "The pin state of the row.",
       type: "RowPin",
       required: true,
     },
@@ -58,7 +58,7 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
     },
     {
       name: "rowIsFocusRow",
-      description: "Whether this row is only being rendered because it is focused.",
+      description: "Whether the row is rendered only because it is focused.",
       type: "boolean",
     },
   ]}
@@ -70,7 +70,7 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
   type={[
     {
       name: "kind",
-      description: "A type discriminant to distinguish the row layout from other layout types.",
+      description: "A type discriminant that distinguishes the row layout from other layout types.",
       type: '"row"',
       required: true,
     },
@@ -88,7 +88,7 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
     },
     {
       name: "rowPin",
-      description: "The pin state of the row",
+      description: "The pin state of the row.",
       type: "RowPin",
       required: true,
     },
@@ -104,12 +104,12 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
     },
     {
       name: "rowIsFocusRow",
-      description: "Whether this row is only being rendered because it is focused.",
+      description: "Whether the row is rendered only because it is focused.",
       type: "boolean",
     },
     {
       name: "cells",
-      description: "The layout of the individual cells in this row.",
+      description: "The layout of the individual cells in the row.",
       type: "LayoutCell[]",
       required: true,
     },
@@ -122,43 +122,43 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
   type={[
     {
       name: "kind",
-      description: "A type discriminant to distinguish the cell layout from other layout types.",
+      description: "A type discriminant that distinguishes the cell layout from other layout types.",
       type: '"cell"',
       required: true,
     },
     {
       name: "id",
-      description: "The unique ID of the row.",
+      description: "The unique ID of the cell.",
       type: "string",
       required: true,
     },
     {
       name: "type",
-      description: "The type of the cell. This is equivalent to the type property of the column.",
+      description: "The type of the cell. This is equivalent to the column \`type\` property.",
       type: "string",
       required: true,
     },
     {
       name: "colSpan",
-      description: "The number of columns this cell spans",
+      description: "The number of columns the cell spans.",
       type: "number",
       required: true,
     },
     {
       name: "rowSpan",
-      description: "The number of rows this cell spans",
+      description: "The number of rows the cell spans.",
       type: "number",
       required: true,
     },
     {
       name: "isDeadRow",
-      description: "Whether this cell is covered by a spanning cell from above.",
+      description: "Whether the cell is covered by a spanning cell from above.",
       type: "boolean",
       required: true,
     },
     {
       name: "isDeadCol",
-      description: "Whether this cell is covered by a spanning cell from the start.",
+      description: "Whether the cell is covered by a spanning cell from the start.",
       type: "boolean",
       required: true,
     },
@@ -208,7 +208,7 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
     },
     {
       name: "rowIsFocusRow",
-      description: "Whether this row is only being rendered because it is focused.",
+      description: "Whether the row is rendered only because it is focused.",
       type: "boolean",
     },
   ]}
@@ -216,12 +216,12 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
 
 ## Header Layouts
 
-Three types are necessary to describe the header layout. The types describe the header group cell,
-header cell, or floating header cell. The `LayoutHeader` type is a union of these three types.
+Three types are necessary to describe the header layout. These types describe a header group cell,
+a header cell, or a floating header cell. The `LayoutHeader` type is a union of these three types.
 
-```ts
+\~~~ts
 type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
-```
+\~~~
 
 ### LayoutHeaderCell
 
@@ -229,7 +229,7 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
   type={[
     {
       name: "kind",
-      description: "A type discriminant to distinguish the header cell from other header layout types.",
+      description: "A type discriminant that distinguishes the header cell from other header layout types.",
       type: '"cell"',
       required: true,
     },
@@ -241,25 +241,25 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
     },
     {
       name: "id",
-      description: "The column ID corresponding to this layout cell.",
+      description: "The column ID corresponding to the header cell.",
       type: "string",
       required: true,
     },
     {
       name: "rowStart",
-      description: "The grid start index of this header cell in the header hierarchy.",
+      description: "The start row index of the header cell in the header hierarchy.",
       type: "number",
       required: true,
     },
     {
       name: "rowEnd",
-      description: "The grid end index of this header cell in the header hierarchy.",
+      description: "The end row index of the header cell in the header hierarchy.",
       type: "number",
       required: true,
     },
     {
       name: "rowSpan",
-      description: "The number of header rows this column cell spans.",
+      description: "The number of header rows the header cell spans.",
       type: "number",
       required: true,
     },
@@ -271,7 +271,7 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
     },
     {
       name: "colEnd",
-      description: "The end column index of the header cell. This is exclusive.",
+      description: "The end column index of the header cell. This value is exclusive.",
       type: "number",
       required: true,
     },
@@ -306,7 +306,7 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
   type={[
     {
       name: "kind",
-      description: "A type discriminant to distinguish the floating cell from other header layout types.",
+      description: "A type discriminant that distinguishes the floating cell from other header layout types.",
       type: '"floating"',
       required: true,
     },
@@ -318,25 +318,25 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
     },
     {
       name: "id",
-      description: "The column ID corresponding to this layout cell.",
+      description: "The column ID corresponding to the floating cell.",
       type: "string",
       required: true,
     },
     {
       name: "rowStart",
-      description: "The grid start index of this floating cell in the header hierarchy.",
+      description: "The start row index of the floating cell in the header hierarchy.",
       type: "number",
       required: true,
     },
     {
       name: "rowEnd",
-      description: "The grid end index of this floating cell in the header hierarchy.",
+      description: "The end row index of the floating cell in the header hierarchy.",
       type: "number",
       required: true,
     },
     {
       name: "rowSpan",
-      description: "The number of header rows this column cell spans.",
+      description: "The number of header rows the floating cell spans.",
       type: "number",
       required: true,
     },
@@ -348,7 +348,7 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
     },
     {
       name: "colEnd",
-      description: "The end column index of the floating cell. This is exclusive.",
+      description: "The end column index of the floating cell. This value is exclusive.",
       type: "number",
       required: true,
     },
@@ -383,37 +383,38 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
   type={[
     {
       name: "kind",
-      description: "A type discriminant to distinguish the group cell from other header layout types.",
+      description: "A type discriminant that distinguishes the group cell from other header layout types.",
       type: '"group"',
       required: true,
     },
     {
       name: "id",
-      description: "The group cell ID. This is not guaranteed to unique if the column group is split.",
+      description:
+        "The group cell ID. This value is not guaranteed to be unique if the column group is split.",
       type: "string",
       required: true,
     },
     {
       name: "idOccurrence",
-      description: "The group cell ID plus a count of its occurrence position. This will be a unique ID.",
+      description: "The group cell ID plus a count of its occurrence position. This value is unique.",
       type: "string",
       required: true,
     },
     {
       name: "rowStart",
-      description: "The grid start index of this group cell cell in the header hierarchy.",
+      description: "The start row index of the group cell in the header hierarchy.",
       type: "number",
       required: true,
     },
     {
       name: "rowEnd",
-      description: "The grid end index of this group cell in the header hierarchy.",
+      description: "The end row index of the group cell in the header hierarchy.",
       type: "number",
       required: true,
     },
     {
       name: "rowSpan",
-      description: "The number of header rows this group cell spans.",
+      description: "The number of header rows the group cell spans.",
       type: "number",
       required: true,
     },
@@ -425,7 +426,7 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
     },
     {
       name: "colEnd",
-      description: "The end column index of the group cell. This is exclusive.",
+      description: "The end column index of the group cell. This value is exclusive.",
       type: "number",
       required: true,
     },
@@ -453,7 +454,7 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
     },
     {
       name: "collapsible",
-      description: "Whether the group cell can be closed.",
+      description: "Whether the group cell can be collapsed.",
       type: "boolean",
       required: true,
     },
@@ -465,7 +466,7 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
     },
     {
       name: "columnIds",
-      description: "The IDs of all the columns within this column group.",
+      description: "The IDs of all columns in the column group.",
       type: "string[]",
       required: true,
     },
@@ -483,7 +484,7 @@ type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
     },
     {
       name: "isHiddenMove",
-      description: "Whether this group is hidden due to a column move.",
+      description: "Whether the group is hidden due to a column move.",
       type: "boolean",
     },
   ]}

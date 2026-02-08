@@ -1,6 +1,6 @@
 ---
 title: Grid Types
-description: LyteNyte Grid provides first call TypeScript support. As a result there an many
+description: LyteNyte Grid provides first-class TypeScript support. As a result, there are many
   associated types that work with the grid. This section details the main types exported by
   LyteNyte Grid.
 ---
@@ -12,13 +12,13 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
     {
       name: "AggregationFn",
       description:
-        "A function that accepts an array of leaf rows an returns an object representing the result of aggregating the values in the rows.",
+        "A function that accepts an array of leaf rows and returns an object representing the result of aggregating values in those rows.",
       type: "(data: RowLeaf[]) => Record<string, unknown>",
     },
     {
       name: "Aggregator",
       description:
-        "A function a takes a field and an array of leaf rows and returns a single aggregated result.",
+        "A function that takes a field and an array of leaf rows and returns a single aggregated result.",
       type: "(field: Field, data: RowLeaf[]) => unknown",
     },
   ]}
@@ -41,7 +41,7 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
     {
       name: "CellRendererParams",
       description:
-        "Parameters that extend \`CellParamsWithIndex\` with additional cell rendering specific properties.",
+        "Parameters that extend \`CellParamsWithIndex\` with additional cell rendering-specific properties.",
       type: "CellParamsWithIndex & { selected: boolean, indeterminate: boolean, detailExpanded: boolean, editData: unknown, layout: LayoutCell }",
     },
   ]}
@@ -49,30 +49,28 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
 
 ## Column
 
-<TypeTable 
+<TypeTable
   type={[
     {
       name: "ColumnPin",
-      description: "The different pin values a column may have.",
-      type: `"start" | "end" | null`
-    }
+      description: "The pin values a column may have.",
+      type: `"start" | "end" | null`,
+    },
   ]}
-
 />
-
 ## Dimensions
 
 <TypeTable
   type={[
     {
       name: "Dimension",
-      description: "An object that contains a field or an ID that can be used as a field",
+      description: "An object that contains a field or an ID that the grid can use as a field.",
       type: "{ name?: string; field: Field } | { id: string; field?: Field }",
     },
     {
       name: "DimensionSort",
       description:
-        "An object with a \`Dimension\` and sort direction. The Dimension may also be a sort function.",
+        "An object with a \`Dimension\` and sort direction. The dimension may also be a sort function.",
       type: "{ dim: Dimension | SortFn; descending?: boolean }",
     },
     {
@@ -85,27 +83,26 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
 
 ## Dragging
 
-<TypeTable 
+<TypeTable
   type={[
     {
       name: "DragItem",
       description: "A union type representing either a `DragItemTransfer` or `DragItemSiteLocal` type.",
-      type: "DragItemTransfer | DragItemSiteLocal"
+      type: "DragItemTransfer | DragItemSiteLocal",
     },
     {
       name: "DragItemTransfer",
-      description: "A drag data type representing data that can be stored on the data transfer object of a drag event.",
-      type: `{ kind: "dt", type: string, data: string }`
+      description: "A drag data type representing data stored on the data transfer object of a drag event.",
+      type: `{ kind: "dt", type: string, data: string }`,
     },
     {
       name: "DragItemSiteLocal",
-      description: "A drag data type representing data that will be used locally on the site, and is not settable on the data transfer object.",
+      description:
+        "A drag data type representing data used locally on the site, which is not set on the data transfer object.",
       type: `{ kind: "site", data: unknown }`,
-    }
+    },
   ]}
-
 />
-
 ## Editing
 
 <TypeTable
@@ -113,7 +110,7 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
     {
       name: "EditParams",
       description:
-        "The parameters provided to the edit renderer. This type extends \`CellParamsWithIndex\` with additional cell editing properties.",
+        "Parameters provided to the edit renderer. This type extends \`CellParamsWithIndex\` with additional cell editing properties.",
       type: "{ editValue: unknown, changeValue: (v) => boolean | Record<string, unknown>, editData: unknown, editValidation: boolean | Record<string, unknown>, changeData: (data: unknown) => boolean | Record<string, unknown>, commit: () => boolean | Record<string, unknown>, cancel: () => void, layout: LayoutCell }",
     },
   ]}
@@ -131,7 +128,7 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
     {
       name: "ExportDataRectResult",
       description:
-        "The result of a data export in the grid. This type contains the headers, group headers, data, and columns of the exported area.",
+        "The result of a data export in the grid. This type contains headers, group headers, data, and columns for the exported area.",
       type: "{ headers: string[], groupHeaders: (string | null)[][], data: unknown[][], columns: Column[] }",
     },
   ]}
@@ -141,43 +138,39 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
 
 <TypeTable
   type={[
-    { 
+    {
       name: "Field",
-      description: "A type representing the way LyteNyte Grid should calculate a value for a cell given the data of a row.",
-      type: `string | number | PathField | ((params: { row: RowNode }) => unknown)`
+      description: "A type representing how LyteNyte Grid calculates a cell value from row data.",
+      type: `string | number | PathField | ((params: { row: RowNode }) => unknown)`,
     },
     {
       name: "PathField",
-      description: "An object representing a property path lookup that can be used by the `Field` type.",
-      type: `{ kind: "path"; path: string }`
-    }
-]}
-
+      description: "An object representing a property path lookup used by the `Field` type.",
+      type: `{ kind: "path"; path: string }`,
+    },
+  ]}
 />
-
 ## Filter
 
-<TypeTable 
+<TypeTable
   type={[
     {
       name: "FilterFn",
-      description: "A predicate function used to filter rows.",
-      type: "(node: RowLeaf) => boolean"
+      description: "A predicate function used to filter leaf rows.",
+      type: "(node: RowLeaf) => boolean",
     },
     {
       name: "HavingFilterFn",
       description: "A predicate function used to filter group rows.",
-      type: "(node: RowGroup) => boolean"
+      type: "(node: RowGroup) => boolean",
     },
     {
       name: "LabelFilter",
-      description: "A predicate function use to filter rows on a given label.",
+      description: "A predicate function used to filter rows by label.",
       type: "(label: string | null) => boolean",
-    }
+    },
   ]}
-
 />
-
 ## IDs
 
 <TypeTable
@@ -185,15 +178,14 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
     {
       name: "leafIdFn",
       description: "A function that returns the ID of a leaf row given its data.",
-      type: `(d: T, index: number, section: "top" | "center" | "bottom") => string`
+      type: `(d: T, index: number, section: "top" | "center" | "bottom") => string`,
     },
     {
       name: "GroupIdFn",
       description: "A function that returns the ID of a group row given its group path.",
       type: "(path: (string | null)[]) => string",
     },
-
-]}
+  ]}
 />
 
 ## Group
@@ -215,41 +207,38 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
 
 ## Header
 
-<TypeTable 
+<TypeTable
   type={[
     {
       name: "HeaderGroupParams",
-      description: "The parameters passed to the header group renderer.",
-      type: "{ collapsible: boolean, collapsed: boolean, groupPath: string[], columns: Column[], api: API }"
+      description: "Parameters passed to the header group renderer.",
+      type: "{ collapsible: boolean, collapsed: boolean, groupPath: string[], columns: Column[], api: API }",
     },
     {
       name: "HeaderParams",
-      description: "The parameters passed to the header renderer of a column.",
-      type: "{ column: Column, api: API }"
-    }
-]}
-
+      description: "Parameters passed to a column header renderer.",
+      type: "{ column: Column, api: API }",
+    },
+  ]}
 />
-
 ## Row
 
 <TypeTable
   type={[
     {
       name: "RowParams",
-      description: "The parameters provided to row functions callbacks in the grid.",
+      description: "Parameters provided to row function callbacks in the grid.",
       type: "{ rowIndex: number, row: RowNode, api: API }",
     },
     {
       name: "RowFullWidthRendererParams",
-      description:
-        "The parameters provided to the full width renderer of the grid. Extends the `RowParams` type.",
+      description: "Parameters provided to the grid full width renderer. This type extends `RowParams`.",
       type: "RowParams & { layout: LayoutFullWidthRow }",
     },
     {
       name: "RowSelectionState",
       description:
-        "A type union of the row selection state. Represents either a linked or isolated row selection.",
+        "A union type representing row selection state. This type represents either linked or isolated row selection.",
       type: "RowSelectionIsolated | RowSelectionLinked",
     },
     {
@@ -264,12 +253,12 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
     },
     {
       name: "RowSelectNode",
-      description: "A selection node within the `RowSelectionLinked` state representing a grouped selection.",
+      description: "A selection node within the `RowSelectionLinked` state representing grouped selection.",
       type: `{ id: string, children?: Map<string, RowSelectNode>, selected?: boolean }`,
     },
     {
       name: "RowDragPlaceholderFn",
-      description: "A component function that returns the placeholder content when a row drag is active.",
+      description: "A component function that returns placeholder content when a row drag is active.",
       type: "(p: { x: number; y: number; data: DragData }) => ReactNode",
     },
   ]}
@@ -277,13 +266,12 @@ description: LyteNyte Grid provides first call TypeScript support. As a result t
 
 ## Sort
 
-<TypeTable 
+<TypeTable
   type={[
     {
       name: "SortFn",
-      description: "A comparator function capable of comparing two rows.",
-      type: "(left: RowNode, right: RowNode) => number;"
-    }
+      description: "A comparator function that compares two rows.",
+      type: "(left: RowNode, right: RowNode) => number;",
+    },
   ]}
-
 />
