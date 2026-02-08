@@ -191,13 +191,13 @@ Like the `DataResponse` type, the `DataResponseLeafItem` also has a `kind` prope
 `"leaf"`. LyteNyte Grid uses this value to determine if the response data should create a leaf
 row node.
 
-The `id` value maps to the [row node's](/docs/reference/rows) `id` property, and the `data`
+The `id` value maps to the [row node's](/docs/reference/row) `id` property, and the `data`
 in the response is associated with that row node. Each item in the data response becomes a row node.
 
 #### Branch Row Data
 
 Group (or branch) row data is represented by the `DataResponseBranchItem`. LyteNyte Grid uses these
-items to create [row group nodes](/docs/reference/rows). Group nodes represent branches in
+items to create [row group nodes](/docs/reference/row). Group nodes represent branches in
 the view that may be expanded or collapsed.
 
 The TypeScript interface for `DataResponseBranchItem` is shown below.
@@ -221,7 +221,7 @@ is used to place the node in the row tree maintained by the server data source. 
 property is required and indicates how many child nodes the group will have.
 
 The close mapping between `DataResponseBranchItem` and the
-[row group node](/docs/reference/rows) is intentional. The server response is designed to
+[row group node](/docs/reference/row) is intentional. The server response is designed to
 map directly to row creation for performance.
 
 ### Data Response For Pinned Rows

@@ -8,9 +8,9 @@ description: Learn how the LyteNyte grid creates, renders, and manages rows. Lyt
 
 LyteNyte Grid represents rows using the `RowNode` interface. This interface is a union of three types:
 
-- [`RowGroup`](/docs/reference/rows): A row that contains child rows and establishes a hierarchical relationship.
-- [`RowAggregated`](/docs/reference/rows): A row that contains aggregate data but is not a group node that can be expanded.
-- [`RowLeaf`](/docs/reference/rows): A row with no child rows.
+- [`RowGroup`](/docs/reference/row): A row that contains child rows and establishes a hierarchical relationship.
+- [`RowAggregated`](/docs/reference/row): A row that contains aggregate data but is not a group node that can be expanded.
+- [`RowLeaf`](/docs/reference/row): A row with no child rows.
 
 You can distinguish between row node types by checking the `kind` property. For example:
 
