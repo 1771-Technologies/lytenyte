@@ -1,15 +1,8 @@
 import { createContext, useContext, type Dispatch, type RefObject, type SetStateAction } from "react";
-import type { API, DataRect, DataRectSplit, VirtualTarget } from "../types";
+import type { API, DataRect, DataRectSplit } from "../types";
 
 export interface ProContext {
   readonly api: API;
-
-  readonly openDialogFrames: Record<string, any>;
-  readonly setDialogFrames: Dispatch<SetStateAction<Record<string, any>>>;
-  readonly openPopoverFrames: Record<string, { target: HTMLElement | VirtualTarget; context: any }>;
-  readonly setPopoverFrames: Dispatch<
-    SetStateAction<Record<string, { target: HTMLElement | VirtualTarget; context: any }>>
-  >;
 
   readonly excludeMarker: boolean;
   readonly keepSelection: boolean;

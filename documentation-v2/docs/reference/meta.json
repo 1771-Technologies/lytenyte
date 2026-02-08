@@ -6,6 +6,7 @@
     "column",
     "grid-types",
     "---",
+    "row-source",
     "client-row-source",
     "server-row-source",
     "tree-row-source",
