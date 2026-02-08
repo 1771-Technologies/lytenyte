@@ -1,0 +1,490 @@
+---
+title: Layout
+description: LyteNyte Grid is a headless data grid. The cells and headers of the grid
+  are positioned based a layout description. This section describes the different types
+  that make up the layout description of the grid.
+---
+
+For more details on working with LyteNyte Grid as a headless grid see
+the [Headless Component Parts guide](/docs/grid-headless-parts).
+
+## Row Layouts
+
+Two types are necessary to describe the layout of a row in LyteNyte, since a row
+may either be a full width row or a row with individual cells. The row layout is described by a type
+called `LayoutRow`, which is a union of the cells layout or full width layout types:
+
+```ts
+type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
+```
+
+### LayoutFullWidthRow
+
+<TypeTable
+  type={[
+    {
+      name: "kind",
+      description: "A type discriminant to distinguish the full width layout row from other layout types.",
+      type: '"full-width"',
+      required: true,
+    },
+    {
+      name: "id",
+      description: "The unique ID of the row.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "rowIndex",
+      description: "The row index of the layout row.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowPin",
+      description: "The pin state of the row",
+      type: "RowPin",
+      required: true,
+    },
+    {
+      name: "rowLastPinTop",
+      description: "Whether the row is the last of the top pinned rows.",
+      type: "boolean",
+    },
+    {
+      name: "rowFirstPinBottom",
+      description: "Whether the row is the first of the bottom pinned rows.",
+      type: "boolean",
+    },
+    {
+      name: "rowIsFocusRow",
+      description: "Whether this row is only being rendered because it is focused.",
+      type: "boolean",
+    },
+  ]}
+/>
+
+### LayoutRowWithCells
+
+<TypeTable
+  type={[
+    {
+      name: "kind",
+      description: "A type discriminant to distinguish the row layout from other layout types.",
+      type: '"row"',
+      required: true,
+    },
+    {
+      name: "id",
+      description: "The unique ID of the row.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "rowIndex",
+      description: "The row index of the layout row.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowPin",
+      description: "The pin state of the row",
+      type: "RowPin",
+      required: true,
+    },
+    {
+      name: "rowLastPinTop",
+      description: "Whether the row is the last of the top pinned rows.",
+      type: "boolean",
+    },
+    {
+      name: "rowFirstPinBottom",
+      description: "Whether the row is the first of the bottom pinned rows.",
+      type: "boolean",
+    },
+    {
+      name: "rowIsFocusRow",
+      description: "Whether this row is only being rendered because it is focused.",
+      type: "boolean",
+    },
+    {
+      name: "cells",
+      description: "The layout of the individual cells in this row.",
+      type: "LayoutCell[]",
+      required: true,
+    },
+  ]}
+/>
+
+### LayoutCell
+
+<TypeTable
+  type={[
+    {
+      name: "kind",
+      description: "A type discriminant to distinguish the cell layout from other layout types.",
+      type: '"cell"',
+      required: true,
+    },
+    {
+      name: "id",
+      description: "The unique ID of the row.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "type",
+      description: "The type of the cell. This is equivalent to the type property of the column.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "colSpan",
+      description: "The number of columns this cell spans",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowSpan",
+      description: "The number of rows this cell spans",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "isDeadRow",
+      description: "Whether this cell is covered by a spanning cell from above.",
+      type: "boolean",
+      required: true,
+    },
+    {
+      name: "isDeadCol",
+      description: "Whether this cell is covered by a spanning cell from the start.",
+      type: "boolean",
+      required: true,
+    },
+    {
+      name: "rowIndex",
+      description: "The row index of the cell.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colIndex",
+      description: "The column index of the cell.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowPin",
+      description: "The pin state of the row.",
+      type: "RowPin",
+      required: true,
+    },
+    {
+      name: "colPin",
+      description: "The pin state of the column.",
+      type: "ColumnPin",
+      required: true,
+    },
+    {
+      name: "colFirstEndPin",
+      description: "Whether the cell is the first cell pinned to the end.",
+      type: "boolean",
+    },
+    {
+      name: "colLastStartPin",
+      description: "Whether the cell is the last cell pinned to the start.",
+      type: "boolean",
+    },
+    {
+      name: "rowLastPinTop",
+      description: "Whether the row is the last of the top pinned rows.",
+      type: "boolean",
+    },
+    {
+      name: "rowFirstPinBottom",
+      description: "Whether the row is the first of the bottom pinned rows.",
+      type: "boolean",
+    },
+    {
+      name: "rowIsFocusRow",
+      description: "Whether this row is only being rendered because it is focused.",
+      type: "boolean",
+    },
+  ]}
+/>
+
+## Header Layouts
+
+Three types are necessary to describe the header layout. The types describe the header group cell,
+header cell, or floating header cell. The `LayoutHeader` type is a union of these three types.
+
+```ts
+type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
+```
+
+### LayoutHeaderCell
+
+<TypeTable
+  type={[
+    {
+      name: "kind",
+      description: "A type discriminant to distinguish the header cell from other header layout types.",
+      type: '"cell"',
+      required: true,
+    },
+    {
+      name: "type",
+      description: "The type of the column.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "id",
+      description: "The column ID corresponding to this layout cell.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "rowStart",
+      description: "The grid start index of this header cell in the header hierarchy.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowEnd",
+      description: "The grid end index of this header cell in the header hierarchy.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowSpan",
+      description: "The number of header rows this column cell spans.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colStart",
+      description: "The start column index of the header cell.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colEnd",
+      description: "The end column index of the header cell. This is exclusive.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colSpan",
+      description: "The number of columns spanned.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colPin",
+      description: "The column pin state of the header cell.",
+      type: "ColumnPin",
+      required: true,
+    },
+    {
+      name: "colFirstEndPin",
+      description: "Whether the header cell is the first cell pinned to the end in its header row.",
+      type: "boolean",
+    },
+    {
+      name: "colLastStartPin",
+      description: "Whether the header cell is the last cell pinned to the start in its header row.",
+      type: "boolean",
+    },
+  ]}
+/>
+
+### LayoutHeaderFloating
+
+<TypeTable
+  type={[
+    {
+      name: "kind",
+      description: "A type discriminant to distinguish the floating cell from other header layout types.",
+      type: '"floating"',
+      required: true,
+    },
+    {
+      name: "type",
+      description: "The type of the column.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "id",
+      description: "The column ID corresponding to this layout cell.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "rowStart",
+      description: "The grid start index of this floating cell in the header hierarchy.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowEnd",
+      description: "The grid end index of this floating cell in the header hierarchy.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowSpan",
+      description: "The number of header rows this column cell spans.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colStart",
+      description: "The start column index of the floating cell.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colEnd",
+      description: "The end column index of the floating cell. This is exclusive.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colSpan",
+      description: "The number of columns spanned.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colPin",
+      description: "The column pin state of the floating cell.",
+      type: "ColumnPin",
+      required: true,
+    },
+    {
+      name: "colFirstEndPin",
+      description: "Whether the floating cell is the first cell pinned to the end in its header row.",
+      type: "boolean",
+    },
+    {
+      name: "colLastStartPin",
+      description: "Whether the floating cell is the last cell pinned to the start in its header row.",
+      type: "boolean",
+    },
+  ]}
+/>
+
+### LayoutHeaderGroup
+
+<TypeTable
+  type={[
+    {
+      name: "kind",
+      description: "A type discriminant to distinguish the group cell from other header layout types.",
+      type: '"group"',
+      required: true,
+    },
+    {
+      name: "id",
+      description: "The group cell ID. This is not guaranteed to unique if the column group is split.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "idOccurrence",
+      description: "The group cell ID plus a count of its occurrence position. This will be a unique ID.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "rowStart",
+      description: "The grid start index of this group cell cell in the header hierarchy.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowEnd",
+      description: "The grid end index of this group cell in the header hierarchy.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "rowSpan",
+      description: "The number of header rows this group cell spans.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colStart",
+      description: "The start column index of the group cell.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colEnd",
+      description: "The end column index of the group cell. This is exclusive.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colSpan",
+      description: "The number of columns spanned.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "colPin",
+      description: "The column pin state of the group cell.",
+      type: "ColumnPin",
+      required: true,
+    },
+    {
+      name: "colFirstEndPin",
+      description: "Whether the group cell is the first cell pinned to the end in its header row.",
+      type: "boolean",
+    },
+    {
+      name: "colLastStartPin",
+      description: "Whether the group cell is the last cell pinned to the start in its header row.",
+      type: "boolean",
+    },
+    {
+      name: "collapsible",
+      description: "Whether the group cell can be closed.",
+      type: "boolean",
+      required: true,
+    },
+    {
+      name: "groupPath",
+      description: "The group path of the group cell.",
+      type: "string[]",
+      required: true,
+    },
+    {
+      name: "columnIds",
+      description: "The IDs of all the columns within this column group.",
+      type: "string[]",
+      required: true,
+    },
+    {
+      name: "start",
+      description: "The start position of the group cell.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "end",
+      description: "The end position of the group cell.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "isHiddenMove",
+      description: "Whether this group is hidden due to a column move.",
+      type: "boolean",
+    },
+  ]}
+/>

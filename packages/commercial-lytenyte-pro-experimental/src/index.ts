@@ -114,6 +114,7 @@ export namespace Grid {
     export type RowGroup = LnTypes.RowGroup;
     export type RowAggregated = LnTypes.RowAggregated;
     export type ColumnPin = LnTypes.ColumnPin;
+
     export type LayoutCell = LnTypes.LayoutCell;
     export type LayoutHeader = LnTypes.LayoutHeader;
     export type LayoutHeaderCell = LnTypes.LayoutHeaderCell;

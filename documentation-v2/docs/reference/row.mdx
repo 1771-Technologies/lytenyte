@@ -1,0 +1,208 @@
+---
+title: Rows
+description: LyteNyte Grid has three types of rows, leaf, group, and aggregated. This reference
+  details the types on these rows.
+---
+
+## Row Node
+
+The `RowNode` type represents a union of the three different row types. Whilst this section provides a
+reference for three row types, you will generally see the usage of `RowNode` in grid types instead of an
+individual type.
+
+```ts
+type RowNode<T> = RowLeaf<T> | RowGroup | RowAggregated;
+```
+
+For more details on row nodes see the [Row Overview guide](/docs/row-overview).
+
+## Row Leaf
+
+<TypeTable
+  type={[
+    {
+      name: "id",
+      description:
+        "A unique ID for this row. This ID will be unique across all rows regardless of the grouping.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "kind",
+      description: "A type discriminant to narrow the type of `RowNode` to the leaf row type.",
+      type: `"leaf"`,
+      required: true,
+    },
+    {
+      name: "loading",
+      description:
+        "Whether the row is currently in a loading state. A loading state may still have data, but the data is likely stale.",
+      type: `boolean`,
+    },
+    {
+      name: "error",
+      description:
+        "An error associated with the row, often as result of failing to load the rows data from the server.",
+      type: "unknown",
+    },
+    {
+      name: "parentId",
+      description:
+        "The ID of the parent row, if the row has a parent. This will only be populated if rows a grouped.",
+      type: "string | null | undefined",
+      required: true,
+    },
+    {
+      name: "depth",
+      description:
+        "Indicates how deep in the grouping hierarchy the row is. A value of 0 indicates the row is at the root of the grouping tree.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "data",
+      description: "Any data associated with the row.",
+      type: "T",
+      required: true,
+    },
+  ]}
+/>
+
+## Row Group
+
+<TypeTable
+  type={[
+    {
+      name: "id",
+      description:
+        "A unique ID for this row. This ID will be unique across all rows regardless of the grouping.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "kind",
+      description: "A type discriminant to narrow the type of `RowNode` to the group row type.",
+      type: `"branch"`,
+      required: true,
+    },
+    {
+      name: "key",
+      description:
+        "The group key of the row. This can be `null` indicating a blank value for this group level.",
+      type: "string | null",
+      required: true,
+    },
+    {
+      name: "loading",
+      description:
+        "Whether the row is currently in a loading state. A loading state may still have data, but the data is likely stale.",
+      type: `boolean`,
+    },
+    {
+      name: "error",
+      description:
+        "An error associated with the row, often as result of failing to load the rows data from the server.",
+      type: "unknown",
+    },
+    {
+      name: "parentId",
+      description:
+        "The ID of the parent row, if the row has a parent. This will only be populated if rows a grouped.",
+      type: "string | null | undefined",
+      required: true,
+    },
+    {
+      name: "depth",
+      description:
+        "Indicates how deep in the grouping hierarchy the row is. A value of 0 indicates the row is at the root of the grouping tree.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "data",
+      description: "Any data associated with the row.",
+      type: "Record<string, unknown>",
+      required: true,
+    },
+    {
+      name: "last",
+      description: "Whether the row group is the last group in the grouping level.",
+      type: "boolean",
+      required: true,
+    },
+    {
+      name: "expanded",
+      description: "Whether the row group is expanded.",
+      type: "boolean",
+      required: true,
+    },
+    {
+      name: "expandable",
+      description: "Whether the row group is expandable.",
+      type: "boolean",
+      required: true,
+    },
+    {
+      name: "errorGroup",
+      description: "An error associated with the row group as a result of failing to expand or collapse.",
+      type: "unknown",
+    },
+    {
+      name: "loadingGroup",
+      description: "Whether the row group expansion is loading to open or close.",
+      type: "boolean",
+    },
+  ]}
+/>
+
+## Row Aggregated
+
+<TypeTable
+  type={[
+    {
+      name: "id",
+      description:
+        "A unique ID for this row. This ID will be unique across all rows regardless of the grouping.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "kind",
+      description: "A type discriminant to narrow the type of `RowNode` to the aggregated row type.",
+      type: `"aggregated"`,
+      required: true,
+    },
+    {
+      name: "loading",
+      description:
+        "Whether the row is currently in a loading state. A loading state may still have data, but the data is likely stale.",
+      type: `boolean`,
+    },
+    {
+      name: "error",
+      description:
+        "An error associated with the row, often as result of failing to load the rows data from the server.",
+      type: "unknown",
+    },
+    {
+      name: "parentId",
+      description:
+        "The ID of the parent row, if the row has a parent. This will only be populated if rows a grouped.",
+      type: "string | null | undefined",
+      required: true,
+    },
+    {
+      name: "depth",
+      description:
+        "Indicates how deep in the grouping hierarchy the row is. A value of 0 indicates the row is at the root of the grouping tree.",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "data",
+      description: "Any data associated with the row.",
+      type: "Record<string, unknown>",
+      required: true,
+    },
+  ]}
+/>

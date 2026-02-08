@@ -77,6 +77,7 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       To perform actions on specific grid elements, prefer attaching event listeners through the \`events\` grid prop.`,
       type: `(el: HTMLElement) => PositionUnion | null`,
       pro: true,
+      required: true,
       see: ["/docs/keyboard"]
     },
     {
@@ -84,6 +85,7 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `Returns the current cell selection data rectangles in the grid.`,
       type: `() => DataRect[]`,
       pro: true,
+      required: true,
       see: ["/docs/cell-selection"]
     },
     {
@@ -91,18 +93,21 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `A Piece object that provides access to the column x positions and allows reactive subscriptions.
       The x positions represent the starting pixel coordinate of each column relative to the viewport.`,
       type: `Piece<Uint32Array>`,
+      required: true,
     },
     {
       name: "yPositions$",
       description: `A Piece object that provides access to the row y positions and allows reactive subscriptions.
       The y positions represent the starting pixel coordinate of each row relative to the viewport.`,
       type: `Piece<Uint32Array>`,
+      required: true,
     },
     {
       name: "viewport$",
       description: `A Piece object that provides access to the grid viewport element and allows reactive subscriptions
       to viewport element changes.`,
-      type: `Piece<HTMLElement | null>`
+      type: `Piece<HTMLElement | null>`,
+      required: true,
     },
     {
       name: "cellRoot",
@@ -111,23 +116,27 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       spanning cell for any row and column index it covers.
 
       If the grid does not use cell spanning, this method always returns the provided position.`,
-      type: "(row: number, column: number) => PositionGridCell | PositionFullWidthRow | null"
+      type: "(row: number, column: number) => PositionGridCell | PositionFullWidthRow | null",
+      required: true,
     },
     {
       name: "exportData",
       description: `Returns the cell data for a given cell selection rectangle. If no rectangle is provided, this method
       returns all cell data in the grid.`,
       type: "(params: { rect: DataRect }) => Promise<ExportDataRectResult>",
+      required: true,
       see: ["/docs/export-overview"]
     },
     {
       name: "scrollIntoView",
       description: "Scrolls the specified row or column into view. This method does nothing if the row or column is already visible.",
+      required: true,
       type: "(params) => void"
     },
     {
       name: "viewport",
       description: `Returns the viewport HTML element of the grid. Prefer using the \`viewport$\` property.`,
+      required: true,
       type: "() => HTMLElement | null"
     },
 
@@ -142,36 +151,42 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       name: "columnById",
       description: `Returns the column definition for the given ID. Returns \`null\` if the column is not found.`,
       type: "(id: string) => Column | null",
+      required: true,
       see: ["/docs/columns"],
     },
     {
       name: "columnByIndex",
       description: `Returns the column definition for the given column index. Returns \`null\` if the column index is out of bounds.`,
       type: "(index: number) => Column | null",
+      required: true,
       see: ["/docs/columns"],
     },
     {
       name: "columnField",
       description: `Returns the cell value for a given column and row using the column \`field\` property.`,
       type: "(colOrId: string | WithId, row: RowNode) => unknown",
+      required: true,
       see: ["/docs/column-field"],
     },
     {
       name: "columnMove",
       description: `Reorders columns in the grid. This method calls the \`onColumnsChange\` event with the reordered columns.`,
       type: "(params) => void",
+      required: true,
       see: ["/docs/column-move"],
     },
     {
       name: "columnResize",
       description: `Resizes columns in the grid. This method calls the \`onColumnsChange\` event with the resized columns.`,
       type: "(sizes: Record<string, number>) => void",
+      required: true,
       see: ["/docs/column-resizing"],
     },
     {
       name: "columnAutosize",
       description: `Automatically sizes some or all columns in the grid. You can call this method with a dry run option to get the expected column sizes.`,
       type: "(params) => Record<string, number>",
+      required: true,
       see: ["/docs/column-autosizing"],
     },
     {
@@ -179,18 +194,21 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `Updates the definition of one or more columns. This method calls the \`onColumnsChange\` event with the updated columns.
       Use this method to update properties provided through column extensions.`,
       type: "(updates: Record<string, ColumnPartial>) => void",
+      required: true,
       see: ["/docs/columns"],
     },
     {
       name: "columnToggleGroup",
       description: `Toggles the expansion state of a column group. If the \`state\` parameter is provided, this method applies that state directly.`,
       type: "(group: string | string[], state?: boolean) => void",
+      required: true,
       see: ["/docs/column-groups"],
     },
     {
       name: "columnView",
       description: `Returns a column view object, which is a description of the current visible column configuration.`,
       type: "() => ColumnView",
+      required: true,
       see: ["/docs/columns"],
     },
   ]}
@@ -205,12 +223,14 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `Returns the rendered height of the row detail area for the given row. Use this method when the
       \`rowDetailHeight\` property on the grid is set to "auto" and you need to query the detail area height.`,
       type: "(row: WithId | string) => string",
+      required: true,
       see: ["/docs/row-detail"],
     },
     {
       name: "rowDetailExpanded",
       description: "Returns the current row detail expansion state for a given row.",
       type: `(row: RowNode | string | number) => boolean`,
+      required: true,
       see: ["/docs/row-detail"],
     },
     {
@@ -218,6 +238,7 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `Toggles the row detail expansion state for a given row. If \`state\` is provided, this method applies
       the given state directly.`,
       type: `(row: RowNode | string, state?: boolean) => void`,
+      required: true,
       see: ["/docs/row-detail"],
     },
     {
@@ -225,64 +246,75 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `Toggles the expansion state of a row group. If \`state\` is provided, this method applies the
       given state directly.`,
       type: `(row: string | RowNode, state?: boolean) => void`,
+      required: true,
       see: ["/docs/client-source-row-grouping"],
     },
     {
       name: "rowIsLeaf",
       description: `A type guard method that checks whether the given row is a leaf row.`,
       type: "(row: RowNode) => row is RowLeaf",
+      required: true,
       see: ["/docs/row-overview"],
     },
     {
       name: "rowIsGroup",
       description: `A type guard method that checks whether the given row is a group row.`,
       type: "(row: RowNode) => row is RowGroup",
+      required: true,
       see: ["/docs/row-overview"],
     },
     {
       name: "rowIsAggregated",
       description: `A type guard method that checks whether the given row is an aggregated row.`,
       type: "(row: RowNode) => row is RowAggregated",
+      required: true,
       see: ["/docs/row-overview"],
     },
     {
       name: "rowIsExpanded",
       description: `Checks whether the given row is expanded. Always returns \`false\` if the row is not a group row.`,
       type: "(row: RowNode) => boolean",
+      required: true,
       see: ["/docs/client-source-row-grouping"],
     },
     {
       name: "rowIsExpandable",
       description: `Checks whether the given row is expandable. Always returns \`false\` if the row is not a group row.`,
       type: "(row: RowNode) => boolean",
+      required: true,
       see: ["/docs/client-source-row-grouping"],
     },
     {
       name: "rowView",
       description: `Returns a description of the current row view.`,
+      required: true,
       type: "() => RowView",
     },
     {
       name: "rowSelect",
       description: `Selects a row, all rows, or all rows between two rows. If \`deselect\` is set, this method deselects instead.`,
       type: "(params) => void",
+      required: true,
       see: ["/docs/row-selection"],
     },
     {
       name: "rowHandleSelect",
       description: `Handles a row selection event. Use this method to allow custom components to manage row selection.`,
       type: "(params) => void",
+      required: true,
       see: ["/docs/row-selection"],
     },
     {
       name: "useRowDrag",
       description: `A hook that returns a set of props that you can apply to an element to enable row dragging.`,
       type: `(params) => DragProperties`,
+      required: true,
       see: ["/docs/row-dragging"],
     },
     {
       name: "props",
       description: "Returns the props provided to the grid.",
+      required: true,
       type: `() => Grid.Props`,
     },
   ]}
@@ -297,18 +329,21 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `Begins a cell edit at the given position. Calling this method starts editing programmatically
       in the same way as when a user triggers an edit.`,
       type: "(params) => void",
+      required: true,
       see: ["/docs/cell-editing"],
     },
     {
       name: "editEnd",
       description: `Ends the active cell edit, optionally cancelling it.`,
       type: `(cancel?: boolean) => void`,
+      required: true,
       see: ["/docs/cell-editing"],
     },
     {
       name: "editIsCellActive",
       description: `Checks whether the given position is currently being edited.`,
       type: `(params) => boolean`,
+      required: true,
       see: ["/docs/cell-editing"],
     },
     {
@@ -316,6 +351,7 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `Updates rows in bulk. Every row is put through the normal edit validation process before the update.
       Returns \`true\` if the update succeeds. Otherwise, this method returns a map containing failure reasons per row.`,
       type: "(rows: Map<string | number, unknown>) => true | Map<string | number, boolean | Record<string, unknown>>",
+      required: true,
       see: ["/docs/cell-editing", "/docs/cell-editing-bulk-editing"],
     },
     {
@@ -323,6 +359,7 @@ See the [Row Source reference](/docs/reference/row-source) for more details.
       description: `Updates cells in bulk. Every cell is put through the normal edit validation process before the update.
       Returns \`true\` if the update succeeds. Otherwise, this method returns a map containing failure reasons per row.`,
       type: "(rows: Map<string | number, Update[]>) => true | Map<string | number, boolean | Record<string, unknown>>",
+      required: true,
       see: ["/docs/cell-editing", "/docs/cell-editing-bulk-editing"],
     },
   ]}

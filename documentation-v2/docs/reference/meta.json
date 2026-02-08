@@ -4,6 +4,8 @@
     "grid-props",
     "grid-api",
     "column",
+    "row",
+    "layout",
     "grid-types",
     "---",
     "row-source",
