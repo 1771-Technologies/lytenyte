@@ -1,5 +1,40 @@
 ---
 title: API Reference
+description: LyteNyte Grid provides a comprehensive API designed to support its wide range of features.
+  The API Reference provides technical coverage and type descriptions of the grid's public interface.
 ---
 
-API Reference Placeholder
+LyteNyte Grid's public API can be divided into six main sections:
+
+- [Grid Props](/docs/reference/grid-props): Properties passed to the grid component. These properties
+  configure and customize LyteNyte Grid behavior.
+- [Grid API](/docs/reference/grid-api): Methods exposed by LyteNyte Grid for advanced functionality.
+  The Grid API allows imperative interaction with the grid.
+- [Column](/docs/reference/column): An overview of the grid's column specification. Columns define
+  what LyteNyte Grid displays.
+- [Row](/docs/reference/row): An overview of the different row types in LyteNyte Grid. Rows define
+  how LyteNyte Grid retrieves data for cells.
+- [Layout](/docs/reference/layout): A description of the layout objects used to assemble LyteNyte Grid
+  when running in [headless mode](/docs/grid-headless-parts).
+- [Grid Types](/docs/reference/grid-types): Auxiliary types used by LyteNyte Grid's functions,
+  methods, and properties.
+
+Separate from the grid is the row source, which provides the interface the grid uses to query and
+interact with row data. LyteNyte Grid provides several row sources out of the box:
+
+- [Client Row Source](/docs/reference/client-row-source): A row source for data that exists on the client.
+- [Server Row Source](/docs/reference/server-row-source): A row source for loading data in slices from a server.
+- [Tree Row Source](/docs/reference/tree-row-source): A row source for rendering and editing hierarchical,
+  object-based data.
+
+Finally, LyteNyte Grid provides a set of utility functions that enhance the grid's functionality:
+
+- The [Piece utility](/docs/reference/piece-utility) creates stable references from unstable state
+  sources that can be shared with LyteNyte Grid and other components.
+- [Other small utility functions](/docs/reference/utility-functions), such as `equal`, make it easier
+  to build advanced use cases with LyteNyte Grid.
+
+Each reference page contains the descriptions and type information required to use LyteNyte Grid's
+public API. For learning how to use LyteNyte Grid in practice, see the
+[dedicated guides](/docs/intro-getting-started). Use the reference section as a quick lookup for
+method and function details.

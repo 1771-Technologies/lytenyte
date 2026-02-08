@@ -10,7 +10,7 @@ import type {
   RowSource,
 } from "@1771technologies/lytenyte-shared";
 import type { Column } from "./column.js";
-import type { GridSpec, VirtualTarget } from "./grid.js";
+import type { GridSpec } from "./grid.js";
 import type {
   Piece,
   useDraggable,
@@ -36,10 +36,6 @@ export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
 }
 
 export type API<Spec extends GridSpec = GridSpec> = {
-  readonly dialogFrameOpen: (id: string, context?: any) => void;
-  readonly dialogFrameClose: (id?: string) => void;
-  readonly popoverFrameOpen: (id: string, target: HTMLElement | VirtualTarget, context?: any) => void;
-  readonly popoverFrameClose: (id?: string) => void;
   readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
   readonly cellSelections: () => DataRect[];
 

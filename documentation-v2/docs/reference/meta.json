@@ -1,14 +1,20 @@
 {
   "title": "API Reference",
   "pages": [
-    "index",
+    "grid-props",
+    "grid-api",
+    "column",
+    "row",
+    "layout",
+    "grid-types",
     "---",
-    "(foundational)",
-    "(columns)",
-    "(row)",
-    "(cell)",
-    "(functionality)",
-    "..."
+    "row-source",
+    "client-row-source",
+    "server-row-source",
+    "tree-row-source",
+    "---",
+    "piece-utility",
+    "utility-functions"
   ],
   "root": true
 }

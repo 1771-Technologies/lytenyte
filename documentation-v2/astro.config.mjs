@@ -64,18 +64,18 @@ export default defineConfig({
             icon: "changelog",
           },
         ],
-        // right: [
-        //   {
-        //     title: "Blog",
-        //     url: "/blog/md-all",
-        //     matchSelected: {
-        //       match: ["/blog"],
-        //       ignore: [],
-        //     },
-        //     description: "1771 Technologies Blog Page",
-        //     icon: "blog",
-        //   },
-        // ],
+        right: [
+          {
+            title: "V1 Documentation",
+            url: "https://www.1771technologies.com/docs/intro-getting-started",
+            matchSelected: {
+              match: [],
+              ignore: [],
+            },
+            description: "1771 Technologies Blog Page",
+            external: true,
+          },
+        ],
       },
     }),
   ],

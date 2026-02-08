@@ -24,7 +24,7 @@ on the column definition are required for cells in a column to be editable:
 - `editable`: A boolean or predicate value that determines whether a cell is editable.
   Use a predicate function to control editability on a row-by-row basis.
 - `editRenderer`: Determines which component LyteNyte Grid renders within the cell's bounds.
-  LyteNyte Grid provides this component with a set of [`EditParams`](/docs/reference) to
+  LyteNyte Grid provides this component with a set of [`EditParams`](/docs/reference/grid-types#editing) to
   handle cell editing.
 
 LyteNyte Grid never mutates the row data you provide. Instead, the grid notifies the row
@@ -51,7 +51,7 @@ The demo defines basic edit renderers for the **Price** and **Customer** columns
 creating custom edit renderers.
 
 To support editing, LyteNyte Grid passes each edit renderer a set of props that conform to
-the [`EditParams`](/docs/reference) type. The demo uses two properties from `EditParams`:
+the [`EditParams`](/docs/reference/grid-types#editing) type. The demo uses two properties from `EditParams`:
 
 - `editValue`: The current value being edited. This value initially matches the cell value
   and updates as edits occur. LyteNyte Grid applies this value only when the edit is committed.
@@ -91,14 +91,14 @@ columns are editable. Click a cell in either column to begin editing.
 ## Edit Parameters
 
 LyteNyte Grid provides each cell edit renderer with a set of props that conform to the
-[`EditParams`](/docs/reference) type. `EditParams` contains the methods and state required
+[`EditParams`](/docs/reference/grid-types#editing) type. `EditParams` contains the methods and state required
 to manage cell updates in LyteNyte Grid. The sections below describe the most important
 properties on `EditParams`.
 
 ### Edit Value and Edit Data
 
 To use cell editing effectively, it is important to understand the relationship between
-the `editValue` and `editData` properties on [`EditParams`](/docs/reference).
+the `editValue` and `editData` properties on [`EditParams`](/docs/reference/grid-types#editing).
 
 When a cell edit begins, LyteNyte Grid creates a copy of the row data for the edited row
 and assigns this copy to `editData`. The grid then uses the column's `field` property to
@@ -165,7 +165,7 @@ While a cell edit is active, LyteNyte Grid does not mutate the original row data
 ## Edit Events
 
 LyteNyte Grid fires edit events at different points in the cell editing lifecycle.
-The events below are commonly used. See the [grid props API reference](/docs/reference)
+The events below are commonly used. See the [grid props API reference](/docs/reference/grid-props#cell-editing)
 for complete details:
 
 - `onEditBegin`: Fired when a cell edit begins. Call `preventDefault` on the event params
@@ -178,7 +178,7 @@ for complete details:
 ## Programmatic Editing
 
 LyteNyte Grid's API exposes methods for programmatically editing cells. These methods
-support advanced editing scenarios. See the grid's [API reference](/docs/reference)
+support advanced editing scenarios. See the grid's [API reference](/docs/reference/grid-api#cell-editing)
 for detailed usage information.
 
 - `editBegin`: Begins editing a specific cell.

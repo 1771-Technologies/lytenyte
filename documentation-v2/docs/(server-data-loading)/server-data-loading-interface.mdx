@@ -16,7 +16,7 @@ overview. For a practical guide, see the [Server Row Data guide](/docs/server-da
 ## Request Interface
 
 At the core of the server data interface is the request interface, the API description of which
-may be found in the [API reference](/docs/reference). In plain
+may be found in the [API reference](/docs/reference/grid-api). In plain
 typescript the `DataRequest` interface is relatively simple:
 
 ```ts
@@ -114,9 +114,9 @@ which is valid and expected by LyteNyte Grid's server data source.
 There are two distinct response types:
 
 - A data response for scrollable rows, described in this
-  [API reference](/docs/reference).
+  [API reference](/docs/reference/grid-api).
 - A data response for pinned rows (top or bottom), described in this
-  [API reference](/docs/reference).
+  [API reference](/docs/reference/grid-api).
 
 LyteNyte Grid expects an array of responses, so the server may send multiple response types in the
 same network round trip.
@@ -176,8 +176,7 @@ These may be changed in the server response, but doing so is generally not recom
 
 #### Leaf Row Data
 
-Leaf row data uses the `DataResponseLeafItem` type (see the
-[API reference](/docs/reference)). Its TypeScript definition is
+Leaf row data uses the `DataResponseLeafItem` type. Its TypeScript definition is
 shown below:
 
 ```ts
@@ -192,17 +191,16 @@ Like the `DataResponse` type, the `DataResponseLeafItem` also has a `kind` prope
 `"leaf"`. LyteNyte Grid uses this value to determine if the response data should create a leaf
 row node.
 
-The `id` value maps to the [row node's](/docs/reference) `id` property, and the `data`
+The `id` value maps to the [row node's](/docs/reference/rows) `id` property, and the `data`
 in the response is associated with that row node. Each item in the data response becomes a row node.
 
 #### Branch Row Data
 
 Group (or branch) row data is represented by the `DataResponseBranchItem`. LyteNyte Grid uses these
-items to create [row group nodes](/docs/reference). Group nodes represent branches in
+items to create [row group nodes](/docs/reference/rows). Group nodes represent branches in
 the view that may be expanded or collapsed.
 
-The TypeScript interface for `DataResponseBranchItem` is shown below. For details, see the
-[API reference](/docs/reference).
+The TypeScript interface for `DataResponseBranchItem` is shown below.
 
 ```ts
 export interface DataResponseBranchItem {
@@ -223,7 +221,7 @@ is used to place the node in the row tree maintained by the server data source. 
 property is required and indicates how many child nodes the group will have.
 
 The close mapping between `DataResponseBranchItem` and the
-[row group node](/docs/reference) is intentional. The server response is designed to
+[row group node](/docs/reference/rows) is intentional. The server response is designed to
 map directly to row creation for performance.
 
 ### Data Response For Pinned Rows
@@ -232,8 +230,7 @@ Pinned rows are always visible in the view, so LyteNyte Grid cannot detect chang
 address this, the server data source allows developers to push pinned row responses alongside
 scrollable row responses.
 
-The `DataResponsePinned` interface
-([API reference](/docs/reference)) defines the response type that
+The `DataResponsePinned` interface defines the response type that
 LyteNyte Grid expects:
 
 ```ts
@@ -269,8 +266,7 @@ const ds = useServerDataSource<MyDataType>({
 ```
 
 The `queryFn` function receives a `params` object, which includes the data requests for
-the current grid view. This object is described by the `QueryFnParams` type
-(see the [API reference](/docs/reference)), whose TypeScript definition is
+the current grid view. This object is described by the `QueryFnParams` type whose TypeScript definition is
 shown below:
 
 ```ts

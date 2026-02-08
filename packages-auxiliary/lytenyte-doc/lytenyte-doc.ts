@@ -48,6 +48,7 @@ export interface OneDocConfig {
     left?: {
       title: string;
       url: string;
+      external?: boolean;
       matchSelected: { match: string[]; ignore: string[] };
       description: string;
       icon: "guides" | "api-reference" | "changelog" | "blog";
@@ -55,6 +56,7 @@ export interface OneDocConfig {
     right?: {
       title: string;
       url: string;
+      external?: boolean;
       matchSelected: { match: string[]; ignore: string[] };
       description: string;
       icon: "guides" | "api-reference" | "changelog" | "blog";

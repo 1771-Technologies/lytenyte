@@ -16,7 +16,7 @@ for more details.
 
 ## Edit Update Method
 
-You can edit cells in bulk using the [`editUpdateRows`](/docs/reference) method on the grid's API. The
+You can edit cells in bulk using the [`editUpdateRows`](/docs/reference/grid-api#cell-editing) method on the grid's API. The
 `editUpdateRows` method requires a map of rows to update. The update map can use
 two key types:
 
@@ -66,7 +66,7 @@ if the update fails.
 
 ## Bulk Editing Cells
 
-You can use the [`editUpdateCells`](/docs/reference) method to bulk update a set of cells in
+You can use the [`editUpdateCells`](/docs/reference/grid-api#cell-editing) method to bulk update a set of cells in
 the grid, rather than updating entire rows. The `editUpdateCells` method is a convenience
 wrapper that uses `editUpdateRows` internally. LyteNyte Grid converts the provided cell
 updates into row updates and then calls `editUpdateRows`.

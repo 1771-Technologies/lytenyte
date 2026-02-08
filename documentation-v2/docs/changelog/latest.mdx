@@ -39,9 +39,9 @@ ds.[method_name] // use method here
 ```
 
 - `refresh`: Triggers a new data fetch for the current view. Enables easy polling.
-- `requestForGroup`: Returns the [DataRequest](/docs/reference) for a given group row.
-- `requestForNextSlice`: Returns the [DataRequest](/docs/reference) for the next slice to aid optimistic data fetching.
-- `requestsForView`: Returns the [DataRequests](/docs/reference) for the current view.
+- `requestForGroup`: Returns the `DataRequest` for a given group row.
+- `requestForNextSlice`: Returns the `DataRequest` for the next slice to aid optimistic data fetching.
+- `requestsForView`: Returns the `DataRequests` for the current view.
 - `seenRequests`: A writable set that lets users clear or add request IDs to LyteNyte Grid's seen requests cache.
 
 Additionally, the `useServerDataSource` hook now accepts an optional `dataFetchExternals` dependency array.
@@ -134,7 +134,7 @@ At a glance, v1.0.0 delivers:
 - `sortComparatorFns` removed. Use custom comparators directly in `sortModel`.
 - Overlay and menu-related properties (`overlayToShow`, `overlays`, `columnMenuRenderer`, `contextMenuRenderer`,
   `contextMenuPredicate`, `panelFrames`, `panelFrameButtons`, `menuFrames`) removed. unnecessary in headless mode.
-- Pivot-related properties refactored. `columnPivotModel` now holds the complete pivot configuration. See the [column pivoting guide](/docs/reference).
+- Pivot-related properties refactored. `columnPivotModel` now holds the complete pivot configuration.
 - `filterQuickSearch` → `quickSearch`
 - `filterModel` split into `FilterModel` (simple filters) and `FilterInModel` (set filters).
 - `measureModel` removed. Now defined in `columnPivotModel`.

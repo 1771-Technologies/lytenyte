@@ -91,19 +91,19 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly colOverscanStart?: number;
   readonly colOverscanEnd?: number;
 
+  readonly virtualizeCols?: boolean;
+  readonly virtualizeRows?: boolean;
+
   readonly rowAlternateAttr?: boolean;
   readonly rowScanDistance?: number;
   readonly rowSource?: Spec["source"];
   readonly rowHeight?: RowHeight;
-  readonly rowAutoHeightGuess?: number;
+  // readonly rowAutoHeightGuess?: number;
 
   readonly rowGroupColumn?: false | Omit<Partial<Column<Spec>>, "field" | "id">;
 
   readonly rowFullWidthPredicate?: null | ((params: RowParams<Spec>) => boolean);
   readonly rowFullWidthRenderer?: (props: RowFullWidthRendererParams<Spec>) => ReactNode | null;
-
-  readonly virtualizeCols?: boolean;
-  readonly virtualizeRows?: boolean;
 
   readonly rowSelectionMode?: "single" | "multiple" | "none";
   readonly rowSelectionActivator?: "single-click" | "double-click" | "none";
@@ -112,6 +112,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly rowDetailHeight?: number | "auto";
   readonly rowDetailAutoHeightGuess?: number;
   readonly rowDetailRenderer?: (props: RowParams<Spec>) => ReactNode | null;
+
   readonly rowDropAccept?: string[];
 
   readonly ref?: Ref<API<Spec>>;

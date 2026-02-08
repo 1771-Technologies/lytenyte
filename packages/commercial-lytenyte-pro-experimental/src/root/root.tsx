@@ -89,8 +89,6 @@ const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
 
 const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
   const { view, source } = useRoot();
-  const [openDialogFrames, setDialogFrames] = useState<ProContext["openDialogFrames"]>({});
-  const [openPopoverFrames, setPopoverFrames] = useState<ProContext["openPopoverFrames"]>({});
 
   const cellSelectionMode = p.cellSelectionMode ?? "none";
   const [cellSelections, setCellSelections] = useControlled({
@@ -102,7 +100,7 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
     setCellSelections(rects);
   });
 
-  const api = useProAPI(setDialogFrames, setPopoverFrames, cellSelections);
+  const api = useProAPI(cellSelections);
 
   const [cellSelectionPivot, setSelectionPivot] = useState<DataRectSplit | null>(null);
   const [cellSelectionAdditiveRects, setCellSelectionAdditiveRects] = useState<DataRectSplit[] | null>(null);
@@ -134,10 +132,6 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
     return {
       api,
 
-      openDialogFrames,
-      setDialogFrames,
-      openPopoverFrames,
-      setPopoverFrames,
       excludeMarker,
       keepSelection: p.cellSelectionMaintainOnNonCellPosition ?? false,
 
@@ -153,8 +147,6 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
     };
   }, [
     api,
-    openDialogFrames,
-    openPopoverFrames,
     excludeMarker,
     p.cellSelectionMaintainOnNonCellPosition,
     cellSelectionMode,

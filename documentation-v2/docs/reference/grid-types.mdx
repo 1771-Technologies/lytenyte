@@ -1,0 +1,277 @@
+---
+title: Grid Types
+description: LyteNyte Grid provides first-class TypeScript support. As a result, there are many
+  associated types that work with the grid. This section details the main types exported by
+  LyteNyte Grid.
+---
+
+## Aggregation
+
+<TypeTable
+  type={[
+    {
+      name: "AggregationFn",
+      description:
+        "A function that accepts an array of leaf rows and returns an object representing the result of aggregating values in those rows.",
+      type: "(data: RowLeaf[]) => Record<string, unknown>",
+    },
+    {
+      name: "Aggregator",
+      description:
+        "A function that takes a field and an array of leaf rows and returns a single aggregated result.",
+      type: "(field: Field, data: RowLeaf[]) => unknown",
+    },
+  ]}
+/>
+
+## Cell Params
+
+<TypeTable
+  type={[
+    {
+      name: "CellParams",
+      description: "Parameters containing information about a cell in the grid.",
+      type: "{ row: RowNode, column: Column, api: API }",
+    },
+    {
+      name: "CellParamsWithIndex",
+      description: "Parameters that extend \`CellParams\` with the row and column index.",
+      type: "CellParams & { rowIndex: number, colIndex: number }",
+    },
+    {
+      name: "CellRendererParams",
+      description:
+        "Parameters that extend \`CellParamsWithIndex\` with additional cell rendering-specific properties.",
+      type: "CellParamsWithIndex & { selected: boolean, indeterminate: boolean, detailExpanded: boolean, editData: unknown, layout: LayoutCell }",
+    },
+  ]}
+/>
+
+## Column
+
+<TypeTable
+  type={[
+    {
+      name: "ColumnPin",
+      description: "The pin values a column may have.",
+      type: `"start" | "end" | null`,
+    },
+  ]}
+/>
+## Dimensions
+
+<TypeTable
+  type={[
+    {
+      name: "Dimension",
+      description: "An object that contains a field or an ID that the grid can use as a field.",
+      type: "{ name?: string; field: Field } | { id: string; field?: Field }",
+    },
+    {
+      name: "DimensionSort",
+      description:
+        "An object with a \`Dimension\` and sort direction. The dimension may also be a sort function.",
+      type: "{ dim: Dimension | SortFn; descending?: boolean }",
+    },
+    {
+      name: "DimensionAgg",
+      description: "An object with a \`Dimension\` and an aggregation.",
+      type: "{ dim: { id: string; field?: Field<T> }, fn: Aggregator<T> | string; }",
+    },
+  ]}
+/>
+
+## Dragging
+
+<TypeTable
+  type={[
+    {
+      name: "DragItem",
+      description: "A union type representing either a `DragItemTransfer` or `DragItemSiteLocal` type.",
+      type: "DragItemTransfer | DragItemSiteLocal",
+    },
+    {
+      name: "DragItemTransfer",
+      description: "A drag data type representing data stored on the data transfer object of a drag event.",
+      type: `{ kind: "dt", type: string, data: string }`,
+    },
+    {
+      name: "DragItemSiteLocal",
+      description:
+        "A drag data type representing data used locally on the site, which is not set on the data transfer object.",
+      type: `{ kind: "site", data: unknown }`,
+    },
+  ]}
+/>
+## Editing
+
+<TypeTable
+  type={[
+    {
+      name: "EditParams",
+      description:
+        "Parameters provided to the edit renderer. This type extends \`CellParamsWithIndex\` with additional cell editing properties.",
+      type: "{ editValue: unknown, changeValue: (v) => boolean | Record<string, unknown>, editData: unknown, editValidation: boolean | Record<string, unknown>, changeData: (data: unknown) => boolean | Record<string, unknown>, commit: () => boolean | Record<string, unknown>, cancel: () => void, layout: LayoutCell }",
+    },
+  ]}
+/>
+
+## Export
+
+<TypeTable
+  type={[
+    {
+      name: "DataRect",
+      description: "A rectangular area representing a data selection in the grid.",
+      type: "{ rowStart: number, rowEnd: number, columnStart: number, columnEnd: number }",
+    },
+    {
+      name: "ExportDataRectResult",
+      description:
+        "The result of a data export in the grid. This type contains headers, group headers, data, and columns for the exported area.",
+      type: "{ headers: string[], groupHeaders: (string | null)[][], data: unknown[][], columns: Column[] }",
+    },
+  ]}
+/>
+
+## Field
+
+<TypeTable
+  type={[
+    {
+      name: "Field",
+      description: "A type representing how LyteNyte Grid calculates a cell value from row data.",
+      type: `string | number | PathField | ((params: { row: RowNode }) => unknown)`,
+    },
+    {
+      name: "PathField",
+      description: "An object representing a property path lookup used by the `Field` type.",
+      type: `{ kind: "path"; path: string }`,
+    },
+  ]}
+/>
+## Filter
+
+<TypeTable
+  type={[
+    {
+      name: "FilterFn",
+      description: "A predicate function used to filter leaf rows.",
+      type: "(node: RowLeaf) => boolean",
+    },
+    {
+      name: "HavingFilterFn",
+      description: "A predicate function used to filter group rows.",
+      type: "(node: RowGroup) => boolean",
+    },
+    {
+      name: "LabelFilter",
+      description: "A predicate function used to filter rows by label.",
+      type: "(label: string | null) => boolean",
+    },
+  ]}
+/>
+## IDs
+
+<TypeTable
+  type={[
+    {
+      name: "leafIdFn",
+      description: "A function that returns the ID of a leaf row given its data.",
+      type: `(d: T, index: number, section: "top" | "center" | "bottom") => string`,
+    },
+    {
+      name: "GroupIdFn",
+      description: "A function that returns the ID of a group row given its group path.",
+      type: "(path: (string | null)[]) => string",
+    },
+  ]}
+/>
+
+## Group
+
+<TypeTable
+  type={[
+    {
+      name: "GroupFn",
+      description: "A function that returns the group path of a leaf row.",
+      type: "(node: RowLeaf) => (string | null)[] | null",
+    },
+    {
+      name: "GroupIdFn",
+      description: "A function that returns the ID of a group row given its group path.",
+      type: "(path: (string | null)[]) => string",
+    },
+  ]}
+/>
+
+## Header
+
+<TypeTable
+  type={[
+    {
+      name: "HeaderGroupParams",
+      description: "Parameters passed to the header group renderer.",
+      type: "{ collapsible: boolean, collapsed: boolean, groupPath: string[], columns: Column[], api: API }",
+    },
+    {
+      name: "HeaderParams",
+      description: "Parameters passed to a column header renderer.",
+      type: "{ column: Column, api: API }",
+    },
+  ]}
+/>
+## Row
+
+<TypeTable
+  type={[
+    {
+      name: "RowParams",
+      description: "Parameters provided to row function callbacks in the grid.",
+      type: "{ rowIndex: number, row: RowNode, api: API }",
+    },
+    {
+      name: "RowFullWidthRendererParams",
+      description: "Parameters provided to the grid full width renderer. This type extends `RowParams`.",
+      type: "RowParams & { layout: LayoutFullWidthRow }",
+    },
+    {
+      name: "RowSelectionState",
+      description:
+        "A union type representing row selection state. This type represents either linked or isolated row selection.",
+      type: "RowSelectionIsolated | RowSelectionLinked",
+    },
+    {
+      name: "RowSelectionIsolated",
+      description: "A type representing isolated row selection state.",
+      type: `{ kind: "isolated", selected: boolean, exceptions: Set<string> }`,
+    },
+    {
+      name: "RowSelectionLinked",
+      description: "A type representing linked row selection state.",
+      type: `{ kind: "linked", selected: boolean, children: Map<string, RowSelectNode> }`,
+    },
+    {
+      name: "RowSelectNode",
+      description: "A selection node within the `RowSelectionLinked` state representing grouped selection.",
+      type: `{ id: string, children?: Map<string, RowSelectNode>, selected?: boolean }`,
+    },
+    {
+      name: "RowDragPlaceholderFn",
+      description: "A component function that returns placeholder content when a row drag is active.",
+      type: "(p: { x: number; y: number; data: DragData }) => ReactNode",
+    },
+  ]}
+/>
+
+## Sort
+
+<TypeTable
+  type={[
+    {
+      name: "SortFn",
+      description: "A comparator function that compares two rows.",
+      type: "(left: RowNode, right: RowNode) => number;",
+    },
+  ]}
+/>

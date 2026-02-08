@@ -16,7 +16,7 @@ Before reading this guide, you must be familiar with row pinning in LyteNyte Gri
 
 ## Pinning Rows Top
 
-Assign an array of [`RowLeaf`](/docs/reference) or [`RowAggregated`](/docs/reference) nodes to
+Assign an array of [`RowLeaf`](/docs/reference/rows) or [`RowAggregated`](/docs/reference/rows) nodes to
 the `topData` property of the `useTreeDataSource` hook. This configuration pins the specified
 rows to the top of the viewport.
 
@@ -26,8 +26,8 @@ The demo below shows a tree data source with rows frozen at the top.
 
 ## Pinning Rows Bottom
 
-To pin rows to the bottom of the viewport, assign an array of [`RowLeaf`](/docs/reference) or
-[`RowAggregated`](/docs/reference) nodes to the `botData` property.
+To pin rows to the bottom of the viewport, assign an array of [`RowLeaf`](/docs/reference/rows) or
+[`RowAggregated`](/docs/reference/rows) nodes to the `botData` property.
 Rows assigned to `botData` remain fixed at the bottom edge of the grid while the rest of the
 tree content scrolls.
 

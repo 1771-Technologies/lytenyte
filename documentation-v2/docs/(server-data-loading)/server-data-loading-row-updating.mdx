@@ -28,8 +28,8 @@ show that update ticking works for both flat and grouped views.
 The `refresh` method described above is a convenience wrapper around two other
 methods provided by the LyteNyte Grid server data source:
 
-- `requestsForView`: a reactive value that returns [Data Request Objects](/docs/reference) for the current view.
-- `pushRequests`: sends [Data Request Objects](/docs/reference) to the
+- `requestsForView`: a reactive value that returns data request objects for the current view.
+- `pushRequests`: sends data request objects to the
   server to force an update for the slices described by the requests.
 
 Therefore, the following code blocks are equivalent:

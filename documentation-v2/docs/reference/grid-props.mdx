@@ -1,0 +1,472 @@
+---
+title: Grid Props
+description: This reference details the different properties that you can provide to the
+  LyteNyte Grid component.
+---
+
+The base type for LyteNyte Grid component props is `Grid.Props`. `Grid.Props` is a generic type that
+accepts a `GridSpec` object. The following example shows the `GridSpec` interface.
+For a detailed walkthrough, see the [API Extension guide](/docs/grid-api-extensions).
+
+```ts
+export interface GridSpec<
+  Data = unknown,
+  ColExt extends Record<string, any> = object,
+  S extends RowSource<Data> = RowSource,
+  Ext extends Record<string, any> = object,
+> {
+  readonly data?: Data;
+  readonly column?: ColExt;
+  readonly source?: S;
+  readonly api?: Ext;
+}
+```
+
+## Properties
+
+Provide these props to the `Grid` component to configure the LyteNyte Grid.
+
+### Grid
+
+<TypeTable
+  type={[
+    {
+      name: "gridId",
+      description: `The ID of the grid. This value determines element ownership for grid components.
+      In most cases, you should not set this value unless you need to distinguish grid elements in a query selector.`,
+      type: "string",
+    },
+    {
+      name: "events",
+      description: `Event handlers for grid components. Use this property to attach event listeners
+      to a cell, column, row, viewport, or header.`,
+      type: "Events",
+    },
+    {
+      name: "styles",
+      description: `Styles and classes applied to grid elements. Use this property to add additional styles
+      to cells, rows, headers, detail containers, or the viewport without breaking the grid into separate component parts.`,
+      type: '{ [key: "viewport" | ... | "headerGroup"]: { style?: CSSProperties, className?: string }}',
+      see: ["/docs/grid-theming"],
+    },
+    {
+      name: "rtl",
+      description: `Whether the grid renders in right-to-left (RTL) direction.`,
+      type: "boolean",
+      see: ["/docs/rtl-support"],
+    },
+    {
+      name: "ref",
+      description: `A ref used to retrieve the grid API.`,
+      type: "Ref<API>",
+    },
+    {
+      name: "slotShadows",
+      description: `A component slot for the auxiliary \`ViewportShadows\` component.`,
+      type: "(props) => ReactNode",
+      see: ["/docs/component-viewport-shadows"],
+    },
+    {
+      name: "slotViewportOverlay",
+      description: `A component slot for providing overlays rendered within the viewport.`,
+      type: "((props) => ReactNode) | ReactNode",
+      see: ["/docs/component-grid-overlays"],
+    },
+    {
+      name: "slotRowsOverlay",
+      description: `A component slot for providing overlays rendered within the rows container.`,
+      type: "((props) => ReactNode) | ReactNode",
+      see: ["/docs/component-grid-overlays"],
+    },
+  ]}
+/>
+
+### Columns
+
+<TypeTable
+  type={[
+    {
+      name: "columns",
+      description: `The column definitions that the grid uses. Every column must have a unique ID.`,
+      type: "Column[] | null",
+      see: ["/docs/columns"],
+    },
+    {
+      name: "onColumnsChange",
+      description: `An event callback that fires when the grid columns change, for example when columns are moved.`,
+      type: "(columns: Column[]) => void",
+      see: ["/docs/columns"],
+    },
+    {
+      name: "columnBase",
+      description: `The default column definition. The grid uses this definition as a fallback for properties not defined on a column.`,
+      type: 'Omit<Column, "id" | "pin" | "field" | "editSetter">',
+      see: ["/docs/column-base"],
+    },
+    {
+      name: "columnMarker",
+      description: `The definition of the special marker column managed by LyteNyte Grid. Set the \`on\` property to enable the marker.`,
+      type: 'Omit<Column, "id" | "pin" | "field"> & { on?: boolean }',
+      see: ["/docs/marker-columns"],
+    },
+    {
+      name: "columnGroupDefaultExpansion",
+      description: `Whether column groups are expanded by default.`,
+      type: "boolean",
+      see: ["/docs/column-groups"],
+    },
+    {
+      name: "columnGroupExpansions",
+      description: `The column group expansion state that the grid uses. Provide this value to control column group expansions.`,
+      type: "Record<string, boolean>",
+      see: ["/docs/column-groups"],
+    },
+    {
+      name: "onColumnGroupExpansionChange",
+      description: `An event callback that fires when the expansion state of a column group changes.`,
+      type: `(change: Record<string, boolean>) => void`,
+      see: ["/docs/column-groups"],
+    },
+    {
+      name: "columnGroupJoinDelimiter",
+      description: `The delimiter the grid uses to join column group paths when creating a column group ID. By default, this value is "/".`,
+      type: "string",
+      see: ["/docs/column-groups"],
+    },
+    {
+      name: "columnSizeToFit",
+      description: `Whether the grid resizes columns to fit the viewport.`,
+      type: "boolean",
+      see: ["/docs/column-resizing"],
+    },
+    {
+      name: "columnDoubleClickToAutosize",
+      description: `Whether the grid autosizes a column when the edge of the header is double-clicked. The column must be resizable.`,
+      type: "boolean",
+      see: ["/docs/column-autosizing"],
+    },
+    {
+      name: "columnMoveDragPlaceholder",
+      description: `The drag placeholder the grid uses while a column move is in progress.`,
+      type: "string | { query: string, offset?: [number, number] } | (props) => ReactNode",
+      see: ["/docs/column-moving"],
+    },
+    {
+      name: "columnGroupMoveDragPlaceholder",
+      description: `The drag placeholder the grid uses while a column group move is in progress.`,
+      type: "string | { query: string, offset?: [number, number] } | (props) => ReactNode",
+      see: ["/docs/column-moving"],
+    },
+    {
+      name: "columnGroupRenderer",
+      description: `The renderer used to display column group content.`,
+      type: "(props) => ReactNode",
+      see: ["/docs/column-groups"],
+    },
+    {
+      name: "onColumnMoveOutside",
+      description: `An event callback that fires when a column move ends with a drop occurring outside the viewport.`,
+      type: "(params) => void",
+      see: ["/docs/column-moving"],
+    },
+  ]}
+/>
+
+### Rows
+
+<TypeTable
+  type={[
+    {
+      name: "rowAlternateAttr",
+      description: `Whether the grid applies the \`data-ln-row-alternate\` attribute to odd rows.`,
+      type: "boolean",
+    },
+    {
+      name: "rowScanDistance",
+      description: `The maximum number of rows before the visual start row that the grid checks for row spans.`,
+      type: "number",
+      see: ["/docs/row-spanning"],
+    },
+    {
+      name: "rowSource",
+      description: `The row data source the grid uses to retrieve rows and determine row counts.`,
+      type: "RowSource",
+      see: ["/docs/client-source-overview", "/docs/server-data-loading-overview"],
+    },
+    {
+      name: "rowHeight",
+      description: `The height of rows in the grid.`,
+      type: 'number | ((i: number) => number) | "auto" | `fill:${number}`',
+      see: ["/docs/row-height"],
+    },
+    {
+      name: "rowGroupColumn",
+      description: "The column definition for the automatically generated group column.",
+      type: `Omit<Column, "field" | "id">`,
+      see: ["/docs/client-source-row-grouping"],
+    },
+    {
+      name: "onRowGroupColumnChange",
+      description:
+        "An event callback that fires when the row group column is updated in the grid, for example when it is resized.",
+      type: `(column: Omit<Column, "field" | "id">) => void`,
+      see: ["/docs/client-source-row-grouping"],
+    },
+    {
+      name: "rowFullWidthPredicate",
+      description: "A predicate function that determines whether a row renders as full width.",
+      type: `(params) => boolean`,
+      see: ["/docs/row-full-width"],
+    },
+    {
+      name: "rowFullWidthRenderer",
+      description:
+        "A component that renders the content for a full width row. If the grid includes full width rows, you must provide this.",
+      type: `(props) => ReactNode`,
+      see: ["/docs/row-full-width"],
+    },
+    {
+      name: "rowSelectionMode",
+      description: `The row selection behavior the grid uses.`,
+      type: `"single" | "multiple" | "none"`,
+      see: ["/docs/row-selection"],
+    },
+    {
+      name: "rowSelectionActivator",
+      description: `The mouse interaction that triggers row selection in the grid.`,
+      type: `"single-click" | "double-click" | "none"`,
+      see: ["/docs/row-selection"],
+    },
+    {
+      name: `rowDropAccept`,
+      description: `Tag identifiers that a row accepts during a row drag operation.`,
+      type: "string[]",
+      see: ["/docs/row-dragging"],
+    },
+    {
+      name: `onRowDrop`,
+      description: `An event callback that fires when a row is dropped during a row drag operation.`,
+      type: `(params) => void`,
+      see: ["/docs/row-dragging"],
+    },
+    {
+      name: `onRowDragEnter`,
+      description: `An event callback that fires when a row drag enters a valid drop zone target.`,
+      type: `(params) => void`,
+      see: ["/docs/row-dragging"],
+    },
+    {
+      name: `onRowDragLeave`,
+      description: `An event callback that fires when a row drag leaves a valid drop zone target.`,
+      type: `(params) => void`,
+      see: ["/docs/row-dragging"],
+    },
+  ]}
+/>
+
+### Row Detail
+
+<TypeTable
+  type={[
+    {
+      name: "rowDetailExpansion",
+      description:
+        "The set of rows that have expanded detail. Provide this value if you want to control row detail expansion.",
+      type: "Set<string>",
+      see: ["/docs/row-detail"],
+    },
+    {
+      name: "onRowDetailExpansionsChange",
+      description: `An event callback that fires when the detail expansion state of a row changes.`,
+      type: "(change: Set<string>) => void",
+      see: ["/docs/row-detail"],
+    },
+    {
+      name: "rowDetailHeight",
+      description: "The height the row detail area uses.",
+      type: `number | "auto"`,
+      see: ["/docs/row-detail"],
+    },
+    {
+      name: "rowDetailAutoHeightGuess",
+      description: `The initial detail area height the grid uses before it has had a chance to observe the actual detail height.
+      The grid uses this property only when the \`rowDetailHeight\` property is set to \`"auto"\`.`,
+      type: "number",
+      see: ["/docs/row-detail"],
+    },
+    {
+      name: "rowDetailRenderer",
+      description: `The component the grid uses to render the detail area of an expanded row.`,
+      type: `(props) => ReactNode`,
+      see: ["/docs/row-detail"],
+    },
+  ]}
+/>
+
+### Virtualization and Sizing
+
+<TypeTable
+  type={[
+    {
+      name: "headerHeight",
+      description: `The height in pixels of the header.`,
+      type: "number",
+      see: ["/docs/column-header-height"],
+    },
+    {
+      name: "headerGroupHeight",
+      description: `The height in pixels of the header group.`,
+      type: "number",
+      see: ["/docs/column-header-height"],
+    },
+    {
+      name: "floatingRowHeight",
+      description: `The height in pixels of the floating row.`,
+      type: "number",
+      see: ["/docs/column-header-height", "/docs/column-floating-header"],
+    },
+    {
+      name: "floatingRowEnabled",
+      description: `Whether the floating row is enabled.`,
+      type: "boolean",
+      see: ["/docs/column-floating-header"],
+    },
+    {
+      name: "rowOverscanTop",
+      description: `The number of additional rows the grid renders above the viewport to improve perceived scroll performance.`,
+      type: "number",
+      see: ["/docs/grid-virtualization"],
+    },
+    {
+      name: "rowOverscanBottom",
+      description: `The number of additional rows the grid renders below the viewport to improve perceived scroll performance.`,
+      type: "number",
+      see: ["/docs/grid-virtualization"],
+    },
+    {
+      name: "colOverscanStart",
+      description: `The number of additional columns the grid renders before the viewport start to improve perceived horizontal scrolling.`,
+      type: "number",
+      see: ["/docs/grid-virtualization"],
+    },
+    {
+      name: "colOverscanEnd",
+      description: `The number of additional columns the grid renders after the viewport end to improve perceived horizontal scrolling.`,
+      type: "number",
+      see: ["/docs/grid-virtualization"],
+    },
+    {
+      name: "virtualizeCols",
+      description: `Whether the grid virtualizes columns.`,
+      type: "boolean",
+      see: ["/docs/grid-virtualization"],
+    },
+    {
+      name: "virtualizeRows",
+      description: `Whether the grid virtualizes rows.`,
+      type: "boolean",
+      see: ["/docs/grid-virtualization"],
+    },
+  ]}
+/>
+
+### Cell Editing
+
+<TypeTable
+  type={[
+    {
+      name: "editRowValidatorFn",
+      description: `A validator function the grid uses to validate row edits.`,
+      type: "(params) => boolean | Record<string, unknown>",
+      see: ["/docs/cell-editing", "/docs/cell-editing-validation"],
+    },
+    {
+      name: "editClickActivator",
+      description: `The mouse interaction that begins a cell edit.`,
+      type: `"single-click" | "double-click" | "none"`,
+      see: ["/docs/cell-editing"],
+    },
+    {
+      name: "editMode",
+      description: `The cell editing behavior the grid uses, either single cell editing, full row editing, or no editing.`,
+      type: `"cell" | "row" | "readonly"`,
+      see: ["/docs/cell-editing"],
+    },
+    {
+      name: "onEditBegin",
+      description: `An event callback that fires when cell editing begins. You can use this callback to prevent cell editing.`,
+      type: "(params) => void",
+      see: ["/docs/cell-editing"],
+    },
+    {
+      name: "onEditEnd",
+      description: `An event callback that fires when cell editing ends successfully.`,
+      type: "(params) => void",
+      see: ["/docs/cell-editing"],
+    },
+    {
+      name: "onEditFail",
+      description: `An event callback that fires when cell editing fails.`,
+      type: "(params) => void",
+      see: ["/docs/cell-editing"],
+    },
+    {
+      name: "onEditCancel",
+      description: `An event callback that fires when cell editing is cancelled.`,
+      type: "(params) => void",
+      see: ["/docs/cell-editing"],
+    },
+  ]}
+/>
+
+### Cell Selection
+
+<TypeTable 
+  type={[
+    {
+      name: "cellSelectionMode",
+      description: `
+      The type of cell selection the grid enables.
+
+      - \`"range"\` allows a single range of cells to be selected.
+      - \`"multi-range"\` allows multiple ranges of cells to be selected.
+      - \`"none"\` disables cell selection. This is the default.
+      `,
+      type: '"range" | "multi-range" | "none"',
+      pro: true,
+      see: ["/docs/cell-selection"]
+    },
+    {
+      name: "cellSelections",
+      description: `
+        A controlled array of selection rectangles. Provide this value to control
+        the selection areas of the grid.
+      `,
+      type: "DataRect[]",
+      pro: true,
+      see: ["/docs/cell-selection"]
+    },
+    {
+      name: "cellSelectionExcludeMarker",
+      description: `Whether the grid allows marker column selection in cell selection ranges.`,
+      type: "boolean",
+      pro: true,
+      see: ["/docs/cell-selection", "/docs/marker-columns"]
+    },
+    {
+      name: "cellSelectionMaintainOnNonCellPosition",
+      description: `Whether the grid clears the cell selection when focus moves to a non-cell position, such as a header cell.`,
+      type: "boolean",
+      pro: true,
+      see: ["/docs/cell-selection"]
+    },
+    {
+      name: `onCellSelectionChange`,
+      description: `An event callback that fires when the cell selection area in the grid changes.`,
+      type: `(rects: DataRect[]) => void`,
+      pro: true,
+      see: ["/docs/cell-selection"]
+    },
+
+]}
+/>
