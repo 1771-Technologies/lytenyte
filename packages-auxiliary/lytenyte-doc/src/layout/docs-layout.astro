@@ -132,6 +132,7 @@ const pathname = Astro.url.pathname;
                     return (
                       <a
                         href={x.url}
+                        target={x.external ? "_blank" : "_self"}
                         class:list={cn(
                           "items-center flex font-semibold text-sm text-xd-muted-foreground hover:text-xd-foreground transition-colors gap-1 px-2 border-s border-transparent",
                           active && "border-s border-s-xd-foreground text-xd-foreground",
@@ -149,6 +150,7 @@ const pathname = Astro.url.pathname;
                 {
                   navbar.right?.map((x) => {
                     const Icon = icons[x.icon];
+
                     const active =
                       x.matchSelected.match.some((x) => pathname.startsWith(x)) &&
                       !x.matchSelected.ignore.some((x) => pathname.startsWith(x));
@@ -156,12 +158,13 @@ const pathname = Astro.url.pathname;
                     return (
                       <a
                         href={x.url}
+                        target={x.external ? "_blank" : "_self"}
                         class:list={cn(
                           "h-full items-center flex font-semibold text-sm text-xd-muted-foreground hover:text-xd-foreground transition-colors gap-1 px-2",
                           active && "border-b border-b-xd-foreground text-xd-foreground",
                         )}
                       >
-                        <Icon />
+                        {Icon && <Icon />}
                         <span class="sr-only">{x.description}</span>
                         {x.title}
                       </a>
@@ -200,6 +203,7 @@ const pathname = Astro.url.pathname;
                   return (
                     <a
                       href={x.url}
+                      target={x.external ? "_blank" : "_self"}
                       class:list={cn(
                         "h-full items-center flex font-semibold text-sm text-xd-muted-foreground hover:text-xd-foreground transition-colors gap-1 px-2 border-b border-transparent",
                         active && "border-b border-b-xd-foreground text-xd-foreground",
@@ -225,12 +229,13 @@ const pathname = Astro.url.pathname;
                   return (
                     <a
                       href={x.url}
+                      target={x.external ? "_blank" : "_self"}
                       class:list={cn(
                         "h-full items-center flex font-semibold text-sm text-xd-muted-foreground hover:text-xd-foreground transition-colors gap-1 px-2",
                         active && "border-b border-b-xd-foreground text-xd-foreground",
                       )}
                     >
-                      <Icon />
+                      {Icon && <Icon />}
                       <span class="sr-only">{x.description}</span>
                       {x.title}
                     </a>
