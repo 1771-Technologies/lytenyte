@@ -208,7 +208,7 @@ Passing a render prop as the `children` of the `Grid.Header` component allows fo
 control over how the header renders. When using this approach, the render prop must return a
 `Grid.HeaderRow`, and that component must render the header cells as its `children`.
 
-The render prop function receives an array of [`LayoutHeader`](/docs/reference) items. Each `LayoutHeader` item describes
+The render prop function receives an array of [`LayoutHeader`](/docs/reference/layout) items. Each `LayoutHeader` item describes
 the layout of an individual header cell, such as whether the cell is pinned or whether the cell
 belongs to a column group, a normal header, or a floating header.
 
@@ -351,7 +351,7 @@ The code snippet below demonstrates the default mode structure, so it's equivale
 
 ### Rows Render Prop
 
-The render prop receives a [`LayoutRow`](/docs/reference) item. Each `LayoutRow` describes the type of row to render, along
+The render prop receives a [`LayoutRow`](/docs/reference/layout) item. Each `LayoutRow` describes the type of row to render, along
 with properties such as `rowIndex` and `rowPin`. You can use these values to apply row-specific logic.
 
 There are two types of grid row components:

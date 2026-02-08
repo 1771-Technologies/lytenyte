@@ -78,7 +78,7 @@ that they can select rows.
 The selection checkbox demo allows you to select or deselect all rows
 in the grid using the header checkbox in the [marker column](/docs/marker-column). The demo
 uses the [SelectAll component](/docs/component-select-all). However, you can achieve the same select-all
-behavior programmatically with the [`api.rowSelect`](/docs/reference) method, as shown below:
+behavior programmatically with the [`api.rowSelect`](/docs/reference/grid-api) method, as shown below:
 
 ```ts
 api.rowSelect({ selected: "all" }); // select all rows
@@ -219,7 +219,7 @@ The linked row representation may appear complex at first, but it has some very 
 LyteNyte Grid compacts and collapses redundant nodes in the tree as the user selects rows.
 This keeps the tree as flat as possible while still representing the correct selection state.
 As a developer, you rarely need to interact with the selection state directly.
-In most cases, it is sufficient to call the [`rowsSelected`](/docs/reference)
+In most cases, it is sufficient to call the [`rowsSelected`](/docs/reference/grid-api)
 method on the data source or the grid API. This method returns
 the currently selected row nodes.
 

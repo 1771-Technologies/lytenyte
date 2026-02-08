@@ -17,7 +17,7 @@ and the [Cell Edit Renderers guide](/docs/cell-editing-renderers).
 
 ## Editing More Than One Cell
 
-A standard edit renderer calls the `changeValue` method on the [`EditParams`](/docs/reference) passed to the
+A standard edit renderer calls the `changeValue` method on the [`EditParams`](/docs/reference/grid-types#editing) passed to the
 renderer. The `changeValue` method updates only the edit value for the cell currently being edited. To create
 a linked cell edit, use the `changeData` method instead, and provide new edit values for all cells that should
 update when the edited cell changes.
