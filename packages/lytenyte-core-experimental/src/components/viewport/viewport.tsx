@@ -103,7 +103,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           h?.(ev);
           if (ev.defaultPrevented) return;
 
-          beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, "single");
+          beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, "single-click");
 
           if (selectActivator === "single-click") api.rowHandleSelect(ev);
         }}
@@ -124,7 +124,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
           if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
 
-          const isEditing = edit.activeEdit.get();
+          const isEditing = edit.activeEdit;
           if (e.key === "Tab" && isEditing) return;
 
           handleNavigation(e, false);
@@ -156,7 +156,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
               const focusable = active ? getNearestFocusable(id, active) : null;
 
               if (focusable) {
-                const validation = edit.editValidation.get();
+                const validation = edit.editValidation;
                 if (validation !== true) return;
 
                 const rowIndex = Number.parseInt(focusable.getAttribute("data-ln-rowindex")!);

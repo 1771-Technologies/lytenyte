@@ -14,7 +14,7 @@ export function useEditIsCellActive(api: Root.API, edit: EditContext): Root.API[
 
     if (!row || !column) return false;
 
-    const active = edit.activeEdit.get();
+    const active = edit.activeEdit;
     return active?.column === column.id && active.rowId === row.get()?.id;
   });
 }

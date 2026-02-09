@@ -6,7 +6,7 @@ export function EditDriver() {
   const edit = useEdit();
 
   const focus = focusActive.useValue();
-  const activeEdit = edit.activeEdit.useValue();
+  const activeEdit = edit.activeEdit;
 
   useEffect(() => {
     if (editMode === "readonly" || !focus || !activeEdit) return;

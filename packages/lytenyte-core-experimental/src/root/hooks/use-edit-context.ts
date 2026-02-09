@@ -1,5 +1,4 @@
 import { useMemo, useRef, useState } from "react";
-import { usePiece } from "../../hooks/use-piece.js";
 import type { ColumnAbstract, RowNode } from "@1771technologies/lytenyte-shared";
 import { type ColumnView, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../hooks/use-event.js";
@@ -7,25 +6,20 @@ import type { Root } from "../root.js";
 import type { EditContext } from "../root-context.js";
 
 export function useEditContext(view: ColumnView, api: Root.API, props: Root.Props, source: RowSource) {
-  const [activeEditState, setActiveEdit] = useState<null | {
+  const [activeEdit, setActiveEdit] = useState<null | {
     readonly rowId: string;
     readonly column: string;
   }>(null);
 
-  const activeEdit = usePiece(activeEditState, setActiveEdit);
-  const activeRow = usePiece(activeEditState?.rowId ?? null);
+  const [editValidation, setEditValidation] = useState<boolean | Record<string, unknown>>(true);
 
-  const [editValidationState, setEditValidation] = useState<boolean | Record<string, unknown>>(true);
-  const editValidation = usePiece(editValidationState, setEditValidation);
-
-  const [editDataState, setEditDataState] = useState<any>(null);
-  const editData = usePiece(editDataState, setEditDataState);
+  const [editData, setEditData] = useState<any>(null);
 
   const changeWithInit = useEvent((value: any, row: RowNode<any>, column: ColumnAbstract) => {
     let nextData: any;
     const setter = ((column as any) ?? props.columnBase)?.editSetter as Root.Column["editSetter"];
 
-    const current = editDataState ?? structuredClone(row.data);
+    const current = editData ?? structuredClone(row.data);
 
     if (setter) {
       nextData = setter({ api, column, editData: current, editValue: value, row });
@@ -39,61 +33,61 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     return nextData;
   });
 
-  const editDataStateRef = useRef(editDataState);
-  editDataStateRef.current = editDataState;
+  const editDataStateRef = useRef(editData);
+  editDataStateRef.current = editData;
 
   const changeValue = useEvent((value: any) => {
-    if (!activeEditState) return false;
+    if (!activeEdit) return false;
 
-    const column = view.lookup.get(activeEditState.column);
-    const row = api.rowById(activeEditState.rowId);
+    const column = view.lookup.get(activeEdit.column);
+    const row = api.rowById(activeEdit.rowId);
     if (!column || !row) return false;
 
     const nextData = changeWithInit(value, row, column);
     if (nextData === false) return false;
 
-    setEditDataState(nextData);
+    setEditData(nextData);
     editDataStateRef.current = nextData;
     const validator = props.editRowValidatorFn as Root.Props["editRowValidatorFn"];
 
     if (validator) {
       const result = validator({ api, editData: nextData, row });
-      editValidation.set(result);
+      setEditValidation(result);
       return result;
     }
 
-    editValidation.set(true);
+    setEditValidation(true);
     return true;
   });
 
   const changeData = useEvent((nextData) => {
-    if (!activeEditState) return false;
-    const row = api.rowById(activeEditState.rowId);
+    if (!activeEdit) return false;
+    const row = api.rowById(activeEdit.rowId);
     if (!row) return false;
 
-    setEditDataState(nextData);
+    setEditData(nextData);
     editDataStateRef.current = nextData;
 
     const validator = props.editRowValidatorFn as Root.Props["editRowValidatorFn"];
 
     if (validator) {
       const result = validator({ api, editData: nextData, row });
-      editValidation.set(result);
+      setEditValidation(result);
       return result;
     }
 
-    editValidation.set(true);
+    setEditValidation(true);
     return true;
   });
 
   const cancel = useEvent(() => {
-    if (!activeEditState) return false;
+    if (!activeEdit) return false;
 
-    const column = view.lookup.get(activeEditState.column);
-    const row = api.rowById(activeEditState.rowId);
+    const column = view.lookup.get(activeEdit.column);
+    const row = api.rowById(activeEdit.rowId);
     if (!column || !row) {
       setActiveEdit(null);
-      setEditDataState(null);
+      setEditData(null);
       setEditValidation(true);
       return false;
     }
@@ -101,16 +95,16 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     props.onEditCancel?.({ api, row, column, editData });
     setEditValidation(true);
     setActiveEdit(null);
-    setEditDataState(null);
+    setEditData(null);
   });
 
   const commit = useEvent(() => {
     const editDataState = editDataStateRef.current;
 
-    if (!activeEditState) return false;
+    if (!activeEdit) return false;
 
-    const column = view.lookup.get(activeEditState.column);
-    const row = api.rowById(activeEditState.rowId);
+    const column = view.lookup.get(activeEdit.column);
+    const row = api.rowById(activeEdit.rowId);
     if (!row || !column) return false;
 
     const validator = props.editRowValidatorFn as Root.Props["editRowValidatorFn"];
@@ -143,15 +137,16 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
 
     setActiveEdit(null);
     setEditValidation(true);
-    setEditDataState(null);
+    setEditData(null);
     return true;
   });
 
   const value = useMemo<EditContext>(() => {
     return {
       activeEdit,
-      activeRow,
+      setActiveEdit,
       editData,
+      setEditData,
       editValidation,
       changeValue,
       changeWithInit,
@@ -159,17 +154,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
       cancel,
       commit,
     };
-  }, [
-    activeEdit,
-    activeRow,
-    cancel,
-    changeData,
-    changeValue,
-    changeWithInit,
-    commit,
-    editData,
-    editValidation,
-  ]);
+  }, [activeEdit, cancel, changeData, changeValue, changeWithInit, commit, editData, editValidation]);
 
   return value;
 }

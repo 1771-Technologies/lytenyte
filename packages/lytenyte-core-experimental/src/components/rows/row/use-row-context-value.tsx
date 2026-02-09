@@ -17,10 +17,11 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
 
   const edit = useEdit();
 
-  const isEditing = edit.activeEdit.useValue((x) => x?.rowId === row.id);
-  const editColumn = edit.activeEdit.useValue((x) => (isEditing ? x!.column! : null));
-  const editValue = edit.editData.useValue((x) => (isEditing ? x : null));
-  const editValidation = edit.editValidation.useValue((x) => (isEditing ? x : null));
+  const isEditing = edit.activeEdit?.rowId === row.id;
+  const editColumn = isEditing ? edit.activeEdit.column! : null;
+
+  const editValue = isEditing ? edit.editData : null;
+  const editValidation = isEditing ? edit.editValidation : null;
 
   const detailExpanded = row && detailExpansions.has(row.id);
   const detailHeight = !detailExpanded

@@ -124,7 +124,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly editRowValidatorFn?: (
     params: Pick<EditParams<Spec>, "api" | "editData" | "row">,
   ) => boolean | Record<string, unknown>;
-  readonly editClickActivator?: "single" | "double-click" | "none";
+  readonly editClickActivator?: "single-click" | "double-click" | "none";
   readonly editMode?: "cell" | "row" | "readonly";
 
   // Values that can be changed by the grid
