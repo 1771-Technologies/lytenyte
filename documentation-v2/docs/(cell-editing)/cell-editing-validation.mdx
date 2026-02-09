@@ -1,33 +1,27 @@
 ---
 title: Cell Edit Validation
 step: Validate cell edits to ensure updates are correct.
-description: Validating cell edits is an essential part of ensuring the integrity
-  of the data in LyteNyte Grid when cell editing is enabled.
+description: Validation is essential to maintain data integrity when cell editing is enabled
+  in LyteNyte Grid. Verify cell values and display clear error messages for invalid data.
 ---
-
-Ensuring cell values are correct, and providing clear error messages for invalid data,
-is critical to creating a good user experience.
 
 :::note
 
-This guide assumes you are already familiar with the cell editing capabilities of LyteNyte Grid. Before
-reading the rest of this guide, ensure you are familiar with the contents of the [Cell Editing guide](/docs/cell-editing)
-and the [Cell Edit Renderers guide](/docs/cell-editing-renderers).
+This guide builds on the concepts covered in the [Cell Editing](/docs/cell-editing)
+and [Cell Edit Renderers](/docs/cell-editing-renderers) documentation. We recommend reviewing those
+topics before proceeding.
 
 :::
 
 ## Edit Validation
 
-Set the `editRowValidatorFn` property on the grid to validate cell edit updates. LyteNyte Grid
-uses the `editRowValidatorFn` function to validate edits at the row level, even when the user
-edits only a single cell. The provided `editRowValidatorFn` function must return one of the
-following values:
+Set the `editRowValidatorFn` property on the grid to validate cell edit updates.
+LyteNyte Grid calls `editRowValidatorFn` at the row level,
+even for single-cell edits. The function must return one of these values:
 
-- `true`: Indicates the validation passed and the edit can safely be applied to the row data.
-- `false`: Indicates the validation failed, but no additional information is provided. Only return
-  `false` if you have another way to display validation feedback to the user.
-- An object of type `Record<string, unknown>`, where the key is an arbitrary error code (of your choosing)
-  and the value is an error message or error object.
+- `true`: Validation passed; the edit can safely be applied to the row data.
+- `false`: Validation failed without details. Return `false` only if your UI displays validation feedback in another way.
+- `Record<string, unknown>`: A validation error map, keyed by an error code you define, with an error message or error object as the value.
 
 In the demo below, an `editRowValidatorFn` function validates that the value in the **Price**
 column is greater than 0. Double-click any cell in the **Price** column to begin editing. When
@@ -61,8 +55,8 @@ use `editRowValidatorFn` to validate any type of data and integrate any validati
 
 :::tip
 
-[Zod](https://zod.dev/) is a TypeScript-first schema validation library that has grown in popularity.
-Consider using Zod to validate cell edits, which also provides strong type safety.
+[Zod](https://zod.dev/) is a TypeScript-first schema validation library.
+Consider using Zod to validate cell edits and get strong type safety.
 
 :::
 
