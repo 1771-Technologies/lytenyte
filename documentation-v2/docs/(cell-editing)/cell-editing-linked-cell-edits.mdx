@@ -1,34 +1,35 @@
 ---
 title: Linked Cell Edits
 step: Update dependent cells and cascade changes during edits.
-description:
-  LyteNyte Grid edits cells on a cell-by-cell basis. However, the edit data is applied to the entire
-  row. This behavior makes it possible to link two or more cells, so that updating one cell also updates
-  other cells in the same row.
+description: LyteNyte Grid handles edits on a cell-by-cell basis but applies changes to the
+  entire row. This allows you to link cells so that updating one
+  value automatically updates others within the same row.
 ---
 
 :::note
 
-This guide assumes you are already familiar with the cell editing capabilities of LyteNyte Grid. Before
-reading the rest of this guide, ensure you are familiar with the contents of the [Cell Editing guide](/docs/cell-editing)
-and the [Cell Edit Renderers guide](/docs/cell-editing-renderers).
+This guide builds on the concepts covered in the [Cell Editing](/docs/cell-editing) and
+[Cell Edit Renderers](/docs/cell-editing-renderers) documentation.
+We recommend reviewing those topics before proceeding.
 
 :::
 
-## Editing More Than One Cell
+## Editing Linked Cells
 
 A standard edit renderer calls the `changeValue` method on the [`EditParams`](/docs/reference/grid-types#editing) passed to the
 renderer. The `changeValue` method updates only the edit value for the cell currently being edited. To create
 a linked cell edit, use the `changeData` method instead, and provide new edit values for all cells that should
 update when the edited cell changes.
 
-In the demo below, the **Product** column is linked to the **Price** column. Any change to a cell in the
-**Product** column resets the value of the **Price** column to a predetermined price for the selected product.
+In the demo below, the **Product** column is linked to the **Price** column.
+Selecting a new product automatically updates the **Price** to
+that product's default value.
 
-Linked cell edits do not have to be bidirectional. Changing the value of a cell in the **Product** column
-resets the **Price** cell's value, but changes to the **Price** cell do not affect the selected product.
+Linked edits don't have to be bidirectional.
+Editing **Product** updates **Price**, but editing **Price** does
+not change the selected product.
 
-::demo[Linked Edits="./demos/cell-editing-popover-smart"]
+::demo[Updating Linked Cells="./demos/cell-editing-popover-smart"]
 
 :::tip
 
