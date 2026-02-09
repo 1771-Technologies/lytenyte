@@ -14,7 +14,6 @@ import {
 } from "./components.jsx";
 import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
 import { useRef, useState } from "react";
-import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 
 export interface GridSpec {
   readonly data: OrderData;
@@ -38,8 +37,6 @@ const columns: Grid.Column<GridSpec>[] = [
     cellRenderer: AvatarCell,
     width: 180,
     name: "Customer",
-    editable: true, //!
-    editRenderer: TextCellEditor, //!
   },
   { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 130, editable: true },
   { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
@@ -80,8 +77,7 @@ export default function Demo() {
             apiRef.current?.editUpdateRows(update);
           }}
         >
-          Increase Price (+10)
-          <ArrowUpIcon />
+          Inc. Price +$10.00
         </button>
         <button
           data-ln-button="tertiary"
@@ -98,8 +94,7 @@ export default function Demo() {
             apiRef.current?.editUpdateRows(update);
           }}
         >
-          Decrease Price (-10)
-          <ArrowDownIcon />
+          Dec. Price -$10.00
         </button>
       </div>
 
@@ -114,16 +109,6 @@ export default function Demo() {
         />
       </div>
     </>
-  );
-}
-
-function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
-  return (
-    <input
-      className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`} //!
-      onChange={(e) => changeValue(e.target.value)} //!
-    />
   );
 }
 
