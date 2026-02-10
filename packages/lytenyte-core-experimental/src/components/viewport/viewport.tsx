@@ -6,6 +6,7 @@ import {
   getNearestFocusable,
   getPositionFromFocusable,
   navigator,
+  queryCell,
   runWithBackoff,
 } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
@@ -130,12 +131,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
 
           const isEditing = edit.activeEdit;
-          if (e.key === "Tab" && isEditing) return;
 
           let skipOnEdit = false;
+          const pos = focusActive.get();
           if (isEditing) {
-            const pos = focusActive.get();
-
             const nearestFocusable = getNearestFocusable(id, document.activeElement as HTMLElement);
             const active = nearestFocusable ? getPositionFromFocusable(id, nearestFocusable) : null;
 
@@ -150,6 +149,46 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             }
           }
 
+          // We need to cycle on tab.
+          const cycle =
+            editMode === "row" &&
+            isEditing &&
+            pos?.kind === "cell" &&
+            api.rowByIndex(pos.rowIndex).get()?.id === isEditing.rowId;
+
+          if (e.key === "Tab" && isEditing && !cycle) return;
+
+          if (cycle && e.key === "Tab") {
+            if (pos.colIndex === view.visibleColumns.length - 1 && !e.shiftKey) {
+              api.scrollIntoView({ column: 0, behavior: "instant" });
+              runWithBackoff(() => {
+                const el = queryCell(id, pos.rowIndex, 0, vp);
+
+                if (!el) return false;
+
+                el.focus();
+                return true;
+              }, [8, 16, 32, 64, 128]);
+
+              e.preventDefault();
+              e.stopPropagation();
+            }
+            if (pos.colIndex === 0 && e.shiftKey) {
+              api.scrollIntoView({ column: view.visibleColumns.length - 1, behavior: "instant" });
+              runWithBackoff(() => {
+                const el = queryCell(id, pos.rowIndex, view.visibleColumns.length - 1, vp);
+
+                if (!el) return false;
+                el.focus();
+                return true;
+              }, [8, 16, 32, 64, 128]);
+
+              e.preventDefault();
+              e.stopPropagation();
+            }
+
+            return;
+          }
           if (!skipOnEdit) handleNavigation(e, false);
 
           if (!isEditing && editMode !== "readonly") {
@@ -200,6 +239,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
                       key: "ArrowDown",
                       ctrlKey: false,
                       metaKey: false,
+                      shiftKey: false,
                       preventDefault: noop,
                       stopPropagation: noop,
                     },
