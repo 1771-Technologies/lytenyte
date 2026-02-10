@@ -1,21 +1,19 @@
 ---
 title: Set Filtering
 step: Learn how to create custom set filters and filter rows.
-description: Create a filter that removes rows based on whether a cell's value is included
-  in or excluded from a set of values.
+description: Create a filter that includes or excludes rows based
+  on whether a cell value appears in a set.
 ---
 
 :::note
 
-How you apply a set filter in LyteNyte Grid depends on the row source you use.
-See the following guides for each supported row data source:
+Applying a set filter varies depending on the row source. Refer to the guides below for each supported row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Server Row Filtering](/docs/server-data-loading-row-filtering)
 - [Tree Filtering](/docs/tree-source-filtering)
 
-This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
-The concepts in this guide apply equally to all row sources.
+While this guide focuses on using client row filtering, these filter concepts apply to all row sources.
 
 :::
 
@@ -31,8 +29,8 @@ Implementing a set filter in LyteNyte Grid involves creating a filter function t
 set of values and accepts a [row node](/docs/row-overview). The filter function must return
 `true` to keep the row or `false` to remove it.
 
-The demo below demonstrates a basic set filter in action. Type a filter query to select
-the categories you want to view. The grid keeps only rows that match the selected categories.
+Type a filter query to select product Name values to display.
+The grid shows only rows that match the selected values.
 
 ::demo[Basic Set Filtering="./demos/set-filter"]
 
@@ -130,9 +128,8 @@ const filterFn = useMemo<Grid.T.FilterFn<GridSpec["data"]> | null>(() => {
 
 :::note
 
-The [Tree View component](/docs/component-tree-view) is a wrapped variant of LyteNyte Grid.
-Its row selection model follows the LyteNyte Grid row selection model. For more details,
-see the [Row Selection guide](/docs/row-selection).
+[Tree View](/docs/component-tree-view) wraps LyteNyte Grid, so it uses the same row selection model.
+For details, see the [Row Selection guide](/docs/row-selection).
 
 :::
 
