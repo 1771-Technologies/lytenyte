@@ -1,37 +1,31 @@
 ---
 title: Quick Search Filtering
 step: Quickly find rows based on simple text searches.
-description: A quick search filter uses a query string to filter rows by checking
-  the search term against all or selected values in a row.
+description: A quick search filter uses a query string to filter rows by matching the search term against all or selected values in a row.
 ---
 
 :::note
 
-How you apply a quick search filter in LyteNyte Grid depends on the row source you use.
-See the following guides for each supported row data source:
+Applying a quick search filter varies depending on the row source. Refer to the guides below for each supported row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Server Row Filtering](/docs/server-data-loading-row-filtering)
 - [Tree Filtering](/docs/tree-source-filtering)
 
-This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
-The concepts in this guide apply equally to all row sources.
+While this guide focuses on using client row filtering, these filter concepts apply to all row sources.
 
 :::
 
-## Searching
+## Implementing Quick Search
 
-The simplest way to implement a quick search is to provide the grid with a filter function that performs
-a string inclusion check.
+Implement quick search by passing a filter function to the grid that checks whether
+a cell value contains the search string. The demo below uses a case-insensitive
+inclusion match. For fuzzy search, integrate a library like [Fuse.js](https://www.fusejs.io/).
 
-The demo below demonstrates quick search in action. The demo uses a simple case-insensitive inclusion match.
-You can implement more advanced fuzzy searching by using external libraries such as
-[Fuse.js](https://www.fusejs.io/).
+::demo[Quick Search Filter="./demos/quick-search"]
 
-::demo[Quick Search="./demos/quick-search"]
-
-To implement quick search, the demo defines a query value and uses that value to create a filter function.
-The filter function is then passed to the data source.
+The demo tracks a query value in state, generates a corresponding filter
+function, and passes it to the data source.
 
 ```ts
 const [query, setQuery] = useState("");
