@@ -30,7 +30,7 @@ const columns: Grid.Column<GridSpec>[] = [
 ];
 //#end
 
-const filterPrice: Grid.T.FilterFn<GridSpec["data"]> = (row) => row.data.price > 50; //!
+const filterPrice: Grid.T.FilterFn<GridSpec["data"]> = (row) => row.data.price > 300; //!
 
 export default function Demo() {
   const [filterValues, setFilterValues] = useState(true); //!
@@ -43,7 +43,7 @@ export default function Demo() {
     <>
       <div className="border-ln-border flex w-full border-b px-2 py-2">
         <SwitchToggle
-          label="Price Greater Than 50"
+          label="Price Greater Than $300"
           checked={filterValues}
           onChange={() => {
             setFilterValues((prev) => !prev);

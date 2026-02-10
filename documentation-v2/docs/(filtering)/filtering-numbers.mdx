@@ -1,21 +1,18 @@
 ---
 title: Filtering Numbers
 step: Filter row data based on numerical cell values.
-description: Create custom number filters in LyteNyte Grid to filter rows. This guide
-  covers common filters that apply to numeric values in cells.
+description: Create custom number filters in LyteNyte Grid. This guide covers common filters for numeric cell values.
 ---
 
 :::note
 
-How you apply a number filter in LyteNyte Grid depends on the row source you use.
-See the following guides for each supported row data source:
+Applying a number filter varies depending on the row source. Refer to the guides below for each supported row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Server Row Filtering](/docs/server-data-loading-row-filtering)
 - [Tree Filtering](/docs/tree-source-filtering)
 
-This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
-The concepts in this guide apply equally to all row sources.
+While this guide focuses on using client row filtering, these filter concepts apply to all row sources.
 
 :::
 
@@ -37,22 +34,20 @@ const filterPrice: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
 };
 ```
 
-The demo below demonstrates this filter. Click the **Price Greater Than 50** switch to toggle
-the filter state.
+Click the **Price Greater Than $300** switch to toggle the filter state.
 
-::demo[Filter Price="./demos/number-filtering"]
+::demo[Number Filtering="./demos/number-filtering"]
 
-## Filter Model
+## Number Filter Model
 
-LyteNyte Grid lets you define your own filter model and operations, which you can use to
-create dynamic number filters.
+Define number filters dynamically rather than relying on predefined logic.
+LyteNyte Grid lets you define a filter model and a set of operations to build custom filters.
+This section presents one approach. Design the filter model that best fits your
+application's requirements.
 
-This section shows one approach to defining a filter model. The model in this section is
-specific to number filtering, but you can extend it to support other filter types. You are
-encouraged to define a filter representation that suits your application's requirements.
-
-To create a dynamic filter, start by defining the type representation of your number filter.
-The following code defines the filter model used in this section:
+Begin by defining the type representation for your number filter.
+The code below defines a basic filter model you can use to create a
+filter function for the client row data source:
 
 ```ts
 export type FilterNumberOperator =
@@ -82,16 +77,13 @@ export interface GridSpec {
 }
 ```
 
-Using this filter model, you can create a filter function for the client row data source.
+Open the filter popover by clicking the funnel icon on the **Price** column.
 
-The demo below shows this approach in action. Click the funnel icon on the **Price** column
-to open the filter popover.
+::demo[Number Filter User Interface="./demos/number-filter-ui"]
 
-::demo[Filter UI="./demos/number-filter-ui"]
-
-Pay close attention to the code that defines the filter model below. This code creates the
-filter model state and passes it to the grid's API as an extension. The demo includes a
-filter UI that allows users to apply filters.
+The code below defines the filter model. It creates filter model state and
+passes it to the grid API as an extension. The demo also includes a
+filter UI for applying filters interactively.
 
 When a user applies a filter, `useMemo` creates a new `filterFn`, which you then pass to the
 client data source. See the `filter.tsx` file in the demo's expanded code for the logic that
