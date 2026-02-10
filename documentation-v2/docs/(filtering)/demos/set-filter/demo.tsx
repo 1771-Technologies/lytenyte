@@ -66,10 +66,8 @@ export default function FilteringDemo() {
           trigger={
             <SmartSelect.MultiComboTrigger
               data-ln-input
-              className="flex h-10 w-full items-center gap-2"
-              renderInput={
-                <input type="text" autoComplete="off" className="h-full w-full focus:outline-none" />
-              }
+              className="flex h-fit w-full flex-wrap items-center gap-2 py-2"
+              renderInput={<input type="text" autoComplete="off" className="h-full focus:outline-none" />}
             >
               {values.map((x) => {
                 return (

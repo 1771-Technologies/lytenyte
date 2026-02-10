@@ -1,21 +1,18 @@
 ---
 title: Filtering Dates
 step: Learn how to create custom date filters.
-description: Create custom date filters in LyteNyte Grid to filter rows. This guide
-  covers common filters that apply to date values in cells.
+description: Create custom date filters in LyteNyte Grid. This guide covers common filters for date cell values.
 ---
 
 :::note
 
-How you apply a date filter in LyteNyte Grid depends on the row source you use.
-See the following guides for each supported row data source:
+Applying a date filter varies depending on the row source. Refer to the guides below for each supported row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Server Row Filtering](/docs/server-data-loading-row-filtering)
 - [Tree Filtering](/docs/tree-source-filtering)
 
-This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
-The concepts in this guide apply equally to all row sources.
+While this guide focuses on using client row filtering, these filter concepts apply to all row sources.
 
 :::
 
@@ -52,22 +49,20 @@ const filter2025: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
 };
 ```
 
-The demo below demonstrates this filter. Click the **Sales in 2025** switch to toggle
-the filter state.
+Click the **Sales in 2025** switch to toggle the filter state.
 
 ::demo[Date Filter="./demos/date-filter"]
 
-## Filter Model
+## Date Filter Model
 
-LyteNyte Grid lets you define your own filter model and filter operations, which you can use to create
-dynamic date filters.
+Define date filters dynamically rather than relying on predefined logic. LyteNyte Grid
+lets you define a filter model and a set of operations to build custom filters.
+This section presents one approach. Design the filter model that best fits
+your application's requirements.
 
-This section demonstrates one approach to defining a date filter model. The model shown here is specific
-to date filtering, but you can extend it to support other filter types. You are encouraged to define
-a filter representation that fits your application's requirements.
-
-To create a dynamic filter, start by defining the type representation of a date filter. The following
-code defines the model used in this section:
+Begin by defining the type representation for your date filter. The code
+below defines a basic filter model you can use to create a filter function
+for the client row data source:
 
 ```ts
 export type FilterDateOperator = "equals" | "before" | "after" | "quarter" | "month";
@@ -91,16 +86,13 @@ export interface GridSpec {
 }
 ```
 
-Using this filter model, you can create a filter function for the client row data source.
+Open the filter popover by clicking the funnel icon on the **Sale Date** column.
 
-The demo below shows this approach in action. Click the funnel icon on the **Sale Date** column to
-open the filter popover.
+::demo[Date Filter User Interface="./demos/date-filter-ui"]
 
-::demo[Filter Model="./demos/date-filter-ui"]
-
-Pay close attention to the code below that defines the filter model. This code creates
-the filter model state and passes it to the grid API as an extension. The demo includes a
-filter UI that allows users to apply filters.
+The code below defines the filter model. It creates filter model state
+and passes it to the grid API as an extension. The demo also includes a
+filter UI for applying filters interactively.
 
 When a user applies a filter, `useMemo` creates a new `filterFn`, which you then pass to the
 client data source. See the `filter.tsx` file in the demo's expanded code for the logic that

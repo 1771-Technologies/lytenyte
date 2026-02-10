@@ -1,21 +1,19 @@
 ---
 title: Filtering Text
-step: Learn how to create and apply text filters to your client row data.
-description: Create custom text filters in LyteNyte Grid to filter rows. This
-  guide covers common filters that apply to string values in cells.
+step: Create and apply text filters to client-side data.
+description: Create custom text filters in LyteNyte Grid.
+  This guide covers common filters for string cell values.
 ---
 
 :::note
 
-How you apply a text filter in LyteNyte Grid depends on the row source you use.
-See the following guides for each supported row data source:
+Applying a text filter varies depending on the row source. Refer to the guides below for each supported row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Server Row Filtering](/docs/server-data-loading-row-filtering)
 - [Tree Filtering](/docs/tree-source-filtering)
 
-This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
-The concepts in this guide apply equally to all row sources.
+While this guide focuses on using client row filtering, these filter concepts apply to all row sources.
 
 :::
 
@@ -36,16 +34,14 @@ const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
 };
 ```
 
-The demo below demonstrates this filter. Click the **Show Xbox Only** switch to toggle
-the filter state.
+Click the **Show Xbox Only** switch to toggle the filter state.
 
 ::demo[Text Filtering="./demos/text-filtering"]
 
 ### Filter Modifiers
 
-Because text filtering is implemented as a function, you can apply modifiers in any
-way that fits your requirements. For example, you can perform a case-insensitive filter
-by converting both values to lower case:
+Apply modifiers within the text filter function to control matching behavior.
+For example, convert values to lowercase to enable case-insensitive filtering:
 
 ```ts
 const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
@@ -53,8 +49,8 @@ const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
 };
 ```
 
-In more advanced cases, you can ignore punctuation, trim whitespace, and treat accented
-characters—such as "á"—as normal letters:
+Expand filter logic to ignore punctuation, trim whitespace, and normalize
+accented characters, such as mapping "á" to "a":
 
 ```ts
 const collator = new Intl.Collator(locale, { sensitivity: "case" });
@@ -65,17 +61,16 @@ const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
 };
 ```
 
-## Filter Model
+## Text Filter Model
 
-Text filtering becomes more powerful when users can define filters dynamically instead
-of relying on predefined logic. LyteNyte Grid lets you define a filter model and a set of
-operations that you can use to build dynamic filters.
+Define text filters dynamically rather than relying on predefined logic.
+LyteNyte Grid lets you define a filter model and a set of operations to build custom
+filters. This section presents one approach. Design the filter model
+that best fits your application's requirements.
 
-This section demonstrates one possible approach. You are encouraged to design a filter
-model that best fits your application's requirements.
-
-To create a dynamic filter, start by defining a type representation for your text filter.
-The following code defines a basic filter model:
+Begin by defining the type representation for your text filter.
+The code below defines a basic filter model you can use to create
+a filter function for the client row data source:
 
 ```ts
 export type FilterStringOperator =
@@ -107,16 +102,13 @@ export interface GridSpec {
 }
 ```
 
-Using this filter model, you can create a filter function for the client row data source.
+Open the filter popover by clicking the funnel icon on the **Product**, **Customer**, or **Email** columns.
 
-The demo below shows this approach in action. Click the funnel icon on the **Product**,
-**Customer**, or **Email** columns to open the filter popover.
+::demo[Text Filter User Interface="./demos/text-filter-ui"]
 
-::demo[Filter UI="./demos/text-filter-ui"]
-
-Pay close attention to the code that defines the filter model below. This code creates
-the filter model state and passes it to the grid's API as an extension. The demo also
-includes a filter UI that allows users to apply filters interactively.
+The code below defines the filter model. It creates filter model state and passes
+it to the grid API as an extension. The demo also includes a filter UI
+for applying filters interactively.
 
 When a user applies a filter, `useMemo` creates a new `filterFn`, which you then pass to
 the client data source. See the `filter.tsx` file in the demo's expanded code for the logic
