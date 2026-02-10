@@ -50,8 +50,6 @@ const columns: Grid.Column<GridSpec>[] = [
     cellRenderer: AvatarCell,
     width: 180,
     name: "Customer",
-    editable: true,
-    editRenderer: TextCellEditor,
   },
   { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 130 },
   { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
@@ -100,10 +98,10 @@ function ProductSelect({ changeData, editValue, editData, commit }: Grid.T.EditP
       options={options}
       open={open}
       onOpenChange={setOpen}
-      onOpenChangeComplete={(x) => {
-        if (!x) commit();
+      onOpenChangeComplete={(b) => {
+        if (!b) commit();
       }}
-      openKeys={[" "]}
+      openKeys={[" ", "ArrowDown"]}
       container={<SmartSelect.Container className="max-h-50 overflow-auto" />}
       trigger={
         <SmartSelect.BasicTrigger
@@ -131,6 +129,7 @@ function ProductSelect({ changeData, editValue, editData, commit }: Grid.T.EditP
             productThumbnail: p.productThumbnail,
             productDescription: p.productDescription,
           });
+          setOpen(false);
         }
       }}
     >

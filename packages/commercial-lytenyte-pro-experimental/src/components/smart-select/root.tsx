@@ -24,6 +24,7 @@ import type {
 } from "./type.js";
 import { useAsyncOptions, type ComboOptionState } from "./use-async-options.js";
 import { getNearestMatching } from "@1771technologies/lytenyte-shared";
+import { createPortal } from "react-dom";
 
 export type SmartSelectRootProps<T extends BaseOption> = {
   readonly open?: boolean;
@@ -167,6 +168,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       onOptionSelect,
       onOptionsChange,
       kindAndValue: { kind: p.kind, value: p.value } as any,
+      options,
 
       inputRef,
       trigger: triggerEl,
@@ -199,6 +201,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     onOptionsChange,
     onQueryChange,
     open,
+    options,
     p.closeKeys,
     p.closeOnSelect,
     p.kind,
@@ -233,7 +236,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
         lightDismiss={lightDismiss}
       >
         {trigger}
-        {container}
+        {triggerEl && createPortal(container, triggerEl)}
       </Popover>
     </SmartSelectProvider>
   );

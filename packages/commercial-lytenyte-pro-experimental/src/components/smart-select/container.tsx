@@ -11,7 +11,16 @@ function SmartSelectContainerBase(
 
   const combined = useCombinedRefs(ref, setContainer);
 
-  return <Popover.Container {...props} ref={combined} data-ln-smart-select-container />;
+  return (
+    <Popover.Container
+      {...props}
+      onClick={(e) => {
+        e.preventDefault();
+      }}
+      ref={combined}
+      data-ln-smart-select-container
+    />
+  );
 }
 
 export const SmartSelectContainer = forwardRef(SmartSelectContainerBase);

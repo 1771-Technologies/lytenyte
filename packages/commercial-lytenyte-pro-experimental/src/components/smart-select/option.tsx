@@ -23,6 +23,7 @@ function OptionBase<T extends BaseOption>(
         "data-ln-active": active,
         "data-ln-smart-option": option.id,
         "data-ln-selectable": option.selectable ?? true,
+        "data-ln-close-on-select": closeOnSelectFinal,
       },
       {
         onMouseDown: () => {
