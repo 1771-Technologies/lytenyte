@@ -290,6 +290,7 @@
       padding-inline: var(--ln-space-20);
 
       border-radius: var(--ln-radius-md);
+      height: 32px;
 
       &[data-ln-active="true"] {
         background-color: var(--ln-gray-05);

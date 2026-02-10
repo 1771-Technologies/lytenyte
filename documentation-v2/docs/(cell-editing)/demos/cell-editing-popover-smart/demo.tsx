@@ -149,16 +149,6 @@ function ProductSelect({ changeData, editValue, editData, commit }: Grid.T.EditP
   );
 }
 
-function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
-  return (
-    <input
-      className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`} //!
-      onChange={(e) => changeValue(e.target.value)} //!
-    />
-  );
-}
-
 function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
   return (
     <input
