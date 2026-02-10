@@ -1,4 +1,4 @@
-const TEXT_INPUT_TYPES = new Set(["text", "search", "email", "url", "tel", "password", "number"]);
+const TEXT_INPUT_TYPES = new Set(["text", "search", "email", "url", "tel", "password", "number", "date"]);
 
 export function isTextInputFocused() {
   const el = document.activeElement as HTMLInputElement;

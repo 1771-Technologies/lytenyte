@@ -84,6 +84,7 @@ const CellImpl = memo(
     const selected = row.__selected;
     const indeterminate = row.__indeterminate;
 
+    const handleFocus = willDisplayEdit && !!EditRenderer;
     return (
       <>
         {cell.colFirstEndPin && (
@@ -98,6 +99,20 @@ const CellImpl = memo(
           role="gridcell"
           aria-colindex={cell.colIndex + 1}
           tabIndex={isEditingThis ? -1 : 0}
+          onFocus={
+            handleFocus
+              ? (e) => {
+                  (props.onFocus ?? handlers.onFocus)?.(e);
+                  if (e.isPropagationStopped()) return;
+
+                  rowMeta.setActiveEdit((prev) => {
+                    if (!prev) return prev;
+
+                    return { ...prev, column: column.id };
+                  });
+                }
+              : undefined
+          }
           style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
           // Data Properties
           data-ln-type={column.type ?? base.type ?? "string"}

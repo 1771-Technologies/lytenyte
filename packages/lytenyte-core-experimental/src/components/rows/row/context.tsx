@@ -1,5 +1,5 @@
 import type { LayoutRowWithCells, RowNode } from "@1771technologies/lytenyte-shared";
-import { createContext, useContext } from "react";
+import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
 import type { EditContext } from "../../../root/root-context";
 
 export interface RowMeta {
@@ -19,6 +19,11 @@ export interface RowMeta {
   readonly editData: any;
   readonly editValidation: null | boolean | Record<string, unknown>;
   readonly editColumn: string | null | undefined;
+  readonly setActiveEdit: Dispatch<
+    SetStateAction<null | { readonly rowId: string; readonly column: string }>
+  >;
+
+  // edit.setActiveEdit
 
   readonly detailHeight: number;
   readonly detailExpanded: boolean;

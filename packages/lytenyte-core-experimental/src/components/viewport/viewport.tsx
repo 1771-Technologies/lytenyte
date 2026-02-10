@@ -2,7 +2,12 @@ import { forwardRef, memo, useMemo, useState, type CSSProperties, type JSX } fro
 import { useEdit, useRoot } from "../../root/root-context.js";
 import { useCombinedRefs } from "../../hooks/use-combine-refs.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
-import { getNearestFocusable, navigator, runWithBackoff } from "@1771technologies/lytenyte-shared";
+import {
+  getNearestFocusable,
+  getPositionFromFocusable,
+  navigator,
+  runWithBackoff,
+} from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
@@ -127,7 +132,25 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           const isEditing = edit.activeEdit;
           if (e.key === "Tab" && isEditing) return;
 
-          handleNavigation(e, false);
+          let skipOnEdit = false;
+          if (isEditing) {
+            const pos = focusActive.get();
+
+            const nearestFocusable = getNearestFocusable(id, document.activeElement as HTMLElement);
+            const active = nearestFocusable ? getPositionFromFocusable(id, nearestFocusable) : null;
+
+            if (
+              pos?.kind === active?.kind &&
+              active?.kind === "cell" &&
+              pos?.kind === "cell" &&
+              pos.rowIndex === active.rowIndex &&
+              view.visibleColumns[pos.colIndex].id === isEditing.column
+            ) {
+              skipOnEdit = true;
+            }
+          }
+
+          if (!skipOnEdit) handleNavigation(e, false);
 
           if (!isEditing && editMode !== "readonly") {
             if (e.key === "Enter") {

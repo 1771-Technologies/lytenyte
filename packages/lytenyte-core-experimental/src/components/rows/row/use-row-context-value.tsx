@@ -48,6 +48,7 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
       commit: edit.commit,
       changeData: edit.changeData,
       changeValue: edit.changeValue,
+      setActiveEdit: edit.setActiveEdit,
     };
     // This is exhaustive but with extras for the row.
     // eslint-disable-next-line react-hooks/exhaustive-deps

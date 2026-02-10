@@ -34,7 +34,7 @@ export function useEditBegin(
     edit.commit();
 
     const base = props.columnBase as Root.Column;
-    const editable = column.editable ?? base.editable;
+    const editable = column.editable ?? base?.editable ?? false;
     if (typeof editable === "function" ? !editable({ api, row, column }) : !editable) {
       if (focusIfNotEditable) {
         api.scrollIntoView({ column, row: rowIndex, behavior: "instant" });
