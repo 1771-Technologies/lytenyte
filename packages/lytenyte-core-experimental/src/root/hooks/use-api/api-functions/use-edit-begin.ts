@@ -34,7 +34,7 @@ export function useEditBegin(
     edit.commit();
 
     const base = props.columnBase as Root.Column;
-    const editable = column.editable ?? base.editable;
+    const editable = column.editable ?? base?.editable ?? false;
     if (typeof editable === "function" ? !editable({ api, row, column }) : !editable) {
       if (focusIfNotEditable) {
         api.scrollIntoView({ column, row: rowIndex, behavior: "instant" });
@@ -60,8 +60,8 @@ export function useEditBegin(
 
     if (stop) return;
 
-    edit.activeEdit.set({ rowId: row.id, column: column.id });
-    edit.editData.set(editData);
+    edit.setActiveEdit({ rowId: row.id, column: column.id });
+    edit.setEditData(editData);
 
     api.scrollIntoView({ column, row: rowIndex, behavior: "instant" });
     runWithBackoff(() => {

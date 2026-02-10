@@ -2,7 +2,13 @@ import { forwardRef, memo, useMemo, useState, type CSSProperties, type JSX } fro
 import { useEdit, useRoot } from "../../root/root-context.js";
 import { useCombinedRefs } from "../../hooks/use-combine-refs.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
-import { getNearestFocusable, navigator, runWithBackoff } from "@1771technologies/lytenyte-shared";
+import {
+  getNearestFocusable,
+  getPositionFromFocusable,
+  navigator,
+  queryCell,
+  runWithBackoff,
+} from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
@@ -103,7 +109,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           h?.(ev);
           if (ev.defaultPrevented) return;
 
-          beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, "single");
+          beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, "single-click");
 
           if (selectActivator === "single-click") api.rowHandleSelect(ev);
         }}
@@ -124,10 +130,66 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
           if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
 
-          const isEditing = edit.activeEdit.get();
-          if (e.key === "Tab" && isEditing) return;
+          const isEditing = edit.activeEdit;
 
-          handleNavigation(e, false);
+          let skipOnEdit = false;
+          const pos = focusActive.get();
+          if (isEditing) {
+            const nearestFocusable = getNearestFocusable(id, document.activeElement as HTMLElement);
+            const active = nearestFocusable ? getPositionFromFocusable(id, nearestFocusable) : null;
+
+            if (
+              pos?.kind === active?.kind &&
+              active?.kind === "cell" &&
+              pos?.kind === "cell" &&
+              pos.rowIndex === active.rowIndex &&
+              view.visibleColumns[pos.colIndex].id === isEditing.column
+            ) {
+              skipOnEdit = true;
+            }
+          }
+
+          // We need to cycle on tab.
+          const cycle =
+            editMode === "row" &&
+            isEditing &&
+            pos?.kind === "cell" &&
+            api.rowByIndex(pos.rowIndex).get()?.id === isEditing.rowId;
+
+          if (e.key === "Tab" && isEditing && !cycle) return;
+
+          if (cycle && e.key === "Tab") {
+            if (pos.colIndex === view.visibleColumns.length - 1 && !e.shiftKey) {
+              api.scrollIntoView({ column: 0, behavior: "instant" });
+              runWithBackoff(() => {
+                const el = queryCell(id, pos.rowIndex, 0, vp);
+
+                if (!el) return false;
+
+                el.focus();
+                return true;
+              }, [8, 16, 32, 64, 128]);
+
+              e.preventDefault();
+              e.stopPropagation();
+            }
+            if (pos.colIndex === 0 && e.shiftKey) {
+              api.scrollIntoView({ column: view.visibleColumns.length - 1, behavior: "instant" });
+              runWithBackoff(() => {
+                const el = queryCell(id, pos.rowIndex, view.visibleColumns.length - 1, vp);
+
+                if (!el) return false;
+                el.focus();
+                return true;
+              }, [8, 16, 32, 64, 128]);
+
+              e.preventDefault();
+              e.stopPropagation();
+            }
+
+            return;
+          }
+          if (!skipOnEdit) handleNavigation(e, false);
 
           if (!isEditing && editMode !== "readonly") {
             if (e.key === "Enter") {
@@ -156,7 +218,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
               const focusable = active ? getNearestFocusable(id, active) : null;
 
               if (focusable) {
-                const validation = edit.editValidation.get();
+                const validation = edit.editValidation;
                 if (validation !== true) return;
 
                 const rowIndex = Number.parseInt(focusable.getAttribute("data-ln-rowindex")!);
@@ -177,6 +239,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
                       key: "ArrowDown",
                       ctrlKey: false,
                       metaKey: false,
+                      shiftKey: false,
                       preventDefault: noop,
                       stopPropagation: noop,
                     },

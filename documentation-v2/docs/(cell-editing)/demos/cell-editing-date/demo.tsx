@@ -29,7 +29,7 @@ const columns: Grid.Column<GridSpec>[] = [
     id: "purchaseDate",
     cellRenderer: PurchaseDateCell,
     name: "Purchase Date",
-    width: 130,
+    width: 150,
     editable: true,
     editRenderer: DateCellEditor,
     //!next 6

@@ -90,6 +90,7 @@ export function CellEditor<T>({ cell }: CellEditorParams<T>) {
               metaKey: false,
               preventDefault: () => {},
               stopPropagation: () => {},
+              shiftKey: false,
             },
             true,
           );

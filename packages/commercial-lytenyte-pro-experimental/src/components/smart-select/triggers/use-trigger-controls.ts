@@ -16,6 +16,8 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
     kindAndValue: { value },
     openKeys,
     closeKeys,
+    options,
+    onOptionSelect,
   } = useSmartSelect();
 
   return useMemo(() => {
@@ -50,8 +52,16 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
           const active = container?.querySelector('[data-ln-active="true"]') as HTMLElement;
           if (!active) return;
 
-          active.click();
+          const id = active.getAttribute("data-ln-smart-option");
 
+          const option = options.find((x) => x.id === id);
+          if (!option) return;
+
+          onOptionSelect(option);
+
+          if (active.getAttribute("data-ln-close-on-select")) {
+            onOpenChange(false);
+          }
           return;
         }
 
@@ -138,10 +148,12 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
     container,
     isMulti,
     onOpenChange,
+    onOptionSelect,
     onOptionsChange,
     open,
     openKeys,
     openOnClick,
+    options,
     rtl,
     setActiveChip,
     setActiveId,

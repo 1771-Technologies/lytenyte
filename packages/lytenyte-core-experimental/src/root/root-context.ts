@@ -21,7 +21,7 @@ import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 import type { GridEvents } from "../types/events";
-import type { GridSpec, Props } from "../types";
+import type { Column, GridSpec, Props } from "../types";
 
 export interface RootContextValue {
   readonly id: string;
@@ -78,7 +78,7 @@ export interface RootContextValue {
   readonly headerHeight: number;
 
   readonly editMode: "cell" | "row" | "readonly";
-  readonly editClickActivator: "single" | "double-click" | "none";
+  readonly editClickActivator: "single-click" | "double-click" | "none";
   readonly editValidator: null | ((x: any) => any);
 
   readonly dropAccept: string[];
@@ -114,12 +114,15 @@ export const BoundsContextProvider = boundsContext.Provider;
 export const useBounds = () => useContext(boundsContext);
 
 export interface EditContext {
-  readonly activeEdit: PieceWritable<null | { readonly rowId: string; readonly column: string }>;
-  readonly activeRow: Piece<string | null>;
-  readonly editData: PieceWritable<any>;
-  readonly editValidation: Piece<boolean | Record<string, unknown>>;
+  readonly activeEdit: null | { readonly rowId: string; readonly column: string };
+  readonly setActiveEdit: Dispatch<
+    SetStateAction<null | { readonly rowId: string; readonly column: string }>
+  >;
+  readonly editData: any;
+  readonly setEditData: Dispatch<SetStateAction<any>>;
+  readonly editValidation: boolean | Record<string, unknown>;
 
-  readonly changeValue: (value: any) => boolean | Record<string, unknown>;
+  readonly changeValue: (value: any, column: Column) => boolean | Record<string, unknown>;
   readonly changeWithInit: (value: any, row: RowNode<any>, column: ColumnAbstract) => any;
   readonly changeData: (data: any) => boolean | Record<string, unknown>;
 

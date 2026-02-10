@@ -7,8 +7,8 @@ export function beginEditing(
   edit: EditContext,
   focusPos: PositionUnion | null,
   editMode: "cell" | "row" | "readonly",
-  editActivator: "single" | "double-click" | "none",
-  activator?: "single" | "double-click",
+  editActivator: "single-click" | "double-click" | "none",
+  activator?: "single-click" | "double-click",
   initValue?: any,
   printable?: boolean,
 ) {

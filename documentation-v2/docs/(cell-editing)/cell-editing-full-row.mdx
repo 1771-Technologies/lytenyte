@@ -1,8 +1,8 @@
 ---
 title: Full Row Cell Editing
-step: Change the data in cells on a row-by-row basis.
-description: LyteNyte Grid can edit all or some of the cells in a given row at the same time.
-  When cells are edited as a row, LyteNyte Grid applies and commits the changes as a single row edit.
+step: Simultaneously edit cells across an entire row.
+description: Edit some or all cells in a row at once. When cells are edited
+  as a row, the grid applies and commits these changes as a single row edit.
 ---
 
 ## Full Row Edits
@@ -11,14 +11,14 @@ Set the `editMode` property to `"row"` to enable row-based cell editing. When ro
 LyteNyte Grid updates cells on a per-row basis. When a row edit begins, the grid renders all editable
 cells in the row.
 
-The demo below demonstrates row edit mode. The **Price**, **Customer**, and **Email** columns are editable.
-By double-clicking a cell in one of these columns, editing begins and the cells render their edit components.
+The demo below shows row edit mode. The **Price**, **Customer**, and **Email** columns are editable.
+Double-clicking a cell initiates row editing and renders edit components for all editable cells in that row.
 
 ::demo[Row Edit Mode="./demos/cell-editing-row"]
 
-While a row edit is active, pressing the Tab key cycles through the editable cells in the row. LyteNyte
-Grid enables this behavior to support tab-based navigation within the row. Without row edit mode active,
-pressing Tab ends the edit when the edit renderer loses focus.
+When a row edit is active, pressing the Tab key cycles through the row's
+editable cells. If row edit mode is not active, pressing Tab ends the edit when
+the edit renderer loses focus.
 
 ### Row Edit vs Cell Edit
 

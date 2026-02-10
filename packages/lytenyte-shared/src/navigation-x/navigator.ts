@@ -57,6 +57,7 @@ export function navigator({
       key: string;
       ctrlKey: boolean;
       metaKey: boolean;
+      shiftKey: boolean;
       preventDefault: () => void;
       stopPropagation: () => void;
     },
@@ -64,6 +65,10 @@ export function navigator({
   ) => {
     const key = ev.key;
     const shouldHandle = () => true; // Temp placeholder for eventual handle hook
+    const done = () => {
+      ev.preventDefault();
+      ev.stopPropagation();
+    };
 
     // If the user is pressing tab, then we should skip the remaining cells and move to the next
     // element. This is slightly different than what may be expected, but makes the most sense.
@@ -76,11 +81,6 @@ export function navigator({
     }
 
     const modified = ev.ctrlKey || ev.metaKey;
-
-    const done = () => {
-      ev.preventDefault();
-      ev.stopPropagation();
-    };
 
     // First is determining if the key should be handled.
     // Handling the key will prevent any further navigation.

@@ -1,16 +1,14 @@
 ---
 title: Bulk Cell Editing
-step: Perform bulk row updates programmatically using the Grid API.
-description: LyteNyte Grid can edit cells in bulk through the grid's API. Provide
-  updated data for specific rows, and LyteNyte Grid will update the rows in the grid
-  as though the cells were edited.
+step: Programmatically update large datasets via the API.
+description: Use the LyteNyte Grid API to perform bulk cell updates. Provide updated data
+  for targeted rows, and the grid will update the corresponding
+  cells as if they were edited directly.
 ---
 
 :::note
 
-Bulk updates are an advanced cell editing feature. Ensure you are familiar with the
-cell editing functionality available in LyteNyte Grid. Read the [Cell Editing guide](/docs/cell-editing)
-for more details.
+Bulk updates require familiarity with cell editing. See the [Cell Editing guide](/docs/cell-editing) for more details.
 
 :::
 
@@ -31,9 +29,7 @@ bulk.
 
 ::demo[Bulk Cell Editing="./demos/cell-editing-bulk"]
 
-The two buttons, **Increase Price** and **Decrease Price**, both leverage the grid's API
-to create a bulk update that increases or decreases the price of every row by 10, respectively.
-The code is shown below for increasing the price. Notice that the code creates a new update map,
+The code for increasing the price is shown below. Notice that the code creates a new update map,
 then calls `editUpdateRows` to update the rows through LyteNyte Grid's edit functionality.
 
 ```tsx
@@ -74,6 +70,12 @@ updates into row updates and then calls `editUpdateRows`.
 The demo below demonstrates `editUpdateCells` by implementing standard clipboard
 functionality, including copy, cut, and paste. See the
 [Clipboard guide](/docs/export-clipboard) for more details.
+
+Select a range of cells and press **Control-C** to copy them,
+or **Control-X** to cut them. Press **Control-V** to paste the cells into the grid.
+The demo grid does not validate pasted cell values. See the
+[Cell Editing Validation guide](/docs/cell-editing-validation) for details on how
+to validate cell edits.
 
 ::demo[Edit Cells In Bulk="../(export)/demos/clipboard"]
 

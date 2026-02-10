@@ -21,7 +21,7 @@ export interface GridSpec {
 }
 
 const columns: Grid.Column<GridSpec>[] = [
-  { name: "Name", id: "name", cellRenderer: NameCell, width: 110 },
+  { name: "Name", id: "name", cellRenderer: NameCell, width: 130 },
   { name: "Country", id: "country", width: 150, cellRenderer: CountryCell },
   { name: "Loan Amount", id: "loanAmount", width: 120, type: "number", cellRenderer: NumberCell },
   { name: "Balance", id: "balance", type: "number", cellRenderer: NumberCell },

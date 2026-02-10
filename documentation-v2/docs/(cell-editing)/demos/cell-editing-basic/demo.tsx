@@ -61,9 +61,11 @@ export default function Demo() {
   });
 
   return (
-    <div className="ln-grid" style={{ height: 500 }}>
-      <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows} editMode="cell" />
-    </div>
+    <>
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows} editMode="cell" />
+      </div>
+    </>
   );
 }
 
@@ -83,7 +85,7 @@ function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
       className="focus:outline-ln-primary-50 h-full w-full px-2"
       value={`${editValue}`} //!
       type="number"
-      onChange={(e) => changeValue(Number.parseFloat(e.target.value))} //!
+      onChange={(e) => changeValue(Number.parseFloat(e.target.value || "0"))} //!
     />
   );
 }

@@ -92,7 +92,7 @@ export default function BasicServerData() {
       <Grid
         rowSource={ds}
         editMode="cell"
-        editClickActivator="single"
+        editClickActivator="single-click"
         columns={columns}
         styles={useMemo(() => {
           return { viewport: { style: { scrollbarGutter: "stable" } } };

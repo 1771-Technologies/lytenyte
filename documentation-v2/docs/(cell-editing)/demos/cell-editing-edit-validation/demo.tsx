@@ -21,6 +21,7 @@ import {
 import { useCallback, useState } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { NumberInput } from "@ark-ui/react/number-input";
 
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
@@ -48,8 +49,6 @@ const columns: Grid.Column<GridSpec>[] = [
     cellRenderer: AvatarCell,
     width: 180,
     name: "Customer",
-    editable: true, //!
-    editRenderer: TextCellEditor, //!
   },
   { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 130, editable: true },
   { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
@@ -95,17 +94,8 @@ export default function Demo() {
   );
 }
 
-function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
-  return (
-    <input
-      className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`} //!
-      onChange={(e) => changeValue(e.target.value)} //!
-    />
-  );
-}
-
-function NumberEditor({ changeValue, editValue, editValidation, column }: Grid.T.EditParams<GridSpec>) {
+function NumberEditor(props: Grid.T.EditParams<GridSpec>) {
+  const { changeValue, editValue, editValidation, column } = props;
   const valid = typeof editValidation === "boolean" ? editValidation : !editValidation[column.id];
   const errorMessage =
     typeof editValidation === "boolean"
@@ -131,38 +121,26 @@ function NumberEditor({ changeValue, editValue, editValidation, column }: Grid.T
         </Popover.Container>
       </Popover>
 
-      <input
+      <NumberInput.Root
         className={tw(
-          "focus:outline-ln-primary-50 h-full w-full px-2",
-          !valid && "bg-ln-red-30 focus:outline-ln-red-50",
+          "focus-within:outline-ln-primary-50 flex h-full w-full items-center rounded px-2 focus-within:outline focus-within:-outline-offset-1",
+          !valid && "bg-ln-red-30 focus-within:outline-ln-red-50",
         )}
-        value={`${editValue}`} //!
-        ref={setAnchor}
-        onChange={(e) => {
-          const value = getNumberValue(e.target.value); //!
-          changeValue(value || 0); //!
+        value={`${editValue}`}
+        onValueChange={(d) => {
+          changeValue(Number.isNaN(d.valueAsNumber) ? 0 : d.valueAsNumber);
         }}
-      />
+        onKeyDown={(e) => {
+          if (e.key === "," || e.key === "-") {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+        min={0}
+        allowOverflow={false}
+      >
+        <NumberInput.Input ref={setAnchor} className={tw("h-full w-full flex-1 focus:outline-none")} />
+      </NumberInput.Root>
     </>
   );
 }
-
-const getNumberValue = (e: string) => {
-  const value = e.trim();
-
-  // Allow empty input
-  if (value === "") return "";
-
-  // Allow minus sign only at the start
-  if (value === "-") return "-";
-
-  // Convert to number and check if it's valid
-  const number = Number.parseFloat(value);
-
-  if (value && !Number.isNaN(number)) {
-    return String(number) + (value.endsWith(".") ? "." : "");
-  } else {
-    // If not a valid number, revert to previous value
-    return value.slice(0, -1) || "";
-  }
-};

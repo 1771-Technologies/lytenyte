@@ -13,6 +13,9 @@ import {
 } from "./components.jsx";
 import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
 import { useState } from "react";
+import { NumberInput } from "@ark-ui/react/number-input";
+import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from "clsx";
 
 export interface GridSpec {
   readonly data: OrderData;
@@ -28,13 +31,6 @@ const columns: Grid.Column<GridSpec>[] = [
     cellRenderer: PriceCell,
     width: 100,
     name: "Price",
-    //!next 6
-    editSetter: (p) => {
-      const currentValue = typeof p.editValue !== "string" ? 0 : getNumberValue(p.editValue) || 0;
-      const data = { ...(p.editData as Record<string, unknown>), [p.column.id]: currentValue };
-
-      return data;
-    },
     editable: true, //!
     editRenderer: NumberEditor, //!
   },
@@ -72,35 +68,36 @@ export default function Demo() {
   );
 }
 
-function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
+function NumberEditor(props: Grid.T.EditParams<GridSpec>) {
+  const { changeValue, editValue, editValidation, column } = props;
+  const valid = typeof editValidation === "boolean" ? editValidation : !editValidation[column.id];
+
   return (
-    <input
-      className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`} //!
-      onChange={(e) => {
-        const value = getNumberValue(e.target.value); //!
-        changeValue(value || 0); //!
-      }}
-    />
+    <>
+      <NumberInput.Root
+        className={tw(
+          "focus-within:outline-ln-primary-50 flex h-full w-full items-center rounded px-2 focus-within:outline focus-within:-outline-offset-1",
+          !valid && "bg-ln-red-30 focus-within:outline-ln-red-50",
+        )}
+        value={`${editValue}`}
+        onValueChange={(d) => {
+          changeValue(Number.isNaN(d.valueAsNumber) ? 0 : d.valueAsNumber);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "," || e.key === "-") {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+        min={0}
+        allowOverflow={false}
+      >
+        <NumberInput.Input className={tw("h-full w-full flex-1 focus:outline-none")} />
+      </NumberInput.Root>
+    </>
   );
 }
 
-const getNumberValue = (e: string) => {
-  const value = e.trim();
-
-  // Allow empty input
-  if (value === "") return "";
-
-  // Allow minus sign only at the start
-  if (value === "-") return "-";
-
-  // Convert to number and check if it's valid
-  const number = Number.parseFloat(value);
-
-  if (value && !Number.isNaN(number)) {
-    return String(number) + (value.endsWith(".") ? "." : "");
-  } else {
-    // If not a valid number, revert to previous value
-    return value.slice(0, -1) || "";
-  }
-};
+export function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
+}

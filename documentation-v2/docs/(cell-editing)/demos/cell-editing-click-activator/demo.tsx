@@ -68,7 +68,7 @@ export default function Demo() {
         rowSource={ds}
         slotShadows={ViewportShadows}
         editMode="cell"
-        editClickActivator="single" //!
+        editClickActivator="single-click" //!
       />
     </div>
   );
