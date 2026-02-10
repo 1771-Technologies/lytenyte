@@ -32,84 +32,10 @@ function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>)
 
 Number edit renderers can use an `input` with type `number`, but text inputs
 with custom number parsing offers better control over the input experience. The
-demo below uses a text `input` for the **Price** column and enforces numeric-only values.
+demo below users [Ark UI's number input](https://ark-ui.com/docs/components/number-input),
+which enforces numeric-only values, with improved number input editing.
 
 ::demo[Number Edit Renderer="./demos/cell-editing-number-renderer"]
-
-:::note
-The `editSetter` property is set on the **Price** column, ensuring the edit
-value is always a valid number.
-
-Users can start editing by pressing any printable key when a cell has focus.
-When editing begins this way, LyteNyte Grid uses the pressed
-key as the initial edit value.
-
-Since this initial value bypasses the `getNumberValue` callback, the Price column parses
-it in `editSetter`, as shown in the code below.
-
-```ts
-{
-  id: "price",
-  type: "number",
-  cellRenderer: PriceCell,
-  width: 100,
-  name: "Price",
-  //!next 6
-  editSetter: (p) => {
-    const currentValue = typeof p.editValue !== "string" ? 0 : getNumberValue(p.editValue) || 0;
-    const data = { ...(p.editData as Record<string, unknown>), [p.column.id]: currentValue };
-
-    return data;
-  },
-  editable: true,
-  editRenderer: NumberEditor,
-};
-```
-
-:::
-
-In the demo, the `input` change handler calls `getNumberValue`, which
-parses and validates the input as numeric.
-
-```ts
-function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
-  return (
-    <input
-      className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`}
-      onChange={(e) => {
-        const value = getNumberValue(e.target.value); //!
-        changeValue(value || 0);
-      }}
-    />
-  );
-}
-
-//!next 19
-const getNumberValue = (e: string) => {
-  const value = e.trim();
-
-  // Allow empty input
-  if (value === "") return "";
-
-  // Allow minus sign only at the start
-  if (value === "-") return "-";
-
-  // Convert to number and check if it's valid
-  const number = Number.parseFloat(value);
-
-  if (value && !Number.isNaN(number)) {
-    return String(number) + (value.endsWith(".") ? "." : "");
-  } else {
-    // If not a valid number, revert to previous value
-    return value.slice(0, -1) || "";
-  }
-};
-```
-
-This is one approach for creating a number edit renderer. You can also use
-a custom input or use a third-party component like
-[Ark UI's number input](https://ark-ui.com/docs/components/number-input).
 
 ## Date Editors
 
@@ -172,7 +98,7 @@ The demo below demonstrates this using LyteNyte
 Grid's [Smart Select component](/docs/component-smart-select). Double-click any cell in
 the **Product** column below to begin editing.
 
-::demo[Smart Product Select="./demos/cell-editing-popover-smart"]
+::demo[Smart Select Popover="./demos/cell-editing-popover-smart"]
 
 :::note
 
