@@ -21,7 +21,7 @@ import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 import type { GridEvents } from "../types/events";
-import type { GridSpec, Props } from "../types";
+import type { Column, GridSpec, Props } from "../types";
 
 export interface RootContextValue {
   readonly id: string;
@@ -122,7 +122,7 @@ export interface EditContext {
   readonly setEditData: Dispatch<SetStateAction<any>>;
   readonly editValidation: boolean | Record<string, unknown>;
 
-  readonly changeValue: (value: any) => boolean | Record<string, unknown>;
+  readonly changeValue: (value: any, column: Column) => boolean | Record<string, unknown>;
   readonly changeWithInit: (value: any, row: RowNode<any>, column: ColumnAbstract) => any;
   readonly changeData: (data: any) => boolean | Record<string, unknown>;
 

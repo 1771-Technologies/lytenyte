@@ -4,6 +4,7 @@ import { type ColumnView, type RowSource } from "@1771technologies/lytenyte-shar
 import { useEvent } from "../../hooks/use-event.js";
 import type { Root } from "../root.js";
 import type { EditContext } from "../root-context.js";
+import type { Column } from "../../types/index.js";
 
 export function useEditContext(view: ColumnView, api: Root.API, props: Root.Props, source: RowSource) {
   const [activeEdit, setActiveEdit] = useState<null | {
@@ -36,10 +37,9 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
   const editDataStateRef = useRef(editData);
   editDataStateRef.current = editData;
 
-  const changeValue = useEvent((value: any) => {
+  const changeValue = useEvent((value: any, column: Column) => {
     if (!activeEdit) return false;
 
-    const column = view.lookup.get(activeEdit.column);
     const row = api.rowById(activeEdit.rowId);
     if (!column || !row) return false;
 

@@ -1,4 +1,4 @@
-import { forwardRef, memo, type JSX } from "react";
+import { forwardRef, memo, useCallback, type JSX } from "react";
 import { sizeFromCoord, type LayoutCell } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default.js";
 import { useCellStyle } from "./use-cell-style.js";
@@ -70,6 +70,13 @@ const CellImpl = memo(
 
     const handlers = useMappedEvents(events.cell, { column, row, api, layout: cell });
 
+    const changeValue = useCallback(
+      (value: unknown) => {
+        return rowMeta.changeValue(value, column);
+      },
+      [column, rowMeta],
+    );
+
     if (!row || cell.isDeadCol) return null;
 
     if (cell.isDeadRow) return <div style={{ width: sizeFromCoord(cell.colIndex, xPositions) }} />;
@@ -116,7 +123,7 @@ const CellImpl = memo(
               cancel={rowMeta.cancel}
               commit={rowMeta.commit}
               changeData={rowMeta.changeData}
-              changeValue={rowMeta.changeValue}
+              changeValue={changeValue}
               rowIndex={cell.rowIndex}
               colIndex={cell.colIndex}
               column={column}
