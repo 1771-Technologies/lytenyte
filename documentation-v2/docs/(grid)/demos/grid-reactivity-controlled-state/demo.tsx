@@ -1,7 +1,7 @@
 //#start
 import "./main.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 
 import type { RequestData } from "./data.js";
 import { requestData } from "./data.js";
@@ -60,7 +60,6 @@ export default function ControlledRowState() {
         rowSource={ds}
         rowDetailRenderer={RowDetailRenderer}
         columnMarker={marker}
-        slotShadows={ViewportShadows}
         rowDetailExpansions={rowDetailExpansions} //!
         onRowDetailExpansionsChange={setRowDetailExpansions} //!
       />
