@@ -28,6 +28,16 @@ const columns: Grid.Column<GridSpec>[] = [
     cellRenderer: PriceCell,
     width: 100,
     name: "Price",
+    editMutateCommit: (p) => {
+      // You will want to validate with Zod.
+      const data = p.editData as any;
+      const value = String(data[p.column.id]);
+
+      // Parse the commit value to a string.
+      const numberValue = Number.parseFloat(value);
+      if (Number.isNaN(numberValue)) data[p.column.id] = null;
+      else data[p.column.id] = numberValue;
+    },
     editable: true,
     editRenderer: NumberEditor,
   },
@@ -88,9 +98,9 @@ function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
   return (
     <input
       className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`}
+      value={`${editValue}`} //!
       type="number"
-      onChange={(e) => changeValue(Number.parseFloat(e.target.value))}
+      onChange={(e) => changeValue(e.target.value)} //!
     />
   );
 }

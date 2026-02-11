@@ -117,6 +117,12 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
       }
     }
 
+    for (const c of props.columns ?? []) {
+      const mutateEdit = c?.editMutateCommit ?? props.columnBase?.editMutateCommit;
+      if (!mutateEdit) continue;
+      mutateEdit({ api, column: c, editData: editDataState, row });
+    }
+
     let stop = false;
 
     props.onEditEnd?.({

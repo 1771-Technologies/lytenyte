@@ -47,6 +47,8 @@ export function PriceCell({ api, row, editData }: Grid.T.CellRendererParams<Grid
 
   const data = (editData as Record<string, number>) ?? row.data;
 
+  if (data.price == null) return "-";
+
   const price = formatter.format(data.price);
   const [dollars, cents] = price.split(".");
 

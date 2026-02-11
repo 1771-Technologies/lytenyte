@@ -45,6 +45,8 @@ const formatter = new Intl.NumberFormat("en-Us", {
 export function PriceCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
+  if (row.data.price == null) return "-";
+
   const price = formatter.format(row.data.price);
   const [dollars, cents] = price.split(".");
 

@@ -36,7 +36,16 @@ const columns: Grid.Column<GridSpec>[] = [
   { name: "Contact", id: "contact" },
 ];
 
-const base = { width: 100 };
+const base: Grid.ColumnBase<GridSpec> = {
+  width: 100,
+  cellRenderer: (p) => {
+    const field = p.api.columnField(p.column, p.row);
+
+    if (field == null) return "";
+
+    return String(field);
+  },
+};
 
 export default function Clipboard() {
   const [data, setData] = useState(loanData);
@@ -75,7 +84,7 @@ export default function Clipboard() {
 
     const stringToCopy = data.data
       .map((row) => {
-        return row.map((cell) => `${cell}`).join("\t");
+        return row.map((cell) => `${cell ?? ""}`).join("\t");
       })
       .join("\n");
 
@@ -105,11 +114,14 @@ export default function Clipboard() {
         for (let j = 0; j < data.length; j++) {
           const colI = j + position.colIndex;
 
-          const column = columns[colI];
+          console.log(position.colIndex);
+          const column = api.columnByIndex(colI);
+          if (!column) continue;
+
           const rawValue = data[j];
 
           let value = column.type === "number" ? Number.parseFloat(rawValue as string) : rawValue;
-          if (column.type === "number" && Number.isNaN(value)) value = String(rawValue);
+          if (column.type === "number" && Number.isNaN(value)) value = rawValue;
 
           columnUpdates.push({ column: colI, value: value });
         }
