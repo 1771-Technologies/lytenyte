@@ -46,14 +46,24 @@ const formatter = new Intl.NumberFormat("en-Us", {
 export function PriceCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
+  const rtl = api.props().rtl;
   const price = formatter.format(row.data.price);
   const [dollars, cents] = price.split(".");
 
   return (
     <div className="flex h-full w-full items-center justify-end">
       <div className="flex items-baseline tabular-nums">
-        <span className="text-ln-text font-semibold">${dollars}</span>.
+        {!rtl && (
+          <>
+            <span className="text-ln-text font-semibold">${dollars}</span>.
+          </>
+        )}
         <span className="relative text-xs">{cents}</span>
+        {rtl && (
+          <>
+            .<span className="text-ln-text font-semibold">${dollars}</span>
+          </>
+        )}
       </div>
     </div>
   );

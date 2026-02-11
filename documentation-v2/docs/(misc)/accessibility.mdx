@@ -1,8 +1,7 @@
 ---
 title: Accessibility
-step: Learn about the accessibility measures taken by LyteNyte Grid.
-description: Learn how LyteNyte Grid implements ARIA and best practices to build
-  inclusive, accessible data grids.
+step: Review accessibility measures and ARIA compliance.
+description: Implement ARIA standards and best practices to build inclusive, accessible data grids.
 ---
 
 Accessibility ensures that all users can navigate and interact with your
@@ -12,9 +11,8 @@ capabilities and best practices.
 
 ## Accessibility Compliance
 
-LyteNyte Grid meets the W3C's [WCAG 2.0](https://www.w3.org/WAI/standards-guidelines/wcag/) guidelines.
-It supports all three conformance levels—A, AA, and AAA. Meeting AA
-requirements also satisfies most [ADA](https://www.ada.gov/) standards.
+LyteNyte Grid complies with [WCAG 2.0](https://www.w3.org/WAI/standards-guidelines/wcag/) guidelines at levels
+A, AA, and AAA. Level AA compliance typically satisfies [ADA](https://www.ada.gov/) standards.
 
 The grid uses ARIA (Accessible Rich Internet Applications) attributes on
 rows, cells, and headers. Screen readers interpret these attributes to
@@ -35,10 +33,10 @@ and accessible.
 
 The main container uses `role="grid"`. It also applies:
 
-- `aria-rowcount`: total rows in the grid
-- `aria-colcount`: total columns in the grid
+- `aria-rowcount`: total rows in the grid.
+- `aria-colcount`: total columns in the grid.
 - `aria-multiselectable="true"`: only when multiple row selection is
-  enabled
+  enabled.
 
 ### Row Roles
 
@@ -47,21 +45,21 @@ row containers.
 
 For `role="row"`, the grid adds:
 
-- `aria-rowindex`: the row's position in the grid
-- `aria-selected`: whether the row is selected
+- `aria-rowindex`: the row's position in the grid.
+- `aria-selected`: whether the row is selected.
 
 ### Header Cell Roles
 
 Headers use `role="columnheader"` and may include:
 
-- `aria-colindex`: the column's position in the grid
-- `aria-expanded`: open or collapsed state
+- `aria-colindex`: the column's position in the grid.
+- `aria-expanded`: open or collapsed state.
 
 ### Grid Cell Roles
 
 Cells use `role="gridcell"` and may include:
 
-- `aria-colindex`: the column's position in the grid
+- `aria-colindex`: the column's position in the grid.
 
 ## Considerations for Visual Accessibility
 
@@ -84,21 +82,17 @@ Use accessible colors to meet AA standards and maintain readability.
 LyteNyte Grid provides prebuilt grid themes and color design tokens. These
 themes are designed to be accessible and spec-compliant.
 
-Beyond the themes provided by LyteNyte Grid, choosing a strong color palette
-for your application is essential for maintaining accessibility.
-Some recommended palettes include:
+If you don't use a built-in LyteNyte Grid theme and instead customize your own,
+choose a high-contrast palette to maintain accessibility. Recommended palettes include:
 
 - [Radix UI Colors](https://www.radix-ui.com/colors)
 - [Tailwind Colors](https://tailwindcss.com/docs/customizing-colors)
 
-Accessible color choices help keep data visually clear for all users.
+Accessible colors ensure data remains legible for everyone. LyteNyte Grid supports accessible
+implementations. Use correct ARIA roles, test with screen readers, and validate your
+color choices. Reassess with assistive technology whenever you update the UI.
 
-LyteNyte Grid embeds accessibility into its core design. Use ARIA roles,
-test with screen readers, and choose inclusive color palettes to deliver
-a grid that works for everyone. Regularly test with assistive
-technologies to maintain a seamless, inclusive experience.
-
-## Next Step
+## Next Steps
 
 ::next[/docs/rtl-support]
 ::next[/docs/keyboard]
