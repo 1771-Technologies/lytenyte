@@ -52,8 +52,8 @@ each edit renderer. This demo uses:
 
 The **Customer** column edit renderer assigns
 `editValue` to the `<input />` value, and the input's `onChange` handler calls `changeValue`
-to update the edit value. The renderer also converts editValue to a string because
-the input element expects a string value, and editValue may not initially be a string.
+to update the edit value. The renderer also converts `editValue` to a string because
+the `input` element expects a string value, and `editValue` may not initially be a string.
 
 ```tsx
 function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
@@ -86,7 +86,7 @@ Click any cell in these columns to begin editing.
 LyteNyte Grid provides each cell edit renderer with props conforming to the
 [`EditParams`](/docs/reference/grid-types#editing) type. `EditParams` contains the state and
 methods required to manage cell updates. The following sections detail the most
-important properties of EditParams.
+important properties of `EditParams`.
 
 ### Edit Value and Data
 
@@ -147,6 +147,37 @@ The `editSetter` must always return the full `editData` object, not just the mod
 value. Use `editSetter` to enforce update constraints and to create linked cell updates.
 For more information, see the [Linked Cell Edits guide](/docs/cell-editing-linked-cell-edits).
 
+### Edit Mutate Commit
+
+Use the `editMutateCommit` property on the column to write changes to
+the `editData` object before the grid completes the edit operation.
+The `editMutateCommit` property provides one final opportunity to adjust the
+row data before the grid fires edit events.
+
+For example, the following definition parses the column's value to
+ensure it is a number. The code mutates the `editData` object directly to
+change the final value of the edit.
+
+The grid calls `editMutateCommit` once for each column whenever
+any column value is edited.
+
+```ts
+{
+  id: "price",
+  type: "number",
+  editMutateCommit: (p) => {
+    // You will want to validate with Zod.
+    const data = p.editData as any;
+    const value = String(data[p.column.id]);
+
+    // Parse the commit value to a string.
+    const numberValue = Number.parseFloat(value);
+    if (Number.isNaN(numberValue)) data[p.column.id] = null;
+    else data[p.column.id] = numberValue;
+  },
+}
+```
+
 ### Committing and Cancelling Edits
 
 LyteNyte Grid does not mutate the original row data during an edit.
@@ -167,10 +198,6 @@ For the full list, see the [grid props API reference](/docs/reference/grid-props
 - `onEditFail`: Fires when validation fails during editing.
 
 ## Programmatic Editing
-
-LyteNyte Grid's API exposes methods for programmatically editing cells. These methods
-support advanced editing scenarios. See the grid's
-for detailed usage information.
 
 LyteNyte Grid's API exposes methods for programmatically editing cells. For complete details, see the grid
 [API reference](/docs/reference/grid-api#cell-editing).

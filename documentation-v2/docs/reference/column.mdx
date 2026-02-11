@@ -171,5 +171,11 @@ const columns: Column[] = [
       type: "(params) => unknown",
       see: ["/docs/cell-editing"],
     },
+    {
+      name: "editMutateCommit",
+      description: `A function that mutates the final edit data before the grid performs an edit data commit.`,
+      type: "(params) => void",
+      see: ["/docs/cell-editing"],
+    },
   ]}
 />

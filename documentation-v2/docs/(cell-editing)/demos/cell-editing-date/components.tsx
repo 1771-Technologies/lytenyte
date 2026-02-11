@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 import { type JSX, type ReactNode } from "react";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo.jsx";
@@ -60,6 +60,10 @@ export function PriceCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 
 export function PurchaseDateCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
+
+  const dateField = new Date(row.data.purchaseDate);
+
+  if (!isValid(dateField)) return <div className="flex h-full w-full items-center">-</div>;
 
   const formattedDate = format(row.data.purchaseDate, "dd MMM, yyyy");
 

@@ -111,7 +111,7 @@ const CellImpl = memo(
                     return { ...prev, column: column.id };
                   });
                 }
-              : undefined
+              : (props.onFocus ?? handlers.onFocus)
           }
           style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
           // Data Properties

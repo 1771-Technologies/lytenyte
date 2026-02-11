@@ -84,6 +84,7 @@ interface ColumnUnextended<Spec extends GridSpec = GridSpec> extends ColumnAbstr
   readonly editSetter?: (
     params: Pick<EditParams<Spec>, "api" | "editValue" | "editData" | "row" | "column">,
   ) => unknown;
+  readonly editMutateCommit?: (params: Pick<EditParams<Spec>, "api" | "editData" | "row" | "column">) => void;
 }
 
 export type Column<Spec extends GridSpec = GridSpec> = ColumnUnextended<Spec> & Spec["column"];

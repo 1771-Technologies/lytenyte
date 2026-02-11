@@ -84,6 +84,7 @@ export default function Demo() {
   const [network, setNetwork] = useState<string | null>(null); //!
   const [anchor, setAnchor] = useState<HTMLElement | null>(null); //!
   const ds = useClientDataSource({ data: data });
+
   return (
     <div
       className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight"
