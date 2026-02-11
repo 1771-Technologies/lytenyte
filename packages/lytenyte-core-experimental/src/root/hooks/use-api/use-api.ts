@@ -1,4 +1,6 @@
 import {
+  getNearestFocusable,
+  getPositionFromFocusable,
   type ColumnView,
   type LayoutState,
   type RowSource,
@@ -42,6 +44,7 @@ import { usePiece } from "../../../hooks/use-piece.js";
 import { useRowView } from "./api-functions/use-row-view.js";
 import { useColumnView } from "./api-functions/use-column-view.js";
 import { useEditUpdateCells } from "./api-functions/use-edit-update-cells.js";
+import { useEvent } from "../../../internal.js";
 
 export function useApi(
   gridId: string,
@@ -100,6 +103,13 @@ export function useApi(
   api.columnMove = useColumnMove(view, controlled);
 
   api.columnField = useColumnField(view);
+
+  api.positionFromElement = useEvent((el: HTMLElement) => {
+    const focusable = getNearestFocusable(gridId, el);
+    if (!focusable) return null;
+
+    return getPositionFromFocusable(gridId, focusable);
+  });
 
   api.cellRoot = useCellRoot(
     props,

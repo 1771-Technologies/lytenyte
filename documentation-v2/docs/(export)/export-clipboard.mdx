@@ -1,22 +1,18 @@
 ---
 title: Clipboard
-step: Copy and paste data from your clipboard using LyteNyte Grid.
+step: Copy and paste grid data using the clipboard.
 pro: true
-description: Using LyteNyte Grid's cell selection and data export functionality, the grid
-  allows data to be exported to the clipboard.
+description: Use the grid's cell selection and export API to copy grid data to the clipboard.
 ---
 
-LyteNyte Grid does not directly handle clipboard operations. However, you can implement
-clipboard support using the grid's `exportData` method. You can combine this method with
-[cell selection](/docs/cell-selection) and
-[bulk data editing](/docs/cell-editing-bulk-editing) to build copy, cut, and paste
-functionality.
+Implement clipboard support by combining `exportData` with [cell selection](/docs/cell-selection)
+and [bulk data editing](/docs/cell-editing-bulk-editing).
+Use this approach to build copy, cut, and paste functionality.
 
-## Clipboard Operation Flow
+## Clipboard Workflow
 
-The demo below demonstrates clipboard interactions. Select cells by clicking and dragging.
-Use `Ctrl c` to copy the selected cells, `Ctrl x` to cut the selected cells, and `Ctrl v`
-to paste data from the clipboard.
+The demo below shows clipboard interactions.Click and drag to select
+cells. Press `Ctrl+C` to copy, `Ctrl+X` to cut, and `Ctrl+V` to paste.
 
 ::demo[Clipboard="./demos/clipboard"]
 
@@ -32,11 +28,9 @@ The `handleGridUpdate` function parses update data and writes it to the grid usi
 
 :::note
 
-This example does not include clipboard validation logic in order to keep the code sample
-concise. Treat pasted clipboard data as untrusted input. Consider using a validation
-library such as [Zod](https://zod.dev/) to validate pasted data before applying updates.
-
-See the [Cell Editing guide](/docs/cell-editing) for more information on updating grid data.
+This sample prioritizes conciseness. In production, treat clipboard data as untrusted
+input and validate it using libraries like [Zod](https://zod.dev/)
+before applying updates. See the [Cell Editing guide](/docs/cell-editing) for details.
 
 :::
 
@@ -63,39 +57,40 @@ const handleCopy = useCallback(async () => {
 const handleGridUpdate = useCallback(
   async (updates: unknown[][]) => {
     if (!api) return;
+    if (!document.activeElement) return null;
 
-    const rect = getFirstSelection();
-    if (!rect) return;
+    const position = api.positionFromElement(document.activeElement as HTMLElement);
+    if (position?.kind !== "cell") return;
 
     const map = new Map<number, { column: number; value: any }[]>();
 
-    for (let rowI = rect.rowStart; rowI < rect.rowEnd; rowI++) {
+    for (let i = 0; i < updates.length; i++) {
+      const rowI = i + position.rowIndex;
       const row = api.rowByIndex(rowI).get();
+
       if (!row?.data || api.rowIsGroup(row)) continue;
 
-      // The selection rectangle may contain more rows than the update data,
-      // so stop processing when all updates have been applied.
-      if (rowI - rect.rowStart >= updates.length) break;
+      const data = updates[i];
 
       const columnUpdates: { column: number; value: any }[] = [];
 
-      for (let colI = rect.columnStart; colI < rect.columnEnd; colI++) {
-        // The selection may contain more columns than the update data,
-        // so skip remaining columns when necessary.
-        if (colI - rect.columnStart >= updates[rowI - rect.rowStart].length) break;
+      for (let j = 0; j < data.length; j++) {
+        const colI = j + position.colIndex;
 
-        columnUpdates.push({
-          column: colI,
-          value: updates[rowI - rect.rowStart][colI - rect.columnStart],
-        });
+        const column = columns[colI];
+        const rawValue = data[j];
+
+        let value = column.type === "number" ? Number.parseFloat(rawValue as string) : rawValue;
+        if (column.type === "number" && Number.isNaN(value)) value = String(rawValue);
+
+        columnUpdates.push({ column: colI, value: value });
       }
-
       map.set(rowI, columnUpdates);
     }
 
     if (!api.editUpdateCells(map)) alert("Copy operation failed");
   },
-  [api, getFirstSelection],
+  [api],
 );
 ```
 

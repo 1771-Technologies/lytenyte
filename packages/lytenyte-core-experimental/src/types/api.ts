@@ -2,6 +2,7 @@ import type {
   ColumnView,
   PositionFullWidthRow,
   PositionGridCell,
+  PositionUnion,
   RowAggregated,
   RowGroup,
   RowLeaf,
@@ -33,6 +34,8 @@ export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
 }
 
 export type API<Spec extends GridSpec = GridSpec> = {
+  readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
+
   readonly xPositions$: Piece<Uint32Array>;
   readonly yPositions$: Piece<Uint32Array>;
   readonly viewport$: Piece<HTMLElement | null>;

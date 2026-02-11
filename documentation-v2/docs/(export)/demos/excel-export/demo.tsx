@@ -38,7 +38,7 @@ export default function GridExport() {
     <>
       <div className="border-ln-border border-b p-2">
         <button
-          data-ln-button="tertiary"
+          data-ln-button="website"
           data-ln-size="md"
           //!next 8
           onClick={async () => {

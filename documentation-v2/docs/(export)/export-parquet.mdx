@@ -1,8 +1,7 @@
 ---
 title: Export Parquet
-step: Export data from LyteNyte Grid as a Parquet file.
-description: Apache Parquet is an open source, column-oriented data file format. Using
-  LyteNyte Grid's data export functionality, you can create and download Parquet files.
+step: Export grid data as a Parquet file.
+description: Export grid data to Apache Parquet using LyteNyte Grid's export API.
 ---
 
 This guide uses the
@@ -11,19 +10,17 @@ files in the browser. Install this package to enable exporting data to Parquet f
 
 <PackageInstall package="hyparquet-writer" />
 
-## Download a Parquet File
+## Parquet Download
 
-The demo below demonstrates exporting data from the grid and creating and downloading
-a Parquet file. Because Parquet files are binary, you will need a
-[Parquet file viewer](https://hyperparam.app/)
-to inspect the output.
+The demo below exports grid data to a Parquet file.
+Parquet is a binary format, so use a [Parquet viewer](https://hyperparam.app/) to inspect the output.
 
-::demo[Export Parquet File="./demos/parquet-export"]
+::demo[Parquet Export & Download="./demos/parquet-export"]
 
-The code below shows how to create and download a Parquet file. Because the Parquet
-format is columnar, the code first constructs an object of arrays, where each array
-represents a column. The code then passes this object to `parquetWriteBuffer`, which
-returns an `ArrayBuffer`. The code converts this buffer into a file and downloads it.
+To match Parquet's columnar format, the code below constructs an
+object of arrays, with one array per column. It passes the object to
+`parquetWriteBuffer`, which returns an `ArrayBuffer`. Finally, it wraps the
+buffer in a `Blob` and downloads the file.
 
 ```tsx
 <button

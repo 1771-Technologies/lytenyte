@@ -1,8 +1,7 @@
 ---
-title: Export Apache Arrow
-step: Export data from LyteNyte Grid as an Arrow file.
-description: Apache Arrow is a universal columnar format often used for in-memory analytics.
-  Using LyteNyte Grid's export functionality, you can create and download an Arrow file.
+title: Export Arrow
+step: Export grid data as an Arrow file.
+description: Export grid data to Apache Arrow using LyteNyte Grid's export API.
 ---
 
 [Apache Arrow](https://arrow.apache.org/) provides the `apache-arrow` package for parsing and
@@ -10,20 +9,17 @@ creating Arrow tables. Install this package to enable exporting data to Arrow fi
 
 <PackageInstall package="apache-arrow" />
 
-## Download an Arrow File
+## Arrow Download
 
-The demo below demonstrates exporting data from the grid and creating and downloading
-an Arrow file. Since Arrow files are binary, you will need an
-[Apache Arrow file viewer](https://www.filestash.app/tools/arrow-viewer.html)
-to inspect the output.
+The demo below exports grid data to an Arrow file. Arrow is a binary
+format, so use an [Arrow viewer](https://www.filestash.app/tools/arrow-viewer.html) to inspect the output.
 
-::demo[Export Arrow File="./demos/arrow-export"]
+::demo[Arrow Export & Download="./demos/arrow-export"]
 
-The code below shows how to create and download an Arrow table. Because the Arrow
-format is columnar, the code first constructs an object of arrays, where each array
-represents a column. The code then passes this object to the `tableFromArrays` export
-from `apache-arrow`. Finally, the code converts the table to a byte buffer that can
-be downloaded.
+To match Arrow's columnar format, the code constructs an object of arrays,
+with one array per column. It passes the object to `tableFromArrays` from
+`apache-arrow` to create a table. Finally, it converts the table to a
+byte buffer, wraps the buffer in a `Blob`, and downloads the file.
 
 ```tsx
 <button
