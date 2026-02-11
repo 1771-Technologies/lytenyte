@@ -22,7 +22,8 @@ export function expandSelectionDown(
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
-    api.scrollIntoView({ row: rowCount - 1 });
+
+    if (pos.rowStart !== 0) api.scrollIntoView({ row: rowCount - 1 });
     return;
   }
 

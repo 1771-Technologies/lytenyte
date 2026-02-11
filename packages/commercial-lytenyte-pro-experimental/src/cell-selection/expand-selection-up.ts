@@ -10,6 +10,7 @@ export function expandSelectionUp(
   setSelections: (d: DataRect[]) => void,
   meta: boolean,
   position: PositionGridCell,
+  rowCount: number,
 ) {
   const pos = dataRectFromCellPosition(position);
 
@@ -22,7 +23,7 @@ export function expandSelectionUp(
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
 
-    api.scrollIntoView({ row: 0 });
+    if (pos.rowStart !== rowCount - 1) api.scrollIntoView({ row: 0 });
     return;
   }
 
