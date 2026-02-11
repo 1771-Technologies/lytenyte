@@ -1,24 +1,21 @@
 ---
 title: CSV Data Export
-step: Export data from LyteNyte Grid as CSV.
-description: Export data to CSV using LyteNyte Grid's data export functionality.
+step: Export grid data as a CSV file.
+description: Export grid data to CSV using LyteNyte Grid's export API.
 ---
 
-LyteNyte Grid does not include a built-in CSV parser. However, you can use LyteNyte Grid's
-export functionality to generate a CSV file by parsing the output of the
-[`exportData`](/docs/reference/grid-api) method on the grid API.
+Generate CSV files by parsing the structured output of
+the [`exportData`](/docs/reference/grid-api) API method.
 
-## Download a CSV
+## CSV Download
 
-The demo below demonstrates exporting grid data to a CSV string and then downloading
-that data as a CSV file. CSV is a simple format that supports numbers and strings.
+The demo below exports grid data to a CSV string, then downloads it as a CSV file.
 
-::demo[Export CSV="./demos/csv-export"]
+::demo[CSV Export & Download="./demos/csv-export"]
 
-The example below shows a basic implementation for exporting grid data to CSV.
-This implementation is intentionally simple and does not handle all possible
-CSV edge cases. For more robust serialization, consider using an open source
-CSV library such as [csv-parser](https://github.com/mafintosh/csv-parser).
+The example below demonstrates a basic CSV export implementation.
+For robust serialization that handles all edge cases, use a
+dedicated library like [csv-parser](https://github.com/mafintosh/csv-parser).
 
 ```tsx
 <button

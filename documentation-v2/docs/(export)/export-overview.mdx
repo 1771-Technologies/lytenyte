@@ -1,13 +1,13 @@
 ---
 title: Export Overview
 step: Export grid data in custom formats using LyteNyte Grid's flexible data export API.
-description: LyteNyte Grid supports exporting grid data in a structured form that can then be
-  used to create files in different formats or written to the clipboard.
+description: LyteNyte Grid exports structured grid data to
+  create files in various formats or to copy to the clipboard.
 ---
 
-Many file formats exist for representing and storing data. Rather than implementing each
-format directly in the grid, LyteNyte Grid provides the
-[`exportData`](/docs/reference/grid-api) method on the grid API.
+LyteNyte Grid supports custom file generation via the [`exportData`](/docs/reference/grid-api)
+method, letting you support any file format without adding to the
+core library's size or complexity.
 
 ## Export Data
 
@@ -51,9 +51,8 @@ interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
 
 ## Export Files
 
-The primary use case for `exportData` is creating file exports from LyteNyte Grid, although
-the API is not limited to file generation. For format-specific implementations, see the
-guides below:
+Use `exportData` primarily for file exports, though the API supports broader
+data extraction tasks. For format-specific implementations, see the guides below:
 
 - [Excel export](/docs/export-excel)
 - [CSV export](/docs/export-csv)

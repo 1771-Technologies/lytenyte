@@ -85,41 +85,40 @@ export default function Clipboard() {
   const handleGridUpdate = useCallback(
     async (updates: unknown[][]) => {
       if (!api) return;
+      if (!document.activeElement) return null;
 
-      const rect = getFirstSelection();
-      if (!rect) return;
+      const position = api.positionFromElement(document.activeElement as HTMLElement);
+      if (position?.kind !== "cell") return;
 
       const map = new Map<number, { column: number; value: any }[]>();
 
-      for (let rowI = rect.rowStart; rowI < rect.rowEnd; rowI++) {
+      for (let i = 0; i < updates.length; i++) {
+        const rowI = i + position.rowIndex;
         const row = api.rowByIndex(rowI).get();
+
         if (!row?.data || api.rowIsGroup(row)) continue;
 
-        // Our selection rect is bigger than our updates (i.e. has more rows),
-        // so we can stop early.
-        if (rowI - rect.rowStart >= updates.length) break;
+        const data = updates[i];
 
         const columnUpdates: { column: number; value: any }[] = [];
 
-        for (let colI = rect.columnStart; colI < rect.columnEnd; colI++) {
-          // Our selection has more columns than we are updating so we can skip.
-          if (colI - rect.columnStart >= updates[rowI - rect.rowStart].length) break;
+        for (let j = 0; j < data.length; j++) {
+          const colI = j + position.colIndex;
 
           const column = columns[colI];
-          const rawValue = updates[rowI - rect.rowStart][colI - rect.columnStart];
+          const rawValue = data[j];
 
           let value = column.type === "number" ? Number.parseFloat(rawValue as string) : rawValue;
-          if (column.type === "number" && Number.isNaN(value)) value = null;
+          if (column.type === "number" && Number.isNaN(value)) value = String(rawValue);
 
           columnUpdates.push({ column: colI, value: value });
         }
-
         map.set(rowI, columnUpdates);
       }
 
       if (!api.editUpdateCells(map)) alert("Copy operation failed");
     },
-    [api, getFirstSelection],
+    [api],
   );
 
   return (

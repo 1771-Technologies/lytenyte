@@ -36,10 +36,11 @@ export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
 }
 
 export type API<Spec extends GridSpec = GridSpec> = {
-  readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
   readonly cellSelections: () => DataRect[];
 
   // CORE Shared Properties
+  readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
+
   readonly xPositions$: Piece<Uint32Array>;
   readonly yPositions$: Piece<Uint32Array>;
   readonly viewport$: Piece<HTMLElement | null>;

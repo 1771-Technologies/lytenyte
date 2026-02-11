@@ -2,7 +2,7 @@ import { type Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo.js";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
-import { countryFlags } from "@1771technologies/grid-sample-data/loan-data";
+import { countryFlags, nameToAvatar } from "@1771technologies/grid-sample-data/loan-data";
 import { useId, useMemo } from "react";
 import { format, isValid, parse } from "date-fns";
 
@@ -17,7 +17,8 @@ const formatter = new Intl.NumberFormat("en-US", {
 export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
-  if (typeof field !== "number") return "-";
+  if (typeof field !== "number")
+    return <div className="flex h-full w-full items-center">{String(field ?? "-")}</div>;
 
   const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
 
@@ -37,13 +38,12 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
 export function NameCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
-  const url = row.data?.avatar;
-
   const name = row.data.name;
+  const url = nameToAvatar[name];
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <img className="border-ln-border-strong h-7 w-7 rounded-full border" src={url} alt={name} />
+      {url && <img className="border-ln-border-strong h-7 w-7 rounded-full border" src={url} alt={name} />}
       <div className="text-ln-text-dark flex flex-col gap-0.5">
         <div>{name}</div>
       </div>
@@ -54,18 +54,20 @@ export function NameCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
-  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
+  if (typeof field === "number")
+    return <div className="flex h-full w-full items-center justify-end">{formatter.format(field)} days</div>;
+
+  return <div className="flex h-full w-full items-center justify-start">{String(field ?? "-")}</div>;
 }
 
 export function CountryCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
   const flag = countryFlags[field as keyof typeof countryFlags];
-  if (!flag) return "-";
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <img className="size-4" src={flag} alt={`country flag of ${field}`} />
+      {flag && <img className="size-4" src={flag} alt={`country flag of ${field}`} />}
       <span>{String(field ?? "-")}</span>
     </div>
   );
@@ -74,11 +76,13 @@ export function CountryCell({ api, row, column }: Grid.T.CellRendererParams<Grid
 export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
-  if (typeof field !== "string") return "-";
+  if (typeof field !== "string")
+    return <div className="flex h-full w-full items-center">{String(field ?? "-")}</div>;
 
   const dateField = parse(field as string, "yyyy-MM-dd", new Date());
 
-  if (!isValid(dateField)) return "-";
+  if (!isValid(dateField))
+    return <div className="flex h-full w-full items-center">{String(field ?? "-")}</div>;
 
   const niceDate = format(dateField, "yyyy MMM dd");
   return <div className="flex h-full w-full items-center tabular-nums">{niceDate}</div>;
@@ -86,7 +90,8 @@ export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpe
 
 export function OverdueCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
-  if (field !== "Yes" && field !== "No") return "-";
+  if (field !== "Yes" && field !== "No")
+    return <div className="flex h-full w-full items-center">{String(field ?? "-")}</div>;
 
   return (
     <div
@@ -103,7 +108,8 @@ export function OverdueCell({ api, row, column }: Grid.T.CellRendererParams<Grid
 
 export function CustomerRating({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
-  if (typeof field !== "number") return String(field ?? "-");
+  if (typeof field !== "number" || field > 5)
+    return <div className="flex h-full w-full items-center">{String(field ?? "-")}</div>;
 
   return (
     <div className="flex justify-center text-yellow-300">
