@@ -1,4 +1,4 @@
-import type { PositionGridCell } from "@1771technologies/lytenyte-shared";
+import type { ColumnView, PositionGridCell } from "@1771technologies/lytenyte-shared";
 import type { API, DataRect } from "../types/api.js";
 import { dataRectFromCellPosition } from "./data-rect-from-cell-position.js";
 import { isOverlappingRect } from "./is-overlapping-rect.js";
@@ -11,6 +11,7 @@ export function expandSelectionStart(
   meta: boolean,
   position: PositionGridCell,
   excludeMarker: boolean,
+  view: ColumnView,
 ) {
   const pos = dataRectFromCellPosition(position);
   const rect = selections.at(-1);
@@ -23,7 +24,8 @@ export function expandSelectionStart(
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
-    api.scrollIntoView({ column: first });
+
+    if (pos.columnStart !== view.visibleColumns.length - 1) api.scrollIntoView({ column: first });
     return;
   }
 

@@ -16,11 +16,14 @@ const columns: Grid.Column<{ data: any }>[] = [
       return (
         <RowGroupCell
           {...p}
-          leafLabel={(p) => (
-            <div className="font-bold" style={{ paddingInlineStart: 18 }}>
-              {p.data.name}
-            </div>
-          )}
+          leafLabel={(p) => {
+            if (p.loading) return null;
+            return (
+              <div className="font-bold" style={{ paddingInlineStart: 18 }}>
+                {p.data.name}
+              </div>
+            );
+          }}
         />
       );
     },

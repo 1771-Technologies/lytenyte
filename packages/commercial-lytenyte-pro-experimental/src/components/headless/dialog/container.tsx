@@ -162,7 +162,8 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
 
     return () => {
       lockTimeout.current = setTimeout(() => {
-        SCROLL_LOCKER.release();
+        if (locked.current) SCROLL_LOCKER.release();
+
         locked.current = false;
         lockTimeout.current = null;
       }, 20);

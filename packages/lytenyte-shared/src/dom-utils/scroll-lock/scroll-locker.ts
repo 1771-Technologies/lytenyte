@@ -111,7 +111,7 @@ function preventScrollStandard(referenceElement: Element | null) {
 
     body.scrollTop = scrollTop;
     body.scrollLeft = scrollLeft;
-    html.setAttribute("data-base-ui-scroll-locked", "");
+    html.setAttribute("data-ln-scroll-locked", "");
     html.style.scrollBehavior = "unset";
   }
 
@@ -120,7 +120,7 @@ function preventScrollStandard(referenceElement: Element | null) {
     Object.assign(body.style, originalBodyStyles);
     html.scrollTop = scrollTop;
     html.scrollLeft = scrollLeft;
-    html.removeAttribute("data-base-ui-scroll-locked");
+    html.removeAttribute("data-ln-scroll-locked");
     html.style.scrollBehavior = originalHtmlScrollBehavior;
   }
 

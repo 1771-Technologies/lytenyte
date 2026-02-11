@@ -314,7 +314,14 @@ export function CellSelectionDriver() {
 
       let handled = false;
       if (ev.key === "ArrowUp") {
-        expandSelectionUp(api, cellSelections, onCellSelectionChange, ev.ctrlKey || ev.metaKey, position);
+        expandSelectionUp(
+          api,
+          cellSelections,
+          onCellSelectionChange,
+          ev.ctrlKey || ev.metaKey,
+          position,
+          rowCount,
+        );
         handled = true;
       } else if (ev.key === "ArrowDown") {
         expandSelectionDown(
@@ -334,6 +341,7 @@ export function CellSelectionDriver() {
           ev.ctrlKey || ev.metaKey,
           position,
           excludeMarker,
+          view,
         );
         handled = true;
       } else if (ev.key === end) {

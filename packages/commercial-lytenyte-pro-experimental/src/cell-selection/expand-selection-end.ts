@@ -26,7 +26,8 @@ export function expandSelectionEnd(
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
 
-    api.scrollIntoView({ column: view.visibleColumns.length - 1 });
+    if (pos.columnStart !== 0) api.scrollIntoView({ column: view.visibleColumns.length - 1 });
+
     return;
   }
 
