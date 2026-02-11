@@ -4,7 +4,6 @@ import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import {
   Grid,
   useClientDataSource,
-  ViewportShadows,
   type UseClientDataSourceParams,
 } from "@1771technologies/lytenyte-pro-experimental";
 
@@ -77,7 +76,6 @@ export default function GettingStartedDemo() {
         rowSource={ds}
         rowDetailRenderer={RowDetailRenderer}
         columnMarker={marker}
-        slotShadows={ViewportShadows}
       />
     </div>
   );

@@ -1,15 +1,13 @@
 ---
 title: Keyboard
-step: Navigate and use LyteNyte Grid using your keyboard.
-description: Learn LyteNyte Grid's keyboard shortcuts for navigation, selection,
-  editing, and touch interaction.
+step: Control navigation and editing via keyboard bindings.
+description: Navigate, select, and edit data using keyboard shortcuts and touch gestures.
 ---
 
-LyteNyte Grid supports extensive keyboard shortcuts to improve
-navigation, editing, and accessibility. It follows the
-[ARIA Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/) and
-adds extra keybindings for power users. Read the ARIA pattern first,
-then use this guide for LyteNyte-specific bindings.
+LyteNyte Grid provides keyboard bindings to improve navigation, editing, and accessibility.
+It follows the [ARIA Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/) and
+adds custom keyboard bindings for advanced interactions. Read the ARIA pattern first,
+then use this guide for the LyteNyte additions.
 
 ## Navigation
 
@@ -45,30 +43,23 @@ navigation keybindings:
 
 ### Tab Order
 
-LyteNyte Grid orders DOM elements to match their visual layout.
-If you inspect the DOM, you will see that the grid viewport and each
-cell have a `tabIndex` of `0`.
+LyteNyte Grid orders DOM elements to match the visual layout and sets
+the viewport and cells to `tabIndex=0`. With this configuration,
+`Tab` would normally follow the DOM order. However, the grid
+treats the viewport as a single tab stop, except during cell editing.
 
-Normally, this configuration would cause pressing `Tab` to move focus
-to the next element in the natural DOM order. However, LyteNyte Grid
-treats the viewport as a single tab stop, except when cell editing
-is active.
-
-A single `Tab` press moves focus to the next element outside the grid.
-This behavior prevents users from tabbing through every cell before
-reaching the next focus group.
+Pressing `Tab` moves focus to the next element outside the
+grid, so users don't tab through every cell before reaching the next focus group.
 
 ### Row Detail Navigation
 
-LyteNyte Grid supports keyboard navigation within row detail elements.
-When a row has a focused cell and its row detail is expanded, pressing
-`↓` moves focus to the detail container. Pressing `↓` again while the
-detail container is focused moves focus to the next row.
+Navigate expanded row details using the keyboard.
+When a cell is focused and the row is expanded, press `↓` to focus the detail container.
+Press `↓` again to move to the next row.
 
-The demo below supports all navigation keybindings covered so far.
-Use it to explore how the grid responds to different navigation inputs.
+The demo supports all navigation bindings. Use it to explore the grid's response to inputs.
 
-::demo[Grid Navigation="../(introduction)/demos/getting-started"]
+::demo[Row Detail Navigation="../(introduction)/demos/getting-started"]
 
 ## Cell Selection
 
@@ -87,14 +78,10 @@ for detailed guidance.
 - `Ctrl Shift ↓`: Expand or shrink the selection to the last row.
 - `Ctrl A`: Select all cells in the grid.
 
-Whether the selection expands or shrinks depends on the current
-selection rectangle and the pivot cell. The pivot cell is the cell
-that currently has focus.
+Selection expansion depends on the current selection rectangle and the
+pivot cell, which is the focused cell. Use the demo below to explore selection bindings.
 
-The demo below enables cell selection. Use it to explore the available
-selection keybindings.
-
-::demo[Cell Selection="../(cells)/demos/cell-selection"]
+::demo[Cell Selection Navigation="../(cells)/demos/cell-selection"]
 
 ## Editable Cells
 
@@ -111,19 +98,18 @@ for details on updating cell values.
 
 ## Key Binding Customization
 
-Because LyteNyte Grid is headless, you can add custom keybindings by
-attaching handlers to the component's `onKeyDown` events.
+LyteNyte Grid is headless, so you can add custom keybindings by
+handling the component's `onKeyDown`.
 
-The demo below binds the `Space` key to row selection. See the
-[Row Selection guide](/docs/row-selection)
-for more information. In the demo, you can either double-click a row
-to select it or focus a cell and press the space key.
+The demo below binds `Space` to row selection. Double-click
+a row to select it, or focus a cell and press `Space`. For more details, see
+the [Row Selection guide](/docs/row-selection).
 
-::demo[Row Selection With Space Key="./demos/row-selection-space"]
+::demo[Row Selection Keybindings="./demos/row-selection-space"]
 
-The example below adds a custom keybinding using the grid's `events`
-property. The `events` property allows you to attach custom event
-handlers without breaking the grid into fully headless components.
+Use the `events` property to attach custom handlers without
+switching to a fully headless implementation. The example below adds
+a custom keybinding using the grid's `events` property.
 
 ```tsx
 <Grid
@@ -238,9 +224,9 @@ your application.
 
 ## Touch Interactions
 
-LyteNyte Grid works seamlessly on touch devices. Browser `click` events
-fire on tap, and the grid uses these events for its interaction
-handlers.
+LyteNyte Grid supports touch devices.
+Browser click events fire on tap, and the grid uses these events for
+its interaction handlers.
 
 ## Next Steps
 
