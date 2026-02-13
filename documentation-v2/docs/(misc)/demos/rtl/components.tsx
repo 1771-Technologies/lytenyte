@@ -44,9 +44,9 @@ const formatter = new Intl.NumberFormat("en-Us", {
   maximumFractionDigits: 2,
 });
 export function PriceCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const rtl = api.rtl$.useValue();
   if (!api.rowIsLeaf(row) || !row.data) return;
 
-  const rtl = api.props().rtl;
   const price = formatter.format(row.data.price);
   const [dollars, cents] = price.split(".");
 
@@ -70,9 +70,11 @@ export function PriceCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 }
 
 export function PurchaseDateCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const rtl = api.rtl$.useValue();
+
   if (!api.rowIsLeaf(row) || !row.data) return;
 
-  const formattedDate = format(row.data.purchaseDate, "dd MMM, yyyy");
+  const formattedDate = format(row.data.purchaseDate, rtl ? "yyyy ,dd MMM" : "MMM dd, yyyy");
 
   return <div className="flex h-full w-full items-center">{formattedDate}</div>;
 }

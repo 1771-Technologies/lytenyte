@@ -12,11 +12,20 @@ import {
   PurchaseDateCell,
   SwitchToggle,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import {
+  useClientDataSource,
+  Grid,
+  ViewportShadows,
+  type Piece,
+  usePiece,
+} from "@1771technologies/lytenyte-pro-experimental";
 import { useState } from "react";
 
 export interface GridSpec {
   readonly data: OrderData;
+  readonly api: {
+    rtl$: Piece<boolean>;
+  };
 }
 
 const columns: Grid.Column<GridSpec>[] = [
@@ -49,7 +58,14 @@ export default function Demo() {
       </div>
 
       <div className="ln-grid" style={{ height: 500 }}>
-        <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows} rtl={rtl} />
+        <Grid
+          apiExtension={{ rtl$: usePiece(rtl) }}
+          rowHeight={50}
+          columns={columns}
+          rowSource={ds}
+          slotShadows={ViewportShadows}
+          rtl={rtl}
+        />
       </div>
     </>
   );
