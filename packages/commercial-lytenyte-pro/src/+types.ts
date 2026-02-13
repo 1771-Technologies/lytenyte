@@ -7,66 +7,305 @@ import type { ReactNode } from "react";
  *   @group Grid State
  */
 export interface UseLyteNyteProps<T> {
-  // readonly columns?: Column<T>[];
-  // readonly columnBase?: ColumnBase<T>;
-  // readonly columnGroupDefaultExpansion?: boolean;
-  // readonly columnGroupExpansions?: Record<string, boolean>;
-  // readonly columnGroupJoinDelimiter?: string;
-  // readonly columnSizeToFit?: boolean;
-  // readonly headerHeight?: number;
-  // readonly headerGroupHeight?: number;
-  // readonly gridId: string;
-  // readonly rowDataSource?: RowDataSource<T>;
-  // readonly rowAutoHeightGuess?: number;
-  // readonly rowHeight?: RowHeight;
-  // readonly colScanDistance?: number;
-  // readonly rowScanDistance?: number;
-  // readonly rowOverscanTop?: number;
-  // readonly rowOverscanBottom?: number;
-  // readonly colOverscanStart?: number;
-  // readonly colOverscanEnd?: number;
-  // readonly rowFullWidthPredicate?: RowFullWidthPredicate<T> | null;
-  // readonly rowFullWidthRenderer?: RowFullWidthRendererFn<T>;
-  // readonly cellRenderers?: Record<string, CellRendererFn<T>>;
-  // readonly rtl?: boolean;
-  // readonly sortModel?: SortModelItem<T>[];
-  // readonly filterModel?: Record<string, FilterModelItem<T>>;
-  // readonly aggModel?: { [columnId: string]: { fn: AggModelFn<T> } };
-  // readonly rowGroupColumn?: RowGroupColumn<T>;
-  // readonly rowGroupModel?: RowGroupModelItem<T>[];
-  // readonly rowGroupDisplayMode?: RowGroupDisplayMode;
-  // readonly rowGroupDefaultExpansion?: boolean | number;
-  // readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
-  // readonly floatingRowHeight?: number;
-  // readonly floatingRowEnabled?: boolean;
-  // readonly floatingCellRenderers?: Record<string, HeaderFloatingCellRendererFn<T>>;
-  // readonly headerCellRenderers?: Record<string, HeaderCellRendererFn<T>>;
-  // readonly editRenderers?: Record<string, EditRendererFn<T>>;
-  // readonly editRowValidatorFn?: EditRowValidatorFn<T>;
-  // readonly editClickActivator?: EditClickActivator;
-  // readonly editCellMode?: EditCellMode;
-  // readonly columnMarker?: ColumnMarker<T>;
-  // readonly columnMarkerEnabled?: boolean;
-  // readonly columnDoubleClickToAutosize?: boolean;
-  // readonly rowDetailRenderer?: RowDetailRendererFn<T>;
-  // readonly rowDetailHeight?: RowDetailHeight;
-  // readonly rowDetailExpansions?: Set<string>;
-  // readonly rowDetailAutoHeightGuess?: number;
-  // readonly rowSelectedIds?: Set<string>;
-  // readonly rowSelectionMode?: RowSelectionMode;
-  // readonly rowSelectionActivator?: RowSelectionActivator;
-  // readonly rowSelectChildren?: boolean;
-  // readonly virtualizeCols?: boolean;
-  // readonly virtualizeRows?: boolean;
-  // readonly quickSearch?: string | null;
-  // readonly quickSearchSensitivity?: FilterQuickSearchSensitivity;
-  // readonly columnPivotMode?: boolean;
-  // readonly columnPivotModel?: ColumnPivotModel<T>;
-  // readonly dialogFrames?: Record<string, DialogFrame<T>>;
-  // readonly popoverFrames?: Record<string, PopoverFrame<T>>;
-  // readonly filterInModel?: Record<string, FilterIn>;
-  // readonly cellSelections?: DataRect[];
-  // readonly cellSelectionMode?: CellSelectionMode;
+  /**
+   * The initial column definitions.
+   */
+  readonly columns?: Column<T>[];
+
+  /**
+   * The base column definition.
+   */
+  readonly columnBase?: ColumnBase<T>;
+
+  /**
+   * The default expansion state for column groups if not specified explicitly.
+   */
+  readonly columnGroupDefaultExpansion?: boolean;
+
+  /**
+   * The initial expansion state for column groups.
+   */
+  readonly columnGroupExpansions?: Record<string, boolean>;
+
+  /**
+   * A delimiter used to concatenate group paths into a single group id.
+   */
+  readonly columnGroupJoinDelimiter?: string;
+
+  /**
+   * Indicates whether the grid should size columns to fit the available width.
+   */
+  readonly columnSizeToFit?: boolean;
+
+  /**
+   * The height in pixels that the header should occupy.
+   */
+  readonly headerHeight?: number;
+
+  /**
+   * The height in pixels for the header groups.
+   */
+  readonly headerGroupHeight?: number;
+
+  /**
+   * A unique identifier for the grid instance.
+   */
+  readonly gridId: string;
+
+  /**
+   * The data source used by LyteNyte Grid to manage and provide row data.
+   */
+  readonly rowDataSource?: RowDataSource<T>;
+
+  /**
+   * Initial height guess for auto-height rows, used before actual measurement.
+   */
+  readonly rowAutoHeightGuess?: number;
+
+  /**
+   * Row height strategy used by LyteNyte Grid for rendering rows.
+   */
+  readonly rowHeight?: RowHeight;
+
+  /**
+   * The number of columns LyteNyte Grid should scan when computing layout.
+   */
+  readonly colScanDistance?: number;
+
+  /**
+   * The number of rows LyteNyte Grid should scan when computing layout.
+   */
+  readonly rowScanDistance?: number;
+
+  /**
+   * The number of rows above the first visible row to render.
+   */
+  readonly rowOverscanTop?: number;
+
+  /**
+   * The number of rows below the last visible row to render.
+   */
+  readonly rowOverscanBottom?: number;
+
+  /**
+   * The number of columns before the first visible column to render.
+   */
+  readonly colOverscanStart?: number;
+
+  /**
+   * The number of columns after the last visible column to render.
+   */
+  readonly colOverscanEnd?: number;
+
+  /**
+   * The function predicate used to determine if a row should be rendered as full width.
+   */
+  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T> | null;
+
+  /**
+   * The renderer used to render the content of a full width row.
+   */
+  readonly rowFullWidthRenderer?: RowFullWidthRendererFn<T>;
+
+  /**
+   * The map of named cell renderers that can be referenced by name in the grid.
+   */
+  readonly cellRenderers?: Record<string, CellRendererFn<T>>;
+
+  /**
+   * Whether to use right-to-left rendering. If false, left-to-right is assumed.
+   */
+  readonly rtl?: boolean;
+
+  /**
+   * The initial sort model to apply to the grid.
+   */
+  readonly sortModel?: SortModelItem<T>[];
+
+  /**
+   * The initial filter model to apply to the grid.
+   */
+  readonly filterModel?: Record<string, FilterModelItem<T>>;
+
+  /**
+   * The initial aggregation model to apply to LyteNyte Grid.
+   */
+  readonly aggModel?: { [columnId: string]: { fn: AggModelFn<T> } };
+
+  /**
+   * Template for generating row group columns dynamically.
+   */
+  readonly rowGroupColumn?: RowGroupColumn<T>;
+
+  /**
+   * The initial row group model configuration to apply.
+   */
+  readonly rowGroupModel?: RowGroupModelItem<T>[];
+
+  /**
+   * The row group display mode to use in the grid.
+   */
+  readonly rowGroupDisplayMode?: RowGroupDisplayMode;
+
+  /**
+   * Default expansion depth for row groups. Can be a boolean or a depth number.
+   */
+  readonly rowGroupDefaultExpansion?: boolean | number;
+
+  /**
+   * Initial expansion state of specific row groups by row id.
+   */
+  readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
+
+  /**
+   * The height in px of the floating row.
+   */
+  readonly floatingRowHeight?: number;
+
+  /**
+   * A boolean indicating if the floating row should be enabled.
+   */
+  readonly floatingRowEnabled?: boolean;
+
+  /**
+   * The floating cell renderers that may be referenced by name.
+   */
+  readonly floatingCellRenderers?: Record<string, HeaderFloatingCellRendererFn<T>>;
+
+  /**
+   * The header cell renderers that may be referenced by name.
+   */
+  readonly headerCellRenderers?: Record<string, HeaderCellRendererFn<T>>;
+
+  /**
+   * The edit renderers that may be referenced by name.
+   */
+  readonly editRenderers?: Record<string, EditRendererFn<T>>;
+
+  /**
+   * A function for validating grid updates at a row level.
+   */
+  readonly editRowValidatorFn?: EditRowValidatorFn<T>;
+
+  /**
+   * The mouse interaction that should begin cell editing.
+   */
+  readonly editClickActivator?: EditClickActivator;
+
+  /**
+   * The initial cell edit mode.
+   */
+  readonly editCellMode?: EditCellMode;
+
+  /**
+   * The column marker definition.
+   */
+  readonly columnMarker?: ColumnMarker<T>;
+
+  /**
+   * A boolean indicating if the column marker should be visible.
+   */
+  readonly columnMarkerEnabled?: boolean;
+
+  /**
+   * A boolean indicating if double click to autosize a column should be enabled.
+   */
+  readonly columnDoubleClickToAutosize?: boolean;
+
+  /**
+   * A function used to render the content for a row detail area.
+   */
+  readonly rowDetailRenderer?: RowDetailRendererFn<T>;
+
+  /**
+   * The height of the row detail area.
+   */
+  readonly rowDetailHeight?: RowDetailHeight;
+
+  /**
+   * The initial row detail expansion state.
+   */
+  readonly rowDetailExpansions?: Set<string>;
+
+  /**
+   * The initial guess of the height of a row detail area before the actual height is observed.
+   */
+  readonly rowDetailAutoHeightGuess?: number;
+
+  /**
+   * The initial selected row ids.
+   */
+  readonly rowSelectedIds?: Set<string>;
+
+  /**
+   * The row selection mode to use.
+   */
+  readonly rowSelectionMode?: RowSelectionMode;
+
+  /**
+   * The mouse interaction that should begin row selection.
+   */
+  readonly rowSelectionActivator?: RowSelectionActivator;
+
+  /**
+   * A boolean indicating if the row selection should select children as well.
+   */
+  readonly rowSelectChildren?: boolean;
+
+  /**
+   * A boolean indicating if the columns in the grid should be virtualized.
+   */
+  readonly virtualizeCols?: boolean;
+
+  /**
+   * A boolean indicating if the rows in the grid should be virtualized.
+   */
+  readonly virtualizeRows?: boolean;
+
+  /**
+   * The quick search filter value.
+   */
+  readonly quickSearch?: string | null;
+
+  /**
+   * The case sensitivity of the quick search filter.
+   */
+  readonly quickSearchSensitivity?: FilterQuickSearchSensitivity;
+
+  /**
+   * A boolean indicating if the column pivot mode should be on.
+   */
+  readonly columnPivotMode?: boolean;
+
+  /**
+   * The initial column pivot model to apply to LyteNyte Grid.
+   */
+  readonly columnPivotModel?: ColumnPivotModel<T>;
+
+  /**
+   * The dialog frames available in the grid.
+   */
+  readonly dialogFrames?: Record<string, DialogFrame<T>>;
+
+  /**
+   * The popover frames available in the grid.
+   */
+  readonly popoverFrames?: Record<string, PopoverFrame<T>>;
+
+  /**
+   * The in (set) filter model to apply to LyteNyte Grid.
+   */
+  readonly filterInModel?: Record<string, FilterIn>;
+
+  /**
+   * The initial cell selections in the grid.
+   */
+  readonly cellSelections?: DataRect[];
+
+  /**
+   * The cell selection mode to use.
+   */
+  readonly cellSelectionMode?: CellSelectionMode;
 }
 
 /**
@@ -1463,29 +1702,132 @@ export interface ColumnPivotUIHints {
  * @group Column
  */
 export interface Column<T> {
+  /**
+   * A required unique identifier for the column. This value must be distinct among all columns.
+   */
   readonly id: string;
+
+  /**
+   * A human-readable name for the column. Useful when `id` is more technical or programmatic.
+   */
   readonly name?: string;
+
+  /**
+   * Specifies the column's data type. Can be one of the built-in types or a custom string label.
+   */
   readonly type?: "string" | "number" | "date" | "datetime" | ({} & string);
+
+  /**
+   * Controls the visibility of the column. When set to `true`, the column is hidden from the grid display.
+   */
   readonly hide?: boolean;
+
+  /**
+   * Specifies the preferred width of the column. This value is ignored if flex sizing is used, or if it violates the column's min/max bounds.
+   */
   readonly width?: number;
+
+  /**
+   * Defines the maximum width the column is allowed to occupy.
+   */
   readonly widthMax?: number;
+
+  /**
+   * Defines the minimum width the column is allowed to occupy.
+   */
   readonly widthMin?: number;
+
+  /**
+   * Specifies the flex ratio this column should take when distributing remaining space.
+   *
+   *   Similar to CSS `flex`, it controls how extra space is shared among flex-enabled columns.
+   */
   readonly widthFlex?: number;
+
+  /**
+   * Defines whether the column is pinned to the start or end of the grid. Pinned columns remain visible regardless of horizontal scroll.
+   */
   readonly pin?: ColumnPin;
+
+  /**
+   * Controls the visibility behavior of a column when its group is collapsed.
+   *
+   *   Determines whether the column is always visible, only visible when expanded, or only visible when collapsed.
+   */
   readonly groupVisibility?: ColumnGroupVisibility;
+
+  /**
+   * Represents the hierarchical path of column groups the column belongs to. Each string corresponds to a level in the nesting hierarchy.
+   */
   readonly groupPath?: string[];
+
+  /**
+   * Defines how many columns the cell should span. Can be a fixed number or a function that returns a span dynamically.
+   */
   readonly colSpan?: number | CellSpanFn<T>;
+
+  /**
+   * Defines how many rows the cell should span. Can be a fixed number or a function that returns a span dynamically.
+   */
   readonly rowSpan?: number | CellSpanFn<T>;
+
+  /**
+   * Determines how the cell value should be retrieved or computed for the column. If omitted, the column's `id` is used as a fallback.
+   */
   readonly field?: Field<T>;
+
+  /**
+   * Function used to render the column's header. Must return a React node.
+   */
   readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
+   */
   readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
+
+  /**
+   * Defines how to render the cell content. Accepts a renderer function or a string referencing a registered renderer.
+   */
   readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   * Describes the capabilities and intended UI behavior of the column. These hints are used by external UI components.
+   */
   readonly uiHints?: ColumnUIHints;
+
+  /**
+   * Controls whether cells in the column can be edited.
+   *
+   *   Editing is only possible when both the grid is in edit mode and this flag is set.
+   */
   readonly editable?: Editable<T>;
+
+  /**
+   * Specifies a custom cell editor to use when the cell enters edit mode.
+   */
   readonly editRenderer?: EditRenderer<T>;
+
+  /**
+   * Custom logic for applying an edit to the row's data. Required when editing fields that need special update logic.
+   */
   readonly editSetter?: EditSetterFn<T>;
+
+  /**
+   * Function that computes the ideal width for the column based on sampled cell content.
+   */
   readonly autosizeCellFn?: AutosizeCellFn<T>;
+
+  /**
+   * Function that computes the ideal width for the column header based on its content.
+   */
   readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
+
+  /**
+   * When `true`, the column is excluded from the quick search filter.
+   *
+   * Useful for non-textual or metadata columns that should not be searchable by users.
+   */
   readonly quickSearchIgnore?: boolean;
 }
 
@@ -1730,13 +2072,40 @@ export interface ClientRowDataSourcePaginatedParams<T> {
  * @group Row Data Source
  */
 export interface ClientRowDataSourceParams<T> {
-  // readonly data: T[];
-  // readonly topData?: T[];
-  // readonly bottomData?: T[];
-  // readonly reflectData?: boolean;
-  // readonly rowIdBranch?: (path: string[]) => string;
-  // readonly rowIdLeaf?: (d: RowLeaf<T>, i: number) => string;
-  // readonly transformInFilterItem?: (params: { column: Column<T>; values: unknown[] }) => FilterInFilterItem[];
+  /**
+   * The primary dataset passed to LyteNyte Grid for display.
+   */
+  readonly data: T[];
+
+  /**
+   * Rows to pin to the top of the grid, rendered above all scrollable rows.
+   */
+  readonly topData?: T[];
+
+  /**
+   * Rows to pin to the bottom of the grid, rendered below all scrollable rows.
+   */
+  readonly bottomData?: T[];
+
+  /**
+   * If true, the data source will reflect external mutations to the original data array.
+   */
+  readonly reflectData?: boolean;
+
+  /**
+   * Callback to derive a unique id for grouped (branch) rows based on group value path.
+   */
+  readonly rowIdBranch?: (path: string[]) => string;
+
+  /**
+   * Callback to derive a unique id for each leaf row. Receives the row data and index.
+   */
+  readonly rowIdLeaf?: (d: RowLeaf<T>, i: number) => string;
+
+  /**
+   * Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.
+   */
+  readonly transformInFilterItem?: (params: { column: Column<T>; values: unknown[] }) => FilterInFilterItem[];
 }
 
 /**
@@ -2999,61 +3368,278 @@ export interface ColumnMoveParams<T> {
  *   @group Grid API
  */
 export interface GridApi<T> {
-  // readonly columnField: (columnOrId: string | Column<T>, row: FieldDataParam<T>) => unknown;
-  // readonly columnByIndex: (columnIndex: number) => Column<T> | null;
-  // readonly columnIndex: (columnOrId: string | Column<T>) => number;
-  // readonly sortForColumn: (columnOrId: string) => { sort: SortModelItem<T>; index: number } | null;
-  // readonly rowIsLeaf: (row: RowNode<T>) => row is RowLeaf<T>;
-  // readonly rowIsGroup: (row: RowNode<T>) => row is RowGroup;
-  // readonly rowGroupColumnIndex: (c: Column<T>) => number;
-  // readonly rowGroupToggle: (row: RowGroup, state?: boolean) => void;
-  // readonly rowGroupApplyExpansions: (expansions: Record<string, boolean>) => void;
-  // readonly rowGroupIsExpanded: (row: RowGroup) => boolean;
-  // readonly eventAddListener: <K extends keyof GridEvents<T>>(
-  //   event: K,
-  //   fn: (event: Parameters<Required<GridEvents<T>>[K]>[0]) => void,
-  // ) => () => void;
-  // readonly eventRemoveListener: <K extends keyof GridEvents<T>>(
-  //   event: K,
-  //   fn: (event: Parameters<Required<GridEvents<T>>[K]>[0]) => void,
-  // ) => void;
-  // readonly eventFire: <K extends keyof GridEvents<T>>(
-  //   name: K,
-  //   event: Parameters<Required<GridEvents<T>>[K]>[0],
-  // ) => void;
-  // readonly scrollIntoView: (options: ScrollIntoViewOptions<T>) => void;
-  // readonly editBegin: (params: EditBeginParams<T>) => void;
-  // readonly editEnd: (cancel?: boolean) => void;
-  // readonly editIsCellActive: (params: EditBeginParams<T>) => boolean;
-  // readonly editUpdate: (params: EditUpdateParams<T>) => void;
-  // readonly rowDetailIsExpanded: (rowOrId: string | RowNode<T>) => boolean;
-  // readonly rowDetailToggle: (rowOrId: string | RowNode<T>, state?: boolean) => void;
-  // readonly rowDetailRenderedHeight: (rowOrId: string | RowNode<T>) => number;
-  // readonly rowById: (id: string) => RowNode<T> | null | undefined;
-  // readonly rowByIndex: (index: number, section?: RowSection) => RowNode<T> | null | undefined;
-  // readonly rowSelect: (params: RowSelectOptions) => void;
-  // readonly rowSelectAll: (params?: RowSelectAllOptions) => void;
-  // readonly rowSelected: () => RowNode<T>[];
-  // readonly rowHandleSelect: (params: RowHandleSelectParams) => void;
-  // readonly useRowDrag: (params: UseRowDragParams<T>) => {
-  //   dragProps: any;
-  //   isDragging: boolean;
-  // };
-  // readonly columnResize: (columns: Record<string, number>) => void;
-  // readonly columnById: (id: string) => Column<T> | undefined;
-  // readonly columnUpdate: (updates: Record<string, Omit<Column<T>, "id">>) => void;
-  // readonly columnMove: (params: ColumnMoveParams<T>) => void;
-  // readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
-  // readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
-  // readonly columnAutosize: (params: ColumnAutosizeParams<T>) => Record<string, number>;
-  // readonly exportDataRect: (params?: ExportDataRectParams) => Promise<ExportDataRectResult<T>>;
-  // readonly exportCsv: (params?: ExportCsvParams) => Promise<string>;
-  // readonly exportCsvFile: (params?: ExportCsvParams) => Promise<Blob>;
-  // readonly dialogFrameOpen: (id: string, context?: any) => void;
-  // readonly dialogFrameClose: (id?: string) => void;
-  // readonly popoverFrameOpen: (id: string, target: HTMLElement | VirtualTarget, context?: any) => void;
-  // readonly popoverFrameClose: (id?: string) => void;
-  // readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
+  /**
+   * Retrieves the calculated value for a specific column and row. Useful in cases where the column's
+   *   field is not a direct path, or when additional logic is involved in determining cell values.
+   *   It provides access to LyteNyte Grid's internal field evaluation pipeline.
+   */
+  readonly columnField: (columnOrId: string | Column<T>, row: FieldDataParam<T>) => unknown;
+
+  /**
+   * Returns the column at the specified visible index. If the index is out of bounds or
+   *   the column is hidden (due to visibility rules or collapsed groups), this will return null.
+   */
+  readonly columnByIndex: (columnIndex: number) => Column<T> | null;
+
+  /**
+   * Returns the index of a visible column based on its id or column object.
+   *   Returns -1 if the column is not currently visible (e.g., hidden or inside a collapsed group).
+   */
+  readonly columnIndex: (columnOrId: string | Column<T>) => number;
+
+  /**
+   * Retrieves the current sort object and its index from the sort model for a given column.
+   *   If no sort applies to the column, returns null.
+   */
+  readonly sortForColumn: (columnOrId: string) => { sort: SortModelItem<T>; index: number } | null;
+
+  /**
+   * Type guard that determines whether a row node is a leaf node (i.e., not a group).
+   *   Useful when working with union row types such as RowLeaf and RowGroup.
+   */
+  readonly rowIsLeaf: (row: RowNode<T>) => row is RowLeaf<T>;
+
+  /**
+   * Type guard that checks if a row node is a group. Helps distinguish between leaf and group rows.
+   */
+  readonly rowIsGroup: (row: RowNode<T>) => row is RowGroup;
+
+  /**
+   * Returns the group index associated with a group column. Useful in header or cell renderers
+   *   dealing with auto-generated group columns in the grid.
+   */
+  readonly rowGroupColumnIndex: (c: Column<T>) => number;
+
+  /**
+   * Toggles the expansion state of a group row. Optionally accepts a boolean state to set
+   *   expansion explicitly. This method triggers the row group expansion lifecycle.
+   */
+  readonly rowGroupToggle: (row: RowGroup, state?: boolean) => void;
+
+  /**
+   * Applies multiple group row expansion states using a mapping of row ids to expansion booleans.
+   *   Useful when restoring or syncing expansion state.
+   */
+  readonly rowGroupApplyExpansions: (expansions: Record<string, boolean>) => void;
+
+  /**
+   * Returns a boolean indicating if the specified group row is currently expanded.
+   */
+  readonly rowGroupIsExpanded: (row: RowGroup) => boolean;
+
+  /**
+   * Adds an event listener to the grid for a specified event.
+   *   Returns a function that can be called to remove the listener.
+   */
+  readonly eventAddListener: <K extends keyof GridEvents<T>>(
+    event: K,
+    fn: (event: Parameters<Required<GridEvents<T>>[K]>[0]) => void,
+  ) => () => void;
+
+  /**
+   * Removes a registered event listener. The exact event and handler function must be provided.
+   */
+  readonly eventRemoveListener: <K extends keyof GridEvents<T>>(
+    event: K,
+    fn: (event: Parameters<Required<GridEvents<T>>[K]>[0]) => void,
+  ) => void;
+
+  /**
+   * Manually dispatches a grid event with a given payload. This is intended for advanced usage
+   *   where custom behavior or testing scenarios require simulating native event lifecycles.
+   */
+  readonly eventFire: <K extends keyof GridEvents<T>>(
+    name: K,
+    event: Parameters<Required<GridEvents<T>>[K]>[0],
+  ) => void;
+
+  /**
+   * Ensures the specified row and/or column is scrolled into view.
+   * Accepts a configuration object that controls the scroll behavior.
+   */
+  readonly scrollIntoView: (options: ScrollIntoViewOptions<T>) => void;
+
+  /**
+   * Starts cell editing at a specified location. If the grid is set to read-only mode, this method has no effect.
+   */
+  readonly editBegin: (params: EditBeginParams<T>) => void;
+
+  /**
+   * Ends the currently active cell edit. If there is no active edit session, the method does nothing.
+   * Can optionally cancel the edit if `true` is passed.
+   */
+  readonly editEnd: (cancel?: boolean) => void;
+
+  /**
+   * Returns `true` if the provided cell is currently being edited. Useful for conditionally rendering custom cell UI.
+   */
+  readonly editIsCellActive: (params: EditBeginParams<T>) => boolean;
+
+  /**
+   * Applies an edit to the specified cell programmatically. This directly updates the data without going through the UI.
+   */
+  readonly editUpdate: (params: EditUpdateParams<T>) => void;
+
+  /**
+   * Checks whether the detail panel for the given row is currently expanded. Returns `true` if expanded.
+   */
+  readonly rowDetailIsExpanded: (rowOrId: string | RowNode<T>) => boolean;
+
+  /**
+   * Toggles the detail expansion for the specified row. Optionally provide a boolean to explicitly set the expansion state.
+   */
+  readonly rowDetailToggle: (rowOrId: string | RowNode<T>, state?: boolean) => void;
+
+  /**
+   * Returns the rendered height of the row's detail section only. Does not include the standard row height.
+   */
+  readonly rowDetailRenderedHeight: (rowOrId: string | RowNode<T>) => number;
+
+  /**
+   * Retrieves a row by its unique id. Returns `null` or `undefined` if the row doesn't exist or
+   * is not currently available in the data source.
+   */
+  readonly rowById: (id: string) => RowNode<T> | null | undefined;
+
+  /**
+   * Retrieves a row based on its index and optional section (body, pinned top, or pinned bottom).
+   * Returns `null` or `undefined` if the index is out of range.
+   */
+  readonly rowByIndex: (index: number, section?: RowSection) => RowNode<T> | null | undefined;
+
+  /**
+   * Selects a specific set of rows based on the provided {@link RowSelectOptions}.
+   * Triggers corresponding selection-related grid events.
+   */
+  readonly rowSelect: (params: RowSelectOptions) => void;
+
+  /**
+   * Selects all rows in the current grid view. Accepts {@link RowSelectAllOptions} for fine-grained control.
+   * Triggers selection-related events.
+   */
+  readonly rowSelectAll: (params?: RowSelectAllOptions) => void;
+
+  /**
+   * Returns the list of currently selected row nodes.
+   * Note that some returned rows may not be part of the visible grid, depending on the data state.
+   */
+  readonly rowSelected: () => RowNode<T>[];
+
+  /**
+   * A method that may be used in DOM event handlers to trigger row selection logic.
+   *   Ideal for integrating checkbox-based or custom selection workflows. Also supports bulk row selection.
+   */
+  readonly rowHandleSelect: (params: RowHandleSelectParams) => void;
+
+  /**
+   * A React hook that returns props and state for row dragging support.
+   *   These props can be attached to a drag handle in your component to initiate drag behavior.
+   *   This must follow React’s hook rules.
+   */
+  readonly useRowDrag: (params: UseRowDragParams<T>) => {
+    dragProps: any;
+    isDragging: boolean;
+  };
+
+  /**
+   * Resizes one or more columns by providing an object where each key is a column id and the value is the new width in pixels.
+   */
+  readonly columnResize: (columns: Record<string, number>) => void;
+
+  /**
+   * Returns the column with the specified id. If no matching column is found, returns `undefined`.
+   */
+  readonly columnById: (id: string) => Column<T> | undefined;
+
+  /**
+   * Applies updates to one or more columns. Each key in the object is a column id, and each value is the set of updates to apply.
+   */
+  readonly columnUpdate: (updates: Record<string, Omit<Column<T>, "id">>) => void;
+
+  /**
+   * Moves one or more columns before or after a specified target column.
+   *   This operation respects column group visibility and layout rules.
+   */
+  readonly columnMove: (params: ColumnMoveParams<T>) => void;
+
+  /**
+   * Returns the root cell for the provided row and column index. This may be:
+   *
+   * - A cell that is not covered by the row or column span of another cell, in this case the root cell
+   *   is the cell itself
+   * - A cell that is covered by the row or column span of another cell, in this case the root cell is the
+   *   spanning cell
+   * - A full width row, in this case the root cell is the row itself. Note that full width rows cannot be
+   *   spanned over, so it is not possible for a spanning cell to continue past a full width row, even if the
+   *   span amount would allow it
+   */
+  readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
+
+  /**
+   * Toggles the expansion state of one or more column groups.
+   *   You can also pass a boolean to directly set the expansion state.
+   */
+  readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
+
+  /**
+   * Automatically adjusts the widths of columns based on their content. Accepts optional parameters to control the behavior.
+   */
+  readonly columnAutosize: (params: ColumnAutosizeParams<T>) => Record<string, number>;
+
+  /**
+   * Returns the raw cell data within a rectangular selection of the grid.
+   *   This can be useful for custom data processing or exporting workflows.
+   *
+   *   @group Grid API
+   */
+  readonly exportDataRect: (params?: ExportDataRectParams) => Promise<ExportDataRectResult<T>>;
+
+  /**
+   * Exports the cell data for a given rectangle of the grid as a CSV-formatted string.
+   *   The rectangle can be customized through parameters such as selected rows, columns, or cell ranges.
+   *
+   *   @group Grid API
+   */
+  readonly exportCsv: (params?: ExportCsvParams) => Promise<string>;
+
+  /**
+   * Generates a downloadable CSV `Blob` from the selected rectangular area of grid cell data.
+   *   Can be used to trigger a file download in the browser.
+   *
+   *   @group Grid API
+   */
+  readonly exportCsvFile: (params?: ExportCsvParams) => Promise<Blob>;
+
+  /**
+   * Opens a dialog frame by its id. You may optionally provide a context object
+   *       that will be passed into the dialog's renderer for dynamic configuration.
+   */
+  readonly dialogFrameOpen: (id: string, context?: any) => void;
+
+  /**
+   * Closes dialog frames. If an id is provided, only the dialog with that id is closed;
+   *       otherwise, all open dialogs will be closed.
+   */
+  readonly dialogFrameClose: (id?: string) => void;
+
+  /**
+   * Opens a popover frame at the specified target element or virtual target.
+   *       An optional context can be passed into the popover renderer for configuration.
+   */
+  readonly popoverFrameOpen: (id: string, target: HTMLElement | VirtualTarget, context?: any) => void;
+
+  /**
+   * Closes popover frames. If an id is provided, only the corresponding frame is closed;
+   *       otherwise, all popover frames will be dismissed.
+   */
+  readonly popoverFrameClose: (id?: string) => void;
+
+  /**
+   * Returns the grid-relative position of the specified HTML element.
+   *       This can help determine if an element belongs to a specific grid cell,
+   *       header, or other region—useful for anchoring popovers or tooltips.
+   */
+  readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
 }
 
 /**
@@ -6588,11 +7174,68 @@ export interface DataResponsePinned {
  * @group Row Data Source
  */
 export interface RowDataSourceServerParams<T> {
+  /**
+   * The `dataFetcher` function is required by the LyteNyte Grid server data source
+   * and serves as its main entry point for retrieving rows. It fetches row slices
+   * from the server based on the current grid view. LyteNyte Grid calls this function
+   * whenever the view changes, which means it may be invoked frequently if the view
+   * updates often.
+   */
   readonly dataFetcher: DataFetcherFn<T>;
+
+  /**
+   * A list of external dependencies the data source should depend on. If any of these properties
+   * change, then the grid will reset and fetch the data from the server again. This is the equivalent
+   * of adding watch keys/dependency tracking to the grid.
+   *
+   * Use this property when you want the grid to reset based on some external piece of data, such as an
+   * external search query.
+   *
+   * Note all the items in the list should be referentially stable. LyteNyte Grid will shallow compare the
+   * array, and check equality using the `!==` operator. If an item is not stable it may result in an infinite
+   * reset loop.
+   */
   readonly dataFetchExternals?: unknown[];
+
+  /**
+   * Column pivots produce column definitions derived from the row data. Because the
+   * server data source does not have full access to row data, it relies on a
+   * `dataColumnPivotFetcher` function. The server data source calls this function
+   * to fetch pivot column definitions whenever the pivot configuration changes.
+   */
   readonly dataColumnPivotFetcher?: DataColumnPivotFetcherFn<T>;
+
+  /**
+   * The `inFilter` in LyteNyte Grid filters rows by the unique values of a column.
+   * LyteNyte Grid retrieves these values from the row data source. For server data
+   * sources, the `dataInFilterItemFetcher` function retrieves the filter items on
+   * demand. These items are then included with data requests to apply the filter.
+   */
   readonly dataInFilterItemFetcher?: DataInFilterItemFetcherFn<T>;
+
+  /**
+   * LyteNyte Grid supports cell editing, but the row data source must perform the
+   * actual update once an edit completes. For a server data source, the data is not
+   * stored on the client, so LyteNyte Grid calls the `cellUpdateHandler` function
+   * to trigger the server update.
+   *
+   * Developers are responsible for executing the update and handling errors. The
+   * `cellUpdateHandler` provides the hook for managing these updates.
+   */
   readonly cellUpdateHandler?: (updates: Map<string, any>) => void;
+
+  /**
+   * If true, applies cell edits to the UI before the server confirms the update.
+   * This is an optimistic update, assuming the server operation will succeed.
+   * Developers are responsible for reconciling server-side changes and handling
+   * any failures that occur.
+   */
   readonly cellUpdateOptimistically?: boolean;
+
+  /**
+   * LyteNyte Grid's server data source fetches row data in slices. The `blockSize`
+   * property controls the size of each slice. A larger `blockSize` reduces the
+   * number of requests but increases the amount of data transferred per request.
+   */
   readonly blockSize?: number;
 }

@@ -99,6 +99,35 @@ export default function Clipboard() {
       const position = api.positionFromElement(document.activeElement as HTMLElement);
       if (position?.kind !== "cell") return;
 
+      // Repeat paste for excel like behavior
+      const selection = api.cellSelections().at(-1);
+      let repeat: Repeat | null = null;
+      if (selection) {
+        const xDiff = selection.columnEnd - selection.columnStart;
+        const yDiff = selection.rowEnd - selection.rowStart;
+
+        const columnLengths = updates.map((x) => x.length);
+
+        const allTheSameLength = columnLengths.every((x) => x === columnLengths[0]);
+
+        if (allTheSameLength)
+          repeat = rectRepeat({ cols: columnLengths[0], rows: updates.length }, { cols: xDiff, rows: yDiff });
+      }
+      if (repeat) {
+        for (let r = 0; r < updates.length; r++) {
+          const row = updates[r];
+          const newRow = [];
+          for (let i = 0; i < repeat.x; i++) newRow.push(...row);
+
+          updates[r] = newRow;
+        }
+
+        const final = [];
+        for (let i = 0; i < repeat.y; i++) final.push(...updates);
+
+        updates = final;
+      }
+
       const map = new Map<number, { column: number; value: any }[]>();
 
       for (let i = 0; i < updates.length; i++) {
@@ -193,4 +222,23 @@ export default function Clipboard() {
       />
     </div>
   );
+}
+type Rect = { rows: number; cols: number };
+type Repeat = { x: number; y: number };
+
+function rectRepeat(small: Rect, big: Rect): Repeat | null {
+  const sr = small.rows;
+  const sc = small.cols;
+  const br = big.rows;
+  const bc = big.cols;
+
+  // Basic validation (optional but handy)
+  if (![sr, sc, br, bc].every(Number.isInteger)) return null;
+  if (sr <= 0 || sc <= 0 || br <= 0 || bc <= 0) return null;
+
+  // Must divide evenly for a perfect tiling
+  if (br % sr !== 0) return null;
+  if (bc % sc !== 0) return null;
+
+  return { x: bc / sc, y: br / sr };
 }
