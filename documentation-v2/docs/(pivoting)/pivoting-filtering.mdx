@@ -2,21 +2,20 @@
 title: Pivot Filters
 pro: true
 step: Filter pivots by labels or predicate conditions.
-description: Once a pivot view has been created, you can apply filters to reduce the number of
-  rows displayed. Pivots can be filtered by labels or by predicate conditions.
+description: Filter pivot rows using specific labels or predicate conditions.
 ---
 
 :::note
 
-This guide assumes you are familiar with general filtering using the client data source. Before
-continuing, ensure you have read the following guides:
+This guide assumes familiarity with general and client data source filtering. Before continuing, read:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Client Row Having Filters](/docs/client-source-having-filters)
 - [Client Row Label Filters](/docs/client-source-label-filters)
+- [Filtering Numbers](/docs/filtering-numbers)
 
-You should also be familiar with the content of the **Filtering** section, in particular
-the [Filtering Numbers guide](/docs/filtering-numbers).
+Demos in this guide show a measure summing **Profit**. Rows are pivoted by **Country** and **Product**,
+columns by **Age Group**.
 
 :::
 
@@ -30,15 +29,15 @@ property accepts either a single [`HavingFilterFn`](/docs/reference/grid-types#f
 The demo below demonstrates having filter functions in action. You can update the filter applied
 to the pivot column by clicking the funnel icon in the column header.
 
-When you provide a single [`HavingFilterFn`], the grid evaluates all rows using that function.
-To filter at a specific pivot level, provide an array of filter functions instead. See the
-[Client Row Having Filters guide](/docs/client-source-having-filters) for more details.
+When you provide a single `HavingFilterFn`, the grid evaluates
+all rows using that function. To filter at a specific pivot level, provide an array of filter
+functions instead. See the [Client Row Having Filters guide](/docs/client-source-having-filters) for more details.
 
 ::demo[Filtering Pivots="./demos/pivot-filtering"]
 
-The code that applies the filters is relatively straightforward. The LyteNyte API extends the grid
-with a filter model, and the state of that model is converted into a filter function. The grid then
-applies this filter function to the pivot model of the client data source, as shown below:
+The API extends the grid with a filter model. This model's state
+is converted into a filter function and applied to the client
+data source's pivot model, as shown below.
 
 ```ts
 const [filter, setFilter] = useState<Record<string, GridFilter>>({}); //!
@@ -104,31 +103,32 @@ const ds = useClientDataSource<GridSpec>({
 });
 ```
 
-### Filter Before Pivot Creation
+### Pre-Pivot Row Filtering
 
-By default, LyteNyte Grid ignores standard row filters when pivoting.
-As a result, the grid uses all provided rows to create pivot columns.
+By default, LyteNyte Grid does not apply standard row filters when pivoting and
+uses all rows to create pivot columns.
 
-To apply standard row filters before pivoting, set the `pivotApplyExistingFilter` option.
-This causes the grid to filter rows first and then generate the pivoted data.
+To apply standard row filters before pivoting,
+set `pivotApplyExistingFilter`. The grid filters rows first,
+then generates pivoted data.
 
-In the demo below, the grid filters rows to include only entries where the country is
-**United States** or **Germany**. See the
-[Client Row Filtering guide](/docs/client-source-filtering) for more details on row filtering.
+In the demo below, the grid filters rows to include only entries
+where the **Country** is the **United States** or **Germany**. For row filtering
+details, see the [Client Row Filtering guide](/docs/client-source-filtering).
 
 ::demo[Filter Before Pivot Creation="./demos/pivot-existing-filters"]
 
 ## Label Filters
 
-Pivoting creates labels for both rows and columns. You can use `rowLabelFilter` and
-`colLabelFilter` to filter pivot results based on row and column labels, respectively.
+Pivoting creates labels for rows and columns. Use `rowLabelFilter` and `colLabelFilter`
+to filter pivot results by row and column labels.
 
-Label filters allow you to include or exclude specific identifiers from the resulting
-pivot set. See the [Client Row Label Filters guide](/docs/client-source-label-filters) for more details.
+Label filters allow you to include or exclude specific identifiers from
+the pivot output. For details, see the [Client Row Label Filters guide](/docs/client-source-label-filters).
 
-The demo below applies two label filters: one for columns and one for rows. The row label
-filter excludes any country other than **United States** or **Germany**. The column label
-filter excludes the **Under 25** category.
+The demo below applies two label filters. The row label filter keeps only
+the **United States** and **Germany**. The column label filter
+excludes **Under 25** age group.
 
 ::demo[Pivot Label Filters="./demos/pivot-label-filters"]
 

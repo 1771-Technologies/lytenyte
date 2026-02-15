@@ -2,24 +2,22 @@
 title: Pivot Sorting
 pro: true
 step: Customize the sort order of pivoted row groups.
-description: Columns created by pivoting can be sorted. You can sort rows in ascending or
-  descending order. Any pivot column can be sorted.
+description: Pivot columns support sorting. Sort rows in ascending or descending order based on any pivot column.
 ---
 
 :::note
 
-You should be familiar with how sorting works in the client data source before reading this
-guide. Pivot sorting works in the same way as normal client sorting, except that sorts are
-applied to the pivot model.
-
-See the [Client Row Sorting guide](/docs/client-source-row-sorting) for more details.
+This guide assumes familiarity with client sorting. Pivot sorting works the same way,
+but applies sorts to the pivot model. See the [Client Row Sorting guide](/docs/client-source-row-sorting)
+for details.
 
 :::
 
 ## Sorting Pivots
 
-To sort pivot columns, set the `sort` property on the pivot model. The demo below demonstrates
-this by allowing you to sort any column by clicking its header.
+To sort pivot columns, set the `sort` property on the pivot model.
+In the demo below, click a column header to sort by that pivot column.
+The demo uses a measure that sums **Profit**.
 
 ::demo[Pivot Sorting="./demos/pivot-sorting"]
 
