@@ -1,5 +1,6 @@
 import type {
   AggregationFn,
+  DimensionSort,
   RowGroup,
   RowLeaf,
   RowNode,
@@ -9,6 +10,7 @@ import type {
 import type { RootMap, RootNode } from "./use-group-tree/use-group-tree";
 import { useMemo } from "react";
 import { getValidLeafs } from "./get-valid-leafs.js";
+import { useSortFn } from "@1771technologies/lytenyte-core-experimental/internal";
 
 type UseFlattenedGroupsReturn<T> = [rows: RowNode<T>[] | null, depth: number];
 
@@ -22,6 +24,9 @@ export function useFlattenedGroups<T>(
   suppressLeafExpansion: boolean,
   ignoreIsLast: boolean = false,
 ) {
+  const sortFallbackDim = useMemo<DimensionSort<any>[]>(() => [{ dim: { id: "__ln_group__" } }], []);
+  const sortFallback = useSortFn(sortFallbackDim);
+
   const flat = useMemo<UseFlattenedGroupsReturn<T>>(() => {
     if (!root) return [null, 0];
 
@@ -44,7 +49,14 @@ export function useFlattenedGroups<T>(
     ) {
       maxDepth = Math.max(depth + 1, maxDepth);
 
-      const rows = nodeChildrenToRows(node, agg, leafs, workingSet, sort, isLast && !ignoreIsLast);
+      const rows = nodeChildrenToRows(
+        node,
+        agg,
+        leafs,
+        workingSet,
+        sort ?? sortFallback,
+        isLast && !ignoreIsLast,
+      );
 
       let offset = 0;
 
@@ -78,7 +90,7 @@ export function useFlattenedGroups<T>(
     processRowsBetter(root!.children, null, 0, root.maxDepth <= 1);
 
     return [flatList, maxDepth];
-  }, [agg, expandedFn, ignoreIsLast, leafs, root, sort, suppressLeafExpansion, workingSet]);
+  }, [agg, expandedFn, ignoreIsLast, leafs, root, sort, sortFallback, suppressLeafExpansion, workingSet]);
 
   return flat;
 }
