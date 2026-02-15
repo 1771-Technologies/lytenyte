@@ -45,6 +45,7 @@ export interface OneDocConfig {
   }[];
 
   readonly navbar: {
+    docVersions?: { title: string; full: string; href: string }[];
     left?: {
       title: string;
       url: string;
