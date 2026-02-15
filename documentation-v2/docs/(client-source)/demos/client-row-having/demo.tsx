@@ -51,7 +51,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     width: 150,
     type: "number",
     cellRenderer: NumberCell,
-    agg: "avg",
+    agg: "sum",
     allowedAggs: numberAllowed,
     floatingCellRenderer: FloatingFilter,
   },
@@ -61,7 +61,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     type: "number",
     cellRenderer: NumberCell,
     floatingCellRenderer: FloatingFilter,
-    agg: "avg",
+    agg: "sum",
     allowedAggs: numberAllowed,
   },
   {
@@ -87,7 +87,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     width: 175,
     cellRenderer: CustomerRating,
 
-    agg: "avg",
+    agg: "sum",
     allowedAggs: numberAllowed,
   },
   {
@@ -128,7 +128,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     type: "number",
     cellRenderer: DurationCell,
 
-    agg: "avg",
+    agg: "sum",
     allowedAggs: numberAllowed,
   },
   {
@@ -147,7 +147,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     type: "number",
     cellRenderer: AgeCell,
 
-    agg: "avg",
+    agg: "sum",
     allowedAggs: numberAllowed,
   },
   {
