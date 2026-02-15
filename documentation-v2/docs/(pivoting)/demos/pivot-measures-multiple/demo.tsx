@@ -45,11 +45,12 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 130 };
+const base: Grid.ColumnBase<GridSpec> = { width: 130, widthFlex: 1 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
@@ -97,8 +98,19 @@ export default function PivotDemo() {
   const pivotProps = ds.usePivotProps();
   return (
     <>
-      <div className="ln-grid ln-header-group:justify-center" style={{ height: 500 }}>
-        <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid
+          columns={columns}
+          rowSource={ds}
+          columnBase={base}
+          rowGroupColumn={group}
+          {...pivotProps}
+          styles={{
+            headerGroup: {
+              style: { position: "sticky", insetInlineStart: "var(--ln-start-offset)", overflow: "unset" },
+            },
+          }}
+        />
       </div>
     </>
   );

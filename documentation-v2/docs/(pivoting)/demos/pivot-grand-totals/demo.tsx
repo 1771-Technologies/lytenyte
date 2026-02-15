@@ -39,7 +39,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120 };
+const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,

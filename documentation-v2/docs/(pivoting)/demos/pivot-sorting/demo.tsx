@@ -32,7 +32,7 @@ export interface GridSpec {
 export const columns: Grid.Column<GridSpec>[] = [
   { id: "date", name: "Date", cellRenderer: DateCell, width: 110 },
   { id: "age", name: "Age", type: "number", width: 80 },
-  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 110 },
+  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 160 },
   { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 80 },
   { id: "country", name: "Country", cellRenderer: CountryCell, width: 150 },
   { id: "orderQuantity", name: "Quantity", type: "number", width: 60 },
@@ -46,12 +46,13 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120 };
+const base: Grid.ColumnBase<GridSpec> = { width: 160, widthFlex: 1 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   headerRenderer: Header,
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
@@ -61,7 +62,7 @@ const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
 
 export default function PivotDemo() {
   const [pivotSorts, setPivotSorts] = useState<{ id: string; dir: "asc" | "desc" } | null>({
-    id: "25-34-->profit",
+    id: "Adults (35-64)-->profit",
     dir: "desc",
   });
   const sorts = usePiece(pivotSorts, setPivotSorts);
@@ -87,7 +88,7 @@ export default function PivotDemo() {
             name: "Profit",
             type: "number",
             cellRenderer: ProfitCell,
-            width: 140,
+            width: 200,
             headerRenderer: Header,
           },
           fn: "sum",

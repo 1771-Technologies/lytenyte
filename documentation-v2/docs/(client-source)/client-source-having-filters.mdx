@@ -27,13 +27,8 @@ Review the [Client Row Grouping](/docs/client-source-row-grouping) and
 [Client Row Aggregations](/docs/client-source-aggregations) guides for prerequisite knowledge.
 
 To apply a **having** filter, set the `having` property on the client
-data source using one of two formats:
-
-- **Having Filter Function (`HavingFilterFn`):** Filters all group rows globally.
-- **Having Filter Array (`(HavingFilterFn | null)[]`):** Filters rows by depth. The
-  array index maps to the group depth; null entries skip filtering for that level.
-
-### Having Filter Functions
+data source to an array of **Having Filter Functions** (`(HavingFilterFn | null)[]).
+This will filter group rows by depth. Null entries skip filtering for that level.
 
 The demo implements a `HavingFilterFn`. The [grid API extension](/docs/grid-api-extensions)
 provides the `filterModel` defined in this interface
@@ -52,17 +47,9 @@ The filter model lets you build a filter representation before generating
 the filter function from it. The demo uses a custom [floating header row](/docs/column-floating-header)
 component that allows users to modify the model's value.
 
-Type **500** into the **Balance** column's floating filter and test the result.
-Notice that the filter is applied at both the **Job** and **Education**
-row group levels, regardless of depth.
-
-:::info
-
-Another example, set **Balance** to be aggregated using avg and filtered to `< 0`.
-Notice the **Administration** row group has been filtered out because the **having**
-filter applies at all group levels.
-
-:::
+The demo below demonstrates this by providing the `having` property with an array of two items.
+The first item is `null`, so the filter skips the top-most group level.
+The second item is a filter function, so the filter applies to the second grouping level.
 
 ::demo[Having Filter Function="./demos/client-row-having"]
 
@@ -70,7 +57,7 @@ The demo creates the `HavingFilterFn` function by iterating through the filters 
 and applying them one at a time. The code below shows this.
 
 ```ts
-const havingFn = useMemo(() => {
+const havingFilter = useMemo(() => {
   const model = Object.entries(filterModel).filter(([, f]) => {
     return f.kind && f.value && !Number.isNaN(Number.parseFloat(f.value));
   });
@@ -83,7 +70,7 @@ const havingFn = useMemo(() => {
       const compare = Number.parseFloat(f.value!);
       if (value == null || typeof value !== "number") return false;
 
-      if (f.kind === "eq" && value != compare) return false;
+      if (f.kind === "eq" && value !== compare) return false;
       else if (f.kind === "neq" && value === compare) return false;
       else if (f.kind === "ge" && value < compare) return false;
       else if (f.kind === "le" && value > compare) return false;
@@ -94,29 +81,9 @@ const havingFn = useMemo(() => {
     return true;
   };
 
-  return fn;
+  return [null, fn];
 }, [filterModel]);
 ```
-
-### Having Filter Arrays
-
-When you provide the client data source with a filter function for the `having` property, the filter applies
-to every group row. This is generally desirable. However, it is sometimes useful to apply a **having** filter
-only to group nodes at a specific depth.
-
-The demo below demonstrates this by providing the `having` property with an array of two items. The first item
-is `null`, so the filter skips the top-most group level. The second item is a filter function, so the filter
-applies to the second grouping level.
-
-For example, set **Balance** to be aggregated using **avg** and filtered to `< 0`.
-The **Administration** row group remains visible. In the previous demo, that row group was hidden.
-
-::demo[Having Filter Array="./demos/client-row-having-array"]
-
-**Having** filters do not recalculate or impact aggregation values. If a having
-filter excludes child rows, the parent's aggregated value remains unchanged. This
-prevents a recursive filtering loop in which decreasing aggregate totals
-would continually trigger further exclusions until all rows are removed.
 
 ## Next Steps
 

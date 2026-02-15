@@ -1,4 +1,4 @@
-import { forwardRef, memo, useMemo, type JSX } from "react";
+import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import { rangesOverlap, type LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
@@ -6,9 +6,10 @@ import { useDragMove } from "./use-drag-move.js";
 import { HeaderGroupDefault } from "./header-group-default.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useInternalShare } from "../../../internal.js";
+import { ResizeHandler } from "./resize-handler.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
-  { cell, ...props },
+  { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
   const {
@@ -94,6 +95,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
         collapsed={!isExpanded}
         collapsible={cell.isCollapsible}
       />
+      <ResizeHandler cell={cell} style={resizerStyle} className={resizerClassName} />
       {placeholder}
     </div>
   );
@@ -102,5 +104,9 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
 export const HeaderGroupCell = memo(HeaderGroupCellImpl);
 
 export namespace HeaderGroupCell {
-  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & { readonly cell: LayoutHeaderGroup };
+  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
+    readonly cell: LayoutHeaderGroup;
+    readonly resizerStyle?: CSSProperties;
+    readonly resizerClassName?: string;
+  };
 }

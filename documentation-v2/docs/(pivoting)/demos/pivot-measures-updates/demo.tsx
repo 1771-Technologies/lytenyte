@@ -15,6 +15,7 @@ import {
   CostCell,
   CountryCell,
   DateCell,
+  DecimalCell,
   GenderCell,
   NumberCell,
   ProfitCell,
@@ -36,11 +37,18 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 80 },
   { id: "country", name: "Country", cellRenderer: CountryCell, width: 150 },
 
+  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell, measurable: true },
   { id: "profit", name: "Profit", width: 100, type: "number", cellRenderer: ProfitCell, measurable: true },
-  { id: "orderQuantity", name: "Quantity", type: "number", width: 60, measurable: true },
   { id: "unitPrice", name: "Price", type: "number", width: 80, cellRenderer: NumberCell, measurable: true },
   { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell, measurable: true },
-  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell, measurable: true },
+  {
+    id: "orderQuantity",
+    name: "Quantity",
+    type: "number",
+    width: 80,
+    measurable: true,
+    cellRenderer: DecimalCell,
+  },
 
   { id: "state", name: "State", width: 150 },
   { id: "product", name: "Product", width: 160 },
@@ -48,11 +56,12 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 130 };
+const base: Grid.ColumnBase<GridSpec> = { width: 130, widthFlex: 1 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
@@ -204,8 +213,19 @@ export default function PivotDemo() {
           );
         }}
       </PillManager>
-      <div className="ln-grid ln-header-group:justify-center" style={{ height: 500 }}>
-        <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid
+          columns={columns}
+          rowSource={ds}
+          columnBase={base}
+          rowGroupColumn={group}
+          {...pivotProps}
+          styles={{
+            headerGroup: {
+              style: { position: "sticky", insetInlineStart: "var(--ln-start-offset)", overflow: "unset" },
+            },
+          }}
+        />
       </div>
     </>
   );

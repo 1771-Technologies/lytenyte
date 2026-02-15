@@ -2,22 +2,20 @@
 title: Measures
 pro: true
 step: Aggregate and summarize row data when pivoting.
-description: A measure is an aggregation dimension used to summarize data when row
-  and column pivots are applied to the grid.
+description: Configure measures to aggregate values across pivot rows and columns.
 ---
 
 To create a measure, define a custom function that receives an array of [leaf rows](/docs/row-overview)
-and a [field value](/docs/column-field), and returns a summarized value. The summarized value can
-be any type, but it is typically a number.
+and a [field value](/docs/column-field), then returns a summarized result.
+The return value can be any type, but it's typically numeric.
 
 :::note
 
-You should be familiar with row aggregations before reading this guide. If you have not already,
-see the [Client Row Aggregations guide](/docs/client-source-aggregations) for more details.
+This guide assumes familiarity with row aggregations. See the [Client Row Aggregations guide](/docs/client-source-aggregations) for details.
 
 :::
 
-## Measures
+## Defining Measures
 
 Define a measure by setting the `measure` property on the pivot model. LyteNyte Grid uses a measure
 for two purposes:
@@ -26,12 +24,10 @@ for two purposes:
 2. If the measure dimension is a column, use it as a reference for the
    columns created from the pivot configuration.
 
-The demo below shows a measure that aggregates the **Profit** column. The grid is
-row-pivoted on the **Country** column and column-pivoted on the **Age Group** column.
+The demo below shows a measure that sums **Profit**. Rows are pivoted by **Country** and columns by **Age Group**,
+creating a profit breakdown per country and age demographic.
 
-You can interpret this view as a profit breakdown per country, split by age group.
-
-::demo[Profit Measure="./demos/pivot-measures"]
+::demo[Sum of Profit Measure="./demos/pivot-measures"]
 
 The code below shows how to apply the measure. This demo uses a predefined measure function called
 `"sum"`, but you can also provide a function inline if that better suits your application's
@@ -62,7 +58,7 @@ const ds = useClientDataSource<GridSpec>({
 });
 ```
 
-### Multiple Measures
+### Configuring Multiple Measures
 
 You can apply multiple measures to the pivot configuration by providing additional dimensions.
 The order of measures does not affect aggregation behavior, but it does influence the initial
@@ -73,20 +69,17 @@ by clicking the function name in the pill and selecting a different measure for 
 
 ::demo[Multiple Measures="./demos/pivot-measures-updates"]
 
-Each measure results in additional columns being created. If a column pivot creates
-20 dynamic columns, each measure adds 20 columns. For example, two measures produce
-40 columns, three measures produce 60 columns, and so on.
+Be aware that measures multiply your column count. If a pivot generates
+20 columns, two measures produce 40 columns, and three produce 60.
 
-## Single Column Multiple Measures
+## Multiple Measures Per Column
 
-You can use the same column as a measure more than once. This allows you to apply different
-measure functions to the same column.
+You can measure the same column multiple times to apply different measure functions.
 
-The demo below measures the **Profit** column using both **sum** and **avg**.
-From LyteNyte Grid's perspective, each measure is distinct even though both reference
-the same column.
+The demo below measures **Profit** with both **sum** and **avg**. The grid treats each measure
+as distinct, even when both reference the same column.
 
-::demo[Single Column Multiple Measures="./demos/pivot-measures-multiple"]
+::demo[Column Multiple Measures="./demos/pivot-measures-multiple"]
 
 LyteNyte Grid identifies measures by `id`. When you apply multiple measures to the same column,
 you must provide a unique ID for each measure. The example below shows how to configure this:

@@ -17,6 +17,7 @@ import {
   ProfitCell,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
+import { useCallback } from "react";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -39,7 +40,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120 };
+const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -72,7 +73,11 @@ export default function PivotDemo() {
       ],
     },
     pivotApplyExistingFilter: true, //!
-    filter: (row) => row.data.country === "United States" || row.data.country === "Germany", //!
+    //! 4
+    filter: useCallback<Grid.T.FilterFn<GridSpec["data"]>>(
+      (row) => row.data.country === "United States" || row.data.country === "Germany",
+      [],
+    ),
     rowGroupDefaultExpansion: true,
     aggregateFns: { sum: aggSum },
   });

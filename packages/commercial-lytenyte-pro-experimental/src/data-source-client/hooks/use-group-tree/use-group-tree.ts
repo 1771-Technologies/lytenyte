@@ -11,6 +11,7 @@ import { collapse } from "./collapse.js";
 import { collapseLast } from "./collapse-last.js";
 import type { HavingFilterFn, LabelFilter } from "../../use-client-data-source.js";
 import { evaluateLabelFilter } from "../use-pivot/auxiliary-functions/evaluate-label-filter.js";
+import { getValidLeafs } from "../get-valid-leafs.js";
 
 export interface RootNode<T> {
   readonly kind: "root";
@@ -38,7 +39,7 @@ export interface GroupNode<T> {
   readonly children: Map<string | null | number, GroupNode<T> | LeafNode<T>>;
   readonly path: (string | null)[];
   readonly leafs: number[];
-  readonly leafIds: Set<string>;
+  leafIds: Set<string>;
   readonly parent: GroupNode<T> | RootNode<T>;
 }
 
@@ -51,7 +52,7 @@ export function useGroupTree<T>(
   groupIdFn: GroupIdFn,
   rowGroupCollapseBehavior: "no-collapse" | "last-only" | "full-tree",
   labelFilter: (LabelFilter | null)[] | null | undefined,
-  having: HavingFilterFn | (HavingFilterFn | null)[] | null | undefined,
+  having: (HavingFilterFn | null)[] | null | undefined,
   agg: AggregationFn<T> | undefined | null,
 ) {
   const groupNodeCacheRef = useRef(new Map<string, GroupNode<T>["row"]>());
@@ -169,42 +170,51 @@ export function useGroupTree<T>(
     if (having) {
       const traverse = (node: RootNode<T> | GroupNode<T> | LeafNode<T>, depth: number = 0) => {
         if (node.kind === "leaf") return;
-        if (node.kind === "root") node.children.forEach((c) => traverse(c, 0));
-
-        const filterFn = Array.isArray(having) ? (having[depth] ?? null) : having;
 
         if (node.kind === "branch") {
+          node.children.forEach((x) => {
+            if (x.kind === "leaf") return;
+            traverse(x, depth + 1);
+          });
+
+          if (node.leafIds.size === 0) {
+            // Delete self
+            node.parent.children.delete(node.key);
+            return;
+          }
+
+          // Now we have traversed the group.
+          const filterFn = Array.isArray(having) ? (having[depth] ?? null) : having;
+          // We aren't filtering at this depth, so return early.
+          if (!filterFn) return;
+
           const row = node.row;
+          // We need to aggregate this row.
           if (row.__invalidate) {
-            const data = agg ? agg(node.leafs.map((i) => leafs[workingSet[i]])) : {};
+            const data = agg ? agg(getValidLeafs(node, leafs, workingSet)) : {};
             (row as Writable<RowGroup>).data = data;
             row.__invalidate = false;
           }
 
-          const shouldKeep = filterFn ? filterFn(row) : true;
-          if (shouldKeep) {
-            node.children.forEach((c) => traverse(c, depth + 1));
-          } else {
-            // This node is definitely being deleted, so let's get rid of it.
-            root.groupLookup.delete(node.id);
-            if (node.parent.kind === "root") {
-              node.parent.children.delete(node.key);
-            } else {
-              let current: GroupNode<T> | RootNode<T> = node;
-              while (current.kind !== "root") {
-                // Remove the node from itself
-                current.parent.children.delete(current.key);
+          const shouldKeep = filterFn(row);
+          if (shouldKeep) return;
 
-                // The parent still has more children, so we should keep them and move on.
-                if (current.parent.children.size) break;
-                current = current.parent;
-              }
+          // We need to remove this row, remove the leafs from the parents going upwards.
+          root.groupLookup.delete(node.id);
+          node.parent.children.delete(node.key);
+          if (node.parent.kind !== "root") {
+            let current = node.parent;
+            while (current) {
+              current.leafIds = current.leafIds.difference(node.leafIds);
+
+              if (current.parent.kind === "root") break;
+              current = current.parent;
             }
           }
         }
       };
 
-      traverse(root, 0);
+      root.children.forEach((x) => traverse(x, 0));
     }
 
     if (rowGroupCollapseBehavior === "full-tree") root.children.forEach(collapse);

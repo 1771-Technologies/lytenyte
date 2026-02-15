@@ -73,7 +73,7 @@ export interface PivotModel<Spec extends GridSpec = GridSpec> {
   readonly measures?: { dim: Column<Spec>; fn: Aggregator<Spec["data"]> | string }[];
 
   readonly sort?: SortFn<Spec["data"]> | DimensionSort<Spec["data"]>[] | null;
-  readonly filter?: HavingFilterFn | (HavingFilterFn | null)[];
+  readonly filter?: (HavingFilterFn | null)[];
   readonly rowLabelFilter?: (LabelFilter | null)[];
   readonly colLabelFilter?: (LabelFilter | null)[];
 }
@@ -103,7 +103,7 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly aggregate?: AggregationFn<T> | DimensionAgg<T>[];
   readonly aggregateFns?: Record<string, Aggregator<T>>;
 
-  readonly having?: HavingFilterFn | (HavingFilterFn | null)[] | null;
+  readonly having?: (HavingFilterFn | null)[] | null;
   readonly labelFilter?: (LabelFilter | null)[] | null;
 
   readonly leafIdFn?: LeafIdFn<T>;

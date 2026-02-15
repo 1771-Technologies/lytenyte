@@ -23,14 +23,19 @@ export function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
     >
       <div
         className={tw(
-          "sort-button flex w-full items-center gap-2 rounded py-1 transition-colors",
+          "sort-button relative flex w-full items-center gap-1 rounded py-1 transition-colors",
           column.type === "number" && "flex-row-reverse",
         )}
       >
         {column.name ?? column.id}
 
         <Popover>
-          <Popover.Trigger data-ln-button="secondary" data-ln-icon data-ln-size="sm" className="relative">
+          <Popover.Trigger
+            data-ln-button="secondary"
+            data-ln-icon
+            data-ln-size="xs"
+            className="bg-ln-bg-ui-panel/80 hover:bg-ln-bg absolute -left-1"
+          >
             <div className="sr-only">Filter the {label}</div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +46,7 @@ export function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
             >
               <path d="M230.6,49.53A15.81,15.81,0,0,0,216,40H40A16,16,0,0,0,28.19,66.76l.08.09L96,139.17V216a16,16,0,0,0,24.87,13.32l32-21.34A16,16,0,0,0,160,194.66V139.17l67.74-72.32.08-.09A15.8,15.8,0,0,0,230.6,49.53ZM40,56h0Zm106.18,74.58A8,8,0,0,0,144,136v58.66L112,216V136a8,8,0,0,0-2.16-5.47L40,56H216Z"></path>
             </svg>
-            {hasFilter && <div className="bg-ln-primary-50 absolute right-px top-px size-3 rounded-full" />}
+            {hasFilter && <div className="bg-ln-primary-50 absolute right-px top-px size-2 rounded-full" />}
           </Popover.Trigger>
           <Popover.Container>
             <Popover.Arrow />

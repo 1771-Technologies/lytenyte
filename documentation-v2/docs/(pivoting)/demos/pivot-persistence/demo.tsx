@@ -40,7 +40,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120 };
+const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -56,7 +56,7 @@ export default function PivotDemo() {
   const [pivotState, setPivotState] = useState<Grid.T.PivotState>({
     columnGroupState: {},
     columnState: { ordering: [], pinning: {}, resizing: {} },
-    rowGroupExpansions: { Canada: false },
+    rowGroupExpansions: { Australia: false },
   });
 
   const ds = useClientDataSource<GridSpec>({

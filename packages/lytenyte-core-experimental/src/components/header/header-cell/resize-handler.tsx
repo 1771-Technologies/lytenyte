@@ -1,15 +1,14 @@
-import { type CSSProperties } from "react";
+import { useMemo, type CSSProperties } from "react";
 import {
-  DEFAULT_COLUMN_WIDTH_MAX,
-  DEFAULT_COLUMN_WIDTH_MIN,
   sizeFromCoord,
   type LayoutHeaderCell,
+  type LayoutHeaderGroup,
 } from "@1771technologies/lytenyte-shared";
-import { clamp, getClientX } from "@1771technologies/lytenyte-shared";
+import { getClientX } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
 
 interface ResizeHandlerProps {
-  readonly cell: LayoutHeaderCell;
+  readonly cell: LayoutHeaderCell | LayoutHeaderGroup;
   readonly className?: string;
   readonly style?: CSSProperties;
 }
@@ -17,16 +16,23 @@ interface ResizeHandlerProps {
 export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
   const { api, xPositions, columnDoubleClickToAutosize: double, view, base, viewport: vp, rtl } = useRoot();
 
-  const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
-  const column = view.lookup.get(cell.id)!;
+  const columns = useMemo(() => {
+    if (cell.kind === "cell") return [view.lookup.get(cell.id)!];
 
-  const resizable = column.resizable ?? base.resizable ?? false;
+    return cell.columnIds.map((x) => view.lookup.get(x)!);
+  }, [cell, view.lookup]);
+
+  const resizable = useMemo(() => {
+    return columns.every((x) => x?.resizable ?? base.resizable ?? false);
+  }, [base.resizable, columns]);
+
+  if (!resizable) return null;
 
   return (
     <div
       role="button"
       data-ln-header-resizer
-      aria-label={`Resize ${column.name ?? column.id}`}
+      aria-label={"Resize column"}
       tabIndex={-1}
       className={className}
       style={{
@@ -40,8 +46,7 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
       }}
       onDoubleClick={() => {
         if (!double || !resizable) return;
-
-        api.columnAutosize({ columns: [column], includeHeader: true });
+        api.columnAutosize({ columns, includeHeader: true });
       }}
       onPointerDown={(ev) => {
         if (!vp) return;
@@ -52,12 +57,6 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
 
         let startX: number | null = null;
         let anim: number | null = null;
-
-        const minWidth = column.widthMin ?? base.widthMin ?? DEFAULT_COLUMN_WIDTH_MIN;
-        const maxWidth = column.widthMax ?? base.widthMax ?? DEFAULT_COLUMN_WIDTH_MAX;
-
-        const maxDelta = maxWidth - width;
-        const minDelta = minWidth - width;
 
         const deltaRef = { current: 0 };
         const controller = new AbortController();
@@ -73,13 +72,22 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
             const endAdjust = cell.colPin === "end" ? -1 : 1;
             const rtlAdjust = rtl ? -1 : 1;
 
-            deltaRef.current = clamp(minDelta, (getClientX(ev) - startX!) * endAdjust * rtlAdjust, maxDelta);
+            deltaRef.current = (getClientX(ev) - startX!) * endAdjust * rtlAdjust;
 
             if (anim) return;
             anim = requestAnimationFrame(() => {
-              const newWidth = width + deltaRef.current;
+              const portion = Math.round(deltaRef.current / columns.length);
 
-              api.columnResize({ [cell.id]: newWidth });
+              const widths = Object.fromEntries(
+                columns.map((x) => {
+                  const index = view.visibleColumns.findIndex((c) => c.id === x.id);
+                  const w = sizeFromCoord(index, xPositions);
+
+                  return [x.id, w + portion];
+                }),
+              );
+
+              api.columnResize(widths);
 
               anim = null;
             });
@@ -93,10 +101,18 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
             if (anim) cancelAnimationFrame(anim);
             controller.abort();
 
-            // vp.style.overflowX = overflow;
-            const newWidth = width + deltaRef.current;
+            const portion = Math.round(deltaRef.current / columns.length);
 
-            api.columnResize({ [cell.id]: newWidth });
+            const widths = Object.fromEntries(
+              columns.map((x) => {
+                const index = view.visibleColumns.findIndex((c) => c.id === x.id);
+                const w = sizeFromCoord(index, xPositions);
+
+                return [x.id, w + portion];
+              }),
+            );
+
+            api.columnResize(widths);
           },
           { signal: controller.signal },
         );

@@ -71,7 +71,7 @@ function tw(...c: ClassValue[]) {
 }
 
 const formatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 0,
   minimumFractionDigits: 0,
 });
 export function ProfitCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {

@@ -88,11 +88,11 @@ function defaultAutosize(c: AutosizeCellParams<any>) {
       : { kind: "branch", data: c.row.data, key: c.row.key },
   );
 
-  return measureText(`${field}`, c.grid.state.viewport.get() ?? undefined).width + 8;
+  return (measureText(`${field}`, c.grid.state.viewport.get() ?? undefined)?.width ?? 200) + 8;
 }
 
 function defaultAutosizeHeader(c: AutosizeHeaderParams<any>) {
   const text = c.column.name ?? c.column.id;
 
-  return measureText(text, c.grid.state.viewport.get() ?? undefined).width + 8;
+  return (measureText(text, c.grid.state.viewport.get() ?? undefined)?.width ?? 200) + 8;
 }
