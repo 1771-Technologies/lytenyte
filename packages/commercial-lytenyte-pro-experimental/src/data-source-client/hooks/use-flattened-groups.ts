@@ -8,6 +8,7 @@ import type {
 } from "@1771technologies/lytenyte-shared";
 import type { RootMap, RootNode } from "./use-group-tree/use-group-tree";
 import { useMemo } from "react";
+import { getValidLeafs } from "./get-valid-leafs.js";
 
 type UseFlattenedGroupsReturn<T> = [rows: RowNode<T>[] | null, depth: number];
 
@@ -100,7 +101,7 @@ const nodeChildrenToRows = <T>(
     } else {
       const row = v.row;
       if (row.__invalidate) {
-        const data = agg ? agg(v.leafs.map((i) => leafs[workingSet[i]])) : {};
+        const data = agg ? agg(getValidLeafs(v, leafs, workingSet)) : {};
         (row as Writable<RowGroup>).data = data;
         row.__invalidate = false;
       }

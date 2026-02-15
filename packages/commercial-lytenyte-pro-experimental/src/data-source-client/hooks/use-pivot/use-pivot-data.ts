@@ -62,11 +62,6 @@ export function usePivotData<Spec extends GridSpec>(
   );
   const aggFn = usePivotAggFunction(pivotColumns, model, props.aggregateFns);
 
-  const havingFilter = Array.isArray(model?.filter)
-    ? model.filter.length
-      ? model.filter
-      : null
-    : model?.filter;
   const tree = useGroupTree(
     leafs,
     filtered,
@@ -74,7 +69,7 @@ export function usePivotData<Spec extends GridSpec>(
     props.groupIdFn ?? groupIdFallback,
     "no-collapse",
     model?.rowLabelFilter,
-    havingFilter,
+    model?.filter,
     aggFn,
   );
 

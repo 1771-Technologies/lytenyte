@@ -217,7 +217,7 @@ export default function GridTheming() {
   }, [filterModel$]);
 
   //!next 26
-  const havingFn = useMemo(() => {
+  const havingFilter = useMemo(() => {
     const model = Object.entries(filterModel).filter(([, f]) => {
       return f.kind && f.value && !Number.isNaN(Number.parseFloat(f.value));
     });
@@ -241,7 +241,7 @@ export default function GridTheming() {
       return true;
     };
 
-    return fn;
+    return [null, fn];
   }, [filterModel]);
 
   const aggModel = useMemo(() => {
@@ -251,7 +251,7 @@ export default function GridTheming() {
   const ds = useClientDataSource<GridSpec>({
     data: loanData,
     group: [{ id: "job" }, { id: "education" }],
-    having: havingFn, //!
+    having: havingFilter, //!
     aggregate: aggModel,
     aggregateFns: {
       avg,

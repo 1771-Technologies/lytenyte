@@ -34,12 +34,6 @@ export function useFlattenedData<Spec extends GridSpec>(
   const leafIdsRef = useRef(leafIds);
   leafIdsRef.current = leafIds;
 
-  const havingFilter = Array.isArray(props.having)
-    ? props.having.length
-      ? props.having
-      : null
-    : props.having;
-
   const tree = useGroupTree(
     leafs,
     sorted,
@@ -47,7 +41,7 @@ export function useFlattenedData<Spec extends GridSpec>(
     props.groupIdFn ?? groupIdFallback,
     props.rowGroupCollapseBehavior ?? "no-collapse",
     props.labelFilter,
-    havingFilter,
+    props.having,
     aggFn,
   );
 

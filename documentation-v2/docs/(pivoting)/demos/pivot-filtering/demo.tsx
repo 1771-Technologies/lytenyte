@@ -79,7 +79,7 @@ export default function PivotDemo() {
   const [filter, setFilter] = useState<Record<string, GridFilter>>({});
   const filterModel = usePiece(filter, setFilter);
 
-  const filterFn = useMemo<Grid.T.HavingFilterFn>(() => {
+  const filterFn = useMemo<Grid.T.HavingFilterFn[]>(() => {
     const entries = Object.entries(filter);
 
     const evaluateNumberFilter = (operator: FilterNumberOperator, compare: number, value: number) => {
@@ -93,20 +93,22 @@ export default function PivotDemo() {
       return false;
     };
 
-    return (row) => {
-      for (const [column, filter] of entries) {
-        const value = row.data[column as keyof GridSpec["data"]];
+    return [
+      (row) => {
+        for (const [column, filter] of entries) {
+          const value = row.data[column as keyof GridSpec["data"]];
 
-        // We are only working with number filters, so lets filter out none number
-        if (typeof value !== "number") return false;
+          // We are only working with number filters, so lets filter out none number
+          if (typeof value !== "number") return false;
 
-        const compareValue = value;
+          const compareValue = value;
 
-        if (!evaluateNumberFilter(filter.left.operator, compareValue, filter.left.value)) return false;
-      }
+          if (!evaluateNumberFilter(filter.left.operator, compareValue, filter.left.value)) return false;
+        }
 
-      return true;
-    };
+        return true;
+      },
+    ];
   }, [filter]);
 
   const ds = useClientDataSource<GridSpec>({
