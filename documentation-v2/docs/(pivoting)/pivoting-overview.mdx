@@ -1,32 +1,29 @@
 ---
 title: Pivoting Overview
 pro: true
-description: LyteNyte's pivot functionality lets you create rotated views, allowing
-  you to see comparisons, patterns, and trends in your data.
+description: Summarize complex data relationships through pivoting and aggregation to reveal patterns and trends.
 ---
 
-Pivoting takes the cell values of a particular column and creates dynamic columns from those values.
-You can then apply measures that summarize data from a different column, allowing you to break
-the aggregation into the parts that contribute to the pivot column.
+Pivots create dynamic columns from the unique cell values in a column.
+You can then apply aggregation measures to a value column to
+summarize data for each pivot column.
 
-## Full Example
+## Pivot Reference Implementation
 
 The demo below shows a complete, working pivoting example that you can use as a reference implementation.
 The remaining guides in the pivoting section focus on specific parts of the pivot configuration that
 LyteNyte Grid offers.
 
-::demo[Pivot Demo="./demos/pivot-full"]
+::demo[Complete Pivot Implementation="./demos/pivot-full"]
 
 The remainder of this section explains how to enable basic pivots and provides the foundational knowledge
 required to understand the other guides in the pivoting section.
 
 ## Pivot Mode
 
-LyteNyte Grid does not maintain internal state. The grid renders exactly the props you provide.
-As a result, the grid has no direct knowledge of the current pivot state. Instead, the client row
-data source maintains the pivot state.
-
-To enable pivoting, you must do the following:
+LyteNyte Grid does not maintain pivot state internally.
+It renders only the props provided, delegating pivot state management to
+the **client row data source.** To implement pivoting:
 
 - Set the `pivotMode` property to `true` on the client data source.
 - Provide a `pivotModel` value.
@@ -47,21 +44,20 @@ function PivotGrid() {
 }
 ```
 
-The demo below shows pivoting in action. You can toggle pivot mode on and off.
-The grid is hard-coded to pivot on the **Age Group** column, group by the **Country** column,
-and measure the **Profit** column.
+Use the toggle below to enable pivot mode.
+The grid automatically pivots the **Age Group** values,
+groups rows by **Country**, and measures total **Profit**.
 
 ::demo[Basic Pivoting="./demos/pivot-basic"]
 
-The rows are grouped by **Country**. However, you cannot expand the groups to reveal sub-rows.
-This behavior is inherent to pivoting. Pivoted data is always displayed in an aggregated form.
-All displayed rows are group rows, and the final level is not expandable.
+Rows are grouped by **Country**. Since pivoting presents data in a strictly
+aggregated state, these groups cannot be expanded to reveal individual sub-rows.
 
-The code below shows the pivot configuration used in the demo. Pay close attention to the
-`measures` value. LyteNyte Grid uses the `measure` definition as a reference when creating
-pivot-generated columns. In this example, the **Profit** column serves as the base column
-for the newly created pivot columns. The code overrides the column header to make the generated
-headers resemble the unpivoted **Age Group** cell values.
+The code below shows the demo's pivot configuration. The
+grid uses the `measures` definition as a **template** for pivot-generated columns.
+In this example, **Profit** provides the base column definition for the generated
+pivot columns, and a header override ensures the new columns
+display the corresponding **Age Group** values.
 
 ```ts
 const ds = useClientDataSource<GridSpec>({
@@ -112,8 +108,8 @@ determine the structure of the pivot view. Their behavior is as follows:
 - If `rows` contains one or more entries, LyteNyte Grid groups the measure output by the specified rows.
 - If `measures` is provided, LyteNyte Grid aggregates grid rows using the defined measures. Measure behavior
   depends on which other properties are present:
-  1. If only `measures` are provided, LyteNyte Grid creates one column per measure and aggregates all rows,
-     resulting in at most one totals row.
+  1. If only `measures` are provided, LyteNyte Grid creates one column per measure
+     and aggregates across all rows, producing a single totals row.
   2. If `measures` and `columns` are provided, LyteNyte Grid aggregates measures for each dynamically
      generated pivot column.
   3. If `measures` and `rows` are provided, LyteNyte Grid aggregates measures for each row group.
