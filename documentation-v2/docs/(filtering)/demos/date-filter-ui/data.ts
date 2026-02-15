@@ -10,7 +10,7 @@ export interface DataItem {
 }
 
 // prettier-ignore
-export const data: DataItem[] = [
+const rawData = [
   { "id": "PRD001", "category": "Software", "name": "Office Suite", "quantity": 88, "price": 340, "status": "Delivered", "saleDate": "2024-09-26" },
   { "id": "PRD002", "category": "Monitors", "name": "Curved 49\"", "quantity": 18, "price": 354, "status": "Delivered", "saleDate": "2025-01-25" },
   { "id": "PRD003", "category": "PC Accessories", "name": "Wireless Mouse", "quantity": 62, "price": 1199, "status": "Delivered", "saleDate": "2024-11-15" },
@@ -61,4 +61,150 @@ export const data: DataItem[] = [
   { "id": "PRD048", "category": "Software", "name": "Antivirus Plus", "quantity": 45, "price": 171, "status": "Delayed", "saleDate": "2024-08-18" },
   { "id": "PRD049", "category": "Software", "name": "Design Pro", "quantity": 4, "price": 259, "status": "Delivered", "saleDate": "2024-12-14" },
   { "id": "PRD050", "category": "Laptops", "name": "Workstation Pro", "quantity": 86, "price": 408, "status": "Delivered", "saleDate": "2024-11-21" }
-].map(x => ({ ...x, total: x.price * x.quantity } as DataItem))
+]
+
+const pad2 = (n: number) => String(n).padStart(2, "0");
+
+function toISODate(d: Date) {
+  // local date -> YYYY-MM-DD (stable for demos)
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+}
+
+function addDays(base: Date, days: number) {
+  const d = new Date(base);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function startOfWeekMonday(base: Date) {
+  const d = new Date(base);
+  const day = d.getDay(); // 0=Sun..6=Sat
+  const diffToMonday = (day + 6) % 7; // Mon->0, Tue->1, ... Sun->6
+  d.setDate(d.getDate() - diffToMonday);
+  d.setHours(12, 0, 0, 0);
+  return d;
+}
+
+function dateOnYearMonthDay(year: number, monthIndex0: number, day: number) {
+  // clamp day to end-of-month
+  const lastDay = new Date(year, monthIndex0 + 1, 0).getDate();
+  const safeDay = Math.min(day, lastDay);
+  const d = new Date(year, monthIndex0, safeDay);
+  d.setHours(12, 0, 0, 0);
+  return d;
+}
+
+function mulberry32(seed: number) {
+  return function () {
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffleInPlace<T>(arr: T[], seed = 12345) {
+  const rand = mulberry32(seed);
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function buildDemoSaleDates(count: number, now = new Date()): string[] {
+  const today = new Date(now);
+  today.setHours(12, 0, 0, 0);
+
+  const year = today.getFullYear();
+  const month = today.getMonth();
+
+  // 1) Guarantee: at least one date for each month (current year)
+  const onePerMonthThisYear = Array.from({ length: 12 }, (_, m) =>
+    toISODate(dateOnYearMonthDay(year, m, 15)),
+  );
+
+  // 2) Guarantee: some in last year + next year
+  const someLastYear = [0, 5, 11].map((m) => toISODate(dateOnYearMonthDay(year - 1, m, 12)));
+  const someNextYear = [0, 5, 11].map((m) => toISODate(dateOnYearMonthDay(year + 1, m, 12)));
+
+  // 3) Guarantee: today, yesterday, tomorrow (and make “some” by repeating)
+  const todayISO = toISODate(today);
+  const yesterdayISO = toISODate(addDays(today, -1));
+  const tomorrowISO = toISODate(addDays(today, +1));
+  const dayRelative = [
+    todayISO,
+    todayISO,
+    todayISO, // multiple "today"
+    yesterdayISO,
+    yesterdayISO, // some "yesterday"
+    tomorrowISO,
+    tomorrowISO, // some "tomorrow"
+  ];
+
+  // 4) Guarantee: last week, this week, next week
+  const sow = startOfWeekMonday(today);
+  const weekDates = [
+    // last week
+    toISODate(addDays(sow, -7)),
+    toISODate(addDays(sow, -5)),
+    toISODate(addDays(sow, -2)),
+    // this week
+    toISODate(addDays(sow, 0)),
+    toISODate(addDays(sow, 2)),
+    toISODate(addDays(sow, 5)),
+    // next week
+    toISODate(addDays(sow, 7)),
+    toISODate(addDays(sow, 9)),
+    toISODate(addDays(sow, 12)),
+  ];
+
+  // 5) Guarantee: last month, this month, next month
+  const monthDates = [
+    toISODate(dateOnYearMonthDay(year, month - 1, 10)),
+    toISODate(dateOnYearMonthDay(year, month, 10)),
+    toISODate(dateOnYearMonthDay(year, month + 1, 10)),
+    toISODate(dateOnYearMonthDay(year, month - 1, 22)),
+    toISODate(dateOnYearMonthDay(year, month + 1, 22)),
+  ];
+
+  // 6) Guarantee: dates in every quarter (current year)
+  // Q1: Feb, Q2: May, Q3: Aug, Q4: Nov
+  const quarterDates = [
+    toISODate(dateOnYearMonthDay(year, 1, 8)),
+    toISODate(dateOnYearMonthDay(year, 4, 8)),
+    toISODate(dateOnYearMonthDay(year, 7, 8)),
+    toISODate(dateOnYearMonthDay(year, 10, 8)),
+  ];
+
+  // Pool with hard guarantees
+  const guaranteed = [
+    ...onePerMonthThisYear,
+    ...someLastYear,
+    ...someNextYear,
+    ...dayRelative,
+    ...weekDates,
+    ...monthDates,
+    ...quarterDates,
+  ];
+
+  // Fill remaining with a mix around “now” (keeps it feeling realistic)
+  const filler: string[] = [];
+  const offsets = [-40, -33, -21, -14, -10, -6, -3, -2, -1, 0, 1, 2, 4, 6, 9, 14, 21, 33, 45, 80, 120];
+  while (guaranteed.length + filler.length < count) {
+    const o = offsets[(guaranteed.length + filler.length) % offsets.length];
+    filler.push(toISODate(addDays(today, o)));
+  }
+
+  // Shuffle (deterministic) so the first rows aren’t “all months then all specials”
+  const all = [...guaranteed, ...filler].slice(0, count);
+  return shuffleInPlace(all, 1771);
+}
+export const data: DataItem[] = rawData.map(
+  (x, i) =>
+    ({
+      ...x,
+      saleDate: buildDemoSaleDates(rawData.length)[i],
+      total: x.price * x.quantity,
+    }) as DataItem,
+);
