@@ -39,7 +39,6 @@
   "devDependencies": {
     "@1771technologies/grid-sample-data": "workspace:*",
     "@1771technologies/lytenyte-design": "workspace:*",
-    "@1771technologies/lytenyte-pro": "workspace:*",
     "@1771technologies/lytenyte-pro-experimental": "workspace:*",
     "clsx": "2.1.1",
     "date-fns": "4.1.0",
