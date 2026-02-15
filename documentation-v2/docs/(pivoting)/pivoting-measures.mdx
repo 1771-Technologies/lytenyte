@@ -27,7 +27,7 @@ for two purposes:
 The demo below shows a measure that sums **Profit**. Rows are pivoted by **Country** and columns by **Age Group**,
 creating a profit breakdown per country and age demographic.
 
-::demo[Profit Measure="./demos/pivot-measures"]
+::demo[Sum of Profit Measure="./demos/pivot-measures"]
 
 The code below shows how to apply the measure. This demo uses a predefined measure function called
 `"sum"`, but you can also provide a function inline if that better suits your application's
@@ -79,7 +79,7 @@ You can measure the same column multiple times to apply different measure functi
 The demo below measures **Profit** with both **sum** and **avg**. The grid treats each measure
 as distinct, even when both reference the same column.
 
-::demo[Single Column Multiple Measures="./demos/pivot-measures-multiple"]
+::demo[Column Multiple Measures="./demos/pivot-measures-multiple"]
 
 LyteNyte Grid identifies measures by `id`. When you apply multiple measures to the same column,
 you must provide a unique ID for each measure. The example below shows how to configure this:

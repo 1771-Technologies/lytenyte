@@ -36,7 +36,7 @@ It demonstrates controlled pivot state. This configuration behaves identically t
 
 ::demo[Controlled Pivot State="./demos/pivot-persistence"]
 
-The code to control the pivot state is shown below. The initial state starts with the **Canada** row
+The code to control the pivot state is shown below. The initial state starts with the **Australia** row
 group collapsed. To control pivot state, the `onPivotStateChange` is set to the `setPivotState` function
 returned by React's `useState` hook.
 
@@ -45,7 +45,7 @@ returned by React's `useState` hook.
 const [pivotState, setPivotState] = useState<Grid.T.PivotState>({
   columnGroupState: {},
   columnState: { ordering: [], pinning: {}, resizing: {} },
-  rowGroupExpansions: { Canada: false },
+  rowGroupExpansions: { Australia: false },
 });
 
 const ds = useClientDataSource<GridSpec>({

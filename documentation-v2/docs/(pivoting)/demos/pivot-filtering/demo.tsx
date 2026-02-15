@@ -79,7 +79,7 @@ export default function PivotDemo() {
   const [filter, setFilter] = useState<Record<string, GridFilter>>({});
   const filterModel = usePiece(filter, setFilter);
 
-  const filterFn = useMemo<Grid.T.HavingFilterFn[]>(() => {
+  const filterFn = useMemo<(Grid.T.HavingFilterFn | null)[]>(() => {
     const entries = Object.entries(filter);
 
     const evaluateNumberFilter = (operator: FilterNumberOperator, compare: number, value: number) => {
@@ -94,6 +94,7 @@ export default function PivotDemo() {
     };
 
     return [
+      null,
       (row) => {
         for (const [column, filter] of entries) {
           const value = row.data[column as keyof GridSpec["data"]];
@@ -125,7 +126,7 @@ export default function PivotDemo() {
             name: "Profit",
             type: "number",
             cellRenderer: ProfitCell,
-            width: 140,
+            width: 180,
             headerRenderer: Header,
           },
           fn: "sum",

@@ -23,15 +23,12 @@ columns by **Age Group**.
 
 Pivoting data always creates [group rows](/docs/row-overview) because pivots aggregate data.
 To apply filters to pivoted data, set the `filter` property on the pivot model. The `filter`
-property accepts either a single [`HavingFilterFn`](/docs/reference/grid-types#filter) or an array of
-[`HavingFilterFn`](/docs/reference/grid-types#filter) functions.
+property accepts an array of [`HavingFilterFn`](/docs/reference/grid-types#filter) functions.
 
 The demo below demonstrates having filter functions in action. You can update the filter applied
-to the pivot column by clicking the funnel icon in the column header.
-
-When you provide a single `HavingFilterFn`, the grid evaluates
-all rows using that function. To filter at a specific pivot level, provide an array of filter
-functions instead. See the [Client Row Having Filters guide](/docs/client-source-having-filters) for more details.
+to the pivot column by clicking the funnel icon in the column header. Having filters are applied
+to the rows at a specific depth, in this case the child rows of the countries will be filtered.
+See the [Client Row Having Filters guide](/docs/client-source-having-filters) for more details.
 
 ::demo[Filtering Pivots="./demos/pivot-filtering"]
 
@@ -116,7 +113,7 @@ In the demo below, the grid filters rows to include only entries
 where the **Country** is the **United States** or **Germany**. For row filtering
 details, see the [Client Row Filtering guide](/docs/client-source-filtering).
 
-::demo[Filter Before Pivot Creation="./demos/pivot-existing-filters"]
+::demo[Filter Before Pivot="./demos/pivot-existing-filters"]
 
 ## Label Filters
 
@@ -130,7 +127,7 @@ The demo below applies two label filters. The row label filter keeps only
 the **United States** and **Germany**. The column label filter
 excludes **Under 25** age group.
 
-::demo[Pivot Label Filters="./demos/pivot-label-filters"]
+{/* ::demo[Pivot Label Filters="./demos/pivot-label-filters"] */}
 
 Label filters are always applied as an array. Each item in the array filters labels at the
 depth corresponding to its index. This means the first item filters the top-level labels,
