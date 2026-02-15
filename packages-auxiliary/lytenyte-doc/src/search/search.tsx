@@ -111,7 +111,7 @@ export function Search() {
       }}
     >
       <D.Trigger className="md:border-xd-border md:bg-xd-card focus-visible:outline-xd-accent-foreground flex items-center gap-2 rounded-xl py-1.5 pe-2 ps-2 text-sm focus-visible:outline md:border md:pe-3">
-        <span className="iconify ph--magnifying-glass-duotone size-5 md:size-4"></span>
+        <span className="iconify ph--magnifying-glass size-5 md:size-4"></span>
         <span className="hidden pe-32 md:block">Search</span>
         <div className="md:center hidden gap-1">
           <ModKey

@@ -30,6 +30,14 @@ export default defineConfig({
         },
       ],
       navbar: {
+        docVersions: [
+          { title: "v2.0", full: "v2.0.0", href: "latest" },
+          {
+            title: "v1.0",
+            full: "v1.0.20",
+            href: "https://www.1771technologies.com/docs/intro-getting-started",
+          },
+        ],
         left: [
           {
             title: "Guides",
@@ -62,18 +70,6 @@ export default defineConfig({
             },
             description: "A log of all the changes introduced between LyteNyte Grid versions.",
             icon: "changelog",
-          },
-        ],
-        right: [
-          {
-            title: "V1 Documentation",
-            url: "https://www.1771technologies.com/docs/intro-getting-started",
-            matchSelected: {
-              match: [],
-              ignore: [],
-            },
-            description: "1771 Technologies Blog Page",
-            external: true,
           },
         ],
       },

@@ -21,6 +21,7 @@ import LogoLytenyte from "../company/logo-lytenyte.astro";
 import LoadingIndicator from "./loading-indicator.astro";
 import { MobileToc } from "../toc/mobile-toc";
 import { SidebarDialog } from "../sidebar/sidebar-dialog";
+import { VersionPicker } from "./version-picker";
 
 const icons = {
   guides: GuidesIcon,
@@ -242,6 +243,7 @@ const pathname = Astro.url.pathname;
                   );
                 })
               }
+              {navbar.docVersions && <VersionPicker versions={navbar.docVersions} client:idle />}
             </div>
           </aside>
         </div>
