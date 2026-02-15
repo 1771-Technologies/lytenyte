@@ -1,10 +1,10 @@
 import "@1771technologies/lytenyte-pro-experimental/components.css";
-import { Popover, SmartSelect, type Grid } from "@1771technologies/lytenyte-pro-experimental";
-import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
+import { Menu, Popover, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import { CaretRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
-import type { FilterDateOperator, GridFilter, GridSpec } from "./demo";
+import type { GridFilter, GridSpec } from "./demo";
 
 function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
@@ -46,33 +46,54 @@ export function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
 
 const selectOptions = [
   { id: "equals", label: "Equals" },
+  { id: "separator-1", selectable: false },
   { id: "before", label: "Before" },
   { id: "after", label: "After" },
-  { id: "quarter", label: "Quarter" },
-  { id: "month", label: "Month" },
+  { id: "between", label: "After" },
+  { id: "separator-2", selectable: false },
+  { id: "tomorrow", label: "Tomorrow" },
+  { id: "today", label: "Today" },
+  { id: "yesterday", label: "Yesterday" },
+  { id: "separator-3", selectable: false },
+  { id: "next_week", label: "Next Week" },
+  { id: "this_week", label: "This Week" },
+  { id: "last_week", label: "Last Week" },
+  { id: "separator-4", selectable: false },
+  { id: "next_month", label: "Next Month" },
+  { id: "this_month", label: "This Month" },
+  { id: "last_month", label: "Last Month" },
+  { id: "separator-5", selectable: false },
+  { id: "next_quarter", label: "Next Quarter" },
+  { id: "this_quarter", label: "This Quarter" },
+  { id: "last_quarter", label: "Last Quarter" },
+  { id: "separator-6", selectable: false },
+  { id: "next_year", label: "Next Year" },
+  { id: "this_year", label: "This Year" },
+  { id: "last_year", label: "Last Year" },
+  { id: "separator-7", selectable: false },
+  { id: "year_to_date", label: "Year to Date" },
+  { id: "separator-8", selectable: false },
+  { id: "all_dates_in_the_period", label: "All Dates in the Period" },
 ];
 
-const monthOptions = [
-  { id: "january", label: "January", value: 0 },
-  { id: "february", label: "February", value: 1 },
-  { id: "march", label: "March", value: 2 },
-  { id: "april", label: "April", value: 3 },
-  { id: "may", label: "May", value: 4 },
-  { id: "june", label: "June", value: 5 },
-  { id: "july", label: "July", value: 6 },
-  { id: "august", label: "August", value: 7 },
-  { id: "september", label: "September", value: 8 },
-  { id: "october", label: "October", value: 9 },
-  { id: "november", label: "November", value: 10 },
-  { id: "december", label: "December", value: 11 },
-];
-
-const quarterOptions = [
-  { id: "q1", label: "Quarter 1", value: 1 },
-  { id: "q2", label: "Quarter 2", value: 2 },
-  { id: "q3", label: "Quarter 3", value: 3 },
-  { id: "q4", label: "Quarter 4", value: 4 },
-];
+const periodOptions: Record<string, string> = {
+  q1: "Quarter 1",
+  q2: "Quarter 2",
+  q3: "Quarter 3",
+  q4: "Quarter 4",
+  jan: "January",
+  feb: "February",
+  mar: "March",
+  apr: "April",
+  may: "May",
+  jun: "June",
+  jul: "July",
+  aug: "August",
+  sep: "September",
+  oct: "October",
+  nov: "November",
+  dec: "December",
+};
 
 type DeepPartial<T> = T extends object
   ? {
@@ -91,12 +112,18 @@ function TextFilterControl({
 }) {
   const [filter, setFilter] = useState<DeepPartial<GridFilter> | null>(initialFilter);
 
-  const canShowSecond = filter?.right || (filter?.left?.operator && filter.left.value != null);
+  const leftOperator = filter?.left?.operator;
+  const rightOperator = filter?.right?.operator;
 
-  const leftValue = selectOptions.find((x) => x.id === filter?.left?.operator) ?? null;
-  const rightValue = selectOptions.find((x) => x.id === filter?.right?.operator) ?? null;
+  const showInput = leftOperator === "equals" || leftOperator === "after" || leftOperator === "before";
+
+  const leftValue =
+    selectOptions.find((x) => typeof x !== "string" && x.id === filter?.left?.operator) ?? null;
+  const rightValue =
+    selectOptions.find((x) => typeof x !== "string" && x.id === filter?.right?.operator) ?? null;
 
   const combineOperator = filter?.operator ?? "AND";
+  const canShowSecond = leftOperator === "before" && rightOperator === "after";
 
   const canSubmit =
     (filter?.left?.value != null && filter.left?.operator) ||
@@ -111,6 +138,7 @@ function TextFilterControl({
         e.preventDefault();
 
         const finalFilter: DeepPartial<GridFilter> = {};
+
         if (filter?.left?.value != null && filter?.left.operator) finalFilter.left = filter.left;
         if (filter?.right?.value != null && filter?.right.operator) {
           // If the left filter is incomplete then we use the right filter value as the left filter.
@@ -129,141 +157,273 @@ function TextFilterControl({
       }}
     >
       <div className="text-ln-text hidden ps-2 text-sm md:block">Operator</div>
-      <div className="text-ln-text hidden ps-2 text-sm md:block">Values</div>
+      <div className="text-ln-text hidden ps-2 text-sm md:block">{showInput && "Values"}</div>
 
-      <SmartSelect
-        options={selectOptions}
-        value={filter ? (selectOptions.find((x) => x.id === filter?.left?.operator) ?? null) : null}
-        onOptionChange={(option) => {
-          if (!option) return;
-
-          setFilter((prev) => {
-            if (!prev) return { left: { operator: option.id as FilterDateOperator, value: undefined } };
-
-            const value =
-              (["month", "quarter"].includes(prev.left?.operator ?? "") &&
-                ["equals", "before", "after"].includes(option.id)) ||
-              (["month", "quarter"].includes(option.id) &&
-                ["equals", "before", "after"].includes(prev.left?.operator ?? ""))
-                ? undefined
-                : prev.left?.value;
-
-            return {
-              ...prev,
-              left: { ...prev.left, operator: option.id as FilterDateOperator, value },
-            };
-          });
-        }}
-        kind="basic"
-        trigger={
-          <SmartSelect.BasicTrigger
-            type="button"
-            data-ln-input
-            className="flex min-w-40 cursor-pointer items-center justify-between"
-          >
-            <div>{leftValue?.label ?? "Select..."}</div>
-            <div>
-              <ChevronDownIcon />
-            </div>
-          </SmartSelect.BasicTrigger>
-        }
-      >
-        {(p) => {
-          if (p.option.id.startsWith("separator")) {
-            return <div role="separator" className="bg-ln-gray-40 my-1 h-px w-full" />;
-          }
-
-          return (
-            <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
-              {p.option.label}
-              {p.selected && <CheckIcon className="text-ln-primary-50" />}
-            </SmartSelect.Option>
-          );
-        }}
-      </SmartSelect>
-
-      {filter?.left?.operator === "month" && (
-        <SmartSelect
-          options={monthOptions}
-          value={filter ? (monthOptions.find((x) => x.value === filter?.left?.value) ?? null) : null}
-          onOptionChange={(option) => {
-            if (!option) return;
-
-            setFilter((prev) => {
-              if (!prev) return { left: { value: option.value } };
-              return { ...prev, left: { ...prev.left, value: option.value } };
-            });
-          }}
-          kind="basic"
-          trigger={
-            <SmartSelect.BasicTrigger
-              type="button"
-              data-ln-input
-              className="flex min-w-40 cursor-pointer items-center justify-between"
-            >
-              <div>{monthOptions.find((x) => x.value === filter.left?.value)?.label ?? "Select..."}</div>
-              <div>
-                <ChevronDownIcon />
-              </div>
-            </SmartSelect.BasicTrigger>
-          }
+      <Menu>
+        <Menu.Trigger
+          data-ln-input
+          className={tw(
+            "flex min-w-40 cursor-pointer items-center justify-between",
+            !showInput && "col-span-2",
+          )}
+          type="button"
         >
-          {(p) => {
-            if (p.option.id.startsWith("separator")) {
-              return <div role="separator" className="bg-ln-gray-40 my-1 h-px w-full" />;
-            }
-
-            return (
-              <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
-                {p.option.label}
-                {p.selected && <CheckIcon className="text-ln-primary-50" />}
-              </SmartSelect.Option>
-            );
-          }}
-        </SmartSelect>
-      )}
-      {filter?.left?.operator === "quarter" && (
-        <SmartSelect
-          options={quarterOptions}
-          value={filter ? (quarterOptions.find((x) => x.value === filter?.left?.value) ?? null) : null}
-          onOptionChange={(option) => {
-            if (!option) return;
-
-            setFilter((prev) => {
-              if (!prev) return { left: { value: option.value } };
-              return { ...prev, left: { ...prev.left, value: option.value } };
-            });
-          }}
-          kind="basic"
-          trigger={
-            <SmartSelect.BasicTrigger
-              type="button"
-              data-ln-input
-              className="flex min-w-40 cursor-pointer items-center justify-between"
+          <div>
+            {leftOperator === "all_dates_in_the_period"
+              ? `All dates in ${periodOptions[filter?.left?.value ?? ""]}`
+              : (leftValue?.label ?? "Select...")}
+          </div>
+          <div>
+            <ChevronDownIcon />
+          </div>
+        </Menu.Trigger>
+        <Menu.Popover>
+          <Menu.Container className="min-w-(--ln-anchor-width)">
+            <Menu.Item
+              onAction={() => {
+                if (leftOperator === "equals") return;
+                setFilter({ left: { operator: "equals" } });
+              }}
             >
-              <div>{quarterOptions.find((x) => x.value === filter.left?.value)?.label ?? "Select..."}</div>
-              <div>
-                <ChevronDownIcon />
-              </div>
-            </SmartSelect.BasicTrigger>
-          }
-        >
-          {(p) => {
-            if (p.option.id.startsWith("separator")) {
-              return <div role="separator" className="bg-ln-gray-40 my-1 h-px w-full" />;
-            }
+              Equals
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+              onAction={() => {
+                if (leftOperator === "before") return;
+                setFilter({ left: { operator: "before" } });
+              }}
+            >
+              Before
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                if (leftOperator === "after") return;
+                setFilter({ left: { operator: "after" } });
+              }}
+            >
+              After
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                if (leftOperator === "before" && rightOperator === "after") return;
+                setFilter({ left: { operator: "before" }, right: { operator: "after" } });
+              }}
+            >
+              Between
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "tomorrow", value: "" } });
+              }}
+            >
+              Tomorrow
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "today", value: "" } });
+              }}
+            >
+              Today
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "yesterday", value: "" } });
+              }}
+            >
+              Yesterday
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "next_week", value: "" } });
+              }}
+            >
+              Next Week
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "this_week", value: "" } });
+              }}
+            >
+              This Week
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "last_week", value: "" } });
+              }}
+            >
+              Last Week
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "next_month", value: "" } });
+              }}
+            >
+              Next Month
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "this_month", value: "" } });
+              }}
+            >
+              This Month
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "last_month", value: "" } });
+              }}
+            >
+              Last Month
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "next_quarter", value: "" } });
+              }}
+            >
+              Next Quarter
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "this_quarter", value: "" } });
+              }}
+            >
+              This Quarter
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "last_quarter", value: "" } });
+              }}
+            >
+              Last Quarter
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "next_year", value: "" } });
+              }}
+            >
+              Next Year
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "this_year", value: "" } });
+              }}
+            >
+              This Year
+            </Menu.Item>
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "last_year", value: "" } });
+              }}
+            >
+              Last Year
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+              onAction={() => {
+                setFilter({ left: { operator: "year_to_date", value: "" } });
+              }}
+            >
+              Year to Date
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Submenu>
+              <Menu.SubmenuTrigger className="flex items-center justify-between gap-2">
+                <div>All Dates in the Period</div>
+                <CaretRightIcon />
+              </Menu.SubmenuTrigger>
+              <Menu.SubmenuContainer>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "q1" } })}
+                >
+                  Quarter 1
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "q2" } })}
+                >
+                  Quarter 2
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "q3" } })}
+                >
+                  Quarter 3
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "q4" } })}
+                >
+                  Quarter 4
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "jan" } })}
+                >
+                  January
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "feb" } })}
+                >
+                  February
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "mar" } })}
+                >
+                  March
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "apr" } })}
+                >
+                  April
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "may" } })}
+                >
+                  May
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "jun" } })}
+                >
+                  June
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "jul" } })}
+                >
+                  July
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "aug" } })}
+                >
+                  August
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "sep" } })}
+                >
+                  September
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "oct" } })}
+                >
+                  October
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "nov" } })}
+                >
+                  November
+                </Menu.Item>
+                <Menu.Item
+                  onAction={() => setFilter({ left: { operator: "all_dates_in_the_period", value: "dev" } })}
+                >
+                  December
+                </Menu.Item>
+              </Menu.SubmenuContainer>
+            </Menu.Submenu>
+          </Menu.Container>
+        </Menu.Popover>
+      </Menu>
 
-            return (
-              <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
-                {p.option.label}
-                {p.selected && <CheckIcon className="text-ln-primary-50" />}
-              </SmartSelect.Option>
-            );
-          }}
-        </SmartSelect>
-      )}
-
-      {filter?.left?.operator !== "month" && filter?.left?.operator !== "quarter" && (
+      {showInput && (
         <div>
           <label>
             <span className="sr-only">Value for the first filter</span>
@@ -328,161 +488,28 @@ function TextFilterControl({
             </label>
           </div>
 
-          <SmartSelect
-            options={selectOptions}
-            value={filter ? (selectOptions.find((x) => x.id === filter?.right?.operator) ?? null) : null}
-            onOptionChange={(option) => {
-              if (!option) return;
+          <button disabled type="button" data-ln-input className="flex min-w-40 items-center justify-between">
+            <div>{rightValue?.label ?? "Select..."}</div>
+          </button>
 
-              setFilter((prev) => {
-                if (!prev) return { right: { operator: option.id as FilterDateOperator } };
-
-                const value =
-                  (["month", "quarter"].includes(prev.right?.operator ?? "") &&
-                    ["equals", "before", "after"].includes(option.id)) ||
-                  (["month", "quarter"].includes(option.id) &&
-                    ["equals", "before", "after"].includes(prev.right?.operator ?? ""))
-                    ? undefined
-                    : prev.right?.value;
-
-                return {
-                  ...prev,
-                  right: { ...prev.right, operator: option.id as FilterDateOperator, value },
-                };
-              });
-            }}
-            kind="basic"
-            trigger={
-              <SmartSelect.BasicTrigger
-                type="button"
+          <div>
+            <label>
+              <span className="sr-only">Value for the second filter</span>
+              <input
                 data-ln-input
-                className="flex min-w-40 items-center justify-between"
-              >
-                <div>{rightValue?.label ?? "Select..."}</div>
-                <div>
-                  <ChevronDownIcon />
-                </div>
-              </SmartSelect.BasicTrigger>
-            }
-          >
-            {(p) => {
-              if (p.option.id.startsWith("separator")) {
-                return <div role="separator" className="bg-ln-gray-40 my-1 h-px w-full" />;
-              }
+                value={filter?.right?.value ?? ""}
+                className="w-full text-xs"
+                type="date"
+                onChange={(e) => {
+                  setFilter((prev) => {
+                    if (!prev) return { right: { value: e.target.value } };
 
-              return (
-                <SmartSelect.Option key={p.option.id} {...p}>
-                  {p.option.label}
-                </SmartSelect.Option>
-              );
-            }}
-          </SmartSelect>
-
-          {filter?.right?.operator === "month" && (
-            <SmartSelect
-              options={monthOptions}
-              value={filter ? (monthOptions.find((x) => x.value === filter?.right?.value) ?? null) : null}
-              onOptionChange={(option) => {
-                if (!option) return;
-
-                setFilter((prev) => {
-                  if (!prev) return { right: { value: option.value } };
-
-                  return { ...prev, right: { ...prev.right, value: option.value } };
-                });
-              }}
-              kind="basic"
-              trigger={
-                <SmartSelect.BasicTrigger
-                  type="button"
-                  data-ln-input
-                  className="flex min-w-40 cursor-pointer items-center justify-between"
-                >
-                  <div>{monthOptions.find((x) => x.value === filter.right?.value)?.label ?? "Select..."}</div>
-                  <div>
-                    <ChevronDownIcon />
-                  </div>
-                </SmartSelect.BasicTrigger>
-              }
-            >
-              {(p) => {
-                if (p.option.id.startsWith("separator")) {
-                  return <div role="separator" className="bg-ln-gray-40 my-1 h-px w-full" />;
-                }
-
-                return (
-                  <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
-                    {p.option.label}
-                    {p.selected && <CheckIcon className="text-ln-primary-50" />}
-                  </SmartSelect.Option>
-                );
-              }}
-            </SmartSelect>
-          )}
-          {filter?.right?.operator === "quarter" && (
-            <SmartSelect
-              options={quarterOptions}
-              value={filter ? (quarterOptions.find((x) => x.value === filter?.right?.value) ?? null) : null}
-              onOptionChange={(option) => {
-                if (!option) return;
-
-                setFilter((prev) => {
-                  if (!prev) return { right: { value: option.value } };
-                  return { ...prev, right: { ...prev.right, value: option.value } };
-                });
-              }}
-              kind="basic"
-              trigger={
-                <SmartSelect.BasicTrigger
-                  type="button"
-                  data-ln-input
-                  className="flex min-w-40 cursor-pointer items-center justify-between"
-                >
-                  <div>
-                    {quarterOptions.find((x) => x.value === filter.right?.value)?.label ?? "Select..."}
-                  </div>
-                  <div>
-                    <ChevronDownIcon />
-                  </div>
-                </SmartSelect.BasicTrigger>
-              }
-            >
-              {(p) => {
-                if (p.option.id.startsWith("separator")) {
-                  return <div role="separator" className="bg-ln-gray-40 my-1 h-px w-full" />;
-                }
-
-                return (
-                  <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
-                    {p.option.label}
-                    {p.selected && <CheckIcon className="text-ln-primary-50" />}
-                  </SmartSelect.Option>
-                );
-              }}
-            </SmartSelect>
-          )}
-
-          {filter?.right?.operator !== "month" && filter?.right?.operator !== "quarter" && (
-            <div>
-              <label>
-                <span className="sr-only">Value for the second filter</span>
-                <input
-                  disabled={!filter?.right}
-                  data-ln-input
-                  value={filter?.right?.value ?? ""}
-                  className="w-full text-xs"
-                  type="date"
-                  onChange={(e) => {
-                    setFilter((prev) => {
-                      if (!prev) return { right: { value: e.target.value } };
-
-                      return { ...prev, right: { ...prev.right, value: e.target.value } };
-                    });
-                  }}
-                />
-              </label>
-            </div>
-          )}
+                    return { ...prev, right: { ...prev.right, value: e.target.value } };
+                  });
+                }}
+              />
+            </label>
+          </div>
         </>
       )}
 

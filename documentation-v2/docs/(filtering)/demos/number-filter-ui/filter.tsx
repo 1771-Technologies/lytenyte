@@ -228,7 +228,7 @@ function TextFilterControl({
               <SmartSelect.BasicTrigger
                 type="button"
                 data-ln-input
-                className="flex min-w-40 items-center justify-between"
+                className="flex min-w-40 cursor-pointer items-center justify-between"
               >
                 <div>{rightValue?.label ?? "Select..."}</div>
                 <div>
@@ -243,7 +243,7 @@ function TextFilterControl({
               }
 
               return (
-                <SmartSelect.Option key={p.option.id} {...p}>
+                <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
                   {p.option.label}
                 </SmartSelect.Option>
               );

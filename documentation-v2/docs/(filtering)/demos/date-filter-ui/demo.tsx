@@ -9,7 +9,24 @@ import { data, type DataItem } from "./data.js";
 import { useId, useMemo, useState, type CSSProperties } from "react";
 import { Switch } from "radix-ui";
 import { Header } from "./filter.jsx";
-import { isAfter, isBefore, isEqual, getMonth, getQuarter } from "date-fns";
+import { isAfter, isBefore, isEqual, isTomorrow, isToday, isYesterday } from "date-fns";
+import {
+  isInPeriod,
+  isLastMonth,
+  isLastQuarter,
+  isLastWeek,
+  isLastYear,
+  isNextMonth,
+  isNextQuarter,
+  isNextWeek,
+  isNextYear,
+  isThisMonth,
+  isThisQuarter,
+  isThisWeek,
+  isThisYear,
+  isYtd,
+  type Period,
+} from "./date-utils.js";
 
 export interface GridSpec {
   readonly data: DataItem;
@@ -36,11 +53,34 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "total", name: "Total", widthFlex: 1, type: "number", cellRenderer: DollarCell },
 ];
 
-export type FilterDateOperator = "equals" | "before" | "after" | "quarter" | "month";
+export type FilterDateOperator =
+  | "equals"
+  | "before"
+  | "after"
+  | "tomorrow"
+  | "today"
+  | "yesterday"
+  | "next_week"
+  | "this_week"
+  | "last_week"
+  | "next_month"
+  | "this_month"
+  | "last_month"
+  | "next_month"
+  | "this_month"
+  | "last_month"
+  | "next_quarter"
+  | "this_quarter"
+  | "last_quarter"
+  | "next_year"
+  | "this_year"
+  | "last_year"
+  | "year_to_date"
+  | "all_dates_in_the_period";
 
 export interface FilterDate {
   readonly operator: FilterDateOperator;
-  readonly value: string | number;
+  readonly value: string;
 }
 
 export interface GridFilter {
@@ -58,12 +98,36 @@ export default function FilteringDemo() {
   const filterFn = useMemo(() => {
     const entries = Object.entries(filter);
 
-    const evaluateDateFilter = (operator: FilterDateOperator, compare: string, value: string | number) => {
+    const evaluateDateFilter = (operator: FilterDateOperator, compare: string, value: string) => {
       if (operator === "equals") return isEqual(compare, value);
       if (operator === "after") return isAfter(compare, value);
       if (operator === "before") return isBefore(compare, value);
-      if (operator === "month") return getMonth(compare) === value;
-      if (operator === "quarter") return getQuarter(compare) === value;
+
+      if (operator === "tomorrow") return isTomorrow(compare);
+      if (operator === "today") return isToday(compare);
+      if (operator === "yesterday") return isYesterday(compare);
+
+      if (operator === "next_week") return isNextWeek(compare);
+      if (operator === "next_month") return isNextMonth(compare);
+      if (operator === "next_quarter") return isNextQuarter(compare);
+      if (operator === "next_year") return isNextYear(compare);
+
+      if (operator === "this_week") return isThisWeek(compare);
+      if (operator === "this_month") return isThisMonth(compare);
+      if (operator === "this_quarter") return isThisQuarter(compare);
+      if (operator === "this_year") return isThisYear(compare);
+
+      if (operator === "last_week") return isLastWeek(compare);
+      if (operator === "last_month") return isLastMonth(compare);
+      if (operator === "last_quarter") return isLastQuarter(compare);
+      if (operator === "last_year") return isLastYear(compare);
+
+      if (operator === "year_to_date") return isYtd(compare);
+
+      if (operator === "all_dates_in_the_period") {
+        return isInPeriod(compare, value as Period);
+      }
+
       return false;
     };
 
