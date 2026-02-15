@@ -71,7 +71,7 @@ function tw(...c: ClassValue[]) {
 }
 
 const formatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 0,
   minimumFractionDigits: 0,
 });
 export function ProfitCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
@@ -95,12 +95,23 @@ export function ProfitCell({ api, row, column }: Grid.T.CellRendererParams<GridS
   );
 }
 
+export function DecimalCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const formatted = formatter.format(field);
+
+  return <div className={"flex h-full w-full items-center justify-end tabular-nums"}>{formatted}</div>;
+}
+
 export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
   if (typeof field !== "number") return "-";
 
-  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
+  const prefix = column.measure === "count" ? "" : "$";
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : prefix + formatter.format(field);
 
   return <div className={"flex h-full w-full items-center justify-end tabular-nums"}>{formatted}</div>;
 }
@@ -110,7 +121,8 @@ export function CostCell({ api, row, column }: Grid.T.CellRendererParams<GridSpe
 
   if (typeof field !== "number") return "-";
 
-  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
+  const prefix = column.measure === "count" ? "" : "$";
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : prefix + formatter.format(field);
 
   return (
     <div

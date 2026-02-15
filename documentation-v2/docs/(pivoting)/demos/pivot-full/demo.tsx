@@ -15,6 +15,7 @@ import {
   CostCell,
   CountryCell,
   DateCell,
+  DecimalCell,
   GenderCell,
   NumberCell,
   ProfitCell,
@@ -39,7 +40,14 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "country", name: "Country", cellRenderer: CountryCell, width: 150, pivotable: true },
 
   { id: "profit", name: "Profit", width: 120, type: "number", cellRenderer: ProfitCell, measurable: true },
-  { id: "orderQuantity", name: "Quantity", type: "number", width: 120, measurable: true },
+  {
+    id: "orderQuantity",
+    name: "Quantity",
+    type: "number",
+    cellRenderer: DecimalCell,
+    width: 120,
+    measurable: true,
+  },
   { id: "unitPrice", name: "Price", type: "number", width: 120, cellRenderer: NumberCell, measurable: true },
   { id: "cost", name: "Cost", width: 120, type: "number", cellRenderer: CostCell, measurable: true },
   { id: "revenue", name: "Revenue", width: 120, type: "number", cellRenderer: ProfitCell, measurable: true },
@@ -50,7 +58,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160, pivotable: true },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
+const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1, resizable: true };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -107,7 +115,11 @@ export default function PivotDemo() {
   const [colPivots, setColPivots] = useState<PillManager.T.PillItem[]>(() =>
     columns
       .filter((x) => x.pivotable)
-      .map((x) => ({ id: x.id, name: x.name ?? x.id, active: x.id === "ageGroup" })),
+      .map((x) => ({
+        id: x.id,
+        name: x.name ?? x.id,
+        active: x.id === "ageGroup",
+      })),
   );
   const [rowPivots, setRowPivots] = useState<PillManager.T.PillItem[]>(() => {
     const pivotables = columns
@@ -178,6 +190,7 @@ export default function PivotDemo() {
         active: x.active,
         name: x.name ?? x.id,
         data: x.data,
+        movable: x.active,
         removable: true,
       };
     });
@@ -323,7 +336,18 @@ export default function PivotDemo() {
         </PillManager>
       </div>
       <div className="ln-grid" style={{ height: 500 }}>
-        <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />
+        <Grid
+          columns={columns}
+          rowSource={ds}
+          columnBase={base}
+          rowGroupColumn={group}
+          {...pivotProps}
+          styles={{
+            headerGroup: {
+              style: { position: "sticky", insetInlineStart: "var(--ln-start-offset)", overflow: "unset" },
+            },
+          }}
+        />
       </div>
     </>
   );

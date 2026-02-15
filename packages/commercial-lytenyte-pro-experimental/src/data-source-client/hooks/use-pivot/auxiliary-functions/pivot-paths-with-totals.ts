@@ -1,4 +1,3 @@
-// Is AI actually good for something?
 /**
  * Adds ln__total rows at every dimension level (except the measure/leaf),
  * plus ln__grand_total rows at the top level, for every distinct leaf.
@@ -16,7 +15,7 @@
  *   with ln__total rows placed after non-total rows at the same grouping level,
  *   and ln__grand_total rows at the end.
  */
-export function pivotPathsWithTotals(paths: string[]): string[] {
+export function pivotPathsWithTotals(paths: string[], measures: string[]): string[] {
   const SEP = "-->";
   const TOTAL = "ln__total";
   const GRAND = "ln__grand_total";
@@ -102,6 +101,7 @@ export function pivotPathsWithTotals(paths: string[]): string[] {
     return [0, seg.toLowerCase(), seg];
   };
 
+  const tieIndex = Object.fromEntries(measures.map((x, i) => [x.toLowerCase(), i]));
   const cmp = (a: string, b: string): number => {
     const aParts = a.split(SEP).map((s) => s.trim());
     const bParts = b.split(SEP).map((s) => s.trim());
@@ -123,9 +123,20 @@ export function pivotPathsWithTotals(paths: string[]): string[] {
 
       // total positioning
       if (ak[0] !== bk[0]) return ak[0] - bk[0];
+
+      // Tie break at leaf
+      if (i === aParts.length - 1 && i === bParts.length - 1) {
+        const left = tieIndex[ak[1]];
+        const right = tieIndex[bk[1]];
+
+        if (left < right) return -1;
+        if (left > right) return 1;
+      }
+
       // case-insensitive alphabetical
       if (ak[1] < bk[1]) return -1;
       if (ak[1] > bk[1]) return 1;
+
       // raw tie-breaker
       if (ak[2] < bk[2]) return -1;
       if (ak[2] > bk[2]) return 1;

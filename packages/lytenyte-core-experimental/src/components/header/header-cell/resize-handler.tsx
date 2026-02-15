@@ -26,7 +26,7 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
     return columns.every((x) => x?.resizable ?? base.resizable ?? false);
   }, [base.resizable, columns]);
 
-  if (cell.kind === "group") console.log(columns, cell.columnIds);
+  if (!resizable) return null;
 
   return (
     <div

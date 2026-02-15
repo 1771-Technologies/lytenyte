@@ -12,6 +12,7 @@ export function pivotPaths<Spec extends GridSpec>(
   labelFilter: PivotModel<Spec>["colLabelFilter"],
 ) {
   const pathSet = new Set<string>();
+
   for (let i = 0; i < filtered.length; i++) {
     const row = leafs[filtered[i]];
     const current: string[] = [];
@@ -39,7 +40,7 @@ export function pivotPaths<Spec extends GridSpec>(
   }
   const paths = [...pathSet];
 
-  const pathsWithTotals = pivotPathsWithTotals(paths);
+  const pathsWithTotals = pivotPathsWithTotals(paths, measures?.map((x) => x.dim.id) ?? []);
 
   return pathsWithTotals;
 }

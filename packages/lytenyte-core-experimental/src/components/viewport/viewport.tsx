@@ -302,7 +302,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
         {vp && dimensions.innerWidth > 0 && children}
         {/* Prevents layouts shifts when the viewport size has not been retrieved. */}
         {dimensions.innerWidth === 0 && (
-          <div style={{ minWidth: xPositions.at(-1), minHeight: yPositions.at(-1) }} />
+          <div
+            suppressHydrationWarning
+            style={{ minWidth: xPositions.at(-1), minHeight: yPositions.at(-1) }}
+          />
         )}
       </div>
 

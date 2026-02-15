@@ -2,7 +2,13 @@ import { useMemo, useRef } from "react";
 import type { PivotModel } from "../../use-client-data-source";
 import type { Column, GridSpec } from "../../../types/index.js";
 import { computeField } from "@1771technologies/lytenyte-core-experimental/internal";
-import { equal, type ColumnPin, type RowLeaf, itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
+import {
+  equal,
+  type ColumnPin,
+  type RowLeaf,
+  itemsWithIdToMap,
+  measureText,
+} from "@1771technologies/lytenyte-shared";
 import { pivotPaths } from "./auxiliary-functions/pivot-paths.js";
 import { applyReferenceColumn } from "./auxiliary-functions/apply-reference-column.js";
 import type { ControlledPivotState } from "./use-pivot-state";
@@ -59,6 +65,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
           {
             id: x.dim.id,
             field: x.dim.id,
+            name: x.dim.name,
           },
           x.dim as any,
         );
@@ -84,6 +91,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       parts.pop();
 
       let name = measureId === "ln__noop" || measures?.length === 1 ? parts.at(-1)! : measureId;
+
       if (name === "ln__grand_total") name = "Grand Total";
       if (parts[0] === "ln__grand_total" && measures && measures.length! > 1)
         name = "Grand Total " + measureId;
@@ -98,10 +106,16 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       )?.map((x) => (x === "ln__total" ? "Total" : x));
 
       partsRaw.pop();
+
+      const label = measures!.length > 1 ? (measureRef?.name ?? name) : name;
+
+      const minWidth = measureText(label);
+
       const column: Column<Spec> = applyReferenceColumn(
         {
           id: path,
-          name: group ? (measureRef?.name ?? name) : name,
+          name: label,
+          widthMin: minWidth?.width,
           groupPath: group?.map((x) => {
             if (x === "ln__grand_total") return "Grand Total";
             if (x === "ln__total") return "Total";
