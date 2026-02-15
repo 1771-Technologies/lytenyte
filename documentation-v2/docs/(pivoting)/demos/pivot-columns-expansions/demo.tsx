@@ -44,7 +44,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160, pivotable: true },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120 };
+const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -82,6 +82,11 @@ export default function PivotDemo() {
         columnBase={base}
         rowGroupColumn={group}
         columnGroupRenderer={HeaderGroupCell}
+        styles={{
+          headerGroup: {
+            style: { position: "sticky", insetInlineStart: "var(--ln-start-offset)", overflow: "unset" },
+          },
+        }}
         {...pivotProps}
       />
     </div>
