@@ -2,6 +2,7 @@ import "../test.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, useClientDataSource } from "../../index.js";
 import "./navigation.css";
+import { useState } from "react";
 
 const baseColumns: Grid.Column[] = [
   { id: "age" },
@@ -37,6 +38,7 @@ export default function NormalLayout({
   pinBot?: number;
   floatingRow?: boolean;
 }) {
+  const [x, setColumns] = useState(columns ?? baseColumns);
   const ds = useClientDataSource({
     data: center ? bankDataSmall.slice(0, center) : bankDataSmall,
     topData: pinTop ? bankDataSmall.slice(0, pinTop) : [],
@@ -51,10 +53,12 @@ export default function NormalLayout({
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
         <Grid
           gridId="x"
-          columns={columns ?? baseColumns}
+          columns={x ?? baseColumns}
+          onColumnsChange={setColumns}
           rowSource={ds}
           rtl={rtl}
           floatingRowEnabled={floatingRow}
+          columnBase={{ resizable: true }}
         />
       </div>
       <button tabIndex={0} onClick={() => {}}>

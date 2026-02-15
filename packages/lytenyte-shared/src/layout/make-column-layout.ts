@@ -54,7 +54,7 @@ export function makeColumnLayout(view: ColumnView, floatingRowEnabled: boolean) 
         colStart: c.colStart,
         colEnd: c.colStart + c.colSpan,
         colSpan: c.colSpan,
-        columnIds: [...c.data.idsInNode],
+        columnIds: view.visibleColumns.slice(c.colStart, c.colStart + c.colSpan).map((x) => x.id),
         groupPath: c.data.groupPath,
         start: c.data.start,
         end: c.data.end,
