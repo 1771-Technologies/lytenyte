@@ -1,0 +1,5 @@
+@keyframes flash {
+  0% {
+    background-color: var(--color-ln-gray-40);
+  }
+}

@@ -1,0 +1,68 @@
+import "@1771technologies/lytenyte-pro-experimental/components.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { salesData, type SaleDataItem } from "@1771technologies/grid-sample-data/sales-data";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import {
+  AgeGroup,
+  CostCell,
+  CountryCell,
+  DateCell,
+  GenderCell,
+  NumberCell,
+  ProfitCell,
+} from "./components.js";
+import { useState } from "react";
+import { ToggleGroup, ToggleItem } from "./components.jsx";
+
+export interface GridSpec {
+  readonly data: SaleDataItem;
+}
+
+export const columns: Grid.Column<GridSpec>[] = [
+  { id: "date", name: "Date", cellRenderer: DateCell, width: 110 },
+  { id: "age", name: "Age", type: "number", width: 80 },
+  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 110 },
+  { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 80 },
+  { id: "country", name: "Country", cellRenderer: CountryCell, width: 150 },
+  { id: "orderQuantity", name: "Quantity", type: "number", width: 60 },
+  { id: "unitPrice", name: "Price", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell },
+  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell },
+  { id: "profit", name: "Profit", width: 80, type: "number", cellRenderer: ProfitCell },
+  { id: "state", name: "State", width: 150 },
+  { id: "product", name: "Product", width: 160 },
+  { id: "productCategory", name: "Category", width: 120 },
+  { id: "subCategory", name: "Sub-Category", width: 160 },
+];
+
+const base: Grid.ColumnBase<GridSpec> = { width: 120 };
+//#end
+export default function GridReactivityRowHeight() {
+  const ds = useClientDataSource({ data: salesData });
+
+  const [rowHeight, setRowHeight] = useState(40); //!
+
+  return (
+    <div className="ln-grid" style={{ display: "flex", flexDirection: "column" }}>
+      <div className="border-b-ln-border flex w-full border-b px-2 py-2">
+        <ToggleGroup
+          type="single"
+          value={`${rowHeight}`}
+          onValueChange={(c) => {
+            if (!c) return;
+            setRowHeight(Number.parseInt(c)); //!
+          }}
+        >
+          <ToggleItem value="20">Small</ToggleItem>
+          <ToggleItem value="40">Medium</ToggleItem>
+          <ToggleItem value="60">Large</ToggleItem>
+          <ToggleItem value="80">Extra Large</ToggleItem>
+        </ToggleGroup>
+      </div>
+      <div style={{ height: 500 }}>
+        {/*!next */}
+        <Grid columns={columns} columnBase={base} rowHeight={rowHeight} rowSource={ds} />
+      </div>
+    </div>
+  );
+}

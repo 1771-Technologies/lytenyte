@@ -1,0 +1,21 @@
+[data-ln-drag-position="before"]::before {
+  position: absolute;
+  top: 0px;
+  inset-inline-start: 0px;
+  content: "";
+  height: 2px;
+  background-color: var(--ln-primary-50);
+  width: 100%;
+  z-index: 10;
+}
+
+[data-ln-drag-position="after"]::before {
+  position: absolute;
+  top: calc(var(--ln-row-height) - 2px);
+  inset-inline-start: 0px;
+  content: "";
+  height: 2px;
+  background-color: var(--ln-primary-50);
+  width: 100%;
+  z-index: 10;
+}

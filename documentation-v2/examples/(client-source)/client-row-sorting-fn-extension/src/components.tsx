@@ -1,0 +1,150 @@
+import type { ClassValue } from "clsx";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
+import { exchanges, networks, symbols } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+
+export function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
+}
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+
+export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const ticker = row.data.symbolTicker;
+  const symbol = row.data.symbol;
+  const image = symbols[row.data.symbolTicker];
+
+  return (
+    <div className="grid grid-cols-[20px_auto_auto] items-center gap-1.5">
+      <div>
+        <img
+          src={image}
+          alt={`Logo for symbol ${symbol}`}
+          className="h-full w-full overflow-hidden rounded-full"
+        />
+      </div>
+      <div className="bg-ln-gray-20 text-ln-text-dark flex h-fit items-center justify-center rounded-lg px-2 py-px text-[10px]">
+        {ticker}
+      </div>
+      <div className="w-full overflow-hidden text-ellipsis">{symbol.split("/")[0]}</div>
+    </div>
+  );
+}
+
+export function NetworkCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const name = row.data.network;
+  const image = networks[name];
+
+  return (
+    <div className="grid grid-cols-[20px_1fr] items-center gap-1.5">
+      <div>
+        <img
+          src={image}
+          alt={`Logo for network ${name}`}
+          className="h-full w-full overflow-hidden rounded-full"
+        />
+      </div>
+      <div className="w-full overflow-hidden text-ellipsis">{name}</div>
+    </div>
+  );
+}
+
+export function ExchangeCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const name = row.data.exchange;
+  const image = exchanges[name];
+
+  return (
+    <div className="grid grid-cols-[20px_1fr] items-center gap-1.5">
+      <div>
+        <img
+          src={image}
+          alt={`Logo for exchange ${name}`}
+          className="h-full w-full overflow-hidden rounded-full"
+        />
+      </div>
+      <div className="w-full overflow-hidden text-ellipsis">{name}</div>
+    </div>
+  );
+}
+
+export function PercentCellPositiveNegative({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const value = (field > 0 ? "+" : "") + (field * 100).toFixed(2) + "%";
+
+  return (
+    <div
+      className={tw(
+        "h-ful flex w-full items-center justify-end tabular-nums",
+        field < 0 ? "text-red-600 dark:text-red-300" : "text-green-600 dark:text-green-300",
+      )}
+    >
+      {value}
+    </div>
+  );
+}
+
+export function PercentCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const value = (field > 0 ? "+" : "") + (field * 100).toFixed(2) + "%";
+
+  return <div className="h-ful flex w-full items-center justify-end tabular-nums">{value}</div>;
+}
+
+export const makePerfHeaderCell = (name: string, subname: string) => {
+  return ({ column, api }: Grid.T.HeaderParams<GridSpec>) => {
+    return (
+      <div
+        className="flex h-full w-full items-center justify-between"
+        onClick={() => {
+          const nextSort = column.sort === "asc" ? null : column.sort === "desc" ? "asc" : "desc";
+          api.sortColumn(column.id, nextSort);
+        }}
+      >
+        {column.sort === "asc" && <ArrowUpIcon className="text-ln-text-dark size-4" />}
+        {column.sort === "desc" && <ArrowDownIcon className="text-ln-text-dark size-4" />}
+        {!column.sort && <div />}
+
+        <div className="flex flex-col items-end justify-end tabular-nums">
+          <div>{name}</div>
+          <div className="text-ln-text-light font-mono uppercase">{subname}</div>
+        </div>
+      </div>
+    );
+  };
+};
+
+export function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
+  return (
+    <div
+      className="text-ln-gray-60 group relative flex h-full w-full cursor-pointer items-center px-1 text-sm transition-colors"
+      onClick={() => {
+        const nextSort = column.sort === "asc" ? null : column.sort === "desc" ? "asc" : "desc";
+        api.sortColumn(column.id, nextSort);
+      }}
+    >
+      <div className="sort-button flex w-full items-center justify-between rounded px-1 py-1 transition-colors">
+        {column.name ?? column.id}
+
+        {column.sort === "asc" && <ArrowUpIcon className="text-ln-text-dark size-4" />}
+        {column.sort === "desc" && <ArrowDownIcon className="text-ln-text-dark size-4" />}
+      </div>
+    </div>
+  );
+}

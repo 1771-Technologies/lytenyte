@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "update-examples": "pnpm tsx ./make-examples.mts"
   },
   "dependencies": {
     "@1771technologies/lytenyte-doc": "workspace:*",
@@ -42,6 +43,8 @@
     "@1771technologies/lytenyte-pro-experimental": "workspace:*",
     "clsx": "2.1.1",
     "date-fns": "4.1.0",
+    "fast-glob": "3.3.3",
+    "fs-extra": "11.3.0",
     "react-minimal-pie-chart": "9.1.1"
   }
 }
