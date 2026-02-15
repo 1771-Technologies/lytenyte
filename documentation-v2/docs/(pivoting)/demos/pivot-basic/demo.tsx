@@ -27,22 +27,22 @@ export interface GridSpec {
 
 export const columns: Grid.Column<GridSpec>[] = [
   { id: "date", name: "Date", cellRenderer: DateCell, width: 110 },
-  { id: "age", name: "Age", type: "number", width: 80 },
-  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 110 },
-  { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 80 },
   { id: "country", name: "Country", cellRenderer: CountryCell, width: 150 },
+  { id: "age", name: "Age", type: "number", width: 80 },
+  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 160 },
+  { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 120 },
+  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell },
+  { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell },
+  { id: "profit", name: "Profit", width: 80, type: "number", cellRenderer: ProfitCell },
   { id: "orderQuantity", name: "Quantity", type: "number", width: 60 },
   { id: "unitPrice", name: "Price", type: "number", width: 80, cellRenderer: NumberCell },
-  { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell },
-  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell },
-  { id: "profit", name: "Profit", width: 80, type: "number", cellRenderer: ProfitCell },
-  { id: "state", name: "State", width: 150 },
-  { id: "product", name: "Product", width: 160 },
   { id: "productCategory", name: "Category", width: 120 },
   { id: "subCategory", name: "Sub-Category", width: 160 },
+  { id: "product", name: "Product", width: 160 },
+  { id: "state", name: "State", width: 150 },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120 };
+const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -84,7 +84,7 @@ export default function PivotDemo() {
   return (
     <>
       <div className="border-ln-border border-b px-2 py-2">
-        <SwitchToggle label="Toggle Pivot Mode" checked={pivotMode} onChange={setPivotMode} />
+        <SwitchToggle label="Toggle Pivot" checked={pivotMode} onChange={setPivotMode} />
       </div>
       <div className="ln-grid" style={{ height: 500 }}>
         <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />

@@ -23,9 +23,10 @@ export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpe
 export function AgeGroupPivotHeader({ column }: Grid.T.HeaderParams<GridSpec>) {
   const field = column.name ?? column.id;
 
-  if (field === "Under 25") return <div className="text-[#944cec] dark:text-[#B181EB]">Under 25</div>;
-  if (field === "25-34") return <div className="text-[#aa6c1a] dark:text-[#E5B474]">25-34</div>;
-  if (field === "35-64") return <div className="text-[#0f7d4c] dark:text-[#52B086]">35-64</div>;
+  if (field === "Youth (<25)") return <div className="text-[#944cec] dark:text-[#B181EB]">{field}</div>;
+  if (field === "Young Adults (25-34)")
+    return <div className="text-[#aa6c1a] dark:text-[#E5B474]">{field}</div>;
+  if (field === "Adults (35-64)") return <div className="text-[#0f7d4c] dark:text-[#52B086]">{field}</div>;
 
   if (field === "Grand Total") return "Grand Total";
 
@@ -35,9 +36,10 @@ export function AgeGroupPivotHeader({ column }: Grid.T.HeaderParams<GridSpec>) {
 export function AgeGroup({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
-  if (field === "Under 25") return <div className="text-[#944cec] dark:text-[#B181EB]">Under 25</div>;
-  if (field === "25-34") return <div className="text-[#aa6c1a] dark:text-[#E5B474]">25-34</div>;
-  if (field === "35-64") return <div className="text-[#0f7d4c] dark:text-[#52B086]">35-64</div>;
+  if (field === "Youth (<25)") return <div className="text-[#944cec] dark:text-[#B181EB]">{field}</div>;
+  if (field === "Young Adults (25-34)")
+    return <div className="text-[#aa6c1a] dark:text-[#E5B474]">{field}</div>;
+  if (field === "Adults (35-64)") return <div className="text-[#0f7d4c] dark:text-[#52B086]">{field}</div>;
 
   return "-";
 }
@@ -45,23 +47,23 @@ export function AgeGroup({ api, row, column }: Grid.T.CellRendererParams<GridSpe
 export function GenderCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
-  if (field === "M")
+  if (field === "Male")
     return (
       <div className="flex h-full w-full items-center gap-2">
         <div className="flex size-6 items-center justify-center rounded-full bg-blue-500/50">
           <span className="iconify ph--gender-male-bold size-4" />
         </div>
-        M
+        Male
       </div>
     );
 
-  if (field === "F")
+  if (field === "Female")
     return (
       <div className="flex h-full w-full items-center gap-2">
         <div className="flex size-6 items-center justify-center rounded-full bg-pink-500/50">
           <span className="iconify ph--gender-female-bold size-4" />
         </div>
-        F
+        Female
       </div>
     );
 
