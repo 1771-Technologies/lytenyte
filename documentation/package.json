@@ -11,10 +11,9 @@
   },
   "dependencies": {
     "@base-ui-components/react": "1.0.0-beta.1",
-    "@1771technologies/lytenyte-pro": "workspace:*",
-    "@1771technologies/lytenyte-pro-experimental": "workspace:*",
+    "@1771technologies/lytenyte-pro": "1.0.20",
     "@1771technologies/remark-code-demo": "workspace:*",
-    "@1771technologies/grid-sample-data": "workspace:*",
+    "@1771technologies/grid-sample-data": "1.0.20",
     "@ark-ui/react": "5.25.0",
     "@bprogress/next": "3.2.12",
     "@emotion/styled": "11.14.1",

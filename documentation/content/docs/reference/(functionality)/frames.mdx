@@ -2,80 +2,78 @@
 title: Frames
 description: The API reference for the frames functionality in LyteNyte Grid.
 ---
+
 ## `DialogFrame`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Defines a dialog frame configuration used by LyteNyte Grid.
 
-  This structure is passed to grid internals to associate a rendering component
-  for dialogs triggered by grid interactions.
+This structure is passed to grid internals to associate a rendering component
+for dialogs triggered by grid interactions.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DialogFrame" />
-
+<AutoTypeTable path="./types.ts" name="DialogFrame" />
 
 ## `DialogFrameRenderer`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface DialogFrameRenderer {
 
-          /** 
+          /**
            * Function responsible for rendering a dialog component.
- * 
- *   LyteNyte Grid does not provide a dialog component by default. Instead, it expects
- *   developers to use their preferred dialog libraries. This renderer function receives
- *   control parameters and should return a valid ReactNode to render as a dialog.
- * 
- *   Note: The dialog component used should support controlled open/close behavior.
-           */
-          DialogFrameRenderer: (params: (DialogFrameRendererParams) => ReactNode)
-          }`} />
+
+-
+- LyteNyte Grid does not provide a dialog component by default. Instead, it expects
+- developers to use their preferred dialog libraries. This renderer function receives
+- control parameters and should return a valid ReactNode to render as a dialog.
+-
+- Note: The dialog component used should support controlled open/close behavior.
+  \*/
+  DialogFrameRenderer: (params: (DialogFrameRendererParams) => ReactNode)
+  }`} />
 
 ## `DialogFrameRendererParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters provided to the dialog frame renderer function.
 
-  These include the grid context, the frame being rendered, and any additional
-  user-provided context.
+These include the grid context, the frame being rendered, and any additional
+user-provided context.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DialogFrameRendererParams" />
-
+<AutoTypeTable path="./types.ts" name="DialogFrameRendererParams" />
 
 ## `PopoverFrame`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Describes a popover frame and the component renderer used to display it.
 
-  The popover frame is triggered by LyteNyte Grid interactions and used to display
-  contextual information, editors, or auxiliary UI near a cell or element.
+The popover frame is triggered by LyteNyte Grid interactions and used to display
+contextual information, editors, or auxiliary UI near a cell or element.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="PopoverFrame" />
-
+<AutoTypeTable path="./types.ts" name="PopoverFrame" />
 
 ## `PopoverFrameRenderer`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface PopoverFrameRenderer {
 
-          /** 
+          /**
            * Function that renders a popover component for a given context.
- * 
- *   LyteNyte Grid does not include a built-in popover renderer. Developers must use their
- *   own popover UI libraries and integrate them by implementing this renderer interface.
-           */
-          PopoverFrameRenderer: (params: (PopoverFrameRendererParams) => ReactNode)
-          }`} />
+
+-
+- LyteNyte Grid does not include a built-in popover renderer. Developers must use their
+- own popover UI libraries and integrate them by implementing this renderer interface.
+  \*/
+  PopoverFrameRenderer: (params: (PopoverFrameRendererParams) => ReactNode)
+  }`} />
 
 ## `PopoverFrameRendererParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters passed to the popover frame renderer function.
 
-  Includes information about the grid, the target HTML element or virtual
-  target to anchor the popover, and the frame being rendered.
+Includes information about the grid, the target HTML element or virtual
+target to anchor the popover, and the frame being rendered.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="PopoverFrameRendererParams" />
-
+<AutoTypeTable path="./types.ts" name="PopoverFrameRendererParams" />
 
 ## `VirtualTarget`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Represents a virtual DOM target with bounding information, used in situations
-  where a physical DOM element does not exist. Commonly used for positioning popovers
-  or overlays within LyteNyte Grid.
+where a physical DOM element does not exist. Commonly used for positioning popovers
+or overlays within LyteNyte Grid.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="VirtualTarget" />
-
+<AutoTypeTable path="./types.ts" name="VirtualTarget" />

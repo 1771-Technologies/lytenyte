@@ -7,9 +7,10 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-import { Grid, moveRelative, useClientDataSource, usePiece } from "../../index.js";
 import {
   itemsWithIdToMap,
+  moveRelative,
+  type GroupFn,
   type RowGroup,
   type RowLeaf,
   type RowSelectionLinked,
@@ -17,6 +18,13 @@ import {
 import { TreeChildren } from "./tree-children.js";
 import type { TreeViewChildParams, TreeViewItem, TreeViewSelectAllParams } from "./types.js";
 import { SelectAll } from "./select-all.js";
+import { useClientDataSource } from "../../data-source-client/use-client-data-source.js";
+import type { Column } from "../../types/column.js";
+import type { API } from "../../types/api.js";
+import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
+import { Root } from "../../root/root.js";
+import type { GridEvents } from "../../types/events.js";
+import { Grid } from "@1771technologies/lytenyte-core-experimental";
 
 export interface TreeViewProps<T extends TreeViewItem> {
   readonly items: T[];
@@ -81,7 +89,7 @@ function TreeViewBase<T extends TreeViewItem>(
 ) {
   type Spec = { data: T };
 
-  const groupFn: Grid.T.GroupFn<Spec["data"]> = useMemo(() => {
+  const groupFn: GroupFn<Spec["data"]> = useMemo(() => {
     return (x: RowLeaf<T>) => x.data.path;
   }, []);
 
@@ -120,8 +128,8 @@ function TreeViewBase<T extends TreeViewItem>(
   const over$ = usePiece(overId);
   const isBefore$ = usePiece(isBefore);
 
-  const [api, setApi] = useState<Grid.API<Spec> | null>(null);
-  const groupColumn: Grid.RowGroupColumn<Spec> = useMemo(() => {
+  const [api, setApi] = useState<API<Spec> | null>(null);
+  const groupColumn: Omit<Column<Spec>, "id"> = useMemo(() => {
     return {
       widthFlex: 1,
       width: 20,
@@ -174,7 +182,7 @@ function TreeViewBase<T extends TreeViewItem>(
   }, [api]);
 
   return (
-    <Grid
+    <Root
       ref={setApi}
       rowSource={source}
       rowGroupColumn={groupColumn}
@@ -211,7 +219,7 @@ function TreeViewBase<T extends TreeViewItem>(
 
         onItemsReordered?.(next);
       }}
-      events={useMemo<Grid.Events<Spec>>(() => {
+      events={useMemo<GridEvents<Spec>>(() => {
         return {
           cell: {
             keyDown: ({ api, event, row }) => {
@@ -250,7 +258,7 @@ function TreeViewBase<T extends TreeViewItem>(
           <Grid.RowsCenter />
         </Grid.RowsContainer>
       </Grid.Viewport>
-    </Grid>
+    </Root>
   );
 }
 

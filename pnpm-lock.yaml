@@ -112,14 +112,11 @@ importers:
   documentation:
     dependencies:
       '@1771technologies/grid-sample-data':
-        specifier: workspace:*
-        version: link:../packages/sample-data
+        specifier: 1.0.20
+        version: 1.0.20
       '@1771technologies/lytenyte-pro':
-        specifier: workspace:*
-        version: link:../packages/commercial-lytenyte-pro
-      '@1771technologies/lytenyte-pro-experimental':
-        specifier: workspace:*
-        version: link:../packages/commercial-lytenyte-pro-experimental
+        specifier: 1.0.20
+        version: 1.0.20(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@1771technologies/remark-code-demo':
         specifier: workspace:*
         version: link:../packages-auxiliary/remark-code-demo
@@ -395,9 +392,6 @@ importers:
       '@1771technologies/lytenyte-design':
         specifier: workspace:*
         version: link:../packages/lytenyte-design
-      '@1771technologies/lytenyte-pro':
-        specifier: workspace:*
-        version: link:../packages/commercial-lytenyte-pro
       '@1771technologies/lytenyte-pro-experimental':
         specifier: workspace:*
         version: link:../packages/commercial-lytenyte-pro-experimental
@@ -407,6 +401,12 @@ importers:
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
+      fast-glob:
+        specifier: 3.3.3
+        version: 3.3.3
+      fs-extra:
+        specifier: 11.3.0
+        version: 11.3.0
       react-minimal-pie-chart:
         specifier: 9.1.1
         version: 9.1.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -797,21 +797,6 @@ importers:
         specifier: 5.0.0
         version: 5.0.0
 
-  packages/commercial-lytenyte-pro:
-    dependencies:
-      '@1771technologies/lytenyte-core':
-        specifier: workspace:*
-        version: link:../lytenyte-core
-      '@1771technologies/lytenyte-shared':
-        specifier: workspace:*
-        version: link:../lytenyte-shared
-      react:
-        specifier: 18.0.0 || ^19.0.0
-        version: 19.2.1
-      react-dom:
-        specifier: 18.0.0 || ^19.0.0
-        version: 19.2.1(react@19.2.1)
-
   packages/commercial-lytenyte-pro-experimental:
     dependencies:
       '@1771technologies/lytenyte-core-experimental':
@@ -836,18 +821,6 @@ importers:
 
   packages/commercial-lytenyte-type-gen:
     dependencies:
-      react:
-        specifier: 18.0.0 || ^19.0.0
-        version: 19.2.1
-      react-dom:
-        specifier: 18.0.0 || ^19.0.0
-        version: 19.2.1(react@19.2.1)
-
-  packages/lytenyte-core:
-    dependencies:
-      '@1771technologies/lytenyte-shared':
-        specifier: workspace:*
-        version: link:../lytenyte-shared
       react:
         specifier: 18.0.0 || ^19.0.0
         version: 19.2.1
@@ -897,6 +870,24 @@ packages:
     peerDependencies:
       eslint: '>=7.4.0'
       typescript: '>=5.0.0'
+
+  '@1771technologies/grid-sample-data@1.0.20':
+    resolution: {integrity: sha512-sgmUWHcCFMPsWXk2JI751apYjzw87j1z8iXiPHU5+3ajiwcloXLnNyzMrcio6i58/MhEb6USKxzlAUjDFRcFUA==}
+
+  '@1771technologies/lytenyte-core@1.0.20':
+    resolution: {integrity: sha512-2UhilbWUyxhd/mZ0ejghBw4/LYWdpHc1nGpbrRjgcFVdbr/DZsj6gyZd/kmu2VvABE/zCe/ts5VSrX7zrRWdBA==}
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+
+  '@1771technologies/lytenyte-pro@1.0.20':
+    resolution: {integrity: sha512-M94lw6I6Q3JFc9iHu+oLie4q8vuMr0k6xH4w6SQF3FniSdTM+Rn4kQ7RyH5MeUoxjkHxMDc/gB4nIlIf7jfRSA==}
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+
+  '@1771technologies/lytenyte-shared@1.0.20':
+    resolution: {integrity: sha512-fiuX2iV0cwh4aRbNsIXGMeBLJ05aav9a22xXJbPBkNEy3DKgKC3++9ju34TcAEin3bLmp5y676UM7w5VpUx/eQ==}
 
   '@adobe/css-tools@4.4.4':
     resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==}
@@ -9957,6 +9948,23 @@ snapshots:
       typescript-eslint: 8.44.0(eslint@9.26.0(hono@4.11.3)(jiti@2.6.1))(typescript@5.8.3)
     transitivePeerDependencies:
       - supports-color
+
+  '@1771technologies/grid-sample-data@1.0.20': {}
+
+  '@1771technologies/lytenyte-core@1.0.20(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+    dependencies:
+      '@1771technologies/lytenyte-shared': 1.0.20
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
+
+  '@1771technologies/lytenyte-pro@1.0.20(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+    dependencies:
+      '@1771technologies/lytenyte-core': 1.0.20(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@1771technologies/lytenyte-shared': 1.0.20
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
+
+  '@1771technologies/lytenyte-shared@1.0.20': {}
 
   '@adobe/css-tools@4.4.4': {}
 

@@ -1151,10 +1151,7 @@ export interface HeaderLayout<T> {
  *
  *   @group Grid View
  */
-export type HeaderLayoutCell<T> =
-  | HeaderCellLayout<T>
-  | HeaderCellFloating<T>
-  | HeaderGroupCellLayout;
+export type HeaderLayoutCell<T> = HeaderCellLayout<T> | HeaderCellFloating<T> | HeaderGroupCellLayout;
 
 /**
  * Represents the layout metadata for a single cell within a row, including span and contextual info.
@@ -2061,10 +2058,7 @@ export interface ClientRowDataSourcePaginatedParams<T> {
   /**
    * Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.
    */
-  readonly transformInFilterItem?: (params: {
-    column: Column<T>;
-    values: unknown[];
-  }) => FilterInFilterItem[];
+  readonly transformInFilterItem?: (params: { column: Column<T>; values: unknown[] }) => FilterInFilterItem[];
 
   /**
    * The number of rows to have per page. This will impact the total page count.
@@ -2111,10 +2105,7 @@ export interface ClientRowDataSourceParams<T> {
   /**
    * Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.
    */
-  readonly transformInFilterItem?: (params: {
-    column: Column<T>;
-    values: unknown[];
-  }) => FilterInFilterItem[];
+  readonly transformInFilterItem?: (params: { column: Column<T>; values: unknown[] }) => FilterInFilterItem[];
 }
 
 /**
@@ -2156,10 +2147,7 @@ export interface ClientTreeDataSourceParams<T> {
   /**
    * Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.
    */
-  readonly transformInFilterItem?: (params: {
-    column: Column<T>;
-    values: unknown[];
-  }) => FilterInFilterItem[];
+  readonly transformInFilterItem?: (params: { column: Column<T>; values: unknown[] }) => FilterInFilterItem[];
 
   /**
    * Returns the hierarchical path to group a given data row in tree mode.
@@ -2262,9 +2250,7 @@ export interface RowDataSourceClientPaginated<T> {
    *
    *   @group Row Data Source
    */
-  readonly inFilterItems: (
-    column: Column<T>,
-  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+  readonly inFilterItems: (column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 
   /**
    * A client data source method to retrieve the raw data passed to the data source.
@@ -2387,9 +2373,7 @@ export interface RowDataSourceClient<T> {
    *
    *   @group Row Data Source
    */
-  readonly inFilterItems: (
-    column: Column<T>,
-  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+  readonly inFilterItems: (column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 
   /**
    * A client data source method to retrieve the raw data passed to the data source.
@@ -2485,9 +2469,7 @@ export interface RowDataSource<T> {
    *
    *   @group Row Data Source
    */
-  readonly inFilterItems: (
-    column: Column<T>,
-  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+  readonly inFilterItems: (column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 }
 
 /**
@@ -2584,9 +2566,7 @@ export interface RowDataSourceServer<T> {
    *
    *   @group Row Data Source
    */
-  readonly inFilterItems: (
-    column: Column<T>,
-  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+  readonly inFilterItems: (column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 
   /**
    * Indicates whether the server data source is currently fetching data.
@@ -2601,9 +2581,59 @@ export interface RowDataSourceServer<T> {
   readonly loadError: GridAtomReadonly<unknown>;
 
   /**
-   * Retries the failed data load requests.
+   * A set that tracks which requests the server data source has already made. It prevents duplicate
+   * requests to the server. This mutable set can be used to customize how the
+   * grid tracks requests or to inform the data source about optimistically loaded requests.
+   *
+   * Modifying `seenRequests` is intended for advanced use cases. Ensure you fully understand how
+   * data loading works in LyteNyte Grid's server data source before making
+   * changes. If you're unsure, reach out to the LyteNyte Grid team on GitHub.
+   */
+  readonly seenRequests: Set<string>;
+
+  /**
+   * `retry` re-requests any failed data loads in the grid.
+   * Calling `retry` clears the error state for all failed requests, and
+   * the grid resends data requests for those currently in view. Failed
+   * requests outside the view are not retried until they come back into view.
    */
   readonly retry: () => void;
+
+  /**
+   * A grid atom that returns the data requests that would be
+   * sent to the server based on the current state of the view.
+   *
+   * This can be used to implement polling for cell updates, allowing the client
+   * to periodically fetch new or changed data without reloading the entire view.
+   *
+   * To execute the generated requests, use the `pushRequests` method.
+   */
+  readonly requestsForView: GridAtomReadonly<DataRequest[]>;
+
+  /**
+   * Returns the data request that would be sent to the server to load the row group
+   * of the given row. This may be used to get a request that can be used to optimistically
+   * load the group.
+   *
+   * This method will return null if the group is invalid or if the row is not found.
+   */
+  readonly requestForGroup: (row: RowGroup | number) => DataRequest | null;
+
+  /**
+   * Returns the data request for the next slice of data based on the provided request.
+   * This is useful for preloading the next view of data. Returns `null` if no
+   * next slice exists or if the provided request is invalid for the current view configuration.
+   */
+  readonly requestForNextSlice: (currentRequest: DataRequest) => DataRequest | null;
+
+  /**
+   * Refreshes the current view by re-sending the data requests that make up the view to the server.
+   * This ensures that any underlying data changes are reflected in the rendered view.
+   *
+   * This is a convenience method that combines the functionality of `requestsForView` and `pushRequests`,
+   * allowing you to easily re-fetch and re-render data for the current view in a single call.
+   */
+  readonly refresh: (onSuccess?: () => void, onError?: (e: unknown) => void) => void;
 
   /**
    * Pushes data responses directly into the data source. Useful for
@@ -2615,11 +2645,7 @@ export interface RowDataSourceServer<T> {
    * Triggers the data fetching pipeline with a set of requests. Can
    *       optionally invoke a callback upon successful completion.
    */
-  readonly pushRequests: (
-    req: DataRequest[],
-    onSuccess?: () => void,
-    onError?: (e: unknown) => void,
-  ) => void;
+  readonly pushRequests: (req: DataRequest[], onSuccess?: () => void, onError?: (e: unknown) => void) => void;
 
   /**
    * Resets the internal state and clears all server data previously fetched by the grid.
@@ -2923,6 +2949,18 @@ export interface RowGroup {
    * Depth level from the root; used to determine visual indenting and structure.
    */
   readonly depth: number;
+
+  /**
+   * An error that applies to the group row. This is usually set when the group fails to load
+   * its children rows.
+   */
+  readonly errorGroup?: unknown;
+
+  /**
+   * A boolean indicating if the group expansion is loading. This is normally used for server
+   * data loading, which expansions occur only after the group's children data has been fetched.
+   */
+  readonly loadingGroup?: boolean;
 }
 
 /**
@@ -3138,7 +3176,7 @@ export interface FieldFnParams<T> {
  *
  *   Example: `"point.x"` will return `data.point.x`. Useful for deeply nested row data.
  *
- *   @group field
+ *   @group Field
  */
 export interface FieldPath {
   /**
@@ -3324,25 +3362,6 @@ export interface ColumnMoveParams<T> {
 }
 
 /**
- * The accepted input types for the `focusCell` method, which updates the active focus in LyteNyte Grid.
- * Supports various formats:
- *
- * - A row/column pair to focus a specific cell.
- * - A header or group header cell position.
- * - A directional alias ("next", "prev", "up", "down") relative to the current focus (only when the grid is focused).
- *
- * @group Grid API
- */
-export type FocusCellParams<T> =
-  | { row: number; column: string | number | Column<T> }
-  | PositionHeaderCell
-  | Omit<PositionHeaderGroupCell, "columnStartIndex" | "columnEndIndex">
-  | "next"
-  | "prev"
-  | "up"
-  | "down";
-
-/**
  * The LyteNyte Grid API provides a comprehensive set of methods that allow developers
  *   to programmatically query, update, and manipulate grid state and data.
  *
@@ -3439,12 +3458,6 @@ export interface GridApi<T> {
    * Accepts a configuration object that controls the scroll behavior.
    */
   readonly scrollIntoView: (options: ScrollIntoViewOptions<T>) => void;
-
-  /**
-   * Sets focus to a specific cell or navigates the focus based on a direction keyword.
-   * Useful for keyboard-driven navigation and programmatic focus management.
-   */
-  readonly focusCell: (position: FocusCellParams<T>) => void;
 
   /**
    * Starts cell editing at a specified location. If the grid is set to read-only mode, this method has no effect.
@@ -3560,10 +3573,7 @@ export interface GridApi<T> {
    *   spanned over, so it is not possible for a spanning cell to continue past a full width row, even if the
    *   span amount would allow it
    */
-  readonly cellRoot: (
-    row: number,
-    column: number,
-  ) => PositionGridCell | PositionFullWidthRow | null;
+  readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
 
   /**
    * Toggles the expansion state of one or more column groups.
@@ -3616,11 +3626,7 @@ export interface GridApi<T> {
    * Opens a popover frame at the specified target element or virtual target.
    *       An optional context can be passed into the popover renderer for configuration.
    */
-  readonly popoverFrameOpen: (
-    id: string,
-    target: HTMLElement | VirtualTarget,
-    context?: any,
-  ) => void;
+  readonly popoverFrameOpen: (id: string, target: HTMLElement | VirtualTarget, context?: any) => void;
 
   /**
    * Closes popover frames. If an id is provided, only the corresponding frame is closed;
@@ -4221,12 +4227,7 @@ export type FilterInOperator = "in" | "not_in";
  *
  * @group Filters
  */
-export type FilterModelItem<T> =
-  | FilterNumber
-  | FilterString
-  | FilterDate
-  | FilterCombination
-  | FilterFunc<T>;
+export type FilterModelItem<T> = FilterNumber | FilterString | FilterDate | FilterCombination | FilterFunc<T>;
 
 /**
  * Defines a filter for numeric columns.
@@ -5633,6 +5634,28 @@ export interface OnEditErrorParams<T> {
 }
 
 /**
+ * The position value type when the current focus position of the grid is within a detail cell.
+ *
+ *   @group Navigation
+ */
+export interface PositionDetailCell {
+  /**
+   * Discriminant indicating this position refers to a detail cell.
+   */
+  readonly kind: "detail";
+
+  /**
+   * The zero-based index of the row.
+   */
+  readonly rowIndex: number;
+
+  /**
+   * The zero-based index of the column.
+   */
+  readonly colIndex: number;
+}
+
+/**
  * Describes the focus position of a floating header cell.
  *
  *   @group Navigation
@@ -5784,6 +5807,7 @@ export type PositionUnion =
   | PositionGridCell
   | PositionFloatingCell
   | PositionHeaderCell
+  | PositionDetailCell
   | PositionFullWidthRow
   | PositionHeaderGroupCell;
 
@@ -6043,11 +6067,6 @@ export interface DropEventParams {
  */
 export interface DragMoveState {
   /**
-   * Indicates if the drag was initiated via keyboard.
-   */
-  readonly isKeyboard: boolean;
-
-  /**
    * X coordinate of the drop.
    */
   readonly x: number;
@@ -6145,49 +6164,9 @@ export interface UseRowDragParams<T> {
   readonly onDrop?: DropEventFn;
 
   /**
-   * Function to generate placeholder content for the drag preview.
+   * Returns a custom HTML Element to use for the drag image.
    */
-  readonly placeholder?: DragPlaceholderFn<T>;
-
-  /**
-   * Offset [x, y] in pixels from the cursor position for rendering the drag placeholder.
-   */
-  readonly placeholderOffset?: [number, number];
-
-  /**
-   * Keyboard key used to initiate drag mode.
-   */
-  readonly keyActivate?: string;
-
-  /**
-   * Keyboard key used to move to the next drop zone.
-   */
-  readonly keyNext?: string;
-
-  /**
-   * Keyboard key used to move to the previous drop zone.
-   */
-  readonly keyPrev?: string;
-
-  /**
-   * Keyboard key used to execute the drop.
-   */
-  readonly keyDrop?: string;
-
-  /**
-   * Accessible label describing how to perform the drag operation.
-   */
-  readonly dragInstructions?: string;
-
-  /**
-   * Screen reader message to announce drag start.
-   */
-  readonly announceDragStart?: string;
-
-  /**
-   * Screen reader message to announce drag end.
-   */
-  readonly announceDragEnd?: string;
+  readonly placeholder?: (d: DragData, el: HTMLElement) => HTMLElement;
 }
 
 /**
@@ -6577,19 +6556,31 @@ export interface PopoverFrameRendererParams<T> {
 export type CellSelectionMode = "range" | "multi-range" | "none";
 
 /**
- * Fetches pivoted columns for the grid's current pivot configuration.
+ * Fetches the set of pivoted columns defined by the grid's current pivot
+ * configuration. The fetcher retrieves metadata for each pivoted column
+ * independently from the row data, ensuring that column definitions reflect
+ * the active pivot state at the time of the request. This process allows the
+ * grid to update column pivots dynamically when the configuration changes or
+ * when multiple pivot definitions are requested concurrently.
  *
  * @group Row Data Source
  */
 export type DataColumnPivotFetcherFn<T> = (
   /**
-   * The parameters provided to the column pivot fetcher.
+   * The parameters passed to the column pivot fetcher. These parameters include
+   * the unix timestamp of the request, which ensures consistency when resolving
+   * conflicts across concurrent pivot requests, as well as any configuration
+   * details required to retrieve the correct set of pivoted column definitions
+   * from the server.
    */
   params: DataColumnPivotFetcherParams<T>,
 ) => Promise<Column<T>[]>;
 
 /**
- * Parameters passed to the column pivot fetcher function.
+ * When column pivots are applied in LyteNyte Grid, the grid fetches pivot column
+ * definitions separately from the pivot row data. The `DataColumnPivotFetcherParams`
+ * type defines the parameters passed to the fetcher that retrieves these column
+ * pivot definitions from the server.
  *
  * @group Row Data Source
  */
@@ -6600,30 +6591,74 @@ export interface DataColumnPivotFetcherParams<T> {
   readonly grid: Grid<T>;
 
   /**
-   * Timestamp representing the time of the request.
+   * The unix timestamp at the time of the request. The system uses this value to
+   * resolve conflicts when multiple column pivot definitions are requested. Such
+   * conflicts can occur if the pivot configuration changes while a column pivot
+   * request is in flight.
    */
   readonly reqTime: number;
 
   /**
-   * The full model describing the pivot request state.
+   * The `model` property contains the full `DataRequestModel`, which captures the grid's state at the moment the
+   * request is created. This snapshot includes all relevant settings: sorting,
+   * filtering, grouping, pivot configuration, and aggregation rules.
+   *
+   * The server uses the `model` to interpret how data should be prepared before returning
+   * it to the client. For example, the model tells the server which filters to
+   * apply, how rows should be grouped, and what aggregations to compute.
+   *
+   * Because it is a snapshot, the `model` does not remain in sync with the grid after
+   * the request is sent. It represents the state as it existed when the request was
+   * created, ensuring that the server response aligns with the user's view at that time.
    */
   readonly model: DataRequestModel<T>;
 }
 
 /**
- * Fetches grid row data asynchronously for the LyteNyte Server Data Source.
+ * A function used by LyteNyte Grid's server row data source to fetch blocks of row
+ * data slices from the server. This function must be implemented by the developer,
+ * and LyteNyte Grid will call it whenever the view in the grid changes.
+ *
+ * The function receives a `DataFetcherParams` object that contains all the
+ * information required to construct a server request. This includes the set of
+ * `DataRequest` objects for the current view, a snapshot of the grid state
+ * (`DataRequestModel`), and a `reqTime` value marking when the request was
+ * initiated.
+ *
+ * By providing both the request details and the current grid model, LyteNyte Grid
+ * ensures that the server can return data consistent with the user's view. This
+ * allows developers to handle sorting, filtering, grouping, pivoting, and
+ * aggregation on the server side while keeping the grid synchronized.
+ *
+ * The function must return a promise that resolves to an array of `DataResponse`
+ * or `DataResponsePinned` objects, which describe the rows and metadata needed
+ * to render the grid.
  *
  * @group Row Data Source
  */
 export type DataFetcherFn<T> = (
   /**
-   * The parameters provided to the data fetch function.
+   * The parameters passed to the data fetch function.
+   *
+   * This object contains everything needed for the server to fulfill a grid data
+   * request. It includes one or more `DataRequest` objects (`params.requests`)
+   * that describe the slices to fetch, the full `DataRequestModel` (`params.model`)
+   * capturing the grid's sort, filter, group, pivot, and aggregation state, and a
+   * `reqTime` value marking when the request was initiated.
+   *
+   * Together, these parameters let the server return data that matches the user's
+   * current view while handling asynchronous requests consistently.
    */
   params: DataFetcherParams<T>,
 ) => Promise<(DataResponse | DataResponsePinned)[]>;
 
 /**
- * Input parameters provided to a grid data fetcher function.
+ * The LyteNyte Grid server data source requires a `dataFetcher` function. The `DataFetcherParams` type describes the
+ * parameters that LyteNyte Grid passes to this function when performing data loading.
+ *
+ * These parameters include a set of `DataRequest` objects based on the current grid view
+ * and the `DataRequestModel` at the time of the call. A `reqTime` value is also provided,
+ * which is a Unix timestamp indicating when the request was made.
  *
  * @group Row Data Source
  */
@@ -6634,35 +6669,76 @@ export interface DataFetcherParams<T> {
   readonly grid: Grid<T>;
 
   /**
-   * Array of individual data fetch requests.
+   * The `requests` property is an array of `DataRequest` objects. Each object defines a slice of
+   * grid data to load, including its `path`, `start`, and `end` values, along with related metadata.
+   * These requests describe exactly which part of the row tree the server should return data for.
+   *
+   * LyteNyte Grid may issue multiple `DataRequest` objects at once, depending on the user's
+   * current view. For example, if different branches of a grouped view are visible,
+   * separate requests are created for each branch.
+   *
+   * This property ensures that the server receives all necessary instructions to
+   * provide data slices consistently, even when the grid state is complex or rapidly changing.
    */
   readonly requests: DataRequest[];
 
   /**
-   * Unix timestamp representing when the request was initiated.
+   * The `reqTime` property is a Unix timestamp indicating when the request was initiated.
+   * This value is included with every data fetch so LyteNyte Grid can resolve
+   * conflicts that occur when asynchronous requests complete out of order.
+   *
+   * If two requests target the same slice of data, the one with the later `reqTime` value takes
+   * precedence. This guarantees that the grid reflects the most up-to-date
+   * information, even when network latency or rapid user interactions
+   * cause responses to arrive unpredictably.
+   *
+   * By tracking freshness through `reqTime`, the grid avoids overwriting newer data
+   * with stale results, providing a consistent user experience. The `asOfTime` property on the
+   * responses takes priority over the `reqTime` value.
    */
   readonly reqTime: number;
 
   /**
-   * The full data request model describing grid state.
+   * The `model` property contains the full `DataRequestModel`, which captures the grid's state at the moment the
+   * request is created. This snapshot includes all relevant settings: sorting,
+   * filtering, grouping, pivot configuration, and aggregation rules.
+   *
+   * The server uses the `model` to interpret how data should be prepared before returning
+   * it to the client. For example, the model tells the server which filters to
+   * apply, how rows should be grouped, and what aggregations to compute.
+   *
+   * Because it is a snapshot, the `model` does not remain in sync with the grid after
+   * the request is sent. It represents the state as it existed when the request was
+   * created, ensuring that the server response aligns with the user's view at that time.
    */
   readonly model: DataRequestModel<T>;
 }
 
 /**
- * Fetches items used in "in" filters from a server-side source.
+ * Retrieves the unique items used in "in" filters from the server-side data
+ * source. This fetch ensures that filter options reflect the actual distinct
+ * values stored on the server for the specified column.
  *
  * @group Row Data Source
  */
 export type DataInFilterItemFetcherFn<T> = (
   /**
-   * The parameters for the in-filter fetcher function.
+   * The parameters passed to the in-filter fetcher function. These include details
+   * such as the target column and the request timestamp, which ensure the fetcher
+   * returns the correct set of unique filter items from the server.
    */
   params: DataInFilterItemFetcherParams<T>,
 ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 
 /**
- * Parameters passed to the in-filter fetcher function.
+ * The in filter (set filter) in LyteNyte Grid requests possible values from the
+ * row data source attached to the grid state. For a server data source, the
+ * unique values for a given column are stored on the server.
+ *
+ * Developers can supply a `DataInFilterItemFetcherFn` to the server data
+ * source to retrieve these unique filter items. The
+ * `DataInFilterItemFetcherParams` type defines the parameters passed to the
+ * fetcher function.
  *
  * @group Row Data Source
  */
@@ -6678,258 +6754,488 @@ export interface DataInFilterItemFetcherParams<T> {
   readonly column: Column<T>;
 
   /**
-   * Timestamp for the in-filter fetch request.
+   * The unix timestamp recorded when the in-filter fetch request is made. It
+   * ensures consistency and helps resolve conflicts if multiple filter requests
+   * for the same column occur at the same time.
    */
   readonly reqTime: number;
 }
 
 /**
- * Represents a specific request for data to an external data source.
+ * The `DataRequest` type represents a request for a slice of data from the server.
+ * A slice can target either the root of the view or a specific grouping,
+ * identified by the `path` property.
+ *
+ * Each request includes a unique ID, which can be used to deduplicate
+ * requests or enable caching. It also defines `start` and `end` values that specify
+ * the offsets of the requested slice.
+ *
+ * LyteNyte Grid may issue multiple `DataRequest` objects at once, depending on
+ * the user's current view. Each request is a snapshot of the
+ * grid state at the time it was made.
  *
  * @group Row Data Source
  */
 export interface DataRequest {
   /**
-   * Unique id for the request, useful for caching and deduplication.
+   * The `id` property uniquely identifies a data request. LyteNyte Grid
+   * generates this value from the request path and the slice's `start` and `end` values.
+   * The ID can be used to deduplicate requests or cache results.
    */
   readonly id: string;
 
   /**
-   * Hierarchy path for the request. An empty array represents the root level.
+   * The `path` property identifies the position in the data tree for a request.
+   * LyteNyte Grid stores requested slices in a tree structure: the tree is flat
+   * when no row grouping is applied, and nested when groups are present.
+   * The `path` specifies which branch of the tree the request targets.
+   *
+   * Developers typically only need to fetch data for the given `path` value. In practice,
+   * the path usually translates into a filter. For example, if rows are grouped
+   * by the `Category` column and the path is `["critical"]`, the server may apply
+   * a filter such as `WHERE Category = 'critical'`.
    */
   readonly path: (string | null)[];
 
   /**
-   * Start offset of the requested rows, relative to the current path.
+   * The `start` value specifies the offset from the first row
+   * of the current data slice, relative to the node identified by
+   * the `path`. LyteNyte Grid stores slices in a tree structure: flat when
+   * no row grouping is applied, and nested when groups are present.
+   * Unlike a global row index, `start` is always relative to its parent node.
+   *
+   * In SQL, `start` typically maps to an `OFFSET` value. For example,
+   * if the block size is `100`, the request might translate to `LIMIT 100 OFFSET <start>`.
    */
   readonly start: number;
 
   /**
-   * End offset of the requested rows, relative to the current path.
+   * The `end` value specifies the offset of the last row in the current data slice.
+   * It is calculated as `start + blockSize`, but constrained by the node size (row count)
+   * to avoid exceeding available rows. In practice, `end` is often not required for SQL-based
+   * implementations of server data loading, but it is included for completeness and for non-SQL backends.
+   *
+   * Like other slice values, `end` is relative to the node identified by the `path` in LyteNyte Grid's tree
+   * structure. The tree is flat when no row grouping is applied and nested when groups are present.
    */
   readonly end: number;
 
   /**
-   * Grid row index where the request starts.
+   * The `rowStartIndex` is the projected index of the first row in the requested data.
+   * It is an estimate of where LyteNyte expects the row to appear once the request resolves,
+   * not the actual row index. For example, if row groups are applied and the
+   * parent node is rendered at row index `20`, then `rowStartIndex` will be `20 + start`.
+   *
+   * Use `rowStartIndex` only in advanced server view implementations.
+   * Because projected indices can change before a request resolves, relying on
+   * this value increases complexity and should be avoided in most cases.
    */
   readonly rowStartIndex: number;
 
   /**
-   * Grid row index where the request ends.
+   * The `rowEndIndex` is the projected index of the last row in the requested data slice.
+   * Like `rowStartIndex`, it is an estimate based on where LyteNyte expects the rows to appear once
+   * the request resolves, not an actual row index. For example, if a slice requests 100 rows and
+   * the projected `rowStartIndex` is `20`, then the projected `rowEndIndex` will be `120`.
+   *
+   * Use `rowEndIndex` only in advanced server view implementations. Because projected indices
+   * can change before a request resolves, relying on this value increases complexity and
+   * should be avoided in most cases.
    */
   readonly rowEndIndex: number;
 }
 
 /**
- * Describes the current grid state used to construct a request for external data.
+ * The data request model represents the current LyteNyte Grid state at the time of creation.
+ * It concatenates the grid's internal models into a single structure used to request external data.
+ * Depending on your server's capabilities, you can choose to omit certain parts of the model.
+ *
+ * The model is a snapshot only; it is not reactive and does not stay in sync with the grid's ongoing state.
  *
  * @group Row Data Source
  */
 export interface DataRequestModel<T> {
   /**
-   * Array of column sort configurations.
+   * The `sorts` property is an array of column sort configurations.
+   * The grid can apply multiple sorts at once, which the server should respect when ordering rows.
+   * Use the sort model on the server to ensure rows appear in the order the user expects. In SQL,
+   * sorts typically translate to an `ORDER BY <column> ASC|DESC` clause. In NoSQL systems,
+   * apply the equivalent ordering logic.
    */
   readonly sorts: SortModelItem<T>[];
 
   /**
-   * The simple filters currently applied to columns. The key of the record is the column
-   *       id. It is not guaranteed that the column id in the filters is present in the columns in the grid.
+   * The `filters` property records the column filters applied to the grid. It stores key/value pairs
+   * where the key is a column ID and the value is the filter definition. LyteNyte Grid
+   * allows keys that do not match a column in the current state, enabling dynamic
+   * filters defined on the server but not present on the client.
+   *
+   * Filter values can represent any type, including text, number, or date filters.
+   * The server is responsible for applying these filters and returning the results.
+   * In SQL, filters typically translate into `WHERE` clauses.
    */
   readonly filters: Record<string, FilterModelItem<T>>;
 
   /**
-   * The in (set) filters currently applied to the columns. The key of the record is the column
-   *       id. It is not guaranteed that the column id in the in filters is present in the columns in the grid.
+   * The `filtersIn` property stores set filters applied to the grid. It uses key/value pairs where
+   * the key is a column ID and the value is a set filter that includes or excludes specific values.
+   * LyteNyte Grid allows keys that do not match a column in the current state,
+   * enabling dynamic filters defined on the server but not present on the client.
+   *
+   * Values in a set filter are unique by definition and cannot repeat. The server
+   * applies these filters and returns the results. In SQL, set filters typically
+   * translate into `WHERE <column> IN (<set>)` clauses.
    */
   readonly filtersIn: Record<string, FilterIn>;
 
   /**
-   * Quick search text value, or null if not in use.
+   * The `quickSearch` property stores a text filter matched against cell values in
+   * each column. The server decides which columns to search and how to
+   * apply the text match. In SQL, quick search filters typically
+   * translate into multiple `WHERE <column> LIKE '%<value>%'` clauses.
    */
   readonly quickSearch: string | null;
 
   /**
-   * Group model defining how rows are grouped.
+   * The `groups` property stores the row grouping model currently applied to the grid.
+   * Each item in the model represents a grouping level, which can be defined by a
+   * column or by a dynamic expression. Row groups typically translate into `GROUP BY` clauses in SQL.
+   *
+   * When a data request is made, the full group model is included, but the request targets
+   * only a specific slice of grouped data, identified by the `path` value. Including the entire
+   * model supports optimistic data loading and provides full context for the grouped view.
    */
   readonly groups: RowGroupModelItem<T>[];
 
   /**
-   * Expansion state of row groups by group key.
+   * The `groupExpansions` property stores the expansion state of group rows as key/value pairs.
+   * The key is a row ID, and the value is either a boolean or `undefined`.
+   * A value of `undefined` means the row has not been explicitly expanded or collapsed,
+   * so the default expansion state determines whether it is open or closed.
+   *
+   * `groupExpansions` is used only for optimistic data loading,
+   * since LyteNyte Grid requests data for individual group slices.
    */
   readonly groupExpansions: Record<string, boolean | undefined>;
 
   /**
-   * Map of aggregation functions per column.
+   * The `aggregations` property defines how column values are aggregated when row groups are present.
+   * Aggregations are applied per column, but the output does not need to match the grid's columns exactly.
+   * Some columns may omit aggregation if none applies, while others
+   * may include additional aggregations to attach extra data to a row.
+   *
+   * Each aggregation typically produces a column in the server response and
+   * translates to an SQL clause such as `SUM(<column>) AS <alias>`.
    */
   readonly aggregations: Record<string, { fn: AggModelFn<T> }>;
 
   /**
-   * Expansion state of pivot row groups.
+   * The `pivotGroupExpansions` property stores the expansion state of pivot group rows as key/value pairs.
+   * The key is a row ID, and the value is either a boolean or `undefined`. A value of `undefined` means the row has
+   * not been explicitly expanded or collapsed, so the default expansion state decides whether it is open or closed.
    */
   readonly pivotGroupExpansions: Record<string, boolean | undefined>;
 
   /**
-   * Indicates whether pivot mode is enabled.
+   * The `pivotMode` property is a boolean that indicates whether the pivot view in
+   * LyteNyte Grid is active. Check this value before returning pivot data, since
+   * pivot columns are not displayed unless the mode is enabled.
    */
   readonly pivotMode: boolean;
 
   /**
-   * Model describing current pivot column state.
+   * The `pivotModel` defines the current pivot configuration of the grid.
+   * It specifies which columns act as pivots, the measures applied to those
+   * pivots, the row groups to include, the sort state of pivot columns, and any filters in effect.
+   *
+   * The server uses this model to determine which pivoted data to return.
    */
   readonly pivotModel: ColumnPivotModel<T>;
 }
 
 /**
- * Response object for row data from a center section request.
+ * LyteNyte Grid's server data source sends request objects describing the
+ * data needed to render the grid. The server responds with
+ * one or more `DataResponse` objects.
+ *
+ * A `DataResponse` contains the rows and metadata required to render a slice of
+ * the grid's view. Each response includes a `path` value, which identifies where in the row
+ * tree the data belongs. Parent paths must be provided
+ * before their child paths can be created.
+ *
+ * The server data source can handle multiple responses at once.
+ * Sending multiple responses for different slices is common, especially
+ * when data updates frequently.
  *
  * @group Row Data Source
  */
 export interface DataResponse {
   /**
-   * Must be "center" — the section this response applies to.
+   * A type discriminant used by LyteNyte Grid to identify responses for scrollable
+   * rows. Pinned rows use a different structure, so for scrollable
+   * rows this value must always be `"center"`.
    */
   readonly kind: "center";
 
   /**
-   * Array of leaf or branch rows returned for the given path.
+   * An array of row items returned for the
+   * specified `path`. Each item is either a `DataResponseLeafItem` (a leaf row with no children)
+   * or a `DataResponseBranchItem` (a group row with nested children).
+   *
+   * If a response includes leaf items for a grouping that is not the final level,
+   * the result is an unbalanced tree. In this case, those leaf rows cannot
+   * be expanded further, regardless of the group model.
    */
   readonly data: (DataResponseLeafItem | DataResponseBranchItem)[];
 
   /**
-   * Updated row count for the associated path.
+   * The row count for the `path` associated with the response. If the path is empty
+   * (the root view), the size corresponds to the total root row count. LyteNyte Grid uses this
+   * value to determine how much space to reserve for scrollable rows in the viewport.
    */
   readonly size: number;
 
   /**
-   * Unix timestamp indicating when the data is valid from. Used to resolve response conflicts.
+   * The `asOfTime` property is a Unix timestamp that indicates data freshness.
+   * LyteNyte Grid uses it to resolve request conflicts.
+   *
+   * When data is loaded asynchronously, requests may arrive out of order.
+   * If two requests target the same row, the one with the later `asOfTime` value takes precedence.
    */
   readonly asOfTime: number;
 
   /**
-   * Hierarchy path the data belongs to. Empty array means root.
+   * The `path` property identifies the part of the row tree that this
+   * response belongs to. It must match the path provided in the data request.
+   * Because LyteNyte Grid represents the view as a flattened row tree,
+   * the path links data to its correct position in the hierarchy.
+   *
+   * For a path to be valid, its parent must already exist or be created as
+   * part of the current response set. Attempting to load a deeply nested
+   * path before its parents is an error.
+   *
+   * A path array may include `null` values to represent missing values in
+   * a grouping. This acts as a catch-all for row groups
+   * without values in every level.
    */
   readonly path: (string | null)[];
 
   /**
-   * Start offset within the hierarchy segment.
+   * The first relative index where data should begin loading. This value must match
+   * the `start` value in the data request and is relative to the slice's
+   * group, not the row index in the view.
+   *
+   * Avoid using a different `start` value than the request. The only valid case is
+   * when the response lowers the `start` value, typically for optimistic data loading
+   * or refreshing nearby rows in the view.
    */
   readonly start: number;
 
   /**
-   * End offset within the hierarchy segment.
+   * The last relative index where data should stop loading. This value must
+   * match the `end` value in the data request. For optimistic data loading,
+   * it may differ, but it must still be greater than the corresponding `start` value
+   * and less than the slice `size`.
    */
   readonly end: number;
 }
 
 /**
- * Represents a group (branch) row returned from a data request.
+ * The `DataResponseBranchItem` represents a group node.
+ * These items are converted into group row nodes and
+ * indicate that additional child rows are nested beneath them.
  *
  * @group Row Data Source
  */
 export interface DataResponseBranchItem {
   /**
-   * Discriminates the item as a branch response.
+   * A type discriminant used by LyteNyte Grid to distinguish between leaf and
+   * group items in a server response. When a response item has this kind,
+   * the grid creates an expandable group row.
    */
   readonly kind: "branch";
 
   /**
-   * Unique identifier used to create the branch row.
+   * A unique ID for the row. LyteNyte Grid uses this ID to track group
+   * expansion, retrieve rows, and manage selection. The ID must be
+   * unique across all rows, including leaf nodes.
    */
   readonly id: string;
 
   /**
-   * The row data associated with this branch.
+   * The row data for the group node. This value can be any type,
+   * but LyteNyte Grid typically expects a set of key/value pairs.
+   * Server responses usually contain aggregated data for the group
+   * node, though not every column requires a value. The aggregation
+   * model defines the expected shape of this object.
    */
   readonly data: any;
 
   /**
-   * The key of the group the row represents.
+   * A group or branch node represents a branch in the row data tree used for grouped views.
+   * Each node's position in the tree is determined by its `key`, which represents the
+   * path from the root. LyteNyte Grid uses this key to place the row node in
+   * the correct location within the tree.
+   *
+   * The `key` may be `null` if the grouping has no value.
+   * In this case, `null` represents the absence of a value for that grouping.
    */
   readonly key: string | null;
 
   /**
-   * Number of immediate children under this group.
+   * A group node has child rows, though they do not need to be loaded immediately.
+   * The server should indicate how many child rows a group node contains.
+   * This value can be updated in later requests and serves as a hint to
+   * LyteNyte Grid rather than a strict contract.
+   *
+   * In SQL, retrieving child counts typically translates
+   * to a `COUNT(*)` query combined with a `GROUP BY` statement.
    */
   readonly childCount: number;
 }
 
 /**
- * Represents a row of data (a leaf node) returned in a server response.
+ * The `DataResponseLeafItem` represents the data for a leaf row node. A leaf node is the last
+ * level in the data tree and cannot be expanded further. Leaf nodes appear when the view
+ * is flat (no row groups) or when the expanded row is at the final grouping level.
+ *
+ * Each `DataResponseLeafItem` corresponds to a single row node, and responses can mix
+ * different node types in the same request. When row groups are present, a leaf
+ * item may appear before the final grouping level, which can result in unbalanced groups.
  *
  * @group Row Data Source
  */
 export interface DataResponseLeafItem {
   /**
-   * Type identifier for a leaf response item.
+   * A type discriminant used by LyteNyte Grid to distinguish between leaf and
+   * group data items returned by the server. When a response item has this
+   * kind, the grid creates a leaf row that cannot be expanded further.
+   * If no row groups are defined, all data responses should be leaf items.
    */
   readonly kind: "leaf";
 
   /**
-   * Unique row identifier for the grid.
+   * The unique ID that LyteNyte assigns to each row. This ID is used
+   * for row selection, retrieval, updates, and as the rendering key.
+   * It must be unique across all rows in all data responses.
    */
   readonly id: string;
 
   /**
-   * Arbitrary data associated with this row.
+   * The data associated with the row node created from the response.
+   * This value can be any type and should match your application's use case.
+   * LyteNyte Grid does not validate this data; the server is treated as trusted,
+   * and developers are responsible for ensuring the data is appropriate for the view.
    */
   readonly data: any;
 }
 
 /**
- * Response object for setting pinned row data (top or bottom).
+ * Pinned rows in LyteNyte Grid remain visible regardless of user interaction
+ * such as scrolling. By definition, pinned rows do not move within the view.
+ *
+ * The `DataResponsePinned` type provides data for pinned rows and allows the
+ * server to set or update rows pinned to the top or bottom of the view.
  *
  * @group Row Data Source
  */
 export interface DataResponsePinned {
   /**
-   * Specifies the pinned section this data applies to: "top" or "bottom".
+   * A type discriminant used by LyteNyte Grid to indicate whether pinned rows
+   * belong at the top or bottom of the view. To support both top and
+   * bottom pinned rows, the server must send two separate data responses.
    */
   readonly kind: "top" | "bottom";
 
   /**
-   * Array of leaf rows for the pinned section.
+   * The data items used by LyteNyte Grid to create pinned rows.
+   * Pinned rows are always leaf rows. The response can include any number of pinned
+   * rows, but it is usually best to provide only one or two.
    */
   readonly data: DataResponseLeafItem[];
 
   /**
-   * Unix timestamp indicating when the data is valid from. Used to resolve response conflicts.
+   * The `asOfTime` property is a Unix timestamp that indicates data freshness.
+   * LyteNyte Grid uses it to resolve request conflicts.
+   *
+   * When data is loaded asynchronously, requests may arrive out of order.
+   * If two requests target the same row, the one with the later `asOfTime` value takes precedence.
    */
   readonly asOfTime: number;
 }
 
 /**
- * Parameters for configuring the server row data source.
+ * The LyteNyte Grid server row data source provides an implementation optimized
+ * for fetching data in slices from the server.
+ *
+ * The `RowDataSourceServerParams` type defines the configuration parameters
+ * that can be passed to this row data source.
  *
  * @group Row Data Source
  */
 export interface RowDataSourceServerParams<T> {
   /**
-   * Function that fetches grid data when rows are requested.
+   * The `dataFetcher` function is required by the LyteNyte Grid server data source
+   * and serves as its main entry point for retrieving rows. It fetches row slices
+   * from the server based on the current grid view. LyteNyte Grid calls this function
+   * whenever the view changes, which means it may be invoked frequently if the view
+   * updates often.
    */
   readonly dataFetcher: DataFetcherFn<T>;
 
   /**
-   * Optional function to fetch columns when pivot mode is enabled.
+   * A list of external dependencies the data source should depend on. If any of these properties
+   * change, then the grid will reset and fetch the data from the server again. This is the equivalent
+   * of adding watch keys/dependency tracking to the grid.
+   *
+   * Use this property when you want the grid to reset based on some external piece of data, such as an
+   * external search query.
+   *
+   * Note all the items in the list should be referentially stable. LyteNyte Grid will shallow compare the
+   * array, and check equality using the `!==` operator. If an item is not stable it may result in an infinite
+   * reset loop.
+   */
+  readonly dataFetchExternals?: unknown[];
+
+  /**
+   * Column pivots produce column definitions derived from the row data. Because the
+   * server data source does not have full access to row data, it relies on a
+   * `dataColumnPivotFetcher` function. The server data source calls this function
+   * to fetch pivot column definitions whenever the pivot configuration changes.
    */
   readonly dataColumnPivotFetcher?: DataColumnPivotFetcherFn<T>;
 
   /**
-   * Optional function for fetching items for in-type filters.
+   * The `inFilter` in LyteNyte Grid filters rows by the unique values of a column.
+   * LyteNyte Grid retrieves these values from the row data source. For server data
+   * sources, the `dataInFilterItemFetcher` function retrieves the filter items on
+   * demand. These items are then included with data requests to apply the filter.
    */
   readonly dataInFilterItemFetcher?: DataInFilterItemFetcherFn<T>;
 
   /**
-   * Function called to handle cell updates in the grid.
+   * LyteNyte Grid supports cell editing, but the row data source must perform the
+   * actual update once an edit completes. For a server data source, the data is not
+   * stored on the client, so LyteNyte Grid calls the `cellUpdateHandler` function
+   * to trigger the server update.
+   *
+   * Developers are responsible for executing the update and handling errors. The
+   * `cellUpdateHandler` provides the hook for managing these updates.
    */
   readonly cellUpdateHandler?: (updates: Map<string, any>) => void;
 
   /**
-   * Whether cell updates should be applied optimistically.
+   * If true, applies cell edits to the UI before the server confirms the update.
+   * This is an optimistic update, assuming the server operation will succeed.
+   * Developers are responsible for reconciling server-side changes and handling
+   * any failures that occur.
    */
   readonly cellUpdateOptimistically?: boolean;
 
   /**
-   * Number of rows to fetch in a single data block request.
+   * LyteNyte Grid's server data source fetches row data in slices. The `blockSize`
+   * property controls the size of each slice. A larger `blockSize` reduces the
+   * number of requests but increases the amount of data transferred per request.
    */
   readonly blockSize?: number;
 }

@@ -5,6 +5,7 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  transpilePackages: ["@1771technologies/grid-sample-data"],
   typescript: {
     ignoreBuildErrors: true,
   },
