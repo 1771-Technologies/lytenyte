@@ -36,6 +36,9 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
 
   const prevMeasuresRef = useRef(measures);
   const prevColumnsRef = useRef(columns);
+  const pivotControlledImmediateRef = useRef(pivotControlled.state);
+
+  pivotControlledImmediateRef.current = pivotControlled.state;
 
   const pivotColumns = useMemo<Column<Spec>[] | null>(() => {
     if (!pivotMode) return null;
@@ -51,6 +54,11 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
         columnState: { ordering: [], pinning: {}, resizing: {} },
         columnGroupState: {},
       }));
+      pivotControlledImmediateRef.current = {
+        ...pivotControlledImmediateRef.current,
+        columnState: { ordering: [], pinning: {}, resizing: {} },
+        columnGroupState: {},
+      };
 
       prevColumnsRef.current = columns;
       prevMeasuresRef.current = measures;
@@ -160,8 +168,9 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
 
   const pivotColumnsWithState = useMemo(() => {
     if (!pivotColumns) return null;
+    void pivotControlled.pivotColumnState;
 
-    const state = pivotControlled.pivotColumnState;
+    const state = pivotControlledImmediateRef.current.columnState;
     const byId = itemsWithIdToMap(pivotColumns);
     const ordering = state.ordering.filter((x) => byId.has(x));
 

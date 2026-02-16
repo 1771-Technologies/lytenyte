@@ -1,5 +1,5 @@
 import type { RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
-import type { CSSProperties, ReactNode, Ref } from "react";
+import type { ReactNode, Ref } from "react";
 import type {
   Column,
   EditParams,
@@ -8,7 +8,7 @@ import type {
   RowFullWidthRendererParams,
   RowParams,
 } from "./column.js";
-import type { GridSpec } from "./grid.js";
+import type { GridSpec, GridStyle } from "./grid.js";
 import type { API } from "./api.js";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows.js";
 import type { GridEvents } from "./events.js";
@@ -44,32 +44,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
 
   readonly gridId?: string;
   readonly events?: GridEvents<Spec>;
-  readonly styles?: {
-    readonly viewport?: {
-      readonly style?: CSSProperties;
-      readonly className?: string;
-    };
-    readonly row?: {
-      readonly style?: CSSProperties;
-      readonly className?: string;
-    };
-    readonly header?: {
-      readonly style?: CSSProperties;
-      readonly className?: string;
-    };
-    readonly detail?: {
-      readonly style?: CSSProperties;
-      readonly className?: string;
-    };
-    readonly headerGroup?: {
-      readonly style?: CSSProperties;
-      readonly className?: string;
-    };
-    readonly cell?: {
-      readonly style?: CSSProperties;
-      readonly className?: string;
-    };
-  };
+  readonly styles?: GridStyle;
 
   readonly rtl?: boolean;
 

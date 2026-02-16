@@ -7,6 +7,16 @@ import { twMerge } from "tailwind-merge";
 import { useId, type CSSProperties } from "react";
 import { Switch } from "radix-ui";
 
+// Need to set header group overflow to unset to allow sticky header labels.
+export const style: Grid.Style = { headerGroup: { style: { overflow: "unset" } } };
+export function StickGroupHeader(props: Grid.T.HeaderGroupParams<GridSpec>) {
+  return (
+    <div style={{ position: "sticky", insetInlineStart: "calc(var(--ln-start-offset) + 8px)" }}>
+      {props.groupPath.at(-1)}
+    </div>
+  );
+}
+
 export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 

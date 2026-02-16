@@ -2,8 +2,8 @@
 title: Tree Filtering
 pro: true
 step: Remove tree data rows by providing a custom filter function.
-description: Filter tree rows by providing a filter function to the tree data source.
-  LyteNyte Grid calls this predicate for each row to determine whether the grid should filter that row out.
+description: Filter tree rows by passing a predicate function to the tree data source.
+  The predicate runs for each row and determines whether the grid includes it.
 ---
 
 ## Filtering Tree Rows
@@ -15,11 +15,10 @@ The `filter` property accepts a predicate function that receives each value from
 provided to `data`. If the function returns `true`, the value and any of its children
 are kept; otherwise, they are removed.
 
-The demo below demonstrates this behavior. Click the **Toggle Hidden Files** switch to
-show or hide hidden files. A hidden file is any file name that starts with a `.`, such as
-the `.env` file.
+In this demo, hidden files are defined as files whose names start with a `.`, like `.env`.
+Use the **Reveal Hidden Files** switch to toggle their visibility.
 
-::demo[Filter Hidden Files="./demos/tree-filtering"]
+::demo[Tree Row Filtering="./demos/tree-filtering"]
 
 ## Next Steps
 

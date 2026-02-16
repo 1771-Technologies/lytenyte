@@ -32,7 +32,7 @@ export const RowsCenter = memo(
     }, [children, layout.center]);
 
     if (centerHeight <= 0) {
-      return <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 4px)` }} />;
+      return <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 0px)` }} />;
     }
     return (
       <RowsSection
@@ -46,7 +46,7 @@ export const RowsCenter = memo(
         style={{
           ...props.style,
           height: centerHeight,
-          minHeight: `calc(100% - ${pinSectionHeights}px - 4px)`,
+          minHeight: `calc(100% - ${pinSectionHeights}px - 0px)`,
           minWidth: "100%",
           position: "relative",
         }}

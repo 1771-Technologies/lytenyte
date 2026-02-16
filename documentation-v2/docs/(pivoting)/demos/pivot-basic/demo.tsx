@@ -16,6 +16,8 @@ import {
   GenderCell,
   NumberCell,
   ProfitCell,
+  StickGroupHeader,
+  style,
   SwitchToggle,
 } from "./components.js";
 import { sum } from "es-toolkit";
@@ -47,6 +49,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
@@ -84,10 +87,18 @@ export default function PivotDemo() {
   return (
     <>
       <div className="border-ln-border border-b px-2 py-2">
-        <SwitchToggle label="Toggle Pivot" checked={pivotMode} onChange={setPivotMode} />
+        <SwitchToggle label="Pivot Mode" checked={pivotMode} onChange={setPivotMode} />
       </div>
       <div className="ln-grid" style={{ height: 500 }}>
-        <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />
+        <Grid
+          columns={columns}
+          rowSource={ds}
+          columnBase={base}
+          rowGroupColumn={group}
+          {...pivotProps}
+          columnGroupRenderer={StickGroupHeader}
+          styles={style}
+        />
       </div>
     </>
   );

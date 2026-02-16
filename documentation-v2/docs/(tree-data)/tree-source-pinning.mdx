@@ -2,38 +2,34 @@
 title: Tree Row Pinning
 pro: true
 step: Freeze rows to the top or bottom of the viewport with the tree source.
-description: Freeze specific rows to the top or bottom of the viewport while using the
-  tree data source. Pinned rows persist at the edges of the grid and remain visible
-  as the user scrolls through deep hierarchical data.
+description: Pin rows to the top or bottom of the viewport while using the tree data source.
+  Pinned rows remain visible as users scroll through hierarchical data.
 ---
 
-:::info
-
-Before reading this guide, you must be familiar with row pinning in LyteNyte Grid. Review the
-[Row Pinning guide](/docs/row-pinning) for a foundational overview.
-
+:::note
+This guide assumes familiarity with row pinning. Read the [Row Pinning guide](/docs/row-pinning) for more details.
 :::
 
-## Pinning Rows Top
+## Top Pinned Rows
 
-Assign an array of [`RowLeaf`](/docs/reference/row) or [`RowAggregated`](/docs/reference/row) nodes to
-the `topData` property of the `useTreeDataSource` hook. This configuration pins the specified
-rows to the top of the viewport.
+Pin rows to the top of the viewport by assigning an array of
+[`RowLeaf`](/docs/reference/row) or [`RowAggregated`](/docs/reference/row)
+nodes to the `topData` property of the `useTreeDataSource` hook.
 
-The demo below shows a tree data source with rows frozen at the top.
+The demo below shows a tree data source with rows pinned to the top.
 
-::demo[Pin Top="./demos/tree-pin-top"]
+::demo[Tree Data Top Pinned Rows="./demos/tree-pin-top"]
 
-## Pinning Rows Bottom
+## Bottom Pinned Rows
 
-To pin rows to the bottom of the viewport, assign an array of [`RowLeaf`](/docs/reference/row) or
-[`RowAggregated`](/docs/reference/row) nodes to the `botData` property.
-Rows assigned to `botData` remain fixed at the bottom edge of the grid while the rest of the
-tree content scrolls.
+Pin rows to the bottom of the viewport by assigning an array of
+[`RowLeaf`](/docs/reference/row) or [`RowAggregated`](/docs/reference/row)
+nodes to the `botData` property. Rows assigned to `botData` remain fixed at
+the bottom edge while the rest of the tree scrolls.
 
-The demo below shows a tree data source with rows frozen at the bottom.
+The demo below shows a tree data source with rows pinned to the bottom.
 
-::demo[Pin Bottom="./demos/tree-pin-bottom"]
+::demo[Tree Data Bottom Pinned Rows="./demos/tree-pin-bottom"]
 
 ## Next Steps
 

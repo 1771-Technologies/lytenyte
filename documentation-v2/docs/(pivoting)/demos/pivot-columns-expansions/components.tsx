@@ -6,6 +6,9 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
+// Need to set header group overflow to unset to allow sticky header labels.
+export const style: Grid.Style = { headerGroup: { style: { overflow: "unset" } } };
+
 export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
@@ -145,11 +148,15 @@ export function HeaderGroupCell({
 }: Grid.T.HeaderGroupParams<GridSpec>) {
   return (
     <>
-      <div className="flex-1">{groupPath.at(-1)!}</div>
+      <div style={{ position: "sticky", insetInlineStart: "calc(var(--ln-start-offset) + 8px)" }}>
+        {groupPath.at(-1)}
+      </div>
+      <div className="flex-1" />
       <button
         data-ln-button="secondary"
         data-ln-icon
         data-ln-size="sm"
+        className="bg-ln-bg-ui-panel hover:bg-ln-bg absolute right-1"
         onClick={() => api.columnToggleGroup(groupPath)}
       >
         {collapsible && collapsed && <ChevronRightIcon />}

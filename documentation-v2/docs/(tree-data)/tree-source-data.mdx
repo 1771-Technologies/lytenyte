@@ -7,16 +7,14 @@ description: Pass a nested JavaScript object to the tree data source to create a
 
 ## Data Object
 
-Use the [`useTreeDataSource`](/docs/reference/tree-row-source) hook to render a
-nested object as a row set. The `data` property must be a JavaScript object.
+Use the `useTreeDataSource` hook to render a nested object as a row set.
+The `data` property must be a JavaScript object. Pass these functions
+to control how the hook creates rows from the source object:
 
-Configure the following functions within the hook to control how
-rows are created from the source object:
+- `rowValueFn`: Returns the data associated with a specific row.
+- `rowChildrenFn`: Returns an array of objects used to generate child rows.
 
-- **rowValueFn**: Returns the data associated with a specific row.
-- **rowChildrenFn**: Returns an array of objects used to generate child rows.
-
-The demo below uses objects with custom properties and a `children` key to define the hierarchy.
+The demo below uses objects with a `children` key to define the hierarchy
 
 ::demo[Custom Keys="./demos/basic-keys"]
 

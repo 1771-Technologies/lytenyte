@@ -18,7 +18,7 @@ export interface GridSpec {
 const columns: Grid.Column<GridSpec>[] = [
   {
     id: "name",
-    name: "Group",
+    name: "Files",
     cellRenderer: GroupCell,
     width: 240,
     pin: "start",
@@ -51,7 +51,7 @@ const sortBySize: Grid.T.SortFn<GridSpec["data"]> = (left, right) => {
 };
 
 export default function TreeDataDemo() {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(() => structuredClone(initialData));
   const ds = useTreeDataSource({
     data,
     rowGroupDefaultExpansion: true,
@@ -60,8 +60,7 @@ export default function TreeDataDemo() {
 
     onRowDataChange: ({ changes }) => {
       for (const x of changes) {
-        delete x.parent[x.key];
-        x.parent[x.next.name] = x.next;
+        x.parent[x.key] = x.next;
       }
       setData({ ...data });
     },

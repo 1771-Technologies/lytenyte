@@ -16,8 +16,11 @@ import {
   GenderCell,
   NumberCell,
   ProfitCell,
+  StickGroupHeader,
+  style,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
+import { useState } from "react";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -43,11 +46,12 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160, pivotable: true },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120, resizable: true, movable: true, widthFlex: 1 };
+const base: Grid.ColumnBase<GridSpec> = { width: 120, resizable: true, movable: true };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
@@ -73,19 +77,19 @@ export default function PivotDemo() {
 
   const pivotProps = ds.usePivotProps();
 
+  const [groupColumn, setGroupColumn] = useState(group);
+
   return (
     <div className="ln-grid" style={{ height: 500 }}>
       <Grid
         columns={columns}
         rowSource={ds}
         columnBase={base}
-        rowGroupColumn={group}
+        rowGroupColumn={groupColumn}
+        onRowGroupColumnChange={setGroupColumn}
         {...pivotProps}
-        styles={{
-          headerGroup: {
-            style: { position: "sticky", insetInlineStart: "var(--ln-start-offset)", overflow: "unset" },
-          },
-        }}
+        styles={style}
+        columnGroupRenderer={StickGroupHeader}
       />
     </div>
   );

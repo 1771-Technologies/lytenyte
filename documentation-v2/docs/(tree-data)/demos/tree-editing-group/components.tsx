@@ -39,7 +39,7 @@ import { customerToAvatar } from "@1771technologies/grid-sample-data/orders";
 export function GroupCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   const expanded = api.rowIsGroup(row) && row.expandable && row.expanded;
   const expandable = api.rowIsGroup(row) && row.expandable;
-  const name = api.rowIsGroup(row) ? (row.key ?? "") : ((row.data.name as string) ?? "");
+  const name = api.rowIsGroup(row) ? ((row.data.name as string) ?? "") : ((row.data.name as string) ?? "");
 
   const Icon = useMemo(() => {
     if (name.includes(".test")) return TestsIcon;

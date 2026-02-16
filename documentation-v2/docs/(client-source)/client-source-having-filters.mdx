@@ -10,7 +10,7 @@ pro: true
 a group row, the grid also removes all associated child rows.
 
 This guide covers having filters in the client data source,
-not filter types. For client-side filtering, see the [Filter Text](/docs/filtering-text).
+not filter types. For client-side filtering, see the [Filter Text guide](/docs/filtering-text).
 
 :::info
 
@@ -26,12 +26,12 @@ the [PostgreSQL HAVING guide](https://neon.com/postgresql/postgresql-tutorial/po
 Review the [Client Row Grouping](/docs/client-source-row-grouping) and
 [Client Row Aggregations](/docs/client-source-aggregations) guides for prerequisite knowledge.
 
-To apply a **having** filter, set the `having` property on the client
-data source to an array of **Having Filter Functions** (`(HavingFilterFn | null)[]).
-This will filter group rows by depth. Null entries skip filtering for that level.
+To apply a having filter, set `having` on the client data source to an array of **having filter
+functions** (`HavingFilterFn | null[ ]`). The grid uses the function at each index to
+filter group rows at that depth. Use `null` to skip filtering at a depth.
 
-The demo implements a `HavingFilterFn`. The [grid API extension](/docs/grid-api-extensions)
-provides the `filterModel` defined in this interface
+The demo demonstrates a `HavingFilterFn` utilizing the `filterModel`
+provided by the [grid API extension](/docs/grid-api-extensions).
 
 ```ts
 export interface GridSpec {
@@ -47,14 +47,15 @@ The filter model lets you build a filter representation before generating
 the filter function from it. The demo uses a custom [floating header row](/docs/column-floating-header)
 component that allows users to modify the model's value.
 
-The demo below demonstrates this by providing the `having` property with an array of two items.
-The first item is `null`, so the filter skips the top-most group level.
-The second item is a filter function, so the filter applies to the second grouping level.
+In the demo, the `having` filter applies to the second row grouping level: **Education**.
+For example, when you set the **Balance** filter to greater than `$0`, the grid removes
+the **Secondary** row from the **Administration** group and the **Primary** row
+from the **Blue-Collar** group.
 
 ::demo[Having Filter Function="./demos/client-row-having"]
 
-The demo creates the `HavingFilterFn` function by iterating through the filters in the model
-and applying them one at a time. The code below shows this.
+The demo creates the `HavingFilterFn` function by iterating through the filters in
+the model and applying them one at a time.
 
 ```ts
 const havingFilter = useMemo(() => {
