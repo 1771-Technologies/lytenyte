@@ -160,7 +160,7 @@ export function Search() {
                   setDivWidth(el.offsetWidth);
                 }}
               >
-                <span className="iconify ph--magnifying-glass-duotone relative size-5"></span>
+                <span className="iconify ph--magnifying-glass relative size-5"></span>
                 <A.Input className="flex-1 px-2 py-3 focus:outline-none" placeholder="Search" />
                 <D.Close className="border-xd-border hover:bg-xd-accent rounded-lg border p-1 px-2 font-mono text-sm transition-colors">
                   ESC
@@ -199,7 +199,7 @@ export function Search() {
                                   {Array.from({ length: doc.depth }, (_, i) => {
                                     return (
                                       <span
-                                        className="iconify ph--hash-duotone not-first:ms-[-3px] size-4"
+                                        className="iconify ph--hash not-first:ms-[-3px] size-4"
                                         key={i}
                                       ></span>
                                     );

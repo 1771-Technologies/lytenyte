@@ -31,9 +31,9 @@ export default defineConfig({
       ],
       navbar: {
         docVersions: [
-          { title: "v2.0", full: "v2.0.0", href: "latest" },
+          { title: "v2", full: "v2.0.0", href: "latest" },
           {
-            title: "v1.0",
+            title: "v1",
             full: "v1.0.20",
             href: "https://www.1771technologies.com/docs/intro-getting-started",
           },
