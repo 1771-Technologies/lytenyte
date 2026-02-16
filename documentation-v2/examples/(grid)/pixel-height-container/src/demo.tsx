@@ -19,8 +19,8 @@ export interface GridSpec {
 export const columns: Grid.Column<GridSpec>[] = [
   { id: "date", name: "Date", cellRenderer: DateCell, width: 110 },
   { id: "age", name: "Age", type: "number", width: 80 },
-  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 110 },
-  { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 80 },
+  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 160 },
+  { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 100 },
   { id: "country", name: "Country", cellRenderer: CountryCell, width: 150 },
   { id: "orderQuantity", name: "Quantity", type: "number", width: 60 },
   { id: "unitPrice", name: "Price", type: "number", width: 80, cellRenderer: NumberCell },

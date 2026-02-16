@@ -2,10 +2,9 @@ import { format } from "date-fns";
 import type { JSX } from "react";
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { ArrowUpIcon, Link1Icon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon, Link1Icon } from "@radix-ui/react-icons";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo";
-import { ArrowDownIcon } from "@1771technologies/lytenyte-pro/icons";
 
 function SkeletonLoading() {
   return (

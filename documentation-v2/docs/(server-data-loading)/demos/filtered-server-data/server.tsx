@@ -1,5 +1,4 @@
-import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro/types";
-
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
 import type { MovieData } from "./data";
 import { data as movieData } from "./data.js";
 import type { GridFilter } from "./types.js";

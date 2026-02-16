@@ -1,5 +1,4 @@
-import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro/types";
-
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
 import { data } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));

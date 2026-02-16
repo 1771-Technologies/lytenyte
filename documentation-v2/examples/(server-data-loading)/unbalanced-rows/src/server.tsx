@@ -3,9 +3,8 @@ import type {
   DataResponse,
   DataResponseBranchItem,
   DataResponseLeafItem,
-} from "@1771technologies/lytenyte-pro/types";
-
-import { data } from "./data";
+} from "@1771technologies/lytenyte-pro-experimental";
+import { data } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
@@ -24,8 +23,7 @@ export async function Server(reqs: DataRequest[]) {
     return {
       asOfTime: Date.now(),
       data: rows.map<DataResponseLeafItem | DataResponseBranchItem>(([name, file]) => {
-        if ("kind" in file)
-          return { kind: "leaf", id: name, data: { ...file, name, depth: c.path.length } };
+        if ("kind" in file) return { kind: "leaf", id: name, data: { ...file, name, depth: c.path.length } };
 
         return {
           kind: "branch",

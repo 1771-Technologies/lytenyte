@@ -1,10 +1,4 @@
-import type {
-  AggModelFn,
-  DataRequest,
-  DataResponse,
-  RowGroupModelItem,
-} from "@1771technologies/lytenyte-pro/types";
-
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
 import type { SalaryData } from "./data";
 import { data } from "./data.js";
 
@@ -12,8 +6,8 @@ const sleep = () => new Promise((res) => setTimeout(res, 600));
 
 export async function Server(
   reqs: DataRequest[],
-  groupModel: RowGroupModelItem<SalaryData>[],
-  aggModel: { [columnId: string]: { fn: AggModelFn<SalaryData> } },
+  groupModel: string[],
+  aggModel: { [columnId: string]: { fn: string } },
 ) {
   // Simulate latency and server work.
   await sleep();

@@ -1,6 +1,5 @@
-import { ChevronDownIcon } from "@1771technologies/lytenyte-pro/icons";
 import { NumberInput } from "@ark-ui/react/number-input";
-import { ChevronUpIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo";
 

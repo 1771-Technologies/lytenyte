@@ -1,17 +1,12 @@
-import type {
-  AggModelFn,
-  DataRequest,
-  DataResponse,
-  RowGroupModelItem,
-} from "@1771technologies/lytenyte-pro/types";
-import { data, nextData, type DataEntry } from "./data";
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
+import { data, nextData, type DataEntry } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 500));
 
 export async function Server(
   reqs: DataRequest[],
-  groupModel: RowGroupModelItem<DataEntry>[],
-  aggModel: { [columnId: string]: { fn: AggModelFn<DataEntry> } },
+  groupModel: string[],
+  aggModel: { [columnId: string]: { fn: string } },
 ) {
   // Simulate latency and server work.
   await sleep();
@@ -103,9 +98,7 @@ export async function Server(
           Object.entries(aggModel)
             .map(([column, m]) => {
               if (typeof m.fn !== "string")
-                throw new Error(
-                  "Non-string aggregations are not supported by this dummy implementation",
-                );
+                throw new Error("Non-string aggregations are not supported by this dummy implementation");
 
               const id = column as keyof DataEntry;
 
@@ -113,18 +106,12 @@ export async function Server(
               if (m.fn === "last") return [column, childRows.at(-1)![id]];
 
               if (m.fn === "avg")
-                return [
-                  column,
-                  childRows.reduce((acc, x) => acc + (x[id] as number), 0) / childRows.length,
-                ];
+                return [column, childRows.reduce((acc, x) => acc + (x[id] as number), 0) / childRows.length];
 
-              if (m.fn === "sum")
-                return [column, childRows.reduce((acc, x) => acc + (x[id] as number), 0)];
+              if (m.fn === "sum") return [column, childRows.reduce((acc, x) => acc + (x[id] as number), 0)];
 
-              if (m.fn === "min")
-                return [column, Math.min(...childRows.map((x) => x[id] as number))];
-              if (m.fn === "max")
-                return [column, Math.max(...childRows.map((x) => x[id] as number))];
+              if (m.fn === "min") return [column, Math.min(...childRows.map((x) => x[id] as number))];
+              if (m.fn === "max") return [column, Math.max(...childRows.map((x) => x[id] as number))];
             })
             .filter(Boolean) as [string, number | string][],
         );

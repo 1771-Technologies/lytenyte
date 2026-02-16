@@ -1,17 +1,12 @@
-import type {
-  AggModelFn,
-  DataRequest,
-  DataResponse,
-  RowGroupModelItem,
-} from "@1771technologies/lytenyte-pro/types";
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
 import { data, nextData, type DataEntry } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 50));
 
 export async function Server(
   reqs: DataRequest[],
-  groupModel: RowGroupModelItem<DataEntry>[],
-  aggModel: { [columnId: string]: { fn: AggModelFn<DataEntry> } },
+  groupModel: string[],
+  aggModel: { [columnId: string]: { fn: string } },
 ) {
   // Simulate latency and server work.
   await sleep();
@@ -21,8 +16,8 @@ export async function Server(
 
 export function getResponses(
   reqs: DataRequest[],
-  groupModel: RowGroupModelItem<DataEntry>[],
-  aggModel: { [columnId: string]: { fn: AggModelFn<DataEntry> } },
+  groupModel: string[],
+  aggModel: { [columnId: string]: { fn: string } },
 ) {
   // Tick the data so it changes in the UI
   nextData();
