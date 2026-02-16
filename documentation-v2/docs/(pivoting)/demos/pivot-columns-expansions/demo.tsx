@@ -17,6 +17,7 @@ import {
   HeaderGroupCell,
   NumberCell,
   ProfitCell,
+  style,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
 
@@ -44,7 +45,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160, pivotable: true },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
+const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -64,7 +65,7 @@ export default function PivotDemo() {
       columns: [{ id: "ageGroup" }, { id: "customerGender" }],
       measures: [
         {
-          dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 120 },
+          dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 160 },
           fn: "sum",
         },
       ],
@@ -82,11 +83,7 @@ export default function PivotDemo() {
         columnBase={base}
         rowGroupColumn={group}
         columnGroupRenderer={HeaderGroupCell}
-        styles={{
-          headerGroup: {
-            style: { position: "sticky", insetInlineStart: "var(--ln-start-offset)", overflow: "unset" },
-          },
-        }}
+        styles={style}
         {...pivotProps}
       />
     </div>

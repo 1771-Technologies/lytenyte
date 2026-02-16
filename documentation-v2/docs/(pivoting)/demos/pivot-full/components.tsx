@@ -5,6 +5,16 @@ import { countryFlags } from "@1771technologies/grid-sample-data/sales-data";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+// Need to set header group overflow to unset to allow sticky header labels.
+export const style: Grid.Style = { headerGroup: { style: { overflow: "unset" } } };
+export function StickGroupHeader(props: Grid.T.HeaderGroupParams<GridSpec>) {
+  return (
+    <div style={{ position: "sticky", insetInlineStart: "calc(var(--ln-start-offset) + 8px)" }}>
+      {props.groupPath.at(-1)}
+    </div>
+  );
+}
+
 export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
