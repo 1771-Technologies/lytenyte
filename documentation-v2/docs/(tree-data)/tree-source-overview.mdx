@@ -2,19 +2,17 @@
 title: Tree Overview
 pro: true
 step: Represent parent/child relationships with structured hierarchical data.
-description: Represent parent/child relationships using the tree data
-  source for structured hierarchical data.
+description: Use the tree data source to represent parent-child relationships in hierarchical data.
 ---
 
 :::info
 
-LyteNyte Grid requires tree data to be provided as a nested `object`. Unlike other grids
-that represent hierarchy using arrays with path strings, LyteNyte Grid treats array-based
-data as **non-uniform row grouping**.
+LyteNyte Grid expects tree data as a nested `object`. Many grids model hierarchies as
+arrays with path strings. In LyteNyte Grid, an array with path strings
+maps to **non-uniform row grouping, not tree data.**
 
-For array-based structures, see the [Client Row Grouping guide](/docs/client-source-row-grouping).
-Tree data specifically targets object-based structures, such as `JSON` responses returned
-from a server.
+For array-based hierarchies, see the [Client Row Grouping guide](/docs/client-source-row-grouping).
+Use tree data for object-based hierarchies, such as nested `JSON` from a server.
 
 :::
 

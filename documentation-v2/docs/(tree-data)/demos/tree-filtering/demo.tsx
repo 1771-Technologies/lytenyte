@@ -31,21 +31,21 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { widthFlex: 1, width: 120 };
 
 export default function TreeDataDemo() {
-  const [filterHidden, setFilterHidden] = useState(false);
+  const [showHidden, setShowHidden] = useState(false);
   const ds = useTreeDataSource({
     data: data,
     rowGroupDefaultExpansion: true,
-    filter: filterHidden ? (x) => !(typeof x.name === "string" && x.name.startsWith(".")) : null,
+    filter: !showHidden ? (x) => !(typeof x.name === "string" && x.name.startsWith(".")) : null,
   });
 
   return (
     <>
       <div className="border-ln-border flex w-full border-b px-2 py-2">
         <SwitchToggle
-          label="Filter Hidden Files"
-          checked={filterHidden}
+          label="Reveal Hidden Files"
+          checked={showHidden}
           onChange={() => {
-            setFilterHidden((prev) => !prev);
+            setShowHidden((prev) => !prev);
           }}
         />
       </div>
