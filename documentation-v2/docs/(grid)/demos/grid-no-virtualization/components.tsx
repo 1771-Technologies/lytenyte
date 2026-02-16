@@ -1,125 +1,126 @@
-import { CheckIcon, MinusIcon } from "@radix-ui/react-icons";
-import type { ClassValue } from "clsx";
-import clsx from "clsx";
-import { Checkbox as C } from "radix-ui";
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo";
+import { format, isValid, parse } from "date-fns";
+import { countryFlags } from "@1771technologies/grid-sample-data/sales-data";
+import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type {
-  CellRendererParams,
-  HeaderCellRendererParams,
-} from "@1771technologies/lytenyte-pro/types";
-import type { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import type { JSX } from "react";
 
-export type BankData = (typeof bankDataSmall)[number];
+export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "string") return "-";
+
+  const dateField = parse(field as string, "MM/dd/yyyy", new Date());
+
+  if (!isValid(dateField)) return "-";
+
+  const niceDate = format(dateField, "yyyy MMM dd");
+  return <div className="flex h-full w-full items-center tabular-nums">{niceDate}</div>;
+}
+
+export function AgeGroup({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (field === "Youth (<25)") return <div className="text-[#944cec] dark:text-[#B181EB]">{field}</div>;
+  if (field === "Young Adults (25-34)")
+    return <div className="text-[#aa6c1a] dark:text-[#E5B474]">{field}</div>;
+  if (field === "Adults (35-64)") return <div className="text-[#0f7d4c] dark:text-[#52B086]">{field}</div>;
+
+  return "-";
+}
+
+export function GenderCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (field === "Male")
+    return (
+      <div className="flex h-full w-full items-center gap-2">
+        <div className="flex size-6 items-center justify-center rounded-full bg-blue-500/50">
+          <span className="iconify ph--gender-male-bold size-4" />
+        </div>
+        Male
+      </div>
+    );
+
+  if (field === "Female")
+    return (
+      <div className="flex h-full w-full items-center gap-2">
+        <div className="flex size-6 items-center justify-center rounded-full bg-pink-500/50">
+          <span className="iconify ph--gender-female-bold size-4" />
+        </div>
+        Female
+      </div>
+    );
+
+  return "-";
+}
+
+function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
+}
 
 const formatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
   minimumFractionDigits: 0,
 });
-export function BalanceCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
+export function ProfitCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-  if (typeof field === "number") {
-    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+  if (typeof field !== "number") return "-";
 
-    return "$" + formatter.format(field);
-  }
-
-  return `${field ?? "-"}`;
-}
-export function DurationCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
-
-  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
-}
-
-export function NumberCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
-
-  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
-}
-
-export function MarkerHeader({ grid }: HeaderCellRendererParams<BankData>) {
-  const allSelected = grid.state.rowDataSource.get().rowAreAllSelected();
-
-  const selected = grid.state.rowSelectedIds.useValue();
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <GridCheckbox
-        checked={allSelected || selected.size > 0}
-        indeterminate={!allSelected && selected.size > 0}
-        onClick={(ev) => {
-          ev.preventDefault();
-          grid.api.rowSelectAll({ deselect: allSelected });
-        }}
-        onKeyDown={(ev) => {
-          if (ev.key === "Enter" || ev.key === " ")
-            grid.api.rowSelectAll({ deselect: allSelected });
-        }}
-      />
-    </div>
-  );
-}
-
-export function MarkerCell({ grid, rowSelected }: CellRendererParams<BankData>) {
-  return (
-    <div className="flex h-full w-full items-center justify-center">
-      <GridCheckbox
-        checked={rowSelected}
-        onClick={(ev) => {
-          ev.stopPropagation();
-          grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
-        }}
-        onKeyDown={(ev) => {
-          if (ev.key === "Enter" || ev.key === " ")
-            grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
-        }}
-      />
-    </div>
-  );
-}
-
-export function GridCheckbox({
-  children,
-  indeterminate,
-  ...props
-}: C.CheckboxProps & { indeterminate?: boolean }) {
-  return (
-    <label className="text-md text-light flex items-center gap-2">
-      <C.Root
-        {...props}
-        type="button"
-        className={tw(
-          "bg-ln-gray-02 rounded border-transparent",
-          "shadow-[0_1.5px_2px_0_rgba(18,46,88,0.08),0_0_0_1px_var(--lng1771-gray-40)]",
-          "data-[state=checked]:bg-ln-primary-50 data-[state=checked]:shadow-[0_1.5px_2px_0_rgba(18,46,88,0.08),0_0_0_1px_var(--lng1771-primary-50)]",
-          "h-4 w-4",
-          props.className,
-        )}
-      >
-        <C.CheckboxIndicator className={tw("flex items-center justify-center")}>
-          {!indeterminate && <CheckIcon className="text-white dark:text-black" />}
-          {indeterminate && <MinusIcon className="text-white dark:text-black" />}
-        </C.CheckboxIndicator>
-      </C.Root>
-      {children}
-    </label>
-  );
-}
-
-export function tw(...c: ClassValue[]) {
-  return twMerge(clsx(...c));
-}
-
-export function GridButton(props: JSX.IntrinsicElements["button"]) {
-  return (
-    <button
-      {...props}
+    <div
       className={tw(
-        "border-ln-gray-30 hover:bg-ln-gray-80 dark:hover:bg-ln-gray-90 flex h-8 cursor-pointer items-center gap-2 rounded-lg border bg-black px-2 text-sm text-white shadow transition-colors dark:bg-white dark:text-black",
-        props.className,
+        "flex h-full w-full items-center justify-end tabular-nums",
+        field < 0 && "text-red-600 dark:text-red-300",
+        field > 0 && "text-green-600 dark:text-green-300",
       )}
-    ></button>
+    >
+      {formatted}
+    </div>
+  );
+}
+
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
+
+  return <div className={"flex h-full w-full items-center justify-end tabular-nums"}>{formatted}</div>;
+}
+
+export function CostCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
+
+  return (
+    <div
+      className={tw(
+        "flex h-full w-full items-center justify-end tabular-nums text-red-600 dark:text-red-300",
+      )}
+    >
+      {formatted}
+    </div>
+  );
+}
+
+export function CountryCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  const flag = countryFlags[field as keyof typeof countryFlags];
+  if (!flag) return "-";
+
+  return (
+    <div className="flex h-full w-full items-center gap-2">
+      <img className="size-4" src={flag} alt={`country flag of ${field}`} />
+      <span>{String(field ?? "-")}</span>
+    </div>
   );
 }
