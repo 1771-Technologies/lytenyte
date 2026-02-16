@@ -2,19 +2,19 @@
 title: Row Drag
 description: The API reference for the row drag functionality in LyteNyte Grid.
 ---
+
 ## `DragData`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Contains data associated with a drag operation,
-  including transferable and site-local information.
+including transferable and site-local information.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DragData" />
-
+<AutoTypeTable path="./types.ts" name="DragData" />
 
 ## `DragEventFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface DragEventFn {
 
-          /** 
+          /**
            * Callback function executed during a drag event.
            */
           DragEventFn: (params: (DragEventParams) => void)
@@ -24,46 +24,43 @@ Contains data associated with a drag operation,
 
 Arguments passed during a drag event lifecycle.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DragEventParams" />
-
+<AutoTypeTable path="./types.ts" name="DragEventParams" />
 
 ## `DragMoveState`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Describes the final state of a drag-and-drop move operation.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DragMoveState" />
-
+<AutoTypeTable path="./types.ts" name="DragMoveState" />
 
 ## `DragPlaceholderFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface DragPlaceholderFn {
 
-          /** 
+          /**
            * Function to render the drag placeholder UI. This UI
- *   is rendered in isolation and does not respond to app state changes.
-           */
-          DragPlaceholderFn: (params: (DragPlaceholderParams) => HTMLElement)
-          }`} />
+
+- is rendered in isolation and does not respond to app state changes.
+  \*/
+  DragPlaceholderFn: (params: (DragPlaceholderParams) => HTMLElement)
+  }`} />
 
 ## `DragPlaceholderParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters passed when rendering the drag placeholder content.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DragPlaceholderParams" />
-
+<AutoTypeTable path="./types.ts" name="DragPlaceholderParams" />
 
 ## `DragPosition`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Represents the current pointer position during a drag operation.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DragPosition" />
-
+<AutoTypeTable path="./types.ts" name="DragPosition" />
 
 ## `DropEventFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface DropEventFn {
 
-          /** 
+          /**
            * Fired when a drop action is finalized and the dragged element is released over a drop zone.
            */
           DropEventFn: (params: (DropEventParams) => void)
@@ -73,14 +70,13 @@ Represents the current pointer position during a drag operation.
 
 Represents the full context passed to the drop event handler.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DropEventParams" />
-
+<AutoTypeTable path="./types.ts" name="DropEventParams" />
 
 ## `GetDragDataFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface GetDragDataFn {
 
-          /** 
+          /**
            * Function used to provide the data that will be associated with a drag operation.
            */
           GetDragDataFn: (params: (GetDragDataParams) => DragData)
@@ -89,14 +85,12 @@ Represents the full context passed to the drop event handler.
 ## `GetDragDataParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Defines the input parameters for the function
-  that provides data during a drag operation.
+that provides data during a drag operation.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="GetDragDataParams" />
-
+<AutoTypeTable path="./types.ts" name="GetDragDataParams" />
 
 ## `UseRowDragParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters for configuring drag behavior using a React hook.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="UseRowDragParams" />
-
+<AutoTypeTable path="./types.ts" name="UseRowDragParams" />

@@ -2,28 +2,29 @@
 title: Cell Rendering
 description: The API reference for the cell rendering functionality in LyteNyte Grid.
 ---
+
 ## `CellRendererFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface CellRendererFn {
 
-          /** 
+          /**
            * A function that returns a ReactNode representing the rendered content of a cell.
- * 
- * This function is called once per cell for the associated column. Cell renderers should be
- * optimized for performance, as slow renderers may degrade the overall responsiveness of the grid.
- * 
- * Avoid unnecessary re-renders or expensive calculations inside this function.
-           */
-          CellRendererFn: (params: (CellRendererParams) => ReactNode)
-          }`} />
+
+-
+- This function is called once per cell for the associated column. Cell renderers should be
+- optimized for performance, as slow renderers may degrade the overall responsiveness of the grid.
+-
+- Avoid unnecessary re-renders or expensive calculations inside this function.
+  \*/
+  CellRendererFn: (params: (CellRendererParams) => ReactNode)
+  }`} />
 
 ## `CellRendererParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Input parameters passed to the  [CellRendererFn](/docs/reference/cell-rendering#cellrendererfn) , which is responsible for rendering the display content
+Input parameters passed to the [CellRendererFn](/docs/reference/cell-rendering#cellrendererfn) , which is responsible for rendering the display content
 of a specific cell in the grid.
 
 Includes metadata and context such as the grid instance, row and column positions, selection state,
 and the full row node data.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="CellRendererParams" />
-
+<AutoTypeTable path="./types.ts" name="CellRendererParams" />

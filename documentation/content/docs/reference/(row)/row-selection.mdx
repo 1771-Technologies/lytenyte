@@ -2,24 +2,39 @@
 title: Row Selection
 description: The API reference for the row selection functionality in LyteNyte Grid.
 ---
+
 ## `RowSelectAllOptions`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Options for performing bulk selection or deselection of all rows.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowSelectAllOptions" />
-
+<AutoTypeTable path="./types.ts" name="RowSelectAllOptions" />
 
 ## `RowSelectionActivator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"RowSelectionActivator":{"description":"Defines the interaction behavior that activates row selection.\n  - \"single-click\" selects a row with a single mouse click.\n  - \"double-click\" requires a double-click to select.\n  - \"none\" disables interaction-based row selection.","type":"\"single-click\" | \"double-click\" | \"none\""}}} />
+<TypeTable
+  type={{
+    RowSelectionActivator: {
+      description:
+        'Defines the interaction behavior that activates row selection.\n  - "single-click" selects a row with a single mouse click.\n  - "double-click" requires a double-click to select.\n  - "none" disables interaction-based row selection.',
+      type: '"single-click" | "double-click" | "none"',
+    },
+  }}
+/>
 
 ## `RowSelectionMode`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"RowSelectionMode":{"description":"Specifies the available row selection modes supported by LyteNyte Grid.\n  - \"single\" allows only one row to be selected at a time.\n  - \"multiple\" allows multiple row selections.\n  - \"none\" disables row selection entirely.","type":"\"single\" | \"multiple\" | \"none\""}}} />
+<TypeTable
+  type={{
+    RowSelectionMode: {
+      description:
+        'Specifies the available row selection modes supported by LyteNyte Grid.\n  - "single" allows only one row to be selected at a time.\n  - "multiple" allows multiple row selections.\n  - "none" disables row selection entirely.',
+      type: '"single" | "multiple" | "none"',
+    },
+  }}
+/>
 
 ## `RowSelectOptions`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Configuration options used when performing row selection operations.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowSelectOptions" />
-
+<AutoTypeTable path="./types.ts" name="RowSelectOptions" />

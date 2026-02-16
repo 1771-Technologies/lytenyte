@@ -2,133 +2,163 @@
 title: Cell Edit
 description: The API reference for the cell edit functionality in LyteNyte Grid.
 ---
+
 ## `Editable`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"Editable":{"description":"A column-level property that controls editability of cells.\n\n- Use  \\`\\`true\\`\\`  to enable editing for all rows.\n- Use  [EditableFn](/docs/reference/cell-edit#editablefn)  for conditional, row-specific editability.","type":"boolean | EditableFn"}}} />
+<TypeTable
+  type={{
+    Editable: {
+      description:
+        "A column-level property that controls editability of cells.\n\n- Use  \\`\\`true\\`\\`  to enable editing for all rows.\n- Use  [EditableFn](/docs/reference/cell-edit#editablefn)  for conditional, row-specific editability.",
+      type: "boolean | EditableFn",
+    },
+  }}
+/>
 
 ## `EditableFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface EditableFn {
 
-          /** 
+          /**
            * A predicate function that determines whether a particular cell is editable.
- * 
- * If cell editing is enabled in LyteNyte Grid, this function is evaluated per cell. Use
- *  ''true''  for globally editable columns or  [EditableFn](/docs/reference/cell-edit#editablefn)  for row-specific logic.
-           */
-          EditableFn: (params: (EditableFnParams) => boolean)
-          }`} />
+
+-
+- If cell editing is enabled in LyteNyte Grid, this function is evaluated per cell. Use
+- ''true'' for globally editable columns or [EditableFn](/docs/reference/cell-edit#editablefn) for row-specific logic.
+  \*/
+  EditableFn: (params: (EditableFnParams) => boolean)
+  }`} />
 
 ## `EditableFnParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Parameters passed to  [EditableFn](/docs/reference/cell-edit#editablefn) , the predicate function used to determine
+Parameters passed to [EditableFn](/docs/reference/cell-edit#editablefn) , the predicate function used to determine
 if a specific cell in the grid is editable.
 
 These include the row index, the row node object, the grid instance, and the column
 definition.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="EditableFnParams" />
-
+<AutoTypeTable path="./types.ts" name="EditableFnParams" />
 
 ## `EditActivePosition`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Describes the currently active cell position if editing is in progress.
 
-When no edit is active, this will be  ``undefined`` .
+When no edit is active, this will be `undefined` .
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="EditActivePosition" />
-
+<AutoTypeTable path="./types.ts" name="EditActivePosition" />
 
 ## `EditBeginParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Parameters accepted by the  ``editBegin``  method to start editing a specific cell.
+Parameters accepted by the `editBegin` method to start editing a specific cell.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="EditBeginParams" />
-
+<AutoTypeTable path="./types.ts" name="EditBeginParams" />
 
 ## `EditCellMode`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"EditCellMode":{"description":"Controls whether a grid operates in inline editing mode:\n\n-  \\`\\`\"cell\"\\`\\` : Editing is active and inline\n-  \\`\\`\"readonly\"\\`\\` : Editing is disabled entirely","type":"\"cell\" | \"readonly\""}}} />
+<TypeTable
+  type={{
+    EditCellMode: {
+      description:
+        'Controls whether a grid operates in inline editing mode:\n\n-  \\`\\`"cell"\\`\\` : Editing is active and inline\n-  \\`\\`"readonly"\\`\\` : Editing is disabled entirely',
+      type: '"cell" | "readonly"',
+    },
+  }}
+/>
 
 ## `EditClickActivator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"EditClickActivator":{"description":"Specifies what kind of mouse interaction should initiate editing:\n\n-  \\`\\`\"single\"\\`\\` : Single click\n-  \\`\\`\"double-click\"\\`\\` : Double click\n-  \\`\\`\"none\"\\`\\` : Editing must be started via API or programmatically","type":"\"single\" | \"double-click\" | \"none\""}}} />
+<TypeTable
+  type={{
+    EditClickActivator: {
+      description:
+        'Specifies what kind of mouse interaction should initiate editing:\n\n-  \\`\\`"single"\\`\\` : Single click\n-  \\`\\`"double-click"\\`\\` : Double click\n-  \\`\\`"none"\\`\\` : Editing must be started via API or programmatically',
+      type: '"single" | "double-click" | "none"',
+    },
+  }}
+/>
 
 ## `EditRenderer`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"EditRenderer":{"description":"Defines the edit renderer for a column.\n\nCan be either:\n- A string key referencing a registered editor component\n- A function of type  [EditRendererFn](/docs/reference/cell-edit#editrendererfn)  for custom rendering logic","type":"string | EditRendererFn"}}} />
+<TypeTable
+  type={{
+    EditRenderer: {
+      description:
+        "Defines the edit renderer for a column.\n\nCan be either:\n- A string key referencing a registered editor component\n- A function of type  [EditRendererFn](/docs/reference/cell-edit#editrendererfn)  for custom rendering logic",
+      type: "string | EditRendererFn",
+    },
+  }}
+/>
 
 ## `EditRendererFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface EditRendererFn {
 
-          /** 
+          /**
            * A function that returns a React component to be rendered in edit mode for a given cell.
- * 
- * Used for customizing editing UI. If omitted, a default HTML input will be used.
-           */
-          EditRendererFn: (params: (EditRendererFnParams) => ReactNode)
-          }`} />
+
+-
+- Used for customizing editing UI. If omitted, a default HTML input will be used.
+  \*/
+  EditRendererFn: (params: (EditRendererFnParams) => ReactNode)
+  }`} />
 
 ## `EditRendererFnParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Input parameters for the  [EditRendererFn](/docs/reference/cell-edit#editrendererfn) , used to render the edit UI for a cell.
+Input parameters for the [EditRendererFn](/docs/reference/cell-edit#editrendererfn) , used to render the edit UI for a cell.
 
 These include positional and contextual data such as row, column, value, and grid
 instance, along with row validation status and change handlers.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="EditRendererFnParams" />
-
+<AutoTypeTable path="./types.ts" name="EditRendererFnParams" />
 
 ## `EditRowValidatorFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface EditRowValidatorFn {
 
-          /** 
+          /**
            * A function that validates a fully edited row.
- * 
- * Supports synchronous or object-based results for per-column validation. Must return:
- * 
- * -  ''true''  or  ''null''  if the row is valid
- * -  ''false''  or a  ''Record<string, any>''  describing errors if invalid
-           */
-          EditRowValidatorFn: (params: (EditRowValidatorFnParams) => Record | boolean)
-          }`} />
+
+-
+- Supports synchronous or object-based results for per-column validation. Must return:
+-
+- - ''true'' or ''null'' if the row is valid
+- - ''false'' or a ''Record<string, any>'' describing errors if invalid
+    \*/
+    EditRowValidatorFn: (params: (EditRowValidatorFnParams) => Record | boolean)
+    }`} />
 
 ## `EditRowValidatorFnParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Input arguments passed to  [EditRowValidatorFn](/docs/reference/cell-edit#editrowvalidatorfn) .
+Input arguments passed to [EditRowValidatorFn](/docs/reference/cell-edit#editrowvalidatorfn) .
 
 Used to perform validation on the entire row during or after edit submission.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="EditRowValidatorFnParams" />
-
+<AutoTypeTable path="./types.ts" name="EditRowValidatorFnParams" />
 
 ## `EditSetterFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface EditSetterFn {
 
-          /** 
+          /**
            * A function that returns a new row object based on the edited cell value.
- * 
- * Required when dealing with nested, computed, or non-primitive values that the grid
- * cannot update automatically.
-           */
-          EditSetterFn: (params: (EditSetterParams) => any)
-          }`} />
+
+-
+- Required when dealing with nested, computed, or non-primitive values that the grid
+- cannot update automatically.
+  \*/
+  EditSetterFn: (params: (EditSetterParams) => any)
+  }`} />
 
 ## `EditSetterParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Input parameters passed to an  [EditSetterFn](/docs/reference/cell-edit#editsetterfn) .
+Input parameters passed to an [EditSetterFn](/docs/reference/cell-edit#editsetterfn) .
 
 Provides the context needed to compute and apply new row data based on edit input.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="EditSetterParams" />
-
+<AutoTypeTable path="./types.ts" name="EditSetterParams" />
 
 ## `EditUpdateParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Parameters passed to the  ``editUpdate``  method, used to submit a value change.
+Parameters passed to the `editUpdate` method, used to submit a value change.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="EditUpdateParams" />
-
+<AutoTypeTable path="./types.ts" name="EditUpdateParams" />

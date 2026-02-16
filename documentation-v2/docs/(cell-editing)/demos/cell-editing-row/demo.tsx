@@ -54,7 +54,7 @@ const columns: Grid.Column<GridSpec>[] = [
   },
 ];
 
-export default function Demo() {
+export default function CellEditingDemo() {
   const [data, setData] = useState(initialData);
   const ds = useClientDataSource({
     data,

@@ -2,48 +2,65 @@
 title: Column Header
 description: The API reference for the column header functionality in LyteNyte Grid.
 ---
+
 ## `HeaderCellRenderer`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"HeaderCellRenderer":{"description":"Header cell renderer reference. This may be a registered renderer\n  name (string) or a renderer function. If a string is used, it should match a renderer registered in the grid state.","type":"string | HeaderCellRendererFn"}}} />
+<TypeTable
+  type={{
+    HeaderCellRenderer: {
+      description:
+        "Header cell renderer reference. This may be a registered renderer\n  name (string) or a renderer function. If a string is used, it should match a renderer registered in the grid state.",
+      type: "string | HeaderCellRendererFn",
+    },
+  }}
+/>
 
 ## `HeaderCellRendererFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface HeaderCellRendererFn {
 
-          /** 
+          /**
            * A function used to render the content of a header cell.
- *   It receives renderer parameters and returns a ReactNode to render.
-           */
-          HeaderCellRendererFn: (params: (HeaderCellRendererParams) => ReactNode)
-          }`} />
+
+- It receives renderer parameters and returns a ReactNode to render.
+  \*/
+  HeaderCellRendererFn: (params: (HeaderCellRendererParams) => ReactNode)
+  }`} />
 
 ## `HeaderCellRendererParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters passed to the header cell renderer function. This
-  provides access to the grid and column for rendering context.
+provides access to the grid and column for rendering context.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="HeaderCellRendererParams" />
-
+<AutoTypeTable path="./types.ts" name="HeaderCellRendererParams" />
 
 ## `HeaderFloatingCellRenderer`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"HeaderFloatingCellRenderer":{"description":"Floating header cell renderer reference. Can be a string\n  referencing a registered floating renderer or a function used directly by the column.","type":"string | HeaderFloatingCellRendererFn"}}} />
+<TypeTable
+  type={{
+    HeaderFloatingCellRenderer: {
+      description:
+        "Floating header cell renderer reference. Can be a string\n  referencing a registered floating renderer or a function used directly by the column.",
+      type: "string | HeaderFloatingCellRendererFn",
+    },
+  }}
+/>
 
 ## `HeaderFloatingCellRendererFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface HeaderFloatingCellRendererFn {
 
-          /** 
+          /**
            * Renderer function for floating header cells. Returns the visual
- *   contents for floating headers using provided parameters.
-           */
-          HeaderFloatingCellRendererFn: (params: (HeaderFloatingCellRendererParams) => ReactNode)
-          }`} />
+
+- contents for floating headers using provided parameters.
+  \*/
+  HeaderFloatingCellRendererFn: (params: (HeaderFloatingCellRendererParams) => ReactNode)
+  }`} />
 
 ## `HeaderFloatingCellRendererParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters passed to the floating cell renderer. Provides grid
-  and column context to determine what should be rendered.
+and column context to determine what should be rendered.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="HeaderFloatingCellRendererParams" />
-
+<AutoTypeTable path="./types.ts" name="HeaderFloatingCellRendererParams" />
