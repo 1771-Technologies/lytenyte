@@ -840,6 +840,8 @@ importers:
 
   packages/lytenyte-shared: {}
 
+  packages/lytenyte-ui: {}
+
   packages/sample-data:
     devDependencies:
       csv-parser:
