@@ -1,14 +1,13 @@
 ---
 title: Pill Manager
-step: A versatile component for creating intuitive grid interactions using label pills.
+step: Create and manage grid interactions using label pills.
 pro: true
-description: Manage selection and order through LyteNyte Grid's Pill Manager component. The Pill Manager
-  component is a versatile item list component with drag-and-drop support.
+description: Use the Pill Manager to manage data items, selection, order,
+  and state using a list of pills with drag-and-drop support.
 ---
 
-LyteNyte Grid exports the `PillManager` component. `PillManager` is a headless component composed of
-separate parts that you can optionally assemble for manual customization or render using a
-default configuration.
+LyteNyte Grid exports `PillManager`, a headless component with composable parts.
+Assemble the parts for manual customization, or use the default configuration.
 
 You can use the `PillManager` to control different aspects of the grid, for example:
 
@@ -20,15 +19,15 @@ You can use the `PillManager` to control different aspects of the grid, for exam
 The example below demonstrates a complete setup. The remaining sections of this guide explain the
 individual capabilities of the `PillManager` component.
 
-::demo[Pill Manager="./demos/pill-manager-full"]
+::demo[Pill Manager Component="./demos/pill-manager-full"]
 
 ## Pill Manager Anatomy
 
 The `PillManager` component is a headless component. Similar to LyteNyte Grid, it supports
 two rendering modes:
 
-- **Default Mode**: `PillManager` renders using a built-in default configuration.
 - **Headless Mode**: `PillManager` exposes its component parts for full custom configuration.
+- **Default Mode**: `PillManager` renders using a built-in default configuration.
 
 <Tabs>
 
@@ -105,18 +104,16 @@ export interface PillRowSpec {
 
 ## Pill Active State
 
-Every `PillItemSpec` in a `PillRowSpec` must have the `active` state property set. The
-`active` property determines whether a pill is enabled. What it means for a pill to be
-active depends on your use case.
+Set the `active` property on every `PillItemSpec` in a `PillRowSpec`.
+The `active` property determines whether a pill is enabled. The semantic meaning
+of `active` is defined by your use case.
 
-For example, you can use the `active` property to determine column visibility, as the demo
-below demonstrates. Pills that are not active are dimmed.
+The demo below uses `active` to toggle column visibility, where inactive pills appear dimmed.
 
-::demo[Pill Active State="../(column)/demos/column-visibility"]
+::demo[Pill Manager State="../(column)/demos/column-visibility"]
 
-When the `active` state of a pill changes, the `PillManager` calls the `onPillRowChange`
-handler. The interface for `onPillRowChange` is shown below. You can use the provided
-parameters to update your pill row state.
+When a pill's `active` state changes, the `PillManager` calls the
+`onPillRowChange` handler. Use the provided parameters shown below to update your row state.
 
 ```ts
 type onPillItemActiveChange = (params: {
@@ -136,7 +133,7 @@ a pill may also be moved to another row. For another row to accept a pill, set t
 The demo below demonstrates pill reordering. You can drag pills between sections to
 activate them, or reorder pills within the same row.
 
-::demo[Pill Reordering="../(pivoting)/demos/pivot-rows"]
+::demo[Pill Manager Reordering="../(pivoting)/demos/pivot-rows"]
 
 When pills are reordered, the `PillManager` calls the `onPillRowChange` event handler.
 The handler type is shown below.
@@ -151,9 +148,8 @@ type onPillRowChange = (params: { readonly changed: PillRowSpec[]; readonly full
 
 ## Pill Parts
 
-The `PillManager` is a headless component. All parts are rendered using a render prop
-provided to the `PillManager`. The render prop is optional. If you do not provide it,
-the `PillManager` uses a default implementation.
+All parts are rendered using a render prop provided to the PillManager. The render prop is optional.
+If you do not provide it, the PillManager uses a default implementation.
 
 ### Pill Row
 
@@ -254,25 +250,25 @@ view and a wrapped view. When expanded, all pills in the row are visible.
 
 ## Vertical Pills
 
-Set the `orientation` property on the `PillManager` to `"vertical"` to orient pills
-vertically. The demo below demonstrates this configuration. Because the `PillManager`
-is headless, you must apply the appropriate styles when rendering a vertical layout.
+Set the orientation property on the `PillManager` to "vertical" to orient pills vertically.
+The demo below demonstrates this configuration. Since the `PillManager` is headless, you must
+apply the appropriate styles when rendering a vertical layout.
 
 ::demo[Vertical Pill="./demos/pill-manager-vertical"]
 
 ## Pill Manager Styling
 
-The `PillManager` component is headless and unstyled by default. You can import
-pre-made styles from the LyteNyte Grid package to match the `PillManager` theme
-with existing LyteNyte Grid styles.
+`PillManager` is unstyled by default. Import the prebuilt LyteNyte Grid styles
+to align `PillManager` with the rest of the grid. These styles also provide
+pill theming for each `PillRowSpec` type.
+
+The pre-made styles also provide pill theming for each `PillRowSpec` type.
 
 ```ts
 import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
 ```
 
-The pre-made styles also provide pill theming for each `PillRowSpec` type.
-
-## Properties
+## Pill Manager Properties
 
 All `PillManager` component parts render as HTML elements and accept standard HTML props.
 This section lists the additional properties that each component supports.

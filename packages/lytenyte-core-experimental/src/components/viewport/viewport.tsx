@@ -286,6 +286,8 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             "--ln-end-offset": `${endOffset}px`,
             "--ln-top-offset": `${topOffset}px`,
             "--ln-bottom-offset": `${bottomOffset}px`,
+            "--ln-full-width": `${xPositions.at(-1)!}px`,
+            "--ln-full-height": `${yPositions.at(-1)!}px`,
             ...(props.style ?? styles?.viewport?.style),
           } as CSSProperties
         }

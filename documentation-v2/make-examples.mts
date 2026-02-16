@@ -13,6 +13,6 @@ demoFiles.forEach((c) => {
   const dir = c.replace("docs/", "").replace("demos/", "");
   ensureDirSync(`examples/${dir}`);
 
-  copySync("./project-template", `examples/${dir}`);
-  copySync(`${c}`, `examples/${dir}/src`);
+  copySync("./project-template", `examples/docs/${dir}`);
+  copySync(`${c}`, `examples/docs/${dir}/src`);
 });

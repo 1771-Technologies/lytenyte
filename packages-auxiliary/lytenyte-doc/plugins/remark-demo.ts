@@ -100,16 +100,23 @@ export function getCurrentGitBranch(cwd = process.cwd()) {
 }
 
 const getStackBlitzUrl = (path: string, org: string, repo: string, branch: string) => {
+  void org;
+  void repo;
+  void branch;
   const final = path.startsWith("/") ? path.slice(1) : path;
 
   const url = final.replace("/content/docs/", "/examples/").replace("demos/", "");
 
-  return `https://stackblitz.com/fork/github/${org}/${repo}/tree/${branch}/${url}?file=src/demo.tsx`;
+  return `https://stackblitz.com/fork/github/1771-technologies/lytenyte/tree/main/${url}?file=src/demo.tsx`;
 };
 
 const getCodeSandboxUrl = (path: string, org: string, repo: string, branch: string) => {
+  void org;
+  void repo;
+  void branch;
+
   const final = path.startsWith("/") ? path.slice(1) : path;
   const url = final.replace("/content/docs/", "/examples/").replace("demos/", "");
 
-  return `https://codesandbox.io/s/github/${org}/${repo}/tree/${branch}/${url}?file=%2Fsrc%2Fdemo.tsx`;
+  return `https://codesandbox.io/s/github/1771technologies/lytenyte/tree/main/${url}?file=%2Fsrc%2Fdemo.tsx`;
 };
