@@ -52,6 +52,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 120, resizable: true };
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
@@ -96,6 +97,9 @@ export default function PivotDemo() {
   }, [pivots]);
 
   const pivotProps = ds.usePivotProps();
+
+  const [groupColumn, setGroupColumn] = useState(group);
+
   return (
     <>
       <div>
@@ -122,7 +126,8 @@ export default function PivotDemo() {
           columns={columns}
           rowSource={ds}
           columnBase={base}
-          rowGroupColumn={group}
+          rowGroupColumn={groupColumn}
+          onRowGroupColumnChange={setGroupColumn}
           {...pivotProps}
           styles={style}
           columnGroupRenderer={StickGroupHeader}

@@ -20,6 +20,7 @@ import {
   style,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
+import { useState } from "react";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -50,6 +51,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 120, resizable: true, movable: 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
@@ -75,13 +77,16 @@ export default function PivotDemo() {
 
   const pivotProps = ds.usePivotProps();
 
+  const [groupColumn, setGroupColumn] = useState(group);
+
   return (
     <div className="ln-grid" style={{ height: 500 }}>
       <Grid
         columns={columns}
         rowSource={ds}
         columnBase={base}
-        rowGroupColumn={group}
+        rowGroupColumn={groupColumn}
+        onRowGroupColumnChange={setGroupColumn}
         {...pivotProps}
         styles={style}
         columnGroupRenderer={StickGroupHeader}

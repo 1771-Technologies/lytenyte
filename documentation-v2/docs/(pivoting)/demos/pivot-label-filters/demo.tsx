@@ -44,6 +44,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 120, widthFlex: 1 };
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
   width: 200,
+  pin: "start",
 };
 
 const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {

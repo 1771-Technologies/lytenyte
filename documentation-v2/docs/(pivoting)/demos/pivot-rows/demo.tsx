@@ -137,6 +137,7 @@ export default function PivotDemo() {
   }, [colPivots, rowPivots]);
 
   const pivotProps = ds.usePivotProps();
+  const [groupColumn, setGroupColumn] = useState(group);
   return (
     <>
       <div className="@container">
@@ -197,7 +198,8 @@ export default function PivotDemo() {
           columns={columns}
           rowSource={ds}
           columnBase={base}
-          rowGroupColumn={group}
+          rowGroupColumn={groupColumn}
+          onRowGroupColumnChange={setGroupColumn}
           {...pivotProps}
           columnGroupRenderer={StickGroupHeader}
           styles={style}
