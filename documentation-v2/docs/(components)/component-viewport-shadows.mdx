@@ -1,20 +1,16 @@
 ---
 title: Viewport Shadows
-step: Render shadows for pin sections to add depth to your grid.
-description: The viewport shadows slot in LyteNyte Grid is used to render shadows for pin
-  sections in the grid to create visual depth.
+step: Add visual depth to pinned columns and rows with scroll shadows.
+description: Use the viewport shadows slot to render shadows for pinned sections and add visual depth.
 ---
 
 ## Shadows Slot
 
-LyteNyte Grid exports the `ViewportShadows` component, which can be assigned to the
-`slotShadows` property on the grid. The `ViewportShadows` component positions itself
-within the viewport element of the grid.
+LyteNyte Grid exports `ViewportShadows`. Pass it to `slotShadows` on the
+grid. `ViewportShadows` renders within the grid's viewport element.
 
-The demo below shows the viewport shadows component in action. The pin areas have
-borders drawn, and the end and bottom pin sections display a shadow. If you scroll
-the grid vertically and horizontally, you will also see shadows appear for the
-start and top sections.
+The demo below demonstrates `ViewportShadows`. The pinned sections show borders.
+Scroll horizontally or vertically to observe shadows appearing.
 
 ::demo[Viewport Shadows="./demos/viewport-shadows"]
 
@@ -94,7 +90,7 @@ The `data-ln-y-status` and `data-ln-x-status` data attributes have one of the fo
 }
 ```
 
-## Properties
+## Shadows Properties
 
 The `ViewportShadows` component accepts the properties listed below. To apply these
 properties, create an intermediate component. For example:

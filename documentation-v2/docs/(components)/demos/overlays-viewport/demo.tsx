@@ -52,8 +52,10 @@ export default function ComponentDemo() {
           rowSource={ds}
           slotViewportOverlay={
             showOverlay ? (
-              <div className="bg-ln-gray-30/30 z-12 absolute left-0 top-0 flex h-full w-full animate-pulse items-center justify-center">
-                Loading...
+              <div className="z-12 sticky left-0 top-0 flex h-0 w-0">
+                <div className="bg-ln-gray-30/30 w-(--ln-vp-width) h-(--ln-vp-height) absolute left-0 top-0 flex animate-pulse items-center justify-center text-lg">
+                  Loading...
+                </div>
               </div>
             ) : null
           }

@@ -38,16 +38,17 @@ export default function ComponentDemo() {
           rowHeight={50}
           columns={columns}
           rowSource={ds}
-          styles={{ viewport: { style: { overflow: "hidden" } } }}
           slotRowsOverlay={
-            <div className="absolute left-0 top-0 flex w-full flex-col items-center justify-center p-12">
-              <div className="dark:hidden">
-                <NoRowsSvgLight />
+            <div className="z-12 sticky left-0 top-0 flex h-0 w-0">
+              <div className="w-(--ln-vp-width) absolute left-0 top-0 flex flex-col items-center justify-center pt-12 text-lg">
+                <div className="dark:hidden">
+                  <NoRowsSvgLight />
+                </div>
+                <div className="hidden dark:block">
+                  <NoRowsSvgDark />
+                </div>
+                <div className="relative -top-4 text-lg font-bold">No Rows</div>
               </div>
-              <div className="hidden dark:block">
-                <NoRowsSvgDark />
-              </div>
-              <div className="relative -top-4 text-lg font-bold">No Rows</div>
             </div>
           }
         />
