@@ -35,7 +35,7 @@ const marker: Grid.ColumnMarker<GridSpec> = {
   headerRenderer: MarkerHeader,
 };
 
-export default function RowSelectionCheckbox() {
+export default function RowDemo() {
   const ds = useClientDataSource({ data: data });
 
   return (

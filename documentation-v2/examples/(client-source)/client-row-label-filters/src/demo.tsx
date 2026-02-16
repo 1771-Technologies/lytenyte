@@ -49,7 +49,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
 
 //#end
 
-export default function RowGrouping() {
+export default function ClientDemo() {
   const [pills, setPills] = useState<PillManager.T.PillRow[]>(() => {
     const allEducation = [...new Set(loanData.map((x) => x.education))]
       .sort()

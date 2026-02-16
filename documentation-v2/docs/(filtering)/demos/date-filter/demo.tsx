@@ -26,7 +26,7 @@ const filter2025: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
   return getYear(row.data.saleDate) === 2025;
 };
 
-export default function FilteringDemo() {
+export default function FilterDemo() {
   const [filterValues, setFilterValues] = useState(true);
   const ds = useClientDataSource<GridSpec>({
     data: data,

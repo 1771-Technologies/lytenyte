@@ -36,7 +36,7 @@ const rowDetailRenderer: Grid.Props<GridSpec>["rowDetailRenderer"] = (p) => {
 const base: Grid.ColumnBase<GridSpec> = { width: 100, widthFlex: 1 };
 
 //#end
-export default function RowDetail() {
+export default function ThemingDemo() {
   const ds = useClientDataSource({
     data: companiesWithPricePerf,
   });

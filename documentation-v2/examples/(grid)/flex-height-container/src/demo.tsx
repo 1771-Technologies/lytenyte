@@ -35,7 +35,7 @@ export const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
-export default function PivotDemo() {
+export default function GridDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: salesData,
   });

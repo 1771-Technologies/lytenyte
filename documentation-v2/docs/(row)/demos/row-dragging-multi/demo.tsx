@@ -84,7 +84,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 const marker: Grid.ColumnMarker<GridSpec> = { on: true, cellRenderer: MarkerCell };
 
-export default function RowSelection() {
+export default function RowDemo() {
   const [data, setData] = useState(initialData);
 
   const ds = useClientDataSource({ data });

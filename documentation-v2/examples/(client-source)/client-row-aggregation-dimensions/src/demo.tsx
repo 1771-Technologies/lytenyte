@@ -84,7 +84,7 @@ const count: Grid.T.Aggregator<GridSpec["data"]> = (_, data) => {
   return data.length;
 };
 
-export default function GridTheming() {
+export default function ClientDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: loanData,
     group: [{ id: "job" }, { id: "education" }],

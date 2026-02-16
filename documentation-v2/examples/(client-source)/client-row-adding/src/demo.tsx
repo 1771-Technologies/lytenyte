@@ -37,7 +37,7 @@ const columns: Grid.Column<GridSpec>[] = [
 ];
 
 let addIndex = 1;
-export default function Demo() {
+export default function ClientDemo() {
   const [data, setData] = useState(initialData.slice(0, 1));
 
   const ds = useClientDataSource<GridSpec>({

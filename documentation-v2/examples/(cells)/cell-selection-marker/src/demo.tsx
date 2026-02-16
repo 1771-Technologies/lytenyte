@@ -28,7 +28,7 @@ const marker: Grid.ColumnMarker<GridSpec> = {
   },
 };
 
-export default function CellSelection() {
+export default function CellDemo() {
   const ds = useClientDataSource({ data: stockData });
 
   return (

@@ -79,7 +79,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 //#end
-export default function ColumnBase() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
   const [columns, setColumns] = useState(initialColumns); //!
 

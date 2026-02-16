@@ -90,7 +90,7 @@ const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {
   return [row.data.job, row.data.education];
 };
 
-export default function ClientSourceDemo() {
+export default function ClientDemo() {
   const [collapse, setCollapse] = useState<"no-collapse" | "last-only" | "full-tree">("last-only");
   const ds = useClientDataSource<GridSpec>({
     data: data,

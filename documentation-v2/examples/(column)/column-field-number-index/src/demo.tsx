@@ -23,7 +23,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { widthFlex: 1 };
 
-export default function ColumnFieldNumberIndex() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: stockData });
 
   return (

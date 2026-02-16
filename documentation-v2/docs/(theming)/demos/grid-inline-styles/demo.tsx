@@ -26,7 +26,7 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 100 };
 
 //#end
-export default function InlineStyles() {
+export default function ThemingDemo() {
   const ds = useClientDataSource({ data: bankDataSmall });
 
   const [cellBg, setCellBg] = useState("#0a1314");

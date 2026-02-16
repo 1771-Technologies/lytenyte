@@ -41,7 +41,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
 ];
 
-export default function RowPinningPushed() {
+export default function ServerDataDemo() {
   const queryFn: UseServerDataSourceParams<GridSpec["data"], []>["queryFn"] = useCallback((params) => {
     return Server(params.requests);
   }, []);

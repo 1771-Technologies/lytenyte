@@ -87,7 +87,7 @@ const sortByChange24: Grid.T.SortFn<GridSpec["data"]> = (left, right) => {
   return leftData.change24h - rightData.change24h;
 };
 
-export default function ColumnBase() {
+export default function ClientDemo() {
   const [sort, setSort] = useState<Grid.T.SortFn<GridSpec["data"]> | null>(null);
 
   const ds = useClientDataSource<GridSpec>({ data, sort }); //!

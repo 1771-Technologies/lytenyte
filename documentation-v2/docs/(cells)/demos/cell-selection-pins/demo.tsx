@@ -29,7 +29,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { widthFlex: 1 };
 
-export default function CellSelection() {
+export default function CellDemo() {
   const ds = useClientDataSource({
     data: stockData.slice(2, -2),
     topData: stockData.slice(0, 2),

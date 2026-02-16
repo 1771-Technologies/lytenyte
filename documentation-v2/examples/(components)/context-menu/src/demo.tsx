@@ -36,7 +36,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
   { id: "email", cellRenderer: EmailCell, width: 220, name: "Email" },
 ];
 
-export default function Demo() {
+export default function ComponentDemo() {
   const [columns, setColumns] = useState(initialColumns);
   const ds = useClientDataSource({ data: data });
 

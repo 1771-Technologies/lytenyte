@@ -26,7 +26,7 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 100 };
 
 //#end
-export default function GridHeightContainer() {
+export default function GridDemo() {
   const ds = useClientDataSource({ data: bankDataSmall.slice(0, 40) });
 
   return (

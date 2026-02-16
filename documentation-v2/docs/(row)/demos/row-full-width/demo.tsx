@@ -89,7 +89,7 @@ const fullWidthPredicate: Grid.Props<GridSpec>["rowFullWidthPredicate"] = (p) =>
   p.api.rowIsLeaf(p.row) && !!p.row.data.fullWidth;
 
 //#end
-export default function ColumnBase() {
+export default function RowDemo() {
   const ds = useClientDataSource({ data: data });
   return (
     <div

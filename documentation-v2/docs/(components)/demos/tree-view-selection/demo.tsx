@@ -5,7 +5,7 @@ import { TreeView } from "@1771technologies/lytenyte-pro-experimental";
 import { items } from "./data.js";
 import { useMemo, useState } from "react";
 
-export default function TreeViewDemo() {
+export default function ComponentDemo() {
   const [rowsSelected, setSelection] = useState<Grid.T.RowSelectionLinked>({
     kind: "linked",
     selected: false,

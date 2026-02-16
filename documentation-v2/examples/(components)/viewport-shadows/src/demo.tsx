@@ -28,7 +28,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "email", cellRenderer: EmailCell, width: 220, name: "Email", pin: "end" },
 ];
 
-export default function Demo() {
+export default function ComponentDemo() {
   const ds = useClientDataSource({
     data: data.slice(2, -2),
     topData: data.slice(0, 2),

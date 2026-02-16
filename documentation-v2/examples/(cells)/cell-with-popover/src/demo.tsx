@@ -80,7 +80,7 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 //#end
-export default function Demo() {
+export default function CellDemo() {
   const [network, setNetwork] = useState<string | null>(null); //!
   const [anchor, setAnchor] = useState<HTMLElement | null>(null); //!
   const ds = useClientDataSource({ data: data });

@@ -28,7 +28,7 @@ export interface GridSpec {
 }
 
 //#end
-export default function ColumnBase() {
+export default function RowDemo() {
   const ds = useClientDataSource({ data: data.slice(0, 8) });
 
   return (

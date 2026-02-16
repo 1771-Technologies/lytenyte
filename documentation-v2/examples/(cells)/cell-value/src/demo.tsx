@@ -61,7 +61,7 @@ const aggFn: Grid.T.AggregationFn<GridSpec["data"]> = (data) => {
   };
 };
 
-export default function CellsDemo() {
+export default function CellDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: bankDataSmall,
     group: [{ id: "job" }, { id: "education" }],

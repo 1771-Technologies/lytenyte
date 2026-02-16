@@ -25,7 +25,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
 const names = [...new Set(data.map((x) => x.name).sort())].map((x) => ({ id: x, label: x }));
 
-export default function FilteringDemo() {
+export default function FilterDemo() {
   const [values, setValues] = useState<{ id: string; label: string }[]>([
     { id: "Office Suite", label: "Office Suite" },
   ]);

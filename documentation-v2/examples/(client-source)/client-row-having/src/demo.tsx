@@ -203,7 +203,7 @@ const last: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   return computeField(field, data.at(-1)!);
 };
 
-export default function GridTheming() {
+export default function ClientDemo() {
   const [columns, setColumns] = useState(initialColumns);
 
   //!next 2

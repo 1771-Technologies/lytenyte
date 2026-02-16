@@ -30,7 +30,7 @@ const columns: Grid.Column<GridSpec>[] = [
 ];
 //#end
 
-export default function Demo() {
+export default function FilterDemo() {
   const [query, setQuery] = useState("");
 
   const filterFn = useMemo(() => {

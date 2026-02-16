@@ -3,11 +3,7 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import { ArrowDownIcon, ArrowUpIcon } from "@1771technologies/lytenyte-pro/icons";
-import type {
-  Column,
-  HeaderCellRendererParams,
-  SortModelItem,
-} from "@1771technologies/lytenyte-pro/types";
+import type { Column, HeaderCellRendererParams, SortModelItem } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
 import { BalanceCell, DurationCell, NumberCell, tw } from "./components";
@@ -31,7 +27,7 @@ const columns: Column<BankData>[] = [
   { id: "y" },
 ];
 
-export default function RowSortingMulti() {
+export default function RowDemo() {
   const ds = useClientRowDataSource({
     data: bankDataSmall,
   });
@@ -184,11 +180,7 @@ function Header({ column, grid }: HeaderCellRendererParams<BankData>) {
 
       {sort && (
         <div className="text-ln-primary-50 relative font-bold">
-          {!isDescending ? (
-            <ArrowUpIcon className="size-4" />
-          ) : (
-            <ArrowDownIcon className="size-4" />
-          )}
+          {!isDescending ? <ArrowUpIcon className="size-4" /> : <ArrowDownIcon className="size-4" />}
           {sortIndex >= 0 && sortModel.length > 1 && (
             <div className="absolute right-[-2px] top-[-2px] text-xs">{sortIndex + 1}</div>
           )}

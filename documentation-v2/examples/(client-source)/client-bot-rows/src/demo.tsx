@@ -78,7 +78,7 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 //#end
-export default function ClientDataDemo() {
+export default function ClientDemo() {
   const ds = useClientDataSource({
     data: data.slice(2),
     botData: data.slice(0, 2), //!

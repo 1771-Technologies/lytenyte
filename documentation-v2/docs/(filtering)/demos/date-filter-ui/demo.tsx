@@ -91,7 +91,7 @@ export interface GridFilter {
 
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
-export default function FilteringDemo() {
+export default function FilterDemo() {
   const [filter, setFilter] = useState<Record<string, GridFilter>>({});
   const filterModel = usePiece(filter, setFilter);
 

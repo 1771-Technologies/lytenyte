@@ -30,7 +30,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "email", cellRenderer: EmailCell, width: 220, name: "Email" },
 ];
 
-export default function Demo() {
+export default function ComponentDemo() {
   const [showOverlay, setShowOverlay] = useState(true);
   const ds = useClientDataSource({ data: data });
 

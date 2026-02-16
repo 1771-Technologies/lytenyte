@@ -87,7 +87,7 @@ const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {
   return [row.data.job, row.data.education];
 };
 
-export default function ClientSourceDemo() {
+export default function ClientDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: data,
     group: groupFn,

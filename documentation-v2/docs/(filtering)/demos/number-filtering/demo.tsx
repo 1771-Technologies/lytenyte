@@ -32,7 +32,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const filterPrice: Grid.T.FilterFn<GridSpec["data"]> = (row) => row.data.price > 300; //!
 
-export default function Demo() {
+export default function FilterDemo() {
   const [filterValues, setFilterValues] = useState(true); //!
   const ds = useClientDataSource<GridSpec>({
     data,

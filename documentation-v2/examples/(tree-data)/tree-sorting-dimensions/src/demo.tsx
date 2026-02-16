@@ -29,7 +29,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { widthFlex: 1, width: 120, headerRenderer: Header };
 
-export default function TreeDemo() {
+export default function TreeDataDemo() {
   const [columns, setColumns] = useState(initialColumns);
 
   const sortDimension = useMemo(() => {

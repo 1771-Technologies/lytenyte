@@ -31,7 +31,7 @@ export interface GridSpec {
 
 const base: Grid.ColumnBase<GridSpec> = { movable: true }; //!
 
-export default function ColumnMoving() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   const [columns, setColumns] = useState(initialColumns);

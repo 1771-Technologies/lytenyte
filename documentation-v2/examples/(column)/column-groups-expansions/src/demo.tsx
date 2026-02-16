@@ -112,7 +112,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
-export default function ColumnBase() {
+export default function ColumnDemo() {
   const [expansions, setExpansions] = useState<Record<string, boolean>>({ "Market Info": false });
   const ds = useClientDataSource({ data: data });
 

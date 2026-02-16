@@ -55,7 +55,7 @@ const marker: Grid.ColumnMarker<GridSpec> = {
 };
 
 //#end
-export default function GridTheming() {
+export default function RowDemo() {
   const ds = useClientDataSource({
     data: loanData,
     group: [{ id: "job" }, { id: "education" }],

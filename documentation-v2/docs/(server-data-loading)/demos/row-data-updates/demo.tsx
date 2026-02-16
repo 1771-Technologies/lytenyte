@@ -99,7 +99,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
   width: 170,
 };
 
-export default function RowUpdates() {
+export default function ServerDataDemo() {
   const ds = useServerDataSource<DataEntry>({
     queryFn: async (params) => {
       return await Server(params.requests, ["symbol"], {

@@ -84,7 +84,7 @@ export interface GridSpec {
   };
 }
 
-export default function ColumnBase() {
+export default function ClientDemo() {
   const [columns, setColumns] = useState(initialColumns);
 
   const sortFn = useMemo(() => {

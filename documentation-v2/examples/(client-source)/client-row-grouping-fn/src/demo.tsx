@@ -47,7 +47,7 @@ const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {
   return [row.data.job, row.data.education];
 };
 
-export default function GridTheming() {
+export default function ClientDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: loanData,
     group: groupFn, //!

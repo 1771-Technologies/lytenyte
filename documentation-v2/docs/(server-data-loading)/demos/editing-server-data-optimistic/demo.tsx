@@ -67,7 +67,7 @@ const columns: Grid.Column<GridSpec>[] = [
   },
 ];
 
-export default function BasicServerData() {
+export default function ServerDataDemo() {
   const resetKey = useId();
 
   const ds = useServerDataSource<SalaryData>({

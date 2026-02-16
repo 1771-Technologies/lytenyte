@@ -36,7 +36,7 @@ const marker: Grid.ColumnMarker<GridSpec> = {
   },
 };
 
-export default function Demo() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   return (

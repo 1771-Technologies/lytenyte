@@ -29,7 +29,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { widthFlex: 1, width: 120 };
 
-export default function TreeDemo() {
+export default function TreeDataDemo() {
   const ds = useTreeDataSource({
     data: data,
     botData: [

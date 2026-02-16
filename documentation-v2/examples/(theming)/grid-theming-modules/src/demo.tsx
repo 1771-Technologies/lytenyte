@@ -32,7 +32,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "email", cellRenderer: EmailCell, width: 220, name: "Email" },
 ];
 
-export default function ColumnBase() {
+export default function ThemingDemo() {
   const ds = useClientDataSource({ data: data });
   const [theme, setTheme] = useState("ln-dark");
 

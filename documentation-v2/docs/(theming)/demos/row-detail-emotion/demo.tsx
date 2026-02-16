@@ -79,7 +79,7 @@ const RowsContainer = styled(Grid.RowsContainer)`
   }
 `;
 
-export default function RowDetail() {
+export default function ThemingDemo() {
   const ds = useClientDataSource({
     data: companiesWithPricePerf,
   });

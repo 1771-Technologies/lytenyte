@@ -30,7 +30,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "email", cellRenderer: EmailCell, width: 220, name: "Email" },
 ];
 
-export default function ColumnBase() {
+export default function ClientDemo() {
   const [filter, setFilter] = useState<Grid.T.FilterFn<GridSpec["data"]> | null>(null);
   const ds = useClientDataSource<GridSpec>({ data: data, filter });
 

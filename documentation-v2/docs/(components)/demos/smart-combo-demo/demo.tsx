@@ -6,7 +6,7 @@ import { useState } from "react";
 import { CheckIcon } from "@radix-ui/react-icons";
 //#end
 
-export default function TreeViewDemo() {
+export default function ComponentDemo() {
   const [value, setValue] = useState(options[0]);
 
   const [query, setQuery] = useState(value.label);

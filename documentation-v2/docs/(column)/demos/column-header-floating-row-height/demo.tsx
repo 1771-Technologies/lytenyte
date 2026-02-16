@@ -44,7 +44,7 @@ export interface GridSpec {
 const base: Grid.ColumnBase<GridSpec> = { floatingCellRenderer: FloatingFilter };
 //#end
 
-export default function ColumnBase() {
+export default function ColumnDemo() {
   const [filterModel, setFilterModel] = useState<Record<string, string | null>>({});
   const [floatingRowHeight, setFloatingRowHeight] = useState(40); //!
 

@@ -40,7 +40,7 @@ export interface GridSpec {
 const base: Grid.ColumnBase<GridSpec> = { floatingCellRenderer: FloatingFilter };
 //#end
 
-export default function ColumnBase() {
+export default function ClientDemo() {
   const [filterModel, setFilterModel] = useState<Record<string, string | null>>({});
 
   const filter$ = usePiece(filterModel, setFilterModel);

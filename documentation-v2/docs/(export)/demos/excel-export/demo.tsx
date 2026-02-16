@@ -30,7 +30,7 @@ const columns: Grid.Column<GridSpec>[] = [
 const base = { width: 100 };
 
 //#end
-export default function GridExport() {
+export default function ExportDemo() {
   const ds = useClientDataSource({ data: bankDataSmall });
   const apiRef = useRef<Grid.API<GridSpec> | null>(null);
 

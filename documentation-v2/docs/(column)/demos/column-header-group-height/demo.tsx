@@ -51,7 +51,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 //#end
 
-export default function ColumnBase() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   const [headerGroupHeight, setHeaderGroupHeight] = useState(40); //!

@@ -35,7 +35,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "type", name: "Type", width: 120, cellRenderer: TypeRenderer },
   { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
 ];
-export default function ServerDataFailFirst() {
+export default function ServerDataDemo() {
   // Track a fail ref to simulate network failure but still allow the demo to be reset.
   const shouldFailRef = useRef(true);
   const ds = useServerDataSource<MovieData>({

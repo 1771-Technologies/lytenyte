@@ -80,7 +80,7 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 //#end
-export default function RowSelection() {
+export default function RowDemo() {
   const [count, setCount] = useState(0); //!
 
   const ds = useClientDataSource({

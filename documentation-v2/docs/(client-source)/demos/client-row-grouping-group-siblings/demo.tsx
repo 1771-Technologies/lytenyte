@@ -76,7 +76,7 @@ const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {
   return [row.data.job, row.data.education];
 };
 
-export default function GroupingDemo() {
+export default function ClientDemo() {
   const [expansions, setExpansions] = useState<Record<string, boolean | undefined>>({
     Administration: true,
     "Administration->Primary": true,

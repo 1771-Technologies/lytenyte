@@ -50,7 +50,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
 };
 
 //#end
-export default function GridTheming() {
+export default function ClientDemo() {
   const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" | null } | null>({
     id: "__ln_group__",
     dir: "desc",

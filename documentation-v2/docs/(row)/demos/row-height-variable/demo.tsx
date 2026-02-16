@@ -81,7 +81,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 const rowHeight = (i: number) => [30, 50, 80, 120][i % 4]; //!
 
-export default function ColumnBase() {
+export default function RowDemo() {
   const ds = useClientDataSource({ data: data });
 
   return (

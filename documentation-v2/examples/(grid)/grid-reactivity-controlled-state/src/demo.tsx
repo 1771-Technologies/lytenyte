@@ -45,7 +45,7 @@ const columns: Grid.Column<GridSpec>[] = [
 ];
 
 //#end
-export default function ControlledRowState() {
+export default function GridDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: requestData,
   });

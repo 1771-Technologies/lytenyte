@@ -27,7 +27,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { widthMin: 30, width: 50, widthFlex: 1, cellRenderer: HeatMapCell };
 
-export default function ColumnField() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   return (

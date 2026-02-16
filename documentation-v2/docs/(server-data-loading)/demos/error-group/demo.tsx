@@ -55,7 +55,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
   pin: "start",
 };
 
-export default function RowGroupingBasic() {
+export default function ServerDataDemo() {
   const shouldFailRef = useRef<Record<string, boolean>>({});
 
   const ds = useServerDataSource({

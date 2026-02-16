@@ -128,7 +128,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 //#end
-export default function ColumnAutosize() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   const ref = useRef<Grid.API<GridSpec>>(null);

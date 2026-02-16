@@ -5,7 +5,7 @@ import { items as initial } from "./data.js";
 import { useState } from "react";
 import { TrashIcon } from "@radix-ui/react-icons";
 
-export default function TreeViewDemo() {
+export default function ComponentDemo() {
   const [items, setItems] = useState(initial);
 
   return (

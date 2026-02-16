@@ -50,7 +50,7 @@ const sortBySize: Grid.T.SortFn<GridSpec["data"]> = (left, right) => {
   }
 };
 
-export default function TreeDemo() {
+export default function TreeDataDemo() {
   const [data, setData] = useState(initialData);
   const ds = useTreeDataSource({
     data,

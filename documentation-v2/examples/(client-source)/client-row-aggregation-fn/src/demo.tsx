@@ -80,7 +80,7 @@ const aggFn: Grid.T.AggregationFn<GridSpec["data"]> = (data) => {
   };
 };
 
-export default function GroupDemo() {
+export default function ClientDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: loanData,
     group: [{ id: "job" }, { id: "education" }],

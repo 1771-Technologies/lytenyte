@@ -31,7 +31,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "email", cellRenderer: EmailCell, width: 220, name: "Email" },
 ];
 
-export default function GridThemingDemo() {
+export default function ThemingDemo() {
   const [selections, setSelections] = useState<Grid.T.DataRect[]>([
     { rowStart: 1, rowEnd: 3, columnStart: 1, columnEnd: 3 },
   ]);

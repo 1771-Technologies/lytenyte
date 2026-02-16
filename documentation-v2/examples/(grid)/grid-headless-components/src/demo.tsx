@@ -58,7 +58,7 @@ const rowFullWidthRenderer: Grid.Props<GridSpec>["rowFullWidthRenderer"] = (r) =
   );
 };
 
-export default function ColumnGroupExpansions() {
+export default function GridDemo() {
   const ds = useClientDataSource({
     data: finalData,
     topData: bankDataSmall.slice(0, 2),

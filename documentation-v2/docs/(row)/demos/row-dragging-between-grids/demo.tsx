@@ -89,7 +89,7 @@ const marker: Grid.ColumnMarker<GridSpec> = { on: true, cellRenderer: MarkerCell
 const leafIdFn: Grid.T.LeafIdFn<GridSpec["data"]> = (d) =>
   `${d.symbolTicker}-${d.exchange}-${d.network}-${d.symbol}`;
 
-export default function RowSelection() {
+export default function RowDemo() {
   const [primary, setPrimary] = useState(initialData.slice(2, 20));
   const [secondary, setSecondary] = useState<typeof initialData>(initialData.slice(0, 2));
 

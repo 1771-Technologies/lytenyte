@@ -65,7 +65,7 @@ const Row = styled(Grid.Row)`
   }
 `;
 
-export default function GridTheming() {
+export default function ThemingDemo() {
   const ds = useClientDataSource({ data: bankDataSmall });
 
   const cache = useMemo(() => {

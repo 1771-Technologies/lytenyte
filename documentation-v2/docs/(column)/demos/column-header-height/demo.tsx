@@ -32,7 +32,7 @@ export interface GridSpec {
 
 //#end
 
-export default function ColumnBase() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   const [headerHeight, setHeaderHeight] = useState(40); //!

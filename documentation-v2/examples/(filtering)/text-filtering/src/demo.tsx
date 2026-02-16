@@ -32,7 +32,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => row.data.product.includes("Xbox"); //!
 
-export default function Demo() {
+export default function FilterDemo() {
   const [filterValues, setFilterValues] = useState(true); //!
   const ds = useClientDataSource<GridSpec>({
     data,

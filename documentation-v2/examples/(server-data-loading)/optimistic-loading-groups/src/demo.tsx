@@ -86,7 +86,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
   pin: "start",
 };
 
-export default function RowGroupingBasic() {
+export default function ServerDataDemo() {
   const [columns, setColumns] = useState(initialColumns);
   const [rowGroups, setRowGroups] = useState<PillManager.T.PillItem[]>([
     { name: "Education Level", id: "Education Level", active: true, movable: true },

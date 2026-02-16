@@ -28,7 +28,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "email", cellRenderer: EmailCell, width: 220, name: "Email" },
 ];
 
-export default function Demo() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   return (

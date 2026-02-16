@@ -50,7 +50,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "email", cellRenderer: EmailCell, width: 220, name: "Email", editable: true },
 ];
 
-export default function Demo() {
+export default function CellEditingDemo() {
   const [data, setData] = useState(initialData);
   const ds = useClientDataSource({
     data,

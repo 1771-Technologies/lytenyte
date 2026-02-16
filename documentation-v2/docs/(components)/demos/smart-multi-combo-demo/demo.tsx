@@ -6,7 +6,7 @@ import { useState } from "react";
 import { CheckIcon, Cross1Icon } from "@radix-ui/react-icons";
 //#end
 
-export default function TreeViewDemo() {
+export default function ComponentDemo() {
   const [values, setValues] = useState([options[0]]);
 
   return (

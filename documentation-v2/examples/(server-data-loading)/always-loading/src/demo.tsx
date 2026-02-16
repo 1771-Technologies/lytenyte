@@ -2,7 +2,7 @@
 import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 
-export default function AlwaysLoading() {
+export default function ServerDataDemo() {
   const ds = useServerDataSource({
     queryKey: [],
     queryFn: async () => {

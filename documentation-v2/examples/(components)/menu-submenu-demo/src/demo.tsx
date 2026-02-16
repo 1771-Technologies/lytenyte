@@ -18,7 +18,7 @@ import { twMerge } from "tailwind-merge";
 const menuClass = "grid grid-cols-[24px_1fr] gap-1 ps-[4px]";
 const radioClass = "grid grid-cols-[24px_1fr] gap-1";
 
-export default function TreeViewDemo() {
+export default function ComponentDemo() {
   const [radioValue, setRadioValue] = useState("medium");
   const [smoothScroll, setSmoothScroll] = useState(false);
   const [notify, setNotify] = useState(true);

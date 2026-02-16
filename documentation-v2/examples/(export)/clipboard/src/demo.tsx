@@ -47,7 +47,7 @@ const base: Grid.ColumnBase<GridSpec> = {
   },
 };
 
-export default function Clipboard() {
+export default function ExportDemo() {
   const [data, setData] = useState(loanData);
   const ds = useClientDataSource({
     data: data,

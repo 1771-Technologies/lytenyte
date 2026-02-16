@@ -45,7 +45,7 @@ const marker: Grid.Props<GridSpec>["columnMarker"] = {
   cellRenderer: MarkerCell,
 };
 
-export default function RowDetail() {
+export default function RowDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: requestData,
   });

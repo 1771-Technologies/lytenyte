@@ -33,7 +33,7 @@ const base: Grid.ColumnBase<GridSpec> = {
   headerRenderer: HeaderWithIcon, //!
 };
 
-export default function ColumnBase() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   return (

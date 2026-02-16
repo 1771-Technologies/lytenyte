@@ -29,7 +29,7 @@ export interface GridSpec {
 
 const base: Grid.ColumnBase<GridSpec> = { headerRenderer: HeaderCell };
 
-export default function ColumnBase() {
+export default function GridDemo() {
   const ds = useClientDataSource({ data: data });
 
   const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([

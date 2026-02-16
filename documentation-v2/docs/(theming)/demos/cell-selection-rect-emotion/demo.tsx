@@ -90,7 +90,7 @@ const RowsContainer = styled(Grid.RowsContainer)`
   }
 `;
 
-export default function CellSelectionRect() {
+export default function ThemingDemo() {
   const [selections, setSelections] = useState([{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }]);
   const ds = useClientDataSource({ data: bankDataSmall });
 

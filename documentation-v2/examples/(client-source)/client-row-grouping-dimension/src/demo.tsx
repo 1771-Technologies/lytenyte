@@ -42,7 +42,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
 
 //#end
 
-export default function GridTheming() {
+export default function ClientDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: loanData,
     group: [columns[0], { field: "education" }], //!

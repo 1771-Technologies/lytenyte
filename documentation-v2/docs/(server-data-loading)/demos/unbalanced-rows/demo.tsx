@@ -33,7 +33,7 @@ const columns: Grid.Column<{ data: any }>[] = [
   { id: "type", width: 100, name: "Ext" },
 ];
 
-export default function BasicServerData() {
+export default function ServerDataDemo() {
   const [expansions, setExpansions] = useState<Record<string, boolean | undefined>>({ Documents: true });
   const ds = useServerDataSource<any>({
     queryFn: (params) => {

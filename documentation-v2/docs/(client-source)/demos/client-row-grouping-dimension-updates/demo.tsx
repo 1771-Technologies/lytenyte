@@ -49,7 +49,7 @@ const group: Grid.RowGroupColumn<GridSpec> = {
 
 //#end
 
-export default function RowGrouping() {
+export default function ClientDemo() {
   //!next 5
   const [rowGroups, setRowGroups] = useState<PillManager.T.PillItem[]>([
     { name: "Job", id: "job", active: true, movable: true },

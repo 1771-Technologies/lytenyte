@@ -53,7 +53,7 @@ const HeaderCell = styled(Grid.HeaderCell)`
   font-size: 14px;
 `;
 
-export default function GridTheming() {
+export default function ThemingDemo() {
   const [selections, setSelections] = useState<Grid.T.DataRect[]>([
     { rowStart: 1, rowEnd: 3, columnStart: 1, columnEnd: 3 },
   ]);

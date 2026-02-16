@@ -37,7 +37,7 @@ export const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 //#end
-export default function GridReactivityRowHeight() {
+export default function GridDemo() {
   const ds = useClientDataSource({ data: salesData });
 
   const [rowHeight, setRowHeight] = useState(40); //!

@@ -73,7 +73,7 @@ const base: Grid.ColumnBase<GridSpec> = {
   cellRenderer: HeatMapCell,
 };
 
-export default function Demo() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
 
   return (

@@ -60,7 +60,7 @@ export interface GridFilter {
   readonly operator: "AND" | "OR";
 }
 
-export default function Demo() {
+export default function FilterDemo() {
   const [filter, setFilter] = useState<Record<string, GridFilter>>({});
   const filterModel = usePiece(filter, setFilter);
 

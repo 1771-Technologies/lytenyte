@@ -84,7 +84,7 @@ const first: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
 const base: Grid.ColumnMarker<GridSpec> = { headerRenderer: HeaderCell };
 const rowGroupColumn: Grid.RowGroupColumn<GridSpec> = { width: 170, cellRenderer: GroupCell, pin: "start" };
 
-export default function DataPushing() {
+export default function CellDemo() {
   const [data, setData] = useState(initialData);
 
   const ds = useClientDataSource<GridSpec>({

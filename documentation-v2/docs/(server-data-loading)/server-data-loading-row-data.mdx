@@ -24,7 +24,7 @@ interfaces and request/response cycle are described in the
 [Data Interface guide](/docs/server-data-loading-interface).
 
 ```ts
-export default function RowDataFromServer() {
+export default function ServerDataDemo() {
   const ds = useServerDataSource<MovieData>({
     queryFn: (params) => {
       // See code example for sample implementation
@@ -83,7 +83,7 @@ Before the first request, the server data source sets a reactive
 loading indicators or skeleton placeholders while fetching initial data.
 
 ```ts
-export default function RowDataFromServer() {
+export default function ServerDataDemo() {
   const ds = useServerDataSource<MovieData>({
     queryFn: (params) => Server(params.requests),
   });

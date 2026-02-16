@@ -28,7 +28,7 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { widthMin: 100, widthMax: 300 };
 
-export default function ColumnBase() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
   const [widthFlex, setWidthFlex] = useState(true);
 

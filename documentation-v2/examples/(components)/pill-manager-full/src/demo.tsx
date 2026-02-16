@@ -34,7 +34,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", pivotable: true },
 ];
 
-export default function PillManagerDemo() {
+export default function ComponentDemo() {
   const [measures, setMeasures] = useState<PillManager.T.PillItem[]>(() => {
     return columns
       .filter((x) => x.measurable)

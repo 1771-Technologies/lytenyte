@@ -4,7 +4,7 @@ import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 //#end
 
-export default function TreeViewDemo() {
+export default function ComponentDemo() {
   return (
     <div style={{ height: "400px" }} className="ln-grid flex justify-center pt-8">
       <Dialog>

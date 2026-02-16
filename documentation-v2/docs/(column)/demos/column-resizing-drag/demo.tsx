@@ -21,7 +21,7 @@ export interface GridSpec {
 
 const base: Grid.ColumnBase<GridSpec> = { resizable: true }; //!
 
-export default function ColumnBase() {
+export default function ColumnDemo() {
   const ds = useClientDataSource({ data: data });
   const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([
     { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },

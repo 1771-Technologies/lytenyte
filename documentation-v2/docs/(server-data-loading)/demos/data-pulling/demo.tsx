@@ -113,7 +113,7 @@ const aggModel = {
   symbol: { fn: "first" },
 };
 
-export default function RowUpdates() {
+export default function ServerDataDemo() {
   const ds = useServerDataSource<DataEntry>({
     queryFn: async (params) => {
       return await Server(params.requests, groupModel, aggModel);

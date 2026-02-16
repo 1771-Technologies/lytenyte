@@ -49,7 +49,7 @@ const cellStyles = cva("flex items-center px-2", {
   },
 });
 
-export default function GridTheming() {
+export default function ThemingDemo() {
   const ds = useClientDataSource({ data: bankDataSmall });
 
   return (
