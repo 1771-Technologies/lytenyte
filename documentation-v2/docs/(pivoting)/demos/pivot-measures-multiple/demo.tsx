@@ -16,6 +16,8 @@ import {
   GenderCell,
   NumberCell,
   ProfitCell,
+  StickGroupHeader,
+  style,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
 
@@ -105,11 +107,8 @@ export default function PivotDemo() {
           columnBase={base}
           rowGroupColumn={group}
           {...pivotProps}
-          styles={{
-            headerGroup: {
-              style: { position: "sticky", insetInlineStart: "var(--ln-start-offset)", overflow: "unset" },
-            },
-          }}
+          styles={style}
+          columnGroupRenderer={StickGroupHeader}
         />
       </div>
     </>

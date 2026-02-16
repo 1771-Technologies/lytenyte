@@ -65,7 +65,7 @@ export default function PivotDemo() {
       columns: [{ id: "ageGroup" }, { id: "customerGender" }],
       measures: [
         {
-          dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 160 },
+          dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 130 },
           fn: "sum",
         },
       ],
