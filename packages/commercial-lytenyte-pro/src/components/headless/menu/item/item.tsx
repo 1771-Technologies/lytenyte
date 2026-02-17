@@ -2,7 +2,7 @@ import { forwardRef, useState, type JSX } from "react";
 import { useMenuItemEvents } from "./use-menu-item-events.js";
 import { handleVerticalNavigation } from "./handle-vertical-navigation.js";
 import { useDialogRoot } from "../../dialog/context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 function ItemImpl({ onAction, closeOnAction, disabled, ...props }: Item.Props, ref: Item.Props["ref"]) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);

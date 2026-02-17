@@ -7,7 +7,7 @@ import {
   getDragDirection,
   useDraggable,
   useEvent,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import { DragDots } from "./icons.js";
 import { usePillRoot } from "./root.context.js";
 import { equal, moveRelative, type Writable } from "@1771technologies/lytenyte-shared";

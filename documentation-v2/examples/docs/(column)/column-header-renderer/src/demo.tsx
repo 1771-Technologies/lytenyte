@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
 import {

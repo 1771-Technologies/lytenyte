@@ -3,7 +3,7 @@ import { CellStyleRow } from "./cell-style-row.js";
 import { isTopRect } from "./is-top-rect.js";
 import { isCenterRect } from "./is-center-rect.js";
 import { isBottomRect } from "./is-bottom-rect.js";
-import { useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useRoot } from "@1771technologies/lytenyte-core/internal";
 import { useProRoot } from "../root/context.js";
 
 export const CellSelectionTop = memo(function CellSelectionTop() {

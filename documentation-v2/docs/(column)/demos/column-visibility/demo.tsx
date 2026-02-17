@@ -1,7 +1,7 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import { Grid, PillManager, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import "@1771technologies/lytenyte-pro/pill-manager.css";
+import { Grid, PillManager, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import {
   ExchangeCell,
   makePerfHeaderCell,

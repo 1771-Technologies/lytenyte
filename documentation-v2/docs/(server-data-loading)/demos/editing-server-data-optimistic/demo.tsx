@@ -1,6 +1,6 @@
 "use client";
 
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { useId, useMemo } from "react";
 import { handleUpdate, Server } from "./server.jsx";
 import { type SalaryData } from "./data.js";
@@ -13,7 +13,7 @@ import {
   TextEditor,
   YearsOfExperienceRenderer,
 } from "./components.jsx";
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 
 export interface GridSpec {
   readonly data: SalaryData;

@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState, type JSX } from "react";
 import { useComboContext } from "./combo-context.js";
 import { useDialogRoot } from "../../dialog/context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 function ComboOptionImpl(
   { disabled, onAction, closeOnAction, ...props }: ComboOption.Props,

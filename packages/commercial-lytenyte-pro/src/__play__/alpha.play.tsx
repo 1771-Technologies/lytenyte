@@ -3,7 +3,7 @@ import "@1771technologies/lytenyte-design/fonts.css";
 import "../../css/grid-full.css";
 
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
+import { ViewportShadows } from "@1771technologies/lytenyte-core";
 import { useClientDataSource } from "../data-source-client/use-client-data-source.js";
 import { useMemo, useState } from "react";
 import type { Field, GridSpec, Props } from "../types";

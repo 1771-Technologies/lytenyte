@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import type { DataRequest } from "../types";
-import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled, useEvent } from "@1771technologies/lytenyte-core/internal";
 import type { UseServerDataSourceParams } from "../use-server-data-source";
 import type { RowNode } from "@1771technologies/lytenyte-shared";
 

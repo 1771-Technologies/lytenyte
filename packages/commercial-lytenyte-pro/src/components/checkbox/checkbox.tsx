@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { useSlot, type SlotComponent } from "../../hooks/use-slot/index.js";
-import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled, useEvent } from "@1771technologies/lytenyte-core/internal";
 
 function CheckboxBase(
   { indeterminate, renderMarker, onCheckChange: onCheck, ...props }: Checkbox.Props,

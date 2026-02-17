@@ -1,4 +1,4 @@
-import type { PieceWritable } from "@1771technologies/lytenyte-core-experimental";
+import type { PieceWritable } from "@1771technologies/lytenyte-core";
 import { equal, type PositionUnion } from "@1771technologies/lytenyte-shared";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 import type { DataRectSplit } from "../split-cell-selection-rect";

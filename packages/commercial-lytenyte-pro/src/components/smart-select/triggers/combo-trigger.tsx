@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { useSmartSelect } from "../context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 import { mergeProps } from "../../../hooks/use-slot/merge-props.js";
 import { useComboControls } from "./use-combo-controls.js";
 

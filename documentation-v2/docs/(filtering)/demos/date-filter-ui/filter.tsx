@@ -1,5 +1,5 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import { Menu, Popover, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import { Menu, Popover, type Grid } from "@1771technologies/lytenyte-pro";
 import { CaretRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";

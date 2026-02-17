@@ -10,7 +10,7 @@ import {
   useEvent,
   useGlobalRefresh,
   useRowSelectionState,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import {
   type RowGroup,
   type RowLeaf,

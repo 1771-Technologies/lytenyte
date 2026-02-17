@@ -15,7 +15,7 @@ import {
   usePiece,
   useSortFn,
   type LeafNodeTuple,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import { type ControlledPivotState } from "./use-pivot-state.js";
 
 const empty: RowLeaf<any>[] = [];

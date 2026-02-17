@@ -1,6 +1,6 @@
 import { format, isValid } from "date-fns";
 import { type JSX, type ReactNode } from "react";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo.jsx";
 
 export function ProductCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {

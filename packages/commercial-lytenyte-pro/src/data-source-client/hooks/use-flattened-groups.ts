@@ -10,7 +10,7 @@ import type {
 import type { RootMap, RootNode } from "./use-group-tree/use-group-tree";
 import { useMemo } from "react";
 import { getValidLeafs } from "./get-valid-leafs.js";
-import { useSortFn } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useSortFn } from "@1771technologies/lytenyte-core/internal";
 
 type UseFlattenedGroupsReturn<T> = [rows: RowNode<T>[] | null, depth: number];
 

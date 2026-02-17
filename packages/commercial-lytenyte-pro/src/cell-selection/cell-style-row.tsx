@@ -1,7 +1,7 @@
 import { useMemo, type CSSProperties } from "react";
 import { getTranslate, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import type { DataRectSplit } from "./split-cell-selection-rect.js";
-import { useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useRoot } from "@1771technologies/lytenyte-core/internal";
 
 export function CellStyleRow({
   rect,

@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { type JSX, type ReactNode } from "react";
 import { ToggleGroup as TG } from "radix-ui";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo.jsx";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";

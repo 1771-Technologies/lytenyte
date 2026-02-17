@@ -1,4 +1,4 @@
-import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled, useEvent } from "@1771technologies/lytenyte-core/internal";
 import {
   Fragment,
   useCallback,

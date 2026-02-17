@@ -1,8 +1,8 @@
 import "./demo.css";
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { useState } from "react";
 
 export type BankData = (typeof bankDataSmall)[number];

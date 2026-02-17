@@ -1,12 +1,12 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/pill-manager.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import {
   Grid,
   PillManager,
   RowGroupCell,
   useClientDataSource,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 import { useMemo, useState } from "react";
 import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
 import {

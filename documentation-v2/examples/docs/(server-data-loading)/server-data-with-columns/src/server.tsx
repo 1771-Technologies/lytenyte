@@ -1,4 +1,4 @@
-import type { Grid, DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid, DataRequest, DataResponse } from "@1771technologies/lytenyte-pro";
 import { data } from "./data.js";
 import type { GridSpec } from "./demo.jsx";
 

@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useRef, useState, type JSX } from "react";
 import { useSubmenuContext } from "./submenu-context.js";
 import { getNearestMatching, getTabbables } from "@1771technologies/lytenyte-shared";
 import { handleVerticalNavigation } from "../item/handle-vertical-navigation.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 function SubmenuTriggerImpl({ disabled, ...props }: SubmenuTrigger.Props, ref: SubmenuTrigger.Props["ref"]) {
   const [active, setActive] = useState(false);

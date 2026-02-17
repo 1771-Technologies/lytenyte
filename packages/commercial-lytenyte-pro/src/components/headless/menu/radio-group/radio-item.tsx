@@ -3,7 +3,7 @@ import { useMenuItemEvents } from "../item/use-menu-item-events.js";
 import { handleVerticalNavigation } from "../item/handle-vertical-navigation.js";
 import { context } from "./context.js";
 import { useDialogRoot } from "../../dialog/context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 function ItemImpl(
   { value, disabled, children, closeOnAction, ...props }: RadioItem.Props,

@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { Popover } from "../headless/popover/index.js";
 import { useSmartSelect } from "./context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 function SmartSelectContainerBase(
   props: Popover.Component.Container,

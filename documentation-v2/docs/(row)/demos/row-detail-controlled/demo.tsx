@@ -1,7 +1,7 @@
 //#start
 import "./main.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro";
 
 import type { RequestData } from "./data.js";
 import { requestData } from "./data.js";

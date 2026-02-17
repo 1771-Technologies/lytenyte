@@ -1,7 +1,7 @@
 "use client";
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 
 import { Server } from "./server.js";
 import type { MovieData } from "./data";

@@ -13,7 +13,7 @@ import {
   useSorted,
   useSortFn,
   type LeafNodeTuple,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import { useMemo, useRef } from "react";
 
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");

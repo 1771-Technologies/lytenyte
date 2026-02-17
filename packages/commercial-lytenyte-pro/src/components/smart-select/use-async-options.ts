@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import type { BaseOption } from "./type";
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent } from "@1771technologies/lytenyte-core/internal";
 
 export interface ComboOptionState<T extends BaseOption> {
   loading: boolean;

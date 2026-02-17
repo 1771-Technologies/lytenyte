@@ -1,7 +1,7 @@
 import styles from "./demo.module.css";
 //#start
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 
 export type BankData = (typeof bankDataSmall)[number];
 interface GridSpec {

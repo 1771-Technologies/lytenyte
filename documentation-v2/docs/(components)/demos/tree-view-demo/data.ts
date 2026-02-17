@@ -1,4 +1,4 @@
-import type { TreeViewItem } from "@1771technologies/lytenyte-pro-experimental";
+import type { TreeViewItem } from "@1771technologies/lytenyte-pro";
 
 export const items: TreeViewItem[] = [
   { id: "src-index", path: ["src"], name: "index.ts" },

@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState, type JSX, type ReactNode } from "react";
 import { useComboContext } from "./combo-context.js";
 import { useDialogRoot } from "../../dialog/context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 function ComboCheckboxBase(
   { checked, onCheckChange, disabled, children, closeOnAction, ...props }: ComboCheckbox.Props,

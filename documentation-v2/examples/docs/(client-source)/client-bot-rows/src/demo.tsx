@@ -1,7 +1,7 @@
-import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental"; //!
+import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro"; //!
 
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import {
   ExchangeCell,
   makePerfHeaderCell,

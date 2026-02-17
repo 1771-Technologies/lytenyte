@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { DialogTrigger } from "../dialog/trigger.js";
 import { usePopoverContext } from "./context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 export const PopoverTriggerBase = (props: DialogTrigger.Props, ref: DialogTrigger.Props["ref"]) => {
   const { setTrigger } = usePopoverContext();

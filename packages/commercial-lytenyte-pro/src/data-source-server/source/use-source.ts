@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { UseServerDataSourceParams } from "../use-server-data-source";
 import { arrayShallow } from "@1771technologies/lytenyte-shared";
-import { useEvent, type Signal } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent, type Signal } from "@1771technologies/lytenyte-core/internal";
 import { ServerData, type DataFetcher } from "../server-data.js";
 import type { SourceState } from "./use-source-state";
 

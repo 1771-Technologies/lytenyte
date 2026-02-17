@@ -1,7 +1,7 @@
 import { forwardRef, useState, type JSX } from "react";
 import { useMenuItemEvents } from "../item/use-menu-item-events.js";
 import { comboContext } from "./combo-context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 function ComboMenuImpl(props: ComboMenu.Props, ref: ComboMenu.Props["ref"]) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);

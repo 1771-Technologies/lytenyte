@@ -1,4 +1,4 @@
-import { useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useRoot } from "@1771technologies/lytenyte-core/internal";
 import { useCallback, useRef } from "react";
 
 export function useEdgeScroll() {

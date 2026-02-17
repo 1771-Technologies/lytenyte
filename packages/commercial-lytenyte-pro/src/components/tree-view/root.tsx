@@ -21,10 +21,10 @@ import { SelectAll } from "./select-all.js";
 import { useClientDataSource } from "../../data-source-client/use-client-data-source.js";
 import type { Column } from "../../types/column.js";
 import type { API } from "../../types/api.js";
-import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
+import { usePiece } from "@1771technologies/lytenyte-core/internal";
 import { Root } from "../../root/root.js";
 import type { GridEvents } from "../../types/events.js";
-import { Grid } from "@1771technologies/lytenyte-core-experimental";
+import { Grid } from "@1771technologies/lytenyte-core";
 
 export interface TreeViewProps<T extends TreeViewItem> {
   readonly items: T[];

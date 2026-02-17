@@ -2,7 +2,7 @@ import { forwardRef, useCallback, useEffect, useMemo, useState, type JSX } from 
 import type { Placement } from "../../../external/floating-ui.js";
 import { useSubmenuPosition } from "./use-submenu-position.js";
 import { submenuContext } from "./submenu-context.js";
-import { useCombinedRefs, useControlled } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs, useControlled } from "@1771technologies/lytenyte-core/internal";
 import { useTransitioned } from "../../../../hooks/use-transitioned-open.js";
 
 export interface SubmenuProps {

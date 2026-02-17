@@ -1,6 +1,6 @@
 "use client";
-import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 
 export default function ServerDataDemo() {
   const ds = useServerDataSource({

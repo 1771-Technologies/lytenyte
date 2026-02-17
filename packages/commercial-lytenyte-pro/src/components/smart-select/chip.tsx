@@ -3,7 +3,7 @@ import { useSlot, type SlotComponent } from "../../hooks/use-slot/index.js";
 import type { BaseOption } from "./type.js";
 import { useChipContext } from "./chip-context.js";
 import { useSmartSelect } from "./context.js";
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent } from "@1771technologies/lytenyte-core/internal";
 
 export type ChipProps<T extends BaseOption> = JSX.IntrinsicElements["div"] & {
   readonly option: T;

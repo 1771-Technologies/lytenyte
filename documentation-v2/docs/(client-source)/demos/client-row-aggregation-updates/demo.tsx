@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { sum, uniq } from "es-toolkit";
 import {
   computeField,
@@ -8,7 +8,7 @@ import {
   Menu,
   RowGroupCell,
   useClientDataSource,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
 import { useMemo, useState } from "react";

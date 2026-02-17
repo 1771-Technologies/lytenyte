@@ -1,4 +1,4 @@
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent } from "@1771technologies/lytenyte-core/internal";
 import type { ServerData } from "../server-data";
 import type { RowSourceServer, UseServerDataSourceParams } from "../use-server-data-source";
 import type { TreeLeaf } from "../async-tree/types";

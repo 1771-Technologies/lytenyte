@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
-import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled, useEvent } from "@1771technologies/lytenyte-core/internal";
 import type { ControlledPivotState } from "./use-pivot/use-pivot-state.js";
 
 export type SourceState = ReturnType<typeof useSourceState>;

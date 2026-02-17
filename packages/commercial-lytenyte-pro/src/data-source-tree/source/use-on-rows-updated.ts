@@ -1,6 +1,6 @@
 import type { RowSourceTree, UseTreeDataSourceParams } from "../use-tree-data-source";
 import type { TreeRoot } from "../types";
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent } from "@1771technologies/lytenyte-core/internal";
 
 export function useOnRowsUpdated<T>(tree: TreeRoot, p: UseTreeDataSourceParams<T>) {
   const onRowsUpdate: RowSourceTree<any>["onRowsUpdated"] = useEvent((updates) => {

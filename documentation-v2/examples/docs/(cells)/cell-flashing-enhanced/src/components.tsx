@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 

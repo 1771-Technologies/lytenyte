@@ -1,5 +1,5 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
 import {
@@ -18,7 +18,7 @@ import {
   ViewportShadows,
   type Piece,
   usePiece,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 import { useState } from "react";
 
 export interface GridSpec {

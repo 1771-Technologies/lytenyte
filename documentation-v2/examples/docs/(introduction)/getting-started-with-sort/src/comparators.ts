@@ -1,7 +1,7 @@
 import type { GridSpec } from "./demo.js";
 import type { RequestData } from "./data.js";
 import { compareAsc } from "date-fns";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 
 export const sortComparators: Record<string, Grid.T.SortFn<GridSpec["data"]>> = {
   region: (left, right) => {

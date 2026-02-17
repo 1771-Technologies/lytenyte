@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { useDialogRoot } from "./context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 import { useSlot } from "../../../hooks/use-slot/use-slot.js";
 import type { LnComponent } from "../../types.js";
 

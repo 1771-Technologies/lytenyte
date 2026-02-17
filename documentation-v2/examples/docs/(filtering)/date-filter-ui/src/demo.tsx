@@ -1,10 +1,10 @@
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import {
   Grid,
   useClientDataSource,
   usePiece,
   type PieceWritable,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 import { data, type DataItem } from "./data.js";
 import { useId, useMemo, useState, type CSSProperties } from "react";
 import { Switch } from "radix-ui";

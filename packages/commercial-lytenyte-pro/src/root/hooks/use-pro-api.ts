@@ -1,4 +1,4 @@
-import { useEvent, useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent, useRoot } from "@1771technologies/lytenyte-core/internal";
 import type { API, DataRect } from "../../types";
 import { type Writable } from "@1771technologies/lytenyte-shared";
 

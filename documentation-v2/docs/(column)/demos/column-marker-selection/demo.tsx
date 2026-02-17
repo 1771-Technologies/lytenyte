@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
 import {
@@ -12,7 +12,7 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, SelectAll, Checkbox } from "@1771technologies/lytenyte-pro-experimental";
+import { useClientDataSource, Grid, SelectAll, Checkbox } from "@1771technologies/lytenyte-pro";
 
 export interface GridSpec {
   readonly data: OrderData;

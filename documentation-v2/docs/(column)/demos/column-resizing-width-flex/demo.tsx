@@ -1,5 +1,5 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
 import {
@@ -10,7 +10,7 @@ import {
   ProductCell,
   SwitchToggle,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro";
 import { useMemo, useState } from "react";
 //#end
 

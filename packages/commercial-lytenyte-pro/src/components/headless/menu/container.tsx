@@ -1,7 +1,7 @@
 import { forwardRef, useState, type JSX } from "react";
 import { useMenu } from "./use-menu.js";
 import { useSubmenuContext } from "./submenu/submenu-context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 function ContainerImpl(props: Container.Props, ref: Container.Props["ref"]) {
   const [menuEl, setMenuEl] = useState<HTMLDivElement | null>(null);

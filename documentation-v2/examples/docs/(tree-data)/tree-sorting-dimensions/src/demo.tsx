@@ -1,5 +1,5 @@
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { computeField, Grid, useTreeDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { computeField, Grid, useTreeDataSource } from "@1771technologies/lytenyte-pro";
 import { data } from "./tree.js";
 import { AvatarCell, GroupCell, Header, ModifiedCell, SizeCell } from "./components.jsx";
 import { useMemo, useState } from "react";

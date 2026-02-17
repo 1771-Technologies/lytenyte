@@ -1,5 +1,5 @@
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
-import { Menu } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
+import { Menu } from "@1771technologies/lytenyte-pro";
 import type { FilterModel, GridSpec } from "./demo";
 import { NumberInput } from "./number-input.js";
 

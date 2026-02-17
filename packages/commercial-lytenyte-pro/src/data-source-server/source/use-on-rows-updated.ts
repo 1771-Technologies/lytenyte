@@ -1,4 +1,4 @@
-import { useEvent, type Signal } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent, type Signal } from "@1771technologies/lytenyte-core/internal";
 import type { ServerData } from "../server-data";
 import { type RowSourceServer, type UseServerDataSourceParams } from "../use-server-data-source.js";
 

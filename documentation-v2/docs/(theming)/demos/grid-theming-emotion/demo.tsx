@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import "@1771technologies/lytenyte-pro-experimental/grid-full.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import "@1771technologies/lytenyte-pro/grid-full.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
 import {
@@ -12,7 +12,7 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro";
 import { ThemePicker } from "./theme.jsx";
 import { useMemo, useState } from "react";
 import styled from "@emotion/styled";

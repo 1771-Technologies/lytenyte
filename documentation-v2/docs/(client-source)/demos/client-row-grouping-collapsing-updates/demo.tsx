@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { Grid, RowGroupCell, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { Grid, RowGroupCell, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import {
   CountryCell,
   CustomerRating,

@@ -1,4 +1,4 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
+import "@1771technologies/lytenyte-pro/components.css";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -8,7 +8,7 @@ import { Tooltip } from "radix-ui";
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 
 export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {

@@ -1,6 +1,6 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { TreeView } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { TreeView } from "@1771technologies/lytenyte-pro";
 import { items as initial } from "./data.js";
 import { useState } from "react";
 import { TrashIcon } from "@radix-ui/react-icons";

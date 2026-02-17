@@ -6,7 +6,7 @@ import { exchanges, networks, symbols } from "@1771technologies/grid-sample-data
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 
 export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {

@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data as initialData } from "@1771technologies/grid-sample-data/orders";
 import {
@@ -17,7 +17,7 @@ import {
   Grid,
   ViewportShadows,
   Popover,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 import { useCallback, useState } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";

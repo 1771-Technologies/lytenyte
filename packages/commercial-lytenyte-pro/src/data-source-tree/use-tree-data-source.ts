@@ -25,7 +25,7 @@ import {
   useRowSelectionState,
   useRowsSelected,
   useSortFn,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import { useRowParents } from "./source/use-row-parents.js";
 import { useRowLeafs } from "./source/use-row-leafs.js";
 import { useRowChildren } from "./source/use-row-children.js";

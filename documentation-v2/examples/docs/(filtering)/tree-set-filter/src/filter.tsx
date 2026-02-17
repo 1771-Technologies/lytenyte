@@ -1,5 +1,5 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import { Popover, TreeView, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import { Popover, TreeView, type Grid } from "@1771technologies/lytenyte-pro";
 import { compareDesc, getDate, getMonth, getYear } from "date-fns";
 import { data } from "./data.js";
 import type { GridSpec } from "./demo.jsx";

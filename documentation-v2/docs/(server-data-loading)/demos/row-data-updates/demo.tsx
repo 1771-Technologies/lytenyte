@@ -1,10 +1,10 @@
 "use client";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { useEffect, useMemo } from "react";
 import { Server } from "./server.js";
 import type { DataEntry } from "./data";
 import { HeaderCell, NumberCell } from "./components.js";
-import { Grid, RowGroupCell, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, RowGroupCell, useServerDataSource } from "@1771technologies/lytenyte-pro";
 import { logos } from "@1771technologies/grid-sample-data/stock-data-smaller";
 
 export interface GridSpec {

@@ -1,7 +1,7 @@
 //#start
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import {
   ExchangeCell,
   Header,

@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro";
 import { stockData } from "@1771technologies/grid-sample-data/stock-data-smaller";
 import { PercentCell, CurrencyCell, SymbolCell, CompactNumberCell } from "./components.jsx";
 

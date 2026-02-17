@@ -1,6 +1,6 @@
 import type { TreeRoot } from "../types";
 import type { RowSourceTree } from "../use-tree-data-source";
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent } from "@1771technologies/lytenyte-core/internal";
 
 export function useRowChildren(tree: TreeRoot) {
   const rowChildren: RowSourceTree<any>["rowChildren"] = useEvent((id) => {

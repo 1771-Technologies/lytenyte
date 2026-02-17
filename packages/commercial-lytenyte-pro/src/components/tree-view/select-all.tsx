@@ -1,5 +1,5 @@
 import { useMemo, type CSSProperties, type ReactNode } from "react";
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent } from "@1771technologies/lytenyte-core/internal";
 import type { RowSelectionLinked } from "@1771technologies/lytenyte-shared";
 import type { TreeViewSelectAllParams } from "./types";
 import type { API } from "../../types";

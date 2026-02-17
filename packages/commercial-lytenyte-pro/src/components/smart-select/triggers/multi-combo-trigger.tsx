@@ -1,6 +1,6 @@
 import { forwardRef, useMemo, useState, type ChangeEvent, type JSX } from "react";
 import { useSmartSelect } from "../context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 import type { SlotComponent } from "../../../hooks/use-slot/types.js";
 import { useSlot } from "../../../hooks/use-slot/use-slot.js";
 import { useComboControls } from "./use-combo-controls.js";

@@ -40,7 +40,7 @@ import {
   useRowSelectionState,
   useRowSelectSplitLookup,
   useRowSiblings,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import type { Column, Field } from "../types/column.js";
 import type { GridSpec } from "../types/grid.js";
 import { useFlattenedData } from "./hooks/use-flattened-data.js";

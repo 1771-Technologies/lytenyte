@@ -2,7 +2,7 @@ import { cloneElement, type ReactElement } from "react";
 import type { AnyProps, AnyRef } from "./types.js";
 import { mergeProps } from "./merge-props.js";
 import { getElementRef } from "./get-element-ref.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
 export interface UseSlotProps {
   readonly ref?: AnyRef;

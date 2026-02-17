@@ -7,7 +7,7 @@ import {
   getDragData,
   useCombinedRefs,
   useSelector,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import type { PillItemSpec } from "./types.js";
 import { getFocusables } from "@1771technologies/lytenyte-shared";
 

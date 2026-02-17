@@ -5,7 +5,7 @@ import clsx from "clsx";
 import type { RequestData } from "./data";
 import { PieChart } from "react-minimal-pie-chart";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 
 export function Header({ column }: Grid.T.HeaderParams<GridSpec>) {
   return (

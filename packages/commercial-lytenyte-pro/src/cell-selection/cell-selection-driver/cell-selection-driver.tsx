@@ -12,7 +12,7 @@ import { updateAdditiveCellSelection } from "../update-additive-cell-selection.j
 import { deselectRectRange } from "../deselect-rect-range.js";
 import { isWithinSelectionRect } from "../is-within-selection-rect.js";
 import { useProRoot } from "../../root/context.js";
-import { useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useRoot } from "@1771technologies/lytenyte-core/internal";
 import type { DataRect } from "../../types/api.js";
 import { useCellFocusChange } from "./use-cell-focus-change.js";
 import { adjustRectForRowAndCellSpan } from "../adjust-rect-for-row-and-cell-span.js";

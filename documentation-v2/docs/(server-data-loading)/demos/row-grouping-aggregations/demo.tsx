@@ -1,13 +1,13 @@
 "use client";
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/pill-manager.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import {
   Grid,
   Menu,
   PillManager,
   RowGroupCell,
   useServerDataSource,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 
 import { useMemo, useState } from "react";
 import { Server } from "./server.js";

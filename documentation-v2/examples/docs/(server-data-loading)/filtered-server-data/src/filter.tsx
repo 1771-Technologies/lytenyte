@@ -1,5 +1,5 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import { Popover, SmartSelect, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import { Popover, SmartSelect, type Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useState } from "react";

@@ -10,7 +10,7 @@ import type {
 } from "./column.js";
 import type { GridSpec, GridStyle } from "./grid.js";
 import type { API, DataRect } from "./api.js";
-import type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
+import type { ViewportShadowsProps } from "@1771technologies/lytenyte-core";
 import type { GridEvents } from "./events.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {

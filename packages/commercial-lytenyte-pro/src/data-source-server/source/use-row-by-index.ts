@@ -14,7 +14,7 @@ import {
   useEvent,
   useSelector,
   type Signal,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+} from "@1771technologies/lytenyte-core/internal";
 
 export function useRowByIndex<T>(
   source: ServerData,

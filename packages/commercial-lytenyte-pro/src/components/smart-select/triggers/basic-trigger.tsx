@@ -1,7 +1,7 @@
 import { forwardRef, type JSX } from "react";
 import { useSmartSelect } from "../context.js";
 import { mergeProps } from "../../../hooks/use-slot/merge-props.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 import { useSelectControls } from "./use-trigger-controls.js";
 
 const noop = () => {};
