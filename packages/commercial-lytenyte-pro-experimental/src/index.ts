@@ -5,8 +5,6 @@ import { Root } from "./root/root.js";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
 import type * as LnTypes from "./types/index.js";
 
-export { Root } from "./root/root.js";
-
 export interface GridComponent {
   <Spec extends Root.GridSpec = Root.GridSpec>(
     props: PropsWithChildren<
