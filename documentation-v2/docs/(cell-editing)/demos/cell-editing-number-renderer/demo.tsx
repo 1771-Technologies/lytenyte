@@ -11,11 +11,12 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro";
+import { useClientDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import { useState } from "react";
 import { NumberInput } from "@ark-ui/react/number-input";
 import { twMerge } from "tailwind-merge";
 import { clsx, type ClassValue } from "clsx";
+import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: OrderData;
