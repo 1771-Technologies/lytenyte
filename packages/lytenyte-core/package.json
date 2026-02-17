@@ -9,11 +9,11 @@
     "headless",
     "virtualized"
   ],
-  "version": "2.0.0-dev.0",
+  "version": "2.0.0-dev.2",
   "type": "module",
   "files": [
     "dist",
-    "main.css",
+    "css",
     "LICENSE",
     "README.md"
   ],

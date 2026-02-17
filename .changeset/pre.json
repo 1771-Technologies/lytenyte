@@ -11,7 +11,11 @@
     "@1771technologies/lytenyte-core": "1.0.19",
     "@1771technologies/lytenyte-design": "1.0.21",
     "@1771technologies/lytenyte-shared": "1.0.21",
-    "@1771technologies/grid-sample-data": "1.0.21"
+    "@1771technologies/grid-sample-data": "1.0.21",
+    "documentation": "0.0.0",
+    "docs": "0.0.1"
   },
-  "changesets": ["kind-moles-mate"]
+  "changesets": [
+    "kind-moles-mate"
+  ]
 }

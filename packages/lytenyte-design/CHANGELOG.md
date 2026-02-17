@@ -1,6 +1,6 @@
 # @1771technologies/lytenyte-design
 
-## 2.0.0-dev.0
+## 2.0.0-dev.2
 
 ### Major Changes
 
