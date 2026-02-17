@@ -3,7 +3,7 @@ import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
 import { type SaleDataItem } from "@1771technologies/grid-sample-data/sales-data";
 import type { Grid } from "@1771technologies/lytenyte-pro";
-import { Menu, PillManager } from "@1771technologies/lytenyte-pro";
+import { Menu, PillManager } from "@1771technologies/lytenyte-pro/components";
 import { useMemo, useState } from "react";
 
 export interface GridSpec {

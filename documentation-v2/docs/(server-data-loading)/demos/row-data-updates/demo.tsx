@@ -4,8 +4,9 @@ import { useEffect, useMemo } from "react";
 import { Server } from "./server.js";
 import type { DataEntry } from "./data";
 import { HeaderCell, NumberCell } from "./components.js";
-import { Grid, RowGroupCell, useServerDataSource } from "@1771technologies/lytenyte-pro";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 import { logos } from "@1771technologies/grid-sample-data/stock-data-smaller";
+import { RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: DataEntry;

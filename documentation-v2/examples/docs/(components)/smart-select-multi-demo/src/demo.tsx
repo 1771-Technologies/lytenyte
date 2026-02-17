@@ -1,7 +1,7 @@
 //#start
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
-import { SmartSelect } from "@1771technologies/lytenyte-pro";
+import { SmartSelect } from "@1771technologies/lytenyte-pro/components";
 import { useState } from "react";
 import { CheckIcon, ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons";
 //#end

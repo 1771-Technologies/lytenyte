@@ -11,7 +11,8 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro";
+import { useClientDataSource, Grid } from "@1771technologies/lytenyte-pro";
+import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 //#end
 
 export interface GridSpec {

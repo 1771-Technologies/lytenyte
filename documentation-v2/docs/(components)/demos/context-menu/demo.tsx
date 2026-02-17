@@ -12,14 +12,9 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import {
-  useClientDataSource,
-  Grid,
-  Menu,
-  computeField,
-  virtualFromXY,
-} from "@1771technologies/lytenyte-pro";
+import { useClientDataSource, Grid, computeField, virtualFromXY } from "@1771technologies/lytenyte-pro";
 import { useMemo, useState } from "react";
+import { Menu } from "@1771technologies/lytenyte-pro/components";
 //#end
 
 export interface GridSpec {

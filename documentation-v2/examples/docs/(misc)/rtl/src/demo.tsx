@@ -12,14 +12,9 @@ import {
   PurchaseDateCell,
   SwitchToggle,
 } from "./components.jsx";
-import {
-  useClientDataSource,
-  Grid,
-  ViewportShadows,
-  type Piece,
-  usePiece,
-} from "@1771technologies/lytenyte-pro";
+import { useClientDataSource, Grid, type Piece, usePiece } from "@1771technologies/lytenyte-pro";
 import { useState } from "react";
+import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: OrderData;

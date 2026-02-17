@@ -1,4 +1,4 @@
-import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro"; //!
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro"; //!
 
 //#start
 import "@1771technologies/lytenyte-pro/light-dark.css";
@@ -12,6 +12,7 @@ import {
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: DEXPerformanceData;

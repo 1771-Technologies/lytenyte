@@ -1,12 +1,6 @@
 //#start
 import "@1771technologies/lytenyte-pro/light-dark.css";
-import {
-  Grid,
-  RowGroupCell,
-  useClientDataSource,
-  usePiece,
-  type PieceWritable,
-} from "@1771technologies/lytenyte-pro";
+import { Grid, useClientDataSource, usePiece, type PieceWritable } from "@1771technologies/lytenyte-pro";
 import { useMemo, useState } from "react";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
@@ -20,6 +14,7 @@ import {
   OverdueCell,
   tw,
 } from "./components.js";
+import { RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: LoanDataItem;

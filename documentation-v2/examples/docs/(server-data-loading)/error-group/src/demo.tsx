@@ -1,6 +1,6 @@
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
-import { Grid, RowGroupCell, useServerDataSource } from "@1771technologies/lytenyte-pro";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 
 import { Server } from "./server.js";
 import type { SalaryData } from "./data";
@@ -11,6 +11,7 @@ import {
   YearsOfExperienceRenderer,
 } from "./components.js";
 import { useRef } from "react";
+import { RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: SalaryData;

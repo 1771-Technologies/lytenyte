@@ -4,7 +4,6 @@ import { salesData, type SaleDataItem } from "@1771technologies/grid-sample-data
 import {
   computeField,
   Grid,
-  RowGroupCell,
   useClientDataSource,
   usePiece,
   type PieceWritable,
@@ -21,6 +20,7 @@ import {
 } from "./components.jsx";
 import { sum } from "es-toolkit";
 import { useMemo, useState } from "react";
+import { RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: SaleDataItem;

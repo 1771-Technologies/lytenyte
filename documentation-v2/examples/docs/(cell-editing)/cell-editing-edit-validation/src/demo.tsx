@@ -12,16 +12,12 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import {
-  useClientDataSource,
-  Grid,
-  ViewportShadows,
-  Popover,
-} from "@1771technologies/lytenyte-pro";
+import { useClientDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import { useCallback, useState } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { NumberInput } from "@ark-ui/react/number-input";
+import { Popover, ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));

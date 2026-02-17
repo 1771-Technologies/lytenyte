@@ -12,7 +12,8 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, SelectAll, Checkbox } from "@1771technologies/lytenyte-pro";
+import { useClientDataSource, Grid } from "@1771technologies/lytenyte-pro";
+import { Checkbox, SelectAll } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: OrderData;

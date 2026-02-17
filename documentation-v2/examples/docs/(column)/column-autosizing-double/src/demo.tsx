@@ -27,10 +27,9 @@ const initialColumns: Grid.Column<GridSpec>[] = [
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
-      const textWidth = measureText(
-        `${data.symbol.split("/")[0].trim()}${data.symbolTicker}`,
-        p.api.viewport(),
-      ).width;
+      const textWidth =
+        measureText(`${data.symbol.split("/")[0].trim()}${data.symbolTicker}`, p.api.viewport())?.width ??
+        100;
       const iconWidth = 20;
       const gapWidth = 20;
       const padding = 24;
@@ -46,7 +45,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
-      const textWidth = measureText(data.network, p.api.viewport()).width;
+      const textWidth = measureText(data.network, p.api.viewport())?.width ?? 100;
       const iconWidth = 20;
       const gapWidth = 6;
       const padding = 20;
@@ -63,7 +62,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
-      const textWidth = measureText(data.exchange, p.api.viewport()).width;
+      const textWidth = measureText(data.exchange, p.api.viewport())?.width ?? 100;
       const iconWidth = 20;
       const gapWidth = 6;
       const padding = 20;

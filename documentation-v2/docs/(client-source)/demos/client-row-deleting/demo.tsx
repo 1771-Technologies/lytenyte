@@ -12,14 +12,10 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import {
-  useClientDataSource,
-  Grid,
-  ViewportShadows,
-  type RowSourceClient,
-} from "@1771technologies/lytenyte-pro";
+import { useClientDataSource, Grid, type RowSourceClient } from "@1771technologies/lytenyte-pro";
 import { useState } from "react";
 import { TrashIcon } from "@radix-ui/react-icons";
+import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 //#end
 
 export interface GridSpec {

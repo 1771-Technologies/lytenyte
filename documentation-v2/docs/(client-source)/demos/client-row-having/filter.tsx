@@ -1,7 +1,7 @@
 import type { Grid } from "@1771technologies/lytenyte-pro";
-import { Menu } from "@1771technologies/lytenyte-pro";
 import type { FilterModel, GridSpec } from "./demo";
 import { NumberInput } from "./number-input.js";
+import { Menu } from "@1771technologies/lytenyte-pro/components";
 
 export function FloatingFilter({ api, column }: Grid.T.HeaderParams<GridSpec>) {
   const model = api.filterModel.useValue();

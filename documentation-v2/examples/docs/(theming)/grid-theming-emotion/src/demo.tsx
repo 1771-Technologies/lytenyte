@@ -12,12 +12,13 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro";
+import { useClientDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import { ThemePicker } from "./theme.jsx";
 import { useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: OrderData;

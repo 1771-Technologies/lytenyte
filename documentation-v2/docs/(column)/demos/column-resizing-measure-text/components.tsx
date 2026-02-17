@@ -132,7 +132,7 @@ function HashedValue({
   const measuredWidth = useMemo(() => {
     const m = measureText(value, api.viewport()!);
 
-    return m.width;
+    return m?.width ?? 100;
   }, [api, value]);
 
   // Minus 6 as slight adjustment so we know there is definitely enough space

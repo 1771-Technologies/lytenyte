@@ -1,13 +1,7 @@
 "use client";
 import "@1771technologies/lytenyte-pro/pill-manager.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
-import {
-  Grid,
-  Menu,
-  PillManager,
-  RowGroupCell,
-  useServerDataSource,
-} from "@1771technologies/lytenyte-pro";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 
 import { useMemo, useState } from "react";
 import { Server } from "./server.jsx";
@@ -20,6 +14,7 @@ import {
   YearsOfExperienceRenderer,
 } from "./components.jsx";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { Menu, PillManager, RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: SalaryData;

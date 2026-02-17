@@ -1,5 +1,5 @@
 //#start
-import { Menu } from "@1771technologies/lytenyte-pro";
+import { Menu } from "@1771technologies/lytenyte-pro/components";
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
 import { CheckIcon, CopyIcon, TrashIcon } from "@radix-ui/react-icons";

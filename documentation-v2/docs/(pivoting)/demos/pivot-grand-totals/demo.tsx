@@ -1,12 +1,7 @@
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
 import { salesData, type SaleDataItem } from "@1771technologies/grid-sample-data/sales-data";
-import {
-  computeField,
-  Grid,
-  RowGroupCell,
-  useClientDataSource,
-} from "@1771technologies/lytenyte-pro";
+import { computeField, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import {
   AgeGroup,
   CostCell,
@@ -17,6 +12,7 @@ import {
   ProfitCell,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
+import { RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: SaleDataItem;

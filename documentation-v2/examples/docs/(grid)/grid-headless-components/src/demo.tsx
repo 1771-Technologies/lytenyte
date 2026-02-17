@@ -1,7 +1,8 @@
 //#start
 import "@1771technologies/lytenyte-pro/light-dark.css";
-import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 //#end
 
 type BankData = (typeof bankDataSmall)[number];

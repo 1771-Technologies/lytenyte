@@ -2,14 +2,7 @@ import "@1771technologies/lytenyte-pro/pill-manager.css";
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
 import { salesData, type SaleDataItem } from "@1771technologies/grid-sample-data/sales-data";
-import {
-  computeField,
-  Grid,
-  Menu,
-  PillManager,
-  RowGroupCell,
-  useClientDataSource,
-} from "@1771technologies/lytenyte-pro";
+import { computeField, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import {
   AgeGroup,
   CostCell,
@@ -22,6 +15,7 @@ import {
 } from "./components.jsx";
 import { sum } from "es-toolkit";
 import { useMemo, useState } from "react";
+import { Menu, PillManager, RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
