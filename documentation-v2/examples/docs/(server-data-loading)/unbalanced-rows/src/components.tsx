@@ -1,4 +1,4 @@
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { format } from "date-fns";

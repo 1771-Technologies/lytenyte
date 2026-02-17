@@ -1,5 +1,5 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo.jsx";
 import {
   ComponentsFolderClose,

@@ -1,4 +1,4 @@
-import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro-experimental";
+import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro";
 import type { MovieData } from "./data";
 import { data as rawData } from "./data.js";
 

@@ -1,10 +1,11 @@
 "use client";
 
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { useMemo, useState } from "react";
 import { Server } from "./server.js";
 import { LastModified, SizeRenderer } from "./components.js";
-import { Grid, RowGroupCell, useServerDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
+import { RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 const columns: Grid.Column<{ data: any }>[] = [
   {

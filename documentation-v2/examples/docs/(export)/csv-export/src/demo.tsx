@@ -1,7 +1,7 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { BalanceCell, DurationCell, NumberCell } from "./components.jsx";
 import { useRef } from "react";

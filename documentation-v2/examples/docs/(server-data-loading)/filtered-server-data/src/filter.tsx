@@ -1,10 +1,11 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import { Popover, SmartSelect, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import { type Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import type { GridFilter } from "./types";
 import clsx from "clsx";
+import { Popover, SmartSelect } from "@1771technologies/lytenyte-pro/components";
 
 const textOptions = [
   { id: "equals", label: "Equals" },

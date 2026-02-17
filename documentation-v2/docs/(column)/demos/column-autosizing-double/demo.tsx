@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import {
   ExchangeCell,
   makePerfHeaderCell,
@@ -11,7 +11,7 @@ import {
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import { Grid, measureText, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, measureText, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { useRef, useState } from "react";
 
 export interface GridSpec {
@@ -27,10 +27,9 @@ const initialColumns: Grid.Column<GridSpec>[] = [
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
-      const textWidth = measureText(
-        `${data.symbol.split("/")[0].trim()}${data.symbolTicker}`,
-        p.api.viewport(),
-      ).width;
+      const textWidth =
+        measureText(`${data.symbol.split("/")[0].trim()}${data.symbolTicker}`, p.api.viewport())?.width ??
+        100;
       const iconWidth = 20;
       const gapWidth = 20;
       const padding = 24;
@@ -46,7 +45,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
-      const textWidth = measureText(data.network, p.api.viewport()).width;
+      const textWidth = measureText(data.network, p.api.viewport())?.width ?? 100;
       const iconWidth = 20;
       const gapWidth = 6;
       const padding = 20;
@@ -63,7 +62,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
-      const textWidth = measureText(data.exchange, p.api.viewport()).width;
+      const textWidth = measureText(data.exchange, p.api.viewport())?.width ?? 100;
       const iconWidth = 20;
       const gapWidth = 6;
       const padding = 20;

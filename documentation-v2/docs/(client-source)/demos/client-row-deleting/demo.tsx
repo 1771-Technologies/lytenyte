@@ -1,6 +1,6 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data as initialData } from "@1771technologies/grid-sample-data/orders";
 import {
@@ -12,14 +12,10 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import {
-  useClientDataSource,
-  Grid,
-  ViewportShadows,
-  type RowSourceClient,
-} from "@1771technologies/lytenyte-pro-experimental";
+import { useClientDataSource, Grid, type RowSourceClient } from "@1771technologies/lytenyte-pro";
 import { useState } from "react";
 import { TrashIcon } from "@radix-ui/react-icons";
+import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 //#end
 
 export interface GridSpec {

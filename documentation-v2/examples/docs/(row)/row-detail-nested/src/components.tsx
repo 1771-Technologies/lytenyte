@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import clsx from "clsx";
 import type { RequestData } from "./data";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 
 export function Header({ column }: Grid.T.HeaderParams<GridSpec>) {
   return (

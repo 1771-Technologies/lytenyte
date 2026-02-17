@@ -2,7 +2,7 @@ import type { GridSpec } from "./demo";
 import { useMemo } from "react";
 import { format } from "date-fns";
 import clsx from "clsx";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 
 export function DateCell({ column, row, api }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);

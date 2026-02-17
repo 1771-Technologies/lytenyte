@@ -1,5 +1,5 @@
 import { ToggleGroup as TG } from "radix-ui";
-import { type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import { type Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo.js";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";

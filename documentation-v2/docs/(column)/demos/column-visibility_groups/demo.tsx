@@ -1,7 +1,7 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import { Grid, PillManager, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import "@1771technologies/lytenyte-pro/pill-manager.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import {
   ExchangeCell,
   HeaderGroupCell,
@@ -14,6 +14,7 @@ import {
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { useState } from "react";
+import { PillManager } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: DEXPerformanceData;

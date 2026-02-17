@@ -1,12 +1,7 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import {
-  Grid,
-  PillManager,
-  RowGroupCell,
-  useClientDataSource,
-} from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/pill-manager.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { useMemo, useState } from "react";
 import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
 import {
@@ -18,6 +13,7 @@ import {
   NumberCell,
   OverdueCell,
 } from "./components.js";
+import { PillManager, RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: LoanDataItem;

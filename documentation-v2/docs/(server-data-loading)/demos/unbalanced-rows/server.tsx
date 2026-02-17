@@ -3,7 +3,7 @@ import type {
   DataResponse,
   DataResponseBranchItem,
   DataResponseLeafItem,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 import { data } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));

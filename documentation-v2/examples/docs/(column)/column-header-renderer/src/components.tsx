@@ -12,7 +12,7 @@ import {
   ShoppingBagIcon,
   SquareUserIcon,
 } from "lucide-react";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo.jsx";
 
 export function tw(...c: ClassValue[]) {

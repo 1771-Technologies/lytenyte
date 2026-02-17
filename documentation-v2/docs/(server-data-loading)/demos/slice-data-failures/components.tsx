@@ -6,7 +6,7 @@ import { Link1Icon } from "@radix-ui/react-icons";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 
 function tw(...c: ClassValue[]) {

@@ -1,7 +1,7 @@
 //#start
 import { cva } from "class-variance-authority";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

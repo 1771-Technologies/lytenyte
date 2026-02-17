@@ -1,16 +1,14 @@
 //#start
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { sum, uniq } from "es-toolkit";
 import {
   computeField,
   Grid,
-  Menu,
-  RowGroupCell,
   useClientDataSource,
   usePiece,
   type PieceWritable,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
 import { useMemo, useState } from "react";
@@ -27,6 +25,7 @@ import {
 } from "./components.jsx";
 import { loanData, type LoanDataItem } from "@1771technologies/grid-sample-data/loan-data";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { Menu, RowGroupCell } from "@1771technologies/lytenyte-pro/components";
 
 export type FilterModel = Record<
   string,

@@ -1,4 +1,4 @@
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 import { format, isValid, parse } from "date-fns";
 import { countryFlags } from "@1771technologies/grid-sample-data/sales-data";

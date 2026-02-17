@@ -1,4 +1,4 @@
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import { memo, type ReactNode } from "react";
 import { logos } from "@1771technologies/grid-sample-data/stock-data-smaller";
 import type { ClassValue } from "clsx";

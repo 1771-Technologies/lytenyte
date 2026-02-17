@@ -3,9 +3,10 @@ import type { JSX } from "react";
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Link1Icon } from "@radix-ui/react-icons";
-import { Popover, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import { type Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 import { TextFilterControl } from "./filter.jsx";
+import { Popover } from "@1771technologies/lytenyte-pro/components";
 
 function SkeletonLoading() {
   return (

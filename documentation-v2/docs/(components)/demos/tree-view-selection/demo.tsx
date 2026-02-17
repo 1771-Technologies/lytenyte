@@ -1,7 +1,7 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
-import { TreeView } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import type { Grid } from "@1771technologies/lytenyte-pro";
+import { TreeView } from "@1771technologies/lytenyte-pro/components";
 import { items } from "./data.js";
 import { useMemo, useState } from "react";
 

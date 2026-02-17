@@ -1,8 +1,8 @@
-import { Grid, Popover, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental"; //!
-import "@1771technologies/lytenyte-pro-experimental/components.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro"; //!
+import "@1771technologies/lytenyte-pro/components.css";
 
 //#start
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import {
   ExchangeCell,
   makePerfHeaderCell,
@@ -14,6 +14,7 @@ import {
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data, networks } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { useMemo, useState } from "react";
+import { Popover } from "@1771technologies/lytenyte-pro/components";
 
 export interface GridSpec {
   readonly data: DEXPerformanceData;

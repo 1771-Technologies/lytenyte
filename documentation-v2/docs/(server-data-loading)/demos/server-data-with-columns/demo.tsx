@@ -1,5 +1,5 @@
 "use client";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { useCallback, useMemo, useState } from "react";
 import { Server } from "./server.js";
 import type { MovieData } from "./data";
@@ -15,7 +15,7 @@ import {
   Grid,
   useServerDataSource,
   type UseServerDataSourceParams,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 
 export interface GridSpec {
   readonly data: MovieData;

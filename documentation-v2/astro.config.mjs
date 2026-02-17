@@ -35,7 +35,7 @@ export default defineConfig({
           {
             title: "v1",
             full: "v1.0.20",
-            href: "https://www.1771technologies.com/docs/intro-getting-started",
+            href: "https://www.1771technologies.com/docs/v1/intro-getting-started",
           },
         ],
         left: [

@@ -1,7 +1,7 @@
 //#start
-import { Dialog } from "@1771technologies/lytenyte-pro-experimental";
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { Dialog } from "@1771technologies/lytenyte-pro/components";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 //#end
 
 export default function ComponentDemo() {

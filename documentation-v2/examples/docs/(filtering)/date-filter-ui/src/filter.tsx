@@ -1,10 +1,11 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import { Menu, Popover, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import { type Grid } from "@1771technologies/lytenyte-pro";
 import { CaretRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
 import type { GridFilter, GridSpec } from "./demo";
+import { Menu, Popover } from "@1771technologies/lytenyte-pro/components";
 
 function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));

@@ -6,7 +6,7 @@ import { exchanges, networks, symbols } from "@1771technologies/grid-sample-data
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
-import { measureText, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import { measureText, type Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 import { useId, useMemo, type CSSProperties } from "react";
 import { Switch } from "radix-ui";
@@ -132,7 +132,7 @@ function HashedValue({
   const measuredWidth = useMemo(() => {
     const m = measureText(value, api.viewport()!);
 
-    return m.width;
+    return m?.width ?? 100;
   }, [api, value]);
 
   // Minus 6 as slight adjustment so we know there is definitely enough space

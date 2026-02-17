@@ -1,6 +1,6 @@
-import "@1771technologies/lytenyte-pro-experimental/components.css";
-import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { computeField, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import "@1771technologies/lytenyte-pro/components.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { computeField, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { useState } from "react";
 import { data as initialData, nextData, type DataEntry } from "./data.js";
 import { GroupCell, HeaderCell, NumberCell } from "./components.js";

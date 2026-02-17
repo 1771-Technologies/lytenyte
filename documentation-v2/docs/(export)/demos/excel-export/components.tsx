@@ -1,4 +1,4 @@
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 
 const formatter = new Intl.NumberFormat("en-US", {

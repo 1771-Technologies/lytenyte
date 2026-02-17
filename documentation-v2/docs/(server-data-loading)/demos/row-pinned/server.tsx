@@ -2,7 +2,7 @@ import type {
   DataRequest,
   DataResponse,
   DataResponsePinned,
-} from "@1771technologies/lytenyte-pro-experimental";
+} from "@1771technologies/lytenyte-pro";
 import { data } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));

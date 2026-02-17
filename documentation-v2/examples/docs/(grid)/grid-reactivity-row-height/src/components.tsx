@@ -1,4 +1,4 @@
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { Grid } from "@1771technologies/lytenyte-pro";
 import { ToggleGroup as TG } from "radix-ui";
 import type { GridSpec } from "./demo";
 import { format, isValid, parse } from "date-fns";
