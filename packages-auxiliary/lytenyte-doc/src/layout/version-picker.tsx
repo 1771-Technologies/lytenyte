@@ -7,9 +7,11 @@ export function VersionPicker({ versions }: { versions: Required<OneDocConfig["n
   return (
     <M.Root>
       <div className="flex h-full items-center">
-        <M.Trigger className="center hover:bg-xd-accent border-xd-border h-[90%] cursor-pointer items-center gap-2 rounded border px-2 py-2 text-sm font-bold transition-colors">
+        <M.Trigger className="center hover:bg-xd-accent h-[90%] cursor-pointer items-center gap-2 rounded px-2 py-2 text-sm font-bold transition-colors">
           {latest?.full}
-          <div className="rounded bg-blue-500/50 px-2 py-0.5 text-[10px]">Latest</div>
+          <div className="rounded border border-blue-500/80 bg-blue-500/50 px-2 py-0.5 text-[10px]">
+            Latest
+          </div>
 
           <span className="iconify ph--caret-down relative -left-px"></span>
           <span className="sr-only">Open additional page export options</span>
@@ -47,7 +49,7 @@ export function VersionPicker({ versions }: { versions: Required<OneDocConfig["n
 
               return (
                 <M.Item
-                  render={<a href={x.href} target="_blank" />}
+                  render={<a href={x.href} />}
                   className="hover:bg-xd-accent col-span-full grid cursor-pointer grid-cols-subgrid items-center rounded-lg px-2 py-2 text-sm font-semibold"
                 >
                   {x.title}
