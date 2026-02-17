@@ -665,8 +665,6 @@ importers:
         specifier: 22.15.15
         version: 22.15.15
 
-  packages-auxiliary/one-play/src/create/site-template: {}
-
   packages-auxiliary/one-play/src/init/template:
     dependencies:
       '@1771technologies/eslint-preset':

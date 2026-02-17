@@ -32,6 +32,11 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./components": {
+      "types": "./src/components.ts",
+      "import": "./src/components.ts",
+      "require": "./src/components.ts"
+    },
     "./grid.css": "./css/grid.css",
     "./grid-full.css": "./css/grid-full.css",
     "./light-dark.css": "./css/light-dark.css",
@@ -55,6 +60,11 @@
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js",
         "require": "./dist/index.js"
+      },
+      "./components": {
+        "types": "./dist/components.d.ts",
+        "import": "./dist/components.js",
+        "require": "./dist/components.js"
       },
       "./grid.css": "./css/grid.css",
       "./grid-full.css": "./css/grid-full.css",

@@ -163,32 +163,5 @@ export { measureText, moveRelative, equal, arrayShallow } from "@1771technologie
 export { getRowDragData, computeField } from "@1771technologies/lytenyte-core/internal";
 export { virtualFromXY } from "./components/virtual-from-coordinates.js";
 
-export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core";
-export { ViewportShadows } from "@1771technologies/lytenyte-core";
-
-export { RowGroupCell } from "./components/row-group-cell.js";
-export type { SelectAllProps } from "./components/select-all.js";
-export { SelectAll } from "./components/select-all.js";
-
 export type { Piece, PieceWritable } from "@1771technologies/lytenyte-core";
 export { usePiece } from "@1771technologies/lytenyte-core";
-
-export { PillManager } from "./components/pill-manager/index.js";
-export { Dialog } from "./components/headless/dialog/index.parts.js";
-export { Menu } from "./components/headless/menu/index.js";
-export { Popover } from "./components/headless/popover/index.js";
-export { SmartSelect } from "./components/smart-select/index.js";
-
-export type {
-  TreeViewItem,
-  TreeViewProps,
-  TreeViewChildParams,
-  TreeViewSelectAllParams,
-} from "./components/tree-view/index.js";
-export type { TreeViewApi } from "./components/tree-view/index.js";
-export { TreeView, TreeChildren } from "./components/tree-view/index.js";
-
-export type { ColumnManagerProps } from "./components/column-manager/column-manager.js";
-export { ColumnManager } from "./components/column-manager/column-manager.js";
-
-export { Checkbox } from "./components/checkbox/checkbox.js";

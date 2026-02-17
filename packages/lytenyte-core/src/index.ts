@@ -146,9 +146,6 @@ export { measureText, moveRelative, equal, arrayShallow } from "@1771technologie
 export { getRowDragData } from "./dnd/get-drag-data.js";
 export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";
 
-export type { ViewportShadowsProps } from "./components/viewport/viewport-shadows.js";
-export { ViewportShadows } from "./components/viewport/viewport-shadows.js";
-
 export { useClientDataSource } from "./data-source/use-client-data-source.js";
 export type { RowSourceClient, UseClientDataSourceParams } from "./data-source/use-client-data-source.js";
 

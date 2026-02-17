@@ -32,6 +32,11 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./components": {
+      "types": "./src/components.ts",
+      "import": "./src/components.ts",
+      "require": "./src/components.ts"
+    },
     "./internal": {
       "types": "./src/internal..ts",
       "import": "./src/internal.ts",
@@ -58,6 +63,11 @@
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js",
         "require": "./dist/index.js"
+      },
+      "./components": {
+        "types": "./dist/components.d.ts",
+        "import": "./dist/components.js",
+        "require": "./dist/components.js"
       },
       "./internal": {
         "types": "./dist/internal.d.ts",
