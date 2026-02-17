@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@1771technologies/lytenyte-pro": "2.0.0-dev.2",
+    "@1771technologies/lytenyte-design": "2.0.0-dev.2",
     "@1771technologies/grid-sample-data": "2.0.0-dev.2",
     "@ark-ui/react": "5.25.0",
     "@emotion/cache": "^11.14.0",
@@ -29,7 +30,7 @@
     "lucide-react": "0.544.0",
     "radix-ui": "1.4.3",
     "react": "19.2.1",
-    "react-dom": "19.0.0",
+    "react-dom": "19.2.1",
     "react-tooltip": "^5.30.0",
     "recharts": "3.2.1",
     "rehype-expressive-code": "0.41.5",
@@ -43,7 +44,7 @@
   },
   "devDependencies": {
     "@types/react": "19.1.10",
-    "@types/react-dom": "19.1.7",
+    "@types/react-dom": "19.1.10",
     "@vitejs/plugin-react": "5.0.0",
     "globals": "16.3.0",
     "typescript": "~5.8.3",
