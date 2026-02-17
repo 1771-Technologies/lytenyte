@@ -60,9 +60,11 @@ export const remarkDemo: Plugin<[], Root> = (opts?: RemarkDemoOptions) => {
       demoPathPart.splice(1, 0, "examples");
       const demoPath = demoPathPart.join("/");
 
-      const stackblitzUrl = githubRepo ? getStackBlitzUrl(demoPath, githubOrg, githubRepo, githubBranch) : "";
+      const stackblitzUrl = githubRepo
+        ? getStackBlitzUrl(demoPath, relFolder.split("/").at(-1)!, githubOrg, githubRepo, githubBranch)
+        : "";
       const codeSandboxUrl = githubRepo
-        ? getCodeSandboxUrl(demoPath, githubOrg, githubRepo, githubBranch)
+        ? getCodeSandboxUrl(demoPath, relFolder.split("/").at(-1)!, githubOrg, githubRepo, githubBranch)
         : "";
 
       const demoName = `File${demoInd0x}`;
@@ -99,24 +101,24 @@ export function getCurrentGitBranch(cwd = process.cwd()) {
   }
 }
 
-const getStackBlitzUrl = (path: string, org: string, repo: string, branch: string) => {
+const getStackBlitzUrl = (path: string, demo: string, org: string, repo: string, branch: string) => {
   void org;
   void repo;
   void branch;
   const final = path.startsWith("/") ? path.slice(1) : path;
 
-  const url = final.replace("/content/docs/", "/examples/").replace("demos/", "");
+  const url = final.replaceAll("/demos", "");
 
-  return `https://stackblitz.com/fork/github/1771-technologies/lytenyte/tree/main/${url}?file=src/demo.tsx`;
+  return `https://stackblitz.com/fork/github/1771-technologies/lytenyte/tree/main/${url}/${demo}?file=src/demo.tsx`;
 };
 
-const getCodeSandboxUrl = (path: string, org: string, repo: string, branch: string) => {
+const getCodeSandboxUrl = (path: string, demo: string, org: string, repo: string, branch: string) => {
   void org;
   void repo;
   void branch;
 
   const final = path.startsWith("/") ? path.slice(1) : path;
-  const url = final.replace("/content/docs/", "/examples/").replace("demos/", "");
+  const url = final.replaceAll("/demos", "");
 
-  return `https://codesandbox.io/s/github/1771technologies/lytenyte/tree/main/${url}?file=%2Fsrc%2Fdemo.tsx`;
+  return `https://codesandbox.io/s/github/1771-technologies/lytenyte/tree/main/${url}/${demo}?file=%2Fsrc%2Fdemo.tsx`;
 };
