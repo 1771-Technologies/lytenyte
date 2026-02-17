@@ -1,0 +1,41 @@
+---
+title: Tree Row Data Source
+description: Learn how to effectively use the hierarchical Tree Row Data Source in LyteNyte Grid
+  to display and manage parent-child relationships while maintaining full grid functionality.
+---
+
+The LyteNyte Grid tree data source enables you to represent hierarchical data while preserving all grid
+functionality, including sorting and filtering. Tree Data is particularly valuable for visualizing
+data with natural parent-child relationships, such as file directory structures.
+
+## Basic Usage
+
+Begin by importing the tree data source hook from the LyteNyte Grid package:
+
+```ts
+import { useClientTreeDataSource } from "@1771technologies/lytenyte-pro";
+```
+
+You can then use the data source returned by `useClientTreeDataSource` when initializing your
+grid state. Below is a minimal example:
+
+!demo:Tree Data Source="./demos/row-tree-data-source"
+
+### The Tree Path
+
+The `useClientTreeDataSource` hook requires several essential parameters:
+
+- `getPathFromData`: A callback that returns the tree path for a given data item. Return an empty array for a root row.
+- `data`: The leaf tree data. LyteNyte uses this data and the `getPathFromData` callback to construct the tree.
+
+The most critical parameter is the `getPathFromData` callback, which determines how the tree
+structure is generated from your raw data. This essentially functions as the grouping mechanism for the data source.
+
+## Pinned Rows
+
+Like the [client row data source](/docs/v1/row-client-data-source), the tree data source
+accepts `topData` and `bottomData` parameters to create rows pinned to the top
+and bottom respectively. Pinned rows must be leaf rows and exist outside
+the normal tree grouping structure.
+
+!demo:Tree Data Source Pinned Rows="./demos/row-tree-data-source-pinned"

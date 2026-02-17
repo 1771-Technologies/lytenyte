@@ -1,0 +1,208 @@
+---
+title: Column Groups
+description: LyteNyte Grid lets you organize columns into groups to create visual
+  relationships between related columns. Each column belongs to one
+  group, and groups may contain nested groups to form hierarchies.
+---
+
+## Creating a Column Group
+
+Create column groups in LyteNyte Grid by setting the `groupPath`
+property on each column. The grid builds a hierarchy from the
+`groupPath` values across all columns. The demo below shows a basic
+column group setup.
+
+!demo:Column Groups="./demos/column-groups_x"
+
+Columns stay as a flat array, even when grouped. LyteNyte Grid creates
+the hierarchy by joining each column's group path. Columns with the
+same group path belong to the same group. In the example below, the
+**Symbol**, **Network**, and **Exchange** columns all belong to the
+**Market Info** group.
+
+```ts
+const columns: Column<DEXPerformanceData>[] = [
+  {
+    id: "symbol",
+    name: "Symbol",
+    groupPath: ["Market Info"],
+  },
+  {
+    id: "network",
+    name: "Network",
+    groupPath: ["Market Info"],
+  },
+  {
+    id: "exchange",
+    name: "Exchange",
+    groupPath: ["Market Info"],
+  },
+  // other columns
+];
+```
+
+Columns do not need to belong to a group. If a column has no group path,
+its header cell spans the full height of the header.
+
+### Split Column Groups
+
+LyteNyte Grid uses the `groupPath` property to identify column groups.
+A group appears split when columns from different groups are placed between its members.
+Although the group remains a single logical entity, it renders as multiple visual segments.
+When you move separated columns next to each other, the grid automatically merges the segments.
+
+Pinned columns always appear visually separate from non-pinned columns,
+even when they share a group.
+
+The demo below shows this behavior. The **Market Info** and
+**Performance** groups are split visually but remain single logical
+groups.
+
+!demo:Split Column Groups="./demos/column-groups-split_x"
+
+The `key` passed to `Grid.HeaderGroupCell` uses `c.idOccurrence`. Split
+groups create multiple occurrences of the same header, and each shares
+the same `id`. Since React requires unique keys, the grid provides
+`idOccurrence`, which combines the group ID with an occurrence count.
+
+```tsx
+<Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />
+```
+
+## Multiple Column Group Levels
+
+The `groupPath` property is an array of strings. Each string represents
+a grouping level. Adding more entries creates deeper nesting. The demo
+below illustrates multiple group levels:
+
+!demo:Multiple Group Levels="./demos/column-groups-multiple-levels_x"
+
+Each grouping level creates a new header row. The longest `groupPath`
+in the grid determines the number of header rows.
+
+## Column Groups & Pinned Columns
+
+Pinned columns can still belong to a group. Pinned columns create a
+split boundary, so the grid treats them as visually separate even if
+they are adjacent to other group members. The example below shows this:
+
+!demo:Pinned Column Groups="./demos/column-groups-expansions-pinned_x"
+
+Set the `pin` property to `"start"` or `"end"` to pin a column to the
+start or end of the viewport. For details, see the
+[Column Pinning guide](/docs/v1/column-pinning).
+
+## Column Group Expansions
+
+Column groups become collapsible when you use the `groupVisibility`
+property, which controls when each column is visible:
+
+- `"open"`: Visible only when the group is expanded.
+- `"closed"`: Visible only when the group is collapsed.
+- `"always"`: Always visible.
+
+A group becomes collapsible when at least one column is visible in the
+collapsed state and at least one is visible in the expanded state.
+
+In the demo below, the **Market Info** and **Performance** groups are
+collapsible. The **Market Info** group starts collapsed. Click the
+chevron to expand it.
+
+!demo:Column Group Expansion="./demos/column-groups-expansions_x"
+
+The demo uses a few noteworthy patterns:
+
+- A button is passed to the `children` prop of `Grid.HeaderGroupCell`.
+  The button toggles the group using `grid.api.columnToggleGroup`.
+- The Tailwind classes use the `data-ln-collapsible` attribute, which
+  LyteNyte Grid adds to indicate whether a group can collapse. Use this
+  attribute in custom CSS if some groups should not collapse.
+
+```tsx
+<Grid.HeaderGroupCell cell={c} key={c.idOccurrence} className="text-xs! group flex items-center px-2">
+  <div className="flex-1">{c.id}</div>
+  <button
+    className="text-ln-gray-90 hidden cursor-pointer items-center justify-center text-base group-data-[ln-collapsible=true]:flex"
+    onClick={() => grid.api.columnToggleGroup(c.id)}
+  >
+    <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
+    <ChevronRightIcon className="block group-data-[ln-collapsed=false]:hidden" />
+  </button>
+</Grid.HeaderGroupCell>
+```
+
+### Default Group Expansion
+
+Collapsible groups are expanded by default. Use the
+`columnGroupDefaultExpansion` property to change this. Setting it to
+`false` will collapse column groups by default:
+
+!demo:Default Expansion State="./demos/column-groups-default-expansions_x"
+
+You can also provide explicit initial expansion states. To do this, you
+must know how LyteNyte Grid generates group IDs.
+
+Group IDs come from joining the `groupPath` array with a delimiter. The
+default delimiter is `-->`, but you can change it using
+`columnGroupJoinDelimiter`. For example:
+
+```ts
+["Market Info"]; // "Market Info"
+["Market Info", "Location"]; // "Market Info-->Location"
+```
+
+With this information, you can set expansion states directly:
+
+```ts
+const grid = Grid.useLyteNyte({
+  // Other grid props
+  columnGroupExpansions: { "Market Info": false },
+});
+```
+
+## Sticky Group Labels
+
+Some groups contain many columns, and horizontal scrolling can hide the
+group label. LyteNyte Grid allows you to style header cells so the
+label remains visible. The demo below shows this behavior. Try scrolling
+horizontally and observe that the **Market Info** label remains in view.
+
+!demo:Sticky Group Labels="./demos/column-groups-sticky_x"
+
+The implementation is simple. The important part is the `style`
+override. `Grid.HeaderGroupCell` uses `relative` position and `hidden`
+overflow by default. In this case, overriding those defaults is
+appropriate. Since pinned columns may appear at the start, compute the
+starting width and use it for `insetInlineStart`.
+
+```tsx
+function StickyGroupHeader({
+  layout,
+  grid,
+}: {
+  grid: GridState<DEXPerformanceData>;
+  layout: HeaderGroupCellLayout;
+}) {
+  const meta = grid.state.columnMeta.useValue();
+  const widths = grid.state.xPositions.useValue();
+  const startWidth = widths[meta.columnVisibleStartCount];
+
+  return (
+    <Grid.HeaderGroupCell
+      cell={layout}
+      style={{
+        overflow: "unset",
+        position: "sticky",
+        insetInlineStart: startWidth,
+      }}
+    />
+  );
+}
+```
+
+## Next Steps
+
+- [Column Resizing](/docs/v1/column-resizing): Change column widths programmatically or via user interaction.
+- [Column ID & Name](/docs/v1/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Pinning](/docs/v1/column-pinning): Pin columns to the start or end of the viewport.
+- [Column Field](/docs/v1/column-field): Control how a column retrieves its value for each cell.

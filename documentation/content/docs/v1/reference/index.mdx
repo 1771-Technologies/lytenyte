@@ -1,0 +1,31 @@
+---
+title: API Reference
+description: LyteNyte Grid provides a comprehensive API designed to support
+  its wide range of features. The API Reference provides in depth technical explanations
+  of the various APIs available in LyteNyte Grid.
+---
+
+LyteNyte Grid has three primary interfaces that make up the bulk of the API interaction with the
+grid. These interfaces are the most commonly used. These are:
+
+- [Grid State Reference](/docs/v1/reference/grid-state#gridstate): provides technical coverage of the
+  grid state properties of LyteNyte Grid. State is the main driver in LyteNyte Grid as the majority of the
+  API is declarative.
+- [Grid API Reference](/docs/v1/reference/grid-api#gridapi): guidance on using the imperative methods LyteNyte Grid
+  provides to make managing the declarative API easier, and and overview of the convenience methods that extend the
+  power and functionality of LyteNyte Grid.
+- [Grid Events](/docs/v1/reference/events#gridevents): a detailed overview of all the events emitted by LyteNyte Grid, including event types,
+  payload structures, and recommended usage scenarios.
+
+## Using LyteNyte Grid's API
+
+Each instance of LyteNyte Grid get's its own reference to the grid state and API. Creating an
+instance is done through the `useLyteNyte` hook:
+
+```ts
+const grid = useLyteNyte({ ... })
+```
+
+The _ts`grid`_ reference is the main access point to the LyteNyte Grid API:
+
+<AutoTypeTable path="./types.ts" name="Grid" />

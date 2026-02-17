@@ -1,0 +1,98 @@
+---
+title: Cell Editing
+description: Enable and configure editable cells in LyteNyte Grid with custom editors, value parsing, and
+  seamless integration with your data source.
+---
+
+LyteNyte Grid lets you edit cell values directly in the grid. Editing is configured per cell.
+
+To enable editing:
+
+1. Set `editCellMode` to `"cell"` in grid state. (Default is `"readonly"`.)
+2. Mark editable columns with `editable: true`.
+
+Control how editing starts with `editClickActivator`. Supported values:
+
+- `"single-click"`
+- `"double-click"`
+- `"none"`
+
+The example below shows a basic setup where `columnBase: { editable: true }` makes all columns editable.
+
+!demo:Cell Edit Predicate="./demos/cell-editing"
+
+## Edit Renderer
+
+Set the `editRenderer` property on a column to define its cell editor. This can be:
+
+- A React component.
+- A string key referencing a registered edit provider.
+
+Register edit providers with the `editRenderers` property in grid state.
+
+!demo:Cell Edit Renderers="./demos/cell-editing-provider"
+
+When using a custom editor, LyteNyte Grid passes:
+
+- `value` - The current cell value.
+- `onChange` - A function to update the value.
+
+Editing is controlled: **Enter** accepts changes, **Escape** cancels.
+
+## Selectively Enable Editing
+
+`editable` can be:
+
+- **Boolean** - Enables editing for all cells in the column.
+- **Function** - Enables editing only for specific cells.
+
+Example: In the `Job` column, only `"management"` values are editable.
+
+!demo:Cell Editing Selectively="./demos/cell-editing-selectively"
+
+## Edit Setter
+
+Use `editSetter` to control how updated values are written to row data. This is useful when a cell's
+value comes from a derived or nested field. The [field](/docs/v1/column-field) property determines the
+displayed value.
+
+When editing:
+
+1. The grid reads the initial value.
+2. A copy of the row's data is created.
+3. The updated value is applied via `editSetter` (or via `field` for `string`/`number` fields).
+
+!demo:Cell Editing Edit Setter="./demos/cell-editing-edit-setter"
+
+## Row Edit Validation
+
+Edits are applied at the row level-updating one cell updates the row's entire data object.
+
+If defined, `editRowValidatorFn` runs before updates are applied. It can:
+
+- Return `true` - Validation passes.
+- Return `false` - Validation fails.
+- Return an **object** - Validation fails; object contains error details.
+
+If validation fails, the `editError` event is fired. Use this event to inform the user.
+
+Example: Prevent negative values in the `Age` column.
+
+!demo:Cell Editing Validation="./demos/cell-editing-validation"
+
+## Programmatic Edit Update
+
+Use `grid.api.editUpdate` to update a cell without user interaction. This method:
+
+1. Applies the column's `editSetter`.
+2. Runs row validation.
+3. Updates the data if validation passes.
+
+## Cell Edit Events
+
+LyteNyte Grid emits these events during editing:
+
+- **`editBegin`** - Fired before editing starts; call `preventDefault()` to block it.
+- **`editEnd`** - Fired after updates are applied.
+- **`editError`** - Fired when validation fails or an error occurs.
+- **`editCancel`** - Fired when editing is cancelled (e.g., pressing **Escape**).

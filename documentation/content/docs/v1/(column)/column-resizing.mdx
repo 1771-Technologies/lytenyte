@@ -1,0 +1,188 @@
+---
+title: Column Resizing
+description: Columns can be resized programmatically or through user interaction.
+  LyteNyte Grid includes built-in drag-to-resize behavior for column headers.
+---
+
+## Resizing Columns
+
+Columns in LyteNyte Grid always have a fixed width. To resize a column, update
+its fixed width. Users can drag the edge of a column header to change its width.
+LyteNyte Grid supports this interaction out of the box. Enable it by setting
+the `resizable` property to `true` on the column's `uiHints` property.
+The example below enables resizing for all columns.
+
+```ts
+const grid = Grid.useLyteNyte({
+  // ... other properties
+  columnBase: {
+    uiHints: {
+      resizable: true,
+    },
+  },
+});
+```
+
+When `resizable` is `true`, the grid renders a resize handle on the
+header's edge. Users can drag this handle to change the width of a column.
+The demo below enables the drag handle.
+Try placing your cursor on the right edge of a column header
+and dragging once the hover indicator appears.
+
+!demo:Resizing Columns="./demos/column-resizing-drag_x"
+
+<Callout>
+
+Dragging to resize does not work on touch devices because touch dragging scrolls the viewport.
+The developer should provide an alternative resize action, such as a “size to fit” button for accessibility purposes.
+
+</Callout>
+
+### Customizing the Resize Handle
+
+LyteNyte Grid renders the resize handle as an invisible `div`. You can style it
+using CSS or by passing properties to the `Grid.HeaderCell` component.
+Three properties customize the resize handle:
+
+- `resizeStyle`: Inline styles applied to the handle.
+- `resizeClassName`: CSS class names applied to the handle.
+- `resizeAs`: A render prop that supplies custom React content for the handle.
+
+In most cases, `resizeClassName` is enough to customize the handle's appearance.
+
+If you use a built-in grid theme, the handle already has styling. The
+default themes use the following CSS, which you can reference when implementing your own
+customizations:
+
+```css
+[data-ln-header-resizer="true"] {
+  background-color: transparent;
+  transition: background-color 200ms ease-in-out;
+  cursor: col-resize;
+  &:hover {
+    background-color: var(--lng1771-primary-50);
+  }
+}
+```
+
+### Resizing Programmatically
+
+For one-off resizes or custom resize workflows, call the grid API's `columnResize` method.
+It accepts a JavaScript object mapping column IDs to widths.
+
+```ts
+grid.api.columnResize({ exchange: 200, network: 100 });
+```
+
+The `columnResize` method is a convenience wrapper around `columnUpdate`. The following
+code produces the same result:
+
+```ts
+grid.api.columnUpdate({ exchange: { width: 200 }, network: { width: 100 } });
+```
+
+### Min & Max Column Width
+
+Use the `widthMin` and `widthMax` properties to clamp a column's width.
+By default, columns have a minimum width of `80px` and a maximum width of `1000px`.
+
+The demo below clamps column widths between `100px` and `300px`.
+When a user resizes a column past these bounds, LyteNyte Grid will use a clamped
+width value for layout calculations.
+
+!demo:Column Width Bounds="./demos/column-resizing-minmax_x"
+
+The column `widthMin` and `widthMax` properties define visual layout bounds that
+LyteNyte enforces. LyteNyte does not clamp the column's `width` value to
+those limits, so your code can set `width` outside `widthMin`/`widthMax`. If `width` is out
+of bounds and you later change `widthMin` or `widthMax`, LyteNyte immediately
+resizes the column to fit the updated limits.
+
+```ts
+const column = { id: "exchange", widthMin: 100, width: 3000, widthMax: 300 };
+```
+
+## Column Width Flex
+
+Every column has a specified width or a default width. When the total column width is
+smaller than the viewport, you can allocate the remaining space using `widthFlex`.
+This property defines how much of the free space a column should take,
+similar to the CSS `flex` property.
+
+!demo:Full Width Viewport Filling="./demos/column-resizing-width-flex_x"
+
+<Callout>
+
+`widthFlex` is most noticeable on wide viewports. On small screens, you may not see
+columns expand. View this demo on a desktop-sized display to see the effect.
+
+</Callout>
+
+## Size To Fit
+
+The `columnSizeToFit` property sizes columns so they fit within the viewport.
+When total column width exceeds the viewport, the grid shrinks column widths.
+When total width is smaller, the grid expands them.
+
+In the demo below, you can toggle the `columnSizeToFit` property to observe how
+it changes the widths of the column. The smaller the size of your display the
+more pronounced the effect will be.
+
+!demo:Size-to-Fit Columns="./demos/column-resizing-size-to-fit_x"
+
+Use the `columnSizeToFit` property sparingly. Columns can appear compressed on
+narrow viewports, and cell content may truncate. Only enable this feature
+when all columns must be visible.
+
+## Measure Text Function
+
+LyteNyte Grid exports a `measureText` function that approximates the
+pixel width of a string. This is useful when adjusting cell
+content based on available space.
+
+Measuring the width of a given cell's text, allows for some interesting use cases.
+For example, applications like Excel show `#` symbols when a number overflows the cell.
+The demo below demonstrates the pattern by toggling this effect on and off.
+
+- **String Truncation:** The **Symbol** and **Exchange** columns, which contain strings, are truncated.
+- **Number Hashing:** The **Performance** and **Volatility** columns, which contain numbers, are hashed.
+
+!demo:Truncating and Hashing="./demos/column-resizing-measure-text_x"
+
+In the demo, the `HashedValue` component uses `measureText` inside a `useMemo`
+call. Measuring text is expensive, so caching the result avoids running the calculation on every render.
+
+```tsx
+function HashedValue({
+  value,
+  columnIndex,
+  gridState,
+}: {
+  value: string;
+  gridState: GridState<DEXPerformanceData>;
+  columnIndex: number;
+}) {
+  const widths = gridState.xPositions.useValue();
+  const width = widths[columnIndex + 1] - widths[columnIndex];
+
+  const measuredWidth = useMemo(() => {
+    const m = measureText(value, gridState.viewport.get()!);
+    return m.width;
+  }, [gridState.viewport, value]);
+
+  if (measuredWidth > width) return "#".repeat(Math.ceil(width / 16) + 1);
+
+  return value;
+}
+```
+
+The `measureText` function has many uses. LyteNyte Grid relies on it internally for autosizing and
+other text-based measurements. Remember that the function returns an approximation, not
+an exact value. Differences in browser text rendering prevent pixel-perfect consistency.
+
+## Next Steps
+
+- [Column Base](/docs/v1/column-base): See the default column values and how to override them with the `columnBase` property.
+- [Column ID & Name](/docs/v1/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Moving](/docs/v1/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Field](/docs/v1/column-field): Control how a column retrieves its value for each cell.

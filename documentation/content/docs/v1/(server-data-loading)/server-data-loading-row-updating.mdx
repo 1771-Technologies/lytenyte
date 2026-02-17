@@ -1,0 +1,78 @@
+---
+title: Data Updates
+description: Handle live data updates to display real-time views driven by server events.
+  LyteNyte Grid's server data source requests update ticks from the server at a configurable frequency.
+---
+
+## Processing Updates
+
+By default, the LyteNyte Grid server data source does not expect row data to update regularly.
+As a result, it does not request updates from the server unless the view changes.
+However, the data source provides a `refresh` method that sends data requests
+for the current view to the server. Therefore, a real-time data grid
+can be established in two steps:
+
+1. Set up the data grid view using the standard non-updating configuration with the `useServerDataSource` hook.
+2. Call the `refresh` method whenever the grid should update its rows.
+
+The example below demonstrates this behavior. A `setInterval` polls the server every second
+for updates, and the grid refreshes accordingly. The example uses a grouped data view to
+show that update ticking works for both flat and grouped views.
+
+!demo:Data Ticking="./demos/row-data-updates"
+
+### Manually Refreshing the Grid
+
+The `refresh` method described above is a convenience wrapper around two other
+methods provided by the LyteNyte Grid server data source:
+
+- `requestsForView`: an atom that returns [Data Request Objects](/docs/v1/reference/row-data-source#datarequest) for the current view.
+- `pushRequests`: sends [Data Request Objects](/docs/v1/reference/row-data-source#datarequest) to the
+  server to force an update for the slices described by the requests.
+
+Therefore, the following code blocks are equivalent:
+
+```ts
+const ds = useServerDataSource({ ... })
+
+ds.refresh()
+// Is equivalent to
+ds.pushRequests(ds.requestsForView.get())
+```
+
+## Data Updating Considerations
+
+Live ticking data grids involve several subtle challenges that many developers,
+and even other grid libraries, often fail to handle correctly. Fortunately, most
+of these complexities are handled automatically when using LyteNyte Grid's server data source.
+
+### Large Number of Updates
+
+Some data views can display hundreds or even thousands of visible cells that may update
+simultaneously and at high frequency. LyteNyte Grid handles these updates efficiently; however,
+because updates originate from the server, browser serialization and deserialization
+introduce performance costs. In such cases, batching updates is recommended. For example,
+request a data refresh every 5 seconds to process updates in 5-second intervals.
+The exact implementation depends on the user case. In practice, you are more likely to
+encounter network update limits before hitting cell-rendering constraints in LyteNyte Grid.
+If you notice performance dips, they are likely occurring in the data-processing layer of your application.
+
+### Consistent Group Updates
+
+When row groups are present, data requests occur per group row and its
+children. For example, if a single expanded row group is in view, the view consists of:
+
+- The root data slice containing the group rows
+- The child rows of the expanded group
+
+These represent two separate data requests. LyteNyte Grid's `dataFetcher`
+provides both slices simultaneously, but if your implementation splits them into
+multiple server requests, the returned data may become out of sync. This can occur if the server
+data ticks between requests. To prevent this, handle refresh requests together to ensure data consistency.
+
+## Next Steps
+
+- [Unbalanced Rows](/docs/v1/server-data-loading-unbalanced-rows): Handle asymmetric row groups of varying depths.
+- [Optimistic Loading](/docs/v1/server-data-loading-optimistic-loading): Use optimistic loading to prefetch data and improve responsiveness.
+- [Server Row Grouping and Aggregation](/docs/v1/server-data-loading-row-grouping-and-aggregation): Handle grouped data and load group slices.
+- [Handling Load Failures](/docs/v1/server-data-loading-handling-load-failures): Explore how to handle failed data requests.

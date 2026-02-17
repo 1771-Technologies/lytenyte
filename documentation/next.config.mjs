@@ -27,7 +27,7 @@ const config = {
   async rewrites() {
     return [
       {
-        source: "/docs/:path*.mdx",
+        source: "/docs/v1/v1/:path*.mdx",
         destination: "/llms.mdx/:path*",
       },
     ];

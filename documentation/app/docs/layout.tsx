@@ -14,7 +14,7 @@ export default function Layout({ children }: PropsWithChildren) {
       nav={{
         mode: "top",
         title: <LogoLyteNyte />,
-        url: "/docs/intro-getting-started",
+        url: "/docs/v1/intro-getting-started",
       }}
       githubUrl="https://github.com/1771-Technologies/lytenyte"
       themeSwitch={{ mode: "light-dark" }}
@@ -32,10 +32,10 @@ export default function Layout({ children }: PropsWithChildren) {
         tabs: [
           {
             title: "Guides",
-            url: "/docs/intro-getting-started",
+            url: "/docs/v1/intro-getting-started",
             matchSelected: {
               match: ["/docs"],
-              ignore: ["/docs/reference", "/docs/changelog"],
+              ignore: ["/docs/v1/reference", "/docs/v1/changelog"],
             },
             description:
               "Tutorials and quick walkthroughs of LyteNyte Grid. These docs are more user friendly and description than the API reference.",
@@ -43,9 +43,9 @@ export default function Layout({ children }: PropsWithChildren) {
           },
           {
             title: "API Reference",
-            url: "/docs/reference",
+            url: "/docs/v1/reference",
             matchSelected: {
-              match: ["/docs/reference"],
+              match: ["/docs/v1/reference"],
               ignore: [],
             },
             description:
@@ -54,9 +54,9 @@ export default function Layout({ children }: PropsWithChildren) {
           },
           {
             title: "Changelog",
-            url: "/docs/changelog/latest",
+            url: "/docs/v1/changelog/latest",
             matchSelected: {
-              match: ["/docs/changelog"],
+              match: ["/docs/v1/changelog"],
               ignore: [],
             },
             description: "A log of all the changes introduced between LyteNyte Grid versions.",

@@ -1,0 +1,65 @@
+---
+title: Installation
+description: Install LyteNyte Grid with a package manager or import its assets from a CDN.
+---
+
+LyteNyte Grid is available in two editions:
+
+- **Core Edition** ([Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)): Free, open-source edition that contains all the essential grid features.
+
+- **PRO Edition** ([commercial license](https://www.1771technologies.com/eula)): Paid, enhanced edition that includes everything in Core, plus advanced
+  capabilities for large-scale and complex use cases, such as server-side data loading, pivoting, tree data, and more.
+
+Both editions can be installed from the NPM registry using your preferred package manager.
+
+```package-install
+@1771technologies/lytenyte-core
+```
+
+```package-install
+@1771technologies/lytenyte-pro
+```
+
+## Upgrading to PRO
+
+LyteNyte Grid PRO extends LyteNyte Grid Core. If you start with LyteNyte Grid Core and later
+upgrade to PRO, you only need to update the package imports. Simply replace:
+
+```ts
+import { Grid } from "@1771technologies/lytenyte-core";
+```
+
+With:
+
+```ts
+import { Grid } from "@1771technologies/lytenyte-pro";
+```
+
+## Trial Licensing
+
+The **PRO edition** requires a valid **Developer PRO** or **Organization PRO** license for production.
+
+You can install and evaluate it without a license. The grid will remain fully functional,
+but a persistent watermark will appear in both development and production.
+To remove the watermark, activate your license key as explained in
+the [License Activation guide](/docs/v1/intro-license-activation).
+
+For details on licensing options and pricing, visit our [pricing page](https://www.1771technologies.com/pricing).
+
+## CDN Installation
+
+LyteNyte Grid is available via CDN through NPM's distribution network. While the package offers various
+entry points depending on your component requirements, the following CDN
+links provide access to all available code files:
+
+- [**unpkg**](https://app.unpkg.com/@1771technologies/lytenyte-pro/files/dist)
+- [**JsDelivr**](https://cdn.jsdelivr.net/npm/@1771technologies/lytenyte-pro/dist/)
+
+## Source Installation
+
+The complete source code for LyteNyte Grid is publicly available on [GitHub](https://github.com/1771-Technologies/lytenyte).
+You can clone and build the project directly from source if your project requires customization.
+
+**Important:** When building from source, you must adhere to the respective licenses
+for both editions. Using or developing code from the PRO source requires a valid license to be purchased.
+Please review the LyteNyte Grid [End User License Agreement](https://www.1771technologies.com/eula) for complete legal terms.

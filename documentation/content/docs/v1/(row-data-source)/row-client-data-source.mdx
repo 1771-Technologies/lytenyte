@@ -1,0 +1,52 @@
+---
+title: Client Row Data Source
+description: Learn how to implement and use the client-side row data source in
+  LyteNyte Grid for fast, in-browser datasets.
+---
+
+Use LyteNyte Grid's client data source when you can load the entire
+dataset into the browser. This source stores all rows in memory and
+assumes the complete dataset is available on the client. It is the
+simplest of all data sources, but also the most feature rich.
+
+<Callout>
+
+Do not underestimate the scalability of the client data source.
+JavaScript runs faster than many expect, and LyteNyte Grid optimizes
+client-side operations heavily. The client data source can handle well
+over 50,000 rows efficiently. The real bottleneck is usually the network
+transfer time, which may or may not be an issue for your users.
+
+</Callout>
+
+## Create a Client Data Source
+
+Import and call the `useClientRowDataSource` hook to create a client
+data source. Pass it the initial row data. The hook returns an object
+that implements the row data source interface. For details, see the
+[API Reference](/docs/v1/reference).
+
+!demo:Client Row Data Source="./demos/row-client-data-source"
+
+### Top and Bottom Data
+
+You can include pinned rows at the top and bottom of the grid. These
+rows remain visible while users scroll through the main dataset.
+
+!demo:Pinned Top and Bottom="./demos/row-client-data-source-pinned"
+
+### Access All Data
+
+The LyteNyte Grid API does not offer a single method to retrieve every
+row from the grid because each data source loads differently. The
+client-side row data source includes a `rowData` method that returns all
+rows currently loaded in memory.
+
+```ts
+const ds = useClientRowDataSource({
+  data: companiesWithPricePerf,
+});
+
+// Get all row data in a flat array
+const rowData = ds.rowData("flat");
+```

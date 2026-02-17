@@ -1,0 +1,21 @@
+---
+title: RTL Support
+description: Enable Right-to-Left (RTL) rendering in LyteNyte Grid with a single
+  configuration change.
+---
+
+LyteNyte Grid fully supports Right-to-Left (RTL) rendering.
+Enable it by setting the `rtl` property on the grid state.
+
+<Callout>
+
+LyteNyte Grid uses [logical CSS properties](https://developer.mozilla.org/en-US/docs/v1/Web/CSS/CSS_logical_properties_and_values)
+throughout its codebase. This ensures RTL works seamlessly without extra styling changes.
+You only need to set the `rtl` flag-no additional configuration is required.
+
+</Callout>
+
+Set the `rtl` flag directly on the grid. The grid will not detect RTL
+based on the CSS `direction` of the viewport or any parent element.
+
+!demo:RTL Mode="./demos/rtl-support"
