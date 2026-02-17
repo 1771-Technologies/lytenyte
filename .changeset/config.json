@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["documentation", "@1771technologies/remark-code-demo", "root"]
+  "ignore": ["documentation", "@1771technologies/remark-code-demo", "@1771technologies/oneplay", "docs"]
 }
