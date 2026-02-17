@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@1771technologies/lytenyte-pro": "2.0.0-dev.2",
-    "@1771technologies/lytenyte-design": "2.0.0-dev.2",
-    "@1771technologies/grid-sample-data": "2.0.0-dev.2",
+    "@1771technologies/lytenyte-pro": "2.0.0",
+    "@1771technologies/lytenyte-design": "2.0.0",
+    "@1771technologies/grid-sample-data": "2.0.0",
     "@ark-ui/react": "5.25.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
