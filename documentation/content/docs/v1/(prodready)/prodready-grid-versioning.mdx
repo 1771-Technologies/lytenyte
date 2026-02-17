@@ -1,0 +1,63 @@
+---
+title: Grid Versioning
+description: LyteNyte Grid uses semantic versioning to manage new grid releases.
+---
+
+## Semantic Versioning
+
+All LyteNyte Grid packages follow [semver](https://semver.org/) versioning.
+Each version consists of three numbers (major.minor.patch), such as `1.2.0`.
+
+Each number represents a different type of release:
+
+- **Major:** Introduces breaking changes that require updates in your application.
+- **Minor:** Adds new, backward-compatible features and works with your existing code.
+- **Patch:** Includes bug fixes and small improvements.
+
+We refer to minor and patch releases as **updates**, while **major** releases are treated as **upgrades**.
+
+## Release Cadence
+
+LyteNyte Grid does not follow a fixed release schedule.
+Bug fixes ship as soon as they pass internal testing.
+
+Although major releases may introduce significant new capabilities, we prioritize
+stability and aim to avoid breaking changes. Most enhancements are
+delivered as backward-compatible minor updates.
+
+When a release adds substantial new functionality, we may publish a new major version even if there are no breaking changes.
+Breaking changes are always documented in the [changelog](/docs/v1/changelog/latest).
+While not every major release contains breaking changes, any breaking change will
+trigger a major version bump. This ensures your application remains stable when updating only minor versions.
+
+### Checking for the Latest Version
+
+You can find the latest published version of LyteNyte Grid on the NPM Registry:
+
+- **[LyteNyte Grid Core](https://www.npmjs.com/package/@1771technologies/lytenyte-core)**
+- **[LyteNyte Grid PRO](https://www.npmjs.com/package/@1771technologies/lytenyte-pro)**
+
+### Fixed Versioning
+
+LyteNyte Grid packages use a fixed versioning scheme. The code base is a monorepo,
+and all packages are released under the same version number. As a result, the
+LyteNyte Grid Core and LyteNyte Grid PRO packages always share the same version,
+even when a change affects only one package.
+
+## LyteNyte Grid PRO Version Access
+
+When you purchase a LyteNyte Grid PRO license, you receive **12 months
+of dedicated technical support and access to the latest software versions.**
+These 12 months are known as your **license period.**
+
+You may use any version of LyteNyte Grid PRO released within your
+active license period **indefinitely.** However, versions released after your
+license expires require a new license purchase or renewal.
+
+For more on licensing terms, see our [Pricing page](https://www.1771technologies.com/pricing).
+
+## Next Steps
+
+- [Security](/docs/v1/prodready-security): Learn how LyteNyte Grid handles code security and protects applications from common exploits.
+- [Supported Browsers](/docs/v1/prodready-supported-browsers): Review which browsers LyteNyte Grid supports.
+- [Bundling & Tree Shaking](/docs/v1/prodready-bundling): Learn the best way to include LyteNyte Grid in your bundle.

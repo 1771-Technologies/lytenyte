@@ -1,0 +1,54 @@
+---
+title: Row Sorting
+description: Sort rows in ascending or descending order using LyteNyte Grid's declarative sort model.
+---
+
+## Sort Model
+
+LyteNyte Grid defines sorting through the `sortModel` property on the grid state. The grid does not
+sort data directly. Instead, the row data source applies the sort and returns the sorted rows.
+`sortModel` is an array of sort configurations.
+
+LyteNyte Grid supports built-in sort types and custom sort implementations.
+Each item in the `sortModel` conforms to the [`SortModelItem`](/docs/v1/reference/sort#sortmodelitem)
+interface. An example appears below:
+
+```tsx
+{ columnId: "age", sort: { kind: "number" }, isDescending: false },
+```
+
+This guide describes the sort model as a generic representation of sort state. The data source you
+provide remains responsible for applying the sort. The demo below shows this behavior using the
+[client row data source](/docs/v1/row-client-data-source).
+
+For a server-driven example, see the
+[Server Row Sorting guide](/docs/v1/server-data-loading-row-sorting), which sorts data on a mock server
+before returning results to the client.
+
+Click a column header in the demo to cycle through the available sort states.
+
+!demo:Row Sort Model="./demos/row-sorting"
+
+## Multi-Column Sort
+
+Since the `sortModel` is an array, you can define multiple sort rules to create a multi-column sort:
+
+1. The first item in the array has the highest priority.
+2. If values are equal, the next sort rule applies, and so on.
+
+In the demo below, hold **Ctrl** (Windows/Linux) or **Command** (macOS) while clicking a column header
+to add it to the sort model. See the example's `Header` component for one way to implement this
+interaction.
+
+!demo:Multi-Column Sorting="./demos/row-sorting-multi"
+
+If your application already performs an action when a column header is clicked, or if Ctrl+click to add more sorts feels unintuitive,
+LyteNyte Grid provides a [Sort Manager](/docs/v1/component-sort-manager) to handle multi-sorting in a user-friendly way.
+Consider using it when your grid requires sorting across multiple dimensions.
+
+## Next Steps
+
+- [Row Height](/docs/v1/row-height): Change row height, including variable-height and fill-height rows.
+- [Row Pinning](/docs/v1/row-pinning): Freeze rows at the top or bottom of the viewport.
+- [Row Full Width](/docs/v1/row-full-width): Create rows that span the full width of the viewport.
+- [Row Selection](/docs/v1/row-selection): Select single or multiple rows.

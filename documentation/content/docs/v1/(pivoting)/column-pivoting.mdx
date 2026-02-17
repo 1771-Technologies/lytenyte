@@ -1,0 +1,36 @@
+---
+title: Column Pivoting
+description: Learn how to use column pivoting in LyteNyte Grid to dynamically generate columns
+  from row data values and calculate measures across dimensions.
+---
+
+Column pivoting transforms values of a column into new columns in your grid. Set the
+`columnPivotModel` property on grid state to enable this feature.
+
+LyteNyte Grid creates unique state for pivot columns with their own sort and filter settings.
+
+Your underlying data source must support column pivoting. Since pivots derive from row values,
+creating columns from these values depends on your data source. Both the
+[Client Row Data Source](/docs/v1/row-client-data-source) and
+[Server Row Data Source](/docs/v1/row-server-data-source) support column pivoting.
+
+## Pivoting
+
+To start column pivoting:
+
+1. Set the value of the `columnPivotModel` to the pivot configuration to display.
+2. Set `columnPivotMode` to `true` on the grid state.
+
+The example below shows the simplest column pivot configuration the grid may use. Here,
+we pivot on the `job` column, turning its values into columns and measure the `balance`
+column as a sum of our pivoted `job` columns.
+
+!demo:Pivoting="./demos/column-pivoting"
+
+## Pivots and Row Groups
+
+Pivots are an aggregate operation. They only make sense when data is aggregated across the pivot
+column. LyteNyte Grid supports break these aggregations into groups by supplying the `columnPivotModel`
+with rows to group on. The example below does this by grouping on the `education` and `marital` columns.
+
+!demo:Pivots With Row Grouping="./demos/column-pivoting-row-groups"

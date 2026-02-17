@@ -1,0 +1,176 @@
+---
+title: Server Row Filtering
+description: LyteNyte Grid defines several filter models that the server data source can use to filter rows
+  on the server. The server may also define its own custom filter model to implement application-specific filtering logic.
+---
+
+## Available Filter Models
+
+There are three parts of the LyteNyte Filter Model. Additionally a custom filter model may be defined. These
+provide four different ways filters may be applied when using the LyteNyte Grid server data source:
+
+- [Filter Model](/docs/v1/reference/filters#filtermodelitem): Standard column filters that
+  apply predicates to cell values, such as greater than or less than comparisons.
+- [Filter In Model](/docs/v1/reference/filters#filterin): A tree-set definition used
+  for inclusion or exclusion of values.
+- [Quick Search](/docs/v1/filter-quick-filter): A string-based search that matches a value across any cell in a row.
+- **Custom:** A developer-defined model, not part of the LyteNyte Grid state.
+  Developers can define any model structure that suits their application.
+
+## Handling the Filter Model on the Server
+
+LyteNyte Grid's `filterModel` state defines column filters that servers can use for basic filtering.
+A server may use this to return only rows that meet a column condition, such as cells greater than a given value.
+
+<Callout type="warn">
+
+The filter logic shown below implements only a subset of LyteNyte Grid's full filter model for
+illustration purposes. Additional filters, such as the date filter's quarterly options have been omitted from the
+implementation for brevity. Most databases already support equivalent operators, so developers rarely
+need to reimplement complex filtering manually.
+
+</Callout>
+
+!demo:Column Filters="./demos/filtered-server-data"
+
+### Filter Options
+
+Each column filter may include additional options. The server decides whether and how to handle them.
+For example, a string filter might look like this:
+
+```ts
+{
+  kind: "string",
+  operator: "contains",
+  value: "Star",
+  options: {
+    trimWhitespace: true
+  }
+}
+```
+
+Here, `trimWhitespace` is `true`. The server reads this flag and trims whitespace from the
+filter value before evaluating it. LyteNyte Grid leaves filter interpretation entirely up to
+your backend. The server may ignore options or apply them as needed.
+The grid expects only that the response includes valid rows for the given query.
+
+## The Filter In Model
+
+The `filterInModel` allows inclusion and exclusion checks for cell values.
+These are often called “set filters” or “in filters.” The server must handle two responsibilities:
+
+1. Provide the list of unique filter values available for each column.
+2. Filter rows in response to changes in the grid's `filterInModel` state.
+
+### Providing Filter Values
+
+The server data source accepts a `dataInFilterItemFetcher` callback, a function that
+returns a `Promise` of filter values for a given column.
+LyteNyte Grid calls this function whenever in-filter values are requested for display.
+
+This function receives parameters described by the
+[`DataInFilterItemFetcherParams`](/docs/v1/reference/row-data-source#datainfilteritemfetcherparams) interface:
+
+```ts
+interface DataInFilterItemFetcherParams<T> {
+  readonly grid: Grid<T>;
+  readonly column: Column<T>;
+  readonly reqTime: number;
+}
+```
+
+- **`grid`:** Reference to the grid state; you can query sort or group state as needed.
+- **`column`:** The column requesting filter items.
+- **`reqTime`:** A Unix timestamp for handling request collisions.
+
+The fetcher should return an array (or `Promise`) of [`FilterInFilterItem`](/docs/v1/reference/filters#filterinfilteritem) objects:
+
+```ts
+export interface FilterInFilterItem {
+  readonly id: string;
+  readonly label: string;
+  readonly value: unknown;
+  readonly groupPath?: string[];
+}
+```
+
+Each filter item must have a unique `id` for rendering.
+
+- `label`: Displays the filter text.
+- `value`: Is used for membership tests and must be storable in a `Set`.
+- `groupPath`: Defines hierarchical groupings, such as dates or category trees.
+
+### Applying the In Filter
+
+After fetching filter items, users can include or exclude values.
+The example below uses LyteNyte Grid's [Filter Tree](/docs/v1/component-filter-tree)
+to display choices for the **Genre** column. Click the funnel icon to open the filter.
+
+<Callout>
+
+Each time the funnel opens, the grid shows a loading indicator. LyteNyte Grid doesn't cache filter
+item responses. If needed, cache the responses in your data fetching layer.
+
+</Callout>
+
+!demo:In Filter="./demos/in-filter-server-data"
+
+The in-filter logic runs on the server, allowing full control over interpretation.
+For example, the model below excludes specific genres:
+
+```ts
+filterInModel: {
+  genre: {
+    kind: "in",
+    operator: "not_in",
+    value: new Set(["Drama", "Animation", "Anime"]),
+  },
+}
+```
+
+This filter keeps rows whose `genre` value is **not** _ts`"Drama"`_, _ts`"Animation"`_, or _ts`"Anime"`_.
+If a `genre` cell contains multiple values (e.g., _ts`"Comedy, Documentary"`_), the server splits the string and checks each value.
+In the demo, filtering ignores case sensitivity, but this behavior can be made configurable.
+You have full control over how to interpret filters based on your data model.
+
+## Quick Search
+
+LyteNyte Grid's `quickSearch` property provides a fast way to filter rows by string matching across all columns.
+The grid can send this value to the server for server side search, though this approach is practical only for small datasets.
+Large scale string matching is costly, even for optimized databases.
+
+The demo below uses the search term _ts`"movie"`_, which keeps only rows containing that string. Try typing _ts`"drama"`_ to test it.
+
+!demo:Quick Search="./demos/filtered-quick-search"
+
+<Callout type="warn">
+
+The example's _tsx`<input />`_ is not debounced for simplicity. In production, debounce
+the search input to avoid redundant server requests. For a guide on debouncing
+see [this article](https://dev.to/manishkc104/debounce-input-in-react-3726).
+
+</Callout>
+
+## External Filters
+
+Depending on your application, you may need a custom filter model.
+You can integrate external filters into the data-fetching pipeline by injecting them into the `dataFetcher` function of
+the server data source. This can be done using the `dataFetchExternals` property on the server data source.
+This property accepts an array of dependencies, and will invalidate the `dataFetcher` function and refetch
+data from the server whenever one of the dependencies changes.
+
+The following demo uses the `dataFetchExternals` property to toggle between `Movies` and `TV Shows`:
+
+!demo:External Filter="./demos/external-filter"
+
+This is one of many ways to use external filters. With the right state
+management tools, you can build more advanced integrations. The key is ensuring your `dataFetchExternals`
+dependencies are stable and only change when necessary.
+
+## Next Steps
+
+- [Server Row Grouping and Aggregations](/docs/v1/server-data-loading-row-grouping-and-aggregation): Learn how
+  to fetch grouped data and handle row expansion and collapse.
+- [Server Row Sorting](/docs/v1/server-data-loading-row-sorting): Implement and display server-side sorting.
+- [Optimistic Loading](/docs/v1/server-data-loading-optimistic-loading): Use optimistic loading
+  to pre-fetch data and improve responsiveness.

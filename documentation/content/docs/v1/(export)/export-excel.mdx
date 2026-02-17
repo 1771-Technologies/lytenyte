@@ -1,0 +1,19 @@
+---
+title: Export Excel
+description: Implement Excel export in LyteNyte Grid using third-party libraries like ExcelJS.
+---
+
+LyteNyte Grid does not include built-in Excel export to keep the bundle size small. Instead, use
+established open-source libraries to generate Excel files. This approach avoids adding large
+dependencies to the grid.
+
+This guide shows how to use [ExcelJS](https://github.com/exceljs/exceljs) to create downloadable
+Excel files from your grid data.
+
+!demo:Excel Export="./demos/excel-export"
+
+## How It Works
+
+Use the `exportDataRect` API method to retrieve the grid's data for export. Pass this data into your
+ExcelJS logic to populate and style the spreadsheet. For details on `exportDataRect`, see the
+[Export Any Data](/docs/v1/export-any-data) guide.
