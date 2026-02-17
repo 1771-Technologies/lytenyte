@@ -96,9 +96,7 @@ export function DocsNavbar({
               </LanguageToggle>
             ) : null}
             {themeSwitch.enabled !== false &&
-              (themeSwitch.component ?? (
-                <ThemeToggle mode={themeSwitch.mode ?? "light-dark-system"} />
-              ))}
+              (themeSwitch.component ?? <ThemeToggle mode={themeSwitch.mode ?? "light-dark-system"} />)}
           </div>
           {links
             .filter((item) => item.type === "icon")

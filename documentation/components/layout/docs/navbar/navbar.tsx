@@ -15,9 +15,7 @@ export function Navbar({ mode, ...props }: ComponentProps<"header"> & { mode: "t
       className={cn(
         "top-(--fd-banner-height) right-(--removed-body-scroll-bar-size,0) px-(--fd-layout-offset) h-(--fd-nav-height) fixed left-0 z-20 flex flex-col backdrop-blur-sm transition-colors",
         (!isTransparent || open) && "bg-fd-background/80",
-        mode === "auto" &&
-          !collapsed &&
-          "ps-[calc(var(--fd-layout-offset)+var(--fd-sidebar-width))]",
+        mode === "auto" && !collapsed && "ps-[calc(var(--fd-layout-offset)+var(--fd-sidebar-width))]",
         props.className,
       )}
     >

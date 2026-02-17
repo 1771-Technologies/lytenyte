@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { LayoutTab } from "./layout-tab";
 import { cn } from "@/components/cn";
 import type { Option } from "@/components/root-toggle";
+import { VersionPicker } from "./version-picker";
 
 export function LayoutTabs({
   options,
@@ -41,13 +42,12 @@ export function LayoutTabs({
       )}
     >
       {options.map((option) => (
-        <LayoutTab
-          key={option.url}
-          selected={selected === option}
-          option={option}
-          vertical={vertical}
-        />
+        <LayoutTab key={option.url} selected={selected === option} option={option} vertical={vertical} />
       ))}
+      <div className="flex-1" />
+      <div className="flex h-full items-center justify-center">
+        <VersionPicker />
+      </div>
     </div>
   );
 }
