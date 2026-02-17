@@ -2,12 +2,9 @@
   "mode": "pre",
   "tag": "dev",
   "initialVersions": {
-    "documentation": "0.0.0",
-    "docs": "0.0.1",
     "@1771technologies/eslint-preset": "0.0.14",
     "@1771technologies/lytenyte-doc": "1.0.13",
     "@1771technologies/oneplay": "0.0.5",
-    "root": "0.0.1",
     "@1771technologies/play-frame": "0.0.19",
     "@1771technologies/remark-code-demo": "1.0.13",
     "@1771technologies/lytenyte-pro": "1.0.21",
@@ -16,7 +13,5 @@
     "@1771technologies/lytenyte-shared": "1.0.21",
     "@1771technologies/grid-sample-data": "1.0.21"
   },
-  "changesets": [
-    "kind-moles-mate"
-  ]
+  "changesets": ["kind-moles-mate"]
 }
