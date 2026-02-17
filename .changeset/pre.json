@@ -16,5 +16,7 @@
     "@1771technologies/lytenyte-shared": "1.0.21",
     "@1771technologies/grid-sample-data": "1.0.21"
   },
-  "changesets": []
+  "changesets": [
+    "kind-moles-mate"
+  ]
 }
