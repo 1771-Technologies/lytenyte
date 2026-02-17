@@ -59,7 +59,7 @@ export default function PivotDemo() {
     pivotModel: {
       colLabelFilter: [
         (s) => {
-          return s !== "Under 25";
+          return s !== "Youth (<25)";
         },
       ],
       rowLabelFilter: [

@@ -819,15 +819,6 @@ importers:
         specifier: workspace:*
         version: link:../sample-data
 
-  packages/commercial-lytenyte-type-gen:
-    dependencies:
-      react:
-        specifier: 18.0.0 || ^19.0.0
-        version: 19.2.1
-      react-dom:
-        specifier: 18.0.0 || ^19.0.0
-        version: 19.2.1(react@19.2.1)
-
   packages/lytenyte-core-experimental:
     dependencies:
       '@1771technologies/lytenyte-design':
