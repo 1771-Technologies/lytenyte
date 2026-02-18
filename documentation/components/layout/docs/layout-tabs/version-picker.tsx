@@ -6,11 +6,8 @@ export function VersionPicker() {
   return (
     <M.Root>
       <div className="flex h-full items-center">
-        <M.Trigger className="hover:bg-fd-accent flex h-[90%] cursor-pointer items-center justify-center gap-2 rounded px-2 py-2 text-sm font-bold transition-colors">
-          v1
-          <div className="rounded border border-orange-500/80 bg-orange-500/50 px-2 py-0.5 text-[10px]">
-            Previous
-          </div>
+        <M.Trigger className="hover:bg-fd-accent flex h-[90%] cursor-pointer items-center justify-between gap-2 rounded px-2 py-2 text-sm font-bold transition-colors">
+          v1.0.20
           <ChevronDown className="size-4" />
           <span className="sr-only">Open additional page export options</span>
         </M.Trigger>
@@ -22,7 +19,7 @@ export function VersionPicker() {
               "origin-(--transform-origin) w-(--anchor-width) bg-fd-popover border-xd-border text-xd-popover-foreground border px-2 py-1",
               "data-ending-style:opacity-0 data-starting-style:opacity-0 rounded-lg shadow-lg",
               "data-ending-style:scale-90 data-starting-style:scale-90 transition-[transform,scale,opacity]",
-              "grid grid-cols-[auto_1fr_auto] gap-x-2",
+              "grid w-24 grid-cols-[auto_1fr_auto] gap-x-2",
             )}
           >
             <M.Item
