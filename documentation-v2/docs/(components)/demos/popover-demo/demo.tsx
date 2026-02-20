@@ -23,7 +23,11 @@ export default function ComponentDemo() {
             only.
           </div>
 
-          <Popover.Close data-ln-button="tertiary" data-ln-size="md">
+          <Popover.Close
+            data-ln-button="tertiary"
+            data-ln-size="md"
+            className="dark:hover:bg-ln-bg-ui-panel/80"
+          >
             Close Popover
           </Popover.Close>
         </Popover.Container>

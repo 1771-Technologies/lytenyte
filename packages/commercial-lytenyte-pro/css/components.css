@@ -225,8 +225,8 @@
 
     font-family: var(--ln-typeface);
 
-    border: 1px solid var(--ln-border);
-    background-color: var(--ln-bg);
+    border: 1px solid var(--ln-border-popover);
+    background-color: var(--ln-bg-popover);
     box-shadow: var(--ln-shadow-400);
 
     transition-property: opacity, scale;
@@ -249,10 +249,10 @@
       position: absolute;
 
       [data-ln-dialog-arrow-area="true"] {
-        fill: var(--ln-bg);
+        fill: var(--ln-bg-popover);
       }
       [data-ln-dialog-arrow-border] {
-        stroke: var(--ln-border);
+        stroke: var(--ln-border-popover);
       }
 
       &[data-ln-placement="bottom"] {
