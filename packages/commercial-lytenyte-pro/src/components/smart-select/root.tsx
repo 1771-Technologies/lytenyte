@@ -236,7 +236,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
         lightDismiss={lightDismiss}
       >
         {trigger}
-        {triggerEl && createPortal(container, triggerEl)}
+        {triggerEl && createPortal(container, p.kind === "combo" ? triggerEl.parentElement! : triggerEl)}
       </Popover>
     </SmartSelectProvider>
   );

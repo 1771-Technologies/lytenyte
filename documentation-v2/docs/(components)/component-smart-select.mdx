@@ -27,11 +27,11 @@ Set the `kind` property to `"combo"` and the `trigger` property to `SmartSelect.
 use the `SmartSelect` component in combobox mode. A combobox allows users to search for an item
 before selecting it.
 
-The demo below shows the `SmartSelect` component used as a combobox. In this demo, the selected
-value is used as the combobox input value, but this behavior is not required. In most cases,
-a combobox is used to update the state of another component based on the selected value.
+The demo below uses the `SmartSelect` component as a combobox. While this example populates
+the input field with the selected value, this behavior is optional.
+Often, a combobox updates state in other components.
 
-::demo[Combobox Select="./demos/smart-combo-demo"]
+::demo[Basic Combobox Select="./demos/smart-combo-demo"]
 
 ## Multiple Select
 
@@ -42,13 +42,13 @@ multiple items.
 The `value` property must be provided as an array of options, unlike the basic select variant,
 which accepts a single selected value.
 
-The demo below shows multi-select in action. Selected items are rendered as `SmartSelect.Chip`
+The demo below shows multi-select. Selected items are rendered as `SmartSelect.Chip`
 components. You must use `SmartSelect.Chip` for selected values to ensure the `SmartSelect`
 component correctly handles keyboard navigation.
 
 ::demo[Multiple Select="./demos/smart-select-multi-demo"]
 
-## Multiple Combobox
+## Multiple Combobox Select
 
 Set the `kind` property to `"multi-combo"` and the `trigger` property to
 `SmartSelect.MultiComboTrigger` to use the `SmartSelect` component in multi-combobox mode.
@@ -58,7 +58,7 @@ The demo below shows multi-combobox in action. Selected items are rendered as
 `SmartSelect.Chip` components. Users can type into the search input to add additional chips
 to the current selection.
 
-::demo[Multi Combobox="./demos/smart-multi-combo-demo"]
+::demo[Multi-Combobox="./demos/smart-multi-combo-demo"]
 
 ## Asynchronous Select
 
@@ -68,9 +68,9 @@ When the `SmartSelect` component uses a combobox trigger, the `options` property
 The demo below shows asynchronous searching. This approach is useful when options for a given
 search query must be fetched from a server.
 
-::demo[Asynchronous Multi Combobox="./demos/smart-multi-combo-async"]
+::demo[Asynchronous Multi-Combobox="./demos/smart-multi-combo-async"]
 
-## Properties
+## Smart Select Properties
 
 The `SmartSelect` component is composed of several headless component parts. This section
 describes the properties for headless components that define behavior beyond standard HTML
@@ -103,12 +103,12 @@ element properties.
     {
       name: "openKeys",
       description:
-        "An array of key values that open the select list. Defaults to [' ', 'Enter', 'ArrowDown'].",
+        "An array of key values that open the select list. Defaults to `[' ', 'Enter', 'ArrowDown']`.",
       type: "string[]",
     },
     {
       name: "closeKeys",
-      description: "An array of key values that close the select list. Defaults to ['Escape'].",
+      description: "An array of key values that close the select list. Defaults to `['Escape']`.",
       type: "string[]",
     },
     {
