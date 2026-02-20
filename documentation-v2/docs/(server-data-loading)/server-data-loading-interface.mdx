@@ -2,22 +2,23 @@
 title: Data Interface
 pro: true
 step: Request and response interface of the LyteNyte Grid server data source.
-description: Use LyteNyte Grid's server data loading interfaces
-  to load and display server-provided row data efficiently.
+description: Use LyteNyte Grid's server data loading APIs to fetch and render row data from your backend.
 ---
 
 LyteNyte Grid sends requests to the server using a defined request structure and
 expects responses in a specific format. This request/response cycle is the server
 data interface, i.e. the protocol LyteNyte Grid uses to exchange data.
 
-This section introduces the server data interface types and provides a high-level
-overview. For a practical guide, see the [Server Row Data guide](/docs/server-data-loading-row-data).
+:::note
+This section introduces the server data interface types and gives an overview. For a practical guide,
+see the [Server Row Data guide](/docs/server-data-loading-row-data).
+:::
 
 ## Request Interface
 
-At the core of the server data interface is the request interface, the API description of which
-may be found in the [API reference](/docs/reference/grid-api). In plain
-typescript the `DataRequest` interface is relatively simple:
+The server data interface centers on the request interface. See the [API reference](/docs/reference/grid-api) for
+the full specification. The TypeScript definition of the
+`DataRequest` interface is shown below:
 
 ```ts
 export interface DataRequest {
@@ -30,7 +31,7 @@ export interface DataRequest {
 }
 ```
 
-An example of the request may look something like:
+Here is an example request:
 
 ```ts
 {
@@ -43,35 +44,33 @@ An example of the request may look something like:
 }
 ```
 
-The request has an `id` of `"__root__:0-100"`. Unique `id`s are created for each request by
-LyteNyte Grid. LyteNyte Grid makes no guarantees about the construction of the `id`, so do not rely
-on its form for logic in your applications. If two requests share the same `id`, the requests are
-equal from a data-fetching standpoint. In other words, their responses write data for the same rows.
-This behavior is useful for deduping requests.
+The request `id` is `"__root__:0-100”`. LyteNyte Grid generates a unique
+`id` for each request but doesn't guarantee the `id` format, so
+don't use it in application logic. When two requests share the
+same `id`, they target the same rows, and their responses populate
+the same row range. This behavior is useful for deduplicating requests.
 
-The `path`, `start`, and `end` properties determine which slice of the view the request targets. The
-server data source divides the view into slices of rows. Each slice is relative to the root of the
-view or to a group row node (in the case of row groups). An empty `path` value indicates that the
-slice requested is for the root. In this example, the data request is for the first 100 rows at the
-root of the view.
+The `path`, `start`, and `end` properties determine the specific
+row slice a request targets. The server data source divides the view
+into row slices. Each slice is relative to the view root
+or a group row node. An empty `path` targets the root.
 
 :::info
 
-LyteNyte Grid represents rows as a tree when using the server data source. The tree is flattened,
-and rows are displayed based on the grid's current scroll position. When these docs refer to the
-**view**, they specifically mean the rows that LyteNyte Grid displays to the user.
+The server data source represents rows as a tree. LyteNyte Grid flattens the tree
+and renders rows according to the current scroll position. In this documentation,
+the term **"view"** refers to the rows currently displayed.
 
 :::
 
-The `rowStartIndex` and `rowEndIndex` provide a projected placement of the returned rows in the
-grid's view. These indices are not strict constraints. They are useful in advanced cases where the
-server holds the full table in memory (with expansions and groupings). Since this is rarely the case,
-most servers ignore these properties. They are included for completeness; developers should not
-worry if `rowStartIndex` or `rowEndIndex` go unused.
+The `rowStartIndex` and `rowEndIndex` project the placement of returned rows
+in the grid view, rather than acting as strict constraints. You can safely
+ignore these properties unless your server keeps the entire expanded
+and grouped table in memory.
 
-When row groups exist, the requested slice may target a group expansion, that is, the child nodes of
-a group. For example, consider a grid grouped by two columns: `"Group A"` and `"Group B"`.
-A data request in this scenario may look like the following:
+When you use row groups, the requested slice can target a group expansion
+to fetch that group's child nodes. For a grid grouped by `"Group A"`
+and `"Group B"`, the data request is as follows:
 
 ```ts
 // For a data slice that is an expansion of just Group A
@@ -95,36 +94,35 @@ A data request in this scenario may look like the following:
 }
 ```
 
-Take the first request object, which has a path of `["Alpha"]`. The server should interpret this
-as: "fetch the rows where `Group A` has the value `"Alpha"`." These rows are then grouped by
-`Group B`, with the first group value equal to `"Alpha"`.
+Consider the first request object, which has `path: ["Alpha"]`. The server should treat
+this as: “Fetch rows where **Group A = "Alpha."** LyteNyte Grid then groups
+the returned rows by **Group B**.
 
-The second request object, with path _ts`["Alpha", "Beta"]`_, targets the leaf rows. Here, `Group A`
-is _ts`"Alpha"`_ and `Group B` is _ts`"Beta"`_.
+The second request object, with `path: ["Alpha", "Beta"]`, targets leaf rows.
+In this case, **Group A = "Alpha"** and **Group B = "Beta"**.
 
-This illustrates how the `path` property defines the slice of data the server should return.
-LyteNyte Grid stitches these response slices together to form a coherent view for users.
+This example shows how `path` defines the data slice the
+server should return. LyteNyte Grid combines these slices to
+build a coherent view.”
 
 ## Response Interface
 
-The server receives data requests and must know how to respond. The types of responses a server can
-send are described in this section. A single data request may result in one or more data responses,
-which is valid and expected by LyteNyte Grid's server data source.
+The server receives data requests and returns responses. The response types
+are defined below. A single request can produce multiple responses,
+and LyteNyte Grid's server data source supports this behavior.
 
 There are two distinct response types:
 
-- A data response for scrollable rows, described in this
-  [API reference](/docs/reference/grid-api).
-- A data response for pinned rows (top or bottom), described in this
-  [API reference](/docs/reference/grid-api).
+- Scrollable rows: Detailed in Scrollable Rows [API reference](/docs/reference/grid-api).
+- Pinned rows (top or bottom): Detailed in the Pinned Rows [API Reference](/docs/reference/grid-api).
 
-LyteNyte Grid expects an array of responses, so the server may send multiple response types in the
-same network round trip.
+LyteNyte Grid expects an array of responses. This allows the server to
+batch multiple response types into a single network payload.
 
 ### Data Response for Scrollable Rows
 
-The data response for scrollable rows uses the `DataResponse` interface. Its TypeScript definition is
-shown below:
+The `DataResponse` interface defines the data response for scrollable
+rows. The TypeScript definition is as follows:
 
 ```ts
 export interface DataResponse {
@@ -138,8 +136,7 @@ export interface DataResponse {
 }
 ```
 
-The response includes additional fields compared to the request interface, while some fields mirror
-those in the request. An example response is shown below:
+The response interface mirrors several request fields and adds additional fields. An example response looks like
 
 ```ts
 {
@@ -156,23 +153,20 @@ those in the request. An example response is shown below:
 }
 ```
 
-The `kind` property of the `DataResponse` object should always be `"center"`. LyteNyte Grid uses
-this value to determine whether a response is for scrollable or pinned rows.
+The scrollable row `DataResponse` object contains the following properties:
 
-The `data` property contains the row data returned by the server. Row data may be either a leaf data
-item or a branch data item. These are explained below.
-
-The `size` property sets the relative row count for the response path. An empty `path` value indicates
-the root row count. Row counts are relative to their path because row groupings create branches in
-the row tree. The tree is then flattened to produce the displayed rows. The final row count is the
-flattened view's row count, accounting for expanded and collapsed rows.
-
-The `asOfTime` property should be a Unix timestamp. It resolves collisions when multiple responses
-map to the same row. The response with the later `asOfTime` takes precedence. Conflicts can occur
-because the server data source is asynchronous, and responses may arrive out of order.
-
-The `path`, `start`, and `end` properties correspond to the properties on the `DataRequest` interface.
-These may be changed in the server response, but doing so is generally not recommended.
+- `kind`: Must be `"center"` to distinguish scrollable rows from pinned rows.
+- `data`: The row data returned by the server, containing leaf or branch data items.
+- `size`: Defines the relative row count for the response `path`.
+  An empty `path` indicates the root row count. Row counts are relative to
+  their `path` because grouping creates branches in the row tree. LyteNyte Grid flattens
+  the tree to produce the rendered rows, and the final count
+  reflects expanded and collapsed groups.
+- `asOfTime`: A Unix timestamp. It resolves collisions when multiple responses map to
+  the same row. The response with the later `asOfTime` takes precedence. Conflicts can
+  occur because requests are asynchronous and responses may arrive out of order.
+- `path`, `start`, `end`: Mirror the `DataRequest` properties.
+  Avoid modifying these values in the response.
 
 #### Leaf Row Data
 
@@ -187,18 +181,17 @@ export interface DataResponseLeafItem {
 }
 ```
 
-Like the `DataResponse` type, the `DataResponseLeafItem` also has a `kind` property. This must be
-`"leaf"`. LyteNyte Grid uses this value to determine if the response data should create a leaf
-row node.
+Like `DataResponse`, `DataResponseLeafItem` includes a `kind` property.
+The `kind` value must be `"leaf"`. LyteNyte Grid uses this value
+to determine whether the response data creates a leaf row node.
 
-The `id` value maps to the [row node's](/docs/reference/row) `id` property, and the `data`
-in the response is associated with that row node. Each item in the data response becomes a row node.
+Each `DataResponseLeafItem` creates one row node, and the item's `id` maps
+directly to the [row node's](/docs/reference/row) `id`, associating the payload's `data` with that specific row node.
 
 #### Branch Row Data
 
-Group (or branch) row data is represented by the `DataResponseBranchItem`. LyteNyte Grid uses these
-items to create [row group nodes](/docs/reference/row). Group nodes represent branches in
-the view that may be expanded or collapsed.
+Branch row data is represented by `DataResponseBranchItem`. LyteNyte Grid uses these items to
+create [row group nodes](/docs/reference/row). Row group nodes represent branches in the view that may be expanded or collapsed.
 
 The TypeScript interface for `DataResponseBranchItem` is shown below.
 
@@ -212,17 +205,16 @@ export interface DataResponseBranchItem {
 }
 ```
 
-The `kind` property tells LyteNyte Grid whether the data item creates a row group node. This value
-must always be `"branch"` to create group nodes.
+The `DataResponseBranchItem` includes the following properties for group nodes:
 
-The `id` property is used as the `id` for the group node. The `data`, typically the group's
-aggregated data, is set on the group node. The `key` property is also attached to the group node and
-is used to place the node in the row tree maintained by the server data source. The `childCount`
-property is required and indicates how many child nodes the group will have.
+- `kind`: Must be `"branch"` to create a group node.
+- `id`: Maps to the group node's `id`.
+- `data`: Set on the group node; it typically contains the group's aggregated data.
+- `key`: Attached to the group node and used to position it within the server data source's row tree.
+- `childCount`: Required. Indicates the number of child nodes in the group.
 
-The close mapping between `DataResponseBranchItem` and the
-[row group node](/docs/reference/row) is intentional. The server response is designed to
-map directly to row creation for performance.
+The close mapping between `DataResponseBranchItem` and the [row group node](/docs/reference/row)
+is intentional. LyteNyte Grid maps the server response directly to node creation to improve performance.
 
 ### Data Response For Pinned Rows
 
@@ -249,9 +241,9 @@ the `asOfTime` property resolves conflicts when writing rows to memory.
 
 ## Query Fetcher Function
 
-The LyteNyte Grid server data source requires a `queryFn` function. This function is the core of
-data loading. The server data source calls it whenever the view changes, passing the data requests
-for the new view.
+The LyteNyte Grid server data source requires a `queryFn` as the primary
+data-loading handler. The server data source calls `queryFn` whenever the
+view changes and passes the requests for the new view.
 
 The function is responsible for fetching responses from the server, either with an HTTP request or a
 WebSocket message, and returning the data. A brief code example is shown below:
@@ -280,9 +272,9 @@ export interface QueryFnParams<K extends unknown[]> {
 }
 ```
 
-The `queryFn` returns a `Promise` of type `(DataResponse | DataResponsePinned)[]`. This means
-LyteNyte Grid expects an array of responses, not a single one. This design supports requesting data in
-slices. The `queryFn` implementation decides how best to retrieve these items.
+The `queryFn` returns a `Promise` of type `(DataResponse | DataResponsePinned)[]`. This
+array-based design lets LyteNyte Grid request data in slices, giving the `queryFn`
+implementation flexibility to optimize how it fetches data and returns responses.
 
 The `requests` property contains the data requests for the current view. It is always an array, not a
 single item. Each request should have at least one matching response, but the server may return
@@ -296,9 +288,6 @@ state. You can use this value to determine if a group is expanded or collapsed w
 applied to the grid.
 
 ## Next Steps
-
-There are more parts to this functionality, but these are covered in dedicated guides. See the guides
-below for detailed coverage of the server data source and example usages:
 
 ::next[/docs/server-data-loading-row-data]
 ::next[/docs/server-data-loading-row-sorting]

@@ -2,13 +2,11 @@
 title: Server Row Overview
 pro: true
 step: Load rows on demand from the server as the user changes the grid view.
-description: The server row data source enables applications using LyteNyte Grid to retrieve and interact
-  with data stored on the server.
+description: Use the server row data source to load and manage server-side row data in LyteNyte Grid.
 ---
 
-The server data source is the most advanced and capable of all LyteNyte Grid
-data sources. Partial data loading is necessary when the dataset contains hundreds
-of thousands or even millions of rows.
+The server data source handles the largest datasets in LyteNyte Grid by
+using partial data loading to render millions of rows.
 
 ## What Problem Does Server Data Loading Solve?
 
@@ -21,19 +19,19 @@ Developers typically choose one of these approaches:
 - **Infinite scrolling:** Lazily load more data as the user scrolls down.
 - **Viewport-based loading:** Load only the rows currently in view.
 
-LyteNyte Grid supports all three approaches, but the Server Data Loading guides focus on
-viewport-based loading. This approach is the most powerful and flexible but also the
-most complex to implement. LyteNyte Grid handles the client-side code, so developers
-only need to implement the server logic.
+LyteNyte Grid supports all three approaches. The guides in this section focus
+on viewport-based loading, which is flexible but can be complex to configure.
+Since LyteNyte Grid handles client-side loading,
+you only need to implement the server-side logic.
 
 ## Why Use Server Data Loading?
 
-Server Data Loading allows direct interaction with any row in the dataset and provides
-a consistent view. For example, if a user scrolls to row index 9,500, the grid retrieves
-that data seamlessly. Operations like pivoting and grouping are natural with the server
-data source but limited or unintuitive with pagination and infinite scrolling.
-Server data loading aims to deliver a client-like experience, with the trade-off of
-network latency.
+Server Data Loading delivers a client-side experience with the expected trade-off of network latency. It provides:
+
+- **Direct Row Interaction:** When a user scrolls to a specific index,
+  like row 9,500, the grid requests the surrounding rows from the server.
+- **Advanced Operations:** Natively supports pivoting and grouping,
+  which are complex or limited when using pagination and infinite scrolling.
 
 ## High-Level Overview
 
@@ -63,14 +61,15 @@ The server data source follows a well defined lifecycle:
 
 3. Actions That Reset the View
 
-   Some actions require a full view reset and fresh data from the server. This occurs when
-   users sort a column or group rows, as these operations alter the dataset view.
+   Certain actions trigger a full view reset and a fresh data request.
+   Sorting a column or grouping rows, for example, alters
+   the dataset and requires the grid to re-fetch the data.
 
 </Steps>
 
-All other operations extend this basic flow. LyteNyte Grid's server data source is advanced
-and supports many extensions. The simplest example of a server data loading grid is shown
-below. Read the guides in this section for in depth coverage:
+Other operations extend this basic flow. LyteNyte Grid's server data source supports
+various advanced configurations. A simple example of a server data
+loading grid is shown below.
 
 ::demo[Basic Server Data="./demos/basic-server-data"]
 
