@@ -54,7 +54,7 @@ export function useFlattenedGroups<T>(
         agg,
         leafs,
         workingSet,
-        sort ?? sortFallback,
+        sort !== undefined ? sort : sortFallback,
         isLast && !ignoreIsLast,
       );
 

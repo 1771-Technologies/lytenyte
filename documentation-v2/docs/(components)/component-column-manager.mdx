@@ -1,26 +1,24 @@
 ---
 title: Column Manager
 pro: true
-step: Manage the visibility and order of columns using the Column Manager.
-description: LyteNyte Grid provides an opinionated Column Manager component that can be
-  used to control the visibility and order of columns in the grid.
+step: Manage the visibility and arrangement of grid columns.
+description: Use an opinionated Column Manager component to handle column visibility and ordering.
 ---
 
-Use the `ColumnManager` component as a simple way to provide a UI for managing columns in the
-grid. The `ColumnManager` is opinionated by design and handles all the boilerplate required
-for a functioning column management interface.
+Use the `ColumnManager` component to provide a UI for managing grid columns.
+`ColumnManager` handles the common boilerplate for showing, hiding,
+and reordering columns.
 
-## Column Manager Example
+## Column Manager Implementation
 
-The demo below demonstrates the Column Manager in action. You can toggle the visibility of a
-column by clicking its checkbox. You can reorder columns by dragging them within the
-Column Manager.
+The demo below shows the Column Manager. Click a checkbox to toggle a column's
+visibility, or drag a column within the manager to reorder it.
 
 ::demo[Column Manager="./demos/column-manager"]
 
-Notice from the demo code that configuring the Column Manager is very simple. LyteNyte Grid's
-Column Manager handles the complexity of managing column settings while providing a
-very simple-to-use component.
+As shown in the demo code, configuring the Column Manager is straightforward. It
+abstracts the complexity of column state management into a
+single, easy-to-use component.
 
 ```tsx
 <ColumnManager columns={columns} onColumnsChange={setColumns} />
@@ -28,9 +26,8 @@ very simple-to-use component.
 
 :::note
 
-If you are looking for a component that is less opinionated, see the [Pill Manager](/docs/component-pill-manager) or
-[Tree View](/docs/component-tree-view) components. These components are headless and allow
-more flexible configuration.
+For a less opinionated approach, use the [Pill Manager](/docs/component-pill-manager)
+or [Tree View](/docs/component-tree-view). Both are headless and allow flexible configuration.
 
 :::
 

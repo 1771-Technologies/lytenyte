@@ -109,6 +109,7 @@ function TreeViewBase<T extends TreeViewItem>(
     data: finalItems,
     rowGroupDefaultExpansion: defaultExpansion ?? false,
 
+    sort: null,
     leafIdFn: useCallback((d: T) => d.id, []),
     groupIdFn: useCallback((p: (string | null)[]) => p.join(branchJoinSeparator), [branchJoinSeparator]),
 
