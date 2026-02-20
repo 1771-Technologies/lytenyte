@@ -26,7 +26,7 @@ const { toc } = Astro.props;
         return (
           <a
             class:list={[
-              x.depth === 3 ? "pl-6" : "pl-3",
+              x.depth === 3 ? "pl-6" : x.depth === 4 ? "pl-9" : "pl-3",
               "text-xd-muted-foreground hover:text-xd-accent-foreground transition-colors cursor-pointer py-0.5 toc-link font-[500]",
               "data-[active=true]:text-xd-foreground",
             ]}

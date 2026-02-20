@@ -59,7 +59,7 @@ export function MobileToc({ toc }: { toc: MarkdownHeading[] }) {
                     onClick={() => setOpen(false)}
                     key={`#${x.slug}`}
                     className={cn(
-                      x.depth === 3 ? "pl-6" : "pl-3",
+                      x.depth === 3 ? "pl-6" : x.depth === 4 ? "pl-9" : "pl-3",
                       (opened.current || open) && "toc-link",
                       "text-xd-muted-foreground hover:text-xd-accent-foreground cursor-pointer py-0.5 transition-colors",
                       "data-[active=true]:text-xd-foreground",
