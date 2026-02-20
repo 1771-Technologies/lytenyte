@@ -2,30 +2,28 @@
 title: Select All
 pro: true
 step: Select all rows in the grid using a checkbox.
-description: LyteNyte Grid provides a checkbox component for selecting all rows in the grid.
-  Use this component to easily display indeterminate and selected states.
+description: Use LyteNyte Grid's checkbox component to select all rows and render checked and indeterminate states.
 ---
 
-:::info
+:::note
 
-This guide assumes you are familiar with how row selection works in LyteNyte Grid.
-See the [Row Selection guide](/docs/row-selection) for more details.
+This guide assumes familiarity with row selection. See the [Row Selection guide](/docs/row-selection) for details.
 
 :::
 
-## Rendering Select All
+## Select All Rendering
 
-LyteNyte Grid exports the `SelectAll` component. This component is intended for use in a
-grid column header, but you can use it in any component that has access to the grid API.
+LyteNyte Grid exports the `SelectAll` component. Use it in a column
+header or any component with access to the grid API.
 
-The demo below shows the `SelectAll` component in action. The checkbox rendered in the marker
-column header selects all rows when checked.
+The demo below shows `SelectAll` in the marker column
+header. When checked, the grid selects all rows.
 
-::demo[Select All="../(column)/demos/column-marker-selection"]
+::demo[Select All Implementation="../(column)/demos/column-marker-selection"]
 
-The code for the `SelectAll` component is shown below. The `Checkbox` component is also exported
-from LyteNyte Grid and simplifies rendering indeterminate checkbox states. You may use your own
-checkbox component if you prefer.
+The code below shows the `SelectAll` component. LyteNyte Grid also exports a `Checkbox` for
+rendering the `indeterminate` state, though you can use
+your own checkbox component instead.
 
 ```tsx
 <SelectAll
@@ -48,17 +46,18 @@ checkbox component if you prefer.
 />
 ```
 
-### Why Use The Select All Component
+### Why Use Select All
 
-The `SelectAll` component automatically manages all selection states for you.
-LyteNyte Grid supports two selection modes: linked selection and isolated selection.
-The logic for determining whether all rows are selected differs between these modes.
+The `SelectAll` component manages all selection states. LyteNyte Grid supports two
+selection modes: **linked** and **isolated**. Each mode uses
+different rules to determine whether all rows are selected.
 
-The `SelectAll` component abstracts these differences and provides a consistent interface
-for determining whether all rows are selected, whether the selection state is indeterminate,
-and for performing the correct select-all action.
+`SelectAll` handles those mode-specific differences and
+exposes a single, consistent interface for determining the overall
+selection status, rendering indeterminate states, and
+performing the correct select-all actions.
 
-## Properties
+## Select All Properties
 
 The `SelectAll` component accepts the following properties.
 

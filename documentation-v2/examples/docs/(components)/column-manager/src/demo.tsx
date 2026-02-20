@@ -20,10 +20,10 @@ export interface GridSpec {
 }
 
 const initialColumns: Grid.Column<GridSpec>[] = [
-  { id: "symbol", groupPath: ["Marker Info"], cellRenderer: SymbolCell, width: 250, name: "Symbol" },
+  { id: "symbol", groupPath: ["Market Info"], cellRenderer: SymbolCell, width: 250, name: "Symbol" },
   {
     id: "network",
-    groupPath: ["Marker Info"],
+    groupPath: ["Market Info"],
     cellRenderer: NetworkCell,
     width: 220,
     hide: true,
@@ -31,7 +31,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
   },
   {
     id: "exchange",
-    groupPath: ["Marker Info"],
+    groupPath: ["Market Info"],
     cellRenderer: ExchangeCell,
     width: 220,
     hide: true,

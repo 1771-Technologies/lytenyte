@@ -2,14 +2,13 @@
 title: Tree View
 pro: true
 step: Render and interact with hierarchical data using the Tree View component.
-description: The tree view component is a UI component that displays hierarchical data
-  as an expand/collapse list.
+description: Use the Tree View component to render hierarchical data in an expandable and collapsible list.
 ---
 
-LyteNyte Grid exports a `TreeView` component that you can use for various UI elements,
-such as [tree set filters](/docs/filtering-set-filters). The `TreeView` component
-is a specialized version of LyteNyte Grid that contains a single column. The styling
-and capabilities are augmented to match a standard tree view component.
+LyteNyte Grid exports a `TreeView` component for tree-based UIs,
+such as [tree set filters](/docs/filtering-set-filters). `TreeView` is a specialized,
+single-column variant of the grid, with styling and capabilities augmented to
+match a standard tree view.
 
 Since the `TreeView` component shares its implementation with LyteNyte Grid, using
 the `TreeView` component alongside LyteNyte Grid does not increase your application's
@@ -17,9 +16,9 @@ bundle size.
 
 ## Basic Tree View
 
-Import the `TreeView` component from LyteNyte Grid to begin using it. The TreeView
-expects an array of path-based objects to be provided through the `items` property.
-Each item must conform to the `TreeViewItem` interface shown below:
+Import `TreeView` from LyteNyte Grid to get started. Pass an array of path-based
+objects to the `items` property. Each item must conform to the
+`TreeViewItem` interface shown below:
 
 ```ts
 interface TreeViewItem {
@@ -32,10 +31,10 @@ interface TreeViewItem {
 The `items` property is a flat array. The `path` property on each item determines the
 resulting tree structure.
 
-The demo below shows a basic tree view in action. As the `TreeView` component is a
-variant of LyteNyte Grid, it requires a [sized container](/docs/grid-container).
+The demo below shows a basic tree view. Since `TreeView` is a
+LyteNyte Grid variant, it requires a [sized container](/docs/grid-container).
 
-::demo[Tree View="./demos/tree-view-demo"]
+::demo[Tree View Implementation="./demos/tree-view-demo"]
 
 The code for this tree view example is shown below. The `items` property is set to an
 array of values. You can select rows by clicking the checkbox next to each item.
@@ -64,13 +63,11 @@ useEffect(() => {
 To control row selection manually, set the `rowSelection` property on the `TreeView`
 component. Provide an `onRowSelectionChange` callback to respond to selection updates.
 
-Since row selection is represented as a linked tree, you must determine which rows
-are selected by traversing the selection tree.
+Since row selection is represented as a linked tree, you must determine which rows are
+selected by traversing the selection tree. The demo below demonstrates this
+behavior by tracking which files in the tree are selected.
 
-The demo below demonstrates this behavior by tracking which files in the tree are
-selected.
-
-::demo[Tree Selection="./demos/tree-view-selection"]
+::demo[Tree Selection Implementation="./demos/tree-view-selection"]
 
 The code below determines selection by traversing the tree and filtering items based
 on their selection state. This is one simple approach to determining selected rows.
@@ -114,7 +111,7 @@ const selectedRows = useMemo(() => {
 }, [rowsSelected]);
 ```
 
-## Children Render Prop
+## Custom Tree View Rendering
 
 You can customize the rendered output of the `TreeView` component by providing a render
 prop as the `children` value. This render prop receives a set of
@@ -136,9 +133,9 @@ export interface TreeViewChildParams<T extends TreeViewItem> {
 Using the children render prop, you can add additional functionality to rows, such as
 item removal. The demo below demonstrates this behavior.
 
-::demo[Node Deletion="./demos/tree-view-children"]
+::demo[Custom Tree View Nodes="./demos/tree-view-children"]
 
-## Properties
+## Tree View Properties
 
 <TypeTable
   type={[

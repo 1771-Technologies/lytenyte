@@ -2,27 +2,26 @@
 title: Row Group Cell
 pro: true
 step: Handle expansion and collapse interactions for grouped rows.
-description: Effortlessly handle row group expansion and collapsing using
-  LyteNyte Grid's row group cell component.
+description: Use LyteNyte Grid's Row Group Cell component to easily expand and collapse row groups.
 ---
 
 ## Row Group Component
 
-LyteNyte Grid exports the `RowGroupCell` component to handle row group expansion and collapsing.
-The `RowGroupCell` component provides the following group cell functionality:
+LyteNyte Grid exports the `RowGroupCell` component to handle row
+group expansion and collapse. It provides the
+following built-in functionality:
 
 - Expand and collapse group nodes.
-- Prevent expansion for group nodes that are not expandable.
-- Display loading indicators while a group expansion is in progress.
-- Display error indicators when a group expansion fails.
+- Prevent expansion for non-expandable group nodes.
+- Display loading indicators during expansion.
+- Display error indicators if expansion fails.
 
-While you can implement row group cell functionality in a custom component, LyteNyte Grid's
-`RowGroupCell` component removes this requirement and significantly reduces the amount of code
-you need to write.
+LyteNyte Grid's `RowGroupCell` component significantly reduces
+boilerplate compared with a custom implementation.
 
-The demo below illustrates the `RowGroupCell` component in action. The **Group** column uses the
-`RowGroupCell` component to render group expansion. The `RowGroupCell` component also handles
-group label retrieval out of the box.
+As shown in the demo below, the Group column uses the
+`RowGroupCell` component to render group expansion and to
+handle out-of-the-box group label retrieval.
 
 ::demo[Row Group Cell="../(client-source)/demos/client-row-aggregation-dimensions"]
 
@@ -98,13 +97,13 @@ use this CSS as a reference implementation.
 }
 ```
 
-## Properties
+## Row Group Cell Properties
 
-The `RowGroupCell` component is a [cell renderer](/docs/cell-renderers). To pass additional
-properties, wrap the `RowGroupCell` component in a custom component and forward the properties.
-The custom component must also implement the cell renderer interface.
+The `RowGroupCell` component is a cell renderer. To pass additional
+props, wrap `RowGroupCell` in a custom component and forward
+the props. The wrapper must implement the cell renderer interface.
 
-The example below adds custom leaf row labels to the row group cell.
+The example below uses this pattern to add custom leaf-row labels to the row group cell.
 
 ```tsx
 function MyGroupCell(props: Grid.T.CellRendererParams) {

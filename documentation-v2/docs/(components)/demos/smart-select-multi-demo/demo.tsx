@@ -25,7 +25,7 @@ export default function ComponentDemo() {
           trigger={
             <SmartSelect.MultiTrigger
               data-ln-button="website"
-              className="flex max-w-80 flex-wrap items-center gap-2 rounded-lg px-2 py-2"
+              className="flex flex-wrap items-center gap-2 rounded-lg px-2 py-2"
               render={
                 <button className="flex justify-between gap-2 ps-2.5">
                   <div className="flex items-center justify-center">

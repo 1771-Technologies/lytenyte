@@ -3,6 +3,7 @@ import type { Column, GridSpec, RowNode } from "../../types";
 import { TreeView } from "../tree-view/index.js";
 import { Checkbox } from "../checkbox/checkbox.js";
 import type { Grid } from "../..";
+import { computePathMatrix } from "@1771technologies/lytenyte-shared";
 
 export interface ColumnManagerProps<Spec extends GridSpec = GridSpec> {
   readonly columns: Column<Spec>[];
@@ -12,14 +13,35 @@ export interface ColumnManagerProps<Spec extends GridSpec = GridSpec> {
 }
 
 export function ColumnManager<Spec extends GridSpec = GridSpec>({
-  columns,
+  columns: provided,
   base,
   onColumnsChange,
   endElement,
 }: ColumnManagerProps<Spec>) {
+  const nonAdjacentSplit = useMemo(() => {
+    const paths = computePathMatrix(provided);
+
+    const adjusted: typeof provided = [];
+
+    for (let i = 0; i < provided.length; i++) {
+      const col = provided[i];
+      const path = paths[i];
+
+      const group = path
+        .filter((x) => x != null)
+        .map((x) => x?.idOccurrence.split("#").slice(-2).join("#"))
+        .flat();
+
+      if (group.length) adjusted.push({ ...col, groupPath: group });
+      else adjusted.push(col);
+    }
+
+    return adjusted;
+  }, [provided]);
+
   const items = useMemo(() => {
-    return columns.map((x) => ({ id: x.id, path: x.groupPath ?? [], name: x.name, column: x }));
-  }, [columns]);
+    return nonAdjacentSplit.map((x) => ({ id: x.id, path: x.groupPath ?? [], name: x.name, column: x }));
+  }, [nonAdjacentSplit]);
 
   return (
     <TreeView
@@ -30,7 +52,7 @@ export function ColumnManager<Spec extends GridSpec = GridSpec>({
       rowSelectAllShow={false}
       defaultExpansion
       onItemsReordered={(x) => {
-        const columns = x.map((x) => x.column);
+        const columns = x.map((x) => provided.find((p) => p.id === x.column.id)!);
         onColumnsChange(columns);
       }}
     >
@@ -53,20 +75,24 @@ export function ColumnManager<Spec extends GridSpec = GridSpec>({
             onChange={() => {
               if (isSelected) {
                 onColumnsChange(
-                  columns.map((x) => {
+                  provided.map((x) => {
                     const c = items.find((c) => x.id === c.column.id);
                     if (!c) return x;
 
-                    return { ...c.column, hide: true };
+                    const original = provided.find((x) => x.id === c.id)!;
+
+                    return { ...original, hide: true };
                   }),
                 );
               } else {
                 onColumnsChange(
-                  columns.map((x) => {
+                  provided.map((x) => {
                     const c = items.find((c) => x.id === c.column.id);
                     if (!c) return x;
 
-                    return { ...c.column, hide: false };
+                    const original = provided.find((x) => x.id === c.id)!;
+
+                    return { ...original, hide: false };
                   }),
                 );
               }
@@ -95,12 +121,12 @@ export function ColumnManager<Spec extends GridSpec = GridSpec>({
                 </button>
               )}
               {draggable && (
-                <div>
+                <div style={{ cursor: "grab" }}>
                   <DragDots />
                 </div>
               )}
               {checkbox}
-              <div style={{ flex: "1" }}>{row.key}</div>
+              <div style={{ flex: "1" }}>{row.key?.split("#").slice(0, -1).join("")}</div>
               {end}
             </div>
           );
@@ -114,7 +140,7 @@ export function ColumnManager<Spec extends GridSpec = GridSpec>({
             {...dragProps}
           >
             {draggable && (
-              <div>
+              <div style={{ cursor: "grab" }}>
                 <DragDots />
               </div>
             )}

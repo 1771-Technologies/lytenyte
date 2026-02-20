@@ -2,7 +2,7 @@
 title: Menu Button
 pro: true
 step: Display a list of actions or options in an accessible dropdown menu.
-description: A menu button displays a list of actions when the user presses the button.
+description: Use the Menu component to display a dropdown list of user actions.
 ---
 
 ## Menu Anatomy
@@ -62,24 +62,24 @@ types of menu items:
 - `Menu.RadioItem`: An exclusive selection radio item. Must be rendered within a `Menu.RadioGroup`.
 - `Menu.CheckboxItem`: An inclusive selection checkbox item that can be used for toggle settings and flags.
 
-::demo[Menu="./demos/menu-demo"]
+::demo[Basic Menu Implementation="./demos/menu-demo"]
 
 ## Submenu Menu
 
 Use the `Menu.Submenu` component to group related menu items into an expandable list
 of options. The demo below shows a submenu in action.
 
-::demo[Submenu="./demos/menu-submenu-demo"]
+::demo[Basic Submenu="./demos/menu-submenu-demo"]
 
-## Properties
+## Menu Properties
 
 All `Menu` component parts accept standard HTML element properties. The properties list below
 describes the additional properties provided by the `Menu` components.
 
 ### Menu
 
-The `Menu` component is a popover component with additional logic for handling dropdown
-menus. Its properties reflect this.
+`Menu` extends the popover component with additional logic
+for dropdown menus, inheriting its foundational properties.
 
 <TypeTable
   type={[
