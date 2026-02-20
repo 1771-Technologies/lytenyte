@@ -6,6 +6,7 @@
     "@1771technologies/cli-table": "1.0.1",
     "@1771technologies/eslint-preset": "workspace:*",
     "@1771technologies/play-frame": "workspace:*",
+    "@1771technologies/play-frame-2": "workspace:*",
     "@changesets/cli": "2.29.4",
     "@testing-library/react": "16.3.0",
     "@types/fs-extra": "11.0.4",

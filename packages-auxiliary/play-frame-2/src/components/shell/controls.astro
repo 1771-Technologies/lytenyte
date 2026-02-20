@@ -1,0 +1,66 @@
+<div id="frame-controls" data-width="300" class="shell-controls">
+  <div id="frame-controls-resizer" class="resizer"></div>
+</div>
+
+<script>
+  const resizer = document.getElementById("frame-controls-resizer");
+
+  resizer?.addEventListener("pointerdown", (ev) => {
+    const startX = ev.clientX;
+    const frame = document.getElementById("frame-controls");
+    if (!frame) return;
+
+    const initial = Number.parseInt(frame.getAttribute("data-width")!);
+    const controller = new AbortController();
+
+    document.body.style.cursor = "col-resize";
+    document.addEventListener(
+      "pointermove",
+      (ev) => {
+        const delta = ev.clientX - startX;
+
+        const next = -delta + initial;
+        frame.setAttribute("data-width", `${next}`);
+      },
+      { signal: controller.signal },
+    );
+
+    document.addEventListener(
+      "pointerup",
+      () => {
+        controller.abort();
+        document.body.style.cursor = "default";
+      },
+      { signal: controller.signal },
+    );
+  });
+</script>
+
+<style>
+  .resizer {
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    background-color: transparent;
+    inset-inline-start: 0px;
+    cursor: col-resize;
+  }
+
+  .shell-controls {
+    box-sizing: border-box;
+    padding-inline-end: 4px;
+    position: relative;
+    width: attr(data-width px);
+    min-width: 200px;
+    max-width: 600px;
+    border-inline-start: 1px solid var(--border);
+  }
+
+  .shell-controls[data-collapsed] {
+    overflow: hidden;
+    border-inline-end: 0px;
+    min-width: 0px;
+    max-width: 0px;
+    width: 0px;
+  }
+</style>
