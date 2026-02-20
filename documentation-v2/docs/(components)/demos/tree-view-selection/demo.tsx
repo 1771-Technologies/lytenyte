@@ -59,13 +59,14 @@ export default function ComponentDemo() {
       </div>
       <div className="border-ln-border-strong rounded-lg border p-2">
         <div className="w-75 h-75 overflow-auto">
-          <h3 className="text-center text-lg font-semibold">Selected Rows</h3>
+          <h3 className="text-center text-base font-semibold">Selected Rows</h3>
           <ul>
-            {selectedRows.map((x) => {
-              const name = x.path.join(" / ") + " / " + (x.name ?? x.id);
-
-              return <li key={name}>{name}</li>;
-            })}
+            {selectedRows
+              .map((x) => (x.path.length ? x.path.join(" / ") + " / " + (x.name ?? x.id) : (x.name ?? x.id)))
+              .toSorted()
+              .map((x) => {
+                return <li key={x}>{x}</li>;
+              })}
           </ul>
         </div>
       </div>
