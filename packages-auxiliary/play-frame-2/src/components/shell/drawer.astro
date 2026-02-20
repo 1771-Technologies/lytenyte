@@ -1,0 +1,65 @@
+<div id="frame-drawer" data-height="400" class="shell-drawer">
+  <div id="frame-drawer-resizer" class="resizer"></div>
+</div>
+
+<script>
+  const resizer = document.getElementById("frame-drawer-resizer");
+
+  resizer?.addEventListener("pointerdown", (ev) => {
+    const startY = ev.clientY;
+    const frame = document.getElementById("frame-drawer");
+    if (!frame) return;
+
+    const initial = Number.parseInt(frame.getAttribute("data-height")!);
+    const controller = new AbortController();
+
+    document.body.style.cursor = "row-resize";
+    document.addEventListener(
+      "pointermove",
+      (ev) => {
+        const delta = ev.clientY - startY;
+
+        const next = -delta + initial;
+        frame.setAttribute("data-height", `${next}`);
+      },
+      { signal: controller.signal },
+    );
+
+    document.addEventListener(
+      "pointerup",
+      () => {
+        controller.abort();
+        document.body.style.cursor = "default";
+      },
+      { signal: controller.signal },
+    );
+  });
+</script>
+
+<style>
+  .resizer {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background-color: transparent;
+    top: 0px;
+    cursor: row-resize;
+  }
+
+  .shell-drawer {
+    position: relative;
+    grid-column: span 3;
+    height: attr(data-height px);
+    min-height: 300px;
+    max-height: 1200px;
+    border-block-start: 1px solid var(--border);
+  }
+
+  .shell-drawer[data-collapsed] {
+    overflow: hidden;
+    border-block-start: 0px;
+    min-height: 0px;
+    max-height: 0px;
+    height: 0px;
+  }
+</style>
