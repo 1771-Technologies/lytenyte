@@ -9,7 +9,7 @@ export function VersionPicker({ versions }: { versions: Required<OneDocConfig["n
       <div className="flex h-full items-center">
         <M.Trigger className="center hover:bg-xd-accent h-[90%] cursor-pointer items-center gap-2 rounded px-2 py-2 text-sm font-bold transition-colors">
           {latest?.full}
-          <div className="rounded border border-blue-500/80 bg-blue-500/50 px-2 py-0.5 text-[10px]">
+          <div className="hidden rounded border border-blue-500/80 bg-blue-500/50 px-2 py-0.5 text-[10px] md:block">
             Latest
           </div>
 
@@ -18,7 +18,7 @@ export function VersionPicker({ versions }: { versions: Required<OneDocConfig["n
         </M.Trigger>
       </div>
       <M.Portal>
-        <M.Positioner side="bottom" sideOffset={6}>
+        <M.Positioner side="bottom" sideOffset={6} className="z-100">
           <M.Popup
             className={cn(
               "origin-(--transform-origin) w-(--anchor-width) bg-xd-popover border-xd-border text-xd-popover-foreground border px-2 py-1",
@@ -30,7 +30,10 @@ export function VersionPicker({ versions }: { versions: Required<OneDocConfig["n
             {versions.map((x) => {
               if (x.href === "latest") {
                 return (
-                  <M.Item className="hover:bg-xd-accent bg-xd-accent/60 col-span-full grid cursor-pointer grid-cols-subgrid items-center rounded-lg px-2 py-2 text-sm font-semibold">
+                  <M.Item
+                    key={x.href}
+                    className="hover:bg-xd-accent bg-xd-accent/60 col-span-full grid cursor-pointer grid-cols-subgrid items-center rounded-lg px-2 py-2 text-sm font-semibold"
+                  >
                     <div className="col-span-2 flex w-full items-center justify-between">
                       <div>{x.title}</div>
                       <svg
@@ -49,6 +52,7 @@ export function VersionPicker({ versions }: { versions: Required<OneDocConfig["n
 
               return (
                 <M.Item
+                  key={x.href}
                   render={<a href={x.href} />}
                   className="hover:bg-xd-accent col-span-full grid cursor-pointer grid-cols-subgrid items-center rounded-lg px-2 py-2 text-sm font-semibold"
                 >

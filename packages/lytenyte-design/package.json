@@ -15,7 +15,8 @@
   "files": [
     "src",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "SECURITY.md"
   ],
   "exports": {
     ".": {

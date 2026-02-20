@@ -115,10 +115,12 @@ const pathname = Astro.url.pathname;
               })
             }
             <SidebarDialog client:load>
-              <div class="pt-2 pb-6 px-2">
+              <div class="pt-2 pb-6 ps-2 pe-12 flex items-center gap-4 justify-between">
                 <a href={homeUrl}>
                   <LogoLytenyte />
                 </a>
+
+                {navbar.docVersions && <VersionPicker client:load versions={navbar.docVersions} />}
               </div>
 
               <div class="flex flex-col gap-4 pt-2 pb-8 px-2">

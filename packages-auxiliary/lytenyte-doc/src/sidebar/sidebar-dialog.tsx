@@ -64,7 +64,7 @@ export function SidebarDialog(props: PropsWithChildren) {
             "no-scrollbar overflow-auto",
           )}
         >
-          <D.Close className="top-5.5 center hover:bg-xd-accent absolute right-4 size-7 rounded-lg transition-colors">
+          <D.Close className="center hover:bg-xd-accent absolute right-4 top-7 size-7 rounded-lg transition-colors">
             <span className="iconify ph--x size-5" />
           </D.Close>
 
