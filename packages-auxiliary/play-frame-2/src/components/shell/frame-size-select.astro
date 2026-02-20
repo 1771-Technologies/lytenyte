@@ -52,13 +52,15 @@ const frames = [
 
 <div>
   Play Area Size:
-  <select class="select">
+  <select id="frame-size" class="select">
     {
       frames.map((x) => {
         if (typeof x === "string") return <hr />;
 
         return (
-          <option value={x.name}>
+          <option
+            value={`${x.name}:${x.width ? `${x.width}px` : "100%"}:${x.height ? `${x.height}px` : "100%"}`}
+          >
             {x.name} ({x.width ?? "fill"} x {x.height ?? "fill"})
           </option>
         );
@@ -70,6 +72,38 @@ const frames = [
 <style>
   .select {
     height: 32px;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 </style>
+
+<script>
+  const select = document.getElementById("frame-size")! as HTMLSelectElement;
+
+  const value = localStorage.getItem("area-size");
+  if (value) {
+    select.value = value;
+    const [_, width, height] = value.split(":");
+
+    const frame = document.getElementById("frame-area")!;
+    frame.style.minWidth = width;
+    frame.style.minHeight = height;
+    frame.style.maxWidth = width;
+    frame.style.maxHeight = height;
+    frame.style.width = width;
+    frame.style.height = height;
+  }
+
+  select.addEventListener("change", (ev) => {
+    const [_, width, height] = (ev as any).target.value.split(":");
+
+    const frame = document.getElementById("frame-area")!;
+    frame.style.minWidth = width;
+    frame.style.minHeight = height;
+    frame.style.maxWidth = width;
+    frame.style.maxHeight = height;
+    frame.style.width = width;
+    frame.style.height = height;
+
+    localStorage.setItem("area-size", (ev as any).target.value);
+  });
+</script>

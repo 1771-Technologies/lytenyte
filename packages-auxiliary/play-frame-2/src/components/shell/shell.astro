@@ -1,40 +1,33 @@
 ---
-import Controls from "./controls.astro";
-import Drawer from "./drawer.astro";
 import FrameArea from "./frame-area.astro";
 import FrameSizeSelect from "./frame-size-select.astro";
-import PanelButtons from "./panel-buttons.astro";
 import Sidebar from "./sidebar.astro";
 ---
 
 <div class="shell-root">
   <div class="shell-nav">
     <div class="shell-nav-start">Play Frame</div>
-    <div class="shell-nav-center">
-      <FrameSizeSelect />
-    </div>
+    <div class="shell-nav-center"></div>
     <div class="shell-nav-end">
-      <PanelButtons />
+      <FrameSizeSelect />
     </div>
   </div>
 
   <Sidebar />
   <FrameArea />
-  <Controls />
-  <Drawer />
 
   <style>
     .shell-root {
       height: 100%;
       width: 100%;
       display: grid;
-      grid-template-columns: auto 1fr auto;
-      grid-template-rows: auto 1fr auto;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr;
     }
 
     .shell-nav {
       height: 48px;
-      grid-column: span 3;
+      grid-column: span 2;
       display: flex;
       align-items: center;
       justify-content: space-between;
