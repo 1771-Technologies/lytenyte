@@ -89,7 +89,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
   titleSuffix={titleSuffix}
   homeUrl={homeUrl}
   navbar={navbar}
-  toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}
+  toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3 || x.depth === 4)}
   lastModified={lastModified ?? new Date().toISOString()}
   prevEntry={prevEntry
     ? {
