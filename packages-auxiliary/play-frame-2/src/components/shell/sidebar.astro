@@ -1,51 +1,6 @@
-<div id="frame-sidebar" data-width="300" class="shell-sidebar">
-  <div id="frame-sidebar-resizer" class="resizer"></div>
-</div>
-
-<script>
-  const resizer = document.getElementById("frame-sidebar-resizer");
-
-  resizer?.addEventListener("pointerdown", (ev) => {
-    const startX = ev.clientX;
-    const frame = document.getElementById("frame-sidebar");
-    if (!frame) return;
-
-    const initial = Number.parseInt(frame.getAttribute("data-width")!);
-    const controller = new AbortController();
-
-    document.body.style.cursor = "col-resize";
-    document.addEventListener(
-      "pointermove",
-      (ev) => {
-        const delta = ev.clientX - startX;
-
-        const next = initial + delta;
-        frame.setAttribute("data-width", `${next}`);
-      },
-      { signal: controller.signal },
-    );
-
-    document.addEventListener(
-      "pointerup",
-      () => {
-        controller.abort();
-        document.body.style.cursor = "default";
-      },
-      { signal: controller.signal },
-    );
-  });
-</script>
+<div id="frame-sidebar" data-width="300" class="shell-sidebar"></div>
 
 <style>
-  .resizer {
-    position: absolute;
-    width: 4px;
-    height: 100%;
-    background-color: transparent;
-    inset-inline-end: 0px;
-    cursor: col-resize;
-  }
-
   .shell-sidebar {
     box-sizing: border-box;
     padding-inline-end: 4px;
