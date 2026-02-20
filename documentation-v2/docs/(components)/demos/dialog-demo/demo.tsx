@@ -13,14 +13,20 @@ export default function ComponentDemo() {
         </Dialog.Trigger>
 
         <Dialog.Container className="flex max-w-80 flex-col gap-3">
-          <Dialog.Title className="text-lg font-bold">Dialog Title</Dialog.Title>
-          <Dialog.Description>
-            A description of the dialog content for accessibility reasons.
+          <Dialog.Title className="text-center text-lg font-bold">Dialog Title</Dialog.Title>
+          <Dialog.Description className="text-center">
+            Every dialog requires a title and a description to ensure accessibility.
           </Dialog.Description>
-          <div>You can include more dialog content. Dialogs should only be used for auxiliary actions.</div>
+          <div className="text-center">
+            While you can include custom dialog content, you should reserve dialogs for auxiliary tasks only.
+          </div>
 
-          <Dialog.Close data-ln-button="tertiary" data-ln-size="md">
-            CloseDialog
+          <Dialog.Close
+            data-ln-button="tertiary"
+            className="dark:hover:bg-ln-bg-ui-panel/80"
+            data-ln-size="md"
+          >
+            Close Dialog
           </Dialog.Close>
         </Dialog.Container>
       </Dialog>
