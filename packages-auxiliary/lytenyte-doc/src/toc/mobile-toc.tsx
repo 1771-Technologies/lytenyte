@@ -56,11 +56,7 @@ export function MobileToc({ toc }: { toc: MarkdownHeading[] }) {
               {toc.map((x) => {
                 return (
                   <a
-                    onClick={(ev) => {
-                      setOpen(false);
-
-                      ev.preventDefault();
-                    }}
+                    onClick={() => setOpen(false)}
                     key={`#${x.slug}`}
                     className={cn(
                       x.depth === 3 ? "pl-6" : "pl-3",
