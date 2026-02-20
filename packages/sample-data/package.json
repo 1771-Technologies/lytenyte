@@ -16,7 +16,8 @@
   "files": [
     "src",
     "tsconfig.json",
-    "LICENSE"
+    "LICENSE",
+    "SECURITY.md"
   ],
   "exports": {
     ".": {

@@ -15,7 +15,8 @@
     "dist",
     "css",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "SECURITY.md"
   ],
   "homepage": "https://1771technologies.com",
   "repository": {

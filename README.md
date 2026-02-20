@@ -143,4 +143,4 @@ LyteNyte Grid follows [semantic versioning](https://semver.org/) to ensure clear
 ## Security
 
 For information on reporting security vulnerabilities,
-please consult our [security policy](./SECURITY.md).
+please consult our [security policy](https://github.com/1771-Technologies/lytenyte/blob/main/SECURITY.md).
