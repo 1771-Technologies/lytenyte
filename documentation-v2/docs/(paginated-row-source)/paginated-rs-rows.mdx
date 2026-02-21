@@ -2,34 +2,34 @@
 title: Paginated Rows
 pro: true
 step: Load rows one page at a time.
-description: Pagination allows you to load rows one set at a time with a cursor based offset.
+description: Pagination lets you load rows one page at a time using a cursor-based offset.
 ---
 
 :::note
-Paginated row loading is backed by the server data source in LyteNyte Grid.
+Paginated row loading uses the server data source in LyteNyte Grid.
 You must already be familiar with the [server data source](/docs/server-data-loading-overview)
-before reading this guide.
+before you read this guide.
 :::
 
 ## Basic Pagination
 
 Paginate rows by combining the [server data source](/docs/server-data-loading-overview) with a
-`page` cursor. This is a two step process:
+`page` cursor. Set up pagination in a two-step process:
 
-- Define a `page` value in state, e.g. by using the `useState` hook.
+- Define a `page` value in React state, e.g. by using the `useState` hook.
 - Include the `page` value in the `queryKey` property of the server data source.
 
-LyteNyte Grid's server data source can then be provided with a `queryFn` function that
-will load the data for the current `page`. Whenever the page changes, the `queryFn`
-will be called to fetch the next slice.
+Then pass a `queryFn` function to LyteNyte Grid's server data source. The `queryFn` function
+loads the data for the current `page`. When `page` changes, LyteNyte Grid calls `queryFn`
+to fetch the next slice of rows.
 
 The demo below demonstrates the basic pagination setup with caching included, so that
-pages that have already been loaded instantly resolve when navigating to a previous page.
+pages that have already been loaded resolve instantly when navigating back to a previous page.
 
 ::demo[Paginated="./demos/basic-pagination"]
 
-The demo retrieves the data for the current page, and additionally the server sends the total
-row count, that can be used to compute the number of pages available.
+The demo retrieves the data for the current page. The server also sends the total row count, which you
+can use to compute the number of pages available.
 
 ```ts
 const responseCache = useRef<Record<number, DataResponse[]>>({});
@@ -46,7 +46,6 @@ const ds = useServerDataSource<GridSpec["data"], [page: number]>({
     responseCache.current[page] = result.pages;
 
     setCount(result.count);
-    open;
     return result.pages;
   },
   queryKey: [page],
@@ -55,14 +54,14 @@ const ds = useServerDataSource<GridSpec["data"], [page: number]>({
 
 ## Changing Page Size
 
-You can configure the number of rows requested per page, by sending this state to the server, alongside the
-the current `page` value. If you include the page size in the `queryKey` of the server data
-source, then changes to the page size will reset that view and re-request the pages from the server.
+You can configure the number of rows requested per page by sending the page size state (`pageSize`) to the server, alongside the
+current `page` value. If you include the page size in the `queryKey` of the server data
+source, changes to the page size will reset the grid view and re-request pages from the server.
 
 ::demo[Paginated="./demos/pagination-change-size"]
 
-The page size is a normal piece of state. The **Show per page** menu can be used to update it.
-When the page size is updated the demo will reset the response cache, the page number, and
+The page size is a normal piece of state. The **Show per page** menu can be used to update the page size.
+When the page size is updated, the demo will reset the response cache, reset the page number, and
 apply the new page size.
 
 Since the `pageSize` value is included in the `queryKey` for the server data source, the grid will

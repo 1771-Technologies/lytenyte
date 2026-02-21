@@ -16,15 +16,15 @@ the [Filter Text guide](/docs/filtering-text).
 ## Filtering Paginated Rows
 
 To filter rows on the server, define a filter model and include it in each data request.
-The filter model can be included in the `queryKey` of the `useServerDataSource` hook.
-Whenever the filter model changes a new set of rows can be fetched from the server.
+Include the filter model in the `queryKey` of the `useServerDataSource` hook.
+Whenever the filter model changes, the grid fetches a new set of rows from the server.
 
 The following demo passes a custom filter model to the `queryKey` of the server data source. Click the
-funnel icon in the column header to apply a filter.
+funnel icon in a column header to apply a filter.
 
 ::demo[Filter Paginated Rows="./demos/server-filtering"]
 
-For more guidance on filtering rows on the server see the
+For more guidance on filtering rows on the server, see the
 [Server Row Filtering guide](/docs/server-data-loading-row-filtering).
 
 ## Next Steps

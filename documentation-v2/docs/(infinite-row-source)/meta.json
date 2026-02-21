@@ -1,10 +1,4 @@
 {
   "title": "Infinite Row Source",
-  "pages": [
-    "infinite-rs-rows",
-    "infinite-rs-row-sorting",
-    "infinite-rs-row-filtering",
-    "infinite-rs-row-editing",
-    "infinite-rs-handling-load-failures"
-  ]
+  "pages": ["infinite-rs-rows", "infinite-rs-row-sorting", "infinite-rs-row-filtering"]
 }
