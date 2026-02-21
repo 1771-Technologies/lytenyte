@@ -1,14 +1,75 @@
 ---
 title: Paginated Rows
 pro: true
-step: s
-description: AS
+step: Load rows one page at a time.
+description: Pagination allows you to load rows one set at a time with a cursor based offset.
 ---
+
+:::note
+Paginated row loading is backed by the server data source in LyteNyte Grid.
+You must already be familiar with the [server data source](/docs/server-data-loading-overview)
+before reading this guide.
+:::
 
 ## Basic Pagination
 
-::demo[Paginated="./demos/basic-server-data"]
+Paginate rows by combining the [server data source](/docs/server-data-loading-overview) with a
+`page` cursor. This is a two step process:
+
+- Define a `page` value in state, e.g. by using the `useState` hook.
+- Include the `page` value in the `queryKey` property of the server data source.
+
+LyteNyte Grid's server data source can then be provided with a `queryFn` function that
+will load the data for the current `page`. Whenever the page changes, the `queryFn`
+will be called to fetch the next slice.
+
+The demo below demonstrates the basic pagination setup with caching included, so that
+pages that have already been loaded instantly resolve when navigating to a previous page.
+
+::demo[Paginated="./demos/basic-pagination"]
+
+The demo retrieves the data for the current page, and additionally the server sends the total
+row count, that can be used to compute the number of pages available.
+
+```ts
+const responseCache = useRef<Record<number, DataResponse[]>>({});
+
+const ds = useServerDataSource<GridSpec["data"], [page: number]>({
+  queryFn: async ({ requests, queryKey }) => {
+    const page = queryKey[0];
+
+    if (responseCache.current[page]) {
+      return responseCache.current[page].map((x) => ({ ...x, asOfTime: Date.now() }));
+    }
+
+    const result = await Server(requests, page, pageSize);
+    responseCache.current[page] = result.pages;
+
+    setCount(result.count);
+    open;
+    return result.pages;
+  },
+  queryKey: [page],
+});
+```
 
 ## Changing Page Size
 
+You can configure the number of rows requested per page, by sending this state to the server, alongside the
+the current `page` value. If you include the page size in the `queryKey` of the server data
+source, then changes to the page size will reset that view and re-request the pages from the server.
+
+::demo[Paginated="./demos/pagination-change-size"]
+
+The page size is a normal piece of state. The **Show per page** menu can be used to update it.
+When the page size is updated the demo will reset the response cache, the page number, and
+apply the new page size.
+
+Since the `pageSize` value is included in the `queryKey` for the server data source, the grid will
+reset and request a new set of rows for the new page size.
+
 ## Next Steps
+
+::next[/docs/paginated-rs-row-sorting]
+::next[/docs/paginated-rs-row-filtering]
+::next[/docs/server-data-loading-interface]

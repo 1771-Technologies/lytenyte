@@ -4,7 +4,6 @@
     "paginated-rs-rows",
     "paginated-rs-row-sorting",
     "paginated-rs-row-filtering",
-    "paginated-rs-row-editing",
-    "paginated-rs-handling-load-failures"
+    "paginated-rs-row-editing"
   ]
 }

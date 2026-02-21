@@ -1,8 +1,19 @@
 ---
 title: Paginated Row Sorting
 pro: true
+step: Sort paginated rows on the server, and request sorted slices.
+description: Request rows of sorted by pages by defining a sort model that can be sent to the server.
 ---
 
 ## Sorting Paginated Rows
+
+To sort rows on the server, define a sort model and include it in each data request. The
+`useServerDataSource` hook accepts the sort model as a member of the `queryKey`.
+
+The sort model you define can take any shape that fits your application's needs, though the
+most straightforward definition would match the model your server or data base uses.
+
+The demo below demonstrates paginated row sorting. Clicking a column header updates that column's
+sort state.
 
 ## Next Steps
