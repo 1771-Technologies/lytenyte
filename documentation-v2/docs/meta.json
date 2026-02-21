@@ -13,6 +13,8 @@
     "(client-source)",
     "(pivoting)",
     "(server-data-loading)",
+    "(paginated-row-source)",
+    "(infinite-row-source)",
     "(tree-data)",
     "(components)",
     "(export)",

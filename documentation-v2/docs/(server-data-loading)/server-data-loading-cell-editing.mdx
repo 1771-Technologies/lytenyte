@@ -12,7 +12,7 @@ handling cell updates through the server data source.
 ## Editing Data
 
 LyteNyte Grid's `useServerDataSource` hook accepts a callback for the `onRowDataChange` property.
-row handler is called when a cell edit occurs in the grid and is responsible for sending the update
+The edit handler is called when a cell edit occurs in the grid and is responsible for sending the update
 request to the server. It runs asynchronously, and once the update completes, it's the
 developer's responsibility to refresh the grid data, typically by calling the server data source's `refresh` method.
 

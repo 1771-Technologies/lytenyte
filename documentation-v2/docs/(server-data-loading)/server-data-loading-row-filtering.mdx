@@ -6,7 +6,7 @@ description: Filter rows on the server before returning them to the client by se
   custom filter model to the server.
 ---
 
-:::info
+:::note
 
 This guide provides an overview of filtering with a focus on the server row data source.
 For detailed guidance on filtering, refer to the Filtering section, starting with
@@ -32,8 +32,6 @@ icon in the column header to apply a filter.
 
 To filter rows, the demo creates a filter model and sends it to the server. The filter model
 interface appears below. The server uses the `GridFilter` type to evaluate and filter rows.
-This example model is intentionally simple, but your application can use a filter model
-with any level of complexity.
 
 ```ts
 export type FilterStringOperator = "equals" | "not_equals" | "less_than" | "greater_than" | "contains";
