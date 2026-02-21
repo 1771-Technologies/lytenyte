@@ -1,21 +1,32 @@
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
-import { Grid, useServerDataSource, type DataResponse } from "@1771technologies/lytenyte-pro";
+import {
+  Grid,
+  usePiece,
+  useServerDataSource,
+  type DataResponse,
+  type PieceWritable,
+} from "@1771technologies/lytenyte-pro";
 
-import { useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Server } from "./server.jsx";
 import type { MovieData } from "./data.js";
 import {
   GenreRenderer,
+  Header,
   LinkRenderer,
   NameCellRenderer,
   RatingRenderer,
   ReleasedRenderer,
   TypeRenderer,
 } from "./components.jsx";
+import type { GridFilter } from "./types.js";
 
 export interface GridSpec {
   readonly data: MovieData;
+  readonly api: {
+    readonly filterModel: PieceWritable<Record<string, GridFilter>>;
+  };
 }
 
 const columns: Grid.Column<GridSpec>[] = [
@@ -27,13 +38,16 @@ const columns: Grid.Column<GridSpec>[] = [
     widthMin: 30,
     widthMax: 30,
     cellRenderer: LinkRenderer,
+    headerRenderer: () => <div />,
   },
   { id: "name", name: "Title", width: 250, widthFlex: 1, cellRenderer: NameCellRenderer },
-  { id: "released_at", name: "Released", width: 120, cellRenderer: ReleasedRenderer },
+  { id: "released_at", name: "Released", width: 120, cellRenderer: ReleasedRenderer, type: "date" },
   { id: "genre", name: "Genre", cellRenderer: GenreRenderer },
   { id: "type", name: "Type", width: 120, cellRenderer: TypeRenderer },
   { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
 ];
+
+const base: Grid.ColumnBase<GridSpec> = { headerRenderer: Header };
 
 const pageSize = 10;
 
@@ -46,33 +60,45 @@ export default function PaginationDemo() {
   const [page, setPage] = useState(0); //!
   const [count, setCount] = useState<number | null>(null); //!
 
+  const [filters, setFilters] = useState<Record<string, GridFilter>>({});
   const responseCache = useRef<Record<number, DataResponse[]>>({});
 
-  const ds = useServerDataSource<GridSpec["data"], [page: number]>({
+  const setFilterAndResetCache: typeof setFilters = useCallback((arg) => {
+    setFilters(arg);
+    responseCache.current = {};
+  }, []);
+
+  const model = usePiece(filters, setFilterAndResetCache);
+
+  const ds = useServerDataSource({
     queryFn: async ({ requests, queryKey }) => {
       const page = queryKey[0];
+      const filter = queryKey[1];
 
       if (responseCache.current[page]) {
         return responseCache.current[page].map((x) => ({ ...x, asOfTime: Date.now() }));
       }
 
-      const result = await Server(requests, page, pageSize);
+      const result = await Server(requests, page, pageSize, filter);
       responseCache.current[page] = result.pages;
 
       setCount(result.count);
 
       return result.pages;
     },
-    queryKey: [page],
+    queryKey: [page, filters] as const,
   });
 
   const isLoading = ds.isLoading.useValue();
+  const apiExtension = useMemo(() => ({ filterModel: model }), [model]);
 
   return (
     <div>
       <div className="ln-grid" style={{ height: pageSize * rowHeight + headerHeight }}>
         <Grid
           rowSource={ds}
+          apiExtension={apiExtension}
+          columnBase={base}
           columns={columns}
           headerHeight={headerHeight}
           rowHeight={rowHeight}

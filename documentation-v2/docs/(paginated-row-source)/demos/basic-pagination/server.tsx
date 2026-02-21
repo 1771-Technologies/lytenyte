@@ -10,16 +10,18 @@ export async function Server(reqs: DataRequest[], page: number, pageSize: number
   const pageStart = page * pageSize;
 
   const pages = reqs.map((c) => {
+    const pageData = data.slice(pageStart, pageStart + pageSize);
+
     return {
       asOfTime: Date.now(),
-      data: data.slice(pageStart, pageStart + pageSize).map((x) => {
+      data: pageData.map((x) => {
         return { kind: "leaf", id: x.uniq_id, data: x };
       }),
       start: c.start,
       end: c.end,
       kind: "center",
       path: c.path,
-      size: pageSize,
+      size: Math.min(pageSize, pageData.length),
     } satisfies DataResponse;
   });
 

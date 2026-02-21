@@ -16,4 +16,14 @@ most straightforward definition would match the model your server or data base u
 The demo below demonstrates paginated row sorting. Clicking a column header updates that column's
 sort state.
 
+::demo[Sorted Paginated Rows="./demos/server-sorting"]
+
+The demo code applies sort state to individual columns. By extends the [grid's API](/docs/grid-api-extensions)
+you can update the `sort` property on the columns directly. The extended API is then able to apply different
+sorts when a column header is clicked.
+
 ## Next Steps
+
+::next[/docs/paginated-rs-row-filtering]
+::next[/docs/paginated-rs-row-editing]
+::next[/docs/server-data-loading-row-sorting]
