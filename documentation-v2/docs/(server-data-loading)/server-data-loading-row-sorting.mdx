@@ -22,9 +22,10 @@ Clicking a column header updates that column's sort state.
 
 ::demo[Server Row Sorting="./demos/server-row-sorting"]
 
-The demo code applies sort state to individual columns. By extending the [grid's API](/docs/grid-api-extensions) you can
-update the `sort` property on columns directly. The logic then derives the sort
-model from the column definitions and passes it to the `queryKey` dependency array.
+The demo applies sort state to individual columns. You can use
+the [grid's API](/docs/reference/grid-api) to update each column's `sort` property.
+The component then derives the sort model from the column definitions and passes it
+to the `queryKey` dependency array.
 
 ```ts
 const [columns, setColumns] = useState(initialColumns);
@@ -52,9 +53,8 @@ const ds = useServerDataSource({
 
 :::tip
 
-LyteNyte Grid is unopinionated regarding sort model structures. Align your client-side sort
-model with your backend database schema to minimize the logic required
-to translate state into server-side queries.
+LyteNyte Grid is unopinionated about sort model structures. Align your client-side sort
+model with your database schema to minimize translation logic when building server queries.
 
 :::
 
