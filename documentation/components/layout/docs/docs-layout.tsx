@@ -27,6 +27,7 @@ import { Navbar } from "./navbar/navbar";
 import { NavbarSidebarTrigger } from "./navbar/navbar-sidebar-trigger";
 import { DocsNavbar } from "./navbar/docs-navbar";
 import { LayoutTabs } from "./layout-tabs/layout-tabs";
+import { VersionPicker } from "./layout-tabs/version-picker";
 
 export interface DocsLayoutProps extends BaseLayoutProps {
   tree: PageTree.Root;
@@ -143,8 +144,13 @@ export function DocsLayout(props: DocsLayoutProps) {
     const mobile = (
       <SidebarContentMobile {...rest}>
         <SidebarHeader>
-          <div className="flex items-center justify-between pb-2">
+          <div className="relative flex items-center justify-between pb-2">
             {nav.title}
+
+            <div className="absolute right-8">
+              <VersionPicker />
+            </div>
+
             <SidebarTrigger
               className={cn(
                 buttonVariants({
@@ -184,21 +190,14 @@ export function DocsLayout(props: DocsLayoutProps) {
             </LanguageToggle>
           ) : null}
           {themeSwitch.enabled !== false &&
-            (themeSwitch.component ?? (
-              <ThemeToggle mode={themeSwitch.mode ?? "light-dark-system"} />
-            ))}
+            (themeSwitch.component ?? <ThemeToggle mode={themeSwitch.mode ?? "light-dark-system"} />)}
           {footer}
         </HideIfEmpty>
       </SidebarContentMobile>
     );
 
     return (
-      <Sidebar
-        defaultOpenLevel={defaultOpenLevel}
-        prefetch={prefetch}
-        Content={content}
-        Mobile={mobile}
-      />
+      <Sidebar defaultOpenLevel={defaultOpenLevel} prefetch={prefetch} Content={content} Mobile={mobile} />
     );
   }
 

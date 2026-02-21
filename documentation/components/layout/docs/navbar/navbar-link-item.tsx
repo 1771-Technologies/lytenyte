@@ -6,10 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/components/cn";
 
-export function NavbarLinkItem({
-  item,
-  ...props
-}: { item: LinkItemType } & HTMLAttributes<HTMLElement>) {
+export function NavbarLinkItem({ item, ...props }: { item: LinkItemType } & HTMLAttributes<HTMLElement>) {
   if (item.type === "menu") {
     return (
       <Popover>
@@ -20,11 +17,7 @@ export function NavbarLinkItem({
             props.className,
           )}
         >
-          {item.url ? (
-            <BaseLinkItem item={item as BaseLinkType}>{item.text}</BaseLinkItem>
-          ) : (
-            item.text
-          )}
+          {item.url ? <BaseLinkItem item={item as BaseLinkType}>{item.text}</BaseLinkItem> : item.text}
           <ChevronDown className="size-3" />
         </PopoverTrigger>
         <PopoverContent className="flex flex-col">

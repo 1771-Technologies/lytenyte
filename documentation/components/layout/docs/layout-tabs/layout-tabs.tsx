@@ -45,7 +45,7 @@ export function LayoutTabs({
         <LayoutTab key={option.url} selected={selected === option} option={option} vertical={vertical} />
       ))}
       <div className="flex-1" />
-      <div className="flex h-full items-center justify-center">
+      <div className="hidden h-full items-center justify-center lg:flex">
         <VersionPicker />
       </div>
     </div>
