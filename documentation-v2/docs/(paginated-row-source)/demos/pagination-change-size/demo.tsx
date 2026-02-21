@@ -92,7 +92,7 @@ export default function PaginationDemo() {
         {count && (
           <>
             <div className="flex items-center gap-3">
-              Show per page
+              Rows per page
               <Menu>
                 <Menu.Trigger data-ln-button="tertiary" data-ln-size="lg" className="gap-2">
                   {pageSize} <ChevronDown className="size-4" />

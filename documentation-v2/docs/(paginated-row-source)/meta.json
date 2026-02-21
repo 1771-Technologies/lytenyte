@@ -1,4 +1,4 @@
 {
-  "title": "Paginated Row Source",
+  "title": "Paginated Data Loading",
   "pages": ["paginated-rs-rows", "paginated-rs-row-sorting", "paginated-rs-row-filtering"]
 }

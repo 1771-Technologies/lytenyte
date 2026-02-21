@@ -50,17 +50,45 @@ export async function Server(
             }
 
             if ((filter.operator === "equals" || filter.operator === "not_equals") && columnId === "genre") {
-              const genres = value.split(",").map((x) => x.trim());
+              const genres = value
+                .toLowerCase()
+                .split(",")
+                .map((x) => x.trim());
 
-              if (filter.operator === "not_equals" && genres.every((x) => x === filter.value)) return false;
-              if (filter.operator === "equals" && genres.every((x) => x !== filter.value)) return false;
+              if (
+                filter.operator === "not_equals" &&
+                genres.every((x) => x.toLowerCase() === filter.value.toLowerCase())
+              )
+                return false;
+              if (
+                filter.operator === "equals" &&
+                genres.every((x) => x.toLowerCase() !== filter.value.toLowerCase())
+              )
+                return false;
             }
 
-            if (columnId !== "genre" && filter.operator === "equals" && value !== filter.value) return false;
-            if (columnId !== "genre" && filter.operator === "not_equals" && value === filter.value)
+            if (
+              columnId !== "genre" &&
+              filter.operator === "equals" &&
+              value.toLocaleLowerCase() !== filter.value.toLocaleLowerCase()
+            )
               return false;
-            if (filter.operator === "less_than" && value >= filter.value!) return false;
-            if (filter.operator === "greater_than" && value <= filter.value!) return false;
+            if (
+              columnId !== "genre" &&
+              filter.operator === "not_equals" &&
+              value.toLocaleLowerCase() === filter.value.toLocaleLowerCase()
+            )
+              return false;
+            if (
+              filter.operator === "less_than" &&
+              value?.toLocaleLowerCase() >= filter.value?.toLocaleLowerCase()
+            )
+              return false;
+            if (
+              filter.operator === "greater_than" &&
+              value?.toLocaleLowerCase() <= filter.value?.toLocaleLowerCase()
+            )
+              return false;
             if (
               filter.operator === "contains" &&
               !value.toLowerCase().includes(`${filter.value}`.toLowerCase())

@@ -1,4 +1,4 @@
 {
-  "title": "Infinite Row Source",
+  "title": "Infinite Data Loading",
   "pages": ["infinite-rs-rows", "infinite-rs-row-sorting", "infinite-rs-row-filtering"]
 }

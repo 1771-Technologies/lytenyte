@@ -26,7 +26,7 @@ to fetch the next slice of rows.
 The demo below demonstrates the basic pagination setup with caching included, so that
 pages that have already been loaded resolve instantly when navigating back to a previous page.
 
-::demo[Paginated="./demos/basic-pagination"]
+::demo[Basic Paginated Implementation="./demos/basic-pagination"]
 
 The demo retrieves the data for the current page. The server also sends the total row count, which you
 can use to compute the number of pages available.
@@ -52,13 +52,13 @@ const ds = useServerDataSource<GridSpec["data"], [page: number]>({
 });
 ```
 
-## Changing Page Size
+## Pagination Size
 
 You can configure the number of rows requested per page by sending the page size state (`pageSize`) to the server, alongside the
 current `page` value. If you include the page size in the `queryKey` of the server data
 source, changes to the page size will reset the grid view and re-request pages from the server.
 
-::demo[Paginated="./demos/pagination-change-size"]
+::demo[Sizing Pagination="./demos/pagination-change-size"]
 
 The page size is a normal piece of state. The **Show per page** menu can be used to update the page size.
 When the page size is updated, the demo will reset the response cache, reset the page number, and
