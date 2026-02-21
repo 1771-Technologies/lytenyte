@@ -1,9 +1,4 @@
 {
   "title": "Paginated Row Source",
-  "pages": [
-    "paginated-rs-rows",
-    "paginated-rs-row-sorting",
-    "paginated-rs-row-filtering",
-    "paginated-rs-row-editing"
-  ]
+  "pages": ["paginated-rs-rows", "paginated-rs-row-sorting", "paginated-rs-row-filtering"]
 }
