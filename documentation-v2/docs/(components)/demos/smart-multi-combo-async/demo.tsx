@@ -10,7 +10,7 @@ export default function ComponentDemo() {
   const [values, setValues] = useState([options[0]]);
 
   return (
-    <div style={{ height: "400px" }} className="ln-grid flex justify-center pt-8">
+    <div style={{ height: "400px" }} className="ln-grid flex justify-center px-2 py-8">
       <div>
         <SmartSelect
           kind="multi-combo"
@@ -43,7 +43,7 @@ export default function ComponentDemo() {
           trigger={
             <SmartSelect.MultiComboTrigger
               data-ln-input
-              className="flex h-fit max-w-full flex-wrap items-center gap-2 rounded-lg px-2 py-2"
+              className="flex h-fit max-h-full max-w-full flex-wrap items-center gap-2 overflow-auto rounded-lg px-2 py-2"
               renderInput={
                 <input
                   placeholder="Search..."

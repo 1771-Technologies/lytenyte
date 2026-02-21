@@ -13,7 +13,7 @@ export function VersionPicker() {
         </M.Trigger>
       </div>
       <M.Portal>
-        <M.Positioner side="bottom" sideOffset={6}>
+        <M.Positioner side="bottom" sideOffset={6} className="z-100">
           <M.Popup
             className={cn(
               "origin-(--transform-origin) w-(--anchor-width) bg-fd-popover border-xd-border text-xd-popover-foreground border px-2 py-1",

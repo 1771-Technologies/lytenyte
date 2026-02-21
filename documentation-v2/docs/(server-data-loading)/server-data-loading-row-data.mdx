@@ -2,20 +2,19 @@
 title: Server Row Data
 pro: true
 step: Detailed guide on slicing and loading data from the server.
-description: LyteNyte Grid's server data source loads row data in slices and retrieves data on demand.
+description: LyteNyte Grid's server data source loads row data in slices and retrieves it on demand.
 ---
 
 ## Server Data Source Hook
 
-To use the server data source in LyteNyte Grid, import
-the `useServerDataSource` hook from the `@1771technologies/lytenyte-pro` package.
+To use the server data source, import the `useServerDataSource`
+hook from `@1771technologies/lytenyte-pro`.
 
 ```ts
 import { useServerDataSource } from "@1771technologies/lytenyte-pro";
 ```
 
-Because this function is a React hook, it must follow
-the [Rules of Hooks](https://react.dev/reference/rules/rules-of-hooks).
+Since this function is a React hook, it must follow the [Rules of Hooks](https://react.dev/reference/rules/rules-of-hooks).
 
 Provide the `useServerDataSource` hook with a `queryFn` callback. The callback retrieves
 data from the server. LyteNyte Grid passes it parameters describing the current data
@@ -37,23 +36,21 @@ export default function ServerDataDemo() {
 
 A complete example of basic server loading is shown below:
 
-::demo[Row Data From Server="./demos/basic-server-data"]
+::demo[Server Row Data="./demos/basic-server-data"]
 
-Even when data loads from the server, cell renderers and grid configuration
-remain client-side. This example demonstrates the simplest form of server
-data loading, only the row data is retrieved from the server.
+When the grid loads data from the server, cell renderers and grid
+configuration remain client-side. In this example, the server returns only row data.
 
-## Setting Columns From the Server
+## Server Column Setting
 
-Sometimes the server defines the column configurations as well. In this case, include the column
-definitions with the server response. The example below extends
-the `queryFn` to handle this scenario.
+If the server defines the column configurations, include the column definitions in
+the response. The example below extends the `queryFn` to handle this scenario.
 
-::demo[Columns Defined On Server="./demos/server-data-with-columns"]
+::demo[Server Defined Columns="./demos/server-data-with-columns"]
 
-Here, the client doesn't define columns up front. LyteNyte Grid requests the
-initial data, and the server responds with both row data and column
-definitions. The `queryFn` then sets the columns on the grid:
+The client does not define columns up front. LyteNyte Grid requests the initial
+data, and the server returns both row data and column definitions.
+The `queryFn` then sets the grid columns:
 
 ```ts
 const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([]);
@@ -78,9 +75,8 @@ const queryFn: UseServerDataSourceParams<GridSpec["data"], []>["queryFn"] = useC
 
 ## Initial Data Loading State
 
-Before the first request, the server data source sets a reactive
-`isLoading` property in its state. Use this property to display
-loading indicators or skeleton placeholders while fetching initial data.
+Use the server data source's `isLoading` state to show loading indicators
+or skeleton placeholders during the initial data fetch.
 
 ```ts
 export default function ServerDataDemo() {
@@ -92,8 +88,7 @@ export default function ServerDataDemo() {
 }
 ```
 
-The example below shows this in action.
-**Do not wait for data to appear**, the response from this demo never resolves:
+The example below shows the loading state. The demo **response never resolves**, so data never appears:
 
 ::demo[Initial Loading State="./demos/always-loading"]
 
@@ -104,9 +99,9 @@ Network requests can fail. Failures may occur during:
 - The initial data request.
 - A subsequent data request (for example, when scrolling through rows).
 
-This section covers the first case as an introduction to error handling.
+This section introduces error handling using a simple failure case.
 See the [Handling Load Failures guide](/docs/server-data-loading-handling-load-failures)
-for in-depth coverage and best practices.
+for best practices and more details.
 
 ::demo[Initial Load Error="./demos/error-loading-initial"]
 
