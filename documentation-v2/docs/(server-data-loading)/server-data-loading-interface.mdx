@@ -95,15 +95,14 @@ and `"Group B"`, the data request is as follows:
 ```
 
 Consider the first request object, which has `path: ["Alpha"]`. The server should treat
-this as: “Fetch rows where **Group A = "Alpha."** LyteNyte Grid then groups
-the returned rows by **Group B**.
+this as: “Fetch rows where **Group A = "Alpha"**.” LyteNyte Grid then groups the
+returned rows by **Group B**.
 
 The second request object, with `path: ["Alpha", "Beta"]`, targets leaf rows.
 In this case, **Group A = "Alpha"** and **Group B = "Beta"**.
 
-This example shows how `path` defines the data slice the
-server should return. LyteNyte Grid combines these slices to
-build a coherent view.”
+This example shows how `path` defines the data slice the server
+should return. LyteNyte Grid combines these slices to build a coherent view.
 
 ## Response Interface
 
