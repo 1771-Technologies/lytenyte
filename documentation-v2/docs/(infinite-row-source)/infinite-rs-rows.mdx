@@ -1,0 +1,55 @@
+---
+title: Infinite Rows
+pro: true
+step: Load rows continuously as the user scrolls toward the bottom.
+description: Load rows continuously as the user scrolls toward the bottom of the viewport.
+---
+
+:::note
+Infinite row loading in LyteNyte Grid uses the server data source.
+You must be familiar with the [server data source](/docs/server-data-loading-overview)
+before reading this guide.
+:::
+
+## Infinite Row Loading
+
+Infinite row loading detects when the user scrolls near the end of the viewport and requests the next slice of data.
+When the scroll position reaches a defined threshold, retrieve the current view and request the next slice.
+
+The following example uses the `events` property on the grid to register a `scrollEnd` listener.
+The listener checks whether the scroll position is within 100px of the total scroll height.
+
+```tsx
+<Grid
+  events={useMemo<Grid.Events<GridSpec>>(() => {
+    return {
+      viewport: {
+        scrollEnd: ({ viewport }) => {
+          const top = viewport.scrollTop;
+          const left = viewport.scrollHeight - viewport.clientHeight - top;
+          if (left < 100) {
+            const req = ds.requestsForView.get().at(-1)!;
+            const next = { ...req, start: req.end, end: req.end + 100 };
+            ds.pushRequests([next]);
+          }
+        },
+      },
+    };
+  }, [ds])}
+/>
+```
+
+This example shows one approach to implementing infinite row loading. The key implementation
+detail is creating a request for the next data slice and calling `ds.pushRequests` to fetch it.
+For more details, see the [Data Interface guide](/docs/server-data-loading-interface).
+
+The demo below demonstrates infinite data loading using this approach.
+When you scroll near the end of the grid, the grid loads additional rows after a brief delay.
+
+::demo[Infinite Rows="./demos/basic-server-data"]
+
+## Next Steps
+
+::next[/docs/infinite-rs-row-sorting]
+::next[/docs/infinite-rs-row-filtering]
+::next[/docs/server-data-loading-interface]

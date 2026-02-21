@@ -1,4 +1,29 @@
 ---
 title: Paginated Row Sorting
 pro: true
+step: Sort paginated rows on the server and request sorted slices.
+description: Request sorted rows by page by defining a sort model that you send to the server.
 ---
+
+## Sorting Paginated Rows
+
+To sort rows on the server, define a sort model and include it in each data request. The
+`useServerDataSource` hook accepts the sort model as part of the `queryKey`.
+
+The sort model can take any shape that fits your application's needs. In most cases, you should
+match the format that your server or database expects.
+
+The demo below shows paginated row sorting. When you click a column header, the grid updates that column's
+sort state.
+
+::demo[Sorted Paginated Rows="./demos/server-sorting"]
+
+The demo code applies sort state to individual columns. By extending the [grid's API](/docs/grid-api-extensions),
+you can update the `sort` property on each column directly. The extended API then applies the appropriate
+sort when the user clicks a column header.
+
+## Next Steps
+
+::next[/docs/paginated-rs-row-filtering]
+::next[/docs/paginated-rs-rows]
+::next[/docs/server-data-loading-row-sorting]

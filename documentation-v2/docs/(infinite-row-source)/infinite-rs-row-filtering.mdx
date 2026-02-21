@@ -1,4 +1,34 @@
 ---
 title: Infinite Row Filtering
 pro: true
+step: Request filtered rows as the user scrolls infinitely.
+description: Infinitely load filtered rows on demand from the server.
 ---
+
+:::note
+
+This guide provides an overview of filtering with a focus on infinite server row data.
+For detailed guidance on filtering, refer to the Filtering section, starting with
+the [Filter Text guide](/docs/filtering-text).
+
+:::
+
+## Filtering Infinite Rows
+
+To filter rows on the server, define a filter model and include it in each data request.
+Include the filter model in the `queryKey` of the `useServerDataSource` hook.
+Whenever the filter model changes, the grid requests a new set of rows from the server as the user scrolls.
+
+The following demo passes a custom filter model to the `queryKey` of the server data source. Click the
+funnel icon in a column header to apply a filter.
+
+::demo[Filter Infinite Rows="./demos/server-filtering"]
+
+For more guidance on filtering rows on the server, see the
+[Server Row Filtering guide](/docs/server-data-loading-row-filtering).
+
+## Next Steps
+
+::next[/docs/infinite-rs-row-sorting]
+::next[/docs/infinite-rs-rows]
+::next[/docs/server-data-loading-row-filtering]

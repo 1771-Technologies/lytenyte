@@ -1,11 +1,15 @@
 import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro";
-import type { MovieData } from "./data";
-import { data as movieData } from "./data.js";
+import { data as movieData, type MovieData } from "./data.js";
 import type { GridFilter } from "./types.js";
 
-const sleep = () => new Promise((res) => setTimeout(res, 600));
+const sleep = () => new Promise((res) => setTimeout(res, 200));
 
-export async function Server(reqs: DataRequest[], filterModel: Record<string, GridFilter>) {
+export async function Server(
+  reqs: DataRequest[],
+  page: number,
+  pageSize: number,
+  filterModel: Record<string, GridFilter>,
+) {
   // Simulate latency and server work.
   await sleep();
 
@@ -95,21 +99,26 @@ export async function Server(reqs: DataRequest[], filterModel: Record<string, Gr
           return true;
         });
 
-  return reqs.map((c) => {
+  const pageStart = page * pageSize;
+
+  const pages = reqs.map((c) => {
+    const pageData = data.slice(pageStart, pageStart + pageSize);
+
     return {
       asOfTime: Date.now(),
-      data: data.slice(c.start, c.end).map((x) => {
-        return {
-          kind: "leaf",
-          id: x.uniq_id,
-          data: x,
-        };
+      data: pageData.map((x) => {
+        return { kind: "leaf", id: x.uniq_id, data: x };
       }),
       start: c.start,
       end: c.end,
       kind: "center",
       path: c.path,
-      size: data.length,
+      size: Math.min(pageSize, pageData.length),
     } satisfies DataResponse;
   });
+
+  return {
+    pages,
+    count: data.length,
+  };
 }
