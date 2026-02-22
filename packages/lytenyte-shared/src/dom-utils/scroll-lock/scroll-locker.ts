@@ -103,7 +103,10 @@ function preventScrollStandard(referenceElement: Element | null) {
     Object.assign(body.style, {
       position: "relative",
       height: marginY || scrollbarHeight ? `calc(100dvh - ${marginY + scrollbarHeight}px)` : "100dvh",
-      width: marginX || scrollbarWidth ? `calc(100vw - ${marginX + scrollbarWidth}px)` : "100vw",
+      width:
+        marginX || (scrollbarWidth && !supportsStableScrollbarGutter)
+          ? `calc(100vw - ${marginX + scrollbarWidth}px)`
+          : "100vw",
       boxSizing: "border-box",
       overflow: "hidden",
       scrollBehavior: "unset",
