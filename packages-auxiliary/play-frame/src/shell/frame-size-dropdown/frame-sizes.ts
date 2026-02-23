@@ -1,50 +1,5 @@
-import { Button, DropdownMenu } from "@radix-ui/themes";
-import type { Frame } from "./+types.js";
-import { FrameIcon } from "@radix-ui/react-icons";
-
-export interface FrameDropdownProps {
-  readonly frame: Frame;
-  readonly onFrameChange: (f: Frame) => void;
-}
-
-export function FrameDropdown({ frame, onFrameChange }: FrameDropdownProps) {
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
-        <Button variant="soft" aria-label="Frame size menu trigger">
-          <FrameIcon />
-          Frame: {frame.name}
-          <DropdownMenu.TriggerIcon />
-        </Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content
-        size="1"
-        style={{ minWidth: "var(--radix-dropdown-menu-trigger-width)" }}
-      >
-        {frames.map((f, i) => {
-          if (typeof f === "string") return <DropdownMenu.Separator key={i} />;
-
-          const shortcut = f.label ?? `${f.width}x${f.height}`;
-
-          return (
-            <DropdownMenu.Item
-              key={f.name}
-              shortcut={shortcut}
-              onClick={() => {
-                onFrameChange(f);
-              }}
-            >
-              {f.name}
-            </DropdownMenu.Item>
-          );
-        })}
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
-  );
-}
-
-const frames = [
-  { name: "Default", width: undefined, height: undefined, label: "Fill Space" },
+export const FRAME_SIZES = [
+  { name: "Fill", width: undefined, height: undefined, label: "100%x100%" },
   "separator",
   { name: "Android Compact", width: 412, height: 917 },
   { name: "Android Medium", width: 700, height: 840 },

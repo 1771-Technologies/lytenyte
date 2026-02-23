@@ -1,5 +1,7 @@
 import frames from "playframe";
 
+console.log(frames);
+
 const keys = Object.keys(frames);
 
 export type Demo = { value: string; label: string; path: string[] };

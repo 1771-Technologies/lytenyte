@@ -1,19 +1,17 @@
 import "@radix-ui/themes/styles.css";
-import "../index.css";
+import "./index.css";
 
 import { useCallback, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { Box, Flex, IconButton, Separator, Theme } from "@radix-ui/themes";
-import { FrameDropdown } from "./frame-dropdown.js";
-import { type Frame } from "./+types.js";
-import { DemoDropdown } from "./demo-dropdown.js";
+import { FrameDropdown, type Frame } from "./frame-size-dropdown/frame-dropdown.js";
+import { DemoDropdown } from "./demo-dropdown/demo-dropdown.js";
 import { ExternalLinkIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
+import type { AxeResults } from "axe-core";
 import axe from "axe-core";
-import { useAtom } from "jotai";
-import { axeLoading$, axeResults$ } from "./atoms.js";
 import { AxePopover } from "./axe-popover/axe-popover.js";
-import { demoOptions, type Demo } from "./demo-tree.js";
+import { demoOptions, type Demo } from "./demo-dropdown/demo-tree.js";
 
 export function Main() {
   const savedIndex = localStorage.getItem("demo-key");
@@ -44,8 +42,8 @@ export function Main() {
   const aRef = useRef<HTMLIFrameElement>(null);
   const bRef = useRef<HTMLIFrameElement>(null);
 
-  const [axeResults, setAxeResults] = useAtom(axeResults$);
-  const [axeLoading, setAxeLoading] = useAtom(axeLoading$);
+  const [axeResults, setAxeResults] = useState<AxeResults | null>(null);
+  const [axeLoading, setAxeLoading] = useState(false);
 
   const runAxe = useCallback(() => {
     setAxeLoading(true);

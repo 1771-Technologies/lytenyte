@@ -1,6 +1,8 @@
 import { Button, DropdownMenu } from "@radix-ui/themes";
 import { trees, type Demo } from "./demo-tree.js";
 
+import "./demo-tree-2.js";
+
 export interface DemoDropdownProps {
   readonly demo: Demo;
   readonly onDemoChange: (f: Demo) => void;
@@ -17,10 +19,7 @@ export function DemoDropdown({ demo, onDemoChange }: DemoDropdownProps) {
           <DropdownMenu.TriggerIcon />
         </Button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content
-        size="1"
-        style={{ minWidth: "var(--radix-dropdown-menu-trigger-width)" }}
-      >
+      <DropdownMenu.Content size="1" style={{ minWidth: "var(--radix-dropdown-menu-trigger-width)" }}>
         {trees.map(function HandleTree(node) {
           if (node.kind === "leaf") {
             const f = node.node;
@@ -40,9 +39,7 @@ export function DemoDropdown({ demo, onDemoChange }: DemoDropdownProps) {
           return (
             <DropdownMenu.Sub key={node.label}>
               <DropdownMenu.SubTrigger>{node.label}</DropdownMenu.SubTrigger>
-              <DropdownMenu.SubContent>
-                {[...node.children.values()].map(HandleTree)}
-              </DropdownMenu.SubContent>
+              <DropdownMenu.SubContent>{[...node.children.values()].map(HandleTree)}</DropdownMenu.SubContent>
             </DropdownMenu.Sub>
           );
         })}
