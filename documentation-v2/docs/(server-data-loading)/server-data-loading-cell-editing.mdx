@@ -19,7 +19,7 @@ the cell briefly retains its old value before the grid refreshes. To eliminate t
 the next section explains how to optimistically update the client-side value
 so changes appear instantly.
 
-::demo[Edit Data Async="./demos/editing-server-data"]
+::demo[Asynchronous Data Editing="./demos/editing-server-data"]
 
 The example implements a basic update handler. In most cases, your update
 logic should look similar to the following:
@@ -42,7 +42,7 @@ You must still use the `onRowDataChange` callback to send the update to the serv
 In the demo below, **double-click** any cell to edit it.
 The cell value updates when you commit the change.
 
-::demo[Edit Data Async With Optimistic Updates="./demos/editing-server-data-optimistic"]
+::demo[Asynchronous Optimistic Editing="./demos/editing-server-data-optimistic"]
 
 When optimistic updates are enabled, you can skip calling `refresh` when the optimistic
 value matches the expected server result. The server update logic follows this pattern:

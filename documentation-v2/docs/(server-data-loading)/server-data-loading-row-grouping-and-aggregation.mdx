@@ -14,7 +14,7 @@ Send this model to the server to request grouped rows.
 The example below shows this behavior. For details on the data request interface used
 by the server data source, see the [Data Interface guide](/docs/server-data-loading-interface).
 
-::demo[Row Grouping="./demos/row-grouping-basic"]
+::demo[Basic Server Row Grouping="./demos/row-grouping-basic"]
 
 This basic grouping example excludes aggregations, so only leaf-level rows contain data values.
 
@@ -33,7 +33,7 @@ In the demo, **click** the aggregation name in a column header to change the agg
 Each change updates the `queryKey`, which refreshes the server data source
 and updates the view with new values.
 
-::demo[Row Grouping With Aggregations="./demos/row-grouping-aggregations"]
+::demo[Aggregated Server Row Grouping="./demos/row-grouping-aggregations"]
 
 Not every column requires aggregation, especially text columns. The server must
 return correct aggregate values, as LyteNyte Grid does not validate them and

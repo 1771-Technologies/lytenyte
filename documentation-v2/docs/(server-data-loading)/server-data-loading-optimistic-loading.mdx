@@ -24,7 +24,7 @@ view and preloads the next slice when the view changes, helping the grid “stay
 Users may still see a loading indicator if they scroll faster
 than the next slice can load.
 
-::demo[Prefetch Next Block="./demos/optimistic-loading"]
+::demo[Optimistic Data Loading="./demos/optimistic-loading"]
 
 In the demo, optimistic loading runs in a single `useEffect` hook, but it uses several
 parts of the server data source interface. The section below breaks down the full effect.
@@ -59,7 +59,7 @@ LyteNyte Grid's API is intentionally low-level so you can tailor the behavior to
 You can optimistically fetch rows when row groups are present. By detecting when a user
 hovers over a group row, you can prefetch the group's child rows before they expand it. See the demo below:
 
-::demo[Preload Group Rows On Hover="./demos/optimistic-loading-groups"]
+::demo[Optimistically Loading Group Rows="./demos/optimistic-loading-groups"]
 
 Preloading on hover is one approach. Other triggers include initial load or cell focus.
 Each approach anticipates row expansion and loads child data before the user requests it.
