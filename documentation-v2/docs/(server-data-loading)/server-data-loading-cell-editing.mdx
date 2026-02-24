@@ -1,25 +1,23 @@
 ---
 title: Cell Editing Server Data
 pro: true
-description: You can edit server-side data through the LyteNyte Grid server data source.
-  This allows updating cell values and synchronizing those updates with the server.
+description: Use the server data source to edit cell values and synchronize those updates with the server.
 ---
 
-This guide assumes familiarity with LyteNyte Grid's cell editing capabilities. If not,
-see the [Cell Editing guide](/docs/cell-editing). The content here focuses on
-handling cell updates through the server data source.
+This guide covers handling cell updates through the server data source.
+Before proceeding, see the [Cell Editing guide](/docs/cell-editing).
 
-## Editing Data
+## Server Data Editing
 
-LyteNyte Grid's `useServerDataSource` hook accepts a callback for the `onRowDataChange` property.
-The edit handler is called when a cell edit occurs in the grid and is responsible for sending the update
-request to the server. It runs asynchronously, and once the update completes, it's the
-developer's responsibility to refresh the grid data, typically by calling the server data source's `refresh` method.
+The `useServerDataSource` hook accepts a callback for the `onRowDataChange` property. This
+handler runs when the user edits a cell and sends the update request to the
+server. The handler runs asynchronously. Once the update completes, you must refresh the grid data,
+typically by calling the server data source's `refresh` method.
 
-The example below demonstrates this. You can edit any cell value (by double clicking on the cell);
-after committing the change, it won't update immediately but will refresh shortly to show the new value.
-This behavior isn't ideal, which is why the next section explains how to optimistically update the
-client value so changes appear instantly.
+In the demo below, **double-click** any cell to edit it. After you commit the change,
+the cell briefly retains its old value before the grid refreshes. To eliminate this delay,
+the next section explains how to optimistically update the client-side value
+so changes appear instantly.
 
 ::demo[Edit Data Async="./demos/editing-server-data"]
 
@@ -34,20 +32,20 @@ onRowDataChange: async ({ rows }) => {
 };
 ```
 
-### Optimistic Update For Instant Feedback
+### Enabling Optimistic Updates
 
-The example above isn't ideal for many use cases. The main issue is that cell updates aren't reflected
-immediately. LyteNyte Grid's server data source provides an optimistic update flag that
-applies cell updates directly on the client. Enabling this flag assumes the
-server update will succeed. The `rowUpdateOptimistically` property makes cell updates apply
-instantly on the client, but remember that this change is client only. Developers
-must still implement the `onRowDataChange` function and handle any errors
-that occur when sending updates to the server.
+To apply optimistic updates, enable `rowUpdateOptimistically` on the server data source.
+This applies edits on the client before the server responds. Since this setting assumes the server
+update will succeed, the change remains client-side until you refresh from the server.
+You must still use the `onRowDataChange` callback to send the update to the server and handle errors.
+
+In the demo below, **double-click** any cell to edit it.
+The cell value updates when you commit the change.
 
 ::demo[Edit Data Async With Optimistic Updates="./demos/editing-server-data-optimistic"]
 
-With optimistic updates enabled, you can skip the refresh step if the applied update
-matches the expected server value. The server update logic now looks similar to:
+When optimistic updates are enabled, you can skip calling `refresh` when the optimistic
+value matches the expected server result. The server update logic follows this pattern:
 
 ```ts
 onRowDataChange: async ({ rows }) => {
