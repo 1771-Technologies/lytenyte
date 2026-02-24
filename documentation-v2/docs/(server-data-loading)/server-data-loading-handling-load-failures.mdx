@@ -2,22 +2,19 @@
 title: Handling Load Failures
 pro: true
 step: Recover from failed data requests and retry loads.
-description: Network requests can fail at any time, that's an inherent part of client-server communication.
-  The LyteNyte Grid server data source provides simple mechanisms to recover from request
-  errors, making it easy to retry failed requests.
+description: Use the server data source's built-in error recovery mechanisms to manage and retry failed network requests.
 ---
 
 ## Handling Initial Request Failure
 
-When the server data source initializes, it sends an initial data request to the server. If this
-request fails, LyteNyte Grid can't determine which data slices to re-request because
-none have loaded. The simplest solution is to reset the grid,
-as shown in the example below.
+When the server data source initializes, it sends an initial data request. If this fails,
+LyteNyte Grid can't retry specific slices because none have loaded.
+To recover, reset the grid as demonstrated below:
 
 ::demo[Initial Load Error="./demos/error-loading-initial"]
 
-Clicking the **"Retry - it will work now"** button calls the `reset` method on
-the server data source, which resends the initial data request to the server.
+Clicking the **“Retry / Resolve”** button calls the `reset` method on the server data
+source, which resends the initial data request to the server.
 
 ## Handle Slice Failures
 
@@ -26,18 +23,16 @@ The LyteNyte Grid server data source provides the `retry` method to reattempt fa
 data requests. This method clears the error state and resends only the failed requests that
 are currently in view; failed requests outside the view are skipped but still have their error state cleared.
 
-In the example below, scroll down a few rows to trigger some failed requests. Clicking
-the **"Retry Failed"** button clears the error state and re-requests
-the affected rows. The subsequent requests will succeed.
+In the following demo, scroll down to trigger failed requests.
+Click the **“Retry Failed”** button to clear the error state and successfully re-request the affected rows.
 
 ::demo[Failed Row Slice="./demos/slice-data-failures"]
 
 ### Handling Group Failures
 
-The `retry` method also handles failed group expansions. Call it to retry a group
-expansion that failed, and all associated errored requests will be retried. In the
-example below, expanding a group triggers a failure. Clicking the exclamation icon
-retries the failed requests, and the subsequent requests succeed.
+The `retry` method also recovers failed group expansions. Calling it re-requests all errored
+fetches associated with that group. In the demo below, expand a group to trigger
+an intentional failure, then click the exclamation icon to successfully retry the request.
 
 ::demo[Group Expansion Failure="./demos/error-group"]
 
