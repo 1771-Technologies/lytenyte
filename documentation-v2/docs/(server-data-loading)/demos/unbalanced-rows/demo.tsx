@@ -35,7 +35,7 @@ const columns: Grid.Column<{ data: any }>[] = [
 ];
 
 export default function ServerDataDemo() {
-  const [expansions, setExpansions] = useState<Record<string, boolean | undefined>>({ Documents: true });
+  const [expansions, setExpansions] = useState<Record<string, boolean | undefined>>({ "/Documents": true });
   const ds = useServerDataSource<any>({
     queryFn: (params) => {
       return Server(params.requests);

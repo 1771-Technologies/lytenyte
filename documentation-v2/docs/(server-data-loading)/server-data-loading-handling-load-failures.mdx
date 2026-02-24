@@ -13,7 +13,7 @@ To recover, reset the grid as demonstrated below:
 
 ::demo[Initial Load Error="./demos/error-loading-initial"]
 
-Clicking the **“Retry / Resolve”** button calls the `reset` method on the server data
+Clicking the **Retry / Resolve** button calls the `reset` method on the server data
 source, which resends the initial data request to the server.
 
 ## Handle Slice Failures
@@ -24,7 +24,7 @@ data requests. This method clears the error state and resends only the failed re
 are currently in view; failed requests outside the view are skipped but still have their error state cleared.
 
 In the following demo, scroll down to trigger failed requests.
-Click the **“Retry Failed”** button to clear the error state and successfully re-request the affected rows.
+Click the **Retry Failed** button to clear the error state and successfully re-request the affected rows.
 
 ::demo[Failed Row Slice="./demos/slice-data-failures"]
 
@@ -32,7 +32,7 @@ Click the **“Retry Failed”** button to clear the error state and successfull
 
 The `retry` method also recovers failed group expansions. Calling it re-requests all errored
 fetches associated with that group. In the demo below, expand a group to trigger
-an intentional failure, then click the exclamation icon to successfully retry the request.
+an intentional failure, then **click** the exclamation icon to successfully retry the request.
 
 ::demo[Group Expansion Failure="./demos/error-group"]
 

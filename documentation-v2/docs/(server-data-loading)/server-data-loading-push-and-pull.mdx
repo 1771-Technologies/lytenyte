@@ -13,12 +13,12 @@ Calling this method bypasses existing request tracking and processes these reque
 The grid resolves row data conflicts and cancels pending requests if
 the grid resets before the server responds.
 
-Click the **“Request Data”** button in the demo below to manually refresh the
+Click the **Request Data** button in the demo below to manually refresh the
 grid, simulating a user-triggered polling update.
 
 ::demo[Server Data Pulling="./demos/data-pulling"]
 
-The **“Request Data”** button's `onClick` callback handles the server data fetch:
+The **Request Data** button's `onClick` callback handles the server data fetch:
 
 ```tsx
 <button
@@ -44,7 +44,7 @@ server responses, as demonstrated below.
 ::demo[Server Data Pushing="./demos/data-pushing"]
 
 This example is intentionally simple to highlight the core functionality. Like
-the data-pulling example, the main logic runs in the **"Push Data"** button's `onClick`
+the data-pulling example, the main logic runs in the **Push Data** button's `onClick`
 handler. However, instead of calling `pushRequests`, it calls `pushResponses`
 and provides complete responses.
 

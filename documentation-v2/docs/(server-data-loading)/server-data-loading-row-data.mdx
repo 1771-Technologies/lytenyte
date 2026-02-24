@@ -119,8 +119,8 @@ const error = ds.loadingError.useValue(); //!
 
 :::note
 
-LyteNyte Grid can only detect a failed request if the promise returned by the `queryFn` rejects.  
-If your implementation catches and handles the rejection internally, the grid will not detect the error.  
+LyteNyte Grid can only detect a failed request if the promise returned by the `queryFn` rejects.
+If your implementation catches and handles the rejection internally, the grid will not detect the error.
 This is acceptable when the error is handled intentionally, but it's a common source of confusion.
 
 For example, this `queryFn` never reports a failure:

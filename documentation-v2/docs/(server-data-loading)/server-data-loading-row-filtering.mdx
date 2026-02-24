@@ -8,7 +8,7 @@ description: Send a custom filter model to the server to filter rows before retu
 :::note
 
 This guide covers filtering for the server row data source. For details,
-see Filtering, starting with [Filter Text](/docs/filtering-text).
+see Filtering, starting with [Filter Text guide](/docs/filtering-text).
 
 :::
 
@@ -25,18 +25,31 @@ before returning the data.
 The following demo passes a custom filter model to the `queryKey` property. Click the funnel
 icon in the column header to apply a filter.
 
-::demo[Server Filtering="./demos/filtered-server-data"]
+::demo[Server Row Filtering="./demos/filtered-server-data"]
 
-To send the filter model to the server, add it to the `queryKey` as shown below.
-The server then evaluates the filter model and returns only the matching rows.
+To filter rows, the demo creates a filter model and sends it to the server. The filter model
+interface appears below. The server uses the `GridFilter` type to evaluate and filter rows.
 
 ```ts
-export type FilterStringOperator = "equals" | "not_equals" | "less_than" | "greater_than" | "contains";
+export type FilterStringOperator = "equals" | "not_equals" | "not_contains" | "contains";
 
 export interface FilterString {
   readonly operator: FilterStringOperator;
   readonly value: string;
   readonly kind: "text";
+}
+
+export type FilterNumberOperator =
+  | "equals"
+  | "not_equals"
+  | "less_than"
+  | "greater_than"
+  | "less_than_or_equal"
+  | "greater_than_or_equal";
+export interface FilterNumber {
+  readonly operator: FilterNumberOperator;
+  readonly value: number;
+  readonly kind: "number";
 }
 
 export type FilterDateOperator = "before" | "after";
@@ -47,12 +60,11 @@ export interface FilterDate {
   readonly kind: "date";
 }
 
-export type GridFilter = FilterString | FilterDate;
+export type GridFilter = FilterString | FilterDate | FilterNumber;
 ```
 
-To send the filter model to the server, the code adds it to the `queryKey`. The example below
-demonstrates this approach. The server evaluates the filter model and removes rows that do
-not match the filter criteria.
+To send the filter model to the server, add it to the `queryKey` as shown below.
+The server then evaluates the filter model and returns only the matching rows.
 
 ```ts
 //!next

@@ -3,7 +3,7 @@ title: Server Row Pinning
 pro: true
 step: Pin rows to keep specific data visible.
 description: Pin rows to the top or bottom of the viewport to keep them visible.
-  With a server data source, the server returns these in a pinned-row response.
+  With the server data source, the server returns these in a pinned-row response.
 ---
 
 ## Server Pinned Rows
@@ -12,7 +12,7 @@ The server data source does not track viewport changes for pinned rows because t
 To supply pinned rows, return a `DataResponsePinned` object for every viewport request, including the
 initial load. For details, see the [Data Interface guide](/docs/server-data-loading-interface).
 
-This example pins rows to the top or bottom of the grid. The server always returns
+This example pins rows to the top and bottom of the grid. The server always returns
 both pinned and scrollable rows. Note that pinned rows are always leaf rows.
 
 ::demo[Server Row Pinning="./demos/row-pinned"]
@@ -44,7 +44,7 @@ on the client without a server response.
 ::demo[Pushing Pinned Rows="./demos/row-pinned-pushed"]
 
 `pushResponses` is one way to push data into the grid. For more
-details, see the [Data Pushing and Pulling guide](/docs/server-data-loading-push-and-pull).
+details, see the [Data Pushing or Pulling guide](/docs/server-data-loading-push-and-pull).
 
 ## Next Steps
 
