@@ -1,59 +1,43 @@
 ---
 title: Server Row Grouping
 pro: true
-step: Handle grouped data and load group slices.
-description: Display hierarchical data efficiently with LyteNyte Grid.
-  Use the server data source to request and assemble data slices for grouped grid views.
+step: Use the server data source to load and manage group slices.
+description: Display hierarchical data by using the server data source to request and assemble data slices for grouped views.
 ---
 
-## Grouping Rows
+## Server Grouped Rows
 
-To group rows in the server data source, define a custom row group model. The simplest way to
-do this is to use an array of `string` values, where the values represent the ID of the column to
-group on.
+To group rows in the server data source, define a custom row group model. The simplest approach uses an
+array of `string` values, where each value is the ID of a column to group by.
+Send this model to the server to request grouped rows.
 
-With a group model defined, you can send this model to the server, and have your server respond
-with group rows.
+The example below shows this behavior. For details on the data request interface used
+by the server data source, see the [Data Interface guide](/docs/server-data-loading-interface).
 
-The example below illustrates this behavior. If you are unfamiliar with the data request interface
-used by teh server data source see the [Data Interface guide](/docs/server-data-loading-interface).
+::demo[Basic Server Row Grouping="./demos/row-grouping-basic"]
 
-::demo[Row Grouping="./demos/row-grouping-basic"]
+This basic grouping example excludes aggregations, so only leaf-level rows contain data values.
 
-This basic grouping example does not include aggregations (covered in the next section), so only
-the leaf-level rows contain data values.
+The demo's `server.ts` file shows the parent/child logic required to build and return grouped rows.
+Compared to flat rows, grouped rows add parent/child structure to the data model. To support this
+hierarchy, the grid includes a `path` property in each request to identify
+the specific group being fetched.
 
-If you inspect the `server.ts` file in the demo (click **Expand Code**), you'll
-see that grouped rows are more complex to compute than flat rows.
-The added parent/child hierarchy increases the complexity of the view's visual representation.
-
-When reviewing the code, pay close attention to the `path` property.
-LyteNyte Grid includes the `path` in each data request to identify
-which part of the grouped rows is being fetched.
-
-This value must be returned in the response so the grid's server
-data source knows how to store the response rows in its internal data tree.
+Return the same `path` in the response so the server data source
+can store the returned rows in its internal data tree.
 
 ## Server Row Aggregations
 
-Return group rows from the server with aggregated data values if you want LyteNyte Grid to display
-the values for these rows. The server can aggregate group rows in any way that makes sense for
-your application's use case.
+To display values on group rows, return group rows with aggregated data from the server.
+In the demo, **click** the aggregation name in a column header to change the aggregation.
+Each change updates the `queryKey`, which refreshes the server data source
+and updates the view with new values.
 
-The demo below demonstrates this by returning aggregated data for group rows. You can change the aggregation
-applied by clicking the aggregation name in the column header. Changing an aggregation will refresh the
-view, since the aggregation values are provided to the `queryKey` property of the data source.
+::demo[Aggregated Server Row Grouping="./demos/row-grouping-aggregations"]
 
-::demo[Row Grouping With Aggregations="./demos/row-grouping-aggregations"]
-
-Aggregations make row grouping valuable. They reveal key insights in your data.
-In the demo above, rows are grouped by `Education`, and both `Age` and `Salary` are aggregated by average.
-From our (fictitious) salary dataset, we can see that the average age of someone with a Bachelor's
-degree is 30 years, with an average salary of $124,768.
-
-Not every column needs an aggregation. For many columns, especially text columns,
-aggregation doesn't make sense. The server is responsible for returning correct aggregation results.
-LyteNyte Grid does not validate the aggregated data; it trusts the server's calculations in the response.
+Not every column requires aggregation, especially text columns. The server must
+return correct aggregate values, as LyteNyte Grid does not validate them and
+simply trusts the server's response.
 
 Many aggregation types are supported. In most cases, these correspond to the aggregation
 functions available in your database. Common examples include `sum` and `average`,
@@ -72,11 +56,9 @@ The demo below illustrates this by showing child counts in the group cells.
 
 :::note
 
-In the example above, the child counts are sent from the server to the client as part of the row data.
-This might seem unexpected since the data response for a group row already includes a child count property.
-However, that property belongs to the server data loading interface, not the LyteNyte Grid row interface.
-
-Including child counts directly in the row data ensures they're accessible to the grid's cell renderers.
+Include child counts directly in the row data to make them accessible to cell renderers.
+The child count property on the group row response belongs to
+the server data loading interface, not the row interface.
 
 :::
 

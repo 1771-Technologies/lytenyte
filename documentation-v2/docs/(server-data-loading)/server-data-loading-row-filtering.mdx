@@ -2,24 +2,21 @@
 title: Server Row Filtering
 pro: true
 step: Filter server-side rows using the server data source.
-description: Filter rows on the server before returning them to the client by sending a
-  custom filter model to the server.
+description: Send a custom filter model to the server to filter rows before returning them to the client.
 ---
 
 :::note
 
-This guide provides an overview of filtering with a focus on the server row data source.
-For detailed guidance on filtering, refer to the Filtering section, starting with
-the [Filter Text guide](/docs/filtering-text).
+This guide covers filtering for the server row data source. For details,
+see Filtering, starting with [Filter Text](/docs/filtering-text).
 
 :::
 
 ## Filtering Rows
 
 To filter rows on the server, define a filter model and include it in each data request.
-The `useServerDataSource` hook accepts a `queryKey` property, which is an array of dependencies
-used for data fetching. When a value in this array changes, the data source resets and fetches a new
-set of rows.
+The `useServerDataSource` hook accepts a `queryKey` array. When any value in the array
+changes, the server data source resets and fetches new rows.
 
 Include the filter model in the `queryKey` dependency array. The data source passes the `queryKey`
 value to the `queryFn`. The `queryFn` then sends the filter model to the server, which applies the filter
@@ -30,8 +27,8 @@ icon in the column header to apply a filter.
 
 ::demo[Server Filtering="./demos/filtered-server-data"]
 
-To filter rows, the demo creates a filter model and sends it to the server. The filter model
-interface appears below. The server uses the `GridFilter` type to evaluate and filter rows.
+To send the filter model to the server, add it to the `queryKey` as shown below.
+The server then evaluates the filter model and returns only the matching rows.
 
 ```ts
 export type FilterStringOperator = "equals" | "not_equals" | "less_than" | "greater_than" | "contains";
@@ -68,9 +65,8 @@ const ds = useServerDataSource({
 });
 ```
 
-This approach represents one way to implement server-side filtering. We recommend aligning
-the client-side filter model with the format your server already supports. This alignment
-helps the client and server represent filters consistently.
+This is just one approach to server-side filtering. We recommend aligning your client-side
+filter model with your existing server format to maintain consistency.
 
 ## Next Steps
 

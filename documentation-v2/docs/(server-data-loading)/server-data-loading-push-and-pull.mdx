@@ -2,26 +2,23 @@
 title: Data Pushing or Pulling
 pro: true
 step: Manually request or push data to the server data source from the client.
-description: The LyteNyte Grid's server data source enables programmatic data exchange
-  with the server, giving developers full control over how data is loaded into the
-  grid. It also supports hybrid patterns where row data originates from both the
-  client and the server.
+description: Control data loading with the server data source and use hybrid
+  patterns where row data comes from both the client and the server.
 ---
 
 ## Pulling Data
 
-LyteNyte Grid provides the `pushRequests` method on the server data source to request (**"pull"**) data
-from the server. When invoked, the grid processes the requests as new, ignoring existing request
-tracking. The grid also manages row data conflict resolution and cancels pending requests
-if the grid resets before a response is received.
+Use the `pushRequests` method on the server data source to manually trigger server data fetches.
+Calling this method bypasses existing request tracking and processes these requests as new.
+The grid resolves row data conflicts and cancels pending requests if
+the grid resets before the server responds.
 
-In the example below, clicking the **"Request Data"** button triggers the
-grid to tick, a manual refresh similar to those in many UIs that let users poll for updates.
+Click the **“Request Data”** button in the demo below to manually refresh the
+grid, simulating a user-triggered polling update.
 
-::demo[Data Pulling="./demos/data-pulling"]
+::demo[Server Data Pulling="./demos/data-pulling"]
 
-The code for pulling data from the server is simple and runs in
-the **"Request Data"** button's `onClick` callback:
+The **“Request Data”** button's `onClick` callback handles the server data fetch:
 
 ```tsx
 <button
@@ -33,19 +30,18 @@ the **"Request Data"** button's `onClick` callback:
 </button>
 ```
 
-We use the `requestsForView` atom to fetch requests for the current view, though any
-request set can be used. If you're unfamiliar with the request interface,
+The demo uses the `requestsForView` atom to fetch data for the current view,
+though any request set can be used. If you're unfamiliar with the request interface,
 see the [Data Interface guide](/docs/server-data-loading-interface) for more details.
 
 ## Pushing Data
 
-You can push data into LyteNyte Grid using the `pushResponses` method on the
-server data source. This method accepts complete data responses and sends
-them to the data source. It can also be used to generate data ticks on the client
-and push the result into the data source as though it were the server that sent the rows.
-This is shown in the example below.
+Use `pushResponses` on the server data source to push data into LyteNyte Grid.
+It accepts complete data responses and applies them to the data source. You
+can also generate client-side updates and push them as simulated
+server responses, as demonstrated below.
 
-::demo[Data Pushing="./demos/data-pushing"]
+::demo[Server Data Pushing="./demos/data-pushing"]
 
 This example is intentionally simple to highlight the core functionality. Like
 the data-pulling example, the main logic runs in the **"Push Data"** button's `onClick`
@@ -67,9 +63,8 @@ and provides complete responses.
 </button>
 ```
 
-Pushing responses requires a solid understanding of the LyteNyte Grid server
-data source's response model and how responses form the data tree.
-See the [Data Interface guide](/docs/server-data-loading-interface) for more information.
+Pushing responses requires understanding the server data source response model and how responses form
+the data tree. For details, see the [Data Interface guide](/docs/server-data-loading-interface).
 
 ## Next Steps
 

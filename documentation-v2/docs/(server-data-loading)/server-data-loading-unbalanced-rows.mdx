@@ -2,31 +2,29 @@
 title: Unbalanced Rows (Tree Data)
 pro: true
 step: Handle asymmetric row groups of varying depths.
-description: Hierarchical data may include leaf rows at varying depths, which
-  is especially common in NoSQL databases. LyteNyte Grid supports
-  representing these unbalanced hierarchies and can load them from a server source on demand.
+description: Use the server data source to handle unbalanced
+  hierarchies and load hierarchical data on demand.
 ---
+
+Hierarchical data can include leaf rows at varying depths, a common pattern in
+NoSQL databases. LyteNyte Grid supports these unbalanced hierarchies.
 
 ## Display A Tree of Data
 
-When using LyteNyte Grid's server data source, it's important to understand that the grid
-view reflects the rows received from the server, not the models defined in the grid
-state. For example, if the [row group model](/docs/server-data-loading-row-grouping-and-aggregation)
-defines four grouping levels, LyteNyte Grid does not enforce that each row must be
-expandable four times to reach a leaf node.
+LyteNyte Grid's server data source renders the rows returned by the server,
+not the models defined in the grid state. For example, if the [row group model](/docs/server-data-loading-row-grouping-and-aggregation)
+defines four grouping levels, the grid does not force every row to expand four times to reach a leaf node.
 
-This means the server data source can display tree data of any depth, as long as
-the server's data representation is consistent with the responses sent to the client.
+The server data source can display tree data of any depth, provided the
+server's data representation stays consistent across requests and responses.
 
-The example below demonstrates this by creating a tree with varying branch levels.
-It does so without using row groups, though the same logic and pattern apply.
+The demo demonstrates this by creating a tree with varying branch
+depths. It does not use row groups, but the same pattern applies.
 
 ::demo[Unbalanced Rows="./demos/unbalanced-rows"]
 
-This is just one example of handling unbalanced rows. Another common use case is collapsing row
-groups that contain only a single child. The key takeaway is that LyteNyte Grid respects
-the rows returned by the server. The server is responsible
-for interpreting state, and the grid simply renders what the server provides.
+This is one way to handle unbalanced hierarchies. Another common approach collapses row groups
+with a single child. The server interprets state, and LyteNyte Grid renders the rows it returns.
 
 ## Next Steps
 

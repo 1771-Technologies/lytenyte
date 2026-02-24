@@ -2,39 +2,33 @@
 title: Optimistic Loading
 pro: true
 step: Pre-fetch data using optimistic loading to reduce perceived latency.
-description: Predicting the data a user will want to view next is key to building a server
-  data loading solution that feels instant. This guide explains how to
-  optimistically load rows so users never encounter a loading indicator.
+description: Prefetch and optimistically load anticipated rows into the server data source to reduce loading indicators.
 ---
 
 ## Optimistically Fetching Data Slices
 
-Optimistic data loading is not a one-size-fits-all strategy. Instead,
-it's about predicting which data a user is likely to view next and preparing it in advance.
-This approach is common on webpages, where links to other pages are preloaded to speed
-up navigation. We can apply the same principle to loading data slices.
+Optimistic data loading predicts and preloads the data a user is likely to view next.
+Similar to prefetching linked pages to accelerate navigation, you can apply
+these techniques to load data slices.
 
 :::note
 
-Before looking at examples, note that optimistic loading is not a fixed sequence
-of functions. The best approach depends on your application and how users interact
-with it. The examples in this guide introduce common use cases and
-demonstrate how LyteNyte Grid supports optimistic data loading.
+Optimistic loading is not a fixed sequence of functions. The best approach depends on
+your application and user interaction patterns. This guide's demos show common
+use cases for optimistic loading with LyteNyte Grid.
 
 :::
 
-The example below demonstrates how to optimistically load slices in a flat data view.
-This works by tracking the current view and preloading the next slice whenever the
-view changes. This way, the grid “stays ahead of the scroll.” Note that this does
-not guarantee users will never see a loading indicator. Scrolling is fast, and if users
-scroll too quickly, the grid may not have finished fetching rows before they become visible.
+The demo shows how to optimistically load slices in a flat data view. It tracks the current
+view and preloads the next slice when the view changes, helping the grid “stay ahead of the scroll.”
+Users may still see a loading indicator if they scroll faster
+than the next slice can load.
 
-::demo[Prefetch Next Block="./demos/optimistic-loading"]
+::demo[Optimistic Data Loading="./demos/optimistic-loading"]
 
-In the example above, optimistic loading occurs within a single `useEffect`, but it uses several parts of the
-server data source interface. The full effect is shown and explained here, but check out the
-[`RowDataSourceServer` reference](/docs/reference/server-row-source) for a complete breakdown
-of the methods available on the server data source.
+In the demo, optimistic loading runs in a single `useEffect` hook, but it uses several
+parts of the server data source interface. The section below breaks down the full effect.
+For a complete list of methods, see the [`RowDataSourceServer` reference](/docs/reference/server-row-source).
 
 ```ts
 const requests = ds.requestsForView.useValue();
@@ -57,24 +51,20 @@ useEffect(() => {
 }, [ds, requests]);
 ```
 
-Notice how multiple parts of the data source API work together to create an optimistic data loading
-pattern. LyteNyte Grid's API for optimistic loading is intentionally low-level, allowing developers to
-tailor the behavior to their specific use case.
+Multiple parts of the data source API interact to support optimistic loading.
+LyteNyte Grid's API is intentionally low-level so you can tailor the behavior to your use case.
 
 ## Optimistically Fetching Group Rows
 
-Another way to optimistically fetch rows is when row groups are present. Before the user
-expands a group, you can fetch its data in advance. A convenient approach is to detect
-when a row is hovered by the user's mouse cursor and then fetch the data for that
-row's children. The example below demonstrates this:
+You can optimistically fetch rows when row groups are present. By detecting when a user
+hovers over a group row, you can prefetch the group's child rows before they expand it. See the demo below:
 
-::demo[Preload Group Rows On Hover="./demos/optimistic-loading-groups"]
+::demo[Optimistically Loading Group Rows="./demos/optimistic-loading-groups"]
 
-Preloading on hover is just one approach. You could also preload on load or when a cell
-gains focus. The core concept remains the same: before the user requests
-the data, the grid predicts that they'll want to expand the row and loads it ahead of time.
+Preloading on hover is one approach. Other triggers include initial load or cell focus.
+Each approach anticipates row expansion and loads child data before the user requests it.
 
-The code for preloading rows is even simpler than for optimistically fetching rows while scrolling:
+Preloading rows on hover is simpler than optimistic fetching on scroll:
 
 ```tsx
 <Grid

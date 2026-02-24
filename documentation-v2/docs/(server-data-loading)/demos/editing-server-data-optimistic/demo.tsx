@@ -1,7 +1,7 @@
 "use client";
 
 import "@1771technologies/lytenyte-pro/light-dark.css";
-import { useId, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { handleUpdate, Server } from "./server.jsx";
 import { type SalaryData } from "./data.js";
 import {
@@ -68,7 +68,8 @@ const columns: Grid.Column<GridSpec>[] = [
 ];
 
 export default function ServerDataDemo() {
-  const resetKey = useId();
+  // No relevant to demo. Used to reset server data.
+  const [resetKey] = useState(() => `${Math.random()}`);
 
   const ds = useServerDataSource<SalaryData>({
     queryFn: (params) => {
