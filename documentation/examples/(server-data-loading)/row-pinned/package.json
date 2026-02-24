@@ -28,7 +28,7 @@
     "date-fns": "4.1.0",
     "exceljs": "4.4.0",
     "radix-ui": "1.1.2",
-    "react": "19.2.1",
+    "react": "19.2.4",
     "react-dom": "19.0.0",
     "react-instantsearch": "7.15.3",
     "react-modern-drawer": "1.4.0",

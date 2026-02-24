@@ -1,13 +1,17 @@
 import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro";
 import { data } from "./data.js";
 
-const sleep = () => new Promise((res) => setTimeout(res, 200));
+const sleep = () => new Promise((res) => setTimeout(res, 500));
 
 export async function Server(reqs: DataRequest[], page: number, pageSize: number) {
   // Simulate latency and server work.
   await sleep();
 
-  const pageStart = page * pageSize;
+  let pageStart = page * pageSize;
+
+  if (pageStart > data.length) {
+    pageStart = data.length - pageSize;
+  }
 
   const pages = reqs.map((c) => {
     const pageData = data.slice(pageStart, pageStart + pageSize);

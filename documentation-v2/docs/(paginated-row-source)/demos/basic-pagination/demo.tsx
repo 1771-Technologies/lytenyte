@@ -13,6 +13,7 @@ import {
   ReleasedRenderer,
   TypeRenderer,
 } from "./components.jsx";
+import { Pager } from "./pager.jsx";
 
 export interface GridSpec {
   readonly data: MovieData;
@@ -37,13 +38,11 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const pageSize = 10;
 
-const formatter = Intl.NumberFormat("en-Us", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
 const headerHeight = 40;
 const rowHeight = 40;
 
 export default function PaginationDemo() {
-  const [page, setPage] = useState(0); //!
+  const [page, setPage] = useState(1); //!
   const [count, setCount] = useState<number | null>(null); //!
 
   const responseCache = useRef<Record<number, DataResponse[]>>({});
@@ -56,7 +55,7 @@ export default function PaginationDemo() {
         return responseCache.current[page].map((x) => ({ ...x, asOfTime: Date.now() }));
       }
 
-      const result = await Server(requests, page, pageSize);
+      const result = await Server(requests, page - 1, pageSize);
       responseCache.current[page] = result.pages;
 
       setCount(result.count);
@@ -84,36 +83,7 @@ export default function PaginationDemo() {
         />
       </div>
       <div className="border-ln-border flex h-12 items-center justify-end gap-4 border-t px-4">
-        {count && (
-          <>
-            <div className="text-sm tabular-nums">
-              {formatter.format(page * pageSize + 1)}-{formatter.format(page * pageSize + pageSize)} of{" "}
-              {formatter.format(count)}
-            </div>
-            <div className="flex items-center">
-              <button
-                data-ln-button="tertiary"
-                data-ln-size="lg"
-                className="rounded-e-none"
-                onClick={() => setPage((prev) => Math.max(0, prev - 1))}
-              >
-                <svg width="14" height="14" fill="currentcolor" viewBox="0 0 256 256">
-                  <path d="M168,48V208a8,8,0,0,1-13.66,5.66l-80-80a8,8,0,0,1,0-11.32l80-80A8,8,0,0,1,168,48Z"></path>
-                </svg>
-              </button>
-              <button
-                data-ln-button="tertiary"
-                data-ln-size="lg"
-                className="rounded-s-none border-s-0"
-                onClick={() => setPage((prev) => Math.min(Math.ceil(count / pageSize) - 1, prev + 1))}
-              >
-                <svg width="14" height="14" fill="currentcolor" viewBox="0 0 256 256">
-                  <path d="M181.66,133.66l-80,80A8,8,0,0,1,88,208V48a8,8,0,0,1,13.66-5.66l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                </svg>
-              </button>
-            </div>
-          </>
-        )}
+        {count && <Pager page={page} onPageChange={setPage} count={count} pageSize={pageSize} />}
       </div>
     </div>
   );
