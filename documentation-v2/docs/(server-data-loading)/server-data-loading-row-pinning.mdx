@@ -2,34 +2,25 @@
 title: Server Row Pinning
 pro: true
 step: Pin rows to keep specific data visible.
-description: You can pin specific rows to the top or bottom of the grid's viewport.
-  Pinned rows stay visible while the user scrolls. When using a server data
-  source, the server manages pinned rows through a pinned row response.
+description: Pin rows to the top or bottom of the viewport to keep them visible.
+  With a server data source, the server returns these in a pinned-row response.
 ---
 
-## Returning Pinned Rows From the Server
+## Server Pinned Rows
 
-LyteNyte Grid's server data source doesn't track viewport changes for
-pinned rows because pinned rows never move. They stay fixed
-at the top or bottom of the grid's viewport.
+The server data source does not track viewport changes for pinned rows because they remain fixed.
+To supply pinned rows, return a `DataResponsePinned` object for every viewport request, including the
+initial load. For details, see the [Data Interface guide](/docs/server-data-loading-interface).
 
-To supply pinned rows, the server should respond with a
-`DataResponsePinned` object on any viewport request, including the initial
-load. For details on `DataResponsePinned`, see
-the [Data Interface guide](/docs/server-data-loading-interface).
-
-This example pins rows to the top or bottom of the grid. The server implementation in the example
-always responds with data for pinned rows along side the data for the scrollable rows. Pinned rows
-will always be leaf rows.
+This example pins rows to the top or bottom of the grid. The server always returns
+both pinned and scrollable rows. Note that pinned rows are always leaf rows.
 
 ::demo[Row Pinning="./demos/row-pinned"]
 
 ## Pushing Pinned Row Updates
 
-Each time the server data source requests more rows, the server can also
-update the grid's pinned rows. Sometimes, pinned rows need updating even when the
-viewport hasn't changed. In those cases, the server data source can push pinned rows
-into the grid programmatically using the `pushResponses` method:
+The server can update pinned rows on any server data source request.
+To update pinned rows without a viewport change, call the server data source's `pushResponses` method:
 
 ```ts
 const ds = useServerDataSource<MovieData>({
@@ -43,17 +34,17 @@ const ds = useServerDataSource<MovieData>({
 ds.pushResponses(...)
 ```
 
-This method lets the client push response objects into the server data source
-as if they were returned from the server.
+The `pushResponses` method lets the client push response objects into
+the server data source as if the server returned them.
 
-The example below shows its usage. The **Pin One Top** button pins a single row
-to the top, and the **Remove Pinned** button removes it. Both actions are triggered entirely
-from the client without any server response.
+In the demo below, **Pin One Top** pins a single row to the top, and
+**Remove Pinned** removes the pinned row. Both actions run
+on the client without a server response.
 
 ::demo[Pushing Pinned Rows="./demos/row-pinned-pushed"]
 
-Using the `pushResponses` method is one way to push data into the grid.
-For more information, see the [Data Pushing and Pulling guide](/docs/server-data-loading-push-and-pull).
+`pushResponses` is one way to push data into the grid. For more
+details, see the [Data Pushing and Pulling guide](/docs/server-data-loading-push-and-pull).
 
 ## Next Steps
 
