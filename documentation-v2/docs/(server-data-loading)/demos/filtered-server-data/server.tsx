@@ -3,7 +3,7 @@ import type { MovieData } from "./data";
 import { data as movieData } from "./data.js";
 import type { GridFilter } from "./types.js";
 
-const sleep = () => new Promise((res) => setTimeout(res, 600));
+const sleep = () => new Promise((res) => setTimeout(res, 200));
 
 export async function Server(reqs: DataRequest[], filterModel: Record<string, GridFilter>) {
   // Simulate latency and server work.
@@ -16,24 +16,23 @@ export async function Server(reqs: DataRequest[], filterModel: Record<string, Gr
       ? movieData
       : movieData.filter((row) => {
           for (const [columnId, filter] of filters) {
-            // Our logic here only handles a small subset of the possible filter functionality
-            // for ease of implementation.
-            if (filter.kind !== "text" && filter.kind !== "date") return false;
-
             const value = row[columnId as keyof MovieData];
             if (!value) return false;
 
             if (columnId === "imdb_rating") {
-              const rating = value ? Math.round(Number.parseFloat(value.split("/")[0]) / 2) : "";
-              const v = rating as number;
-              const filterV =
-                typeof filter.value === "string" ? Number.parseInt(filter.value) : (filter.value as number);
+              if (filter.kind !== "number") return;
 
-              if (filter.operator === "equals" && v !== filterV) return false;
-              if (filter.operator === "not_equals" && v === filterV) return false;
-              if (filter.operator === "less_than" && v >= filterV) return false;
-              if (filter.operator === "greater_than" && v <= filterV) return false;
-              continue;
+              const rating = value ? Math.round(Number.parseFloat(value.split("/")[0]) / 2) : "";
+              const checkValue = rating as number;
+
+              if (filter.operator === "equals") return checkValue === filter.value;
+              if (filter.operator === "not_equals") return checkValue !== filter.value;
+              if (filter.operator === "greater_than") return checkValue > filter.value;
+              if (filter.operator === "greater_than_or_equal") return checkValue >= filter.value;
+              if (filter.operator === "less_than") return checkValue < filter.value;
+              if (filter.operator === "less_than_or_equal") return checkValue <= filter.value;
+
+              return false;
             }
 
             if (columnId === "released_at") {
@@ -45,51 +44,30 @@ export async function Server(reqs: DataRequest[], filterModel: Record<string, Gr
               continue;
             }
 
-            if ((filter.operator === "equals" || filter.operator === "not_equals") && columnId === "genre") {
+            if (columnId === "genre" && filter.operator === "equals") {
               const genres = value
                 .toLowerCase()
                 .split(",")
                 .map((x) => x.trim());
-
-              if (
-                filter.operator === "not_equals" &&
-                genres.every((x) => x.toLowerCase() === filter.value.toLowerCase())
-              )
-                return false;
-              if (
-                filter.operator === "equals" &&
-                genres.every((x) => x.toLowerCase() !== filter.value.toLowerCase())
-              )
-                return false;
+              return genres.some((x) => x === String(filter.value).toLowerCase());
+            }
+            if (columnId === "genre" && filter.operator === "not_equals") {
+              const genres = value
+                .toLowerCase()
+                .split(",")
+                .map((x) => x.trim());
+              return genres.every((x) => x !== String(filter.value).toLowerCase());
             }
 
-            if (
-              columnId !== "genre" &&
-              filter.operator === "equals" &&
-              value.toLocaleLowerCase() !== filter.value.toLocaleLowerCase()
-            )
-              return false;
-            if (
-              columnId !== "genre" &&
-              filter.operator === "not_equals" &&
-              value.toLocaleLowerCase() === filter.value.toLocaleLowerCase()
-            )
-              return false;
-            if (
-              filter.operator === "less_than" &&
-              value?.toLocaleLowerCase() >= filter.value?.toLocaleLowerCase()
-            )
-              return false;
-            if (
-              filter.operator === "greater_than" &&
-              value?.toLocaleLowerCase() <= filter.value?.toLocaleLowerCase()
-            )
-              return false;
-            if (
-              filter.operator === "contains" &&
-              !value.toLowerCase().includes(`${filter.value}`.toLowerCase())
-            )
-              return false;
+            if (filter.operator === "equals") return `${filter.value}`.toLowerCase() === value.toLowerCase();
+            if (filter.operator === "not_equals")
+              return `${filter.value}`.toLowerCase() !== value.toLowerCase();
+
+            if (filter.operator === "contains")
+              return value.toLowerCase().includes(`${filter.value}`.toLowerCase());
+            if (filter.operator === "not_contains") {
+              return !value.toLowerCase().includes(`${filter.value}`.toLowerCase());
+            }
           }
 
           return true;
