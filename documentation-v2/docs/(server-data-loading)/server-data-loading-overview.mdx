@@ -10,10 +10,9 @@ using partial data loading to render millions of rows.
 
 ## What Problem Does Server Data Loading Solve?
 
-When the amount of row data exceeds what is feasible to transfer to a browser at once,
-a partial data loading solution becomes necessary.
-
-Developers typically choose one of these approaches:
+When the amount of row data exceeds what is feasible to transfer to a
+browser at once, a partial data loading solution becomes necessary. Developers
+typically choose one of these approaches:
 
 - **Pagination:** Load one page of data at a time.
 - **Infinite scrolling:** Lazily load more data as the user scrolls down.
@@ -26,23 +25,23 @@ you only need to implement the server-side logic.
 
 ## Why Use Server Data Loading?
 
-Server Data Loading delivers a client-side experience with the expected trade-off of network latency. It provides:
+Server data loading delivers a client-side experience with the expected trade-off of network latency. It provides:
 
 - **Direct Row Interaction:** When a user scrolls to a specific index,
   like row 9,500, the grid requests the surrounding rows from the server.
 - **Advanced Operations:** Natively supports pivoting and grouping,
   which are complex or limited when using pagination and infinite scrolling.
 
-## High-Level Overview
+## Enabling Server Data Source
 
 To enable the server data source, developers must provide LyteNyte Grid with:
 
-- **Total row count:** Determines the scrollable area size. When row grouping is used,
-  group specific row counts are required. LyteNyte Grid assembles these counts into the
-  full dataset.
+- **Total Row Count:** Sets the size of the scrollable area. With row grouping,
+  provide group-specific row counts that the grid combines
+  to represent the full dataset.
 - **`queryFn`:** A function LyteNyte Grid calls to fetch rows from your server.
 
-## Data Flow
+## Server Data Flow
 
 The server data source follows a well defined lifecycle:
 
