@@ -1,8 +1,8 @@
 {
   "name": "@1771technologies/play-frame",
   "bin": {
-    "play": "./bin.js",
-    "play-build": "./build.js"
+    "play": "./bin/bin.js",
+    "play-build": "./bin/build.js"
   },
   "version": "0.0.19",
   "description": "",
@@ -15,9 +15,9 @@
       "require": "./src/play.ts"
     },
     "./entry": {
-      "types": "./src/entry.ts",
-      "import": "./src/entry.ts",
-      "require": "./src/entry.ts"
+      "types": "./src/entry-proxy.ts",
+      "import": "./src/entry-proxy.ts",
+      "require": "./src/entry-proxy.ts"
     }
   },
   "license": "Apache-2.0",
@@ -43,13 +43,10 @@
     "@radix-ui/react-icons": "1.3.2",
     "@radix-ui/themes": "3.2.1",
     "axe-core": "4.10.3",
+    "es-toolkit": "^1.44.0",
     "express": "4.21.2",
-    "jotai": "2.13.0",
     "next-themes": "0.4.6",
-    "unique-selector": "0.5.0",
-    "usehooks-ts": "3.1.1",
-    "@tailwindcss/vite": "4.1.16",
-    "tailwindcss": "4.1.16"
+    "usehooks-ts": "3.1.1"
   },
   "peerDependencies": {
     "react": "18.0.0 || ^19.0.0",

@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import frames from "playframe";
-import { Container } from "./play-area/container.js";
+import { Container } from "./container/container.js";
 import { ThemeProvider } from "next-themes";
 import { NoDefault } from "./shell/no-default.js";
 import axe from "axe-core";

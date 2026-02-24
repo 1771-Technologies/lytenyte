@@ -1,24 +1,23 @@
 import "@radix-ui/themes/styles.css";
-import "../index.css";
+import "./index.css";
 
 import { useCallback, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { Box, Flex, IconButton, Separator, Theme } from "@radix-ui/themes";
-import { FrameDropdown } from "./frame-dropdown.js";
-import { type Frame } from "./+types.js";
-import { DemoDropdown } from "./demo-dropdown.js";
+import { FrameDropdown, type Frame } from "./frame-size-dropdown/frame-dropdown.js";
+import { DemoDropdown, type Demo } from "./demo-dropdown/demo-dropdown.js";
 import { ExternalLinkIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
+import type { AxeResults } from "axe-core";
 import axe from "axe-core";
-import { useAtom } from "jotai";
-import { axeLoading$, axeResults$ } from "./atoms.js";
 import { AxePopover } from "./axe-popover/axe-popover.js";
-import { demoOptions, type Demo } from "./demo-tree.js";
+import { flatDemos } from "./demo-dropdown/demo-tree.js";
 
 export function Main() {
   const savedIndex = localStorage.getItem("demo-key");
-  const index = demoOptions.findIndex((x) => x.value === savedIndex);
-  const [demoA, setDemoA] = useState<Demo | null>(demoOptions[index] ?? demoOptions[0]);
+
+  const index = flatDemos.findIndex((x) => x.filePath === savedIndex);
+  const [demoA, setDemoA] = useState<Demo | null>(flatDemos[index] ?? flatDemos[0]);
   const [demoB, setDemoB] = useState<Demo | null>(null);
 
   const [current, setCurrent] = useState<Demo>(demoA!);
@@ -44,8 +43,8 @@ export function Main() {
   const aRef = useRef<HTMLIFrameElement>(null);
   const bRef = useRef<HTMLIFrameElement>(null);
 
-  const [axeResults, setAxeResults] = useAtom(axeResults$);
-  const [axeLoading, setAxeLoading] = useAtom(axeLoading$);
+  const [axeResults, setAxeResults] = useState<AxeResults | null>(null);
+  const [axeLoading, setAxeLoading] = useState(false);
 
   const runAxe = useCallback(() => {
     setAxeLoading(true);
@@ -78,7 +77,7 @@ export function Main() {
             demo={current}
             onDemoChange={(d) => {
               if (d === current) return;
-              localStorage.setItem("demo-key", d.value);
+              localStorage.setItem("demo-key", d.filePath);
               setDemo(d);
               setCurrent(d);
             }}
@@ -126,7 +125,7 @@ export function Main() {
                 key="A"
                 ref={aRef}
                 title="Play Frame A"
-                src={`/?frame=${demoA.value}`}
+                src={`/?frame=${demoA.filePath}`}
                 onLoad={() => {
                   setTimeout(() => {
                     setActive("A");
@@ -152,7 +151,7 @@ export function Main() {
                 key="B"
                 ref={bRef}
                 title="Play Frame B"
-                src={`/?frame=${demoB.value}`}
+                src={`/?frame=${demoB.filePath}`}
                 onLoad={() => {
                   setTimeout(() => {
                     setActive("B");
