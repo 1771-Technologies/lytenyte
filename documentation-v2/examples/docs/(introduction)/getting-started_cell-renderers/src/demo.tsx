@@ -27,7 +27,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "Method", name: "Method", width: 100, cellRenderer: MethodCell },
   { id: "timing-phase", name: "Timing Phase", cellRenderer: TimingPhaseCell },
   { id: "Pathname", name: "Pathname", cellRenderer: PathnameCell },
-  { id: "Latency", name: "Latency", width: 120, type: "number", cellRenderer: LatencyCell },
+  { id: "Latency", name: "Latency", width: 120, cellRenderer: LatencyCell },
   { id: "region", name: "Region", cellRenderer: RegionCell },
 ];
 

@@ -1,21 +1,27 @@
 ---
 title: Infinite Row Sorting
 pro: true
-step: Infinitely load rows sorted on the server.
-description: Provide a sort model to the server data source to infinitely load sorted rows.
+step: Infinitely load rows by sending a defined sort model to the server.
+description: Provide a sort model to the server data source to
+  infinitely load sorted rows as the user scrolls.
 ---
+
+:::note
+This guide covers sorting on infinite server row data. For client-side
+sorting, see the [Client Row Sorting guide](/docs/client-source-row-sorting).
+:::
 
 ## Sorting Infinite Rows
 
-To sort rows on the server, define a sort model and include it in each data request. The `useServerDataSource`
-hook accepts the sort model as part of the `queryKey`.
+To sort rows on the server, define a sort model and send it with each request.
+The `useServerDataSource` hook accepts the sort model as part of the `queryKey`.
+The sort model can use any structure that fits your application.
+In most cases, match the format your server or database expects.
 
-The sort model can take any shape that fits your application's needs. In most cases, you should
-match the format that your server or database expects.
+The demo below shows infinite row sorting. **Click** a column header to
+update that column's sort state.
 
-The demo below shows infinite row sorting. When you click a column header, the grid updates that column's sort state.
-
-::demo[Sorted Infinite Rows="./demos/server-sorting"]
+::demo[Sort Infinite Rows="./demos/server-sorting"]
 
 The demo code applies sort state to columns. By extending the [grid's API](/docs/grid-api-extensions),
 you can update the `sort` property on each column directly. The extended API then applies the appropriate

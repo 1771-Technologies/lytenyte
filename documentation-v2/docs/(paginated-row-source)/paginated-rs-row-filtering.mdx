@@ -1,16 +1,14 @@
 ---
 title: Paginated Row Filtering
 pro: true
-step: Filter rows and return data in page slices.
-description: Filter rows on the server before sending page slices to the client.
+step: Filter rows on the server before returning page slices to the client.
+description: Use the server data source to filter rows on the
+  server and return only matching rows for each page request.
 ---
 
 :::note
-
-This guide provides an overview of filtering with a focus on paginated server row data.
-For detailed guidance on filtering, refer to the Filtering section, starting with
-the [Filter Text guide](/docs/filtering-text).
-
+This guide covers filtering on paginated server row data. For client-side
+filtering, start with the [Filter Text guide](/docs/filtering-text).
 :::
 
 ## Filtering Paginated Rows
@@ -22,7 +20,7 @@ Whenever the filter model changes, the grid fetches a new set of rows from the s
 The following demo passes a custom filter model to the `queryKey` of the server data source. Click the
 funnel icon in a column header to apply a filter.
 
-::demo[Filter Paginated Rows="./demos/server-filtering"]
+::demo[Row Pagination Filtering="./demos/server-filtering"]
 
 For more guidance on filtering rows on the server, see the
 [Server Row Filtering guide](/docs/server-data-loading-row-filtering).

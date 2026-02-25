@@ -12,15 +12,22 @@ export default function ComponentDemo() {
           Open Popover
         </Popover.Trigger>
 
-        <Popover.Container className="flex max-w-80 flex-col gap-3">
+        <Popover.Container className="flex max-w-80 flex-col gap-3 text-center">
           <Popover.Arrow />
           <Popover.Title className="text-lg font-bold">Popover Title</Popover.Title>
           <Popover.Description>
-            A description of the popover content for accessibility reasons.
+            Every popover requires a title and a description to ensure accessibility.
           </Popover.Description>
-          <div>You can include more popover content. Popovers should only be used for auxiliary actions.</div>
+          <div>
+            While you can include custom popover content, you should reserve popovers for auxiliary tasks
+            only.
+          </div>
 
-          <Popover.Close data-ln-button="tertiary" data-ln-size="md">
+          <Popover.Close
+            data-ln-button="tertiary"
+            data-ln-size="md"
+            className="dark:hover:bg-ln-bg-ui-panel/80"
+          >
             Close Popover
           </Popover.Close>
         </Popover.Container>

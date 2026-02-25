@@ -18,12 +18,12 @@ export default function ComponentDemo() {
   return (
     <div style={{ height: "400px" }} className="ln-grid flex justify-center pt-8">
       <Menu>
-        <Menu.Trigger data-ln-button="website" data-ln-size="md">
+        <Menu.Trigger data-ln-button="website" data-ln-size="md" className="min-w-45">
           Show Menu Items
         </Menu.Trigger>
         <Menu.Popover>
           <Menu.Arrow />
-          <Menu.Container>
+          <Menu.Container className="min-w-45">
             <Menu.Title className="sr-only">Example Menu</Menu.Title>
             <Menu.Description className="sr-only">
               This is an example menu to demonstrate LyteNyte Grid's Menu component

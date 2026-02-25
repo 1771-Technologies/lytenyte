@@ -60,7 +60,7 @@ export default function TreeDataDemo() {
 
     onRowDataChange: ({ changes }) => {
       for (const x of changes) {
-        x.parent[x.key] = x.next;
+        Object.assign(x.parent[x.key], x.next);
       }
       setData({ ...data });
     },

@@ -62,7 +62,7 @@ export default function ServerDataDemo() {
               ds.reset();
             }}
           >
-            Retry - it will work now
+            Retry / Resolve
           </button>
         </div>
       )}
@@ -71,7 +71,7 @@ export default function ServerDataDemo() {
         rowSource={ds}
         columns={columns}
         styles={useMemo(() => {
-          return { viewport: { style: { scrollbarGutter: "stable" } } };
+          return { viewport: { style: { overflowY: "scroll" } } };
         }, [])}
         slotViewportOverlay={
           isLoading && (

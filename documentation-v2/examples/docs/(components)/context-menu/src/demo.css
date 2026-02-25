@@ -1,0 +1,14 @@
+@keyframes flash {
+  0% {
+    background-color: var(--color-ln-primary-10);
+  }
+  50% {
+    background-color: var(--color-ln-primary-30);
+  }
+  100% {
+    background-color: var(--color-ln-primary-10);
+  }
+}
+.copy-flash {
+  animation: flash 0.5s ease-out forwards;
+}
