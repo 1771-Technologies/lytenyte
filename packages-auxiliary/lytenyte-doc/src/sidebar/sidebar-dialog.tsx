@@ -31,7 +31,7 @@ export function SidebarDialog(props: PropsWithChildren) {
 
   return (
     <D.Root>
-      <D.Trigger className="center hover:bg-xd-accent text-xd-foreground size-7 rounded-lg transition-colors md:hidden">
+      <D.Trigger className="center hover:bg-xd-accent text-xd-foreground size-7 rounded-lg transition-colors xl:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
