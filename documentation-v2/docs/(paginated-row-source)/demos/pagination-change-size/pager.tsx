@@ -31,7 +31,7 @@ export function Pager({
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center gap-3">
-        Rows per page
+        <span className="hidden md:block">Per Page</span>
         <Menu>
           <Menu.Trigger data-ln-button="tertiary" data-ln-size="lg" className="gap-2">
             {pageSize} <ChevronDownIcon className="size-4" />
@@ -55,7 +55,8 @@ export function Pager({
             </Menu.Container>
           </Menu.Popover>
         </Menu>
-        <div className="text-sm tabular-nums">
+        <div className="ms-3 text-sm tabular-nums">
+          Rows{" "}
           <span className="font-bold">
             {formatter.format(start)}-{formatter.format(end)}
           </span>{" "}
@@ -63,7 +64,7 @@ export function Pager({
         </div>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center gap-1">
         <button data-ln-button="secondary" data-ln-size="md" onClick={() => onPageChange(1)}>
           <span className="sr-only">To first page</span>
           <svg
@@ -92,7 +93,7 @@ export function Pager({
             <path d="M168,48V208a8,8,0,0,1-13.66,5.66l-80-80a8,8,0,0,1,0-11.32l80-80A8,8,0,0,1,168,48Z"></path>
           </svg>
         </button>
-        <div className="flex items-center gap-1 px-2 tabular-nums">
+        <div className="hidden items-center gap-1 px-2 tabular-nums md:flex">
           Page <IntegerNumberInput page={page} onPageChange={onPageChange} pageCount={pageCount} />
           of <span className="font-bold">{pageCount}</span>
         </div>
@@ -153,7 +154,7 @@ function IntegerNumberInput({ page, onPageChange, pageCount }: IntegerNumberInpu
     }
 
     if (/^\d+$/.test(value)) {
-      const v = Math.min(parseInt(value, 10), pageCount);
+      const v = Math.max(Math.min(parseInt(value, 10), pageCount), 1);
       setInputValue(String(v));
       onPageChange(v);
     }
@@ -169,7 +170,8 @@ function IntegerNumberInput({ page, onPageChange, pageCount }: IntegerNumberInpu
   return (
     <input
       type="text"
-      style={{ width: Math.max(`${inputValue}`.length, 1) * 12 + 18 }}
+      style={{ width: Math.max(`${inputValue}`.length, 3) * 12 + 18 }}
+      className="text-center"
       data-ln-input
       inputMode="numeric"
       value={inputValue}
