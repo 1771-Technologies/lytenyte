@@ -55,7 +55,7 @@ export function Pager({
             </Menu.Container>
           </Menu.Popover>
         </Menu>
-        <div className="ms-3 text-sm tabular-nums">
+        <div className="ms-3 text-xs tabular-nums md:text-sm">
           Rows{" "}
           <span className="font-bold">
             {formatter.format(start)}-{formatter.format(end)}
