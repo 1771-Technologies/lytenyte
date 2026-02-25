@@ -21,7 +21,7 @@ export function Pager({
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="text-sm tabular-nums">
+      <div className="ms-3 text-xs tabular-nums md:text-sm">
         Rows{" "}
         <span className="font-bold">
           {formatter.format((page - 1) * pageSize + 1)}-{formatter.format(page * pageSize)}
