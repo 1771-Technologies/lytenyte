@@ -3,14 +3,15 @@ import { data } from "./data.js";
 
 const sleep = () => new Promise((res) => setTimeout(res, 200));
 
-export async function Server(reqs: DataRequest[], page: number, pageSize: number) {
+export async function Server(reqs: DataRequest[], page: number, pageSize: number | "All") {
   // Simulate latency and server work.
   await sleep();
 
-  const pageStart = page * pageSize;
+  const start = pageSize === "All" ? 0 : page * pageSize;
+  const end = pageSize === "All" ? data.length : start + pageSize;
 
   const pages = reqs.map((c) => {
-    const pageData = data.slice(pageStart, pageStart + pageSize);
+    const pageData = data.slice(start, end);
 
     return {
       asOfTime: Date.now(),
@@ -21,7 +22,7 @@ export async function Server(reqs: DataRequest[], page: number, pageSize: number
       end: c.end,
       kind: "center",
       path: c.path,
-      size: Math.min(pageSize, pageData.length),
+      size: Math.min(pageSize === "All" ? pageData.length : pageSize, pageData.length),
     } satisfies DataResponse;
   });
 

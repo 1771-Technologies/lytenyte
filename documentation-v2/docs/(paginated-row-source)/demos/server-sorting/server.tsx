@@ -54,7 +54,11 @@ export async function Server(
     });
   }
 
-  const pageStart = page * pageSize;
+  let pageStart = page * pageSize;
+
+  if (pageStart > data.length) {
+    pageStart = data.length - pageSize;
+  }
 
   const pages = reqs.map((c) => {
     const pageData = data.slice(pageStart, pageStart + pageSize);

@@ -82,7 +82,7 @@ export default function PaginationDemo() {
           }
         />
       </div>
-      <div className="border-ln-border flex h-12 items-center justify-end gap-4 border-t px-4">
+      <div className="border-ln-border h-13 flex items-center justify-end gap-4 border-t px-4">
         {count && <Pager page={page} onPageChange={setPage} count={count} pageSize={pageSize} />}
       </div>
     </div>

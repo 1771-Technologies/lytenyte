@@ -13,8 +13,7 @@ import {
   ReleasedRenderer,
   TypeRenderer,
 } from "./components.jsx";
-import { Menu } from "@1771technologies/lytenyte-pro/components";
-import { ChevronDown } from "lucide-react";
+import { Pager } from "./pager.jsx";
 
 export interface GridSpec {
   readonly data: MovieData;
@@ -37,19 +36,17 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
 ];
 
-const formatter = Intl.NumberFormat("en-Us", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
 const headerHeight = 40;
 const rowHeight = 40;
 
 export default function PaginationDemo() {
-  const [pageSize, setPageSize] = useState(10);
-  const [page, setPage] = useState(0); //!
+  const [pageSize, setPageSize] = useState<number | "All">(10);
+  const [page, setPage] = useState(1); //!
   const [count, setCount] = useState<number | null>(null); //!
 
   const responseCache = useRef<Record<number, DataResponse[]>>({});
 
-  const ds = useServerDataSource<GridSpec["data"], [page: number, pageSize: number]>({
+  const ds = useServerDataSource<GridSpec["data"], [page: number, pageSize: number | "All"]>({
     queryFn: async ({ requests, queryKey }) => {
       const page = queryKey[0];
 
@@ -57,7 +54,7 @@ export default function PaginationDemo() {
         return responseCache.current[page].map((x) => ({ ...x, asOfTime: Date.now() }));
       }
 
-      const result = await Server(requests, page, pageSize);
+      const result = await Server(requests, page - 1, pageSize);
       responseCache.current[page] = result.pages;
 
       setCount(result.count);
@@ -88,62 +85,19 @@ export default function PaginationDemo() {
           }
         />
       </div>
-      <div className="border-ln-border flex h-12 items-center justify-end gap-4 border-t px-4">
+      <div className="border-ln-border h-13 flex items-center justify-end gap-4 border-t px-4">
         {count && (
-          <>
-            <div className="flex items-center gap-3">
-              Rows per page
-              <Menu>
-                <Menu.Trigger data-ln-button="tertiary" data-ln-size="lg" className="gap-2">
-                  {pageSize} <ChevronDown className="size-4" />
-                </Menu.Trigger>
-                <Menu.Popover>
-                  <Menu.Container className="min-w-12">
-                    {[10, 20, 30, 40, 50].map((size) => {
-                      return (
-                        <Menu.Item
-                          key={size}
-                          onAction={() => {
-                            responseCache.current = {};
-                            setPageSize(size);
-                            setPage(0);
-                          }}
-                        >
-                          {size}
-                        </Menu.Item>
-                      );
-                    })}
-                  </Menu.Container>
-                </Menu.Popover>
-              </Menu>
-            </div>
-            <div className="text-sm tabular-nums">
-              {formatter.format(page * pageSize + 1)}-{formatter.format(page * pageSize + pageSize)} of{" "}
-              {formatter.format(count)}
-            </div>
-            <div className="flex items-center">
-              <button
-                data-ln-button="tertiary"
-                data-ln-size="lg"
-                className="rounded-e-none"
-                onClick={() => setPage((prev) => Math.max(0, prev - 1))}
-              >
-                <svg width="14" height="14" fill="currentcolor" viewBox="0 0 256 256">
-                  <path d="M168,48V208a8,8,0,0,1-13.66,5.66l-80-80a8,8,0,0,1,0-11.32l80-80A8,8,0,0,1,168,48Z"></path>
-                </svg>
-              </button>
-              <button
-                data-ln-button="tertiary"
-                data-ln-size="lg"
-                className="rounded-s-none border-s-0"
-                onClick={() => setPage((prev) => Math.min(Math.ceil(count / pageSize) - 1, prev + 1))}
-              >
-                <svg width="14" height="14" fill="currentcolor" viewBox="0 0 256 256">
-                  <path d="M181.66,133.66l-80,80A8,8,0,0,1,88,208V48a8,8,0,0,1,13.66-5.66l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                </svg>
-              </button>
-            </div>
-          </>
+          <Pager
+            page={page}
+            count={count}
+            onPageChange={setPage}
+            onPageSizeChange={(s) => {
+              setPageSize(s);
+              setPage(1);
+              responseCache.current = {};
+            }}
+            pageSize={pageSize}
+          />
         )}
       </div>
     </div>

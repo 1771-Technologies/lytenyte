@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "@1771technologies/lytenyte-pro/components.css";
 import { useMemo } from "react";
+import { Menu } from "@1771technologies/lytenyte-pro/components";
+import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 const formatter = Intl.NumberFormat("en-Us", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
@@ -9,23 +11,56 @@ export function Pager({
   pageSize,
   count,
   onPageChange,
+  onPageSizeChange,
 }: {
-  pageSize: number;
+  pageSize: number | "All";
   page: number;
   count: number;
   onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number | "All") => void;
 }) {
   const pageCount = useMemo(() => {
+    if (pageSize === "All") return 1;
+
     return Math.ceil(count / pageSize);
   }, [count, pageSize]);
 
+  const start = pageSize === "All" ? 1 : (page - 1) * pageSize + 1;
+  const end = pageSize === "All" ? count : page * pageSize;
+
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="text-sm tabular-nums">
-        <span className="font-bold">
-          {formatter.format((page - 1) * pageSize + 1)}-{formatter.format(page * pageSize)}
-        </span>{" "}
-        of <span className="font-bold">{formatter.format(count)}</span>
+      <div className="flex items-center gap-3">
+        Rows per page
+        <Menu>
+          <Menu.Trigger data-ln-button="tertiary" data-ln-size="lg" className="gap-2">
+            {pageSize} <ChevronDownIcon className="size-4" />
+          </Menu.Trigger>
+          <Menu.Popover>
+            <Menu.Container className="min-w-12">
+              {[10, 20, 50, "All"].map((size) => {
+                return (
+                  <Menu.Item
+                    key={size}
+                    className="flex items-center gap-2"
+                    onAction={() => {
+                      onPageSizeChange(size as number | "All");
+                    }}
+                  >
+                    <span>{size}</span>
+                    {size === pageSize && <CheckIcon className="text-ln-primary-50 size-4" />}
+                  </Menu.Item>
+                );
+              })}
+            </Menu.Container>
+          </Menu.Popover>
+        </Menu>
+        <div className="text-sm tabular-nums">
+          <span className="font-bold">
+            {formatter.format(start)}-{formatter.format(end)}
+          </span>{" "}
+          of <span className="font-bold">{formatter.format(count)}</span>
+        </div>
       </div>
 
       <div className="flex items-center">

@@ -44,7 +44,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "released_at", name: "Released", width: 120, cellRenderer: ReleasedRenderer, type: "date" },
   { id: "genre", name: "Genre", cellRenderer: GenreRenderer },
   { id: "type", name: "Type", width: 120, cellRenderer: TypeRenderer },
-  { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
+  { id: "imdb_rating", type: "number", name: "Rating", width: 120, cellRenderer: RatingRenderer },
 ];
 
 const base: Grid.ColumnBase<GridSpec> = { headerRenderer: Header };

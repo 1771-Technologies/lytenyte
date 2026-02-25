@@ -23,9 +23,14 @@ export function Pager({
     <div className="flex w-full items-center justify-between">
       <div className="text-sm tabular-nums">
         <span className="font-bold">
-          {formatter.format((page - 1) * pageSize + 1)}-{formatter.format(page * pageSize)}
-        </span>{" "}
-        of <span className="font-bold">{formatter.format(count)}</span>
+          {formatter.format((page - 1) * pageSize + 1)}-{formatter.format(Math.min(page * pageSize, count))}
+        </span>
+        {count > pageSize && (
+          <>
+            {" "}
+            of <span className="font-bold">{formatter.format(count)}</span>
+          </>
+        )}
       </div>
 
       <div className="flex items-center">

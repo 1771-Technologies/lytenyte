@@ -3,16 +3,24 @@ import { type Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import type { GridFilter } from "./types.js";
+import type { GridFilter } from "./types";
 import clsx from "clsx";
 import { Popover, SmartSelect } from "@1771technologies/lytenyte-pro/components";
 
 const textOptions = [
   { id: "equals", label: "Equals" },
   { id: "not_equals", label: "Does Not Equal" },
-  { id: "less_than", label: "Less Than" },
-  { id: "greater_than", label: "Greater Than" },
   { id: "contains", label: "Contains" },
+  { id: "not_contains", label: "Does Not Contain" },
+];
+
+const numberOptions = [
+  { id: "equals", label: "Equals" },
+  { id: "not_equals", label: "Does Not Equal" },
+  { id: "less_than", label: "Less Than" },
+  { id: "less_than_or_equal", label: "Less Than Or Equal To" },
+  { id: "greater_than", label: "Greater Than" },
+  { id: "greater_than_or_equal", label: "Greater Than Or Equal To" },
 ];
 
 const dateOptions = [
@@ -26,7 +34,7 @@ type DeepPartial<T> = T extends object
     }
   : T;
 
-export function TextFilterControl({
+export function FilterControl({
   api,
   filter: initialFilter,
   column,
@@ -35,8 +43,9 @@ export function TextFilterControl({
   filter: GridFilter | null;
   column: Grid.Column<GridSpec>;
 }) {
-  const inputType = column.type === "date" ? "date" : "text";
-  const options = column.type === "date" ? dateOptions : textOptions;
+  const inputType = column.type === "date" ? "date" : column.type === "number" ? "number" : "text";
+  const options =
+    column.type === "date" ? dateOptions : column.type === "number" ? numberOptions : textOptions;
 
   const [filter, setFilter] = useState<DeepPartial<GridFilter> | null>(initialFilter);
 
@@ -107,7 +116,16 @@ export function TextFilterControl({
             type={inputType}
             onChange={(e) => {
               setFilter((prev) => {
-                return { ...prev, kind: inputType, value: e.target.value } as GridFilter;
+                return {
+                  ...prev,
+                  kind: inputType,
+                  value:
+                    inputType === "number"
+                      ? e.target.value
+                        ? Number.parseFloat(e.target.value)
+                        : null
+                      : e.target.value,
+                } as GridFilter;
               });
             }}
           />

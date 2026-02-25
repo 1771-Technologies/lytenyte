@@ -6,7 +6,7 @@ import { Link1Icon } from "@radix-ui/react-icons";
 import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
 import { Popover } from "@1771technologies/lytenyte-pro/components";
-import { TextFilterControl } from "./filter.js";
+import { FilterControl } from "./filter.js";
 
 function SkeletonLoading() {
   return (
@@ -167,7 +167,7 @@ export function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
           <Popover.Arrow />
           <Popover.Title className="sr-only">Filter {label}</Popover.Title>
           <Popover.Description className="sr-only">Filter the text in the{label}</Popover.Description>
-          <TextFilterControl column={column} filter={model[column.id] ?? null} api={api} />
+          <FilterControl column={column} filter={model[column.id] ?? null} api={api} />
         </Popover.Container>
       </Popover>
     </div>
