@@ -24,6 +24,7 @@ export default function ComponentDemo() {
                       data-ln-tree-view-cell-expander
                       aria-label="toggle the row group expansion state"
                       onClick={() => toggle()}
+                      className={row.expanded ? "rotate-90 cursor-pointer" : "cursor-pointer"}
                     >
                       <CaretRight />
                     </button>

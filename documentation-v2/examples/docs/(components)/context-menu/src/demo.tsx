@@ -1,4 +1,5 @@
 //#start
+import "./demo.css";
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
@@ -48,6 +49,8 @@ export default function ComponentDemo() {
       <Menu
         anchor={anchor}
         open={!!menu}
+        modal={false}
+        lockScroll
         onOpenChange={(b) => {
           if (!b) {
             setMenu(null);
@@ -67,6 +70,20 @@ export default function ComponentDemo() {
                     } else {
                       navigator.clipboard.writeText(menu.column.name ?? menu.column.id);
                     }
+
+                    const columnIndex = api
+                      ?.columnView()
+                      .visibleColumns.findIndex((x) => x.id === menu.column.id);
+                    const rowIndex = menu.row ? api?.rowIdToRowIndex(menu.row!.id) : null;
+
+                    const query =
+                      rowIndex != null
+                        ? `[data-ln-colindex="${columnIndex}"][data-ln-cell][data-ln-rowindex="${rowIndex}"]`
+                        : `[data-ln-header-cell][data-ln-colindex="${columnIndex}"]`;
+
+                    const cell = document.querySelector(query);
+                    cell?.classList.add("copy-flash");
+                    setTimeout(() => cell?.classList.remove("copy-flash"), 500);
                   }}
                 >
                   Copy {menu.row ? "Cell" : "Header Name"}
@@ -76,6 +93,14 @@ export default function ComponentDemo() {
                     onAction={() => {
                       const fields = columns.map((x) => computeField(x.field ?? x.id, menu.row!)).join("\t");
                       navigator.clipboard.writeText(fields);
+
+                      const rowIndex = api?.rowIdToRowIndex(menu.row!.id);
+
+                      const cells = Array.from(
+                        document.querySelectorAll(`[data-ln-cell][data-ln-rowindex="${rowIndex}"]`),
+                      );
+                      cells.forEach((x) => x.classList.add("copy-flash"));
+                      setTimeout(() => cells.forEach((x) => x.classList.remove("copy-flash")), 500);
                     }}
                   >
                     Copy Row

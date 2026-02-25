@@ -2,7 +2,7 @@ import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro";
 import type { SalaryData } from "./data";
 import { data as rawData } from "./data.js";
 
-const sleep = (n = 4000) => new Promise((res) => setTimeout(res, n));
+const sleep = (n = 600) => new Promise((res) => setTimeout(res, n));
 
 export async function handleUpdate(updates: Map<string, SalaryData>, resetKey: string) {
   await sleep(200);

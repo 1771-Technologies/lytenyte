@@ -106,13 +106,13 @@ export default function ComponentDemo() {
 
   return (
     <div className="ln-grid flex">
-      <div className="min-w-60 py-2">
+      <div className="bg-ln-bg-ui-panel min-w-60 py-2">
         <div className="h-full w-full">
           <ColumnManager columns={columns} onColumnsChange={setColumns} />
         </div>
       </div>
       <div
-        className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight border-ln-border flex-1 border-s"
+        className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header-group:justify-center ln-header:text-ln-text-xlight border-ln-border flex-1 border-s"
         style={{ height: 500 }}
       >
         <Grid columns={columns} columnBase={base} rowSource={ds} />
