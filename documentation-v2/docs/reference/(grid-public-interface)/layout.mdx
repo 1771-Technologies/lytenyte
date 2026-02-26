@@ -1,18 +1,21 @@
 ---
 title: Layout
-description: LyteNyte Grid is a headless data grid. The grid positions cells and headers
-  based on a layout description. This section describes the types that make up the grid
-  layout description.
+description: As a headless data grid, LyteNyte grid positions cells and headers
+  based on a layout description. This reference describes the types
+  that make up the grid layout description.
 ---
 
-For more details on working with LyteNyte Grid as a headless grid, see
-the [Headless Component Parts guide](/docs/grid-headless-parts).
+For more details on working with LyteNyte Grid as a headless grid,
+see the [Headless Component Parts guide](/docs/grid-headless-parts).
 
 ## Row Layouts
 
-Two types are necessary to describe the layout of a row in LyteNyte Grid, since a row
-may be either a full width row or a row with individual cells. The row layout is described by a type
-called `LayoutRow`, which is a union of the cell layout and full width layout types:
+Two layout types are necessary to describe a row's layout:
+
+1. **Full Width Layout:** Used for full width rows.
+2. **Cell Layout:** Used for rows with individual cells.
+
+The `LayoutRow` type defines the row layout as a union of the cell and full-width layout types.
 
 ```ts
 type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
@@ -216,12 +219,17 @@ type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
 
 ## Header Layouts
 
-Three types are necessary to describe the header layout. These types describe a header group cell,
-a header cell, or a floating header cell. The `LayoutHeader` type is a union of these three types.
+Three layout types are necessary to describe a header's layout:
 
-\~~~ts
+1. **Header group cell**
+2. **Header cell**
+3. **Floating header cell**
+
+The `LayoutHeader` type defines the header layout as a union of these types.
+
+```ts
 type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;
-\~~~
+```
 
 ### LayoutHeaderCell
 
