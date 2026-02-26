@@ -109,11 +109,6 @@
     @slot;
   }
 }
-@custom-variant ln-rect-unit {
-  & [data-ln-cell-selection-is-unit="true"] {
-    @slot;
-  }
-}
 @custom-variant ln-rect-t {
   & [data-ln-cell-selection-rect][data-ln-cell-selection-border-top="true"] {
     @slot;

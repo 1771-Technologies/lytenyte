@@ -20,8 +20,6 @@ export interface VirtualTarget {
 }
 
 export interface DataRectSplit extends DataRect {
-  readonly isUnit: boolean;
-
   readonly borderTop?: boolean;
   readonly borderBottom?: boolean;
   readonly borderStart?: boolean;

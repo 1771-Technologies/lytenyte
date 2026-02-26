@@ -1,4 +1,5 @@
 import type { DataRect } from "../types/api.js";
+import type { DataRectSplit } from "../types/grid.js";
 
 interface SplitCellSelectionRectArgs {
   readonly rect: DataRect;
@@ -7,15 +8,6 @@ interface SplitCellSelectionRectArgs {
   readonly rowTopCount: number;
   readonly rowCenterCount: number;
   readonly isDeselect?: boolean;
-}
-
-export interface DataRectSplit extends DataRect {
-  readonly isUnit: boolean;
-
-  readonly borderTop?: boolean;
-  readonly borderBottom?: boolean;
-  readonly borderStart?: boolean;
-  readonly borderEnd?: boolean;
 }
 
 /**
@@ -58,8 +50,6 @@ export function splitCellSelectionRect({
   const colStartBound = colStartCount;
   const colEndBound = colStartCount + colCenterCount;
 
-  const isUnit = rect.rowEnd - rect.rowStart === 1 && rect.columnEnd - rect.columnStart === 1;
-
   const colSplits: DataRectSplit[] = [];
 
   // Handle column splits first
@@ -68,7 +58,6 @@ export function splitCellSelectionRect({
     const startSplit: DataRectSplit = {
       ...rect,
       columnEnd: colStartBound,
-      isUnit,
     };
     colSplits.push(startSplit);
     rect = { ...rect, columnStart: colStartBound };
@@ -79,14 +68,13 @@ export function splitCellSelectionRect({
     const endSplit: DataRectSplit = {
       ...rect,
       columnStart: colEndBound,
-      isUnit,
     };
     rect = { ...rect, columnEnd: colEndBound };
     colSplits.push(endSplit);
   }
 
   // Add the remaining rectangle after column splits
-  colSplits.push({ ...rect, isUnit });
+  colSplits.push({ ...rect });
 
   // Calculate the boundary positions for rows
   const topBound = rowTopCount;
@@ -97,7 +85,7 @@ export function splitCellSelectionRect({
   for (let split of colSplits) {
     // Case 1: Selection spans from top section into center section
     if (split.rowStart < topBound && split.rowEnd > topBound) {
-      const topSplit: DataRectSplit = { ...split, rowEnd: topBound, isUnit };
+      const topSplit: DataRectSplit = { ...split, rowEnd: topBound };
       split = { ...split, rowStart: topBound };
       rowSplits.push(topSplit);
     }
@@ -107,7 +95,6 @@ export function splitCellSelectionRect({
       const bottomSplit: DataRectSplit = {
         ...split,
         rowStart: bottomBound,
-        isUnit,
       };
       split = { ...split, rowEnd: bottomBound };
       rowSplits.push(bottomSplit);

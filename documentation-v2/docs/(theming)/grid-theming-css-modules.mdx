@@ -130,7 +130,7 @@ Here is the CSS module used to style the selection rectangle:
 
 ```css
 .cellStyles {
-  [data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
+  [data-ln-cell-selection-rect] {
     background-color: var(--lng1771-primary-30);
     box-sizing: border-box;
 
@@ -146,10 +146,6 @@ Here is the CSS module used to style the selection rectangle:
     &[data-ln-cell-selection-border-end="true"] {
       border-inline-end: 1px solid var(--lng1771-primary-50);
     }
-  }
-  [data-ln-cell-selection-rect][data-ln-cell-selection-is-unit="true"] {
-    outline: 1px solid var(--lng1771-primary-50);
-    outline-offset: -1px;
   }
 }
 ```

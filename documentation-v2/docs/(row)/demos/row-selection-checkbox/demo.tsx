@@ -1,5 +1,7 @@
 //#start
 import "@1771technologies/lytenyte-pro/light-dark.css";
+import "@1771technologies/lytenyte-pro/components.css";
+
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
 import {

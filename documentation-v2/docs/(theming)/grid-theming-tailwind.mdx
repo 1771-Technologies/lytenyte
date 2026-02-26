@@ -176,12 +176,11 @@ to a separate CSS file if you prefer.
 ```tsx
 <Grid.RowsContainer
   className={tw(
-    '**:not-data-[ln-cell-selection-is-unit="true"]:data-ln-cell-selection-rect:bg-ln-primary-30 **:data-ln-cell-selection-rect:border-ln-primary-50',
-    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-top=true]:border-t',
-    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-bottom=true]:border-b',
-    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-start=true]:border-l',
-    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-end=true]:border-r',
-    '**:data-[ln-cell-selection-is-unit="true"]:outline **:data-[ln-cell-selection-is-unit="true"]:outline-ln-primary-50 **:data-[ln-cell-selection-is-unit="true"]:-outline-offset-1',
+    '**:data-ln-cell-selection-rect:bg-ln-primary-30 **:data-ln-cell-selection-rect:border-ln-primary-50',
+    '**:data-[ln-cell-selection-border-top=true]:border-t',
+    '**:data-[ln-cell-selection-border-bottom=true]:border-b',
+    '**:data-[ln-cell-selection-border-start=true]:border-l',
+    '**:data-[ln-cell-selection-border-end=true]:border-r',
   )}
 >
 ```

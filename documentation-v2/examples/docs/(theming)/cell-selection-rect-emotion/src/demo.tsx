@@ -67,7 +67,7 @@ const Row = styled(Grid.Row)`
 
 //!next 23
 const RowsContainer = styled(Grid.RowsContainer)`
-  [data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
+  [data-ln-cell-selection-rect] {
     background-color: rgba(0, 0, 255, 0.08);
     box-sizing: border-box;
 
@@ -83,10 +83,6 @@ const RowsContainer = styled(Grid.RowsContainer)`
     &[data-ln-cell-selection-border-end="true"] {
       border-inline-end: 1px solid rgba(0, 0, 255, 1);
     }
-  }
-  [data-ln-cell-selection-rect][data-ln-cell-selection-is-unit="true"] {
-    outline: 1px solid rgba(0, 0, 255, 1);
-    outline-offset: -1px;
   }
 `;
 

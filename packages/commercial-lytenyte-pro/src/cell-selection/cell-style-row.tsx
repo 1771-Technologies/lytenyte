@@ -1,7 +1,7 @@
 import { useMemo, type CSSProperties } from "react";
 import { getTranslate, sizeFromCoord } from "@1771technologies/lytenyte-shared";
-import type { DataRectSplit } from "./split-cell-selection-rect.js";
 import { useRoot } from "@1771technologies/lytenyte-core/internal";
+import type { DataRectSplit } from "../types/grid";
 
 export function CellStyleRow({
   rect,
@@ -110,7 +110,6 @@ export function CellStyleRow({
       data-ln-cell-selection-rect
       data-ln-cell-selection-is-deselect={isDeselect}
       data-ln-cell-selection-is-pivot={isPivot}
-      data-ln-cell-selection-is-unit={rect.isUnit}
       data-ln-cell-selection-border-top={rect.borderTop}
       data-ln-cell-selection-border-bottom={rect.borderBottom}
       data-ln-cell-selection-border-start={rect.borderStart}

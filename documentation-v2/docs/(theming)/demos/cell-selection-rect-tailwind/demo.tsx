@@ -73,12 +73,11 @@ export default function ThemingDemo() {
             <Grid.RowsContainer
               //!next 8
               className={tw(
-                '**:not-data-[ln-cell-selection-is-unit="true"]:data-ln-cell-selection-rect:bg-blue-500/20 **:data-ln-cell-selection-rect:border-blue-500',
-                '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-top=true]:border-t',
-                '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-bottom=true]:border-b',
-                '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-start=true]:border-l',
-                '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-end=true]:border-r',
-                '**:data-[ln-cell-selection-is-unit="true"]:outline **:data-[ln-cell-selection-is-unit="true"]:outline-blue-500 **:data-[ln-cell-selection-is-unit="true"]:-outline-offset-1',
+                "**:data-ln-cell-selection-rect:bg-blue-500/20 **:data-ln-cell-selection-rect:border-blue-500",
+                "**:data-[ln-cell-selection-border-top=true]:border-t",
+                "**:data-[ln-cell-selection-border-bottom=true]:border-b",
+                "**:data-[ln-cell-selection-border-start=true]:border-l",
+                "**:data-[ln-cell-selection-border-end=true]:border-r",
               )}
             >
               <Grid.RowsCenter>
