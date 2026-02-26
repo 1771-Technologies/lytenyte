@@ -3,6 +3,7 @@ import "@1771technologies/lytenyte-pro/light-dark.css";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { stockData } from "@1771technologies/grid-sample-data/stock-data-smaller";
 import { PercentCell, CurrencyCell, SymbolCell, CompactNumberCell } from "./components.jsx";
+import { useState } from "react";
 
 type StockData = (typeof stockData)[number];
 
@@ -24,9 +25,18 @@ const base: Grid.ColumnBase<GridSpec> = { widthFlex: 1 };
 export default function CellDemo() {
   const ds = useClientDataSource({ data: stockData });
 
+  const [selections, setSelections] = useState<Grid.T.DataRect[]>([]);
+
   return (
     <div className="ln-grid ln-cell:text-xs ln-cell:font-light ln-header:text-xs" style={{ height: 500 }}>
-      <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectionMode="multi-range" />
+      <Grid
+        columns={columns}
+        columnBase={base}
+        rowSource={ds}
+        cellSelectionMode="multi-range"
+        cellSelections={selections}
+        onCellSelectionChange={setSelections}
+      />
     </div>
   );
 }

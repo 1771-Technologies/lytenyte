@@ -3,7 +3,7 @@
 @layer ln-grid {
   .ln-grid {
     /* CELL SELECTION */
-    [data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
+    [data-ln-cell-selection-rect] {
       background-color: var(--ln-primary-10);
       box-sizing: border-box;
 

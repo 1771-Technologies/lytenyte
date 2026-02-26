@@ -1,9 +1,10 @@
 import { boundSelectionRect } from "./bound-selection-rect.js";
 import { adjustRectForRowAndCellSpan } from "./adjust-rect-for-row-and-cell-span.js";
 import { areRectsEqual } from "./are-rects-equal.js";
-import { splitCellSelectionRect, type DataRectSplit } from "./split-cell-selection-rect.js";
+import { splitCellSelectionRect } from "./split-cell-selection-rect.js";
 import type { ColumnView } from "@1771technologies/lytenyte-shared";
 import type { API, DataRect } from "../types/api.js";
+import type { DataRectSplit } from "../types/grid.js";
 
 export function updateAdditiveCellSelection(
   api: API,

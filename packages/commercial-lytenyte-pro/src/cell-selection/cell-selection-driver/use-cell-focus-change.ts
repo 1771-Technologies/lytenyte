@@ -1,8 +1,7 @@
 import type { PieceWritable } from "@1771technologies/lytenyte-core";
 import { equal, type PositionUnion } from "@1771technologies/lytenyte-shared";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
-import type { DataRectSplit } from "../split-cell-selection-rect";
-import type { API, DataRect } from "../../types";
+import type { API, DataRect, DataRectSplit } from "../../types";
 import { dataRectFromCellPosition } from "../data-rect-from-cell-position.js";
 import { adjustRectForRowAndCellSpan } from "../adjust-rect-for-row-and-cell-span.js";
 

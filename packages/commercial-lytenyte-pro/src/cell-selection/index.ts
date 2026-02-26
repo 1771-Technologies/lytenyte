@@ -1,9 +1,7 @@
 export { isWithinSelectionRect } from "./is-within-selection-rect.js";
-export { splitCellSelectionRect } from "./split-cell-selection-rect.js";
 export { boundSelectionRect } from "./bound-selection-rect.js";
 export { fullWidthStartEndIndex } from "./full-width-start-end-index.js";
 export { areRectsEqual } from "./are-rects-equal.js";
-export { deselectRectRange } from "./deselect-rect-range.js";
 export { updateAdditiveCellSelection } from "./update-additive-cell-selection.js";
 
 export { isBottomRect } from "./is-bottom-rect.js";

@@ -18,7 +18,6 @@ import {
   TimingPhaseCell,
 } from "./components.jsx";
 import { useState } from "react";
-import { ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 //#end
 
 export interface GridSpec {
@@ -63,7 +62,6 @@ export default function RowDemo() {
         rowDetailExpansions={rowDetailExpansions}
         onRowDetailExpansionsChange={setRowDetailExpansions}
         columnMarker={marker}
-        slotShadows={ViewportShadows}
         rowDetailHeight={120}
       />
     </div>

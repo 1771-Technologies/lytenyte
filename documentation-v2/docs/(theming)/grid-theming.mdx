@@ -360,7 +360,7 @@ when selection ranges are active. Notice how individual rectangles are selected,
 the selection area is actually a set of split `div`s assembled to visually form the selection rectangle.
 
 ```css
-[data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
+[data-ln-cell-selection-rect] {
   background-color: rgba(0, 0, 255, 0.08);
   box-sizing: border-box;
 
@@ -376,10 +376,6 @@ the selection area is actually a set of split `div`s assembled to visually form 
   &[data-ln-cell-selection-border-end="true"] {
     border-inline-end: 1px solid rgba(0, 0, 255, 1);
   }
-}
-[data-ln-cell-selection-rect][data-ln-cell-selection-is-unit="true"] {
-  outline: 1px solid rgba(0, 0, 255, 1);
-  outline-offset: -1px;
 }
 ```
 

@@ -23,13 +23,13 @@ import { useProAPI } from "./hooks/use-pro-api.js";
 import { ProRootProvider, type ProContext } from "./context.js";
 import { hasAValidLicense, licenseState } from "../license.js";
 import { useControlled, useEvent, useRoot } from "@1771technologies/lytenyte-core/internal";
-import { splitCellSelectionRect } from "../cell-selection/index.js";
 import { CellSelectionDriver } from "../cell-selection/cell-selection-driver/cell-selection-driver.js";
 import {
   CellSelectionBottom,
   CellSelectionCenter,
   CellSelectionTop,
 } from "../cell-selection/cell-selection-containers.js";
+import { splitCellSelectionRect } from "../cell-selection/split-cell-selection-rect.js";
 
 const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
