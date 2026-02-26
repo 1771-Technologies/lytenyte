@@ -1,14 +1,13 @@
 ---
 title: Grid API
-description: LyteNyte Grid's API provides useful methods to query grid state and
-  makes many grid operations much easier.
+description: Use the API methods to query grid state and run operations programmatically.
 ---
 
-:::note
+:::warn
 
-In general, avoid using API methods in the render path of a React component.
-To prevent state issues, use API methods in callbacks or effects unless you have
-an advanced understanding of how state flows within the grid.
+Avoid calling API methods in the render path of a React component. To prevent state issues,
+use API methods in callbacks or effects unless you have
+an advanced understanding of the grid's state flow.
 
 :::
 
@@ -26,9 +25,9 @@ return <Grid ref={apiRef} />;
 
 ## Extending the API
 
-You can extend the LyteNyte Grid API with custom properties. The code below shows a basic example.
-See the [API Extension guide](/docs/grid-api-extensions) for more details. By extending the API,
-you can add additional capabilities to the grid to make integration with your application much easier.
+You can extend the LyteNyte Grid API with custom properties to add new capabilities and
+simplify integration of the grid into your application. The code below shows a basic
+example. See the [API Extension guide](/docs/grid-api-extensions) for more details.
 
 ```tsx
 interface GridSpec {
@@ -50,7 +49,7 @@ function MyGrid() {
 }
 ```
 
-## Properties
+## Grid API Properties
 
 The properties listed below are grouped into sections, but they are all available on the same API
 instance.
