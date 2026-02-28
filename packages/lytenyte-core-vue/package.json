@@ -1,0 +1,54 @@
+{
+  "name": "@1771technologies/lytenyte-core-vue",
+  "description": "Blazingly fast headless Vue data grid with 100s of features.",
+  "license": "Apache-2.0",
+  "version": "2.0.1",
+  "keywords": [
+    "vue",
+    "vue-data-grid",
+    "data-grid",
+    "react-table",
+    "headless",
+    "virtualized"
+  ],
+  "type": "module",
+  "files": [
+    "dist",
+    "css",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/lytenyte-core-vue"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      }
+    }
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@vue/tsconfig": "^0.8.1"
+  }
+}
