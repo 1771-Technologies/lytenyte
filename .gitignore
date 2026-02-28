@@ -175,3 +175,15 @@ next-env.d.ts
 /playwright/.cache/
 
 *storybook.log
+
+.eslintcache
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+# Vitest
+__screenshots__/
+
+# Vite
+*.timestamp-*-*.mjs
