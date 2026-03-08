@@ -31,7 +31,7 @@ export default defineConfig({
       ],
       navbar: {
         docVersions: [
-          { title: "v2", full: "v2.0.0", href: "latest" },
+          { title: "v2", full: "v2.0.2", href: "latest" },
           {
             title: "v1",
             full: "v1.0.20",
