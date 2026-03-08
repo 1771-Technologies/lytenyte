@@ -1,5 +1,11 @@
 # @1771technologies/grid-sample-data
 
+## 2.0.2
+
+### Patch Changes
+
+- v2.0.2
+
 ## 2.0.1
 
 ### Patch Changes

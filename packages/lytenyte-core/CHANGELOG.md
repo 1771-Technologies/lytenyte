@@ -1,5 +1,14 @@
 # @1771technologies/lytenyte-core
 
+## 2.0.2
+
+### Patch Changes
+
+- v2.0.2
+- Updated dependencies
+  - @1771technologies/lytenyte-design@2.0.2
+  - @1771technologies/lytenyte-shared@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
