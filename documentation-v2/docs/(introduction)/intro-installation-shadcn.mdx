@@ -69,12 +69,18 @@ import "@1771technologies/lytenyte-core/design.css";
 import "@1771technologies/lytenyte-core/shadcn.css";
 import "@1771technologies/lytenyte-core/grid.css";
 import { Grid } from "@1771technologies/lytenyte-core";
-import { memo, type ReactNode } from "react";
 
-export function LyteNyte<Spec extends GridSpec>(props: Grid.Props<Spec>) {
+export function LyteNyte<Spec extends Grid.GridSpec>(
+  props: Grid.Props<Spec> &
+    (undefined extends Spec["api"]
+      ? unknown
+      : {
+          apiExtension: ((incomplete: Grid.API<Spec>) => Spec["api"] | null) | Spec["api"];
+        }),
+) {
   return (
-    <div className="ln-grid ln-shadcn w-full h-full">
-      <Grid {...props}>
+    <div className="ln-grid ln-shadcn h-full w-full">
+      <Grid {...props} />
     </div>
   );
 }
@@ -89,37 +95,21 @@ import "@1771technologies/lytenyte-pro/design.css";
 import "@1771technologies/lytenyte-pro/shadcn.css";
 import "@1771technologies/lytenyte-pro/grid.css";
 import { Grid } from "@1771technologies/lytenyte-pro";
-import { memo, type ReactNode } from "react";
 
-export function LyteNyte<Spec extends GridSpec>(props: Grid.Props<Spec>) {
+export function LyteNyte<Spec extends Grid.GridSpec>(
+  props: Grid.Props<Spec> &
+    (undefined extends Spec["api"]
+      ? unknown
+      : {
+          apiExtension: ((incomplete: Grid.API<Spec>) => Spec["api"] | null) | Spec["api"];
+        }),
+) {
   return (
-    <div className="ln-grid ln-shadcn w-full h-full">
-      <Grid {...props}>
+    <div className="ln-grid ln-shadcn h-full w-full">
+      <Grid {...props} />
     </div>
   );
 }
-```
-
-</Tab>
-
-</Tabs>
-
-Then copy and paste the following code into your hooks folder:
-
-<Tabs>
-
-<Tab label="Core">
-
-```tsx
-export { useClientDataSource } from "@1771technologies/lytenyte-core";
-```
-
-</Tab>
-
-<Tab label="PRO">
-
-```tsx
-export { useServerDataSource, useTreeDataSource, useClientDataSource } from "@1771technologies/lytenyte-pro";
 ```
 
 </Tab>
