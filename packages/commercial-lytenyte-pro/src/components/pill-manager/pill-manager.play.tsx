@@ -1,4 +1,5 @@
 import "@1771technologies/lytenyte-design/light-dark.css";
+import "@1771technologies/lytenyte-design/shadcn-vars.css";
 import "../../../css/pill-manager.css";
 import { PillManager } from "./root.js";
 import { useState } from "react";
@@ -36,7 +37,7 @@ export default function Demo() {
     },
     {
       id: "group",
-      type: "row-pivots",
+      type: "row-groups",
       label: "Row Groups",
       accepts: ["groupable"],
       pills: columns.filter((x) => x.grouped).map((x) => ({ ...x, active: true, movable: true })),
@@ -44,7 +45,7 @@ export default function Demo() {
   ]);
 
   return (
-    <div style={{ display: "flex", gap: 8, flexDirection: "column" }}>
+    <div className="ln-shadcn" style={{ display: "flex", gap: 8, flexDirection: "column" }}>
       <div style={{ height: "200px" }}>
         <PillManager
           rows={state}

@@ -57,7 +57,7 @@
   --ln-border-floating-panel: var(--border);
   --ln-border-popover: var(--border);
 
-  --ln-bg: var(--background);
+  --ln-bg: var(--ln-gray-02);
   --ln-bg-page: var(--background);
   --ln-bg-light: color-mix(in srgb, var(--background) 90%, black 10%);
   --ln-bg-strong: color-mix(in srgb, var(--background) 80%, black 20%);

@@ -1,4 +1,6 @@
-import { useTheme } from "@1771technologies/play-frame";
+// import { useTheme } from "@1771technologies/play-frame";
+import "@1771technologies/lytenyte-design/shadcn-vars.css";
+
 import "@1771technologies/lytenyte-design/fonts.css";
 import "../../css/grid-full.css";
 
@@ -61,17 +63,13 @@ export default function Experimental() {
     cellRenderer: RowGroupCell,
   });
 
-  const { resolvedTheme } = useTheme();
   return (
     <>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px" }}>
         <button onClick={() => setPivotMode((prev) => !prev)}>Toggle Pivot Mode</button>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div
-          className={"ln-grid " + (resolvedTheme === "light" ? "ln-light" : "ln-dark")}
-          style={{ height: "90vh", width: "90vw" }}
-        >
+        <div className={"ln-grid ln-shadcn"} style={{ height: "90vh", width: "90vw" }}>
           <Grid
             columns={columns}
             columnBase={useMemo(() => ({ movable: true, resizable: true, width: 100 }), [])}
