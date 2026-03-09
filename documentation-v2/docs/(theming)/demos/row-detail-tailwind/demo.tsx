@@ -1,4 +1,5 @@
 //#start
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
 import { useMemo } from "react";

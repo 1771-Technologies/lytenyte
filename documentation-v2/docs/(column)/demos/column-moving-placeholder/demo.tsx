@@ -65,7 +65,7 @@ export default function ColumnDemo() {
 const ColumnPlaceholder: Grid.Props<GridSpec>["columnMoveDragPlaceholder"] = (p) => {
   return createPortal(
     <div
-      className="text-ln-text-dark bg-ln-bg-ui-panel border-ln-bg-strong flex items-center gap-2 rounded border px-4 py-2"
+      className="text-ln-text-dark bg-ln-bg-ui-panel border-ln-bg-strong left-0 top-0 flex items-center gap-2 rounded border px-4 py-2"
       style={{ position: "fixed", zIndex: 10, transform: `translate3d(${p.x}px, ${p.y}px, 0px)` }}
     >
       <MoveIcon />
@@ -79,7 +79,7 @@ const ColumnPlaceholder: Grid.Props<GridSpec>["columnMoveDragPlaceholder"] = (p)
 const ColumnGroupPlaceholder: Grid.Props<GridSpec>["columnGroupMoveDragPlaceholder"] = (p) => {
   return createPortal(
     <div
-      className="text-ln-text-dark bg-ln-bg-ui-panel border-ln-bg-strong flex items-center gap-2 rounded border px-4 py-2"
+      className="text-ln-text-dark bg-ln-bg-ui-panel border-ln-bg-strong left-0 top-0 flex items-center gap-2 rounded border px-4 py-2"
       style={{ position: "fixed", zIndex: 10, transform: `translate3d(${p.x}px, ${p.y}px, 0px)` }}
     >
       <MoveIcon />

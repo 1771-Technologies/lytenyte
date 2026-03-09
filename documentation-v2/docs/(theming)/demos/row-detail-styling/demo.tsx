@@ -1,5 +1,6 @@
 //#start
 import "./demo.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
 import { useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
