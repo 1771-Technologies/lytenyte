@@ -11,6 +11,12 @@
   border: 0px solid transparent;
 }
 
+@custom-variant dark {
+  &:where([data-theme="dark"] *) {
+    @slot;
+  }
+}
+
 /* Safari (desktop + iOS) and iOS WebViews */
 [data-ln-header="true"]::before {
   position: absolute;
