@@ -628,6 +628,9 @@ importers:
 
   packages-auxiliary/measure-right:
     dependencies:
+      '@1771technologies/lytenyte-shared':
+        specifier: workspace:*
+        version: link:../../packages/lytenyte-shared
       playwright:
         specifier: 1.56.1
         version: 1.56.1

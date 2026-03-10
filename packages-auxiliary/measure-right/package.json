@@ -10,6 +10,7 @@
     "README.md"
   ],
   "dependencies": {
+    "@1771technologies/lytenyte-shared": "workspace:*",
     "playwright": "1.56.1"
   },
   "homepage": "https://1771technologies.com",

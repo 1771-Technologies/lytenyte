@@ -1,6 +1,6 @@
 import type { Benchmark, BenchmarkResult, BrowserOptions } from "./types.js";
-import { wait } from "./utils/wait.js";
-import { applyForceGC } from "./marks/force-gc.js";
+import { wait } from "@1771technologies/lytenyte-shared";
+import { applyForceGC } from "./browser/force-gc.js";
 import { startBrowser } from "./browser/get-browser.js";
 import { readTraceStats } from "./browser/read-trace-stats.js";
 import { computeSummaryStats } from "./stats/compute-summary-stats.js";
@@ -109,10 +109,20 @@ async function runMemBenchmark(bench: Benchmark, opts?: BrowserOptions) {
 
   await bench.before?.(page);
   await applyForceGC(page);
-  performance.mark("bench_start");
+
+  await page.evaluate(() => {
+    performance.mark("bench_start");
+  });
+
   await bench.run(page);
-  performance.mark("bench_end");
-  performance.measure("bench", "bench_start", "bench_end");
+
+  await page.evaluate(() => {
+    performance.mark("bench_end");
+  });
+
+  await page.evaluate(() => {
+    performance.measure("bench", "bench_start", "bench_end");
+  });
 
   await wait(40);
 
