@@ -1,0 +1,206 @@
+---
+title: Office Release of LyteNyte Grid v2.0
+description: 100% Stateless. The Way Data Grids & Data Tables Should Work
+---
+
+![LyteNyte Release 2.0](./assets/lytenyte-version-2.webp)
+
+[LyteNyte Grid 1.0](/blog/official-release-of-lytenyte-grid-v1) dropped with a ~40kb bundle size, headless or pre-styled modes,
+a declarative API, 150+ features, and lightning-fast performance.
+
+However, like every React data grid in existence, its design still led
+developers to write code using the dreaded useEffect or similar effect handlers,
+particularly when syncing state with URL params. While LyteNyte Grid 1.0 is less
+opinionated than other data grid libraries, it still enforces opinionated structures for sort, filter,
+and group models, creating friction when your data source doesn't fit our mold.
+
+These problems aren't unique to LyteNyte Grid. Our competitors ignore them;
+some call them “features”, but every data grid hits this wall. Until today!
+LyteNyte Grid 2.0 is the only grid that fully solves them.
+
+## What's New in LyteNyte Grid 2.0?
+
+Great developer experience means the data grid gets out of your damn way.
+So, **LyteNyte Grid 2.0** has gone **100% stateless and fully prop-driven**.
+Meaning you can configure it declaratively from your state, whether it's URL params,
+server state, Redux, or whatever else you can imagine.
+
+Statelessness is not the only improvement. LyteNyte Grid 2.0 is stacked with improvements:
+
+### Limitless API Extensions
+
+- Extend API and column definitions with your own properties and methods
+- 100% type-safe, naturally
+
+### Hybrid Headless Mode
+
+- Sensible default child configuration
+- Up to 90% less boilerplate
+
+### Native Tree Data
+
+- Directly supports object-based data
+- Deep nesting works out of the box
+
+### Brand New Components
+
+- Standalone Smart Select, Tree View, Menus, Dialogs
+- Utilities to cut boilerplate
+
+### Featherweight Bundle Size
+
+- PRO: **40kb** (down **18%** from 49kb)
+- Core: **30kb** (down **14%** from 35kb)
+
+### Heavy-Hitting New Features
+
+- Post-group filters, pivot grand totals, resizable column groups
+- Row tree collapsing and advanced label filtering
+
+### Improved Documentation
+
+- **+130 guides** that cover real-world scenarios
+- Live demos, detailed code explanations
+
+If you need a free, open-source data grid (Core) or are shipping enterprise-scale
+applications that demand advanced features and support (PRO),
+LyteNyte Grid 2.0 has you covered.
+
+## Limitless API Extensions
+
+LyteNyte Grid 2.0 now supports virtually unlimited extensibility
+because we acknowledge that only you understand
+your business logic best.
+
+You can now extend the Grid API and column definitions with your
+own custom properties and methods, **all fully type-safe**. Instead of making
+you rebuild your app around our ego, we designed the grid to fit your architecture.
+
+## Hybrid Headless Mode
+
+LyteNyte Grid 1.0 is fully headless. LyteNyte Grid 2.0 keeps that power and
+remains headless, but now provides a sensible default child configuration.
+This lets you get up and running quickly without writing
+the 'Mount Everest' of boilerplate.
+
+Developers can now simply write:
+
+```tsx
+<Grid {...props} />
+```
+
+Instead of:
+
+```tsx
+<Grid.Root>
+  <Grid.Viewport>
+    <Grid.Header>
+      {headerRows.map((row, i) => {
+        return (
+          <Grid.HeaderRow key={i} headerRowIndex={i}>
+            {row.map((c) => {
+              if (c.kind === "group") return <Grid.HeaderGroupCell />;
+              return <Grid.HeaderCell />;
+            })}
+          </Grid.HeaderRow>
+        );
+      })}
+    </Grid.Header>
+
+    <Grid.RowsContainer>
+      <Grid.RowsCenter>
+        {rows.map((row) => {
+          if (row.kind === "full-width") return <Grid.RowFullWidth />;
+          return (
+            <Grid.Row row={row} key={row.id}>
+              {row.cells.map((c) => (
+                <Grid.Cell />
+              ))}
+            </Grid.Row>
+          );
+        })}
+      </Grid.RowsCenter>
+    </Grid.RowsContainer>
+  </Grid.Viewport>
+</Grid.Root>
+```
+
+## Native Tree Data
+
+Tree Data got completely reworked in LyteNyte Grid 2.0. Instead of
+forcing array-based path structures, the grid now works directly
+with object-based data.
+
+We ditched “Tree Data Mode”. Most tree-data needs were already handled
+by the standard client grid, yet most grids force you to flatten nested
+objects into array paths just to render a hierarchy. We don't.
+
+LyteNyte Grid works directly with your nested object data,
+so it can render and edit deep hierarchies natively.
+
+## Brand New Components
+
+LyteNyte Grid 2.0 ships with a high-performance component
+suite you can run with the grid or use independently:
+
+- **Smart Select:** Component for combobox or multi-chip selection.
+- **Tree View:** Built as a grid variant for specialized hierarchies.
+- **Menus & Dialogs:** Fully functional context menus and a general-purpose dialog component.
+
+Since we dislike repetitive setup as much as you do, we've also
+shipped utility components and helpers that minimize grid-related boilerplate.
+
+## Featherweight Bundle Size
+
+We tightened the codebase to make LyteNyte Grid 2.0
+significantly faster and lighter, even with the new features.
+
+- **Core (Free Edition):** 30kb gzipped (Down from 35kb).
+- **Pro (Commercial Edition):** Under 40kb gzipped (Down from 49kb).
+
+Less code. More power.
+
+## Heavy Hitting New Features
+
+DX wasn't the only upgrade. We loaded 2.0 with a wide range of new features:
+
+- Post-group filters
+- Row group tree collapsing
+- Resizable column groups
+- Label filtering
+- Grand total rows for pivot mode
+
+_And a hell of a lot more._
+
+## Improved Documentation
+
+We know developers don't want to read documentation, mostly because docs
+are typically awful. That's why we fixed ours. We didn't merely wish you
+luck and automatically generate an API reference.
+
+We wrote 130+ in-depth guides, each with thorough explanations, real-world demos,
+and code examples. Everything you would need to get productive with LyteNyte Grid fast.
+
+## Next Steps: Beyond The Opening Act
+
+This is only the beginning for us. LyteNyte Grid 2.0 has been significantly
+shaped by feedback from existing users, and we're grateful for it. We have a
+steady slate of features planned, including rollout headers, advanced
+expression filters, and more.
+
+If there is a feature you have in mind? Let us know on [GitHub](https://github.com/1771-Technologies/lytenyte),
+or check out our [live demo](https://www.1771technologies.com/demo) for more.
+
+Give LyteNyte Grid a go, it's one NPM install away
+
+```tsx
+npm install @1771technologies/lytenyte-core
+```
+
+## Get Started Now
+
+- [Try the interactive demo](https://www.1771technologies.com/demo). See LyteNyte Grid PRO in action.
+- [Compare license plans](https://www.1771technologies.com/pricing). Choose the right fit for your team.
+
+Or start building with the free **LyteNyte Grid Core** edition.
+It's open source, memory efficient, and ready to drop into your next React project.

@@ -1,0 +1,215 @@
+---
+title: Who's in Scope with LyteNyte Grid PRO
+description: Determining Developer Coverage
+---
+
+![Who is in scope](./assets/who-is-in-scope-with-lytenyte-grid.webp)
+
+Unfortunately, enterprise-grade data grid libraries often come with
+enterprise-grade licensing terms, meaning clarity is rarely part of the package.
+
+Determining who needs to be covered by a commercial data grid library
+license can raise more questions than bad API documentation. Does it include
+all developers working on a project? Does using a wrapper library change the
+calculation? And of course, the question that stops everyone cold: Do I
+need to license everyone in my repository?
+
+At 1771 Technologies, we understand that front-end development isn't
+always neatly compartmentalized. Teams share code, contributors shift
+between roles, and the data grid you're using might be several abstraction
+layers away from the person writing the logic. In that environment,
+vague license terms slow you down and leave teams guessing who's actually “in scope.”
+
+That's why LyteNyte Grid PRO licensing is built around a clear,
+developer-based model: All you have to consider is who's active in the front-end code.
+
+This blog walks through exactly how to determine which developers need
+to be covered using practical examples. No guesswork. Just clarity.
+
+- [Check out our FAQ](https://www.1771technologies.com/general-faq). Learn more about LyteNyte Grid license plans.
+- [LyteNyte Grid redistribution](/blog/understanding-lytenyte-grid-pro-redistribution). Learn more about LyteNyte Grid PRO distribution and deployment.
+
+## Determining Who Needs a LyteNyte Grid License
+
+In a nutshell, the number of developers covered by your license must equal the number
+of **concurrent developers** who write, modify, or contribute to the **front-end codebase**
+of any **project** that uses or **integrates LyteNyte Grid** or its derivative works.
+
+At any given time, any developer actively contributing to the front-end
+code must be licensed, whether interacting directly with LyteNyte Grid, accessing it
+indirectly through intermediate layers or wrappers, or focusing on other parts
+of the project's front-end code. The license requirement is based on the number of developers
+**concurrently active** in the front-end code, not the total number who have ever contributed.
+
+Developers who perform both front-end and back-end coding tasks must also be licensed.
+
+A license is not required for roles that do not write, modify, or contribute changes
+to the front-end codebase, such as UX/UI designers who work exclusively
+in design platforms like Figma.
+
+To make developer licensing even clearer, we will break it down
+piece by piece, like deconstructing a LEGO set, with a few
+examples to clarify everything.
+
+## Illustration One: Merlin Securities LLC
+
+Merlin Securities LLC is developing **AppX**, a portfolio dashboard for stock data.
+AppX will include financial charts, custom views, and a lightning-fast
+React data grid powered by LyteNyte Grid.
+
+Merlin Securities has assigned 9 employees to work on AppX. Of these,
+4 developers actively contribute to the front-end codebase,
+where LyteNyte Grid is integrated. This group includes developers working directly
+with LyteNyte Grid, those contributing to other areas of the front-end code,
+and a full-stack developer who splits time between front-end and back-end tasks.
+
+Under LyteNyte Grid's licensing model, all 4 developers must be licensed because
+they are writing, modifying, or contributing to the front-end code of a project that
+uses LyteNyte Grid, regardless of whether they touch LyteNyte Grid directly or work
+elsewhere in the front-end codebase.
+
+The remaining five employees are back-end developers, a UX/UI designer, and a QA tester.
+Since their work does not involve writing or modifying the front-end codebase,
+they do not require a LyteNyte Grid license.
+
+:::note
+QA testers typically do not require a LyteNyte Grid license unless
+their role involves contributing code to the front-end.
+:::
+
+![Illustration one: merlin securities](./assets/who-is-in-scope-illustration-1.webp)
+
+## Illustration Two: Wayne Industrial Inc.
+
+Wayne Industrial Inc. is developing **Bats-UI**, an internal UI component library that
+integrates LyteNyte Grid and other proprietary components. The Bats-UI team consists of
+3 developers contributing to its front-end code, while a UX/UI
+designer assists the project without writing code.
+
+Bats-UI is integrated into **AppZ**, a cybersecurity dashboard maintained by a different
+engineering team of 5 developers. Of those, 2 developers contribute to the AppZ's front-end
+code, which uses Bats-UI and therefore LyteNyte Grid, while the
+remaining 3 developers work exclusively on the back-end code.
+
+Under LyteNyte Grid's licensing model, developers who contribute to the front-end
+code of any project that uses LyteNyte Grid, whether directly or via
+a wrapper like Bats-UI, must be licensed.
+
+As a result, Wayne Industrial is required to
+license 5 developers:
+
+- 3 working on the Bats-UI front-end.
+- 2 working on the AppZ front-end.
+
+Team members who do not contribute to the front-end code, such as
+back-end developers and designers, do not require a license.
+
+![Illustration one: wayne industrial](./assets/who-is-in-scope-illustration-2.webp)
+
+## Illustration Three: Oscorp EdTech Inc.
+
+Oscorp EdTech Inc. is developing **NxO Grid**, an internal derivative of LyteNyte Grid with
+customized features. A team of 2 developers contributes to its front-end
+code and interacts directly with LyteNyte Grid.
+
+NxO Grid is integrated into **Goblin-UI**, an internal UI component library maintained
+by a separate team of 2 developers. These developers directly contribute to
+Goblin-UI's front-end code, indirectly using LyteNyte Grid through its
+derivative, NxO Grid. Additionally, 2 UX/UI designers support
+both projects without writing code.
+
+Goblin-UI is integrated into App-Spectra, a learning analytics dashboard built
+by another team of 4 developers. Of these, 2 developers contribute to App-Spectra's
+front-end code, indirectly using LyteNyte Grid via Goblin-UI and NxO Grid.
+The remaining 2 developers work exclusively on the back-end code without
+interaction with the front-end codebase.
+
+Under LyteNyte Grid's licensing model, any developer contributing to the front-end
+code of a project using LyteNyte Grid or its derivatives must be licensed,
+even if the grid is accessed indirectly through internal libraries or wrappers.
+
+Therefore, Oscorp EdTech Inc. must license 6 developers:
+
+- 2 working on the NxO Grid front-end.
+- 2 working on the Goblin-UI front-end.
+- 2 working on the App-Spectra front-end.
+
+Back-end-only developers and non-coding contributors like UX/UI designers do not require a license.
+
+![Illustration one: Oscorp EdTech](./assets/who-is-in-scope-illustration-3.webp)
+
+## Illustration 4: Stark Enterprises Ltd.
+
+Stark Logistics Ltd. is developing 3 internal applications
+to modernize its business operations.
+
+- **App-Infinity:** A dashboard to view all business transactions and customer payments.
+- **App-Arc:** An analytics platform that displays real-time shipment records and global delivery logs.
+- **App-M3:** A routing dashboard designed to assist couriers during last-mile delivery.
+
+LyteNyte Grid will be integrated into App-Infinity and App-Arc.
+App-M3 does not integrate LyteNyte Grid and is being developed
+in-house with the team's proprietary tools.
+
+Each application is being developed by a separate engineering team assigned by
+Stark Logistics. Each team consists of 2 developers contributing to the
+front-end code and 2 working solely on the back-end.
+
+There are no restrictions on how many applications you can build with LyteNyte Grid PRO.
+Under the LyteNyte Grid licensing model, a company only needs to determine the number
+of developers contributing to the front-end code of applications that use LyteNyte Grid
+or its derivatives. That's all there is to it.
+
+Since App-M3 doesn't use LyteNyte Grid, directly or indirectly,
+none of its developers require a license. However, because App-Infinity and
+App Arc integrate LyteNyte Grid, all developers
+contributing to those applications' front-end code must be licensed.
+
+As a result, Stark Logistics must license 4 developers:
+
+- 2 working on App-Infinity front-end.
+- 2 working on App-Arc front-end.
+
+![Illustration one: Stark Enterprises](./assets/who-is-in-scope-illustration-4.webp)
+
+## Concurrency & License Transferability
+
+In real-world engineering teams, developers frequently switch between projects.
+People leave, join, or shift roles, and a LyteNyte Grid PRO plan is built to
+accommodate that. Our licenses are not associated with specific developers and
+can be reassigned internally as your team changes over time.
+
+The key requirement is that at any given time, the number of developers contributing to
+the front-end code of a project that includes LyteNyte Grid doesn't exceed the number of
+licensed seats on your plan. This is what we mean by 'concurrent developers'.
+
+You stay compliant as long as the number of front-end contributors working on
+the project simultaneously does not exceed your seat count. Internal reassignments are allowed
+because the model is built for flexibility, as long as you remain within your licensed total.
+If you need to increase your licensed developer count, you can do so at any
+time through the client portal.
+
+Licenses cannot be transferred outside your organization. Reassignment is permitted
+only within the same legal entity (or one you directly control). This ensures
+the license is used only by your organization, on your team's projects,
+as originally intended.
+
+## License Clarity, Scope Confirmed
+
+Not knowing how to determine the number of developers your license needs to cover
+isn't just a legal risk; it's lost time, internal confusion, and hesitation to ship.
+After walking through the examples, you have a clear and actionable roadmap
+for identifying who's in scope and how to stay compliant.
+
+But the benefit goes beyond compliance. Knowing precisely who needs to
+be licensed gives your team the confidence to adapt, shift, and scale without second-guessing.
+A LyteNyte Grid PRO plan removes the friction of uncertainty, giving your organization a
+predictable, future-proof runway as your team evolves.
+
+## Get Started Now
+
+- [Try the interactive demo](https://www.1771technologies.com/demo). See LyteNyte Grid PRO in action.
+- [Compare license plans](https://www.1771technologies.com/pricing). Choose the right fit for your team.
+
+Or start building with the free **LyteNyte Grid Core** edition.
+It's open source, memory efficient, and ready to drop into your next React project.
