@@ -77,6 +77,8 @@ const current = flat.indexOf(entry.id);
 const next = current !== -1 ? (flat[current + 1] ?? null) : null;
 const prev = current !== -1 ? (flat[current - 1] ?? null) : null;
 
+const blog = entry.data?.blog;
+
 const nextEntry = next ? await getEntry(entry.collection, next) : null;
 const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
 ---
@@ -132,6 +134,13 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
         />
       </div>
       {entry.data.description && <P sx="text-base text-xd-muted-foreground">{entry.data.description}</P>}
+      {
+        blog && (
+          <P sx="text-sm font-mono">
+            {blog.author} - {blog.date} ({blog.time}min)
+          </P>
+        )
+      }
       <Content
         components={{
           ProTag,
