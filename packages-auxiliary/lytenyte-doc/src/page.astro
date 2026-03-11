@@ -81,6 +81,10 @@ const blog = entry.data?.blog;
 
 const nextEntry = next ? await getEntry(entry.collection, next) : null;
 const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
+
+const toc = blog
+  ? headings.filter((x: any) => x.depth === 2)
+  : headings.filter((x: any) => x.depth === 2 || x.depth === 3 || x.depth === 4);
 ---
 
 <DocsLayout
@@ -91,7 +95,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
   titleSuffix={titleSuffix}
   homeUrl={homeUrl}
   navbar={navbar}
-  toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3 || x.depth === 4)}
+  toc={toc}
   lastModified={lastModified ?? new Date().toISOString()}
   prevEntry={prevEntry
     ? {
@@ -109,7 +113,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
     : null}
 >
   <div class="top-header sticky z-20">
-    <MobileToc toc={headings} client:load />
+    <MobileToc toc={toc} client:load />
   </div>
   <div class="text-sm text-neutral-800 dark:text-neutral-400 px-4 py-2 md:py-8 max-w-4xl mx-auto">
     <article class="mx-auto">
