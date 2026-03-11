@@ -80,7 +80,18 @@ async function runCpuBenchmark(bench: Benchmark, opts?: BrowserOptions) {
     categories,
   });
 
+  await page.evaluate(() => {
+    performance.mark("bench_start");
+  });
+
   await bench.run(page);
+
+  await page.evaluate(() => {
+    performance.mark("bench_end");
+  });
+  await page.evaluate(() => {
+    performance.measure("bench", "bench_start", "bench_end");
+  });
 
   await wait(40);
   await browser.stopTracing();
@@ -110,19 +121,7 @@ async function runMemBenchmark(bench: Benchmark, opts?: BrowserOptions) {
   await bench.before?.(page);
   await applyForceGC(page);
 
-  await page.evaluate(() => {
-    performance.mark("bench_start");
-  });
-
   await bench.run(page);
-
-  await page.evaluate(() => {
-    performance.mark("bench_end");
-  });
-
-  await page.evaluate(() => {
-    performance.measure("bench", "bench_start", "bench_end");
-  });
 
   await wait(40);
 
