@@ -2,6 +2,7 @@ import express from "express";
 import react from "@vitejs/plugin-react";
 import { createServer as createViteServer } from "vite";
 import os from "os";
+import { resolvePlayConfig } from "./config.js";
 
 const HTML_TEMPLATE = `
 <!doctype html>
@@ -22,6 +23,8 @@ const HTML_TEMPLATE = `
 async function createServer() {
   const app = express();
 
+  const playConfig = resolvePlayConfig();
+
   const vite = await createViteServer({
     server: { middlewareMode: true },
     appType: "custom",
@@ -35,6 +38,7 @@ async function createServer() {
             return "@play-entry";
           }
           if (id === "playframe") return "playframe";
+          if (id === "playframe-config") return "playframe-config";
         },
         load: (id) => {
           if (id === "playframe") {
@@ -47,6 +51,10 @@ async function createServer() {
 
           if (id === "@play-entry") {
             return `import "@1771technologies/play-frame/entry"`;
+          }
+
+          if (id === "playframe-config") {
+            return `export default ${JSON.stringify(playConfig)}`;
           }
         },
       },

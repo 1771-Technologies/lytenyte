@@ -3,9 +3,12 @@ import tailwind from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs/promises";
 import { HTML_TEMPLATE } from "./constants.js";
+import { resolvePlayConfig } from "./config.js";
 
 try {
   await fs.writeFile("./index.html", HTML_TEMPLATE);
+
+  const playConfig = resolvePlayConfig();
 
   await build({
     plugins: [
@@ -18,6 +21,7 @@ try {
             return "@play-entry";
           }
           if (id === "playframe") return "playframe";
+          if (id === "playframe-config") return "playframe-config";
         },
         load: (id) => {
           if (id === "playframe") {
@@ -30,6 +34,10 @@ try {
 
           if (id === "@play-entry") {
             return `import "@1771technologies/play-frame/entry"`;
+          }
+
+          if (id === "playframe-config") {
+            return `export default ${JSON.stringify(playConfig)}`;
           }
         },
       },

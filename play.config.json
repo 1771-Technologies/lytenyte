@@ -1,0 +1,10 @@
+{
+  "themes": {
+    "attribute": "class",
+    "values": [
+      { "name": "Light", "value": "light", "colorScheme": "light" },
+      { "name": "Dark", "value": "dark", "colorScheme": "dark" },
+      { "name": "Teal", "value": "teal", "colorScheme": "light" }
+    ]
+  }
+}
