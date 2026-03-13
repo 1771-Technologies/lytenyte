@@ -6,3 +6,14 @@ declare module "playframe" {
 
   export default frame;
 }
+
+declare module "playframe-config" {
+  const config: {
+    themes: {
+      attribute: string;
+      values: Array<{ name: string; value: string; colorScheme: "light" | "dark" }>;
+    };
+  };
+
+  export default config;
+}

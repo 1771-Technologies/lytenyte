@@ -1,13 +1,14 @@
 import "@radix-ui/themes/styles.css";
 import "./index.css";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { Box, Flex, IconButton, Separator, Theme } from "@radix-ui/themes";
 import { FrameDropdown, type Frame } from "./frame-size-dropdown/frame-dropdown.js";
 import { DemoDropdown, type Demo } from "./demo-dropdown/demo-dropdown.js";
-import { ExternalLinkIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { useTheme } from "next-themes";
+import { IframeThemeDropdown } from "./iframe-theme-dropdown/iframe-theme-dropdown.js";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import config from "playframe-config";
 import type { AxeResults } from "axe-core";
 import axe from "axe-core";
 import { AxePopover } from "./axe-popover/axe-popover.js";
@@ -36,9 +37,28 @@ export function Main() {
     },
     { deserializer: JSON.parse, serializer: JSON.stringify },
   );
-  const { resolvedTheme, setTheme } = useTheme();
+  const [iframeTheme, setIframeTheme] = useLocalStorage<string>(
+    "iframe-theme",
+    config.themes.values[0]?.value ?? "light",
+  );
+
+  const activeThemeConfig =
+    config.themes.values.find((t) => t.value === iframeTheme) ?? config.themes.values[0];
+  const shellAppearance = activeThemeConfig?.colorScheme ?? "light";
 
   const axeRef = useRef<Promise<void>>(null);
+
+  const postTheme = useCallback(
+    (win: Window | null | undefined) => {
+      win?.postMessage({ type: "play-frame-theme", theme: iframeTheme }, "*");
+    },
+    [iframeTheme],
+  );
+
+  useEffect(() => {
+    postTheme(aRef.current?.contentWindow);
+    postTheme(bRef.current?.contentWindow);
+  }, [postTheme]);
 
   const aRef = useRef<HTMLIFrameElement>(null);
   const bRef = useRef<HTMLIFrameElement>(null);
@@ -69,7 +89,7 @@ export function Main() {
       radius="none"
       accentColor="violet"
       grayColor="slate"
-      appearance={(resolvedTheme as "light" | "dark") ?? "dark"}
+      appearance={shellAppearance}
     >
       <Flex direction="column" style={{ height: "100dvh" }}>
         <Flex height="48px" align="center" px="4" gap="2" justify="between">
@@ -86,13 +106,6 @@ export function Main() {
           <Flex gap="2">
             <AxePopover loading={axeLoading} results={axeResults} runAxe={runAxe} />
             <IconButton
-              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-              variant="soft"
-              aria-label="Theme picker"
-            >
-              {resolvedTheme === "dark" ? <MoonIcon /> : <SunIcon />}
-            </IconButton>
-            <IconButton
               variant="soft"
               aria-label="Full frame view link"
               onClick={() => {
@@ -104,6 +117,7 @@ export function Main() {
             >
               <ExternalLinkIcon />
             </IconButton>
+            <IframeThemeDropdown theme={iframeTheme} onThemeChange={setIframeTheme} />
             <FrameDropdown frame={frame} onFrameChange={setFrame} />
           </Flex>
         </Flex>
@@ -130,6 +144,7 @@ export function Main() {
                   setTimeout(() => {
                     setActive("A");
                     setDemoB(null);
+                    postTheme(aRef.current?.contentWindow);
 
                     setTimeout(() => {
                       if (axeRef.current) axeRef.current.then(() => runAxe());
@@ -156,6 +171,7 @@ export function Main() {
                   setTimeout(() => {
                     setActive("B");
                     setDemoA(null);
+                    postTheme(bRef.current?.contentWindow);
 
                     setTimeout(() => {
                       if (axeRef.current) axeRef.current.then(() => runAxe());
