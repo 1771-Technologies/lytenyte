@@ -2,7 +2,7 @@ import express from "express";
 import react from "@vitejs/plugin-react";
 import { createServer as createViteServer } from "vite";
 import os from "os";
-import { resolvePlayConfig } from "./config.js";
+import { resolvePlayConfig } from "./config/index.js";
 
 const HTML_TEMPLATE = `
 <!doctype html>
@@ -23,7 +23,7 @@ const HTML_TEMPLATE = `
 async function createServer() {
   const app = express();
 
-  const playConfig = resolvePlayConfig();
+  const playConfig = await resolvePlayConfig();
 
   const vite = await createViteServer({
     server: { middlewareMode: true },

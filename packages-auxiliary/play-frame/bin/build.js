@@ -3,12 +3,12 @@ import tailwind from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs/promises";
 import { HTML_TEMPLATE } from "./constants.js";
-import { resolvePlayConfig } from "./config.js";
+import { resolvePlayConfig } from "./config/index.js";
 
 try {
   await fs.writeFile("./index.html", HTML_TEMPLATE);
 
-  const playConfig = resolvePlayConfig();
+  const playConfig = await resolvePlayConfig();
 
   await build({
     plugins: [
