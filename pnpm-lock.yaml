@@ -770,6 +770,9 @@ importers:
       usehooks-ts:
         specifier: 3.1.1
         version: 3.1.1(react@19.2.4)
+      ws:
+        specifier: ^8.18.0
+        version: 8.18.3
     devDependencies:
       '@types/express':
         specifier: 5.0.3
@@ -780,6 +783,9 @@ importers:
       '@types/react-dom':
         specifier: 19.1.6
         version: 19.1.6(@types/react@19.1.8)
+      '@types/ws':
+        specifier: ^8.5.14
+        version: 8.18.1
 
   packages-auxiliary/remark-code-demo:
     dependencies:
@@ -4133,6 +4139,9 @@ packages:
 
   '@types/use-sync-external-store@0.0.6':
     resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
+
+  '@types/ws@8.18.1':
+    resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
 
   '@typescript-eslint/eslint-plugin@8.44.0':
     resolution: {integrity: sha512-EGDAOGX+uwwekcS0iyxVDmRV9HX6FLSM5kzrAToLTsr9OWCIKG/y3lQheCq18yZ5Xh78rRKJiEpP0ZaCs4ryOQ==}
@@ -14173,7 +14182,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 25.3.0
+      '@types/node': 24.5.2
 
   '@types/d3-array@3.2.2': {}
 
@@ -14237,7 +14246,7 @@ snapshots:
 
   '@types/fontkit@2.0.8':
     dependencies:
-      '@types/node': 25.3.0
+      '@types/node': 24.5.2
 
   '@types/fs-extra@11.0.4':
     dependencies:
@@ -14266,7 +14275,7 @@ snapshots:
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 25.3.0
+      '@types/node': 24.5.2
 
   '@types/mdast@4.0.4':
     dependencies:
@@ -14332,15 +14341,15 @@ snapshots:
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 25.3.0
+      '@types/node': 24.5.2
 
   '@types/sax@1.2.7':
     dependencies:
-      '@types/node': 25.3.0
+      '@types/node': 24.5.2
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 25.3.0
+      '@types/node': 24.5.2
 
   '@types/serve-static@2.2.0':
     dependencies:
@@ -14352,6 +14361,10 @@ snapshots:
   '@types/unist@3.0.3': {}
 
   '@types/use-sync-external-store@0.0.6': {}
+
+  '@types/ws@8.18.1':
+    dependencies:
+      '@types/node': 24.5.2
 
   '@typescript-eslint/eslint-plugin@8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.26.0(hono@4.11.3)(jiti@2.6.1))(typescript@5.8.3))(eslint@9.26.0(hono@4.11.3)(jiti@2.6.1))(typescript@5.8.3)':
     dependencies:

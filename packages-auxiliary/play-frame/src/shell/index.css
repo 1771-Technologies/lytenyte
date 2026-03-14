@@ -16,3 +16,7 @@
 body {
   margin: 0px;
 }
+
+.rt-TabsContent[data-state="inactive"] {
+  display: none;
+}
