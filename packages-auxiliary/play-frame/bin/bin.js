@@ -12,6 +12,16 @@ import { resolveTestFiles, runVitest, collectVitest, closeVitest } from "./test-
 
 const cwd = process.cwd();
 
+const c = {
+  reset: "\x1b[0m",
+  bold: "\x1b[1m",
+  dim: "\x1b[2m",
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  cyan: "\x1b[36m",
+  violet: "\x1b[35m",
+};
+
 const HTML_TEMPLATE = `
 <!doctype html>
 <html lang="en">
@@ -135,6 +145,12 @@ async function createServer() {
       if (msg.type === "run" || msg.type === "run-project" || msg.type === "run-test") {
         const { filePath } = msg;
         const testFiles = resolveTestFiles(join(cwd, filePath));
+        const fileName = filePath.split("/").pop();
+
+        console.log();
+        console.log(`  ${c.violet}${c.bold}▶ ${fileName}${c.reset}`);
+
+        const projectResults = new Map();
 
         await runVitest({
           cwd,
@@ -148,6 +164,9 @@ async function createServer() {
           onTestCase: (testCase) => {
             if (activeFilePath !== filePath) return;
             send({ type: "test-case", testCase, filePath });
+            const { projectName } = testCase;
+            if (!projectResults.has(projectName)) projectResults.set(projectName, []);
+            projectResults.get(projectName).push(testCase);
           },
           onModule: (mod) => {
             if (activeFilePath !== filePath) return;
@@ -156,10 +175,38 @@ async function createServer() {
           onDone: (summary) => {
             if (activeFilePath !== filePath) return;
             send({ type: "done", summary, filePath });
+            for (const [projectName, tests] of projectResults) {
+              console.log();
+              console.log(`  ${c.bold}${projectName}${c.reset}`);
+              console.log();
+              for (const { state, fullName, duration, errors } of tests) {
+                if (state === "passed") {
+                  const dur = duration != null ? `${c.dim} (${Math.round(duration)}ms)${c.reset}` : "";
+                  console.log(`    ${c.green}✓${c.reset}  ${fullName}${dur}`);
+                } else if (state === "failed") {
+                  console.log(`    ${c.red}✗${c.reset}  ${c.bold}${fullName}${c.reset}`);
+                  for (const err of errors) {
+                    console.log();
+                    console.log(err.split("\n").map((l) => `      ${l}`).join("\n"));
+                    console.log();
+                  }
+                }
+              }
+            }
+            console.log();
+            const parts = [];
+            if (summary.numPassed > 0) parts.push(`${c.green}${summary.numPassed} passed${c.reset}`);
+            if (summary.numFailed > 0) parts.push(`${c.red}${summary.numFailed} failed${c.reset}`);
+            parts.push(`${c.dim}${summary.numTotal} total${c.reset}`);
+            console.log(`  ${parts.join(`  ${c.dim}|${c.reset}  `)}`);
+            console.log();
           },
           onError: (error) => {
             if (activeFilePath !== filePath) return;
             send({ type: "error", error, filePath });
+            console.log();
+            console.log(`  ${c.red}${c.bold}Error${c.reset}  ${error}`);
+            console.log();
           },
         });
       }
@@ -179,18 +226,9 @@ async function createServer() {
       }
     }
 
-    const c = {
-      reset:  "\x1b[0m",
-      bold:   "\x1b[1m",
-      dim:    "\x1b[2m",
-      green:  "\x1b[32m",
-      cyan:   "\x1b[36m",
-      violet: "\x1b[35m",
-    };
-
     const arrow = `${c.violet}➜${c.reset}`;
     const label = (s) => `${c.dim}${s}${c.reset}`;
-    const url   = (s) => `${c.cyan}${c.bold}${s}${c.reset}`;
+    const url = (s) => `${c.cyan}${c.bold}${s}${c.reset}`;
 
     console.log();
     console.log(`  ${c.violet}${c.bold}▶ play-frame${c.reset}`);
@@ -209,9 +247,11 @@ async function createServer() {
 
     const openBrowser = () => {
       const cmd =
-        os.platform() === "darwin" ? `open "${localUrl}"` :
-        os.platform() === "win32"  ? `start "${localUrl}"` :
-                                     `xdg-open "${localUrl}"`;
+        os.platform() === "darwin"
+          ? `open "${localUrl}"`
+          : os.platform() === "win32"
+            ? `start "${localUrl}"`
+            : `xdg-open "${localUrl}"`;
       exec(cmd);
     };
 
@@ -238,13 +278,17 @@ async function createServer() {
     process.stdin.setEncoding("utf8");
 
     process.stdin.on("data", (key) => {
-      if (key === "\x03") { process.exit(); }          // Ctrl+C
+      if (key === "\x03") {
+        process.exit();
+      } // Ctrl+C
       if (key === "h" || key === "H") {
         helpVisible = !helpVisible;
         if (helpVisible) printHelp();
         else clearHelp();
       }
-      if (key === "o" || key === "O") { openBrowser(); }
+      if (key === "o" || key === "O") {
+        openBrowser();
+      }
     });
   });
 

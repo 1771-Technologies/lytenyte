@@ -6,7 +6,17 @@ function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-export async function runVitest({ cwd, testFiles, testNamePattern, projectName, onModule, onTestCaseStart, onTestCase, onDone, onError }) {
+export async function runVitest({
+  cwd,
+  testFiles,
+  testNamePattern,
+  projectName,
+  onModule,
+  onTestCaseStart,
+  onTestCase,
+  onDone,
+  onError,
+}) {
   let vitest = null;
   try {
     vitest = await getVitest(cwd);
@@ -41,18 +51,14 @@ export async function runVitest({ cwd, testFiles, testNamePattern, projectName, 
     // testNamePattern must be set on every project config — the root config
     // is not propagated to workspace projects during runTestSpecifications.
     // Vitest matches the pattern against the full task name (describe > test).
-    const pattern = testNamePattern
-      ? new RegExp(`^${escapeRegex(testNamePattern)}$`)
-      : undefined;
+    const pattern = testNamePattern ? new RegExp(`^${escapeRegex(testNamePattern)}$`) : undefined;
     for (const project of vitest.projects) {
       project.config.testNamePattern = pattern;
     }
 
     const allSpecs = await vitest.globTestSpecifications();
     const specs = allSpecs.filter(
-      (spec) =>
-        testFiles.includes(spec.moduleId) &&
-        (!projectName || spec.project.name === projectName),
+      (spec) => testFiles.includes(spec.moduleId) && (!projectName || spec.project.name === projectName),
     );
 
     await vitest.runTestSpecifications(specs);
@@ -64,6 +70,7 @@ export async function runVitest({ cwd, testFiles, testNamePattern, projectName, 
     streamingReporter?.setOnModule(null);
     streamingReporter?.setOnTestCaseStart(null);
     streamingReporter?.setOnTestCase(null);
+
     // Always clear the pattern so subsequent Run All runs are unfiltered
     if (vitest) {
       for (const project of vitest.projects) {

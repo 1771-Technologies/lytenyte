@@ -10,8 +10,7 @@ interface TestPanelProps {
 
 export function TestPanel({ demo }: TestPanelProps) {
   const filePath = demo?.filePath ?? null;
-  const { status, modules, summary, error, testFiles, run, runProject, runTest } =
-    useRunTests(filePath);
+  const { status, modules, summary, error, testFiles, run, runProject, runTest } = useRunTests(filePath);
 
   return (
     <Flex direction="column" style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
@@ -43,24 +42,19 @@ export function TestPanel({ demo }: TestPanelProps) {
             {error}
           </Text>
         )}
-      </Flex>
 
-      {/* Test file deep links */}
-      {testFiles.length > 0 && (
-        <Flex
-          px="4"
-          py="3"
-          gap="3"
-          wrap="wrap"
-          style={{ borderBottom: "1px solid var(--gray-a5)", flexShrink: 0 }}
-        >
-          {testFiles.map((f) => (
-            <Link key={f} size="1" href={`vscode://file${f}`} style={{ fontFamily: "monospace" }}>
-              {f.split("/").pop()}
-            </Link>
-          ))}
-        </Flex>
-      )}
+        <Flex flexGrow="1" />
+
+        {testFiles.length > 0 && (
+          <Flex gap="3" wrap="wrap">
+            {testFiles.map((f) => (
+              <Link key={f} size="1" href={`vscode://file${f}`} style={{ fontFamily: "monospace" }}>
+                {f.split("/").pop()}
+              </Link>
+            ))}
+          </Flex>
+        )}
+      </Flex>
 
       {/* Results */}
       <Flex direction="column" style={{ flexGrow: 1, overflowY: "scroll", padding: 16 }}>

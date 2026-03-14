@@ -86,14 +86,9 @@ export function Main() {
   }, [setAxeLoading, setAxeResults]);
 
   return (
-    <Theme
-      radius="none"
-      accentColor="violet"
-      grayColor="slate"
-      appearance={shellAppearance}
-    >
+    <Theme radius="none" accentColor="violet" grayColor="slate" appearance={shellAppearance}>
       <Flex direction="column" style={{ height: "100dvh" }}>
-        <Flex height="48px" align="center" px="4" gap="2" justify="between">
+        <Flex height="48px" minHeight="48px" maxHeight="48px" align="center" px="4" gap="2" justify="between">
           <DemoDropdown
             demo={current}
             onDemoChange={(d) => {
@@ -124,7 +119,10 @@ export function Main() {
         </Flex>
         <Separator style={{ width: "100%" }} />
 
-        <Tabs.Root defaultValue="stage" style={{ display: "flex", flexDirection: "column", flexGrow: 1, minHeight: 0 }}>
+        <Tabs.Root
+          defaultValue="stage"
+          style={{ display: "flex", flexDirection: "column", flexGrow: 1, minHeight: 0 }}
+        >
           <Tabs.List style={{ flexShrink: 0 }}>
             <Tabs.Trigger value="stage">Stage</Tabs.Trigger>
             <Tabs.Trigger value="tests">Tests</Tabs.Trigger>
