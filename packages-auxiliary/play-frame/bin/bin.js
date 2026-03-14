@@ -6,6 +6,7 @@ import { WebSocketServer } from "ws";
 import { join } from "path";
 import os from "os";
 import process from "node:process";
+import { exec } from "node:child_process";
 import { resolvePlayConfig } from "./config/index.js";
 import { resolveTestFiles, runVitest, collectVitest, closeVitest } from "./test-runner/index.js";
 
@@ -178,10 +179,72 @@ async function createServer() {
       }
     }
 
-    console.log(`Server is running:`);
-    console.log(`- Local:   http://localhost:${PORT}`);
+    const c = {
+      reset:  "\x1b[0m",
+      bold:   "\x1b[1m",
+      dim:    "\x1b[2m",
+      green:  "\x1b[32m",
+      cyan:   "\x1b[36m",
+      violet: "\x1b[35m",
+    };
+
+    const arrow = `${c.violet}➜${c.reset}`;
+    const label = (s) => `${c.dim}${s}${c.reset}`;
+    const url   = (s) => `${c.cyan}${c.bold}${s}${c.reset}`;
+
+    console.log();
+    console.log(`  ${c.violet}${c.bold}▶ play-frame${c.reset}`);
+    const localUrl = `http://localhost:${PORT}/`;
+
+    console.log();
+    console.log(`  ${arrow}  ${label("Local:  ")}  ${url(localUrl)}`);
     addresses.forEach((addr) => {
-      console.log(`- Network: http://${addr}:${PORT}`);
+      console.log(`  ${arrow}  ${label("Network:")}  ${url(`http://${addr}:${PORT}/`)}`);
+    });
+    console.log();
+    console.log(`  ${c.dim}press ${c.reset}${c.bold}h${c.reset}${c.dim} to show commands${c.reset}`);
+    console.log();
+
+    if (!process.stdin.isTTY) return;
+
+    const openBrowser = () => {
+      const cmd =
+        os.platform() === "darwin" ? `open "${localUrl}"` :
+        os.platform() === "win32"  ? `start "${localUrl}"` :
+                                     `xdg-open "${localUrl}"`;
+      exec(cmd);
+    };
+
+    const HELP_LINES = 5;
+
+    const printHelp = () => {
+      console.log(`  ${c.bold}${c.violet}Commands${c.reset}`);
+      console.log();
+      console.log(`  ${c.bold}h${c.reset}  ${c.dim}toggle commands${c.reset}`);
+      console.log(`  ${c.bold}o${c.reset}  ${c.dim}open in browser${c.reset}`);
+      console.log();
+    };
+
+    const clearHelp = () => {
+      for (let i = 0; i < HELP_LINES; i++) {
+        process.stdout.write("\x1b[1A\x1b[2K"); // move up one line, erase it
+      }
+    };
+
+    let helpVisible = false;
+
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
+    process.stdin.setEncoding("utf8");
+
+    process.stdin.on("data", (key) => {
+      if (key === "\x03") { process.exit(); }          // Ctrl+C
+      if (key === "h" || key === "H") {
+        helpVisible = !helpVisible;
+        if (helpVisible) printHelp();
+        else clearHelp();
+      }
+      if (key === "o" || key === "O") { openBrowser(); }
     });
   });
 
