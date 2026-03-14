@@ -3,7 +3,7 @@ import "./index.css";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { Box, Flex, IconButton, Separator, Theme } from "@radix-ui/themes";
+import { Box, Flex, IconButton, Separator, Tabs, Theme } from "@radix-ui/themes";
 import { FrameDropdown, type Frame } from "./frame-size-dropdown/frame-dropdown.js";
 import { DemoDropdown, type Demo } from "./demo-dropdown/demo-dropdown.js";
 import { IframeThemeDropdown } from "./iframe-theme-dropdown/iframe-theme-dropdown.js";
@@ -13,6 +13,7 @@ import type { AxeResults } from "axe-core";
 import axe from "axe-core";
 import { AxePopover } from "./axe-popover/axe-popover.js";
 import { flatDemos } from "./demo-dropdown/demo-tree.js";
+import { TestPanel } from "./test-panel/test-panel.js";
 
 export function Main() {
   const savedIndex = localStorage.getItem("demo-key");
@@ -85,14 +86,9 @@ export function Main() {
   }, [setAxeLoading, setAxeResults]);
 
   return (
-    <Theme
-      radius="none"
-      accentColor="violet"
-      grayColor="slate"
-      appearance={shellAppearance}
-    >
+    <Theme radius="none" accentColor="violet" grayColor="slate" appearance={shellAppearance}>
       <Flex direction="column" style={{ height: "100dvh" }}>
-        <Flex height="48px" align="center" px="4" gap="2" justify="between">
+        <Flex height="48px" minHeight="48px" maxHeight="48px" align="center" px="4" gap="2" justify="between">
           <DemoDropdown
             demo={current}
             onDemoChange={(d) => {
@@ -123,73 +119,89 @@ export function Main() {
         </Flex>
         <Separator style={{ width: "100%" }} />
 
-        <Flex justify="center" pt="1" pb="2" px="1" flexGrow="1">
-          <Box
-            style={{
-              width: frame.width ?? "100%",
-              height: frame.height ?? "100%",
-              transitionProperty: "width height",
-              transitionTimingFunction: "ease-in-out",
-              transitionDuration: "200ms",
-              boxShadow: "var(--shadow-1)",
-            }}
-          >
-            {demoA && (
-              <iframe
-                key="A"
-                ref={aRef}
-                title="Play Frame A"
-                src={`/?frame=${demoA.filePath}`}
-                onLoad={() => {
-                  setTimeout(() => {
-                    setActive("A");
-                    setDemoB(null);
-                    postTheme(aRef.current?.contentWindow);
+        <Tabs.Root
+          defaultValue="stage"
+          style={{ display: "flex", flexDirection: "column", flexGrow: 1, minHeight: 0 }}
+        >
+          <Tabs.List style={{ flexShrink: 0 }}>
+            <Tabs.Trigger value="stage">Stage</Tabs.Trigger>
+            <Tabs.Trigger value="tests">Tests</Tabs.Trigger>
+          </Tabs.List>
 
-                    setTimeout(() => {
-                      if (axeRef.current) axeRef.current.then(() => runAxe());
-                      else runAxe();
-                    }, 500);
-                  }, 200);
-                }}
+          <Tabs.Content value="stage" forceMount style={{ flexGrow: 1, minHeight: 0, overflow: "hidden" }}>
+            <Flex justify="center" pt="1" pb="2" px="1" style={{ flex: 1, minHeight: 0 }}>
+              <Box
                 style={{
-                  opacity: demoB ? 0 : 1,
-                  display: active === "A" ? undefined : "none",
-                  border: "0px",
-                  height: "100%",
-                  width: "100%",
+                  width: frame.width ?? "100%",
+                  height: frame.height ?? "100%",
+                  transitionProperty: "width height",
+                  transitionTimingFunction: "ease-in-out",
+                  transitionDuration: "200ms",
+                  boxShadow: "var(--shadow-1)",
                 }}
-              />
-            )}
-            {demoB && (
-              <iframe
-                key="B"
-                ref={bRef}
-                title="Play Frame B"
-                src={`/?frame=${demoB.filePath}`}
-                onLoad={() => {
-                  setTimeout(() => {
-                    setActive("B");
-                    setDemoA(null);
-                    postTheme(bRef.current?.contentWindow);
+              >
+                {demoA && (
+                  <iframe
+                    key="A"
+                    ref={aRef}
+                    title="Play Frame A"
+                    src={`/?frame=${demoA.filePath}`}
+                    onLoad={() => {
+                      setTimeout(() => {
+                        setActive("A");
+                        setDemoB(null);
+                        postTheme(aRef.current?.contentWindow);
 
-                    setTimeout(() => {
-                      if (axeRef.current) axeRef.current.then(() => runAxe());
-                      else runAxe();
-                    }, 500);
-                  }, 200);
-                }}
-                style={{
-                  display: active === "B" ? undefined : "none",
-                  border: "0px",
-                  opacity: demoA ? 0 : 1,
-                  height: "100%",
-                  width: "100%",
-                }}
-              />
-            )}
-          </Box>
-        </Flex>
+                        setTimeout(() => {
+                          if (axeRef.current) axeRef.current.then(() => runAxe());
+                          else runAxe();
+                        }, 500);
+                      }, 200);
+                    }}
+                    style={{
+                      opacity: demoB ? 0 : 1,
+                      display: active === "A" ? undefined : "none",
+                      border: "0px",
+                      height: "100%",
+                      width: "100%",
+                    }}
+                  />
+                )}
+                {demoB && (
+                  <iframe
+                    key="B"
+                    ref={bRef}
+                    title="Play Frame B"
+                    src={`/?frame=${demoB.filePath}`}
+                    onLoad={() => {
+                      setTimeout(() => {
+                        setActive("B");
+                        setDemoA(null);
+                        postTheme(bRef.current?.contentWindow);
+
+                        setTimeout(() => {
+                          if (axeRef.current) axeRef.current.then(() => runAxe());
+                          else runAxe();
+                        }, 500);
+                      }, 200);
+                    }}
+                    style={{
+                      display: active === "B" ? undefined : "none",
+                      border: "0px",
+                      opacity: demoA ? 0 : 1,
+                      height: "100%",
+                      width: "100%",
+                    }}
+                  />
+                )}
+              </Box>
+            </Flex>
+          </Tabs.Content>
+
+          <Tabs.Content value="tests" forceMount style={{ flexGrow: 1, minHeight: 0, overflow: "hidden" }}>
+            <TestPanel demo={current} />
+          </Tabs.Content>
+        </Tabs.Root>
       </Flex>
     </Theme>
   );
