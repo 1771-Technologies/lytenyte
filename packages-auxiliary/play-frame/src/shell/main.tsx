@@ -125,13 +125,13 @@ export function Main() {
         <Separator style={{ width: "100%" }} />
 
         <Tabs.Root defaultValue="stage" style={{ display: "flex", flexDirection: "column", flexGrow: 1, minHeight: 0 }}>
-          <Tabs.List>
+          <Tabs.List style={{ flexShrink: 0 }}>
             <Tabs.Trigger value="stage">Stage</Tabs.Trigger>
             <Tabs.Trigger value="tests">Tests</Tabs.Trigger>
           </Tabs.List>
 
-          <Tabs.Content value="stage" forceMount style={{ flexGrow: 1, minHeight: 0 }}>
-            <Flex justify="center" pt="1" pb="2" px="1" style={{ height: "100%" }}>
+          <Tabs.Content value="stage" forceMount style={{ flexGrow: 1, minHeight: 0, overflow: "hidden" }}>
+            <Flex justify="center" pt="1" pb="2" px="1" style={{ flex: 1, minHeight: 0 }}>
               <Box
                 style={{
                   width: frame.width ?? "100%",
@@ -200,7 +200,7 @@ export function Main() {
             </Flex>
           </Tabs.Content>
 
-          <Tabs.Content value="tests" forceMount style={{ flexGrow: 1, minHeight: 0 }}>
+          <Tabs.Content value="tests" forceMount style={{ flexGrow: 1, minHeight: 0, overflow: "hidden" }}>
             <TestPanel demo={current} />
           </Tabs.Content>
         </Tabs.Root>

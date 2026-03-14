@@ -6,7 +6,7 @@ function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-export async function runVitest({ cwd, testFiles, testNamePattern, projectName, onModule, onDone, onError }) {
+export async function runVitest({ cwd, testFiles, testNamePattern, projectName, onModule, onTestCaseStart, onTestCase, onDone, onError }) {
   let vitest = null;
   try {
     vitest = await getVitest(cwd);
@@ -16,6 +16,26 @@ export async function runVitest({ cwd, testFiles, testNamePattern, projectName, 
       const mod = buildTestFileResult(testModule);
       collectedModules.push(mod);
       onModule(mod);
+    });
+
+    streamingReporter.setOnTestCaseStart((testCase) => {
+      onTestCaseStart({
+        filepath: testCase.module.moduleId,
+        projectName: testCase.project?.name ?? "",
+        fullName: testCase.fullName,
+      });
+    });
+
+    streamingReporter.setOnTestCase((testCase) => {
+      const result = testCase.result();
+      onTestCase({
+        filepath: testCase.module.moduleId,
+        projectName: testCase.project?.name ?? "",
+        fullName: testCase.fullName,
+        state: result?.state ?? "pending",
+        duration: testCase.diagnostic?.()?.duration,
+        errors: result?.errors?.map((e) => e.message ?? String(e)) ?? [],
+      });
     });
 
     // testNamePattern must be set on every project config — the root config
@@ -42,6 +62,8 @@ export async function runVitest({ cwd, testFiles, testNamePattern, projectName, 
     onError(e?.message ?? String(e));
   } finally {
     streamingReporter?.setOnModule(null);
+    streamingReporter?.setOnTestCaseStart(null);
+    streamingReporter?.setOnTestCase(null);
     // Always clear the pattern so subsequent Run All runs are unfiltered
     if (vitest) {
       for (const project of vitest.projects) {

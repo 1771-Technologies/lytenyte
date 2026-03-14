@@ -17,6 +17,30 @@ body {
   margin: 0px;
 }
 
+.rt-TabsContent {
+  display: flex;
+  flex-direction: column;
+}
+
 .rt-TabsContent[data-state="inactive"] {
   display: none;
+}
+
+.play-error-block {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--radius-2);
+  background: #f7f3ec;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  color: inherit;
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  font-family: monospace;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.dark .play-error-block {
+  background: #0d0d0d;
+  border-color: rgba(255, 255, 255, 0.18);
 }

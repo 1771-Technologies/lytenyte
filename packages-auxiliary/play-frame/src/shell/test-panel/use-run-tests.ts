@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export type TestState = "passed" | "failed" | "skipped" | "pending";
+export type TestState = "passed" | "failed" | "skipped" | "pending" | "running";
 
 export interface TestCaseNode {
   kind: "test";
@@ -52,6 +52,24 @@ export interface UseRunTestsResult {
   runTest: (testName: string, projectName: string) => void;
 }
 
+interface TestCaseUpdate {
+  filepath: string;
+  projectName: string;
+  fullName: string;
+  state: TestState;
+  duration?: number;
+  errors: string[];
+}
+
+function updateTestNode(nodes: TestNode[], update: TestCaseUpdate): TestNode[] {
+  return nodes.map((node) => {
+    if (node.kind === "suite") return { ...node, children: updateTestNode(node.children, update) };
+    if (node.fullName === update.fullName)
+      return { ...node, state: update.state, duration: update.duration, errors: update.errors };
+    return node;
+  });
+}
+
 function resetNodes(nodes: TestNode[]): TestNode[] {
   return nodes.map((node) => {
     if (node.kind === "suite") return { ...node, children: resetNodes(node.children) };
@@ -93,6 +111,7 @@ export function useRunTests(filePath: string | null): UseRunTestsResult {
 
       ws.onopen = () => {
         if (filePathRef.current) {
+          setStatus("collecting");
           ws.send(JSON.stringify({ type: "discover", filePath: filePathRef.current }));
         }
       };
@@ -111,6 +130,22 @@ export function useRunTests(filePath: string | null): UseRunTestsResult {
           setError(null);
         } else if (msg.type === "collected") {
           setStatus("idle");
+        } else if (msg.type === "test-case-start") {
+          const tc = msg.testCase;
+          setModules((prev) =>
+            prev.map((mod) => {
+              if (mod.filepath !== tc.filepath || mod.projectName !== tc.projectName) return mod;
+              return { ...mod, nodes: updateTestNode(mod.nodes, { ...tc, state: "running", errors: [], duration: undefined }) };
+            }),
+          );
+        } else if (msg.type === "test-case") {
+          const tc = msg.testCase;
+          setModules((prev) =>
+            prev.map((mod) => {
+              if (mod.filepath !== tc.filepath || mod.projectName !== tc.projectName) return mod;
+              return { ...mod, nodes: updateTestNode(mod.nodes, tc) };
+            }),
+          );
         } else if (msg.type === "module") {
           setModules((prev) => {
             const idx = prev.findIndex(
@@ -159,7 +194,7 @@ export function useRunTests(filePath: string | null): UseRunTestsResult {
     setModules([]);
     setSummary(null);
     setError(null);
-    setStatus("idle");
+    setStatus("collecting");
     setTestFiles([]);
   }, [filePath, send]);
 

@@ -23,6 +23,11 @@ export async function getVitest(cwd) {
   );
 
   await vitestInstance.init();
+
+  // Prevent watch mode from automatically re-running all specs when files
+  // change. The module cache is still invalidated, so edited code is picked
+  // up on the next manual run, but we stay in control of what actually runs.
+  vitestInstance.onFilterWatchedSpecification(() => false);
   vitestCwd = cwd;
 
   return vitestInstance;

@@ -1,17 +1,19 @@
-import { Flex, IconButton, Text } from "@radix-ui/themes";
+import { Flex, IconButton, Spinner, Text } from "@radix-ui/themes";
 import { PlayIcon } from "@radix-ui/react-icons";
 import type { TestNode } from "./use-run-tests.js";
 import { StateIcon } from "./state-icon.js";
+import Convert from "ansi-to-html";
+
+const ansiConvert = new Convert({ escapeXML: true });
 
 interface TestTreeProps {
   nodes: TestNode[];
   onRunTest: (testFullName: string) => void;
-  runningTestName: string | null;
   isRunning: boolean;
   depth?: number;
 }
 
-export function TestTree({ nodes, onRunTest, runningTestName, isRunning, depth = 0 }: TestTreeProps) {
+export function TestTree({ nodes, onRunTest, isRunning, depth = 0 }: TestTreeProps) {
   return (
     <Flex direction="column">
       {nodes.map((node, i) => {
@@ -31,7 +33,6 @@ export function TestTree({ nodes, onRunTest, runningTestName, isRunning, depth =
               <TestTree
                 nodes={node.children}
                 onRunTest={onRunTest}
-                runningTestName={runningTestName}
                 isRunning={isRunning}
                 depth={depth + 1}
               />
@@ -39,42 +40,40 @@ export function TestTree({ nodes, onRunTest, runningTestName, isRunning, depth =
           );
         }
 
-        const isThisTestRunning = runningTestName === node.fullName;
-
         return (
           <Flex key={i} direction="column" style={{ paddingLeft: indent }}>
             <Flex align="center" gap="2" py="2">
               <IconButton
                 size="2"
                 variant="ghost"
-                loading={isThisTestRunning}
                 disabled={isRunning}
                 aria-label={`Run ${node.name}`}
                 onClick={() => onRunTest(node.fullName)}
               >
                 <PlayIcon />
               </IconButton>
-              <StateIcon state={node.state} />
+              {node.state === "running" ? (
+                <Spinner size="1" style={{ flexShrink: 0, width: 16, height: 16 }} />
+              ) : (
+                <StateIcon state={node.state} />
+              )}
               <Text size="2" style={{ flexGrow: 1 }}>
                 {node.name}
               </Text>
               {node.duration != null && (
                 <Text size="1" color="gray">
-                  {node.duration}ms
+                  {Math.round(node.duration)}ms
                 </Text>
               )}
             </Flex>
             {node.errors.length > 0 && (
-              <Flex direction="column" style={{ paddingLeft: 16, paddingBottom: 6 }}>
+              <Flex direction="column" gap="2" style={{ paddingLeft: 16, paddingBottom: 6 }}>
                 {node.errors.map((err, ei) => (
-                  <Text
+                  <pre
                     key={ei}
-                    size="1"
-                    color="red"
-                    style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}
-                  >
-                    {err}
-                  </Text>
+                    className="play-error-block"
+                    dangerouslySetInnerHTML={{ __html: ansiConvert.toHtml(err) }}
+                  />
                 ))}
               </Flex>
             )}

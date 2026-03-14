@@ -10,11 +10,11 @@ interface TestPanelProps {
 
 export function TestPanel({ demo }: TestPanelProps) {
   const filePath = demo?.filePath ?? null;
-  const { status, modules, summary, error, testFiles, runningScope, run, runProject, runTest } =
+  const { status, modules, summary, error, testFiles, run, runProject, runTest } =
     useRunTests(filePath);
 
   return (
-    <Flex direction="column" style={{ height: "100%", overflow: "hidden" }}>
+    <Flex direction="column" style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
       {/* Toolbar */}
       <Flex
         px="4"
@@ -63,7 +63,7 @@ export function TestPanel({ demo }: TestPanelProps) {
       )}
 
       {/* Results */}
-      <Flex direction="column" style={{ flexGrow: 1, overflowY: "auto", padding: 16 }}>
+      <Flex direction="column" style={{ flexGrow: 1, overflowY: "scroll", padding: 16 }}>
         {modules.length === 0 && status === "collecting" && (
           <Flex align="center" justify="center" style={{ height: "100%" }}>
             <Spinner size="2" />
@@ -81,7 +81,6 @@ export function TestPanel({ demo }: TestPanelProps) {
             modules={modules}
             onRunProject={runProject}
             onRunTest={runTest}
-            runningScope={runningScope}
             isRunning={status === "running"}
           />
         )}

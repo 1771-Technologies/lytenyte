@@ -140,6 +140,14 @@ async function createServer() {
           testFiles,
           testNamePattern: msg.type === "run-test" ? msg.testName : undefined,
           projectName: msg.projectName ?? undefined,
+          onTestCaseStart: (testCase) => {
+            if (activeFilePath !== filePath) return;
+            send({ type: "test-case-start", testCase, filePath });
+          },
+          onTestCase: (testCase) => {
+            if (activeFilePath !== filePath) return;
+            send({ type: "test-case", testCase, filePath });
+          },
           onModule: (mod) => {
             if (activeFilePath !== filePath) return;
             send({ type: "module", module: mod, filePath });
