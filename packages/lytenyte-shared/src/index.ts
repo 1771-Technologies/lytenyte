@@ -131,16 +131,6 @@ export type {
   PathTableLeaf,
 } from "./path/+types.path-table.js";
 
-export { evaluateDateFilter } from "./filters/evaluate-date-filter.js";
-export { evaluateNumberFilter } from "./filters/evaluate-number-filter.js";
-export { evaluateStringFilter } from "./filters/evaluate-string-filter.js";
-export type { FilterDateSetting } from "./filters/get-date-filter-settings.js";
-export { getDateFilterSettings } from "./filters/get-date-filter-settings.js";
-export type { FilterNumberSettings } from "./filters/get-number-filter-settings.js";
-export { getNumberFilterSettings } from "./filters/get-number-filter-settings.js";
-export type { FilterStringSettings } from "./filters/get-string-filter-settings.js";
-export { getStringFilterSettings } from "./filters/get-string-filter-settings.js";
-
 export { rowIndexForSection } from "./row/row-index-for-section.js";
 export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
 export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
