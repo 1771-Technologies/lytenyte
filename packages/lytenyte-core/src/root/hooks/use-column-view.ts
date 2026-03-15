@@ -2,6 +2,7 @@ import {
   columnAddMarker,
   columnAddRowGroup,
   makeColumnView,
+  makeColumnView2,
   type ColumnAbstract,
   type RowSource,
 } from "@1771technologies/lytenyte-shared";
@@ -29,12 +30,14 @@ export function useColumnView(
       markerEnabled: props.columnMarker?.on ?? false,
     });
 
-    const view = makeColumnView({
+    const view = makeColumnView2({
       columns: colsWithMarker,
       base: props.columnBase ?? {},
       groupExpansionDefault: props.columnGroupDefaultExpansion ?? true,
       groupExpansions: columnGroupExpansions,
       groupJoinDelimiter: props.columnGroupJoinDelimiter ?? "/",
+      filledDepth: false,
+      lastGroupShouldFill: false,
     });
 
     return view;

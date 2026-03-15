@@ -184,8 +184,6 @@ next-env.d.ts
 /cypress/videos/
 /cypress/screenshots/
 
-# Vitest
-__screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs

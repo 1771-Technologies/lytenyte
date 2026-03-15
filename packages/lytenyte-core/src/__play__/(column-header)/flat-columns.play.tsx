@@ -1,6 +1,6 @@
-import "./test.css";
-import { useClientDataSource, Grid } from "../index.js";
+import "../test.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+import { Grid, useClientDataSource } from "../../index.js";
 
 interface Spec {
   readonly data: (typeof bankDataSmall)[number];
@@ -25,35 +25,35 @@ const columns: Grid.Column<Spec>[] = [
   { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
-export default function BasicRendering() {
+
+export default function FlatColumns() {
   const ds = useClientDataSource({
     data: bankDataSmall,
-    sort: [{ dim: { id: "education" } }],
   });
 
   return (
-    <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
+    <div style={{ width: "800px", height: "1000px", border: "1px solid black" }}>
       <Grid columns={columns} rowSource={ds} />
     </div>
   );
 }
 
 if (import.meta.vitest) {
-  const { wait } = await import("@1771technologies/lytenyte-shared");
   const { test, expect } = import.meta.vitest;
-  const utils = await import("./utils.js");
   const r = await import("vitest-browser-react");
 
-  test("should render without any issues", async () => {
-    const screen = await r.render(<BasicRendering />);
-    await wait(100);
+  test("should display the headers of the grid correctly", async () => {
+    const screen = await r.render(<FlatColumns />);
 
     const grid = screen.getByRole("grid");
     await expect.element(grid).toBeVisible();
-    await expect.element(grid).toMatchScreenshot("001_render_without_issues.png");
-    utils.scrollGrid(grid, { y: 2000 });
-    await expect.element(grid).toMatchScreenshot("002_render_without_issues.png");
-    utils.scrollGrid(grid, { y: 2_000_000 });
-    await expect.element(grid).toMatchScreenshot("003_render_without_issues.png");
+    await expect.element(grid).toMatchScreenshot("001_flat_headers_rendering");
+
+    // We need to check that virtualization is working correctly. Since the grid should only have 4 visible
+    // columns.
+
+    // Scroll the grid
+    // Snap screenshot
+    // Check virtualization
   });
 }

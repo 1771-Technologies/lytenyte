@@ -104,9 +104,9 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   );
 
   const { focusPiece, focusValue, position } = usePosition();
-
   const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
   const headerLayout = useHeaderLayout(view, props);
+
   const rowLayout = useRowLayout(
     props,
     source,
