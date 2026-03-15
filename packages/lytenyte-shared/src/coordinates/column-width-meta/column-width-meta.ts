@@ -10,10 +10,13 @@ const DEFAULT_COLUMN_WIDTH_MIN = 80;
  * used to determine final width of columns in the grid, based on additional settings
  * such as size to fit.
  */
-export function columnWidthMeta(widthItems: ColumnAbstract[], base: ColumnAbstract) {
+export function columnWidthMeta(
+  columns: ColumnAbstract[],
+  base: ColumnAbstract,
+): { widths: number[]; totalWidth: number; flexTotal: number } {
   let totalWidth = 0;
   let flexTotal = 0;
-  const widths: Map<number, number> = new Map();
+  const widths: number[] = [];
 
   // Extract default values from base configuration
   const defaultMin = base.widthMin ?? DEFAULT_COLUMN_WIDTH_MIN;
@@ -21,19 +24,16 @@ export function columnWidthMeta(widthItems: ColumnAbstract[], base: ColumnAbstra
   const defaultWidth = base.width ?? DEFAULT_COLUMN_WIDTH;
   const defaultFlex = base.widthFlex ?? 0;
 
-  // Process each column, prioritizing rightmost columns first
-  for (let i = widthItems.length - 1; i >= 0; i--) {
-    const item = widthItems[i];
+  for (let i = 0; i < columns.length; i++) {
+    const item = columns[i];
 
     const width = Math.max(
       clamp(item.widthMin ?? defaultMin, item.width ?? defaultWidth, item.widthMax ?? defaultMax),
       0,
     );
 
-    // Store the computed width
-    widths.set(i, width);
+    widths[i] = width;
 
-    // Track total flex value and total width for later calculations
     flexTotal += Math.max(item.widthFlex ?? defaultFlex, 0);
     totalWidth += width;
   }
