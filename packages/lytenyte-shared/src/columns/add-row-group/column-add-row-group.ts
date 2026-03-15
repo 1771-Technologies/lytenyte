@@ -7,9 +7,7 @@ interface ColumnHandleGroupColumnArgs {
   readonly rowGroupDepth: number;
 }
 
-const baseGroup: Omit<ColumnAbstract, "id"> = {
-  name: "Group",
-};
+const baseGroup: Omit<ColumnAbstract, "id"> = { name: "Group" };
 
 /**
  * Adds an automatic group column that is managed by LyteNyte Grid. The group column is used to expand or collapse
