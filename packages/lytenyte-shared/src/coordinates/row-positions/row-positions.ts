@@ -15,53 +15,25 @@ export function rowPositions(
   getDetailHeight: (i: number) => number,
   containerHeight: number,
 ) {
-  // Ensure row count is non-negative to prevent invalid coordinate calculations
-  rowCount = Math.max(0, rowCount);
+  const n = Math.max(0, rowCount);
 
-  // Handle fixed height rows (number value)
-  // Simple case where each row has identical base height plus any detail height
-  if (typeof rowHeight === "number") {
-    return makePositionArray((i) => {
-      return Math.max(rowHeight + getDetailHeight(i), 0);
-    }, rowCount);
-  }
+  const makeFixed = (getH: (i: number) => number) =>
+    makePositionArray((i) => Math.max(getH(i) + getDetailHeight(i), 0), n);
 
-  // Handle auto height rows
-  // Uses cached measurements when available, falling back to estimated height
-  // Note: Requires recalculation when autoHeightCache changes
-  if (rowHeight === "auto") {
-    return makePositionArray((i) => {
-      const height = autoHeightCache[i] ?? autoHeightGuess;
-      return Math.max(height + getDetailHeight(i), 0);
-    }, rowCount);
-  }
-
-  // Handle dynamic height rows (function-based)
-  // Calculates each row's height by calling the provided height function
-  if (typeof rowHeight === "function") {
-    return makePositionArray((i) => {
-      const height = rowHeight(i);
-      return Math.max(height + getDetailHeight(i), 0);
-    }, rowCount);
-  }
+  if (typeof rowHeight === "number") return makeFixed(() => rowHeight);
+  if (rowHeight === "auto") return makeFixed((i) => autoHeightCache[i] ?? autoHeightGuess);
+  if (typeof rowHeight === "function") return makeFixed(rowHeight);
 
   // Handle fill height rows (format: "fill:X")
-  // Distributes available space when rows don't fill container
-  // Falls back to fixed height behavior when rows exceed container
-  const height = Math.round(Number.parseFloat(rowHeight.split(":").at(1)!));
-  const rowSpaceNeeded = height * rowCount;
-  const freeSpace = containerHeight - rowSpaceNeeded;
+  // Distributes available space when rows don't fill the container.
+  // Falls back to fixed height behavior when rows exceed or exactly fill it.
+  const height = Math.round(Number.parseFloat(rowHeight.slice(5)));
+  const freeSpace = containerHeight - height * n;
 
-  if (freeSpace <= 0) return makePositionArray((i) => Math.max(height + getDetailHeight(i), 0), rowCount);
+  if (freeSpace <= 0 || n === 0) return makeFixed(() => height);
 
-  // Distribute remaining space among rows, reserving 1px to prevent scrollbar
-  // This ensures rows are slightly shorter than container height
-  const unitFreeSpace = Math.floor(freeSpace / rowCount);
-  let spaceLeft = freeSpace - unitFreeSpace * rowCount - 1;
+  const unit = Math.floor(freeSpace / n);
+  let remainder = freeSpace - unit * n - 1;
 
-  return makePositionArray((i) => {
-    const h = height + unitFreeSpace + (spaceLeft > 0 ? 1 : 0);
-    spaceLeft--;
-    return Math.max(h + getDetailHeight(i), 0);
-  }, rowCount);
+  return makeFixed(() => height + unit + (remainder > 0 ? (remainder--, 1) : 0));
 }
