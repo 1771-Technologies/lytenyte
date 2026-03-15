@@ -109,10 +109,6 @@ export { sizeFromCoord } from "./utils/size-from-coord.js";
 export { getHoveredColumnIndex } from "./utils/get-hovered-column-index.js";
 export { measureText } from "./utils/measure-text.js";
 
-export { stringComparator } from "./sorting/string-comparator.js";
-export { dateComparator } from "./sorting/date-comparator.js";
-export { numberComparator } from "./sorting/number-comparator.js";
-
 export { computePathTree } from "./path/compute-path-tree.js";
 export { computePathTable } from "./path/compute-path-table.js";
 export { computePathMatrix } from "./path/compute-path-matrix.js";
