@@ -8,7 +8,7 @@ import os from "os";
 import process from "node:process";
 import { exec } from "node:child_process";
 import { resolvePlayConfig } from "./config/index.js";
-import { resolveTestFiles, runVitest, collectVitest, closeVitest } from "./test-runner/index.js";
+import { resolveTestFiles, runVitest, runVitestCoverage, collectVitest, closeVitest } from "./test-runner/index.js";
 
 const cwd = process.cwd();
 
@@ -44,7 +44,7 @@ async function createServer() {
   const playConfig = await resolvePlayConfig();
 
   const vite = await createViteServer({
-    server: { middlewareMode: true },
+    server: { middlewareMode: true, watch: { ignored: ["**/.play-coverage/**"] } },
     appType: "custom",
     resolve: {},
     plugins: [
@@ -175,6 +175,75 @@ async function createServer() {
           onDone: (summary) => {
             if (activeFilePath !== filePath) return;
             send({ type: "done", summary, filePath });
+            for (const [projectName, tests] of projectResults) {
+              console.log();
+              console.log(`  ${c.bold}${projectName}${c.reset}`);
+              console.log();
+              for (const { state, fullName, duration, errors } of tests) {
+                if (state === "passed") {
+                  const dur = duration != null ? `${c.dim} (${Math.round(duration)}ms)${c.reset}` : "";
+                  console.log(`    ${c.green}✓${c.reset}  ${fullName}${dur}`);
+                } else if (state === "failed") {
+                  console.log(`    ${c.red}✗${c.reset}  ${c.bold}${fullName}${c.reset}`);
+                  for (const err of errors) {
+                    console.log();
+                    console.log(err.split("\n").map((l) => `      ${l}`).join("\n"));
+                    console.log();
+                  }
+                }
+              }
+            }
+            console.log();
+            const parts = [];
+            if (summary.numPassed > 0) parts.push(`${c.green}${summary.numPassed} passed${c.reset}`);
+            if (summary.numFailed > 0) parts.push(`${c.red}${summary.numFailed} failed${c.reset}`);
+            parts.push(`${c.dim}${summary.numTotal} total${c.reset}`);
+            console.log(`  ${parts.join(`  ${c.dim}|${c.reset}  `)}`);
+            console.log();
+          },
+          onError: (error) => {
+            if (activeFilePath !== filePath) return;
+            send({ type: "error", error, filePath });
+            console.log();
+            console.log(`  ${c.red}${c.bold}Error${c.reset}  ${error}`);
+            console.log();
+          },
+        });
+      }
+
+      if (msg.type === "run-coverage") {
+        const { filePath, touchedOnly = false } = msg;
+        const testFiles = resolveTestFiles(join(cwd, filePath));
+        const fileName = filePath.split("/").pop();
+
+        console.log();
+        console.log(`  ${c.violet}${c.bold}▶ ${fileName}${c.reset} ${c.dim}(coverage)${c.reset}`);
+
+        const projectResults = new Map();
+
+        await runVitestCoverage({
+          cwd,
+          testFiles,
+          touchedOnly,
+          onTestCaseStart: (testCase) => {
+            if (activeFilePath !== filePath) return;
+            send({ type: "test-case-start", testCase, filePath });
+          },
+          onTestCase: (testCase) => {
+            if (activeFilePath !== filePath) return;
+            send({ type: "test-case", testCase, filePath });
+            const { projectName } = testCase;
+            if (!projectResults.has(projectName)) projectResults.set(projectName, []);
+            projectResults.get(projectName).push(testCase);
+          },
+          onModule: (mod) => {
+            if (activeFilePath !== filePath) return;
+            send({ type: "module", module: mod, filePath });
+          },
+          onDone: (summary, coverageData) => {
+            if (activeFilePath !== filePath) return;
+            send({ type: "done", summary, filePath });
+            send({ type: "coverage", coverage: coverageData, filePath });
             for (const [projectName, tests] of projectResults) {
               console.log();
               console.log(`  ${c.bold}${projectName}${c.reset}`);

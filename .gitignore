@@ -25,6 +25,8 @@ source.generated.ts
 .content-collections
 .source
 
+.play-coverage/
+
 
 /coverage
 /.next/

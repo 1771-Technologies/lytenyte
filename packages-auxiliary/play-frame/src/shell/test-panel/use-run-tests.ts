@@ -36,6 +36,34 @@ export interface TestSummary {
 
 export type RunStatus = "idle" | "collecting" | "running" | "done" | "error";
 
+export interface FileCoverageSummary {
+  lines: { pct: number; covered: number; total: number };
+  statements: { pct: number; covered: number; total: number };
+  branches: { pct: number; covered: number; total: number };
+  functions: { pct: number; covered: number; total: number };
+}
+
+export interface UncoveredRange {
+  startLine: number;
+  startCol: number;
+  endLine: number;
+  endCol: number;
+  type: "statement" | "function" | "branch";
+}
+
+export interface FileCoverageData {
+  path: string;
+  source: string;
+  lines: { line: number; count: number }[];
+  summary: FileCoverageSummary;
+  uncoveredRanges: UncoveredRange[];
+}
+
+export interface CoverageResult {
+  files: FileCoverageData[];
+  summary: FileCoverageSummary;
+}
+
 export type RunningScope =
   | { kind: "project"; projectName: string }
   | { kind: "test"; name: string; projectName: string };
@@ -47,9 +75,11 @@ export interface UseRunTestsResult {
   error: string | null;
   testFiles: string[];
   runningScope: RunningScope | null;
+  coverage: CoverageResult | null;
   run: () => void;
   runProject: (projectName: string) => void;
   runTest: (testName: string, projectName: string) => void;
+  runCoverage: (touchedOnly: boolean) => void;
 }
 
 interface TestCaseUpdate {
@@ -92,6 +122,7 @@ export function useRunTests(filePath: string | null): UseRunTestsResult {
   const [error, setError] = useState<string | null>(null);
   const [testFiles, setTestFiles] = useState<string[]>([]);
   const [runningScope, setRunningScope] = useState<RunningScope | null>(null);
+  const [coverage, setCoverage] = useState<CoverageResult | null>(null);
 
   const send = useCallback((obj: unknown) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -163,6 +194,8 @@ export function useRunTests(filePath: string | null): UseRunTestsResult {
           setSummary(msg.summary);
           setStatus("done");
           setRunningScope(null);
+        } else if (msg.type === "coverage") {
+          setCoverage(msg.coverage);
         } else if (msg.type === "error") {
           setError(msg.error);
           setStatus("error");
@@ -194,18 +227,20 @@ export function useRunTests(filePath: string | null): UseRunTestsResult {
     setModules([]);
     setSummary(null);
     setError(null);
+    setCoverage(null);
     setStatus("collecting");
     setTestFiles([]);
   }, [filePath, send]);
 
   const startRun = useCallback(
-    (scope: RunningScope | null, msg: unknown) => {
+    (scope: RunningScope | null, msg: unknown, clearCoverage = false) => {
       if (!filePath) return;
       setStatus("running");
       setRunningScope(scope);
       setSummary(null);
       setError(null);
       setModules((prev) => resetModules(prev));
+      if (clearCoverage) setCoverage(null);
       send(msg);
     },
     [filePath, send],
@@ -232,5 +267,9 @@ export function useRunTests(filePath: string | null): UseRunTestsResult {
     [filePath, startRun],
   );
 
-  return { status, modules, summary, error, testFiles, runningScope, run, runProject, runTest };
+  const runCoverage = useCallback((touchedOnly: boolean) => {
+    startRun(null, { type: "run-coverage", filePath, touchedOnly }, true);
+  }, [filePath, startRun]);
+
+  return { status, modules, summary, error, testFiles, runningScope, coverage, run, runProject, runTest, runCoverage };
 }

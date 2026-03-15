@@ -76,6 +76,9 @@ export default defineConfig({
         "**/scripts/**",
         "**/*.stories.*",
         "**/*.d.ts",
+        "**/__screenshots__",
+        "**/*.play.*",
+        "**/__play__",
 
         // generates types and docs only
         "./packages/commercial-lytenyte-type-gen",
