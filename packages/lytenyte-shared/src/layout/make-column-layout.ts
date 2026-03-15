@@ -1,5 +1,5 @@
 import type { ColumnPin } from "../+types.js";
-import type { ColumnView } from "../column-view/index.js";
+import type { ColumnView } from "../columns/index.js";
 
 export function makeColumnLayout(view: ColumnView, floatingRowEnabled: boolean) {
   const combinedView = view.combinedView;

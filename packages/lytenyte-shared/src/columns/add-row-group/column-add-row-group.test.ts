@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
-import { columnAddRowGroup } from "../column-add-row-group.js";
+import { columnAddRowGroup } from "./column-add-row-group.js";
 
 describe("columnAddRowGroup", () => {
-  test("should add the group column when row grouping is enabled and depth is greater than 0", () => {
+  test("Should add the group column when row grouping is enabled and depth is greater than 0", () => {
     const columns = [{ id: "x" }];
 
     expect(columnAddRowGroup({ columns, rowGroupDepth: 1, rowGroupTemplate: {} })).toMatchInlineSnapshot(`
@@ -18,7 +18,7 @@ describe("columnAddRowGroup", () => {
     `);
   });
 
-  test("should not add the group column when rowGroupTemplate is false", () => {
+  test("Should not add the group column when rowGroupTemplate is false", () => {
     const columns = [{ id: "x" }];
 
     expect(columnAddRowGroup({ columns, rowGroupDepth: 1, rowGroupTemplate: false })).toMatchInlineSnapshot(`
@@ -30,7 +30,7 @@ describe("columnAddRowGroup", () => {
     `);
   });
 
-  test("should not add the group column when rowGroupDepth is 0", () => {
+  test("Should not add the group column when rowGroupDepth is 0", () => {
     const columns = [{ id: "x" }];
 
     expect(columnAddRowGroup({ columns, rowGroupDepth: 0, rowGroupTemplate: {} })).toMatchInlineSnapshot(`
@@ -42,7 +42,7 @@ describe("columnAddRowGroup", () => {
     `);
   });
 
-  test("should include additional group column properties from the template", () => {
+  test("Should include additional group column properties from the template", () => {
     const columns = [{ id: "x" }];
 
     expect(
@@ -66,7 +66,7 @@ describe("columnAddRowGroup", () => {
     `);
   });
 
-  test("should override the base group name when provided in the template", () => {
+  test("Should override the base group name when provided in the template", () => {
     const columns = [{ id: "x" }];
 
     expect(

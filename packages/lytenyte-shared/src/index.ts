@@ -1,5 +1,6 @@
-export type { ColumnView } from "./column-view/index.js";
-export { columnAddRowGroup, columnAddMarker, makeColumnView, makeColumnView2 } from "./column-view/index.js";
+// Columns
+export { makeColumnView } from "./columns/index.js";
+export type { ColumnView } from "./columns/index.js";
 
 export { getMaxHeaderDepth } from "./header-view/get-max-header-depth.js";
 export { getVisibleColumns } from "./header-view/get-visible-columns.js";

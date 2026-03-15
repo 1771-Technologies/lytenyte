@@ -1,5 +1,3 @@
-import type { ColumnAbstract } from "../types";
-
 /**
  * A matrix item containing information about the position in hierarchy.
  * Created by the `computePathMatrix` function during path processing.
@@ -137,20 +135,4 @@ export interface PathTableGroup {
  */
 export type PathTableItem<T extends PathProvidedItem> = PathTableLeaf<T> | PathTableGroup;
 
-export interface ColumnGroupMeta {
-  readonly colIdToGroupIds: Map<string, string[]>;
-  readonly validGroupIds: Set<string>;
-  readonly groupIsCollapsible: Map<string, boolean>;
-}
-
-export interface ColumnView {
-  meta: ColumnGroupMeta;
-  maxRow: number;
-  maxCol: number;
-  combinedView: PathTableItem<ColumnAbstract>[][];
-  visibleColumns: ColumnAbstract[];
-  lookup: Map<string, ColumnAbstract>;
-  startCount: number;
-  endCount: number;
-  centerCount: number;
-}
+export {};

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { buildSectionTable } from "../build-section-table";
-import type { ColumnAbstract } from "../../types";
+import { buildSectionTable } from "./build-section-table.js";
+import type { ColumnAbstract } from "../../types.js";
 
 function build(
   section: ColumnAbstract[],
@@ -261,6 +261,21 @@ describe("BuildSectionTable", () => {
     expect(groupFor(table, "X")!.rowSpan).toBe(2);
   });
 
+  test("Should extend the last group rowSpan when the shallower column comes before the deeper column", () => {
+    // Column order is reversed vs the test above: shallower first, deeper second.
+    // When scanning the span, d=1 sets minColDepth on the first iteration (true branch),
+    // then d=2 fails the d < minColDepth check on the second iteration (false branch).
+    const table = build(
+      [
+        { id: "a", groupPath: ["X"] },
+        { id: "b", groupPath: ["X", "Y"] },
+      ],
+      2,
+      { lastGroupShouldFill: true },
+    );
+    expect(groupFor(table, "X")!.rowSpan).toBe(2);
+  });
+
   test("Should still span ungrouped leaves at full height when lastGroupShouldFill is true", () => {
     const table = build([{ id: "a" }, { id: "b", groupPath: ["X"] }], 1, { lastGroupShouldFill: true });
     const leafA = leafFor(table, "a")!;
@@ -293,6 +308,29 @@ describe("BuildSectionTable", () => {
     const leaf = leafFor(table, "a")!;
     expect(leaf.rowStart).toBe(0);
     expect(leaf.rowSpan).toBe(1);
+  });
+
+  test("Should keep ancestor group rowSpan at 1 when all spanned columns are deeper than ri+1", () => {
+    // Group "X" at ri=0 has minColDepth=2 (both columns are at depth >= 2), so 2 !== ri+1=1 → rowSpan stays 1
+    // Group "X/Y" at ri=1 has minColDepth=2, and 2 === ri+1=2 → rowSpan extends
+    const table = build(
+      [
+        { id: "a", groupPath: ["X", "Y", "Z"] },
+        { id: "b", groupPath: ["X", "Y"] },
+      ],
+      3,
+      { lastGroupShouldFill: true },
+    );
+    expect(groupFor(table, "X")!.rowSpan).toBe(1);
+    expect(groupFor(table, "X/Y")!.rowSpan).toBe(2);
+  });
+
+  test("Should span a grouped leaf across extra rows when maxDepth exceeds the column's path depth", () => {
+    // Column has groupPath of depth 1 but maxDepth is 3 — the leaf should span the extra rows
+    const table = build([{ id: "a", groupPath: ["X"] }], 3);
+    const leaf = leafFor(table, "a")!;
+    expect(leaf.rowStart).toBe(1);
+    expect(leaf.rowSpan).toBe(3);
   });
 
   test("Should produce exactly one leaf per column", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { makeColumnView2, type MakeColumnView2Args } from "../column-view";
+import { view, type ColumnView, type ViewArguments } from "./view.js";
 
 const DEFAULTS = {
   base: {},
@@ -10,11 +10,11 @@ const DEFAULTS = {
   lastGroupShouldFill: false,
 };
 
-function make(overrides: Partial<MakeColumnView2Args>) {
-  return makeColumnView2({ ...DEFAULTS, ...overrides } as MakeColumnView2Args);
+function make(overrides: Partial<ViewArguments>) {
+  return view({ ...DEFAULTS, ...overrides } as ViewArguments);
 }
 
-function findLeaf(view: ReturnType<typeof makeColumnView2>, id: string) {
+function findLeaf(view: ColumnView, id: string) {
   for (const row of view.combinedView) {
     for (const cell of row) {
       if (cell.kind === "leaf" && cell.data.id === id) return cell;
@@ -23,7 +23,7 @@ function findLeaf(view: ReturnType<typeof makeColumnView2>, id: string) {
   return null;
 }
 
-function findGroup(view: ReturnType<typeof makeColumnView2>, groupId: string) {
+function findGroup(view: ColumnView, groupId: string) {
   for (const row of view.combinedView) {
     for (const cell of row) {
       if (cell.kind === "group" && cell.data.id === groupId) return cell;
@@ -32,7 +32,7 @@ function findGroup(view: ReturnType<typeof makeColumnView2>, groupId: string) {
   return null;
 }
 
-describe("makeColumnView2", () => {
+describe("view", () => {
   test("should return all ungrouped columns as leaves in a single row", () => {
     const view = make({ columns: [{ id: "a" }, { id: "b" }, { id: "c" }] });
     expect(view.visibleColumns.map((c) => c.id)).toEqual(["a", "b", "c"]);
@@ -509,9 +509,11 @@ describe("makeColumnView2", () => {
         { id: "e", pin: "end", groupPath: ["Tools"] },
       ],
     });
+
     const toolsGroups = view.combinedView.flat().filter((c) => c.kind === "group" && c.data.id === "Tools");
     const sportsGroups = view.combinedView.flat().filter((c) => c.kind === "group" && c.data.id === "Sports");
     expect(toolsGroups).toHaveLength(2);
+
     expect(sportsGroups).toHaveLength(1);
     expect(sportsGroups[0].colSpan).toBe(2);
   });
