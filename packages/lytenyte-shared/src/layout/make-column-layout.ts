@@ -1,5 +1,5 @@
 import type { ColumnPin } from "../+types.js";
-import type { ColumnView } from "../column-view/index.js";
+import type { ColumnView } from "../columns/index.js";
 
 export function makeColumnLayout(view: ColumnView, floatingRowEnabled: boolean) {
   const combinedView = view.combinedView;
@@ -46,7 +46,7 @@ export function makeColumnLayout(view: ColumnView, floatingRowEnabled: boolean) 
         kind: "group",
         colPin,
         id: c.data.id,
-        isCollapsible: groupMeta.groupIsCollapsible.get(c.data.id)!,
+        isCollapsible: groupMeta.groupIsCollapsible.get(c.data.idOccurrence)!,
         idOccurrence: c.data.idOccurrence,
         rowStart: c.rowStart,
         rowEnd: c.rowStart + c.rowSpan,

@@ -1,10 +1,4 @@
-import {
-  columnAddMarker,
-  columnAddRowGroup,
-  makeColumnView,
-  type ColumnAbstract,
-  type RowSource,
-} from "@1771technologies/lytenyte-shared";
+import { makeColumnView, type ColumnAbstract, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 import type { Root } from "../root";
 
@@ -16,28 +10,21 @@ export function useColumnView(
 ) {
   const maxRowDepth = source.useMaxRowGroupDepth();
 
-  const view = useMemo(() => {
-    const colsWithGroup = columnAddRowGroup({
-      columns: columns,
+  const columnView = useMemo(() => {
+    const columnView = makeColumnView({
+      columns,
       rowGroupDepth: maxRowDepth,
       rowGroupTemplate: props.rowGroupColumn ?? {},
-    });
-
-    const colsWithMarker = columnAddMarker({
-      columns: colsWithGroup,
       marker: props.columnMarker ?? {},
-      markerEnabled: props.columnMarker?.on ?? false,
-    });
-
-    const view = makeColumnView({
-      columns: colsWithMarker,
       base: props.columnBase ?? {},
       groupExpansionDefault: props.columnGroupDefaultExpansion ?? true,
       groupExpansions: columnGroupExpansions,
       groupJoinDelimiter: props.columnGroupJoinDelimiter ?? "/",
+      filledDepth: false,
+      lastGroupShouldFill: false,
     });
 
-    return view;
+    return columnView;
   }, [
     columnGroupExpansions,
     columns,
@@ -49,5 +36,5 @@ export function useColumnView(
     props.rowGroupColumn,
   ]);
 
-  return view;
+  return columnView;
 }

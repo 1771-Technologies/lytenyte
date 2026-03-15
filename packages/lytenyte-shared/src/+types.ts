@@ -17,6 +17,16 @@ export interface ColumnGroupMeta {
   readonly colIdToGroupIds: Map<string, string[]>;
 
   /**
+   * A map linking each column id to its associated occurrence-qualified group id hierarchy.
+   *
+   * Occurrence ids distinguish separate runs of the same group name (e.g. two non-adjacent
+   * blocks of columns sharing the same groupPath). The format appends the run index to the
+   * plain group id using the configured group delimiter, matching the `idOccurrence` format
+   * produced by the path table (e.g. `"Sports/0"`, `"Sports/1"`).
+   */
+  readonly colIdToOccurrenceGroupIds: Map<string, string[]>;
+
+  /**
    * A set of all valid group ids found in the grid.
    *
    * Group ids are derived by joining nested group names using the configured group delimiter.
@@ -25,13 +35,13 @@ export interface ColumnGroupMeta {
   readonly validGroupIds: Set<string>;
 
   /**
-   * Indicates whether a given column group is collapsible.
+   * Indicates whether a given column group occurrence is collapsible.
    *
-   * For a group to be collapsible:
+   * For a group occurrence to be collapsible:
    * - It must contain at least one column visible when the group is **collapsed**
    * - It must also contain at least one column visible only when the group is **expanded**
    *
-   * The map uses group ids as keys and a boolean as the value.
+   * The map uses occurrence-qualified group ids as keys (e.g. `"Sports/0"`).
    */
   readonly groupIsCollapsible: Map<string, boolean>;
 }

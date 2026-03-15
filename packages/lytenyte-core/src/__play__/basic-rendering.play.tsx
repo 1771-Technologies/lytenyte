@@ -1,7 +1,6 @@
 import "./test.css";
 import { useClientDataSource, Grid } from "../index.js";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { wait } from "@1771technologies/lytenyte-shared";
 
 interface Spec {
   readonly data: (typeof bankDataSmall)[number];
@@ -40,6 +39,7 @@ export default function BasicRendering() {
 }
 
 if (import.meta.vitest) {
+  const { wait } = await import("@1771technologies/lytenyte-shared");
   const { test, expect } = import.meta.vitest;
   const utils = await import("./utils.js");
   const r = await import("vitest-browser-react");

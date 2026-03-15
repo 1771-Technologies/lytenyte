@@ -78,6 +78,7 @@ export default defineConfig({
         "**/*.d.ts",
         "**/__screenshots__",
         "**/*.play.*",
+        "types.*",
         "**/__play__",
 
         // generates types and docs only
