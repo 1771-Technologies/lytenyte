@@ -1,10 +1,10 @@
 import { itemsWithIdToMap } from "../../js-utils/index.js";
 import type { ColumnAbstract } from "../../types.js";
-import { columnGroupMeta, type ColumnGroupMeta } from "../group-meta/column-group-meta.js";
+import { columnGroupMeta } from "../group-meta/column-group-meta.js";
 import { maxColumnDepth } from "../max-depth/max-column-depth.js";
 import { partitionColumnsByPinState } from "../partition-by-pin/partition-columns-by-pin-state.js";
 import { pathTable } from "../path-table/path-table.js";
-import type { PathTableItem } from "../path-table/types.path-table.js";
+import type { ColumnView } from "../types.js";
 import { visibleColumnsByGroup } from "../visible-columns/visible-columns-by-group.js";
 
 export interface ViewArguments {
@@ -15,18 +15,6 @@ export interface ViewArguments {
   readonly groupExpansionDefault: boolean;
   readonly filledDepth: boolean;
   readonly lastGroupShouldFill: boolean;
-}
-
-export interface ColumnView {
-  meta: ColumnGroupMeta;
-  maxRow: number;
-  maxCol: number;
-  combinedView: PathTableItem<ColumnAbstract>[][];
-  visibleColumns: ColumnAbstract[];
-  lookup: Map<string, ColumnAbstract>;
-  startCount: number;
-  endCount: number;
-  centerCount: number;
 }
 
 /**

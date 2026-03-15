@@ -1,40 +1,5 @@
-import type { ColumnAbstract } from "../../types";
-
-export interface ColumnGroupMeta {
-  /**
-   * A map that gives all the group IDs that a given column is a part of.
-   * For example:
-   * ```ts
-   * const column = { id: "x", groupPath: ["A", "B", "C" ] };
-   * meta.colIdToGroupIds.get("x") // ["A", "A>B", "A>B>C"]
-   * ```
-   */
-  readonly colIdToGroupIds: Map<string, string[]>;
-  /**
-   * A map that gives all the occurrence-qualified group IDs that a given column is a part of.
-   * Occurrence IDs distinguish separate runs of the same group name (e.g. two non-adjacent blocks
-   * of columns sharing the same groupPath). The run index is appended using the groupJoinDelimiter.
-   * For example, if "A" appears in two separate runs:
-   * ```ts
-   * meta.colIdToOccurrenceGroupIds.get("col-in-first-run")  // ["A>0"]
-   * meta.colIdToOccurrenceGroupIds.get("col-in-second-run") // ["A>1"]
-   * ```
-   */
-  readonly colIdToOccurrenceGroupIds: Map<string, string[]>;
-  /**
-   * A set containing all the valid column group IDs. This can be used to either get all the
-   * possible IDs, or check if an ID is valid. Note that these are the groupPath IDs, joined
-   * by the `groupJoinDelimiter` used to create the column groups.
-   */
-  readonly validGroupIds: Set<string>;
-  /**
-   * A map where the key is the occurrence-qualified group ID and the value is a boolean indicating
-   * if that group occurrence can be expanded and collapsed, or if it is always open. Each
-   * contiguous run of the same group is evaluated independently, so two runs of the same group
-   * name may have different collapsibility.
-   */
-  readonly groupIsCollapsible: Map<string, boolean>;
-}
+import type { ColumnAbstract } from "../../types.js";
+import type { ColumnGroupMeta } from "../types.js";
 
 /**
  * Creates the column group meta object. The meta object contains information about the created column

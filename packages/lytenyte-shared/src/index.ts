@@ -2,8 +2,7 @@
 export { makeColumnView } from "./columns/index.js";
 export type { ColumnView } from "./columns/index.js";
 
-export { computeColumnPositions } from "./coordinates/compute-column-positions.js";
-export { computeRowPositions } from "./coordinates/compute-row-positions.js";
+export { rowPositions, columnPositions } from "./coordinates/index.js";
 
 export { rowSelectLinkWithParents } from "./row-selection/row-select-link-with-parents.js";
 export { rowSelectLinkWithoutParents } from "./row-selection/row-select-link-without-parent.js";
@@ -110,10 +109,6 @@ export { sizeFromCoord } from "./utils/size-from-coord.js";
 export { getHoveredColumnIndex } from "./utils/get-hovered-column-index.js";
 export { measureText } from "./utils/measure-text.js";
 
-export { stringComparator } from "./sorting/string-comparator.js";
-export { dateComparator } from "./sorting/date-comparator.js";
-export { numberComparator } from "./sorting/number-comparator.js";
-
 export { computePathTree } from "./path/compute-path-tree.js";
 export { computePathTable } from "./path/compute-path-table.js";
 export { computePathMatrix } from "./path/compute-path-matrix.js";
@@ -131,16 +126,6 @@ export type {
   PathTableItem,
   PathTableLeaf,
 } from "./path/+types.path-table.js";
-
-export { evaluateDateFilter } from "./filters/evaluate-date-filter.js";
-export { evaluateNumberFilter } from "./filters/evaluate-number-filter.js";
-export { evaluateStringFilter } from "./filters/evaluate-string-filter.js";
-export type { FilterDateSetting } from "./filters/get-date-filter-settings.js";
-export { getDateFilterSettings } from "./filters/get-date-filter-settings.js";
-export type { FilterNumberSettings } from "./filters/get-number-filter-settings.js";
-export { getNumberFilterSettings } from "./filters/get-number-filter-settings.js";
-export type { FilterStringSettings } from "./filters/get-string-filter-settings.js";
-export { getStringFilterSettings } from "./filters/get-string-filter-settings.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
 export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
@@ -160,7 +145,6 @@ export { getNearestRow } from "./navigation-x/get-nearest-row.js";
 export {
   arrayShallow,
   clamp,
-  debounce,
   distance,
   equal,
   fastShallowCompare,
@@ -169,15 +153,12 @@ export {
   getClientY,
   getRelativeXPosition,
   getRelativeYPosition,
-  hasUpperCaseLetter,
   isFunction,
   itemsWithIdToMap,
   rangedBinarySearch,
   rangesOverlap,
   runWithBackoff,
   sleep,
-  smartStringIncludes,
-  upperCaseFirstLetter,
   wait,
   moveRelative,
 } from "./js-utils/index.js";

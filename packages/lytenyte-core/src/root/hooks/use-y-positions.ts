@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { computeRowPositions, type RowSource } from "@1771technologies/lytenyte-shared";
+import { rowPositions, type RowSource } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../root.js";
 
 const EMPTY_POSITION_ARRAY = new Uint32Array([0]);
@@ -40,7 +40,7 @@ export function useYPositions(
     const positions =
       height <= 0 && typeof rowHeight === "string"
         ? EMPTY_POSITION_ARRAY
-        : computeRowPositions(rowCount, rowHeight, rowHeightGuess, rowCache, detailHeightCalc, height);
+        : rowPositions(rowCount, rowHeight, rowHeightGuess, rowCache, detailHeightCalc, height);
 
     return { positions, setRowCache, setDetailCache, detailCache };
   }, [

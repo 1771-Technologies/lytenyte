@@ -1,7 +1,7 @@
-import type { ColumnAbstract } from "../../types";
+import type { ColumnAbstract } from "../../types.js";
 import type { ColumnPartitions } from "../partition-by-pin/partition-columns-by-pin-state";
 import { buildSectionTable } from "../section-table/build-section-table.js";
-import type { PathTableItem } from "./types.path-table";
+import type { PathTableItem } from "../types.js";
 
 /**
  * Builds the combined path table for all three pin sections. Each section is built independently

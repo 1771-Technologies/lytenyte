@@ -1,10 +1,10 @@
 import { Table } from "@1771technologies/cli-table";
-import { makeUint32PositionArray } from "../../coordinates/make-uint32-position-array.js";
+import { makePositionArray } from "../../coordinates/make-position-array/make-position-array.js";
 import { computeBounds, type ComputeBoundsArgs } from "../compute-bounds.js";
 import { describe, expect, test } from "vitest";
 
-const yPositions = makeUint32PositionArray(() => 50, 200);
-const xPositions = makeUint32PositionArray(() => 50, 100);
+const yPositions = makePositionArray(() => 50, 200);
+const xPositions = makePositionArray(() => 50, 100);
 
 const base: ComputeBoundsArgs = {
   viewportWidth: 500,
