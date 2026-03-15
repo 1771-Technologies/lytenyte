@@ -1,5 +1,5 @@
-import type { RowHeight } from "../types.js";
-import { makeUint32PositionArray } from "./make-uint32-position-array.js";
+import type { RowHeight } from "../../types.js";
+import { makePositionArray } from "../make-position-array/make-position-array.js";
 
 /**
  * Calculates vertical (y) coordinates for rows in a virtualized grid view.
@@ -7,7 +7,7 @@ import { makeUint32PositionArray } from "./make-uint32-position-array.js";
  * Each coordinate is computed cumulatively by adding the current row's height
  * to the previous row's position, creating a progressive offset pattern.
  */
-export function computeRowPositions(
+export function rowPositions(
   rowCount: number,
   rowHeight: RowHeight,
   autoHeightGuess: number,
@@ -21,7 +21,7 @@ export function computeRowPositions(
   // Handle fixed height rows (number value)
   // Simple case where each row has identical base height plus any detail height
   if (typeof rowHeight === "number") {
-    return makeUint32PositionArray((i) => {
+    return makePositionArray((i) => {
       return Math.max(rowHeight + getDetailHeight(i), 0);
     }, rowCount);
   }
@@ -30,7 +30,7 @@ export function computeRowPositions(
   // Uses cached measurements when available, falling back to estimated height
   // Note: Requires recalculation when autoHeightCache changes
   if (rowHeight === "auto") {
-    return makeUint32PositionArray((i) => {
+    return makePositionArray((i) => {
       const height = autoHeightCache[i] ?? autoHeightGuess;
       return Math.max(height + getDetailHeight(i), 0);
     }, rowCount);
@@ -39,7 +39,7 @@ export function computeRowPositions(
   // Handle dynamic height rows (function-based)
   // Calculates each row's height by calling the provided height function
   if (typeof rowHeight === "function") {
-    return makeUint32PositionArray((i) => {
+    return makePositionArray((i) => {
       const height = rowHeight(i);
       return Math.max(height + getDetailHeight(i), 0);
     }, rowCount);
@@ -52,15 +52,14 @@ export function computeRowPositions(
   const rowSpaceNeeded = height * rowCount;
   const freeSpace = containerHeight - rowSpaceNeeded;
 
-  if (freeSpace <= 0)
-    return makeUint32PositionArray((i) => Math.max(height + getDetailHeight(i), 0), rowCount);
+  if (freeSpace <= 0) return makePositionArray((i) => Math.max(height + getDetailHeight(i), 0), rowCount);
 
   // Distribute remaining space among rows, reserving 1px to prevent scrollbar
   // This ensures rows are slightly shorter than container height
   const unitFreeSpace = Math.floor(freeSpace / rowCount);
   let spaceLeft = freeSpace - unitFreeSpace * rowCount - 1;
 
-  return makeUint32PositionArray((i) => {
+  return makePositionArray((i) => {
     const h = height + unitFreeSpace + (spaceLeft > 0 ? 1 : 0);
     spaceLeft--;
     return Math.max(h + getDetailHeight(i), 0);

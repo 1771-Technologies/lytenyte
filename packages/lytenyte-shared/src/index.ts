@@ -2,8 +2,7 @@
 export { makeColumnView } from "./columns/index.js";
 export type { ColumnView } from "./columns/index.js";
 
-export { computeColumnPositions } from "./coordinates/compute-column-positions.js";
-export { computeRowPositions } from "./coordinates/compute-row-positions.js";
+export { rowPositions, columnPositions } from "./coordinates/index.js";
 
 export { rowSelectLinkWithParents } from "./row-selection/row-select-link-with-parents.js";
 export { rowSelectLinkWithoutParents } from "./row-selection/row-select-link-without-parent.js";

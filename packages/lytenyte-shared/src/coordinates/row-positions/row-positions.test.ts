@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { computeRowPositions } from "../compute-row-positions.js";
+import { rowPositions } from "./row-positions.js";
 
 describe("computeRowPositions", () => {
   test("should handle fixed row heights", () => {
-    expect(computeRowPositions(5, 20, 0, {}, () => 0, 0)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, 20, 0, {}, () => 0, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -16,7 +16,7 @@ describe("computeRowPositions", () => {
   });
 
   test("should handle fixed row heights with detail rows", () => {
-    expect(computeRowPositions(5, 20, 0, {}, (i) => (i % 2 ? 30 : 0), 0)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, 20, 0, {}, (i) => (i % 2 ? 30 : 0), 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -29,7 +29,7 @@ describe("computeRowPositions", () => {
   });
 
   test("should handle negative fixed row heights", () => {
-    expect(computeRowPositions(5, -20, 0, {}, () => 0, 0)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, -20, 0, {}, () => 0, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       0,
@@ -43,7 +43,7 @@ describe("computeRowPositions", () => {
 
   test("should handle variable row heights", () => {
     expect(
-      computeRowPositions(
+      rowPositions(
         5,
         (i) => (i % 2 ? 10 : 20),
         0,
@@ -65,7 +65,7 @@ describe("computeRowPositions", () => {
 
   test("should handle variable row heights with detail rows", () => {
     expect(
-      computeRowPositions(
+      rowPositions(
         5,
         (i) => (i % 2 ? 10 : 20),
         0,
@@ -87,7 +87,7 @@ describe("computeRowPositions", () => {
 
   test("should handle variable row heights with negative values", () => {
     expect(
-      computeRowPositions(
+      rowPositions(
         5,
         (i) => (i % 2 ? -10 : 20),
         0,
@@ -109,7 +109,7 @@ describe("computeRowPositions", () => {
 
   test("should handle negative row counts with variable row height", () => {
     expect(
-      computeRowPositions(
+      rowPositions(
         -5,
         (i) => (i % 2 ? -10 : 20),
         0,
@@ -125,7 +125,7 @@ describe("computeRowPositions", () => {
   });
 
   test("should handle auto row heights", () => {
-    expect(computeRowPositions(5, "auto", 20, { 2: 50 }, () => 0, 0)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, "auto", 20, { 2: 50 }, () => 0, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -138,7 +138,7 @@ describe("computeRowPositions", () => {
   });
 
   test("should handle auto row heights with row detail", () => {
-    expect(computeRowPositions(5, "auto", 20, { 2: 50 }, () => 10, 0)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, "auto", 20, { 2: 50 }, () => 10, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       30,
@@ -151,7 +151,7 @@ describe("computeRowPositions", () => {
   });
 
   test("should handle auto row heights with negative row heights", () => {
-    expect(computeRowPositions(5, "auto", -20, { 2: 50 }, () => 10, 0)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, "auto", -20, { 2: 50 }, () => 10, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       0,
@@ -164,7 +164,7 @@ describe("computeRowPositions", () => {
   });
 
   test("should handle fill when there isn't enough space", () => {
-    expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 80)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, "fill:20", 0, {}, () => 0, 80)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -177,7 +177,7 @@ describe("computeRowPositions", () => {
   });
 
   test("should handle fill when there is enough space", () => {
-    expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 200)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, "fill:20", 0, {}, () => 0, 200)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       40,
@@ -188,7 +188,7 @@ describe("computeRowPositions", () => {
     ]
   `);
 
-    expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 211)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, "fill:20", 0, {}, () => 0, 211)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       42,
@@ -199,7 +199,7 @@ describe("computeRowPositions", () => {
     ]
   `);
 
-    expect(computeRowPositions(5, "fill:21", 0, {}, () => 0, 177)).toMatchInlineSnapshot(`
+    expect(rowPositions(5, "fill:21", 0, {}, () => 0, 177)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       36,

@@ -5,7 +5,7 @@
  * up to that index. The first element is always 0, and each subsequent element is the
  * running total of sizes for all previous elements.
  */
-export function makeUint32PositionArray(getSize: (i: number) => number, count: number) {
+export function makePositionArray(getSize: (i: number) => number, count: number) {
   const positions = new Uint32Array(count + 1);
 
   for (let i = 0; i < count; i++) positions[i + 1] = positions[i] + Math.max(getSize(i), 0);

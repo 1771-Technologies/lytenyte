@@ -12,7 +12,7 @@ const DEFAULT_COLUMN_WIDTH_MIN = 80;
  */
 export function columnWidthMeta(
   columns: ColumnAbstract[],
-  base: ColumnAbstract,
+  base: Omit<ColumnAbstract, "id">,
 ): { widths: number[]; totalWidth: number; flexTotal: number } {
   let totalWidth = 0;
   let flexTotal = 0;
