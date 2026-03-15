@@ -2,13 +2,17 @@ import { build } from "vite";
 import tailwind from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs/promises";
+import { join, resolve as resolvePath } from "path";
+import process from "node:process";
 import { HTML_TEMPLATE } from "./constants.js";
 import { resolvePlayConfig } from "./config/index.js";
+
+const cwd = process.cwd();
 
 try {
   await fs.writeFile("./index.html", HTML_TEMPLATE);
 
-  const playConfig = await resolvePlayConfig();
+  const { _setupDir, ...playConfig } = await resolvePlayConfig();
 
   await build({
     plugins: [
@@ -16,14 +20,20 @@ try {
       {
         name: "playframe",
         enforce: "pre",
-        resolveId: (id) => {
+        resolveId(id) {
           if (id === "/@play-entry" || id === "@play-entry") {
             return "@play-entry";
           }
           if (id === "playframe") return "playframe";
           if (id === "playframe-config") return "playframe-config";
+          if (id === "playframe-setup") {
+            if (playConfig.setup) {
+              return resolvePath(_setupDir, playConfig.setup);
+            }
+            return "playframe-setup";
+          }
         },
-        load: (id) => {
+        load(id) {
           if (id === "playframe") {
             return `
               const files = import.meta.glob("/src/**/*.play.tsx", { eager: true });
@@ -38,6 +48,10 @@ try {
 
           if (id === "playframe-config") {
             return `export default ${JSON.stringify(playConfig)}`;
+          }
+
+          if (id === "playframe-setup") {
+            return ``;
           }
         },
       },

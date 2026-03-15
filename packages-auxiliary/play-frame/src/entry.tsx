@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { useEffect } from "react";
 import frames from "playframe";
 import config from "playframe-config";
+import "playframe-setup";
 import { Container } from "./container/container.js";
 import { ThemeProvider, useTheme } from "next-themes";
 import { NoDefault } from "./shell/no-default.js";
