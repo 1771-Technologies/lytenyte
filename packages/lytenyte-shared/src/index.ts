@@ -2,13 +2,6 @@
 export { makeColumnView } from "./columns/index.js";
 export type { ColumnView } from "./columns/index.js";
 
-export { getMaxHeaderDepth } from "./header-view/get-max-header-depth.js";
-export { getVisibleColumns } from "./header-view/get-visible-columns.js";
-export { getVisibleColumnsWithGroups } from "./header-view/get-visible-columns-with-groups.js";
-export { isColumnGroupCollapsed } from "./header-view/is-column-group-collapsed.js";
-export { makeColumnGroupMetadata } from "./header-view/make-column-group-metadata.js";
-export { partitionColumnsByPinState } from "./header-view/partition-columns-by-pin-state.js";
-
 export { computeColumnPositions } from "./coordinates/compute-column-positions.js";
 export { computeRowPositions } from "./coordinates/compute-row-positions.js";
 

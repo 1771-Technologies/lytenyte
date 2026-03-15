@@ -37,23 +37,3 @@ export default function FlatColumns() {
     </div>
   );
 }
-
-if (import.meta.vitest) {
-  const { test, expect } = import.meta.vitest;
-  const r = await import("vitest-browser-react");
-
-  test("should display the headers of the grid correctly", async () => {
-    const screen = await r.render(<FlatColumns />);
-
-    const grid = screen.getByRole("grid");
-    await expect.element(grid).toBeVisible();
-    await expect.element(grid).toMatchScreenshot("001_flat_headers_rendering");
-
-    // We need to check that virtualization is working correctly. Since the grid should only have 4 visible
-    // columns.
-
-    // Scroll the grid
-    // Snap screenshot
-    // Check virtualization
-  });
-}

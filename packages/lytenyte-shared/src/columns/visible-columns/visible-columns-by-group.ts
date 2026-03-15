@@ -10,7 +10,7 @@ export function visibleColumnsByGroup(
   candidates: ColumnAbstract[],
   groupExpansions: Record<string, boolean>,
   groupExpansionDefault: boolean,
-  { colIdToGroupIds, groupIsCollapsible }: ColumnGroupMeta,
+  { colIdToGroupIds, colIdToOccurrenceGroupIds, groupIsCollapsible }: ColumnGroupMeta,
 ): ColumnAbstract[] {
   const visibleColumns: ColumnAbstract[] = [];
 
@@ -21,11 +21,12 @@ export function visibleColumnsByGroup(
     }
 
     const groupIds = colIdToGroupIds.get(c.id)!;
+    const occGroupIds = colIdToOccurrenceGroupIds.get(c.id)!;
     const directParentDepth = c.groupPath.length - 1;
     let include = true;
 
     for (let d = 0; d < groupIds.length; d++) {
-      if (!groupIsCollapsible.get(groupIds[d])) continue;
+      if (!groupIsCollapsible.get(occGroupIds[d])) continue;
 
       const expanded = groupExpansions[groupIds[d]] ?? groupExpansionDefault;
       if (expanded) continue;

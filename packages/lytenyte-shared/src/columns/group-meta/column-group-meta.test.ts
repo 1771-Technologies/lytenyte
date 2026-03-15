@@ -57,7 +57,7 @@ describe("columnGroupMeta", () => {
       ">",
     );
 
-    expect(result.groupIsCollapsible.get("A")).toBe(false);
+    expect(result.groupIsCollapsible.get("A>0")).toBe(false);
   });
 
   test("Should mark a group as not collapsible when all direct children have groupVisibility 'close'", () => {
@@ -69,7 +69,7 @@ describe("columnGroupMeta", () => {
       ">",
     );
 
-    expect(result.groupIsCollapsible.get("A")).toBe(false);
+    expect(result.groupIsCollapsible.get("A>0")).toBe(false);
   });
 
   test("Should mark a group as collapsible when it has both 'open' and 'close' direct children", () => {
@@ -81,7 +81,7 @@ describe("columnGroupMeta", () => {
       ">",
     );
 
-    expect(result.groupIsCollapsible.get("A")).toBe(true);
+    expect(result.groupIsCollapsible.get("A>0")).toBe(true);
   });
 
   test("Should treat a missing groupVisibility as 'open'", () => {
@@ -94,7 +94,7 @@ describe("columnGroupMeta", () => {
     );
 
     // col1 has no groupVisibility, treated as "open" — so the group has both open and close children
-    expect(result.groupIsCollapsible.get("A")).toBe(true);
+    expect(result.groupIsCollapsible.get("A>0")).toBe(true);
   });
 
   test("Should count a deeper descendant as a hidden child for all ancestor groups", () => {
@@ -109,7 +109,7 @@ describe("columnGroupMeta", () => {
       ">",
     );
 
-    expect(result.groupIsCollapsible.get("A")).toBe(true);
+    expect(result.groupIsCollapsible.get("A>0")).toBe(true);
   });
 
   test("Should create a colIdToGroupIds entry for each column in the same group", () => {
@@ -138,8 +138,8 @@ describe("columnGroupMeta", () => {
       ">",
     );
 
-    expect(result.groupIsCollapsible.get("A")).toBe(true);
-    expect(result.groupIsCollapsible.get("A>B")).toBe(false);
+    expect(result.groupIsCollapsible.get("A>0")).toBe(true);
+    expect(result.groupIsCollapsible.get("A>B>0")).toBe(false);
   });
 
   test("Should mark a group as collapsible when it has one always-visible direct child and several non-direct children", () => {
@@ -156,7 +156,29 @@ describe("columnGroupMeta", () => {
       ">",
     );
 
-    expect(result.groupIsCollapsible.get("A")).toBe(true);
+    expect(result.groupIsCollapsible.get("A>0")).toBe(true);
+  });
+
+  test("Should evaluate collapsibility independently per run when the same group name appears in multiple non-adjacent blocks", () => {
+    // Run 0 of "A": age (close) + job (open) → collapsible
+    // Run 1 of "A": housing (close) + loan (open) → collapsible
+    // Run 2 of "A": month (open only) → NOT collapsible
+    const result = columnGroupMeta(
+      [
+        { id: "age", groupPath: ["A"], groupVisibility: "close" },
+        { id: "job", groupPath: ["A"] },
+        { id: "balance" }, // gap
+        { id: "housing", groupPath: ["A"], groupVisibility: "close" },
+        { id: "loan", groupPath: ["A"] },
+        { id: "day" }, // gap
+        { id: "month", groupPath: ["A"] },
+      ],
+      ">",
+    );
+
+    expect(result.groupIsCollapsible.get("A>0")).toBe(true);
+    expect(result.groupIsCollapsible.get("A>1")).toBe(true);
+    expect(result.groupIsCollapsible.get("A>2")).toBe(false);
   });
 
   test("Should produce independent entries for columns belonging to completely separate groups", () => {

@@ -218,7 +218,7 @@ describe("view", () => {
         { id: "b", groupPath: ["Sports"], groupVisibility: "open" },
       ],
     });
-    expect(view.meta.groupIsCollapsible.get("Sports")).toBe(true);
+    expect(view.meta.groupIsCollapsible.get("Sports/0")).toBe(true);
   });
 
   test("should not mark a group as collapsible when all columns default to open", () => {
@@ -228,7 +228,7 @@ describe("view", () => {
         { id: "b", groupPath: ["Sports"] },
       ],
     });
-    expect(view.meta.groupIsCollapsible.get("Sports")).toBe(false);
+    expect(view.meta.groupIsCollapsible.get("Sports/0")).toBe(false);
   });
 
   test("should not mark a group as collapsible when no column would be hidden on collapse", () => {
@@ -238,7 +238,7 @@ describe("view", () => {
         { id: "b", groupPath: ["Sports"], groupVisibility: "close" },
       ],
     });
-    expect(view.meta.groupIsCollapsible.get("Sports")).toBe(false);
+    expect(view.meta.groupIsCollapsible.get("Sports/0")).toBe(false);
   });
 
   test("should mark an ancestor group as collapsible when it has a direct always-visible child and a deeper descendant", () => {
@@ -248,8 +248,8 @@ describe("view", () => {
         { id: "b", groupPath: ["A", "B"] },
       ],
     });
-    expect(view.meta.groupIsCollapsible.get("A")).toBe(true);
-    expect(view.meta.groupIsCollapsible.get("A/B")).toBe(false);
+    expect(view.meta.groupIsCollapsible.get("A/0")).toBe(true);
+    expect(view.meta.groupIsCollapsible.get("A/B/0")).toBe(false);
   });
 
   test("should mark a group as collapsible when using the close groupVisibility", () => {
@@ -259,7 +259,7 @@ describe("view", () => {
         { id: "b", groupPath: ["Sports"], groupVisibility: "open" },
       ],
     });
-    expect(view.meta.groupIsCollapsible.get("Sports")).toBe(true);
+    expect(view.meta.groupIsCollapsible.get("Sports/0")).toBe(true);
   });
 
   test("should hide open columns when their direct parent group is collapsed", () => {
@@ -483,6 +483,34 @@ describe("view", () => {
     expect(view.maxCol).toBe(0);
     expect(view.combinedView).toHaveLength(1);
     expect(view.combinedView[0]).toHaveLength(0);
+  });
+
+  test("should mark only runs of a group collapsible when they independently satisfy collapsibility criteria", () => {
+    // Three runs of group "A": runs 0 and 1 each have a close+open pair → collapsible.
+    // Run 2 has only an open column → not collapsible.
+    const view = make({
+      columns: [
+        // Run 0 of A
+        { id: "age", groupPath: ["A"], groupVisibility: "close" },
+        { id: "job", groupPath: ["A"] },
+        // Gap
+        { id: "balance" },
+        { id: "default" },
+        // Run 1 of A
+        { id: "housing", groupPath: ["A"], groupVisibility: "close" },
+        { id: "loan", groupPath: ["A"] },
+        // Gap
+        { id: "day" },
+        // Run 2 of A (solo, open-only)
+        { id: "month", groupPath: ["A"] },
+        // Ungrouped tail
+        { id: "pdays" },
+      ],
+    });
+
+    expect(view.meta.groupIsCollapsible.get("A/0")).toBe(true);
+    expect(view.meta.groupIsCollapsible.get("A/1")).toBe(true);
+    expect(view.meta.groupIsCollapsible.get("A/2")).toBe(false);
   });
 
   test("should return an empty view when all columns are hidden", () => {
