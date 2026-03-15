@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { view, type ColumnView, type ViewArguments } from "./view.js";
+import { view, type ViewArguments } from "./view.js";
+import type { ColumnView } from "../types.js";
 
 const DEFAULTS = {
   base: {},

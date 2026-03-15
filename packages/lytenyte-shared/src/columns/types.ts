@@ -1,3 +1,5 @@
+import type { ColumnAbstract } from "../types";
+
 /**
  * A matrix item containing information about the position in hierarchy.
  * Created by the `computePathMatrix` function during path processing.
@@ -135,4 +137,85 @@ export interface PathTableGroup {
  */
 export type PathTableItem<T extends PathProvidedItem> = PathTableLeaf<T> | PathTableGroup;
 
-export {};
+export interface ColumnGroupMeta {
+  /**
+   * A map that gives all the group IDs that a given column is a part of.
+   * For example:
+   * ```ts
+   * const column = { id: "x", groupPath: ["A", "B", "C" ] };
+   * meta.colIdToGroupIds.get("x") // ["A", "A>B", "A>B>C"]
+   * ```
+   */
+  readonly colIdToGroupIds: Map<string, string[]>;
+  /**
+   * A map that gives all the occurrence-qualified group IDs that a given column is a part of.
+   * Occurrence IDs distinguish separate runs of the same group name (e.g. two non-adjacent blocks
+   * of columns sharing the same groupPath). The run index is appended using the groupJoinDelimiter.
+   * For example, if "A" appears in two separate runs:
+   * ```ts
+   * meta.colIdToOccurrenceGroupIds.get("col-in-first-run")  // ["A>0"]
+   * meta.colIdToOccurrenceGroupIds.get("col-in-second-run") // ["A>1"]
+   * ```
+   */
+  readonly colIdToOccurrenceGroupIds: Map<string, string[]>;
+  /**
+   * A set containing all the valid column group IDs. This can be used to either get all the
+   * possible IDs, or check if an ID is valid. Note that these are the groupPath IDs, joined
+   * by the `groupJoinDelimiter` used to create the column groups.
+   */
+  readonly validGroupIds: Set<string>;
+  /**
+   * A map where the key is the occurrence-qualified group ID and the value is a boolean indicating
+   * if that group occurrence can be expanded and collapsed, or if it is always open. Each
+   * contiguous run of the same group is evaluated independently, so two runs of the same group
+   * name may have different collapsibility.
+   */
+  readonly groupIsCollapsible: Map<string, boolean>;
+}
+
+export interface ColumnView {
+  /**
+   * The column group metadata. This is mainly used internally by LyteNyte Grid, but can
+   * be useful for external use cases where you need to determine if a column group is
+   * expandable, or if you want to get all the column group ids.
+   */
+  meta: ColumnGroupMeta;
+  /**
+   * The maximum number of rows in the combined view. This equals the deepest column group
+   * hierarchy depth plus one (for the leaf row). Used to determine how many header rows
+   * to render.
+   */
+  maxRow: number;
+  /**
+   * The total number of visible columns across all pin sections (start, center, and end).
+   */
+  maxCol: number;
+  /**
+   * The 2D path table used to render the column headers. Each inner array is a row, and each
+   * element is either a group cell (spanning multiple columns) or a leaf cell (a single column).
+   * Rows are ordered from the outermost group level down to the leaf row.
+   */
+  combinedView: PathTableItem<ColumnAbstract>[][];
+  /**
+   * The ordered list of columns that are currently visible, after applying hide flags and
+   * group expansion state. Columns are ordered: pinned start, center, pinned end.
+   */
+  visibleColumns: ColumnAbstract[];
+  /**
+   * A map from column ID to column definition for all columns (including hidden ones).
+   * Useful for looking up a column's full definition by its ID.
+   */
+  lookup: Map<string, ColumnAbstract>;
+  /**
+   * The number of visible columns pinned to the start (left) of the grid.
+   */
+  startCount: number;
+  /**
+   * The number of visible columns pinned to the end (right) of the grid.
+   */
+  endCount: number;
+  /**
+   * The number of visible unpinned columns in the center of the grid.
+   */
+  centerCount: number;
+}

@@ -1,4 +1,4 @@
-import type { ColumnAbstract } from "../../types";
+import type { ColumnAbstract } from "../../types.js";
 
 /**
  * Returns the max group depth of the column hierarchy.
