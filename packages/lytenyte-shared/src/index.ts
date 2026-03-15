@@ -145,7 +145,6 @@ export { getNearestRow } from "./navigation-x/get-nearest-row.js";
 export {
   arrayShallow,
   clamp,
-  debounce,
   distance,
   equal,
   fastShallowCompare,
@@ -154,15 +153,12 @@ export {
   getClientY,
   getRelativeXPosition,
   getRelativeYPosition,
-  hasUpperCaseLetter,
   isFunction,
   itemsWithIdToMap,
   rangedBinarySearch,
   rangesOverlap,
   runWithBackoff,
   sleep,
-  smartStringIncludes,
-  upperCaseFirstLetter,
   wait,
   moveRelative,
 } from "./js-utils/index.js";
