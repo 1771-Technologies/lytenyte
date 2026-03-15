@@ -30,6 +30,10 @@ body {
   background: var(--gray-a3);
 }
 
+.demo-nav-row:hover {
+  background: var(--gray-a3);
+}
+
 .play-error-block {
   margin: 0;
   padding: 8px 10px;
