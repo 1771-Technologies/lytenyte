@@ -6,5 +6,6 @@
       { "name": "Dark", "value": "dark", "colorScheme": "dark" },
       { "name": "Teal", "value": "teal", "colorScheme": "light" }
     ]
-  }
+  },
+  "setup": "./play-setup.ts"
 }

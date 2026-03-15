@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import { createServer as createViteServer } from "vite";
 import { createServer as createHttpServer } from "http";
 import { WebSocketServer } from "ws";
-import { join } from "path";
+import { join, resolve as resolvePath } from "path";
 import os from "os";
 import process from "node:process";
 import { exec } from "node:child_process";
@@ -41,7 +41,7 @@ const HTML_TEMPLATE = `
 async function createServer() {
   const app = express();
 
-  const playConfig = await resolvePlayConfig();
+  const { _setupDir, ...playConfig } = await resolvePlayConfig();
 
   const vite = await createViteServer({
     server: { middlewareMode: true, watch: { ignored: ["**/.play-coverage/**"] } },
@@ -51,14 +51,20 @@ async function createServer() {
       {
         name: "playframe",
         enforce: "pre",
-        resolveId: (id) => {
+        resolveId(id) {
           if (id === "/@play-entry" || id === "@play-entry") {
             return "@play-entry";
           }
           if (id === "playframe") return "playframe";
           if (id === "playframe-config") return "playframe-config";
+          if (id === "playframe-setup") {
+            if (playConfig.setup) {
+              return resolvePath(_setupDir, playConfig.setup);
+            }
+            return "playframe-setup";
+          }
         },
-        load: (id) => {
+        load(id) {
           if (id === "playframe") {
             return `
               const files = import.meta.glob("/src/**/*.*play.tsx", { eager: true });
@@ -73,6 +79,10 @@ async function createServer() {
 
           if (id === "playframe-config") {
             return `export default ${JSON.stringify(playConfig)}`;
+          }
+
+          if (id === "playframe-setup") {
+            return ``;
           }
         },
       },

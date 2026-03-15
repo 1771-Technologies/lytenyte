@@ -7,6 +7,8 @@ declare module "playframe" {
   export default frame;
 }
 
+declare module "playframe-setup" {}
+
 declare module "playframe-config" {
   const config: {
     themes: {

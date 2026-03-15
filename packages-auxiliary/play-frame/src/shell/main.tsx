@@ -127,7 +127,7 @@ export function Main() {
               aria-label="Full frame view link"
               onClick={() => {
                 const currentURL = new URL(window.location.href);
-                currentURL.searchParams.set("frame", demo.value);
+                currentURL.searchParams.set("frame", current.filePath);
                 currentURL.searchParams.set("full", "true");
                 window.open(currentURL.toString(), "_blank");
               }}

@@ -10,10 +10,14 @@ export async function resolvePlayConfig() {
   const workspaceRoot = await findWorkspaceRoot(cwd);
   const rootConfig = workspaceRoot !== cwd ? loadConfig(workspaceRoot) : null;
 
+  // Determine which directory owns the setup field (nearest config wins)
+  const setupDir = packageConfig?.setup != null ? cwd : workspaceRoot;
+
   // Merge: root is the base, package-level replaces per top-level key
   return {
     ...DEFAULT_CONFIG,
     ...rootConfig,
     ...packageConfig,
+    _setupDir: setupDir,
   };
 }
