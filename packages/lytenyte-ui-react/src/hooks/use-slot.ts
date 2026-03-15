@@ -22,5 +22,5 @@ export function useSlot<T = any>({ props, slot, state, ref: forwardedRef }: UseS
 
   if (ref || forwardedRef) mergedProps.ref = mergedRefs;
 
-  return cloneElement(el, mergeProps);
+  return cloneElement(el, mergedProps);
 }
