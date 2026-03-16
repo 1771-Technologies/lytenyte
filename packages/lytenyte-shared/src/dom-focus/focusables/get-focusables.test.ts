@@ -85,4 +85,36 @@ describe("getFocusables", () => {
 
     expect(getFocusables(div)).toEqual([child1, child2]);
   });
+
+  test("Should return focusable elements from multiple nested iframes", () => {
+    const div = document.createElement("div");
+    const frame1 = document.createElement("iframe");
+    const frame2 = document.createElement("iframe");
+    div.appendChild(frame1);
+    div.appendChild(frame2);
+
+    const child1 = document.createElement("button");
+    const child2 = document.createElement("button");
+    const child3 = document.createElement("button");
+    const child4 = document.createElement("button");
+    vi.spyOn(child1, "offsetHeight", "get").mockImplementation(() => 100);
+    vi.spyOn(child2, "offsetHeight", "get").mockImplementation(() => 100);
+    vi.spyOn(child3, "offsetHeight", "get").mockImplementation(() => 100);
+    vi.spyOn(child4, "offsetHeight", "get").mockImplementation(() => 100);
+
+    const frameBody1 = document.createElement("div");
+    frameBody1.appendChild(child1);
+    frameBody1.appendChild(child2);
+
+    const frameBody2 = document.createElement("div");
+    frameBody2.appendChild(child3);
+    frameBody2.appendChild(child4);
+
+    document.body.appendChild(div);
+
+    vi.spyOn(frame1, "contentDocument", "get").mockImplementation(() => ({ body: frameBody1 }) as any);
+    vi.spyOn(frame2, "contentDocument", "get").mockImplementation(() => ({ body: frameBody2 }) as any);
+
+    expect(getFocusables(div)).toEqual([child1, child2, child3, child4]);
+  });
 });

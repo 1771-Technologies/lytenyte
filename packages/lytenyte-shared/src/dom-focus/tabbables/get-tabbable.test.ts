@@ -2,13 +2,13 @@ import { describe, expect, test, vi } from "vitest";
 import { getTabbables } from "./get-tabbables.js";
 
 describe("getTabbables", () => {
-  test("when the element is not defined it should return an empty array", async () => {
+  test("Should return an empty array when there are no tabbable elements", async () => {
     const div = document.createElement("div");
     document.body.appendChild(div);
 
     expect(getTabbables(div)).toEqual([]);
   });
-  test("when the element is defined by there are no focusables it should return an empty array", async () => {
+  test("Should return an empty array when children are not tabbable", async () => {
     const div = document.createElement("div");
     const child1 = document.createElement("div");
     const child2 = document.createElement("div");
@@ -20,11 +20,11 @@ describe("getTabbables", () => {
     expect(getTabbables(div)).toEqual([]);
   });
 
-  test("when the element provided is invalid it should return an empty array", () => {
+  test("Should return an empty array when the container is null", () => {
     expect(getTabbables(null)).toEqual([]);
   });
 
-  test("when the element has some tabbables, these should be returned", () => {
+  test("Should return all tabbable children", () => {
     const div = document.createElement("div");
     const child1 = document.createElement("div");
     child1.tabIndex = -1;
@@ -37,7 +37,7 @@ describe("getTabbables", () => {
     expect(getTabbables(div)).toEqual([child2]);
   });
 
-  test("when the element is empty but it is focusable it should be returned", () => {
+  test("Should include the container when includeContainer is if-empty and no tabbable children exist", () => {
     const div = document.createElement("div");
     div.tabIndex = 0;
     const child1 = document.createElement("div");
@@ -50,7 +50,7 @@ describe("getTabbables", () => {
     expect(getTabbables(div, "if-empty")).toEqual([div]);
   });
 
-  test("when the element is not empty but it should also be returned, it is", () => {
+  test("Should not include the container when includeContainer is true but the container is not tabbable", () => {
     const div = document.createElement("div");
     div.tabIndex = -1;
     const child1 = document.createElement("button");
@@ -63,7 +63,7 @@ describe("getTabbables", () => {
     expect(getTabbables(div, true)).toEqual([child1, child2]);
   });
 
-  test("when the tabbables are in an iframe they should also be returned", () => {
+  test("Should return tabbable elements within nested iframes", () => {
     const div = document.createElement("div");
     const frame = document.createElement("iframe");
     div.appendChild(frame);
@@ -86,7 +86,7 @@ describe("getTabbables", () => {
     expect(getTabbables(div)).toEqual([child1, child2]);
   });
 
-  test("Should return container if the tabbables list is empty and include container is true", () => {
+  test("Should include the container when includeContainer is true and no tabbable children exist", () => {
     const div = document.createElement("div");
     div.tabIndex = 0;
     div.style.height = "200px";
@@ -94,5 +94,64 @@ describe("getTabbables", () => {
     document.body.appendChild(div);
 
     expect(getTabbables(div, true)).toEqual([div]);
+  });
+
+  test("Should sort elements with positive tab indexes before elements with tab index zero", () => {
+    const div = document.createElement("div");
+    const button1 = document.createElement("button");
+    const button2 = document.createElement("button");
+    button2.tabIndex = 1;
+
+    div.appendChild(button1);
+    div.appendChild(button2);
+    document.body.appendChild(div);
+
+    expect(getTabbables(div)).toEqual([button2, button1]);
+  });
+
+  test("Should sort elements with positive tab indexes in ascending order", () => {
+    const div = document.createElement("div");
+    const button1 = document.createElement("button");
+    const button2 = document.createElement("button");
+    button1.tabIndex = 2;
+    button2.tabIndex = 1;
+
+    div.appendChild(button1);
+    div.appendChild(button2);
+    document.body.appendChild(div);
+
+    expect(getTabbables(div)).toEqual([button2, button1]);
+  });
+
+  test("Should return tabbable elements from multiple nested iframes", () => {
+    const div = document.createElement("div");
+    const frame1 = document.createElement("iframe");
+    const frame2 = document.createElement("iframe");
+    div.appendChild(frame1);
+    div.appendChild(frame2);
+
+    const child1 = document.createElement("button");
+    const child2 = document.createElement("button");
+    const child3 = document.createElement("button");
+    const child4 = document.createElement("button");
+    vi.spyOn(child1, "offsetHeight", "get").mockImplementation(() => 100);
+    vi.spyOn(child2, "offsetHeight", "get").mockImplementation(() => 100);
+    vi.spyOn(child3, "offsetHeight", "get").mockImplementation(() => 100);
+    vi.spyOn(child4, "offsetHeight", "get").mockImplementation(() => 100);
+
+    const frameBody1 = document.createElement("div");
+    frameBody1.appendChild(child1);
+    frameBody1.appendChild(child2);
+
+    const frameBody2 = document.createElement("div");
+    frameBody2.appendChild(child3);
+    frameBody2.appendChild(child4);
+
+    document.body.appendChild(div);
+
+    vi.spyOn(frame1, "contentDocument", "get").mockImplementation(() => ({ body: frameBody1 }) as any);
+    vi.spyOn(frame2, "contentDocument", "get").mockImplementation(() => ({ body: frameBody2 }) as any);
+
+    expect(getTabbables(div)).toEqual([child1, child2, child3, child4]);
   });
 });

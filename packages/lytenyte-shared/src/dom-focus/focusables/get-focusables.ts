@@ -21,14 +21,14 @@ export const getFocusables = (
     elements.unshift(container);
   }
 
-  const focusableElements = elements.filter(isFocusable);
-
-  focusableElements.forEach((element, i) => {
+  const result: HTMLElement[] = [];
+  for (const element of elements.filter(isFocusable)) {
     if (isFrame(element) && element.contentDocument) {
-      const frameBody = element.contentDocument.body;
-      focusableElements.splice(i, 1, ...getFocusables(frameBody));
+      result.push(...getFocusables(element.contentDocument.body));
+    } else {
+      result.push(element);
     }
-  });
+  }
 
-  return focusableElements;
+  return result;
 };
