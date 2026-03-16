@@ -71,14 +71,22 @@ export class FocusTrap {
     recentNavEvent: undefined,
   };
 
+  /** Whether the focus trap is currently active. */
   get active() {
     return this.state.active;
   }
 
+  /** Whether the focus trap is currently paused. */
   get paused() {
     return this.state.paused;
   }
 
+  /**
+   * Creates a new focus trap for the given container element(s).
+   *
+   * @param elements - A single container element or an array of container elements to trap focus within.
+   * @param options - Configuration options for the focus trap.
+   */
   constructor(elements: HTMLElement | HTMLElement[], options: FocusTrapOptions) {
     this.trapStack = options.trapStack || sharedTrapStack;
 
@@ -449,6 +457,11 @@ export class FocusTrap {
     }
   };
 
+  /**
+   * Activates the focus trap, directing focus to the initial focus node and beginning
+   * to intercept keyboard and pointer events to keep focus within the trap's containers.
+   * Has no effect if the trap is already active.
+   */
   activate(activateOptions?: ActivateOptions) {
     if (this.state.active) {
       return this;
@@ -486,6 +499,11 @@ export class FocusTrap {
     return this;
   }
 
+  /**
+   * Deactivates the focus trap, removing all event listeners and optionally returning
+   * focus to the element that was focused before the trap was activated.
+   * Has no effect if the trap is not active.
+   */
   deactivate = (deactivateOptions?: DeactivateOptions) => {
     if (!this.state.active) return this;
 
@@ -533,6 +551,11 @@ export class FocusTrap {
     return this;
   };
 
+  /**
+   * Temporarily suspends the focus trap without deactivating it. While paused, focus
+   * is no longer constrained to the trap's containers. Has no effect if the trap is
+   * already paused or not active.
+   */
   pause = (pauseOptions?: PauseOptions) => {
     if (this.state.paused || !this.state.active) {
       return this;
@@ -551,6 +574,11 @@ export class FocusTrap {
     return this;
   };
 
+  /**
+   * Resumes a paused focus trap, restoring focus management and returning focus to
+   * the first tabbable node in the trap. Has no effect if the trap is not paused or
+   * not active.
+   */
   unpause = (unpauseOptions?: UnpauseOptions) => {
     if (!this.state.paused || !this.state.active) {
       return this;
