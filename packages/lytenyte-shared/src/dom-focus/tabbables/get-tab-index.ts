@@ -1,5 +1,5 @@
-import { hasTabIndex } from "../has-tab-index.js";
-import { isEditableElement } from "../is-editable-element.js";
+import { hasTabIndex } from "../../dom-utils/has-tab-index.js";
+import { isEditableElement } from "../../dom-utils/is-editable-element.js";
 
 export function getTabIndex(node: HTMLElement | SVGElement) {
   if (node.tabIndex < 0) {

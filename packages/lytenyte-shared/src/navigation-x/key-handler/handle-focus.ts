@@ -1,4 +1,4 @@
-import { getLastTabbable } from "../../dom-utils/index.js";
+import { getTabbables } from "../../dom-focus/index.js";
 
 export function handleFocus(
   isBack: boolean,
@@ -14,7 +14,7 @@ export function handleFocus(
   // elements, so we want a consistent horizontal move order.
   if (isBack) {
     // -- cycleInnerHook
-    const last = getLastTabbable(cell);
+    const last = getTabbables(cell).at(-1);
     if (last) last.focus();
     else cell.focus();
   } else {

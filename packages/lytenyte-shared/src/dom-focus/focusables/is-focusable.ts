@@ -1,5 +1,5 @@
-import { isElementVisible } from "../is-element-visible.js";
-import { focusableSelector } from "./+constants.js";
+import { isElementVisible } from "../../dom-utils/is-element-visible.js";
+import { focusableSelector } from "../constants.js";
 
 export function isFocusable(element: HTMLElement | null): element is HTMLElement {
   if (!element || element.closest("[inert]")) return false;

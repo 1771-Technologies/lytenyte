@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { getTabbables } from "../get-tabbables.js";
+import { getTabbables } from "./get-tabbables.js";
 
 describe("getTabbables", () => {
   test("when the element is not defined it should return an empty array", async () => {

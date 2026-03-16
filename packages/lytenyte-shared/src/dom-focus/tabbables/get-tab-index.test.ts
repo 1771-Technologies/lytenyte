@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { getTabIndex } from "../get-tab-index.js";
+import { getTabIndex } from "./get-tab-index.js";
 
 describe("getTabIndex", () => {
   test("when the element provided is a tabbable by default it should return 0", () => {

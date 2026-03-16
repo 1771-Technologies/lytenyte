@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { isFocusable } from "../is-focusable.js";
+import { isFocusable } from "./is-focusable.js";
 
 describe("isFocusable", () => {
   test("when the element is inert it should return false", () => {

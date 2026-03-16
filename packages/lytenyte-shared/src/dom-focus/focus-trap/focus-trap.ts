@@ -1,11 +1,11 @@
 // Refactored from https://github.com/focus-trap/focus-trap/blob/master/index.js
 // MIT License
 
-import { addDomEvent } from "../add-dom-event.js";
-import { getActiveElement } from "../get-active-element.js";
-import { getDocument } from "../get-document.js";
-import { getEventTarget } from "../get-event-target.js";
-import { isDocument } from "../is-document.js";
+import { addDomEvent } from "../../dom-utils/add-dom-event.js";
+import { getActiveElement } from "../../dom-utils/get-active-element.js";
+import { getDocument } from "../../dom-utils/get-document.js";
+import { getEventTarget } from "../../dom-utils/get-event-target.js";
+import { isDocument } from "../../dom-utils/is-document.js";
 import type {
   ActivateOptions,
   DeactivateOptions,
@@ -14,12 +14,12 @@ import type {
   FocusTrapState,
   PauseOptions,
   UnpauseOptions,
-} from "./+types.js";
-import { getFocusables } from "./get-focusables.js";
-import { getTabIndex } from "./get-tab-index.js";
-import { getTabbables } from "./get-tabbables.js";
-import { isFocusable } from "./is-focusable.js";
-import { isTabbable } from "./is-tabbable.js";
+} from "../types.js";
+import { getFocusables } from "../focusables/get-focusables.js";
+import { getTabIndex } from "../tabbables/get-tab-index.js";
+import { getTabbables } from "../tabbables/get-tabbables.js";
+import { isFocusable } from "../focusables/is-focusable.js";
+import { isTabbable } from "../tabbables/is-tabbable.js";
 
 const activeFocusTraps = {
   activateTrap(trapStack: FocusTrap[], trap: FocusTrap) {

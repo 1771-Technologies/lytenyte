@@ -18,14 +18,3 @@ export { getNearestMatching } from "./get-nearest-matching.js";
 export { getScrollStatus } from "./get-scroll-status.js";
 export { supportsScrollEnd } from "./supports-scroll-end.js";
 export { isTextInputFocused } from "./is-text-input-focused.js";
-
-export { FocusTrap } from "./focus/focus-trap.js";
-export { getFirstFocusable } from "./focus/get-first-focusable.js";
-export { getFirstTabbable } from "./focus/get-first-tabbable.js";
-export { getFocusables } from "./focus/get-focusables.js";
-export { getLastTabbable } from "./focus/get-last-tabbable.js";
-export { getNextTabbable } from "./focus/get-next-tabbable.js";
-export { getTabIndex } from "./focus/get-tab-index.js";
-export { getTabbables } from "./focus/get-tabbables.js";
-export { isFocusable } from "./focus/is-focusable.js";
-export { isTabbable } from "./focus/is-tabbable.js";

@@ -1,9 +1,4 @@
-import {
-  getFirstTabbable,
-  queryCell,
-  runWithBackoff,
-  type ColumnView,
-} from "@1771technologies/lytenyte-shared";
+import { getTabbables, queryCell, runWithBackoff, type ColumnView } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
 import type { EditContext } from "../../../root-context.js";
@@ -68,7 +63,7 @@ export function useEditBegin(
       const cell = queryCell(gridId, rowIndex, columnIndex, vp);
       if (!cell || cell.getAttribute("data-ln-edit-active") !== "true") return false;
 
-      const first = getFirstTabbable(cell, false);
+      const first = getTabbables(cell, false).at(0);
       if (!first) return false;
 
       first.focus();

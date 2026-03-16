@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isTabbable } from "../is-tabbable.js";
+import { isTabbable } from "../tabbables/is-tabbable.js";
 
 describe("isTabbable", () => {
   test("when the element is not defined it should false", () => {

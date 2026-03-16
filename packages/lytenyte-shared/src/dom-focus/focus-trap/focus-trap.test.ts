@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { userEvent } from "vitest/browser";
-import { FocusTrap } from "../focus-trap.js";
-import { wait } from "../../../js-utils/index.js";
+import { FocusTrap } from "./focus-trap.js";
+import { wait } from "../../js-utils/sleep.js";
 
 describe("focusTrap", () => {
   test("when the provided container has focusable items it should be possible to trap the items in", async () => {

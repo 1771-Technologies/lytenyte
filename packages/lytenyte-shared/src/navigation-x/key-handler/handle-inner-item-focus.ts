@@ -1,4 +1,4 @@
-import { getFirstTabbable, getFocusables, getLastTabbable, isTabbable } from "../../dom-utils/index.js";
+import { getFocusables, getTabbables, isTabbable } from "../../dom-focus/index.js";
 
 export function handleInnerItemFocus(el: HTMLElement, active: HTMLElement, backward: boolean, loop: boolean) {
   // The container and the active are the same, hence we should focus the first tabbable if possible.
@@ -8,7 +8,7 @@ export function handleInnerItemFocus(el: HTMLElement, active: HTMLElement, backw
       // We are on the first position, hence unless we are looping, there is no point in cycling through items.
       if (!loop) return false;
 
-      const last = getLastTabbable(el);
+      const last = getTabbables(el).at(-1) ?? null;
       if (last) {
         last.focus();
         return false;
@@ -17,7 +17,7 @@ export function handleInnerItemFocus(el: HTMLElement, active: HTMLElement, backw
 
     // We are going forward. So let's get the first element and focus it. Otherwise this container has no
     // tabbable elements and we can return false.
-    const first = getFirstTabbable(el);
+    const first = getTabbables(el).at(0) ?? null;
     if (first) {
       first.focus();
       return true;
@@ -76,7 +76,7 @@ export function handleInnerItemFocus(el: HTMLElement, active: HTMLElement, backw
     }
     return false;
   } else if (nextTabbableIndex === -1 && loop) {
-    const first = getFirstTabbable(el);
+    const first = getTabbables(el).at(0) ?? null;
     if (first) {
       first.focus();
       return true;

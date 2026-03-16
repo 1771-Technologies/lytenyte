@@ -1,7 +1,7 @@
-import { isFrame } from "../is-frame.js";
-import { isHTMLElement } from "../is-html-element.js";
-import { focusableSelector } from "./+constants.js";
-import type { IncludeContainerType } from "./+types.js";
+import { isFrame } from "../../dom-utils/is-frame.js";
+import { isHTMLElement } from "../../dom-utils/is-html-element.js";
+import { focusableSelector } from "../constants.js";
+import type { IncludeContainerType } from "../types.js";
 import { isFocusable } from "./is-focusable.js";
 
 export const getFocusables = (

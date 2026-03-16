@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { getFocusables } from "../get-focusables.js";
+import { getFocusables } from "./get-focusables.js";
 
 describe("getFocusables", () => {
   test("when the element is not defined it should return an empty array", async () => {
