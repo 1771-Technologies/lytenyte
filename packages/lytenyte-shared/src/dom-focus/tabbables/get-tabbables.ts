@@ -21,9 +21,5 @@ export function getTabbables(container: HTMLElement | null, includeContainer?: I
     }
   });
 
-  if (!tabbableElements.length && includeContainer) {
-    return elements;
-  }
-
   return tabbableElements.sort((l, r) => getTabIndex(r) - getTabIndex(l));
 }

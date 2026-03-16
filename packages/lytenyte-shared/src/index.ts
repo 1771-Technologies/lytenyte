@@ -165,7 +165,7 @@ export {
 
 // DOM Utils
 export type { FocusTrapOptions } from "./dom-focus/index.js";
-export { FocusTrap, getTabbables } from "./dom-focus/index.js";
+export { FocusTrap, getTabbables, getFocusables } from "./dom-focus/index.js";
 
 export {
   supportsScrollEnd,

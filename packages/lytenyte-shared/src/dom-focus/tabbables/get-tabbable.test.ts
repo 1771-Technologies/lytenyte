@@ -85,4 +85,14 @@ describe("getTabbables", () => {
 
     expect(getTabbables(div)).toEqual([child1, child2]);
   });
+
+  test("Should return container if the tabbables list is empty and include container is true", () => {
+    const div = document.createElement("div");
+    div.tabIndex = 0;
+    div.style.height = "200px";
+    div.style.width = "200px";
+    document.body.appendChild(div);
+
+    expect(getTabbables(div, true)).toEqual([div]);
+  });
 });

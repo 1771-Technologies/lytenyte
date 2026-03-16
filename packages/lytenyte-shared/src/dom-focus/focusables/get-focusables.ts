@@ -4,6 +4,11 @@ import { focusableSelector } from "../constants.js";
 import type { IncludeContainerType } from "../types.js";
 import { isFocusable } from "./is-focusable.js";
 
+/**
+ * Returns all focusable elements within a container. Optionally includes the container
+ * itself based on the `includeContainer` option. Elements within nested iframes are
+ * also traversed and included.
+ */
 export const getFocusables = (
   container: Pick<HTMLElement, "querySelectorAll"> | null,
   includeContainer: IncludeContainerType = false,
