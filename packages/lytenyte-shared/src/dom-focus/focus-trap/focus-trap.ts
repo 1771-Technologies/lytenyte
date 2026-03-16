@@ -1,11 +1,11 @@
 // Refactored from https://github.com/focus-trap/focus-trap/blob/master/index.js
 // MIT License
 
-import { addDomEvent } from "../add-dom-event.js";
-import { getActiveElement } from "../get-active-element.js";
-import { getDocument } from "../get-document.js";
-import { getEventTarget } from "../get-event-target.js";
-import { isDocument } from "../is-document.js";
+import { addDomEvent } from "../../dom-utils/add-dom-event.js";
+import { getActiveElement } from "../../dom-utils/get-active-element.js";
+import { getDocument } from "../../dom-utils/get-document.js";
+import { getEventTarget } from "../../dom-utils/get-event-target.js";
+import { isDocument } from "../../dom-utils/is-document.js";
 import type {
   ActivateOptions,
   DeactivateOptions,
@@ -14,43 +14,41 @@ import type {
   FocusTrapState,
   PauseOptions,
   UnpauseOptions,
-} from "./+types.js";
-import { getFocusables } from "./get-focusables.js";
-import { getTabIndex } from "./get-tab-index.js";
-import { getTabbables } from "./get-tabbables.js";
-import { isFocusable } from "./is-focusable.js";
-import { isTabbable } from "./is-tabbable.js";
+} from "../types.js";
+import { getFocusables } from "../focusables/get-focusables.js";
+import { getTabIndex } from "../tabbables/get-tab-index.js";
+import { getTabbables } from "../tabbables/get-tabbables.js";
+import { isFocusable } from "../focusables/is-focusable.js";
+import { isTabbable } from "../tabbables/is-tabbable.js";
 
-const activeFocusTraps = {
-  activateTrap(trapStack: FocusTrap[], trap: FocusTrap) {
-    if (trapStack.length > 0) {
-      const activeTrap = trapStack[trapStack.length - 1];
-      if (activeTrap !== trap) {
-        activeTrap.pause();
-      }
+function activateTrap(trapStack: FocusTrap[], trap: FocusTrap) {
+  if (trapStack.length > 0) {
+    const activeTrap = trapStack[trapStack.length - 1];
+    if (activeTrap !== trap) {
+      activeTrap.pause();
     }
+  }
 
-    const trapIndex = trapStack.indexOf(trap);
-    if (trapIndex === -1) {
-      trapStack.push(trap);
-    } else {
-      // move this existing trap to the front of the queue
-      trapStack.splice(trapIndex, 1);
-      trapStack.push(trap);
-    }
-  },
+  const trapIndex = trapStack.indexOf(trap);
+  if (trapIndex === -1) {
+    trapStack.push(trap);
+  } else {
+    // move this existing trap to the front of the queue
+    trapStack.splice(trapIndex, 1);
+    trapStack.push(trap);
+  }
+}
 
-  deactivateTrap(trapStack: FocusTrap[], trap: FocusTrap) {
-    const trapIndex = trapStack.indexOf(trap);
-    if (trapIndex !== -1) {
-      trapStack.splice(trapIndex, 1);
-    }
+function deactivateTrap(trapStack: FocusTrap[], trap: FocusTrap) {
+  const trapIndex = trapStack.indexOf(trap);
+  if (trapIndex !== -1) {
+    trapStack.splice(trapIndex, 1);
+  }
 
-    if (trapStack.length > 0) {
-      trapStack[trapStack.length - 1].unpause();
-    }
-  },
-};
+  if (trapStack.length > 0) {
+    trapStack[trapStack.length - 1].unpause();
+  }
+}
 
 const sharedTrapStack: FocusTrap[] = [];
 
@@ -58,6 +56,8 @@ export class FocusTrap {
   private trapStack: FocusTrap[];
   private config: FocusTrapOptions;
   private doc: Document;
+  private _mutationObserver?: MutationObserver;
+  private listenerCleanups: VoidFunction[] = [];
 
   private state: FocusTrapState = {
     containers: [],
@@ -71,14 +71,22 @@ export class FocusTrap {
     recentNavEvent: undefined,
   };
 
+  /** Whether the focus trap is currently active. */
   get active() {
     return this.state.active;
   }
 
+  /** Whether the focus trap is currently paused. */
   get paused() {
     return this.state.paused;
   }
 
+  /**
+   * Creates a new focus trap for the given container element(s).
+   *
+   * @param elements - A single container element or an array of container elements to trap focus within.
+   * @param options - Configuration options for the focus trap.
+   */
   constructor(elements: HTMLElement | HTMLElement[], options: FocusTrapOptions) {
     this.trapStack = options.trapStack || sharedTrapStack;
 
@@ -110,7 +118,7 @@ export class FocusTrap {
       ({ container, tabbableNodes }) =>
         container.contains(element) ||
         composedPath?.includes(container) ||
-        tabbableNodes.find((node) => node === element),
+        tabbableNodes.some((node) => node === element),
     );
   }
 
@@ -123,12 +131,9 @@ export class FocusTrap {
       const lastTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : undefined;
 
       const firstDomTabbableNode = focusableNodes.find((node) => isTabbable(node));
-      const lastDomTabbableNode = focusableNodes
-        .slice()
-        .reverse()
-        .find((node) => isTabbable(node));
+      const lastDomTabbableNode = focusableNodes.findLast((node) => isTabbable(node));
 
-      const posTabIndexesFound = !!tabbableNodes.find((node) => getTabIndex(node) > 0);
+      const posTabIndexesFound = tabbableNodes.some((node) => getTabIndex(node) > 0);
 
       function nextTabbableNode(node: HTMLElement, forward = true) {
         const nodeIdx = tabbableNodes.indexOf(node);
@@ -179,11 +184,9 @@ export class FocusTrap {
     }
   }
 
-  private listenerCleanups: VoidFunction[] = [];
-
   private addListeners() {
     // There can be only one listening focus trap at a time
-    activeFocusTraps.activateTrap(this.trapStack, this);
+    activateTrap(this.trapStack, this);
 
     this.state.delayInitialFocusTimer = this.config.delayInitialFocus
       ? delay(() => {
@@ -212,6 +215,7 @@ export class FocusTrap {
     return this;
   }
 
+  // Arrow functions: these are passed directly as event listener callbacks and must be bound.
   private handleFocus = (event: FocusEvent) => {
     const target = getEventTarget(event) as HTMLElement;
     const targetContained = this.findContainerIndex(target, event) >= 0;
@@ -347,9 +351,11 @@ export class FocusTrap {
   };
 
   private handleTabKey = (event: KeyboardEvent) => {
-    if (this.config.isKeyForward!(event) || this.config.isKeyBackward!(event)) {
+    const isForward = this.config.isKeyForward!(event);
+    const isBackward = this.config.isKeyBackward!(event);
+
+    if (isForward || isBackward) {
       this.state.recentNavEvent = event;
-      const isBackward = this.config.isKeyBackward!(event);
 
       const destinationNode = this.findNextNavNode({ event, isBackward });
       if (!destinationNode) return;
@@ -369,9 +375,7 @@ export class FocusTrap {
     }
   };
 
-  private _mutationObserver?: MutationObserver;
-
-  private setupMutationObserver = () => {
+  private setupMutationObserver() {
     const win = this.doc.defaultView || window;
     this._mutationObserver = new win.MutationObserver((mutations) => {
       const isFocusedNodeRemoved = mutations.some((mutation) => {
@@ -384,19 +388,19 @@ export class FocusTrap {
         this.activate();
       }
     });
-  };
+  }
 
-  private updateObservedNodes = () => {
+  private updateObservedNodes() {
     this._mutationObserver?.disconnect();
 
     if (this.state.active && !this.state.paused) {
-      this.state.containers.map((container) => {
+      this.state.containers.forEach((container) => {
         this._mutationObserver?.observe(container, { subtree: true, childList: true });
       });
     }
-  };
+  }
 
-  private getInitialFocusNode = () => {
+  private getInitialFocusNode() {
     let node = this.getNodeForOption("initialFocus", { hasFallback: true });
 
     // false explicitly indicates we want no initialFocus at all
@@ -430,9 +434,9 @@ export class FocusTrap {
     }
 
     return node;
-  };
+  }
 
-  private tryFocus = (node: HTMLElement | false | null) => {
+  private tryFocus(node: HTMLElement | false | null) {
     if (node === false) return;
     if (node === getActiveElement(this.doc)) return;
     if (!node || !node.focus) {
@@ -447,8 +451,13 @@ export class FocusTrap {
     if (isSelectableInput(node)) {
       node.select();
     }
-  };
+  }
 
+  /**
+   * Activates the focus trap, directing focus to the initial focus node and beginning
+   * to intercept keyboard and pointer events to keep focus within the trap's containers.
+   * Has no effect if the trap is already active.
+   */
   activate(activateOptions?: ActivateOptions) {
     if (this.state.active) {
       return this;
@@ -486,7 +495,12 @@ export class FocusTrap {
     return this;
   }
 
-  deactivate = (deactivateOptions?: DeactivateOptions) => {
+  /**
+   * Deactivates the focus trap, removing all event listeners and optionally returning
+   * focus to the element that was focused before the trap was activated.
+   * Has no effect if the trap is not active.
+   */
+  deactivate(deactivateOptions?: DeactivateOptions) {
     if (!this.state.active) return this;
 
     const options = {
@@ -504,7 +518,7 @@ export class FocusTrap {
     this.state.paused = false;
     this.updateObservedNodes();
 
-    activeFocusTraps.deactivateTrap(this.trapStack, this);
+    deactivateTrap(this.trapStack, this);
 
     const onDeactivate = this.getOption(options, "onDeactivate");
     const onPostDeactivate = this.getOption(options, "onPostDeactivate");
@@ -531,9 +545,14 @@ export class FocusTrap {
 
     finishDeactivation();
     return this;
-  };
+  }
 
-  pause = (pauseOptions?: PauseOptions) => {
+  /**
+   * Temporarily suspends the focus trap without deactivating it. While paused, focus
+   * is no longer constrained to the trap's containers. Has no effect if the trap is
+   * already paused or not active.
+   */
+  pause(pauseOptions?: PauseOptions) {
     if (this.state.paused || !this.state.active) {
       return this;
     }
@@ -549,9 +568,14 @@ export class FocusTrap {
 
     onPostPause?.();
     return this;
-  };
+  }
 
-  unpause = (unpauseOptions?: UnpauseOptions) => {
+  /**
+   * Resumes a paused focus trap, restoring focus management and returning focus to
+   * the first tabbable node in the trap. Has no effect if the trap is not paused or
+   * not active.
+   */
+  unpause(unpauseOptions?: UnpauseOptions) {
     if (!this.state.paused || !this.state.active) {
       return this;
     }
@@ -568,33 +592,35 @@ export class FocusTrap {
 
     onPostUnpause?.();
     return this;
-  };
+  }
 
-  private getReturnFocusNode = (previousActiveElement: HTMLElement | null) => {
+  private getReturnFocusNode(previousActiveElement: HTMLElement | null) {
     const node = this.getNodeForOption("setReturnFocus", {
       params: [previousActiveElement],
     });
-    return node ? node : node === false ? false : previousActiveElement;
-  };
+    if (node) return node;
+    if (node === false) return false;
+    return previousActiveElement;
+  }
 
-  private getOption = (
+  private getOption(
     configOverrideOptions: any,
     optionName: keyof any,
     configOptionName?: keyof FocusTrapOptions,
-  ) => {
+  ) {
     return configOverrideOptions && configOverrideOptions[optionName] !== undefined
       ? configOverrideOptions[optionName]
       : // @ts-expect-error this is fine
         this.config[configOptionName || optionName];
-  };
+  }
 
-  private getNodeForOption = (
+  private getNodeForOption(
     optionName: keyof FocusTrapOptions,
     {
       hasFallback = false,
       params = [],
     }: { hasFallback?: boolean | undefined; params?: any[] | undefined } = {},
-  ) => {
+  ) {
     let optionValue: any = this.config[optionName];
     if (typeof optionValue === "function") optionValue = optionValue(...params);
     if (optionValue === true) optionValue = undefined;
@@ -622,9 +648,9 @@ export class FocusTrap {
     }
 
     return node;
-  };
+  }
 
-  private findNextNavNode = (opts: FindNextNodeOptions) => {
+  private findNextNavNode(opts: FindNextNodeOptions) {
     const { event, isBackward = false } = opts;
     // @ts-expect-error this fine
     const target = opts.target || (getEventTarget(event) as HTMLElement);
@@ -740,7 +766,7 @@ export class FocusTrap {
     }
 
     return destinationNode;
-  };
+  }
 }
 
 const isTabEvent = (event: KeyboardEvent) => event?.key === "Tab";

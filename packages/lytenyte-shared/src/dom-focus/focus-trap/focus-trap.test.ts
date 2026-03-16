@@ -1,10 +1,10 @@
 import { describe, expect, test, vi } from "vitest";
 import { userEvent } from "vitest/browser";
-import { FocusTrap } from "../focus-trap.js";
-import { wait } from "../../../js-utils/index.js";
+import { FocusTrap } from "./focus-trap.js";
+import { wait } from "../../js-utils/sleep.js";
 
-describe("focusTrap", () => {
-  test("when the provided container has focusable items it should be possible to trap the items in", async () => {
+describe("FocusTrap", () => {
+  test("Should trap focus within the container", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -31,7 +31,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("the focus trap should ensure focus cannot be moved outside of the container", async () => {
+  test("Should prevent focus from moving outside the container", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -56,7 +56,7 @@ describe("focusTrap", () => {
     await expect.element(button3).toHaveFocus();
   });
 
-  test("the focus trap should be responsive to new elements being added", async () => {
+  test("Should include newly added elements in the tab order", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -79,7 +79,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("the focus trap should be responsive to the active element being removed", async () => {
+  test("Should refocus when the active element is removed", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -100,7 +100,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("the focus trap should focus the initial node when activated", async () => {
+  test("Should focus the specified initial node on activation", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -119,7 +119,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("the focus trap should allow for a fallback focus when it is not longer active", async () => {
+  test("Should return focus to the previously focused element on deactivation", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -144,7 +144,7 @@ describe("focusTrap", () => {
     await expect.element(button3).toHaveFocus();
   });
 
-  test("the focus trap should be able to keep its focus when the focus is no longer active", async () => {
+  test("Should not return focus on deactivation when returnFocusOnDeactivate is false", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -169,7 +169,7 @@ describe("focusTrap", () => {
     await expect.element(button2).toHaveFocus();
   });
 
-  test("the focus trap should be able to specify its return focus", async () => {
+  test("Should return focus to the element specified by setReturnFocus", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -191,7 +191,7 @@ describe("focusTrap", () => {
     await expect.element(button3).toHaveFocus();
   });
 
-  test("the focus trap should handle the case where the return focus returns false", async () => {
+  test("Should not move focus on deactivation when setReturnFocus returns false", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -213,7 +213,7 @@ describe("focusTrap", () => {
     await expect.element(button2).toHaveFocus();
   });
 
-  test("the focus trap should allow clicks outside if set", async () => {
+  test("Should allow clicks outside the container when allowOutsideClick is true", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -241,7 +241,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("the focus trap should prevent clicks outside if set", async () => {
+  test("Should prevent clicks outside the container when allowOutsideClick is false", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -269,7 +269,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("focus traps should be nestable", async () => {
+  test("Should support nested focus traps", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -303,7 +303,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("focus trap should work across more than a single container", async () => {
+  test("Should trap focus across multiple containers", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -336,7 +336,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("focus trap should be pausable and restartable", async () => {
+  test("Should support pausing and unpausing", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -374,7 +374,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the trap stack is empty the trap.deactivate should work fine", () => {
+  test("Should deactivate gracefully when the trap stack is empty", () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -397,7 +397,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when there are listeners provided they should be called", async () => {
+  test("Should call all lifecycle listeners at the appropriate times", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -446,7 +446,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the trap has been deactivated, pausing and unpausing should not add/remove listeners", async () => {
+  test("Should not add or remove listeners after deactivation", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -467,7 +467,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when return focus is specified and the trap should check then it checks", async () => {
+  test("Should wait for checkCanReturnFocus to resolve before returning focus", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -492,7 +492,7 @@ describe("focusTrap", () => {
     await expect.element(button3).toHaveFocus();
   });
 
-  test("when there are no possible tabbables and there is no fallback provided the trap should throw", () => {
+  test("Should throw when there are no tabbable nodes and no fallback is provided", () => {
     const div = document.createElement("div");
 
     document.body.appendChild(div);
@@ -504,7 +504,7 @@ describe("focusTrap", () => {
     );
   });
 
-  test("when there are multiple containers in the trap and more than one tabbable has a positive index the trap should throw", () => {
+  test("Should throw when multiple containers contain nodes with positive tab indexes", () => {
     const divA = document.createElement("div");
     const divB = document.createElement("div");
     const buttonA = document.createElement("input");
@@ -525,7 +525,7 @@ describe("focusTrap", () => {
     );
   });
 
-  test("when the initial focus is not delayed the focus trap should try an immediately focus the node", async () => {
+  test("Should immediately focus the initial node when delayInitialFocus is false", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -545,7 +545,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when activating the trap should wait until check focus is resolved", async () => {
+  test("Should defer activation until checkCanFocusTrap resolves", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -573,7 +573,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when focus is active and a focusable is clicked inside of the container it should get focus", async () => {
+  test("Should move focus to a clicked focusable inside the container", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -592,7 +592,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when click to deactivate is set and a focusable outside is clicked then the trap should deactivate", async () => {
+  test("Should deactivate when clickOutsideDeactivates triggers on an outside click", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -617,7 +617,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the container is on a negative tab index node and target is focusable but not tabbable should move to the correct node", async () => {
+  test("Should navigate correctly when the target is focusable but not tabbable", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -646,7 +646,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when custom forward and previous buttons are used the focus should move correctly", async () => {
+  test("Should navigate using custom forward and backward key handlers", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -680,7 +680,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the focus is a select input", async () => {
+  test("Should select text when focusing a selectable input", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const select = document.createElement("input");
@@ -700,7 +700,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the docs default view is not set, the focus trap should fallback to the window", async () => {
+  test("Should fall back to window when the document has no defaultView", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("input");
     const button2 = document.createElement("input");
@@ -720,7 +720,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when escape should deactivate the trap deactivates", async () => {
+  test("Should deactivate when the Escape key is pressed", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("input");
@@ -739,7 +739,7 @@ describe("focusTrap", () => {
     expect(trap.active).toEqual(false);
   });
 
-  test("when the target is not contained and the document gets focused", async () => {
+  test("Should pull focus back into the trap when focus escapes to the document", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const input = document.createElement("input");
@@ -768,7 +768,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the target is not contained and the document gets focused and the element is changed", async () => {
+  test("Should pull focus back when the target escapes and tabbable nodes have been cleared", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const input = document.createElement("input");
@@ -798,7 +798,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the target is not contained but the tabbables have items", async () => {
+  test("Should pull focus back when the target escapes and tabbable nodes are present", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const input = document.createElement("input");
@@ -828,7 +828,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the initial focus is false, should return", async () => {
+  test("Should not auto-focus any element when initialFocus is false", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -847,7 +847,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the initial node is not focusable the focus trap should try focusing the first node that is", async () => {
+  test("Should fall back to the first tabbable node when the initial focus node is not focusable", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const div2 = document.createElement("div");
@@ -865,7 +865,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the initial node is not focusable and there are no tabbable nodes, the fallback should be used", async () => {
+  test("Should use fallbackFocus when the initial node is not focusable and no tabbable nodes exist", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -887,7 +887,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the initial node is null the fallback node should be used", async () => {
+  test("Should use fallbackFocus when the initial focus selector matches no node", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -909,7 +909,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the initial node is null and the fallback is not defined it should throw", async () => {
+  test("Should throw when the initial focus selector matches no node and no fallback is defined", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -932,7 +932,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the initial node is null and the fallback is null it should throw", async () => {
+  test("Should throw when setReturnFocus uses an invalid selector on deactivation", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -965,7 +965,7 @@ describe("focusTrap", () => {
     vi.useRealTimers();
   });
 
-  test("when the node is not connected the trap focus should use the fallback", async () => {
+  test("Should use fallbackFocus when the initial focus node is not connected to the DOM", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -985,7 +985,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the option value is true it should focus the first node", async () => {
+  test("Should focus the first tabbable node when initialFocus is true", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -1003,7 +1003,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the option value is null the trap should throw", async () => {
+  test("Should throw when fallbackFocus is null", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -1026,7 +1026,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when both the initial focus and the fallback focus return null the trap should throw", () => {
+  test("Should throw when both initialFocus and fallbackFocus selectors match no node", () => {
     const div = document.createElement("div");
     const trap = new FocusTrap(div, { fallbackFocus: "#id", initialFocus: "#id" });
     expect(() => trap.activate()).toThrowErrorMatchingInlineSnapshot(
@@ -1036,7 +1036,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when the initial focus is a query selector it should handle the query", async () => {
+  test("Should focus the element matched by the initialFocus selector", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -1055,7 +1055,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when both the initial selector is badly formed it should throw", () => {
+  test("Should throw when the fallbackFocus selector is malformed", () => {
     const div = document.createElement("div");
     const trap = new FocusTrap(div, { fallbackFocus: "{{" });
     expect(() => trap.activate()).toThrowError("`fallbackFocus` appears to be an invalid selector;");
@@ -1063,7 +1063,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when activate is provided options they should be used", async () => {
+  test("Should use per-call options passed to activate", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -1100,7 +1100,7 @@ describe("focusTrap", () => {
   });
 
   // INTERNALS
-  test("handleFocus Internals coverage", async () => {
+  test("Should handle all internal handleFocus branches", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -1153,7 +1153,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("tryFocus internal", async () => {
+  test("Should handle a null node in tryFocus without throwing", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -1174,7 +1174,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("findNextNavNode internal", async () => {
+  test("Should handle all internal findNextNavNode branches", async () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");
@@ -1229,7 +1229,7 @@ describe("focusTrap", () => {
     trap.deactivate();
   });
 
-  test("when activating the trap should handle the case where there is not focusable node before activation", () => {
+  test("Should handle activation when no element is focused before activation", () => {
     const div = document.createElement("div");
     const button1 = document.createElement("button");
     const button2 = document.createElement("button");

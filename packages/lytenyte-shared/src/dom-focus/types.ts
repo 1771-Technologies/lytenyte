@@ -1,9 +1,20 @@
+/**
+ * Controls whether the container element itself is included in the focusable results.
+ * `true` always includes it, `false` never includes it, and `"if-empty"` includes it
+ * only when no focusable descendants are found.
+ */
 export type IncludeContainerType = boolean | "if-empty";
 
+/** A focusable HTML or SVG element. */
 export type FocusableElement = HTMLElement | SVGElement;
 
+/** A focusable element or a CSS selector string that resolves to one. */
 export type FocusTargetValue = FocusableElement | string;
 
+/**
+ * A focusable element, a CSS selector string that resolves to one, or `false`
+ * to explicitly opt out of focusing.
+ */
 export type FocusTargetValueOrFalse = FocusTargetValue | false;
 
 /**
@@ -43,20 +54,20 @@ export interface FocusTrapOptions {
 
   /**
    * A function that will be called after the trap has been completely paused and is no longer
-   *  managing/trapping focus.
+   * managing or trapping focus.
    */
   onPostPause?: VoidFunction | undefined;
 
   /**
    * A function that will be called immediately after the trap's state is updated to be active
-   *  again, but prior to updating its knowledge of what nodes are tabbable within its containers,
-   *  and prior to actively managing/trapping focus.
+   * again, but prior to updating its knowledge of what nodes are tabbable within its containers,
+   * and prior to actively managing or trapping focus.
    */
   onUnpause?: VoidFunction | undefined;
 
   /**
    * A function that will be called after the trap has been completely unpaused and is once
-   *  again managing/trapping focus.
+   * again managing and trapping focus.
    */
   onPostUnpause?: VoidFunction | undefined;
 
@@ -81,7 +92,7 @@ export interface FocusTrapOptions {
 
   /**
    * A function that will be called after the trap is deactivated, after `onDeactivate`.
-   * If `returnFocus` was set, it will be called **after** focus has been sent to the trigger
+   * If `returnFocus` is set, it will be called **after** focus has been sent to the trigger
    * element upon deactivation; otherwise, it will be called after deactivation completes.
    */
   onPostDeactivate?: VoidFunction | undefined;
@@ -225,6 +236,7 @@ export interface FindNextNodeOptions {
   isBackward?: boolean | undefined;
 }
 
+/** Internal runtime state maintained by a `FocusTrap` instance. */
 export interface FocusTrapState {
   containers: HTMLElement[];
   nodeFocusedBeforeActivation: HTMLElement | null;
@@ -238,11 +250,15 @@ export interface FocusTrapState {
   recentNavEvent: KeyboardEvent | undefined;
 }
 
+/** Options accepted by `FocusTrap.deactivate()`, overriding the corresponding constructor options. */
 export interface DeactivateOptions
   extends Pick<FocusTrapOptions, "onDeactivate" | "onPostDeactivate" | "checkCanReturnFocus"> {
   returnFocus?: boolean | undefined;
 }
 
+/** Options accepted by `FocusTrap.activate()`, overriding the corresponding constructor options. */
 export type ActivateOptions = Pick<FocusTrapOptions, "onActivate" | "onPostActivate" | "checkCanFocusTrap">;
+/** Options accepted by `FocusTrap.pause()`, overriding the corresponding constructor options. */
 export type PauseOptions = Pick<FocusTrapOptions, "onPause" | "onPostPause">;
+/** Options accepted by `FocusTrap.unpause()`, overriding the corresponding constructor options. */
 export type UnpauseOptions = Pick<FocusTrapOptions, "onUnpause" | "onPostUnpause">;

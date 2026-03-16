@@ -1,6 +1,6 @@
 import type { PositionState, RootCellFn, ScrollIntoViewFn } from "../+types.js";
 import type { PositionHeaderCell, PositionUnion } from "../../+types.js";
-import { getFirstTabbable } from "../../dom-utils/index.js";
+import { getTabbables } from "../../dom-focus/index.js";
 import { runWithBackoff } from "../../js-utils/index.js";
 import { getRowIndex } from "../attributes.js";
 import { BACKOFF_RUNS } from "../constants.js";
@@ -242,7 +242,7 @@ export function handleVertical(params: HandleVerticalParams) {
           false,
           () => {
             const detail = queryDetail(gridId, pos.rowIndex, viewport);
-            return detail ? (getFirstTabbable(detail) ?? detail) : detail;
+            return detail ? (getTabbables(detail).at(0) ?? detail) : detail;
           },
           () => {
             cp.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionHeaderCell);
@@ -273,7 +273,7 @@ export function handleVertical(params: HandleVerticalParams) {
           false,
           () => {
             const detail = queryDetail(gridId, nextIndex, viewport);
-            return detail ? (getFirstTabbable(detail) ?? detail) : detail;
+            return detail ? (getTabbables(detail).at(0) ?? detail) : detail;
           },
           () => {
             cp.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionHeaderCell);

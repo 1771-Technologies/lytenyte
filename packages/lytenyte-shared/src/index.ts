@@ -164,25 +164,18 @@ export {
 } from "./js-utils/index.js";
 
 // DOM Utils
-export type { FocusTrapOptions } from "./dom-utils/focus/+types.js";
+export type { FocusTrapOptions } from "./dom-focus/index.js";
+export { FocusTrap, getTabbables, getFocusables } from "./dom-focus/index.js";
+
 export {
-  FocusTrap,
   supportsScrollEnd,
   getActiveElement,
   getComputedStyle,
-  getFirstFocusable,
-  getFirstTabbable,
-  getFocusables,
   getFrameElement,
-  getLastTabbable,
   getNearestMatching,
-  getNextTabbable,
-  getTabIndex,
-  getTabbables,
   isAppleDevice,
   isChrome,
   isFirefox,
-  isFocusable,
   isHTMLElement,
   isIOS,
   isIPad,
@@ -190,7 +183,6 @@ export {
   isInView,
   isLastTraversableNode,
   isMac,
-  isTabbable,
   isWebKit,
   isTextInputFocused,
   testPlatform,

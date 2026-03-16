@@ -1,26 +1,26 @@
 import { describe, expect, test, vi } from "vitest";
-import { getTabIndex } from "../get-tab-index.js";
+import { getTabIndex } from "./get-tab-index.js";
 
 describe("getTabIndex", () => {
-  test("when the element provided is a tabbable by default it should return 0", () => {
+  test("Should return 0 for elements that are tabbable by default", () => {
     expect(getTabIndex(document.createElement("button"))).toEqual(0);
   });
 
-  test("when the element is editable and tab index is less than 0 it should return 0", () => {
+  test("Should return 0 when an editable element has a negative tab index", () => {
     const v = document.createElement("input");
     vi.spyOn(v, "tabIndex", "get").mockImplementation(() => -1);
 
     expect(getTabIndex(v)).toEqual(0);
   });
 
-  test("when the element is not editable and tab index is less than 0 it should return the tab index", () => {
+  test("Should return the actual negative tab index for non-editable, non-media elements", () => {
     const v = document.createElement("div");
     vi.spyOn(v, "tabIndex", "get").mockImplementation(() => -1);
 
     expect(getTabIndex(v)).toEqual(-1);
   });
 
-  test("when the element is an audio, video, or details element it should have a tab index of 0", () => {
+  test("Should return 0 for audio, video, and details elements with a negative tab index", () => {
     const v = document.createElement("video");
     vi.spyOn(v, "tabIndex", "get").mockImplementation(() => -1);
     const a = document.createElement("audio");
@@ -33,7 +33,7 @@ describe("getTabIndex", () => {
     expect(getTabIndex(d)).toEqual(0);
   });
 
-  test("when the element has a tab index set it should be returned", () => {
+  test("Should return the explicitly set tab index", () => {
     const d = document.createElement("div");
     d.tabIndex = 2;
     expect(getTabIndex(d)).toEqual(2);
