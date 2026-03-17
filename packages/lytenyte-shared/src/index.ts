@@ -192,4 +192,4 @@ export {
 export type { OnAnimationFinishedParams } from "./dom-utils/frame/animation-finished.js";
 export { onAnimationFinished } from "./dom-utils/frame/animation-finished.js";
 
-export { SCROLL_LOCKER } from "./dom-utils/scroll-lock/scroll-locker.js";
+export { SCROLL_LOCKER } from "./dom-scroll-lock/scroll-locker.js";
