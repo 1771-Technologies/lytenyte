@@ -118,6 +118,8 @@ describe("ScrollLocker", () => {
   test("Should use basicPreventScroll on iOS", async () => {
     // Covers: line 46 left-true (isIOS()), line 48 true branch
     // Mock navigator.userAgentData.platform to "iPhone" so isIOS() returns true
+    // @ts-expect-error this won't be defined in Firefox or Safari
+    navigator.userAgentData ??= {};
     vi.spyOn(navigator as any, "userAgentData", "get").mockReturnValue({
       platform: "iPhone",
       mobile: true,

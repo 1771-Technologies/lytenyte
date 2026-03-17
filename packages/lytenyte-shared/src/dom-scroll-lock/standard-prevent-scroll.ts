@@ -1,12 +1,22 @@
 import { isWebKit } from "../dom-utils/index.js";
 import { getDocument } from "../dom-utils/get-document.js";
 import { getWindow } from "../dom-utils/get-window.js";
-import { frame } from "../dom-utils/frame/frame.js";
+import { frame } from "../dom-frame/frame.js";
 
-let originalHtmlStyles: Partial<CSSStyleDeclaration> = {};
-let originalBodyStyles: Partial<CSSStyleDeclaration> = {};
-let originalHtmlScrollBehavior = "";
+let savedStyles: Partial<CSSStyleDeclaration> = {};
+let savedBodyStyles: Partial<CSSStyleDeclaration> = {};
+let savedScrollBehavior = "";
 
+// references
+// https://github.com/willmcpo/body-scroll-lock/blob/master/src/bodyScrollLock.js
+
+/**
+ * Prevents page scrolling using a layout-based strategy that preserves the
+ * scrollbar gutter so the page does not shift when the lock is applied.
+ * Saves the current scroll position and restores it on cleanup. Returns a
+ * cleanup function that removes the lock, or null on WebKit when the visual
+ * viewport is zoomed in (where the lock cannot be applied safely).
+ */
 export function standardPreventScroll(referenceElement: Element | null) {
   const doc = getDocument(referenceElement);
   const html = doc.documentElement;
@@ -27,14 +37,14 @@ export function standardPreventScroll(referenceElement: Element | null) {
     scrollTop = html.scrollTop;
     scrollLeft = html.scrollLeft;
 
-    originalHtmlStyles = {
+    savedStyles = {
       scrollbarGutter: html.style.scrollbarGutter,
       overflowY: html.style.overflowY,
       overflowX: html.style.overflowX,
     };
-    originalHtmlScrollBehavior = html.style.scrollBehavior;
+    savedScrollBehavior = html.style.scrollBehavior;
 
-    originalBodyStyles = {
+    savedBodyStyles = {
       position: body.style.position,
       height: body.style.height,
       width: body.style.width,
@@ -85,12 +95,12 @@ export function standardPreventScroll(referenceElement: Element | null) {
   }
 
   function cleanup() {
-    Object.assign(html.style, originalHtmlStyles);
-    Object.assign(body.style, originalBodyStyles);
+    Object.assign(html.style, savedStyles);
+    Object.assign(body.style, savedBodyStyles);
     html.scrollTop = scrollTop;
     html.scrollLeft = scrollLeft;
     html.removeAttribute("data-ln-scroll-locked");
-    html.style.scrollBehavior = originalHtmlScrollBehavior;
+    html.style.scrollBehavior = savedScrollBehavior;
   }
 
   function handleResize() {

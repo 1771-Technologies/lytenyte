@@ -1,3 +1,4 @@
+// reference https://github.com/pmndrs/rafz
 export interface Timeout {
   time: number;
   handler: () => void;

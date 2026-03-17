@@ -189,7 +189,7 @@ export {
   testUserAgent,
   getScrollStatus,
 } from "./dom-utils/index.js";
-export type { OnAnimationFinishedParams } from "./dom-utils/frame/animation-finished.js";
-export { onAnimationFinished } from "./dom-utils/frame/animation-finished.js";
+export type { OnAnimationFinishedParams } from "./dom-utils/animation-finished.js";
+export { onAnimationFinished } from "./dom-utils/animation-finished.js";
 
 export { SCROLL_LOCKER } from "./dom-scroll-lock/scroll-locker.js";

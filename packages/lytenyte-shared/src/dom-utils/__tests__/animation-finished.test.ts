@@ -1,6 +1,6 @@
 import { expect, test, vi } from "vitest";
 import { onAnimationFinished } from "../animation-finished.js";
-import { wait } from "../../../js-utils/index.js";
+import { wait } from "../../js-utils/index.js";
 
 test("when an element is animating the animation finished should only be called once it finishes", async () => {
   const button = document.createElement("button");
