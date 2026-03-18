@@ -1,4 +1,4 @@
-import { hasNegativeTabIndex } from "../../dom-utils/has-negative-tab-index.js";
+import { hasNegativeTabIndex } from "./has-negative-tab-index.js";
 import { isFocusable } from "../focusables/is-focusable.js";
 
 /**

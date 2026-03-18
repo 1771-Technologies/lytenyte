@@ -1,4 +1,3 @@
-import { getActiveElement, getNearestMatching, isTextInputFocused } from "../dom-utils/index.js";
 import type { ScrollIntoViewFn } from "../types.js";
 import { handleViewportFocused } from "./key-handler/handle-viewport-focused.js";
 import { nearestFocusable } from "./nearest-focusable.js";
@@ -8,6 +7,8 @@ import { handleVertical } from "./key-handler/handle-vertical.js";
 import { handleHomeEnd } from "./key-handler/handle-home-end.js";
 import { handlePageKeys } from "./key-handler/handle-page-keys.js";
 import { canMoveInInput } from "./can-move-in-input.js";
+import { isTextInputFocused } from "../dom-utils/predicates/index.js";
+import { getActiveElement, getNearestMatching } from "../dom-utils/getters/index.js";
 
 export interface NavigatorParams {
   readonly viewport: HTMLElement;

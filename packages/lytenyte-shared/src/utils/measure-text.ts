@@ -1,4 +1,4 @@
-import { isHTMLElement } from "../dom-utils/index.js";
+import { isHTMLElement } from "../dom-utils/predicates/index.js";
 
 let canvas: null | HTMLCanvasElement = null;
 let context: null | CanvasRenderingContext2D = null;

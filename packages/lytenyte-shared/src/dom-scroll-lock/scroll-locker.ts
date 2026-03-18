@@ -1,6 +1,6 @@
-import { getDocument } from "../dom-utils/get-document.js";
-import { getWindow } from "../dom-utils/get-window.js";
-import { isIOS } from "../dom-utils/is-ios.js";
+import { getDocument } from "../dom-utils/getters/get-document.js";
+import { getWindow } from "../dom-utils/getters/get-window.js";
+import { isIOS } from "../dom-utils/detection/index.js";
 import { basicPreventScroll } from "./basic-prevent-scroll.js";
 import { hasInsetScrollbars } from "./has-inset-scrollbars.js";
 import { standardPreventScroll } from "./standard-prevent-scroll.js";
