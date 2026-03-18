@@ -1,9 +1,9 @@
 import { getDocument } from "../dom-utils/getters/get-document.js";
-import { getWindow } from "../dom-utils/getters/get-window.js";
 import { isIOS } from "../dom-utils/detection/index.js";
 import { basicPreventScroll } from "./basic-prevent-scroll.js";
 import { hasInsetScrollbars } from "./has-inset-scrollbars.js";
 import { standardPreventScroll } from "./standard-prevent-scroll.js";
+import { getComputedStyle } from "../dom-utils/getters/get-computed-style.js";
 
 /**
  * Manages a reference-counted scroll lock. Multiple callers can independently
@@ -62,7 +62,7 @@ export class ScrollLocker {
 
     const doc = getDocument(referenceElement);
     const html = doc.documentElement;
-    const htmlOverflowY = getWindow(html).getComputedStyle(html).overflowY;
+    const htmlOverflowY = getComputedStyle(html).overflowY;
 
     if (htmlOverflowY === "hidden" || htmlOverflowY === "clip") {
       this.restore = () => {};

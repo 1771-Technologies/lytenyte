@@ -30,10 +30,8 @@ declare global {
 }
 
 export function testUserAgent(re: RegExp) {
-  /* v8 ignore next 3 */
-  if (typeof window === "undefined" || window.navigator == null) {
-    return false;
-  }
+  if (window.navigator == null) return false;
+
   return (
     window.navigator["userAgentData"]?.brands.some((brand) => re.test(brand.brand)) ||
     re.test(window.navigator.userAgent)

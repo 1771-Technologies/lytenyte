@@ -30,8 +30,7 @@ declare global {
 }
 
 export function testPlatform(re: RegExp) {
-  return typeof window !== "undefined" && window.navigator != null
-    ? /* v8 ignore next 8 */
-      re.test(window.navigator["userAgentData"]?.platform || window.navigator.platform)
+  return window.navigator != null
+    ? re.test(window.navigator["userAgentData"]?.platform || window.navigator.platform)
     : false;
 }

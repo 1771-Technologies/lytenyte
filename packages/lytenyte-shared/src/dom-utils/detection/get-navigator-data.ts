@@ -4,7 +4,6 @@ interface NavigatorUAData {
   platform: string;
 }
 
-// Avoid Chrome DevTools blue warning.
 export function getNavigatorData(): { platform: string; maxTouchPoints: number } {
   if (typeof navigator === "undefined") {
     return { platform: "", maxTouchPoints: -1 };
