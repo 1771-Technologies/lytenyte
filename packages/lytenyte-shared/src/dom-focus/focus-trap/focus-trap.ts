@@ -1,11 +1,11 @@
 // Refactored from https://github.com/focus-trap/focus-trap/blob/master/index.js
 // MIT License
 
-import { addDomEvent } from "../../dom-utils/add-dom-event.js";
-import { getActiveElement } from "../../dom-utils/get-active-element.js";
-import { getDocument } from "../../dom-utils/get-document.js";
-import { getEventTarget } from "../../dom-utils/get-event-target.js";
-import { isDocument } from "../../dom-utils/is-document.js";
+import { addDomEvent } from "./add-dom-event.js";
+import { getActiveElement } from "../../dom-utils/getters/get-active-element.js";
+import { getDocument } from "../../dom-utils/getters/get-document.js";
+import { getEventTarget } from "../../dom-utils/getters/get-event-target.js";
+import { isDocument } from "../../dom-utils/predicates/index.js";
 import type {
   ActivateOptions,
   DeactivateOptions,

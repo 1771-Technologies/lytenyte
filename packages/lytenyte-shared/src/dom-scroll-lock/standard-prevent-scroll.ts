@@ -1,6 +1,6 @@
-import { isWebKit } from "../dom-utils/index.js";
-import { getDocument } from "../dom-utils/get-document.js";
-import { getWindow } from "../dom-utils/get-window.js";
+import { isWebKit } from "../dom-utils/detection/index.js";
+import { getDocument } from "../dom-utils/getters/get-document.js";
+import { getWindow } from "../dom-utils/getters/get-window.js";
 import { frame } from "../dom-frame/frame.js";
 
 let savedStyles: Partial<CSSStyleDeclaration> = {};

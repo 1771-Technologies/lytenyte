@@ -1,5 +1,5 @@
 import type { PositionUnion } from "../+types";
-import { getWindow } from "../dom-utils/get-window.js";
+import { getWindow } from "../dom-utils/getters/get-window.js";
 import type { PositionState } from "./+types";
 import { nearestFocusable } from "./nearest-focusable.js";
 import { positionFromElement } from "./position-from-element.js";

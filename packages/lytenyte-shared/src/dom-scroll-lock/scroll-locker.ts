@@ -1,9 +1,9 @@
-import { getDocument } from "../dom-utils/get-document.js";
-import { getWindow } from "../dom-utils/get-window.js";
-import { isIOS } from "../dom-utils/is-ios.js";
+import { getDocument } from "../dom-utils/getters/get-document.js";
+import { isIOS } from "../dom-utils/detection/index.js";
 import { basicPreventScroll } from "./basic-prevent-scroll.js";
 import { hasInsetScrollbars } from "./has-inset-scrollbars.js";
 import { standardPreventScroll } from "./standard-prevent-scroll.js";
+import { getComputedStyle } from "../dom-utils/getters/get-computed-style.js";
 
 /**
  * Manages a reference-counted scroll lock. Multiple callers can independently
@@ -39,11 +39,6 @@ export class ScrollLocker {
     }
   };
 
-  /**
-   * Calls the stored restore function and clears it, but only if the lock
-   * count is still zero when this runs. Guards against a release being
-   * followed immediately by a new acquire before the timeout fires.
-   */
   #unlock = () => {
     if (this.lockCount === 0 && this.restore) {
       this.restore?.();
@@ -51,18 +46,12 @@ export class ScrollLocker {
     }
   };
 
-  /**
-   * Applies the scroll lock by selecting the appropriate strategy. Uses
-   * `basicPreventScroll` on iOS or when inset scrollbars are absent, and
-   * `standardPreventScroll` otherwise. Does nothing if the document is already
-   * scroll-locked via `overflow: hidden` or `overflow: clip`.
-   */
   #lock(referenceElement: Element | null) {
     if (this.lockCount <= 0 || this.restore !== null) return;
 
     const doc = getDocument(referenceElement);
     const html = doc.documentElement;
-    const htmlOverflowY = getWindow(html).getComputedStyle(html).overflowY;
+    const htmlOverflowY = getComputedStyle(html).overflowY;
 
     if (htmlOverflowY === "hidden" || htmlOverflowY === "clip") {
       this.restore = () => {};

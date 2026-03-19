@@ -1,5 +1,4 @@
-import { isFrame } from "../../dom-utils/is-frame.js";
-import { isHTMLElement } from "../../dom-utils/is-html-element.js";
+import { isFrame, isHTMLElement } from "../../dom-utils/predicates/index.js";
 import { focusableSelector } from "../constants.js";
 import type { IncludeContainerType } from "../types.js";
 import { isFocusable } from "./is-focusable.js";

@@ -166,30 +166,45 @@ export {
 // DOM Utils
 export type { FocusTrapOptions } from "./dom-focus/index.js";
 export { FocusTrap, getTabbables, getFocusables } from "./dom-focus/index.js";
-
 export {
-  supportsScrollEnd,
   getActiveElement,
   getComputedStyle,
+  getDocument,
+  getDocumentElement,
+  getEventTarget,
   getFrameElement,
   getNearestMatching,
+  getNodeName,
+  getParentNode,
+  getWindow,
+  getScrollStatus,
+} from "./dom-utils/getters/index.js";
+export {
+  contains,
+  isAnchorElement,
+  isDocument,
+  isEditableElement,
+  isFrame,
+  isHTMLElement,
+  isInputElement,
+  isNode,
+  isRootElement,
+  isShadowRoot,
+  isTextInputFocused,
+  isVisualViewport,
+  isWindow,
+  supportsScrollEnd,
+} from "./dom-utils/predicates/index.js";
+export {
   isAppleDevice,
   isChrome,
   isFirefox,
-  isHTMLElement,
   isIOS,
   isIPad,
   isIPhone,
-  isInView,
-  isLastTraversableNode,
   isMac,
   isWebKit,
-  isTextInputFocused,
-  testPlatform,
-  testUserAgent,
-  getScrollStatus,
-} from "./dom-utils/index.js";
-export type { OnAnimationFinishedParams } from "./dom-utils/animation-finished.js";
-export { onAnimationFinished } from "./dom-utils/animation-finished.js";
-
+} from "./dom-utils/detection/index.js";
+export type { OnAnimationFinishedParams } from "./dom-utils/animation-finished/animation-finished.js";
+export { onAnimationFinished } from "./dom-utils/animation-finished/animation-finished.js";
 export { SCROLL_LOCKER } from "./dom-scroll-lock/scroll-locker.js";
