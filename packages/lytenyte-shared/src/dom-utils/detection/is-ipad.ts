@@ -17,6 +17,10 @@ import { cached } from "./cached.js";
 import { isMac } from "./is-mac.js";
 import { testPlatform } from "./test-platform.js";
 
+/**
+ * Returns true if the current device is an iPad, including iPadOS 13+ devices that report as
+ * Mac. Result is cached after the first call.
+ */
 export const isIPad = cached(function () {
   return (
     testPlatform(/^iPad/i) ||

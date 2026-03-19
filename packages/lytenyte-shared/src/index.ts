@@ -177,6 +177,7 @@ export {
   getNodeName,
   getParentNode,
   getWindow,
+  getScrollStatus,
 } from "./dom-utils/getters/index.js";
 export {
   contains,
@@ -185,9 +186,7 @@ export {
   isEditableElement,
   isFrame,
   isHTMLElement,
-  isInView,
   isInputElement,
-  isLastTraversableNode,
   isNode,
   isRootElement,
   isShadowRoot,

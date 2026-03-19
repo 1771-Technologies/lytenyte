@@ -6,5 +6,6 @@ export { getEventTarget } from "./get-event-target.js";
 export { getFrameElement } from "./get-frame-element.js";
 export { getNearestMatching } from "./get-nearest-matching.js";
 export { getNodeName } from "./get-node-name.js";
+export { getScrollStatus } from "./get-scroll-status.js";
 export { getParentNode } from "./get-parent-node.js";
 export { getWindow } from "./get-window.js";

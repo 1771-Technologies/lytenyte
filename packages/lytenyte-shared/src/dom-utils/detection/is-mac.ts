@@ -16,6 +16,7 @@ limitations under the License.
 import { cached } from "./cached.js";
 import { testPlatform } from "./test-platform.js";
 
+/** Returns true if the current device is a Mac. Result is cached after the first call. */
 export const isMac = cached(function () {
   return testPlatform(/^Mac/i);
 });

@@ -4,7 +4,7 @@ import { getActiveElement } from "./get-active-element.js";
 import { wait } from "../../js-utils/index.js";
 
 describe("getActiveElement", () => {
-  test("When the active element is in the document it should be returned", async () => {
+  test("Should return the focused element from the document", async () => {
     const button = document.createElement("button");
     button.innerText = "Click me";
     document.body.appendChild(button);
@@ -15,7 +15,7 @@ describe("getActiveElement", () => {
     expect(getActiveElement(document)).toBe(button);
   });
 
-  test("When the active element is in a shadow root it should be returned", async () => {
+  test("Should return the focused element from a shadow root", async () => {
     const host = document.createElement("host");
     host.innerText = "some text";
     document.body.appendChild(host);
@@ -27,7 +27,7 @@ describe("getActiveElement", () => {
     expect(getActiveElement(document)).toBe(host);
   });
 
-  test("When the focused element is within the shadow root", async () => {
+  test("Should return the deepest focused element when nested inside shadow roots", async () => {
     const nestedHost = document.createElement("div");
     const outer = nestedHost.attachShadow({ mode: "open" });
     const innerHost = document.createElement("div");

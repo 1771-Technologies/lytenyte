@@ -11,7 +11,6 @@ function getAxisStatus(
 
   if (scrollPos <= epsilon) return "none";
   if (scrollPos >= maxScroll - epsilon) return "full";
-  if (scrollPos >= epsilon) return "partial";
   return "partial";
 }
 

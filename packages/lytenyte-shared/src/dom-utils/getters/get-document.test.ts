@@ -2,15 +2,15 @@ import { describe, expect, test, vi } from "vitest";
 import { getDocument } from "./get-document.js";
 
 describe("getDocument", () => {
-  test("When the document itself is passed in, it should just be returned", () => {
+  test("Should return the document when the document itself is passed", () => {
     expect(getDocument(document)).toBe(document);
   });
 
-  test("When passing in a window object, the document element should be returned", () => {
+  test("Should return the document when a window object is passed", () => {
     expect(getDocument(window)).toBe(document);
   });
 
-  test("When the element does not have a ownerDocument, the document should be returned", () => {
+  test("Should return the global document when the element has no ownerDocument", () => {
     const el = document.createElement("div");
 
     vi.spyOn(el, "ownerDocument", "get").mockImplementation(() => null as any);
@@ -18,7 +18,7 @@ describe("getDocument", () => {
     expect(getDocument(el)).toBe(document);
   });
 
-  test("When the element is not defined, the document should returned", () => {
+  test("Should return the global document when null is passed", () => {
     expect(getDocument(null)).toBe(document);
   });
 });

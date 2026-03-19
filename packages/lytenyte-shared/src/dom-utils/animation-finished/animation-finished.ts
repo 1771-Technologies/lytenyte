@@ -6,6 +6,11 @@ export interface OnAnimationFinishedParams {
 
   readonly signal?: AbortSignal | null;
 }
+/**
+ * Runs a callback after all current animations on the element have finished. If the element has
+ * no getAnimations method, the callback is invoked immediately. The callback is skipped if the
+ * provided signal is aborted.
+ */
 export function onAnimationFinished({ element, signal, fn }: OnAnimationFinishedParams): void {
   if (typeof element.getAnimations !== "function") {
     fn();

@@ -2,11 +2,11 @@ import { describe, expect, test } from "vitest";
 import { isHTMLElement } from "./is-html-element.js";
 
 describe("isHTMLElement", () => {
-  test("when the element provided is an HTML element it should return true", () => {
+  test("Should return true when the value is an HTML element", () => {
     expect(isHTMLElement(document.createElement("div"))).toEqual(true);
   });
 
-  test("when the element provided is not an HTML element it should return false", () => {
+  test("Should return false when the value is not an HTML element", () => {
     expect(isHTMLElement(window)).toEqual(false);
   });
 });

@@ -29,6 +29,10 @@ declare global {
   }
 }
 
+/**
+ * Returns true if the navigator's userAgent string or any userAgentData brand matches the given
+ * regular expression.
+ */
 export function testUserAgent(re: RegExp) {
   if (window.navigator == null) return false;
 

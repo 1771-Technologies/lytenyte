@@ -2,12 +2,12 @@ import { describe, expect, test } from "vitest";
 import { isVisualViewport } from "./is-visual-viewport.js";
 
 describe("isVisualViewport", () => {
-  test("when the value provided is the visual viewport it should return true", () => {
+  test("Should return true when the value is a VisualViewport and false otherwise", () => {
     expect(isVisualViewport({ constructor: { name: "VisualViewport" } })).toEqual(true);
     expect(isVisualViewport({ constructor: { name: "X" } })).toEqual(false);
   });
 
-  test("when the value provided is not valid it should return false", () => {
+  test("Should return false when the value is null", () => {
     expect(isVisualViewport(null)).toEqual(false);
   });
 });

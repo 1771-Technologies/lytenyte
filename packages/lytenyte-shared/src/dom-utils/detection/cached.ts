@@ -14,6 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+ * Returns a memoized version of a boolean-returning function. The cached result can be reset by
+ * calling __clear on the returned function.
+ */
 export function cached(fn: () => boolean) {
   let res: boolean | null = null;
   const memo = () => {

@@ -2,14 +2,14 @@ import { describe, expect, test, vi } from "vitest";
 import { getWindow } from "./get-window.js";
 
 describe("getWindow", () => {
-  test("when the element is a shadow root it should return the window of its host", () => {
+  test("Should return the window of the shadow root's host element", () => {
     const parent = document.createElement("div");
     const root = parent.attachShadow({ mode: "open" });
 
     expect(getWindow(root)).toEqual(window);
   });
 
-  test("when the element is the document element it should return the default view or window", () => {
+  test("Should return the defaultView or global window when passed a document", () => {
     const defaultView = {};
     vi.spyOn(document, "defaultView", "get").mockImplementationOnce(() => defaultView as any);
 
@@ -18,7 +18,7 @@ describe("getWindow", () => {
     expect(getWindow(document)).toBe(window);
   });
 
-  test("when the element is provided it should return the default view or window of the owner", () => {
+  test("Should return the owner document's defaultView or global window when passed an element", () => {
     const defaultView = {};
     vi.spyOn(document, "defaultView", "get").mockImplementationOnce(() => defaultView as any);
 
@@ -31,7 +31,7 @@ describe("getWindow", () => {
     expect(getWindow(el)).toBe(window);
   });
 
-  test("when an invalid value is provided the window value should be returned", () => {
+  test("Should return the global window when an invalid value is passed", () => {
     expect(getWindow(null)).toBe(window);
   });
 });

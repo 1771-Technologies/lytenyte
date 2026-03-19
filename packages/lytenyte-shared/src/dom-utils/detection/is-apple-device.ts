@@ -17,6 +17,10 @@ import { cached } from "./cached.js";
 import { isIOS } from "./is-ios.js";
 import { isMac } from "./is-mac.js";
 
+/**
+ * Returns true if the current device is an Apple device (Mac or iOS). Result is cached after
+ * the first call.
+ */
 export const isAppleDevice = cached(function () {
   return isMac() || isIOS();
 });

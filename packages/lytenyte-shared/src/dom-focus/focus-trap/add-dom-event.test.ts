@@ -4,7 +4,7 @@ import { userEvent } from "vitest/browser";
 import { wait } from "../../js-utils/index.js";
 
 describe("addDomEvent", () => {
-  test("when an event is added it should be possible to for it to be called and removed", async () => {
+  test("Should call the handler when the event fires and stop calling it after the cleanup function is invoked", async () => {
     const fn = vi.fn();
     const rm = addDomEvent(document.body, "click", fn);
     await userEvent.click(document.body);

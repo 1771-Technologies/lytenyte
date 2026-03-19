@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { contains } from "./contains.js";
 
 describe("contains", () => {
-  test("when the parent target is not an HTML element should return false", () => {
+  test("Should return false when the parent is not an HTML element", () => {
     const items: any[] = [];
     const parent = {
       append: (c: any) => items.push(c),
@@ -15,7 +15,7 @@ describe("contains", () => {
     expect(contains(parent, child)).toEqual(false);
   });
 
-  test("when the child target is not an HTML element should return false", () => {
+  test("Should return false when the child is not an HTML element", () => {
     const parent = document.createElement("div");
     const child = {} as Element;
     parent.append(child);
@@ -23,13 +23,13 @@ describe("contains", () => {
     expect(contains(parent, child)).toEqual(false);
   });
 
-  test("when the parent is the same element as the child it should return true", () => {
+  test("Should return true when parent and child are the same element", () => {
     const parent = document.createElement("div");
 
     expect(contains(parent, parent)).toEqual(true);
   });
 
-  test("when the parent directly contains the child it should return true", () => {
+  test("Should return true when the parent directly contains the child", () => {
     const parent = document.createElement("div");
     const child = document.createElement("div");
     parent.appendChild(child);
@@ -37,7 +37,7 @@ describe("contains", () => {
     expect(contains(parent, child)).toEqual(true);
   });
 
-  test("when the child is nested but contained in the parent it should return true", () => {
+  test("Should return true when the child is deeply nested inside the parent", () => {
     const parent = document.createElement("div");
     const subParent = document.createElement("div");
     parent.appendChild(subParent);
@@ -47,7 +47,7 @@ describe("contains", () => {
     expect(contains(parent, child)).toEqual(true);
   });
 
-  test("when the child is in an open shadow root it should return true", () => {
+  test("Should return true when the child is in an open shadow root", () => {
     const parent = document.createElement("div");
     const openShadow = parent.attachShadow({ mode: "open" });
     const child = document.createElement("child");
@@ -56,7 +56,7 @@ describe("contains", () => {
     expect(contains(parent, child)).toEqual(true);
   });
 
-  test("when the child is a slot in a shadow root it should return true", () => {
+  test("Should return true when the child is assigned to a slot in a shadow root", () => {
     const parent = document.createElement("div");
     const shadowWithSlot = parent.attachShadow({ mode: "open" });
     const slot = document.createElement("slot");
@@ -67,7 +67,7 @@ describe("contains", () => {
     expect(contains(parent, child)).toEqual(true);
   });
 
-  test("when the child is nested in the shadow root", () => {
+  test("Should return true when the child is nested within nested shadow roots", () => {
     const outer = document.createElement("div");
     const outerShadow = outer.attachShadow({ mode: "open" });
     const innerHost = document.createElement("div");
@@ -80,7 +80,7 @@ describe("contains", () => {
     expect(contains(outer, child)).toEqual(true);
   });
 
-  test("when the child is in a closed shadow it should return true", () => {
+  test("Should return true when the child is in a closed shadow root", () => {
     const parent = document.createElement("div");
     const closedRoot = parent.attachShadow({ mode: "closed" });
     const child = document.createElement("div");
@@ -89,7 +89,7 @@ describe("contains", () => {
     expect(contains(parent, child)).toEqual(true);
   });
 
-  test("when the child is not contained by the parent should return false", () => {
+  test("Should return false when the child is not contained by the parent", () => {
     const parent = document.createElement("div");
     const child = document.createElement("div");
 

@@ -16,6 +16,7 @@ limitations under the License.
 import { cached } from "./cached.js";
 import { testUserAgent } from "./test-user-agent.js";
 
+/** Returns true if the current browser is Firefox. Result is cached after the first call. */
 export const isFirefox = cached(function () {
   return testUserAgent(/Firefox/i);
 });

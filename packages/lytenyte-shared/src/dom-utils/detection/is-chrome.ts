@@ -16,6 +16,7 @@ limitations under the License.
 import { cached } from "./cached.js";
 import { testUserAgent } from "./test-user-agent.js";
 
+/** Returns true if the current browser is Chrome. Result is cached after the first call. */
 export const isChrome = cached(function () {
   return testUserAgent(/Chrome/i);
 });

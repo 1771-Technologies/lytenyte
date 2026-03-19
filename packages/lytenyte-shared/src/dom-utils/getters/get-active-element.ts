@@ -1,3 +1,7 @@
+/**
+ * Returns the deepest active element within the given document or shadow root, walking down
+ * through nested open shadow roots.
+ */
 export function getActiveElement(rootNode: Document | ShadowRoot): HTMLElement | null {
   let active = rootNode.activeElement as HTMLElement | null;
 

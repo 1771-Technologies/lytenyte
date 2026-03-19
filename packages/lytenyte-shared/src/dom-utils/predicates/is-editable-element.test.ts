@@ -2,26 +2,26 @@ import { describe, expect, test, vi } from "vitest";
 import { isEditableElement } from "./is-editable-element.js";
 
 describe("isEditableElement", () => {
-  test("when the element provided is not an HTML element or is null it should return false", () => {
+  test("Should return false when the element is not an HTML element or is null", () => {
     expect(isEditableElement(null)).toEqual(false);
     expect(isEditableElement({} as any)).toEqual(false);
   });
 
-  test("when the element provided is an input element it should return true", () => {
+  test("Should return true when the element is an input element", () => {
     const el = document.createElement("input");
     document.body.appendChild(el);
 
     expect(isEditableElement(el)).toEqual(true);
   });
 
-  test("when the element is an input element but selectionStart is null it should return false", () => {
+  test("Should return false when the element is an input but selectionStart is null", () => {
     const el = document.createElement("input");
     vi.spyOn(el, "selectionStart", "get").mockImplementation(() => null as any);
 
     expect(isEditableElement(el)).toEqual(false);
   });
 
-  test("when the element has content editable it should return true", () => {
+  test("Should return true when the element has contenteditable set", () => {
     const el = document.createElement("div");
     vi.spyOn(el, "isContentEditable", "get").mockImplementation(() => true);
     expect(isEditableElement(el)).toEqual(true);

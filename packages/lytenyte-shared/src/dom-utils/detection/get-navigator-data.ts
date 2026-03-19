@@ -4,6 +4,10 @@ interface NavigatorUAData {
   platform: string;
 }
 
+/**
+ * Returns the platform string and maxTouchPoints from the navigator, preferring userAgentData
+ * when available. Returns empty defaults when navigator is not defined.
+ */
 export function getNavigatorData(): { platform: string; maxTouchPoints: number } {
   if (typeof navigator === "undefined") {
     return { platform: "", maxTouchPoints: -1 };

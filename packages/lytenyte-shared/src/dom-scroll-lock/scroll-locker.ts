@@ -39,11 +39,6 @@ export class ScrollLocker {
     }
   };
 
-  /**
-   * Calls the stored restore function and clears it, but only if the lock
-   * count is still zero when this runs. Guards against a release being
-   * followed immediately by a new acquire before the timeout fires.
-   */
   #unlock = () => {
     if (this.lockCount === 0 && this.restore) {
       this.restore?.();
@@ -51,12 +46,6 @@ export class ScrollLocker {
     }
   };
 
-  /**
-   * Applies the scroll lock by selecting the appropriate strategy. Uses
-   * `basicPreventScroll` on iOS or when inset scrollbars are absent, and
-   * `standardPreventScroll` otherwise. Does nothing if the document is already
-   * scroll-locked via `overflow: hidden` or `overflow: clip`.
-   */
   #lock(referenceElement: Element | null) {
     if (this.lockCount <= 0 || this.restore !== null) return;
 

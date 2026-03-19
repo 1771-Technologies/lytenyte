@@ -16,6 +16,7 @@ limitations under the License.
 import { cached } from "./cached.js";
 import { testPlatform } from "./test-platform.js";
 
+/** Returns true if the current device is an iPhone. Result is cached after the first call. */
 export const isIPhone = cached(function () {
   return testPlatform(/^iPhone/i);
 });

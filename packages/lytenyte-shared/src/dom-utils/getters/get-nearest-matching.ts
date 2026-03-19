@@ -2,6 +2,10 @@ import { getDocumentElement } from "./get-document-element.js";
 import { getParentNode } from "./get-parent-node.js";
 import { isHTMLElement } from "../predicates/index.js";
 
+/**
+ * Returns the nearest element matching the predicate, starting at the given element and walking
+ * up the DOM tree.
+ */
 export function getNearestMatching(
   start: HTMLElement,
   matchPredicate: (el: HTMLElement) => boolean,

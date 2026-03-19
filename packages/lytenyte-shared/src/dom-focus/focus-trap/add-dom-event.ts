@@ -1,5 +1,9 @@
 interface DOMEventMap extends DocumentEventMap, WindowEventMap, HTMLElementEventMap {}
 
+/**
+ * Adds an event listener to the given target and returns a cleanup function that
+ * removes it when called.
+ */
 export const addDomEvent = <K extends keyof DOMEventMap>(
   target: EventTarget | null,
   eventName: K,

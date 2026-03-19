@@ -3,6 +3,10 @@ import { isShadowRoot } from "./is-shadow-root.js";
 
 type ElementTarget = HTMLElement | EventTarget | null | undefined;
 
+/**
+ * Returns true if parent contains child, handling standard DOM containment as well as shadow DOM
+ * and nested shadow roots.
+ */
 export function contains(parent: ElementTarget, child: ElementTarget) {
   if (!isHTMLElement(parent) || !isHTMLElement(child)) return false;
 

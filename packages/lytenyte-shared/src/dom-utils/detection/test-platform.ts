@@ -29,6 +29,10 @@ declare global {
   }
 }
 
+/**
+ * Returns true if the navigator's platform string matches the given regular expression,
+ * preferring userAgentData when available.
+ */
 export function testPlatform(re: RegExp) {
   return window.navigator != null
     ? re.test(window.navigator["userAgentData"]?.platform || window.navigator.platform)
