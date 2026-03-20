@@ -31,15 +31,15 @@ to **LyteNyte Grid PRO** for advanced enterprise features and support.
 
 <div align="center">
 
-[![NPM Version](https://img.shields.io/npm/v/%401771technologies%2Flytenyte-pro?label=PRO)](https://www.npmjs.com/package/@1771technologies/lytenyte-pro)
-[![NPM Version](https://img.shields.io/npm/v/%401771technologies%2Flytenyte-core?label=Core)](https://www.npmjs.com/package/@1771technologies/lytenyte-core)
-[![GitHub branch status](https://img.shields.io/github/checks-status/1771-Technologies/lytenyte/main)](https://github.com/1771-Technologies/lytenyte/tree/main)
-[![Follow on X](https://img.shields.io/twitter/follow/1771tech.svg?label=follow+1771tech)](https://x.com/1771tech)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
-
-<!-- [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/TODO/badge)](https://www.bestpractices.dev/projects/TODO) -->
-
-[![CI status](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml?query=branch%3Amain)
+[![NPM Version](https://img.shields.io/npm/v/%401771technologies%2Flytenyte-pro?label=PRO&style=flat&logo=npm&logoColor=white)](https://www.npmjs.com/package/@1771technologies/lytenyte-pro)
+[![NPM Version](https://img.shields.io/npm/v/%401771technologies%2Flytenyte-core?label=Core&style=flat&logo=npm&logoColor=white)](https://www.npmjs.com/package/@1771technologies/lytenyte-core)
+[![GitHub branch status](https://img.shields.io/github/checks-status/1771-Technologies/lytenyte/main?style=flat&logo=github)](https://github.com/1771-Technologies/lytenyte/tree/main)
+[![GitHub Repo stars](https://img.shields.io/github/stars/1771-Technologies/lytenyte?style=flat&logo=github)](https://github.com/1771-Technologies/lytenyte)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa?style=flat)](code_of_conduct.md)
+[![CI Status](https://img.shields.io/github/actions/workflow/status/1771-Technologies/lytenyte/release.yml?branch=main&style=flat&label=CI&logo=github)](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml?query=branch%3Amain)
+[![Follow on X](https://img.shields.io/twitter/follow/1771tech?label=follow+1771tech&style=social&logo=x&logoColor=black)](https://x.com/1771tech)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Follow-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/1771technologies)
+[![YouTube](https://img.shields.io/badge/YouTube-Subscribe-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtube.com/@1771technologies)
 
 </div>
 
@@ -64,7 +64,7 @@ LyteNyte Grid is available in two editions:
    and advanced filtering. Build custom menus, popovers and dialogs,
    and workflow-driven UIs with ease.
 
-# Features
+## Features
 
 <details>
 <summary><b>⚛️&nbsp; Reactive Architecture</b></summary>
@@ -198,8 +198,8 @@ LyteNyte Grid is available in two editions:
 | &nbsp;&nbsp;&nbsp;↳ [Checkbox Row Selection](https://www.1771technologies.com/docs/row-selection#checkbox-selection)     |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Isolated Row Selection](https://www.1771technologies.com/docs/row-selection#isolated-row-selection) |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Linked Row Selection](https://www.1771technologies.com/docs/row-selection#linked-row-selection)     |  ✅  | ✅  |
-| [Cell Selection](https://www.1771technologies.com/docs/cell-selection#single-range-selection)                            |  —   | ⭐  |
-| [Cell Range Selection](https://www.1771technologies.com/docs/cell-selection#multi-range-selection)                       |  —   | ⭐  |
+| [Cell Selection](https://www.1771technologies.com/docs/cell-selection#single-range-selection)                            |  —   | ✅  |
+| [Cell Range Selection](https://www.1771technologies.com/docs/cell-selection#multi-range-selection)                       |  —   | ✅  |
 
 </details>
 
@@ -231,11 +231,11 @@ LyteNyte Grid is available in two editions:
 | &nbsp;&nbsp;&nbsp;↳ [Number Filters](https://www.1771technologies.com/docs/filtering-numbers)                        |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Date Filters](https://www.1771technologies.com/docs/filtering-dates)                            |  ✅  | ✅  |
 | [Quick Search Filter](https://www.1771technologies.com/docs/filtering-quick-search)                                  |  ✅  | ✅  |
-| [Label Filters](https://www.1771technologies.com/docs/client-source-label-filters)                                   |  —   | ⭐  |
+| [Label Filters](https://www.1771technologies.com/docs/client-source-label-filters)                                   |  —   | ✅  |
 | **Advanced Filters**                                                                                                 |  -   | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Set Filters](https://www.1771technologies.com/docs/filtering-set-filters#basic-set-filtering)   |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Tree Set Filters](https://www.1771technologies.com/docs/filtering-set-filters#tree-set-filters) |  ✅  | ✅  |
-| &nbsp;&nbsp;&nbsp;↳ [Having Filters](https://www.1771technologies.com/docs/client-source-having-filters)             |  —   | ⭐  |
+| &nbsp;&nbsp;&nbsp;↳ [Having Filters](https://www.1771technologies.com/docs/client-source-having-filters)             |  —   | ✅  |
 
 </details>
 
@@ -264,11 +264,11 @@ LyteNyte Grid is available in two editions:
 
 | Feature                                                                                | Core | PRO |
 | -------------------------------------------------------------------------------------- | :--: | :-: |
-| [Row & Column Pivots](https://www.1771technologies.com/docs/pivoting-columns-and-rows) |  —   | ⭐  |
-| [Pivot Measures](https://www.1771technologies.com/docs/pivoting-measures)              |  —   | ⭐  |
-| [Pivot Sorting](https://www.1771technologies.com/docs/pivoting-sorting)                |  —   | ⭐  |
-| [Pivot Filtering](https://www.1771technologies.com/docs/pivoting-filtering)            |  —   | ⭐  |
-| [Grand Totals](https://www.1771technologies.com/docs/pivoting-grand-totals)            |  —   | ⭐  |
+| [Row & Column Pivots](https://www.1771technologies.com/docs/pivoting-columns-and-rows) |  —   | ✅  |
+| [Pivot Measures](https://www.1771technologies.com/docs/pivoting-measures)              |  —   | ✅  |
+| [Pivot Sorting](https://www.1771technologies.com/docs/pivoting-sorting)                |  —   | ✅  |
+| [Pivot Filtering](https://www.1771technologies.com/docs/pivoting-filtering)            |  —   | ✅  |
+| [Grand Totals](https://www.1771technologies.com/docs/pivoting-grand-totals)            |  —   | ✅  |
 
 </details>
 
@@ -278,9 +278,9 @@ LyteNyte Grid is available in two editions:
 
 | Feature                                                                                   | Core | PRO |
 | ----------------------------------------------------------------------------------------- | :--: | :-: |
-| [Custom Object Mappings](https://www.1771technologies.com/docs/tree-source-data)          |  —   | ⭐  |
-| [JSON Object Editing](https://www.1771technologies.com/docs/tree-source-data-editing)     |  —   | ⭐  |
-| [Dynamic Tree Creation](https://www.1771technologies.com/docs/tree-source-data#root-rows) |  —   | ⭐  |
+| [Custom Object Mappings](https://www.1771technologies.com/docs/tree-source-data)          |  —   | ✅  |
+| [JSON Object Editing](https://www.1771technologies.com/docs/tree-source-data-editing)     |  —   | ✅  |
+| [Dynamic Tree Creation](https://www.1771technologies.com/docs/tree-source-data#root-rows) |  —   | ✅  |
 
 </details>
 
@@ -290,18 +290,18 @@ LyteNyte Grid is available in two editions:
 
 | Feature                                                                                                                           | Core | PRO |
 | --------------------------------------------------------------------------------------------------------------------------------- | :--: | :-: |
-| **Basic Server Operations**                                                                                                       |  —   | ⭐  |
-| &nbsp;&nbsp;&nbsp;↳ [Server Row Sorting](https://www.1771technologies.com/docs/server-data-loading-row-sorting)                   |  —   | ⭐  |
-| &nbsp;&nbsp;&nbsp;↳ [Server Row Filtering](https://www.1771technologies.com/docs/server-data-loading-row-filtering)               |  —   | ⭐  |
-| &nbsp;&nbsp;&nbsp;↳ [Server Row Pinning](https://www.1771technologies.com/docs/server-data-loading-row-pinning)                   |  —   | ⭐  |
-| &nbsp;&nbsp;&nbsp;↳ [Server Row Grouping](https://www.1771technologies.com/docs/server-data-loading-row-grouping-and-aggregation) |  —   | ⭐  |
-| [Server Tree Data](https://www.1771technologies.com/docs/server-data-loading-unbalanced-rows)                                     |  —   | ⭐  |
-| [Server Cell Editing](https://www.1771technologies.com/docs/server-data-loading-cell-editing)                                     |  —   | ⭐  |
-| [Data Updates](https://www.1771technologies.com/docs/server-data-loading-row-updating)                                            |  —   | ⭐  |
-| [Optimistic Data Loading](https://www.1771technologies.com/docs/server-data-loading-optimistic-loading)                           |  —   | ⭐  |
-| [Paginated Row Data](https://www.1771technologies.com/docs/paginated-rs-rows)                                                     |  —   | ⭐  |
-| [Infinite Row Data](https://www.1771technologies.com/docs/infinite-rs-rows)                                                       |  —   | ⭐  |
-| [Server Data Interface](https://www.1771technologies.com/docs/server-data-loading-interface)                                      |  —   | ⭐  |
+| **Basic Server Operations**                                                                                                       |  —   | ✅  |
+| &nbsp;&nbsp;&nbsp;↳ [Server Row Sorting](https://www.1771technologies.com/docs/server-data-loading-row-sorting)                   |  —   | ✅  |
+| &nbsp;&nbsp;&nbsp;↳ [Server Row Filtering](https://www.1771technologies.com/docs/server-data-loading-row-filtering)               |  —   | ✅  |
+| &nbsp;&nbsp;&nbsp;↳ [Server Row Pinning](https://www.1771technologies.com/docs/server-data-loading-row-pinning)                   |  —   | ✅  |
+| &nbsp;&nbsp;&nbsp;↳ [Server Row Grouping](https://www.1771technologies.com/docs/server-data-loading-row-grouping-and-aggregation) |  —   | ✅  |
+| [Server Tree Data](https://www.1771technologies.com/docs/server-data-loading-unbalanced-rows)                                     |  —   | ✅  |
+| [Server Cell Editing](https://www.1771technologies.com/docs/server-data-loading-cell-editing)                                     |  —   | ✅  |
+| [Data Updates](https://www.1771technologies.com/docs/server-data-loading-row-updating)                                            |  —   | ✅  |
+| [Optimistic Data Loading](https://www.1771technologies.com/docs/server-data-loading-optimistic-loading)                           |  —   | ✅  |
+| [Paginated Row Data](https://www.1771technologies.com/docs/paginated-rs-rows)                                                     |  —   | ✅  |
+| [Infinite Row Data](https://www.1771technologies.com/docs/infinite-rs-rows)                                                       |  —   | ✅  |
+| [Server Data Interface](https://www.1771technologies.com/docs/server-data-loading-interface)                                      |  —   | ✅  |
 
 </details>
 
@@ -311,17 +311,17 @@ LyteNyte Grid is available in two editions:
 
 | Feature                                                                                                  | Core | PRO |
 | -------------------------------------------------------------------------------------------------------- | :--: | :-: |
-| [Pill Manager](https://www.1771technologies.com/docs/component-pill-manager)                             |  —   | ⭐  |
-| [Column Manager](https://www.1771technologies.com/docs/component-column-manager)                         |  —   | ⭐  |
-| [Tree View](https://www.1771technologies.com/docs/component-tree-view)                                   |  —   | ⭐  |
-| [Dialog & Popovers](https://www.1771technologies.com/docs/component-dialog)                              |  —   | ⭐  |
-| [Menus & Context Menus](https://www.1771technologies.com/docs/component-menu-button)                     |  —   | ⭐  |
+| [Pill Manager](https://www.1771technologies.com/docs/component-pill-manager)                             |  —   | ✅  |
+| [Column Manager](https://www.1771technologies.com/docs/component-column-manager)                         |  —   | ✅  |
+| [Tree View](https://www.1771technologies.com/docs/component-tree-view)                                   |  —   | ✅  |
+| [Dialog & Popovers](https://www.1771technologies.com/docs/component-dialog)                              |  —   | ✅  |
+| [Menus & Context Menus](https://www.1771technologies.com/docs/component-menu-button)                     |  —   | ✅  |
 | **Other Prebuilt Components**                                                                            |  -   | ✅  |
-| &nbsp;&nbsp;&nbsp;↳ [Smart Select](https://www.1771technologies.com/docs/component-smart-select)         |  —   | ⭐  |
+| &nbsp;&nbsp;&nbsp;↳ [Smart Select](https://www.1771technologies.com/docs/component-smart-select)         |  —   | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Grid Overlays](https://www.1771technologies.com/docs/component-grid-overlays)       |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Viewport Shadows](https://www.1771technologies.com/docs/component-viewport-shadows) |  ✅  | ✅  |
-| &nbsp;&nbsp;&nbsp;↳ [Select All](https://www.1771technologies.com/docs/component-select-all)             |  —   | ⭐  |
-| &nbsp;&nbsp;&nbsp;↳ [Row Group Cell](https://www.1771technologies.com/docs/component-row-group-cell)     |  —   | ⭐  |
+| &nbsp;&nbsp;&nbsp;↳ [Select All](https://www.1771technologies.com/docs/component-select-all)             |  —   | ✅  |
+| &nbsp;&nbsp;&nbsp;↳ [Row Group Cell](https://www.1771technologies.com/docs/component-row-group-cell)     |  —   | ✅  |
 
 </details>
 
@@ -336,7 +336,7 @@ LyteNyte Grid is available in two editions:
 | &nbsp;&nbsp;&nbsp;↳ [CSV Export](https://www.1771technologies.com/docs/export-csv)         |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Parquet Export](https://www.1771technologies.com/docs/export-parquet) |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Arrow Export](https://www.1771technologies.com/docs/export-arrow)     |  ✅  | ✅  |
-| [Clipboard Operations](https://www.1771technologies.com/docs/export-clipboard)             |  —   | ⭐  |
+| [Clipboard Operations](https://www.1771technologies.com/docs/export-clipboard)             |  —   | ✅  |
 
 </details>
 
