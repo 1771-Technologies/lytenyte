@@ -1,4 +1,4 @@
-import "../test.css";
+import "./column-header.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, useClientDataSource } from "../../index.js";
 import { ColumnGroupRenderer } from "./column-group-renderer.js";
@@ -40,7 +40,7 @@ export default function GroupsAcrossPins() {
   const ds = useClientDataSource({ data: bankDataSmall });
 
   return (
-    <div style={{ width: "100%", height: "90vh", border: "1px solid black" }} className="with-border">
+    <div className="column-header-demo">
       <Grid columns={columns} rowSource={ds} columnGroupRenderer={ColumnGroupRenderer} />
     </div>
   );
