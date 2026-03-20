@@ -132,6 +132,10 @@ export { rowIndexForSection } from "./row/row-index-for-section.js";
 export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
 export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 
+// Rectangle
+export type { DataRect, Section, SectionedRect } from "./rect/index.js";
+export { deselectRect, splitRect, rectsOverlap } from "./rect/index.js";
+
 // Navigation
 export { focusCell } from "./navigation-x/focus-cell.js";
 export { trackFocus } from "./navigation-x/track-focus.js";

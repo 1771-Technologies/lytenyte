@@ -2,7 +2,6 @@ import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import {
   COLUMN_MARKER_ID,
-  rangesOverlap,
   sizeFromCoord,
   type LayoutHeaderCell,
   type LayoutHeaderFloating,
@@ -12,7 +11,6 @@ import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
-import { useInternalShare } from "../../../internal.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
@@ -22,11 +20,6 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
 
   const column = view.lookup.get(cell.id)!;
   const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;
-
-  const { cellSelections } = useInternalShare();
-  const isCellSelected = cellSelections.useValue((x) =>
-    x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
-  );
 
   const Renderer =
     cell.kind === "cell"
@@ -51,6 +44,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
 
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
   const headerStyle = useHeaderCellStyle(cell, xPositions);
+  const isCellSelected = false;
 
   return (
     <div
