@@ -54,6 +54,14 @@ body {
   }
 }
 
+/* ── Cell selection rects ───────────────────────────────────────────────── */
+
+[data-ln-cell-selection-rect="true"] {
+  background-color: rgb(59 130 246 / 0.15) !important;
+  outline: 1px solid rgb(59 130 246 / 0.5);
+  outline-offset: -1px;
+}
+
 /* ── Pinned section borders: shared structure ───────────────────────────── */
 
 [data-ln-header-cell="true"] {

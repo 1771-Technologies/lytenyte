@@ -45,7 +45,7 @@ import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
-import { CellSelectionContext } from "./contexts/cell-selection/cell-selection-context.js";
+import { CellSelectionContext } from "./contexts/cell-selection-context.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {

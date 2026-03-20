@@ -134,7 +134,16 @@ export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 
 // Rectangle
 export type { DataRect, Section, SectionedRect } from "./rect/index.js";
-export { deselectRect, splitRect, rectsOverlap } from "./rect/index.js";
+export {
+  deselectRect,
+  splitRect,
+  rectsOverlap,
+  startSection,
+  endSection,
+  topSection,
+  centerSection,
+  bottomSection,
+} from "./rect/index.js";
 
 // Navigation
 export { focusCell } from "./navigation-x/focus-cell.js";

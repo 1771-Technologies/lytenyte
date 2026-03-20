@@ -1,7 +1,7 @@
 import { splitRect, type DataRect, type SectionedRect } from "@1771technologies/lytenyte-shared";
-import { createContext, memo, useMemo, type PropsWithChildren } from "react";
-import type { Props } from "../../../types";
-import { useControlled, useEvent } from "../../../internal.js";
+import { createContext, memo, useContext, useMemo, type PropsWithChildren } from "react";
+import type { Props } from "../../types";
+import { useControlled, useEvent } from "../../internal.js";
 
 export interface CellSelectionContextType {
   readonly cellSelectionMode: "range" | "multi-range" | "none";
@@ -71,3 +71,4 @@ function CellSelectionContextBase(
 }
 
 export const CellSelectionContext = memo(CellSelectionContextBase);
+export const useCellSelection = () => useContext(context);

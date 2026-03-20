@@ -25,7 +25,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   const rowMeta = useRowContextValue(row, ctx);
   const topOffset = container.useValue($topHeight);
 
-  const hasCellSelection = false;
+  const hasCellSelection = true;
 
   const styles = useRowStyle(
     yPositions,

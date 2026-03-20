@@ -5,6 +5,7 @@ import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { useRoot, useRowLayout } from "../../../root/root-context.js";
 import { $topCount, $topHeight } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
+import { CellSelectionTop } from "./cell-selection/cell-selection-container.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, RowsTop.Props>(function RowsTop(
@@ -49,6 +50,7 @@ export const RowsTop = memo(
           ...props.style,
         }}
       >
+        <CellSelectionTop />
         {rows}
       </RowsSection>
     );

@@ -5,6 +5,7 @@ import { RowsSection } from "./rows-section.js";
 import { useRoot, useRowLayout } from "../../../root/root-context.js";
 import { useRowsContainerContext } from "../rows-container/context.js";
 import { $botCount, $botHeight, $centerCount, $topCount } from "../../../selectors.js";
+import { CellSelectionBottom } from "./cell-selection/cell-selection-container.js";
 
 export const RowsBottom = memo(
   forwardRef<HTMLDivElement, RowsBottom.Props>(function RowsBottom(
@@ -52,6 +53,7 @@ export const RowsBottom = memo(
           minWidth: "100%",
         }}
       >
+        <CellSelectionBottom />
         {rows}
       </RowsSection>
     );
