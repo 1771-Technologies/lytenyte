@@ -8,6 +8,12 @@ export interface ColumnWidthItem {
 
 export type RowHeight = number | ((i: number) => number) | "auto" | `fill:${number}`;
 
+export interface VirtualTarget {
+  readonly getBoundingClientRect: () => Omit<DOMRect, "toJSON">;
+  readonly getClientRects?: () => Omit<DOMRect, "toJSON">[];
+  readonly contextElement?: HTMLElement;
+}
+
 export type Row = number;
 export type Column = number;
 export type RowSpan = number;

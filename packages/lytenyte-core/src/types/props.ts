@@ -9,11 +9,17 @@ import type {
   RowParams,
 } from "./column.js";
 import type { GridSpec, GridStyle } from "./grid.js";
-import type { API } from "./api.js";
+import type { API, DataRect } from "./api.js";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows.js";
 import type { GridEvents } from "./events.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
+  readonly cellSelectionMode?: "range" | "multi-range" | "none";
+  readonly cellSelections?: DataRect[];
+  readonly cellSelectionExcludeMarker?: boolean;
+  readonly cellSelectionMaintainOnNonCellPosition?: boolean;
+  readonly onCellSelectionChange?: (rects: DataRect[]) => void;
+
   readonly columns?: Column<Spec>[];
   readonly columnBase?: Omit<Partial<Column<Spec>>, "id" | "pin" | "field" | "editSetter">;
   readonly columnMarker?: Omit<Partial<Column<Spec>>, "id" | "field" | "pin"> & { on?: boolean };

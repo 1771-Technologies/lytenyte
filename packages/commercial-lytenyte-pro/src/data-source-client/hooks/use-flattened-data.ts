@@ -1,5 +1,4 @@
 import type { GroupIdFn } from "@1771technologies/lytenyte-shared";
-import type { GridSpec } from "../../types/grid.js";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
 import { useGroupTree } from "./use-group-tree/use-group-tree.js";
 import { useFlattenedGroups } from "./use-flattened-groups.js";
@@ -15,6 +14,7 @@ import {
   type LeafNodeTuple,
 } from "@1771technologies/lytenyte-core/internal";
 import { useMemo, useRef } from "react";
+import type { GridSpec } from "@1771technologies/lytenyte-core/types";
 
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
 export function useFlattenedData<Spec extends GridSpec>(

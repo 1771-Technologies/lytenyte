@@ -53,20 +53,13 @@ const empty: DataRect[] = [];
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
     children,
-
-    // @ts-expect-error a secret typescript variable for internal use only.
-    __noFallback,
     ...p
   }: PropsWithChildren<
     Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
   >,
   forwarded: Root.Props<Spec>["ref"],
 ) => {
-  const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {
-    ln_topComponent?: () => ReactNode;
-    ln_bottomComponent: () => ReactNode;
-    ln_centerComponent: () => ReactNode;
-  };
+  const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
   const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
 
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
@@ -180,10 +173,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       totalHeaderHeight,
       detailExpansions: controlled.detailExpansions,
 
-      topComponent: props.ln_topComponent,
-      bottomComponent: props.ln_bottomComponent,
-      centerComponent: props.ln_centerComponent,
-
       rowDetailHeight: props.rowDetailHeight ?? 200,
       rowDetailAutoHeightGuess: props.rowDetailAutoHeightGuess ?? 200,
       rowDetailHeightCache: yPositions.detailCache,
@@ -244,9 +233,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.floatingRowHeight,
     props.headerGroupHeight,
     props.headerHeight,
-    props.ln_bottomComponent,
-    props.ln_centerComponent,
-    props.ln_topComponent,
     props.onColumnMoveOutside,
     props.onRowDragEnter,
     props.onRowDragLeave,
@@ -285,7 +271,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
                     [cellSelectionPiece],
                   )}
                 >
-                  {__noFallback ? children : (children ?? <Fallback />)}
+                  {children ?? <Fallback />}
                 </LnInternalShareProvider>
               </FocusProvider>
             </EditProvider>

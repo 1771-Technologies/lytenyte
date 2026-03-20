@@ -1,4 +1,5 @@
 export type * from "./api.js";
+export type * from "./events.js";
 export type * from "./column.js";
 export type * from "./grid.js";
 export type * from "./props.js";
@@ -17,8 +18,8 @@ export type {
   LeafIdFn,
   GroupIdFn,
   RowSelectionState,
-  RowSelectionLinked,
   RowSelectionIsolated,
+  RowSelectionLinked,
   RowSelectNode,
   RowNode,
   RowLeaf,
@@ -41,4 +42,5 @@ export type {
   PositionHeaderCell,
   PositionHeaderGroupCell,
   PositionUnion,
+  VirtualTarget,
 } from "@1771technologies/lytenyte-shared";

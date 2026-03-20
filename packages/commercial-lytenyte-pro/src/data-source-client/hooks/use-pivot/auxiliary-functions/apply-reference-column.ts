@@ -1,4 +1,4 @@
-import type { Column, GridSpec } from "../../../../types/index.js";
+import type { Column, GridSpec } from "../../../../types.js";
 
 const omitKeys = [
   "id",

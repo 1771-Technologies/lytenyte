@@ -6,6 +6,7 @@
 dist-mpa
 (snap-diff)
 
+.claude
 certificates
 
 !**/packages/graphite-grid/dist

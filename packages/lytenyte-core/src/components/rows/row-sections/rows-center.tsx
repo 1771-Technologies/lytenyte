@@ -12,7 +12,7 @@ export const RowsCenter = memo(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const { id, centerComponent: C } = useRoot();
+    const { id } = useRoot();
     const layout = useRowLayout();
     const container = useRowsContainerContext();
 
@@ -51,10 +51,7 @@ export const RowsCenter = memo(
           position: "relative",
         }}
       >
-        <NativeScroller>
-          {C && <C />}
-          {rows}
-        </NativeScroller>
+        <NativeScroller>{rows}</NativeScroller>
       </RowsSection>
     );
   }),

@@ -1,41 +1,11 @@
-import {
-  Fallback,
-  LnInternalShareProvider,
-  Root as RootCore,
-  usePiece,
-} from "@1771technologies/lytenyte-core/internal";
-import {
-  forwardRef,
-  memo,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type PropsWithChildren,
-  type ReactNode,
-} from "react";
-import type { DataRectSplit, GridSpec as LnSpec } from "../types/grid.js";
-import type { Column as LnColumn } from "../types/column.js";
-import type { DataRect, API as LnAPI } from "../types/api.js";
-import type { Props as LnProps } from "../types/props.js";
+import type * as Core from "@1771technologies/lytenyte-core/types";
+import { Root as RootCore } from "@1771technologies/lytenyte-core/internal";
+import { forwardRef, memo, useEffect, type PropsWithChildren, type ReactNode } from "react";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
-import { useProAPI } from "./hooks/use-pro-api.js";
-import { ProRootProvider, type ProContext } from "./context.js";
 import { hasAValidLicense, licenseState } from "../license.js";
-import { useControlled, useEvent, useRoot } from "@1771technologies/lytenyte-core/internal";
-import { CellSelectionDriver } from "../cell-selection/cell-selection-driver/cell-selection-driver.js";
-import {
-  CellSelectionBottom,
-  CellSelectionCenter,
-  CellSelectionTop,
-} from "../cell-selection/cell-selection-containers.js";
-import { splitCellSelectionRect } from "../cell-selection/split-cell-selection-rect.js";
 
 const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
-  {
-    children,
-    ...p
-  }: PropsWithChildren<
+  props: PropsWithChildren<
     Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
   >,
   forwarded: Root.Props<Spec>["ref"],
@@ -71,110 +41,7 @@ const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
     return () => invalidLicenseWatermark.remove();
   }, []);
 
-  const components =
-    p.cellSelectionMode !== "none"
-      ? {
-          ln_topComponent: CellSelectionTop,
-          ln_bottomComponent: CellSelectionBottom,
-          ln_centerComponent: CellSelectionCenter,
-        }
-      : {};
-
-  return (
-    <RootCore ref={forwarded as any} {...(p as any)} {...components} __noFallback>
-      <RootImpl {...(p as any)}>{children}</RootImpl>
-    </RootCore>
-  );
-};
-
-const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
-  const { view, source } = useRoot();
-
-  const cellSelectionMode = p.cellSelectionMode ?? "none";
-  const [cellSelections, setCellSelections] = useControlled({
-    controlled: p.cellSelections,
-    default: [],
-  });
-  const onCellSelectionChange = useEvent((rects: DataRect[]) => {
-    p.onCellSelectionChange?.(rects);
-    setCellSelections(rects);
-  });
-
-  const api = useProAPI(cellSelections);
-
-  const [cellSelectionPivot, setSelectionPivot] = useState<DataRectSplit | null>(null);
-  const [cellSelectionAdditiveRects, setCellSelectionAdditiveRects] = useState<DataRectSplit[] | null>(null);
-  const cellSelectionIsDeselect = useRef(false);
-
-  const topCount = source.useTopCount();
-  const rowCount = source.useRowCount();
-  const botCount = source.useBottomCount();
-
-  const cellSelectionSplits = useMemo(() => {
-    const centerCount = rowCount - topCount - botCount;
-    const selections = cellSelections;
-
-    const splits = selections.flatMap((rect) => {
-      return splitCellSelectionRect({
-        rect,
-        rowTopCount: topCount,
-        rowCenterCount: centerCount,
-        colStartCount: view.startCount,
-        colCenterCount: view.centerCount,
-      });
-    });
-
-    return splits;
-  }, [botCount, cellSelections, rowCount, topCount, view.centerCount, view.startCount]);
-
-  const excludeMarker = Boolean(p.columnMarker?.on && p.cellSelectionExcludeMarker);
-  const value = useMemo<ProContext>(() => {
-    return {
-      api,
-
-      excludeMarker,
-      keepSelection: p.cellSelectionMaintainOnNonCellPosition ?? false,
-
-      cellSelectionMode,
-      cellSelections,
-      cellSelectionPivot,
-      setSelectionPivot: setSelectionPivot,
-      onCellSelectionChange,
-      cellSelectionAdditiveRects,
-      setCellSelectionAdditiveRects,
-      cellSelectionIsDeselect,
-      cellSelectionSplits,
-    };
-  }, [
-    api,
-    excludeMarker,
-    p.cellSelectionMaintainOnNonCellPosition,
-    cellSelectionMode,
-    cellSelections,
-    cellSelectionPivot,
-    onCellSelectionChange,
-    cellSelectionAdditiveRects,
-    cellSelectionSplits,
-  ]);
-
-  const cellSelectionsPiece = usePiece(cellSelections);
-
-  return (
-    <LnInternalShareProvider
-      value={useMemo(
-        () => ({
-          cellSelections: cellSelectionsPiece,
-          hasCellSelection: (p.cellSelectionMode ?? "none") !== "none",
-        }),
-        [cellSelectionsPiece, p.cellSelectionMode],
-      )}
-    >
-      <ProRootProvider value={value}>
-        {cellSelectionMode !== "none" && <CellSelectionDriver />}
-        {children ?? <Fallback />}
-      </ProRootProvider>
-    </LnInternalShareProvider>
-  );
+  return <RootCore ref={forwarded as any} {...(props as any)} />;
 };
 
 export const Root = memo(forwardRef(RootWrapper)) as <Spec extends Root.GridSpec = Root.GridSpec>(
@@ -189,9 +56,9 @@ export namespace Root {
     C extends Record<string, any> = object,
     S extends RowSource<T> = RowSource,
     E extends Record<string, any> = object,
-  > = LnSpec<T, C, S, E>;
+  > = Core.GridSpec<T, C, S, E>;
 
-  export type Props<Spec extends GridSpec = GridSpec> = LnProps<Spec>;
-  export type API<Spec extends GridSpec = GridSpec> = LnAPI<Spec>;
-  export type Column<Spec extends GridSpec = GridSpec> = LnColumn<Spec>;
+  export type Props<Spec extends GridSpec = GridSpec> = Core.Props<Spec>;
+  export type API<Spec extends GridSpec = GridSpec> = Core.API<Spec>;
+  export type Column<Spec extends GridSpec = GridSpec> = Core.Column<Spec>;
 }

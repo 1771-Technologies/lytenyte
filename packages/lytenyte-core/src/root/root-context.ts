@@ -30,10 +30,6 @@ export interface RootContextValue {
   readonly view: ColumnView;
   readonly api: Root.API;
 
-  readonly topComponent?: () => ReactNode;
-  readonly centerComponent?: () => ReactNode;
-  readonly bottomComponent?: () => ReactNode;
-
   readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;
   readonly dimensions: Dimension;
