@@ -1,4 +1,4 @@
-import type { RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
+import type { DataRect, RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
 import type { ReactNode, Ref } from "react";
 import type {
   Column,
@@ -9,7 +9,7 @@ import type {
   RowParams,
 } from "./column.js";
 import type { GridSpec, GridStyle } from "./grid.js";
-import type { API, DataRect } from "./api.js";
+import type { API } from "./api.js";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows.js";
 import type { GridEvents } from "./events.js";
 

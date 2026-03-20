@@ -1,5 +1,6 @@
 import type {
   ColumnView,
+  DataRect,
   PositionFullWidthRow,
   PositionGridCell,
   PositionUnion,
@@ -18,13 +19,6 @@ import type { Piece } from "../hooks/use-piece.js";
 
 type WithId = { readonly id: string };
 type RowSourceOmits = "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected";
-
-export interface DataRect {
-  readonly rowStart: number;
-  readonly rowEnd: number;
-  readonly columnStart: number;
-  readonly columnEnd: number;
-}
 
 export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
   readonly headers: string[];

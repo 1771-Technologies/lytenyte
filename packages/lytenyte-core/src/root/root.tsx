@@ -45,6 +45,7 @@ import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
+import { CellSelectionContext } from "./contexts/cell-selection/cell-selection-context.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -58,6 +59,19 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
   const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
 
+  const rowCount = source.useRowCount();
+  const topCount = source.useTopCount();
+  const bottomCount = source.useBottomCount();
+  const centerCount = rowCount - topCount - bottomCount;
+
+  const controlled = useControlledGridState(props);
+  const view = useColumnView(controlled.columns, props, source, controlled.columnGroupExpansions);
+
+  const topCutoff = topCount;
+  const botCutoff = centerCount + topCount;
+  const startCutoff = view.startCount;
+  const endCutoff = view.startCount + view.centerCount;
+
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const gridId = useGridId(props.gridId);
   const selectPivot = useRef<number | null>(null);
@@ -65,9 +79,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   const dropAccept = useDropAccept(props, gridId);
 
   const dimensions = useViewportDimensions(vp);
-  const controlled = useControlledGridState(props);
 
-  const view = useColumnView(controlled.columns, props, source, controlled.columnGroupExpansions);
   const totalHeaderHeight = useTotalHeaderHeight(props, view.maxRow);
 
   const xPositions = useXPositions(props, view, dimensions.innerWidth);
@@ -255,15 +267,27 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   return (
     <RootContextProvider value={value}>
-      <RowLayoutContextProvider value={rowLayout}>
-        <ColumnLayoutContextProvider value={headerLayout}>
-          <BoundsContextProvider value={bounds}>
-            <EditProvider value={editValue}>
-              <FocusProvider value={focusValue}>{children ?? <Fallback />}</FocusProvider>
-            </EditProvider>
-          </BoundsContextProvider>
-        </ColumnLayoutContextProvider>
-      </RowLayoutContextProvider>
+      <CellSelectionContext
+        topCutoff={topCutoff}
+        bottomCutoff={botCutoff}
+        endCutoff={endCutoff}
+        startCutoff={startCutoff}
+        cellSelections={p.cellSelections}
+        cellSelectionExcludeMarker={p.cellSelectionExcludeMarker}
+        cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
+        cellSelectionMode={p.cellSelectionMode}
+        onCellSelectionChange={p.onCellSelectionChange}
+      >
+        <RowLayoutContextProvider value={rowLayout}>
+          <ColumnLayoutContextProvider value={headerLayout}>
+            <BoundsContextProvider value={bounds}>
+              <EditProvider value={editValue}>
+                <FocusProvider value={focusValue}>{children ?? <Fallback />}</FocusProvider>
+              </EditProvider>
+            </BoundsContextProvider>
+          </ColumnLayoutContextProvider>
+        </RowLayoutContextProvider>
+      </CellSelectionContext>
     </RootContextProvider>
   );
 };

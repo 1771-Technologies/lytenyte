@@ -12,6 +12,7 @@ export type {
   DimensionSort,
   DimensionAgg,
   Dimension,
+  DataRect,
   FilterFn,
   AggregationFn,
   Aggregator,
