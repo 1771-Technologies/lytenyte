@@ -8,6 +8,7 @@ import { RowsContainerContext, type RowsContainerContextType } from "./context.j
 import { useRoot } from "../../../root/root-context.js";
 import { usePiece } from "../../../hooks/use-piece.js";
 import { useRangeSelection } from "../range-selection/use-range-selection.js";
+import { useKeyboardRangeSelection } from "../range-selection/use-keyboard-range-selection.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
@@ -69,6 +70,7 @@ export const RowsContainer = memo(
     ]);
 
     const onMouseDown = useRangeSelection(props.onMouseDown, viewport, rtl);
+    const onKeyDownRange = useKeyboardRangeSelection();
 
     return (
       <RowsContainerContext.Provider value={usePiece(value)}>
@@ -79,6 +81,10 @@ export const RowsContainer = memo(
           data-ln-gridid={id}
           role="presentation"
           onMouseDown={onMouseDown}
+          onKeyDown={(e) => {
+            props.onKeyDown?.(e);
+            onKeyDownRange(e);
+          }}
           style={
             {
               ...props.style,
