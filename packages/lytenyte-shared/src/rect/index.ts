@@ -1,3 +1,4 @@
+export { clampRectToAccessible } from "./clamp-rect-to-accessible.js";
 export { deselectRect } from "./deselect-rect.js";
 export { rectsOverlap } from "./rects-overlap.js";
 export { rectFromGridCellPositions } from "./rect-from-grid-cell-positions.js";

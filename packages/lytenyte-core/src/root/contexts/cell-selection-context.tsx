@@ -1,5 +1,18 @@
-import { splitRect, type DataRect, type SectionedRect } from "@1771technologies/lytenyte-shared";
-import { createContext, memo, useContext, useMemo, type PropsWithChildren } from "react";
+import {
+  splitRect,
+  type DataRect,
+  type SectionedRect,
+  type PositionGridCell,
+} from "@1771technologies/lytenyte-shared";
+import {
+  createContext,
+  memo,
+  useContext,
+  useMemo,
+  useRef,
+  type PropsWithChildren,
+  type RefObject,
+} from "react";
 import type { Props } from "../../types";
 import { useControlled, useEvent } from "../../internal.js";
 
@@ -8,6 +21,7 @@ interface CellSelectionSettingsType {
   readonly cellSelectionMaintainOnNonCellPosition: boolean;
   readonly onCellSelectionChange: (change: DataRect[]) => void;
   readonly ignoreFirstColumn: boolean;
+  readonly anchorRef: RefObject<PositionGridCell | null>;
 }
 
 interface CellSelectionContextType {
@@ -53,6 +67,8 @@ function CellSelectionContextBase(
     p.onCellSelectionChange?.(change);
   });
 
+  const anchorRef = useRef<PositionGridCell | null>(null);
+
   const markerOn = p.columnMarker?.on ?? false;
   const settings = useMemo<CellSelectionSettingsType>(() => {
     return {
@@ -60,6 +76,7 @@ function CellSelectionContextBase(
       ignoreFirstColumn: markerOn && (p.cellSelectionExcludeMarker ?? false),
       cellSelectionMaintainOnNonCellPosition: p.cellSelectionMaintainOnNonCellPosition ?? false,
       cellSelectionMode: p.cellSelectionMode ?? "none",
+      anchorRef,
     };
   }, [
     markerOn,

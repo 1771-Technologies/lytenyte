@@ -135,6 +135,7 @@ export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 // Rectangle
 export type { DataRect, Section, SectionedRect } from "./rect/index.js";
 export {
+  clampRectToAccessible,
   deselectRect,
   splitRect,
   rectFromGridCellPositions,

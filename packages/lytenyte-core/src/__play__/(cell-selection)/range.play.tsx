@@ -50,7 +50,7 @@ export default function CellSelectionAreas() {
   return (
     <div className="areas-demo">
       <div className="areas-grid-container">
-        <Grid columns={columns} rowSource={ds} cellSelectionMode="range" />
+        <Grid columns={columns} rowSource={ds} cellSelectionMode="multi-range" />
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ interface ActiveRangeContextType {
   readonly setActiveRange: Dispatch<SetStateAction<DataRect | null>>;
   readonly activeSplit: SectionedRect[];
   readonly deselect: boolean;
+  readonly setDeselect: Dispatch<SetStateAction<boolean>>;
 }
 
 const context = createContext<ActiveRangeContextType>({} as any);
@@ -22,6 +23,7 @@ const context = createContext<ActiveRangeContextType>({} as any);
 export function ActiveRangeProvider(props: PropsWithChildren) {
   const cutoff = useCutoffs();
   const [activeRange, setActiveRange] = useState<DataRect | null>(null);
+  const [deselect, setDeselect] = useState(false);
 
   const activeSplit = useMemo(() => {
     if (!activeRange) return [];
@@ -39,10 +41,11 @@ export function ActiveRangeProvider(props: PropsWithChildren) {
     return {
       activeRange,
       activeSplit,
-      deselect: false,
+      deselect,
+      setDeselect,
       setActiveRange,
     };
-  }, [activeRange, activeSplit]);
+  }, [activeRange, activeSplit, deselect]);
 
   return <context.Provider value={value}>{props.children}</context.Provider>;
 }
