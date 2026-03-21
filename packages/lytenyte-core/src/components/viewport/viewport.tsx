@@ -14,7 +14,7 @@ import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { EditDriver } from "./edit-driver.js";
-import { useCutoffs } from "../../root/contexts/cutoff-context.js";
+import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -41,7 +41,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     yPositions,
   } = useRoot();
 
-  const cutoffs = useCutoffs();
+  const cutoffs = useGridSections();
 
   const edit = useEdit();
 

@@ -16,7 +16,7 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { useCellSelection, useCellSelectionSettings } from "../../../root/contexts/cell-selection-context.js";
 import { useActiveRangeSelection } from "../../../root/contexts/active-range-context.js";
-import { useCutoffs } from "../../../root/contexts/cutoff-context.js";
+import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
 
 // Module-level constants — avoids re-allocation on every render
 const MAX_SPEED = 20;
@@ -33,7 +33,7 @@ export function useRangeSelection(
   const { cellSelections } = useCellSelection();
   const { setActiveRange, setDeselect } = useActiveRangeSelection();
 
-  const cutoffs = useCutoffs();
+  const cutoffs = useGridSections();
 
   const onMouseDown: MouseEventHandler<HTMLDivElement> = useEvent((ev) => {
     if (!viewport) return;

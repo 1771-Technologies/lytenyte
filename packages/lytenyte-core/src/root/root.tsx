@@ -47,7 +47,7 @@ import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
 import { CellSelectionContext } from "./contexts/cell-selection-context.js";
 import { GridIdProvider } from "./contexts/grid-id.js";
-import { CutoffProvider, type CountsContext } from "./contexts/cutoff-context.js";
+import { GridSectionsProvider, type GridSections } from "./contexts/grid-sections-context.js";
 import { ActiveRangeProvider } from "./contexts/active-range-context.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
@@ -82,7 +82,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
 
-  const cutoffValue = useMemo<CountsContext>(() => {
+  const cutoffValue = useMemo<GridSections>(() => {
     const centerCount = rowCount - topCount - bottomCount;
     const topCutoff = topCount;
     const botCutoff = centerCount + topCount;
@@ -279,7 +279,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   return (
     <RootContextProvider value={value}>
       <GridIdProvider value={gridId}>
-        <CutoffProvider value={cutoffValue}>
+        <GridSectionsProvider value={cutoffValue}>
           <CellSelectionContext
             topCutoff={cutoffValue.topCutoff}
             bottomCutoff={cutoffValue.bottomCutoff}
@@ -303,7 +303,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
               </RowLayoutContextProvider>
             </ActiveRangeProvider>
           </CellSelectionContext>
-        </CutoffProvider>
+        </GridSectionsProvider>
       </GridIdProvider>
     </RootContextProvider>
   );
