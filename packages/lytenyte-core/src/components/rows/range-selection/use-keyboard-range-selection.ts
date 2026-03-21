@@ -41,12 +41,30 @@ export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement
       settings.onCellSelectionChange(selections);
     }
 
-    if (isUp) expandSelectionUp(api, selections, settings.onCellSelectionChange, meta, pos, rowCount);
+    if (isUp)
+      expandSelectionUp(
+        api.scrollIntoView,
+        api.cellRoot,
+        selections,
+        settings.onCellSelectionChange,
+        meta,
+        pos,
+        rowCount,
+      );
     else if (isDown)
-      expandSelectionDown(api, selections, settings.onCellSelectionChange, meta, pos, rowCount);
+      expandSelectionDown(
+        api.scrollIntoView,
+        api.cellRoot,
+        selections,
+        settings.onCellSelectionChange,
+        meta,
+        pos,
+        rowCount,
+      );
     else if (isStart)
       expandSelectionStart(
-        api,
+        api.scrollIntoView,
+        api.cellRoot,
         selections,
         settings.onCellSelectionChange,
         meta,
@@ -54,6 +72,15 @@ export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement
         settings.ignoreFirstColumn,
         view,
       );
-    else if (isEnd) expandSelectionEnd(api, selections, settings.onCellSelectionChange, meta, pos, view);
+    else if (isEnd)
+      expandSelectionEnd(
+        api.scrollIntoView,
+        api.cellRoot,
+        selections,
+        settings.onCellSelectionChange,
+        meta,
+        pos,
+        view,
+      );
   });
 }

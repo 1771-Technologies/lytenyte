@@ -4,11 +4,12 @@ import {
   rectsOverlap,
   type DataRect,
   type PositionGridCell,
+  type PositionUnion,
 } from "@1771technologies/lytenyte-shared";
-import type { API } from "../../../types/api.js";
 
 export function expandSelectionUp(
-  api: API,
+  scrollIntoView: (params: { row?: number; column?: number }) => void,
+  cellRoot: (row: number, column: number) => PositionUnion | null,
   selections: DataRect[],
   setSelections: (d: DataRect[]) => void,
   meta: boolean,
@@ -26,7 +27,7 @@ export function expandSelectionUp(
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
 
-    if (pos.rowStart !== rowCount - 1) api.scrollIntoView({ row: 0 });
+    if (pos.rowStart !== rowCount - 1) scrollIntoView({ row: 0 });
     return;
   }
 
@@ -37,7 +38,7 @@ export function expandSelectionUp(
   // Our cell some how is spanned over. so for the current rowIndex, find the maximum span along the columns
   if (!isAtEdge) {
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
-      const cell = rectFromGridCellPosition(api.cellRoot(pos.rowStart, i) as PositionGridCell);
+      const cell = rectFromGridCellPosition(cellRoot(pos.rowStart, i) as PositionGridCell);
       pivotStart = Math.min(pivotStart, cell.rowStart);
       pivotEnd = Math.max(pivotEnd, cell.rowEnd);
     }
@@ -48,7 +49,7 @@ export function expandSelectionUp(
     let lowestRowStart = Infinity;
     let c = rect;
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
-      const cell = rectFromGridCellPosition(api.cellRoot(rect.rowEnd - 1, i) as PositionGridCell);
+      const cell = rectFromGridCellPosition(cellRoot(rect.rowEnd - 1, i) as PositionGridCell);
       lowestRowStart = Math.min(cell.rowStart, lowestRowStart);
       if (cell.rowStart < lowestRowStart) {
         lowestRowStart = cell.rowStart;
@@ -56,7 +57,7 @@ export function expandSelectionUp(
       }
     }
 
-    api.scrollIntoView({ row: lowestRowStart - 1 });
+    scrollIntoView({ row: lowestRowStart - 1 });
     next = {
       ...rect,
       rowEnd: lowestRowStart,
@@ -70,7 +71,7 @@ export function expandSelectionUp(
     let lowestRowStart = Infinity;
     let c = rect;
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
-      const cell = rectFromGridCellPosition(api.cellRoot(rect.rowStart - 1, i) as PositionGridCell);
+      const cell = rectFromGridCellPosition(cellRoot(rect.rowStart - 1, i) as PositionGridCell);
       lowestRowStart = Math.min(cell.rowStart, lowestRowStart);
       if (cell.rowStart < lowestRowStart) {
         lowestRowStart = cell.rowStart;
@@ -78,7 +79,7 @@ export function expandSelectionUp(
       }
     }
 
-    api.scrollIntoView({ row: lowestRowStart });
+    scrollIntoView({ row: lowestRowStart });
     next = {
       ...rect,
       rowStart: lowestRowStart,

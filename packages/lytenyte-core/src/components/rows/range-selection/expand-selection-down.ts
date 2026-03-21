@@ -4,11 +4,12 @@ import {
   rectsOverlap,
   type DataRect,
   type PositionGridCell,
+  type PositionUnion,
 } from "@1771technologies/lytenyte-shared";
-import type { API } from "../../../types/api.js";
 
 export function expandSelectionDown(
-  api: API,
+  scrollIntoView: (params: { row?: number; column?: number }) => void,
+  cellRoot: (row: number, column: number) => PositionUnion | null,
   selections: DataRect[],
   setSelections: (d: DataRect[]) => void,
   meta: boolean,
@@ -26,7 +27,7 @@ export function expandSelectionDown(
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
 
-    if (pos.rowStart !== 0) api.scrollIntoView({ row: rowCount - 1 });
+    if (pos.rowStart !== 0) scrollIntoView({ row: rowCount - 1 });
     return;
   }
 
@@ -37,7 +38,7 @@ export function expandSelectionDown(
   // Our cell some how is spanned over. so for the current rowIndex, find the maximum span along the columns
   if (!isAtEdge) {
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
-      const cell = rectFromGridCellPosition(api.cellRoot(pos.rowStart, i) as PositionGridCell);
+      const cell = rectFromGridCellPosition(cellRoot(pos.rowStart, i) as PositionGridCell);
       pivotStart = Math.min(pivotStart, cell.rowStart);
       pivotEnd = Math.max(pivotEnd, cell.rowEnd);
     }
@@ -49,7 +50,7 @@ export function expandSelectionDown(
     let highestRowEnd = -Infinity;
     let setCell: DataRect = rect;
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
-      const cell = rectFromGridCellPosition(api.cellRoot(rect.rowStart + 1, i) as PositionGridCell);
+      const cell = rectFromGridCellPosition(cellRoot(rect.rowStart + 1, i) as PositionGridCell);
 
       if (cell.rowStart > highestRowEnd) {
         setCell = cell;
@@ -57,7 +58,7 @@ export function expandSelectionDown(
       }
     }
 
-    api.scrollIntoView({ row: highestRowEnd });
+    scrollIntoView({ row: highestRowEnd });
     next = {
       ...rect,
       rowStart: highestRowEnd,
@@ -73,7 +74,7 @@ export function expandSelectionDown(
       highestRowEnd = rowCount;
     } else {
       for (let i = rect.columnStart; i < rect.columnEnd; i++) {
-        const cell = rectFromGridCellPosition(api.cellRoot(rect.rowEnd, i) as PositionGridCell);
+        const cell = rectFromGridCellPosition(cellRoot(rect.rowEnd, i) as PositionGridCell);
         highestRowEnd = Math.max(cell.rowEnd, highestRowEnd);
 
         if (cell.rowEnd > highestRowEnd) {
@@ -83,7 +84,7 @@ export function expandSelectionDown(
       }
     }
 
-    api.scrollIntoView({ row: highestRowEnd - 1 });
+    scrollIntoView({ row: highestRowEnd - 1 });
     next = {
       ...rect,
       rowEnd: highestRowEnd,
