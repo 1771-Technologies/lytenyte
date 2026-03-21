@@ -6,4 +6,8 @@ export { splitRect } from "./split-rect.js";
 export { bottomSection, endSection, startSection, topSection, centerSection } from "./section-mappings.js";
 export { isFullyWithinRect } from "./is-fully-within-rect.js";
 export { rectFromGridCellPosition } from "./rect-from-grid-cell-position.js";
+export { expandRectsDown } from "./expand-rects-down.js";
+export { expandRectsEnd } from "./expand-rects-end.js";
+export { expandRectsStart } from "./expand-rects-start.js";
+export { expandRectsUp } from "./expand-rects-up.js";
 export type { DataRect, Section, SectionedRect } from "./types.js";

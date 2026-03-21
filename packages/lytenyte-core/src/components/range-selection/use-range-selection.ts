@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from "react";
-import { useEvent } from "../../../internal.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useEvent } from "../../internal.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 import {
   clampRectToAccessible,
   computeScrollDirection,
@@ -14,9 +14,9 @@ import {
   type DataRect,
   type PositionGridCell,
 } from "@1771technologies/lytenyte-shared";
-import { useCellSelection, useCellSelectionSettings } from "../../../root/contexts/cell-selection-context.js";
-import { useActiveRangeSelection } from "../../../root/contexts/active-range-context.js";
-import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
+import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
+import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
+import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 
 // Module-level constants — avoids re-allocation on every render
 const MAX_SPEED = 20;

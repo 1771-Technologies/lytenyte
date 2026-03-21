@@ -7,8 +7,8 @@ import {
 import { RowsContainerContext, type RowsContainerContextType } from "./context.js";
 import { useRoot } from "../../../root/root-context.js";
 import { usePiece } from "../../../hooks/use-piece.js";
-import { useRangeSelection } from "../range-selection/use-range-selection.js";
-import { useKeyboardRangeSelection } from "../range-selection/use-keyboard-range-selection.js";
+import { useRangeSelection } from "../../range-selection/use-range-selection.js";
+import { useKeyboardRangeSelection } from "../../range-selection/use-keyboard-range-selection.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {

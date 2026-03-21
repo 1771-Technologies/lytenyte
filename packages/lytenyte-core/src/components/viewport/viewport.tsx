@@ -188,7 +188,9 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
             return;
           }
-          if (!skipOnEdit) handleNavigation(e, false);
+          if (!skipOnEdit) {
+            handleNavigation(e, false);
+          }
 
           if (!isEditing && editMode !== "readonly") {
             if (e.key === "Enter") {

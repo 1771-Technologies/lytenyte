@@ -1,12 +1,15 @@
 import type { KeyboardEventHandler } from "react";
-import { useEvent } from "../../../internal.js";
-import { useRoot } from "../../../root/root-context.js";
-import { useCellSelection, useCellSelectionSettings } from "../../../root/contexts/cell-selection-context.js";
-import { expandSelectionUp } from "./expand-selection-up.js";
-import { expandSelectionDown } from "./expand-selection-down.js";
-import { expandSelectionStart } from "./expand-selection-start.js";
-import { expandSelectionEnd } from "./expand-selection-end.js";
-import { rectFromGridCellPosition, type DataRect } from "@1771technologies/lytenyte-shared";
+import { useEvent } from "../../internal.js";
+import { useRoot } from "../../root/root-context.js";
+import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
+import {
+  expandRectsDown,
+  expandRectsEnd,
+  expandRectsStart,
+  expandRectsUp,
+  rectFromGridCellPosition,
+  type DataRect,
+} from "@1771technologies/lytenyte-shared";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
   const { api, focusActive, view, source, rtl } = useRoot();
@@ -43,11 +46,11 @@ export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement
 
     let rect: DataRect[] | null = null;
 
-    if (isUp) rect = expandSelectionUp(api.scrollIntoView, api.cellRoot, selections, meta, pos, rowCount);
+    if (isUp) rect = expandRectsUp(api.scrollIntoView, api.cellRoot, selections, meta, pos, rowCount);
     else if (isDown)
-      rect = expandSelectionDown(api.scrollIntoView, api.cellRoot, selections, meta, pos, rowCount);
+      rect = expandRectsDown(api.scrollIntoView, api.cellRoot, selections, meta, pos, rowCount);
     else if (isStart)
-      rect = expandSelectionStart(
+      rect = expandRectsStart(
         api.scrollIntoView,
         api.cellRoot,
         selections,
@@ -56,7 +59,7 @@ export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement
         settings.ignoreFirstColumn,
         view,
       );
-    else if (isEnd) rect = expandSelectionEnd(api.scrollIntoView, api.cellRoot, selections, meta, pos, view);
+    else if (isEnd) rect = expandRectsEnd(api.scrollIntoView, api.cellRoot, selections, meta, pos, view);
 
     if (rect) settings.onCellSelectionChange(rect);
   });

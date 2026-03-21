@@ -147,6 +147,10 @@ export {
   topSection,
   centerSection,
   bottomSection,
+  expandRectsDown,
+  expandRectsEnd,
+  expandRectsStart,
+  expandRectsUp,
 } from "./rect/index.js";
 
 // Navigation

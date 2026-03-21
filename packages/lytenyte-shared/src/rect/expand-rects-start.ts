@@ -1,14 +1,11 @@
-import {
-  isFullyWithinRect,
-  rectFromGridCellPosition,
-  rectsOverlap,
-  type ColumnView,
-  type DataRect,
-  type PositionGridCell,
-  type PositionUnion,
-} from "@1771technologies/lytenyte-shared";
+import type { ColumnView } from "../columns/index.js";
+import type { PositionGridCell, PositionUnion } from "../types.js";
+import { isFullyWithinRect } from "./is-fully-within-rect.js";
+import { rectFromGridCellPosition } from "./rect-from-grid-cell-position.js";
+import { rectsOverlap } from "./rects-overlap.js";
+import type { DataRect } from "./types.js";
 
-export function expandSelectionStart(
+export function expandRectsStart(
   scrollIntoView: (params: { row?: number; column?: number }) => void,
   cellRoot: (row: number, column: number) => PositionUnion | null,
   selections: DataRect[],
