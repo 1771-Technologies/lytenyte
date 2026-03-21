@@ -11,24 +11,22 @@ export function expandSelectionUp(
   scrollIntoView: (params: { row?: number; column?: number }) => void,
   cellRoot: (row: number, column: number) => PositionUnion | null,
   selections: DataRect[],
-  setSelections: (d: DataRect[]) => void,
   meta: boolean,
   position: PositionGridCell,
   rowCount: number,
-) {
+): DataRect[] | null {
   const pos = rectFromGridCellPosition(position);
 
   const rect = selections.at(-1);
-  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return;
+  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return null;
 
   if (meta) {
     const next: DataRect = { ...rect, rowStart: 0, rowEnd: pos.rowStart + 1 };
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
-    setSelections(nextSelections);
 
     if (pos.rowStart !== rowCount - 1) scrollIntoView({ row: 0 });
-    return;
+    return nextSelections;
   }
 
   const isAtEdge = pos.rowStart == rect.rowStart || pos.rowEnd === rect.rowEnd;
@@ -66,7 +64,7 @@ export function expandSelectionUp(
       columnEnd: Math.max(c.columnEnd, rect.columnEnd),
     };
   } else {
-    if (rect.rowStart === 0) return;
+    if (rect.rowStart === 0) return null;
 
     let lowestRowStart = Infinity;
     let c = rect;
@@ -90,6 +88,5 @@ export function expandSelectionUp(
 
   const nextSelections = [...selections];
   nextSelections[nextSelections.length - 1] = next;
-  setSelections(nextSelections);
-  return;
+  return nextSelections;
 }

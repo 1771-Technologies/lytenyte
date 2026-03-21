@@ -11,24 +11,22 @@ export function expandSelectionDown(
   scrollIntoView: (params: { row?: number; column?: number }) => void,
   cellRoot: (row: number, column: number) => PositionUnion | null,
   selections: DataRect[],
-  setSelections: (d: DataRect[]) => void,
   meta: boolean,
   position: PositionGridCell,
   rowCount: number,
-) {
+): DataRect[] | null {
   const pos = rectFromGridCellPosition(position);
 
   const rect = selections.at(-1);
-  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return;
+  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return null;
 
   if (meta) {
     const next: DataRect = { ...rect, rowEnd: rowCount, rowStart: pos.rowStart };
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
-    setSelections(nextSelections);
-
     if (pos.rowStart !== 0) scrollIntoView({ row: rowCount - 1 });
-    return;
+
+    return nextSelections;
   }
 
   const isAtEdge = pos.rowStart == rect.rowStart || pos.rowEnd === rect.rowEnd;
@@ -96,6 +94,6 @@ export function expandSelectionDown(
 
   const nextSelections = [...selections];
   nextSelections[nextSelections.length - 1] = next;
-  setSelections(nextSelections);
-  return;
+
+  return nextSelections;
 }

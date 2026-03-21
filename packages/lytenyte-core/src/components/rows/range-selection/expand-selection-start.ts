@@ -12,15 +12,14 @@ export function expandSelectionStart(
   scrollIntoView: (params: { row?: number; column?: number }) => void,
   cellRoot: (row: number, column: number) => PositionUnion | null,
   selections: DataRect[],
-  setSelections: (d: DataRect[]) => void,
   meta: boolean,
   position: PositionGridCell,
   excludeMarker: boolean,
   view: ColumnView,
-) {
+): DataRect[] | null {
   const pos = rectFromGridCellPosition(position);
   const rect = selections.at(-1);
-  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return;
+  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return null;
 
   const first = excludeMarker ? 1 : 0;
 
@@ -28,10 +27,9 @@ export function expandSelectionStart(
     const next: DataRect = { ...rect, columnStart: first, columnEnd: pos.columnStart + 1 };
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
-    setSelections(nextSelections);
 
     if (pos.columnStart !== view.visibleColumns.length - 1) scrollIntoView({ column: first });
-    return;
+    return nextSelections;
   }
 
   const isAtEdge = pos.columnStart == rect.columnStart || pos.columnEnd === rect.columnEnd;
@@ -50,7 +48,7 @@ export function expandSelectionStart(
   let next: DataRect;
 
   if (rect.columnEnd <= pivotEnd) {
-    if (rect.columnStart === first) return;
+    if (rect.columnStart === first) return null;
 
     let highestColEnd = -Infinity;
     let setCell: DataRect = rect;
@@ -91,6 +89,6 @@ export function expandSelectionStart(
 
   const nextSelections = [...selections];
   nextSelections[nextSelections.length - 1] = next;
-  setSelections(nextSelections);
-  return;
+
+  return nextSelections;
 }

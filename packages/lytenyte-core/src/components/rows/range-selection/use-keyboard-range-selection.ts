@@ -6,7 +6,7 @@ import { expandSelectionUp } from "./expand-selection-up.js";
 import { expandSelectionDown } from "./expand-selection-down.js";
 import { expandSelectionStart } from "./expand-selection-start.js";
 import { expandSelectionEnd } from "./expand-selection-end.js";
-import { rectFromGridCellPosition } from "@1771technologies/lytenyte-shared";
+import { rectFromGridCellPosition, type DataRect } from "@1771technologies/lytenyte-shared";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
   const { api, focusActive, view, source, rtl } = useRoot();
@@ -41,46 +41,23 @@ export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement
       settings.onCellSelectionChange(selections);
     }
 
-    if (isUp)
-      expandSelectionUp(
-        api.scrollIntoView,
-        api.cellRoot,
-        selections,
-        settings.onCellSelectionChange,
-        meta,
-        pos,
-        rowCount,
-      );
+    let rect: DataRect[] | null = null;
+
+    if (isUp) rect = expandSelectionUp(api.scrollIntoView, api.cellRoot, selections, meta, pos, rowCount);
     else if (isDown)
-      expandSelectionDown(
-        api.scrollIntoView,
-        api.cellRoot,
-        selections,
-        settings.onCellSelectionChange,
-        meta,
-        pos,
-        rowCount,
-      );
+      rect = expandSelectionDown(api.scrollIntoView, api.cellRoot, selections, meta, pos, rowCount);
     else if (isStart)
-      expandSelectionStart(
+      rect = expandSelectionStart(
         api.scrollIntoView,
         api.cellRoot,
         selections,
-        settings.onCellSelectionChange,
         meta,
         pos,
         settings.ignoreFirstColumn,
         view,
       );
-    else if (isEnd)
-      expandSelectionEnd(
-        api.scrollIntoView,
-        api.cellRoot,
-        selections,
-        settings.onCellSelectionChange,
-        meta,
-        pos,
-        view,
-      );
+    else if (isEnd) rect = expandSelectionEnd(api.scrollIntoView, api.cellRoot, selections, meta, pos, view);
+
+    if (rect) settings.onCellSelectionChange(rect);
   });
 }
