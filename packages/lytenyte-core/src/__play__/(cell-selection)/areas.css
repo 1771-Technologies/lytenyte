@@ -161,6 +161,11 @@ body {
     background-color: rgb(59 130 246 / 0.15) !important;
     outline: 1px solid rgb(59 130 246 / 0.5);
     outline-offset: -1px;
+
+    &[data-ln-cell-selection-is-deselect="true"] {
+      background-color: rgb(239 68 68 / 0.15) !important;
+      outline-color: rgb(239 68 68 / 0.5);
+    }
   }
 
   /* ── Panel ──────────────────────────────────────────────────────────────── */

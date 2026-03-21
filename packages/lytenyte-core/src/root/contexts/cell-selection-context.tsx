@@ -19,6 +19,7 @@ import { useControlled, useEvent } from "../../internal.js";
 interface CellSelectionSettingsType {
   readonly cellSelectionMode: "range" | "multi-range" | "none";
   readonly cellSelectionMaintainOnNonCellPosition: boolean;
+  readonly cellSelectionClearOnSelf: boolean;
   readonly onCellSelectionChange: (change: DataRect[]) => void;
   readonly ignoreFirstColumn: boolean;
   readonly anchorRef: RefObject<PositionGridCell | null>;
@@ -73,6 +74,7 @@ function CellSelectionContextBase(
   const settings = useMemo<CellSelectionSettingsType>(() => {
     return {
       onCellSelectionChange,
+      cellSelectionClearOnSelf: true,
       ignoreFirstColumn: markerOn && (p.cellSelectionExcludeMarker ?? false),
       cellSelectionMaintainOnNonCellPosition: p.cellSelectionMaintainOnNonCellPosition ?? false,
       cellSelectionMode: p.cellSelectionMode ?? "none",

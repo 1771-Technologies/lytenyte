@@ -41,7 +41,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     yPositions,
   } = useRoot();
 
-  const cutoffs = useGridSections();
+  const gridSections = useGridSections();
 
   const edit = useEdit();
 
@@ -283,10 +283,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             "--ln-vp-height": `${dimensions.innerHeight}px`,
             "--ln-vp-row-height": `${dimensions.innerHeight - totalHeaderHeight}px`,
             "--ln-vp-width": `${dimensions.innerWidth}px`,
-            "--ln-start-offset": `${cutoffs.startOffset}px`,
-            "--ln-end-offset": `${cutoffs.endOffset}px`,
-            "--ln-top-offset": `${cutoffs.topOffset}px`,
-            "--ln-bottom-offset": `${cutoffs.bottomOffset}px`,
+            "--ln-start-offset": `${gridSections.startOffset}px`,
+            "--ln-end-offset": `${gridSections.endOffset}px`,
+            "--ln-top-offset": `${gridSections.topOffset}px`,
+            "--ln-bottom-offset": `${gridSections.bottomOffset}px`,
             "--ln-full-width": `${xPositions.at(-1)!}px`,
             "--ln-full-height": `${yPositions.at(-1)!}px`,
             ...(props.style ?? styles?.viewport?.style),

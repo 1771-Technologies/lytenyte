@@ -16,6 +16,7 @@ interface ActiveRangeContextType {
   readonly activeSplit: SectionedRect[];
   readonly deselect: boolean;
   readonly setDeselect: Dispatch<SetStateAction<boolean>>;
+  readonly selecting: boolean;
 }
 
 const context = createContext<ActiveRangeContextType>({} as any);
@@ -44,6 +45,7 @@ export function ActiveRangeProvider(props: PropsWithChildren) {
       deselect,
       setDeselect,
       setActiveRange,
+      selecting: !!activeRange,
     };
   }, [activeRange, activeSplit, deselect]);
 

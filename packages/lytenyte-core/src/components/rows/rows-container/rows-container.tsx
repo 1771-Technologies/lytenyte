@@ -9,6 +9,7 @@ import { useRoot } from "../../../root/root-context.js";
 import { usePiece } from "../../../hooks/use-piece.js";
 import { useRangeSelection } from "../../range-selection/use-range-selection.js";
 import { useKeyboardRangeSelection } from "../../range-selection/use-keyboard-range-selection.js";
+import { useCellFocusChange } from "../../range-selection/use-cell-focus-change.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
@@ -23,6 +24,7 @@ export const RowsContainer = memo(
       viewport,
       slotRowsOverlay: RowsOverlay,
       rtl,
+      focusActive,
     } = useRoot();
 
     const startWidth = xPositions[view.startCount];
@@ -71,6 +73,7 @@ export const RowsContainer = memo(
 
     const onMouseDown = useRangeSelection(props.onMouseDown, viewport, rtl);
     const onKeyDownRange = useKeyboardRangeSelection();
+    useCellFocusChange(focusActive);
 
     return (
       <RowsContainerContext.Provider value={usePiece(value)}>

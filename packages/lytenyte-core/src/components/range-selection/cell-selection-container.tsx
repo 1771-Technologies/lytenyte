@@ -7,10 +7,7 @@ import { useActiveRangeSelection } from "../../root/contexts/active-range-contex
 export const CellSelectionTop = memo(function CellSelectionTop() {
   const { cellSelectionsSplit: allRects } = useCellSelection();
 
-  const { activeSplit } = useActiveRangeSelection();
-
-  const cellSelectionIsDeselect = { current: false };
-  const isDeselect = cellSelectionIsDeselect.current;
+  const { activeSplit, deselect } = useActiveRangeSelection();
 
   const topRects = useMemo(() => {
     return allRects.filter((rect) => topSection[rect.section]);
@@ -34,7 +31,7 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
         return <CellSelectionRect rect={rect} key={i} />;
       })}
       {additiveRects.map((rect) => {
-        return <CellSelectionRect rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
+        return <CellSelectionRect rect={rect} key={rect.columnStart} isDeselect={deselect} />;
       })}
     </div>
   );
@@ -42,9 +39,7 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
 
 export const CellSelectionCenter = memo(function CellSelectionCenter() {
   const { cellSelectionsSplit: allRects } = useCellSelection();
-  const { activeSplit } = useActiveRangeSelection();
-  const cellSelectionIsDeselect = { current: false };
-  const isDeselect = cellSelectionIsDeselect.current;
+  const { activeSplit, deselect } = useActiveRangeSelection();
 
   const centerRects = useMemo(() => {
     return allRects.filter((rect) => centerSection[rect.section]);
@@ -69,7 +64,7 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
         return <CellSelectionRect rect={rect} key={i} />;
       })}
       {additiveRects.map((rect) => {
-        return <CellSelectionRect rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
+        return <CellSelectionRect rect={rect} key={rect.columnStart} isDeselect={deselect} />;
       })}
     </div>
   );
@@ -77,9 +72,7 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
 
 export const CellSelectionBottom = memo(function CellSelectionBottom() {
   const { cellSelectionsSplit: allRects } = useCellSelection();
-  const { activeSplit } = useActiveRangeSelection();
-  const cellSelectionIsDeselect = { current: false };
-  const isDeselect = cellSelectionIsDeselect.current;
+  const { activeSplit, deselect } = useActiveRangeSelection();
 
   const bottomRects = useMemo(() => {
     return allRects.filter((rect) => bottomSection[rect.section]);
@@ -104,7 +97,7 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
         return <CellSelectionRect rect={rect} key={i} />;
       })}
       {additiveRects.map((rect) => {
-        return <CellSelectionRect rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
+        return <CellSelectionRect rect={rect} key={rect.columnStart} isDeselect={deselect} />;
       })}
     </div>
   );
