@@ -1,7 +1,11 @@
-import type { ColumnView, DataRect, PositionGridCell } from "@1771technologies/lytenyte-shared";
-import { dataRectFromCellPosition } from "./data-rect-from-cell-position.js";
-import { isOverlappingRect } from "./is-overlapping-rect.js";
-import { isFullyWithinRect } from "./is-fully-within-rect.js";
+import {
+  isFullyWithinRect,
+  rectFromGridCellPosition,
+  rectsOverlap,
+  type ColumnView,
+  type DataRect,
+  type PositionGridCell,
+} from "@1771technologies/lytenyte-shared";
 import type { API } from "../../../types/api.js";
 
 export function expandSelectionStart(
@@ -13,9 +17,9 @@ export function expandSelectionStart(
   excludeMarker: boolean,
   view: ColumnView,
 ) {
-  const pos = dataRectFromCellPosition(position);
+  const pos = rectFromGridCellPosition(position);
   const rect = selections.at(-1);
-  if (!rect || !isOverlappingRect(rect, pos) || isFullyWithinRect(pos, rect)) return;
+  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return;
 
   const first = excludeMarker ? 1 : 0;
 
@@ -36,7 +40,7 @@ export function expandSelectionStart(
   // Our cell some how is spanned over. so for the current rowIndex, find the maximum span along the columns
   if (!isAtEdge) {
     for (let i = rect.rowStart; i < rect.rowEnd; i++) {
-      const cell = dataRectFromCellPosition(api.cellRoot(pos.columnStart, i) as PositionGridCell);
+      const cell = rectFromGridCellPosition(api.cellRoot(pos.columnStart, i) as PositionGridCell);
       pivotStart = Math.min(pivotStart, cell.columnStart);
       pivotEnd = Math.max(pivotEnd, cell.columnEnd);
     }
@@ -50,7 +54,7 @@ export function expandSelectionStart(
     let highestColEnd = -Infinity;
     let setCell: DataRect = rect;
     for (let i = rect.rowStart; i < rect.rowEnd; i++) {
-      const cell = dataRectFromCellPosition(api.cellRoot(i, rect.columnStart - 1) as PositionGridCell);
+      const cell = rectFromGridCellPosition(api.cellRoot(i, rect.columnStart - 1) as PositionGridCell);
       if (cell.columnStart > highestColEnd) {
         highestColEnd = cell.columnStart;
         setCell = cell;
@@ -68,7 +72,7 @@ export function expandSelectionStart(
     let highestColEnd = -Infinity;
     let setCell: DataRect = rect;
     for (let i = rect.rowStart; i < rect.rowEnd; i++) {
-      const cell = dataRectFromCellPosition(api.cellRoot(i, rect.columnEnd - 1) as PositionGridCell);
+      const cell = rectFromGridCellPosition(api.cellRoot(i, rect.columnEnd - 1) as PositionGridCell);
       if (cell.columnStart > highestColEnd) {
         highestColEnd = cell.columnStart;
         setCell = cell;

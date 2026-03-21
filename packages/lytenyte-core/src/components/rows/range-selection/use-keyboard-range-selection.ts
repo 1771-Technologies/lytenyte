@@ -2,11 +2,11 @@ import type { KeyboardEventHandler } from "react";
 import { useEvent } from "../../../internal.js";
 import { useRoot } from "../../../root/root-context.js";
 import { useCellSelection, useCellSelectionSettings } from "../../../root/contexts/cell-selection-context.js";
-import { dataRectFromCellPosition } from "./data-rect-from-cell-position.js";
 import { expandSelectionUp } from "./expand-selection-up.js";
 import { expandSelectionDown } from "./expand-selection-down.js";
 import { expandSelectionStart } from "./expand-selection-start.js";
 import { expandSelectionEnd } from "./expand-selection-end.js";
+import { rectFromGridCellPosition } from "@1771technologies/lytenyte-shared";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
   const { api, focusActive, view, source, rtl } = useRoot();
@@ -37,7 +37,7 @@ export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement
     // Bootstrap a single-cell selection if none exists
     let selections = cellSelections;
     if (selections.length === 0) {
-      selections = [dataRectFromCellPosition(pos)];
+      selections = [rectFromGridCellPosition(pos)];
       settings.onCellSelectionChange(selections);
     }
 

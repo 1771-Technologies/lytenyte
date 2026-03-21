@@ -1,6 +1,6 @@
 import type { DataRect, PositionGridCell } from "@1771technologies/lytenyte-shared";
 
-export function dataRectFromCellPosition(position: PositionGridCell): DataRect {
+export function rectFromGridCellPosition(position: PositionGridCell): DataRect {
   if (position.root) {
     const r = position.root;
     return {
