@@ -180,6 +180,8 @@ export {
 } from "./js-utils/index.js";
 
 // DOM Utils
+export type { Autoscroller } from "./dom-autoscroller/index.js";
+export { computeScrollDirection, createAutoscroller } from "./dom-autoscroller/index.js";
 export type { FocusTrapOptions } from "./dom-focus/index.js";
 export { FocusTrap, getTabbables, getFocusables } from "./dom-focus/index.js";
 export {

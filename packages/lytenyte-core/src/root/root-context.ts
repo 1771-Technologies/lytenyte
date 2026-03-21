@@ -38,11 +38,6 @@ export interface RootContextValue {
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
 
-  readonly startOffset: number;
-  readonly endOffset: number;
-  readonly topOffset: number;
-  readonly bottomOffset: number;
-
   readonly setDetailCache: Dispatch<SetStateAction<Record<string, number>>>;
   readonly rowDetailHeightCache: Record<string, number>;
   readonly rowDetailAutoHeightGuess: number;

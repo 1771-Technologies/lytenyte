@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRoot } from "../../root/root-context.js";
 import { getScrollStatus } from "@1771technologies/lytenyte-shared";
+import { useCutoffs } from "../../root/contexts/cutoff-context.js";
 
 export interface ViewportShadowsProps {
   readonly start?: boolean;
@@ -15,19 +16,9 @@ export function ViewportShadows({
   top = true,
   bottom = true,
 }: ViewportShadowsProps) {
-  const {
-    rtl,
-    view,
-    viewport,
-    totalHeaderHeight,
-    source,
-    xPositions,
-    yPositions,
-    dimensions,
-    startOffset: startWidth,
-    endOffset: endWidth,
-    bottomOffset: botHeight,
-  } = useRoot();
+  const { rtl, view, viewport, totalHeaderHeight, source, xPositions, yPositions, dimensions } = useRoot();
+
+  const { startOffset: startWidth, endOffset: endWidth, bottomOffset: botHeight } = useCutoffs();
 
   const rowTopCount = source.useTopCount();
   const rowBotCount = source.useBottomCount();

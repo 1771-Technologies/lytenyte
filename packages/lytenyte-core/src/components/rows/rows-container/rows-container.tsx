@@ -7,7 +7,7 @@ import {
 import { RowsContainerContext, type RowsContainerContextType } from "./context.js";
 import { useRoot } from "../../../root/root-context.js";
 import { usePiece } from "../../../hooks/use-piece.js";
-import { useRangeSelection } from "../range-selection/use-range-selection/index.js";
+import { useRangeSelection } from "../range-selection/use-range-selection.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
@@ -20,10 +20,6 @@ export const RowsContainer = memo(
       dimensions,
       api,
       viewport,
-      topOffset,
-      bottomOffset,
-      startOffset,
-      endOffset,
       slotRowsOverlay: RowsOverlay,
       rtl,
     } = useRoot();
@@ -72,15 +68,7 @@ export const RowsContainer = memo(
       width,
     ]);
 
-    const onMouseDown = useRangeSelection(
-      props.onMouseDown,
-      viewport,
-      topOffset,
-      bottomOffset,
-      startOffset,
-      endOffset,
-      rtl,
-    );
+    const onMouseDown = useRangeSelection(props.onMouseDown, viewport, rtl);
 
     return (
       <RowsContainerContext.Provider value={usePiece(value)}>

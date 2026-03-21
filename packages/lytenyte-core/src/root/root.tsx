@@ -47,7 +47,7 @@ import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
 import { CellSelectionContext } from "./contexts/cell-selection-context.js";
 import { GridIdProvider } from "./contexts/grid-id.js";
-import { CutoffProvider, type CutoffType } from "./contexts/cutoff-context.js";
+import { CutoffProvider, type CountsContext } from "./contexts/cutoff-context.js";
 import { ActiveRangeProvider } from "./contexts/active-range-context.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
@@ -64,11 +64,25 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   const controlled = useControlledGridState(props);
   const view = useColumnView(controlled.columns, props, source, controlled.columnGroupExpansions);
 
+  const [vp, setVp] = useState<HTMLDivElement | null>(null);
+  const dimensions = useViewportDimensions(vp);
+
   const rowCount = source.useRowCount();
   const topCount = source.useTopCount();
   const bottomCount = source.useBottomCount();
 
-  const cutoffValue = useMemo<CutoffType>(() => {
+  const totalHeaderHeight = useTotalHeaderHeight(props, view.maxRow);
+  const xPositions = useXPositions(props, view, dimensions.innerWidth);
+  const yPositions = useYPositions(
+    props,
+    source,
+    dimensions.innerHeight - totalHeaderHeight,
+    controlled.detailExpansions,
+  );
+
+  const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
+
+  const cutoffValue = useMemo<CountsContext>(() => {
     const centerCount = rowCount - topCount - bottomCount;
     const topCutoff = topCount;
     const botCutoff = centerCount + topCount;
@@ -87,26 +101,14 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       startCutoff,
       endCutoff,
       topCutoff,
+      ...offsets,
     };
-  }, [bottomCount, rowCount, topCount, view.centerCount, view.endCount, view.startCount]);
+  }, [bottomCount, offsets, rowCount, topCount, view.centerCount, view.endCount, view.startCount]);
 
-  const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const gridId = useGridId(props.gridId);
   const selectPivot = useRef<number | null>(null);
 
   const dropAccept = useDropAccept(props, gridId);
-
-  const dimensions = useViewportDimensions(vp);
-
-  const totalHeaderHeight = useTotalHeaderHeight(props, view.maxRow);
-
-  const xPositions = useXPositions(props, view, dimensions.innerWidth);
-  const yPositions = useYPositions(
-    props,
-    source,
-    dimensions.innerHeight - totalHeaderHeight,
-    controlled.detailExpansions,
-  );
 
   const api = useExtendedAPI(props);
   useImperativeHandle(forwarded, () => api as any, [api]);
@@ -167,8 +169,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     return next;
   }, [props.styles]);
 
-  const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
-
   // @TODO lee: remove grid id from this context
   const value = useMemo<RootContextValue>(() => {
     return {
@@ -191,10 +191,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
       dimensions,
       styles,
-      topOffset: offsets.topOffset,
-      bottomOffset: offsets.bottomOffset,
-      startOffset: offsets.startOffset,
-      endOffset: offsets.endOffset,
 
       totalHeaderHeight,
       detailExpansions: controlled.detailExpansions,
@@ -241,10 +237,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     dropAccept,
     focusPiece,
     gridId,
-    offsets.bottomOffset,
-    offsets.endOffset,
-    offsets.startOffset,
-    offsets.topOffset,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,

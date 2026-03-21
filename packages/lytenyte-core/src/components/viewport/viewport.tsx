@@ -14,6 +14,7 @@ import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { EditDriver } from "./edit-driver.js";
+import { useCutoffs } from "../../root/contexts/cutoff-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -33,16 +34,14 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     view,
     slotShadows: Shadows,
     styles,
-    topOffset,
-    bottomOffset,
-    startOffset,
-    endOffset,
     slotViewportOverlay: ViewportOverlay,
     totalHeaderHeight,
     dimensions,
     xPositions,
     yPositions,
   } = useRoot();
+
+  const cutoffs = useCutoffs();
 
   const edit = useEdit();
 
@@ -282,10 +281,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             "--ln-vp-height": `${dimensions.innerHeight}px`,
             "--ln-vp-row-height": `${dimensions.innerHeight - totalHeaderHeight}px`,
             "--ln-vp-width": `${dimensions.innerWidth}px`,
-            "--ln-start-offset": `${startOffset}px`,
-            "--ln-end-offset": `${endOffset}px`,
-            "--ln-top-offset": `${topOffset}px`,
-            "--ln-bottom-offset": `${bottomOffset}px`,
+            "--ln-start-offset": `${cutoffs.startOffset}px`,
+            "--ln-end-offset": `${cutoffs.endOffset}px`,
+            "--ln-top-offset": `${cutoffs.topOffset}px`,
+            "--ln-bottom-offset": `${cutoffs.bottomOffset}px`,
             "--ln-full-width": `${xPositions.at(-1)!}px`,
             "--ln-full-height": `${yPositions.at(-1)!}px`,
             ...(props.style ?? styles?.viewport?.style),

@@ -1,9 +1,12 @@
 import type { MouseEventHandler } from "react";
-import { useEvent } from "../../../../internal.js";
-import { useGridId } from "../../../../root/contexts/grid-id.js";
+import { useEvent } from "../../../internal.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 import {
   clampRectToAccessible,
+  computeScrollDirection,
+  createAutoscroller,
   deselectRect,
+  equal,
   getDocument,
   getNearestFocusable,
   getPositionFromFocusable,
@@ -11,57 +14,45 @@ import {
   type DataRect,
   type PositionGridCell,
 } from "@1771technologies/lytenyte-shared";
-import {
-  useCellSelection,
-  useCellSelectionSettings,
-} from "../../../../root/contexts/cell-selection-context.js";
-import { useActiveRangeSelection } from "../../../../root/contexts/active-range-context.js";
-import { useCutoffs } from "../../../../root/contexts/cutoff-context.js";
-import { createAutoscroller } from "./autoscroller.js";
-import { computeScrollDirection } from "./compute-scroll-direction.js";
+import { useCellSelection, useCellSelectionSettings } from "../../../root/contexts/cell-selection-context.js";
+import { useActiveRangeSelection } from "../../../root/contexts/active-range-context.js";
+import { useCutoffs } from "../../../root/contexts/cutoff-context.js";
 
 // Module-level constants — avoids re-allocation on every render
 const MAX_SPEED = 20;
 const ACCELERATION = 0.5;
 
-function rectsEqual(a: DataRect | null, b: DataRect | null): boolean {
-  if (a === b) return true;
-  if (!a || !b) return false;
-  return (
-    a.columnStart === b.columnStart &&
-    a.columnEnd === b.columnEnd &&
-    a.rowStart === b.rowStart &&
-    a.rowEnd === b.rowEnd
-  );
-}
-
 export function useRangeSelection(
   mouseDown: MouseEventHandler<HTMLDivElement> | undefined,
   viewport: HTMLElement | null,
-  topOffset: number,
-  bottomOffset: number,
-  startOffset: number,
-  endOffset: number,
   rtl: boolean,
 ) {
   const gridId = useGridId();
   const settings = useCellSelectionSettings();
+
   const { cellSelections } = useCellSelection();
   const { setActiveRange, setDeselect } = useActiveRangeSelection();
+
   const cutoffs = useCutoffs();
 
   const onMouseDown: MouseEventHandler<HTMLDivElement> = useEvent((ev) => {
     if (!viewport) return;
-
     mouseDown?.(ev);
+
+    // The user may have provided their own mouse down handler for the container. This is possible when the grid is
+    // in headless mode. If they did provide their own handler, then we will stop selection if they prevented the
+    // default, or if they stopped propagation of the handler.
+    //
+    // Also if the mode is "none", then there is no further action needed.
     if (ev.isPropagationStopped() || ev.isDefaultPrevented() || settings.cellSelectionMode === "none") return;
 
-    // Modifier intent
+    // This function is similar to what excel has.
+    // Shift + Ctrl voids the modification, and is treated as a normal selection.
     const shiftOnly = ev.shiftKey && !ev.ctrlKey && !ev.metaKey;
     const ctrlOnly = (ev.ctrlKey || ev.metaKey) && !ev.shiftKey;
-    // shift+ctrl treated as plain
 
-    // Prevent the browser from moving DOM focus on shift-click
+    // If the shift key is pressed, we want to augment the last selection. Since we are augmenting the last selection
+    // we do not want to make the new cell that was clicked take focus, so we prevent the default.
     if (shiftOnly) ev.preventDefault();
 
     // Classify drag origin section from mouse position at mousedown
@@ -71,10 +62,12 @@ export function useRangeSelection(
     const vpStartW = vpRectStart.width;
     const vpStartH = vpRectStart.height;
 
-    const originTop = startMouseY < topOffset;
-    const originBottom = startMouseY > vpStartH - bottomOffset;
-    const originInStart = rtl ? startMouseX > vpStartW - startOffset : startMouseX < startOffset;
-    const originInEnd = rtl ? startMouseX < endOffset : startMouseX > vpStartW - endOffset;
+    const originTop = startMouseY < cutoffs.topOffset;
+    const originBottom = startMouseY > vpStartH - cutoffs.bottomOffset;
+    const originInStart = rtl
+      ? startMouseX > vpStartW - cutoffs.startOffset
+      : startMouseX < cutoffs.startOffset;
+    const originInEnd = rtl ? startMouseX < cutoffs.endOffset : startMouseX > vpStartW - cutoffs.endOffset;
 
     const startTarget = ev.target as HTMLElement;
     const cell = getNearestFocusable(gridId, startTarget);
@@ -146,7 +139,7 @@ export function useRangeSelection(
     // scroll but the rAF loop keeps firing.
     let lastActiveRect: DataRect | null = null;
     function setActiveRangeDeduped(rect: DataRect | null) {
-      if (rectsEqual(rect, lastActiveRect)) return;
+      if (equal(rect, lastActiveRect)) return;
       lastActiveRect = rect;
       setActiveRange(rect);
     }
@@ -219,10 +212,10 @@ export function useRangeSelection(
           y,
           vpRect.width,
           vpRect.height,
-          topOffset,
-          bottomOffset,
-          startOffset,
-          endOffset,
+          cutoffs.topOffset,
+          cutoffs.bottomOffset,
+          cutoffs.startOffset,
+          cutoffs.endOffset,
           rtl,
           originTop,
           originBottom,
