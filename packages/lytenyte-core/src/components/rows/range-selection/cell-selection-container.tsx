@@ -1,17 +1,14 @@
 import { memo, useMemo } from "react";
-import { useCellSelection } from "../../../../root/contexts/cell-selection-context.js";
-import {
-  bottomSection,
-  centerSection,
-  topSection,
-  type SectionedRect,
-} from "@1771technologies/lytenyte-shared";
+import { useCellSelection } from "../../../root/contexts/cell-selection-context.js";
+import { bottomSection, centerSection, topSection } from "@1771technologies/lytenyte-shared";
 import { CellSelectionRect } from "./cell-selection-rect.js";
-
-const additive: SectionedRect[] = [];
+import { useActiveRangeSelection } from "../../../root/contexts/active-range-context.js";
 
 export const CellSelectionTop = memo(function CellSelectionTop() {
   const { cellSelectionsSplit: allRects } = useCellSelection();
+
+  const { activeSplit } = useActiveRangeSelection();
+
   const cellSelectionIsDeselect = { current: false };
   const isDeselect = cellSelectionIsDeselect.current;
 
@@ -19,9 +16,8 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
     return allRects.filter((rect) => topSection[rect.section]);
   }, [allRects]);
   const additiveRects = useMemo(() => {
-    if (!additive) return [];
-    return additive.filter((rect) => topSection[rect.section]);
-  }, []);
+    return activeSplit.filter((rect) => topSection[rect.section]);
+  }, [activeSplit]);
 
   return (
     <div
@@ -46,6 +42,7 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
 
 export const CellSelectionCenter = memo(function CellSelectionCenter() {
   const { cellSelectionsSplit: allRects } = useCellSelection();
+  const { activeSplit } = useActiveRangeSelection();
   const cellSelectionIsDeselect = { current: false };
   const isDeselect = cellSelectionIsDeselect.current;
 
@@ -54,9 +51,8 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
   }, [allRects]);
 
   const additiveRects = useMemo(() => {
-    if (!additive) return [];
-    return additive.filter((rect) => centerSection[rect.section]);
-  }, []);
+    return activeSplit.filter((rect) => centerSection[rect.section]);
+  }, [activeSplit]);
 
   return (
     <div
@@ -81,6 +77,7 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
 
 export const CellSelectionBottom = memo(function CellSelectionBottom() {
   const { cellSelectionsSplit: allRects } = useCellSelection();
+  const { activeSplit } = useActiveRangeSelection();
   const cellSelectionIsDeselect = { current: false };
   const isDeselect = cellSelectionIsDeselect.current;
 
@@ -89,9 +86,8 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
   }, [allRects]);
 
   const additiveRects = useMemo(() => {
-    if (!additive) return [];
-    return additive.filter((rect) => bottomSection[rect.section]);
-  }, []);
+    return activeSplit.filter((rect) => bottomSection[rect.section]);
+  }, [activeSplit]);
 
   return (
     <div

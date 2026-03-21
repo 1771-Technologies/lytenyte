@@ -6,7 +6,7 @@ import { useRoot, useRowLayout } from "../../../root/root-context.js";
 import { $centerCount, $centerHeight, $pinHeight, $topCount } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
-import { CellSelectionCenter } from "./cell-selection/cell-selection-container.js";
+import { CellSelectionCenter } from "../range-selection/cell-selection-container.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(

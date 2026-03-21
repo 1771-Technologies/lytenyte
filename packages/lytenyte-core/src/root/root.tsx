@@ -46,6 +46,9 @@ import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
 import { CellSelectionContext } from "./contexts/cell-selection-context.js";
+import { GridIdProvider } from "./contexts/grid-id.js";
+import { CutoffProvider, type CutoffType } from "./contexts/cutoff-context.js";
+import { ActiveRangeProvider } from "./contexts/active-range-context.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -58,19 +61,34 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 ) => {
   const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
   const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
+  const controlled = useControlledGridState(props);
+  const view = useColumnView(controlled.columns, props, source, controlled.columnGroupExpansions);
 
   const rowCount = source.useRowCount();
   const topCount = source.useTopCount();
   const bottomCount = source.useBottomCount();
-  const centerCount = rowCount - topCount - bottomCount;
 
-  const controlled = useControlledGridState(props);
-  const view = useColumnView(controlled.columns, props, source, controlled.columnGroupExpansions);
+  const cutoffValue = useMemo<CutoffType>(() => {
+    const centerCount = rowCount - topCount - bottomCount;
+    const topCutoff = topCount;
+    const botCutoff = centerCount + topCount;
+    const startCutoff = view.startCount;
+    const endCutoff = view.startCount + view.centerCount;
 
-  const topCutoff = topCount;
-  const botCutoff = centerCount + topCount;
-  const startCutoff = view.startCount;
-  const endCutoff = view.startCount + view.centerCount;
+    return {
+      rowCount,
+      topCount,
+      centerCount,
+      bottomCount,
+      startCount: view.startCount,
+      colCenterCount: view.centerCount,
+      endCount: view.endCount,
+      bottomCutoff: botCutoff,
+      startCutoff,
+      endCutoff,
+      topCutoff,
+    };
+  }, [bottomCount, rowCount, topCount, view.centerCount, view.endCount, view.startCount]);
 
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const gridId = useGridId(props.gridId);
@@ -151,6 +169,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
 
+  // @TODO lee: remove grid id from this context
   const value = useMemo<RootContextValue>(() => {
     return {
       id: gridId,
@@ -267,27 +286,33 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   return (
     <RootContextProvider value={value}>
-      <CellSelectionContext
-        topCutoff={topCutoff}
-        bottomCutoff={botCutoff}
-        endCutoff={endCutoff}
-        startCutoff={startCutoff}
-        cellSelections={p.cellSelections}
-        cellSelectionExcludeMarker={p.cellSelectionExcludeMarker}
-        cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
-        cellSelectionMode={p.cellSelectionMode}
-        onCellSelectionChange={p.onCellSelectionChange}
-      >
-        <RowLayoutContextProvider value={rowLayout}>
-          <ColumnLayoutContextProvider value={headerLayout}>
-            <BoundsContextProvider value={bounds}>
-              <EditProvider value={editValue}>
-                <FocusProvider value={focusValue}>{children ?? <Fallback />}</FocusProvider>
-              </EditProvider>
-            </BoundsContextProvider>
-          </ColumnLayoutContextProvider>
-        </RowLayoutContextProvider>
-      </CellSelectionContext>
+      <GridIdProvider value={gridId}>
+        <CutoffProvider value={cutoffValue}>
+          <CellSelectionContext
+            topCutoff={cutoffValue.topCutoff}
+            bottomCutoff={cutoffValue.bottomCutoff}
+            endCutoff={cutoffValue.endCutoff}
+            startCutoff={cutoffValue.startCutoff}
+            cellSelections={p.cellSelections}
+            cellSelectionExcludeMarker={p.cellSelectionExcludeMarker}
+            cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
+            cellSelectionMode={p.cellSelectionMode}
+            onCellSelectionChange={p.onCellSelectionChange}
+          >
+            <ActiveRangeProvider>
+              <RowLayoutContextProvider value={rowLayout}>
+                <ColumnLayoutContextProvider value={headerLayout}>
+                  <BoundsContextProvider value={bounds}>
+                    <EditProvider value={editValue}>
+                      <FocusProvider value={focusValue}>{children ?? <Fallback />}</FocusProvider>
+                    </EditProvider>
+                  </BoundsContextProvider>
+                </ColumnLayoutContextProvider>
+              </RowLayoutContextProvider>
+            </ActiveRangeProvider>
+          </CellSelectionContext>
+        </CutoffProvider>
+      </GridIdProvider>
     </RootContextProvider>
   );
 };

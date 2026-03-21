@@ -3,13 +3,15 @@ import { createContext, memo, useContext, useMemo, type PropsWithChildren } from
 import type { Props } from "../../types";
 import { useControlled, useEvent } from "../../internal.js";
 
-export interface CellSelectionContextType {
+interface CellSelectionSettingsType {
   readonly cellSelectionMode: "range" | "multi-range" | "none";
-  readonly cellSelections: DataRect[];
-  readonly cellSelectionExcludeMarker: boolean;
   readonly cellSelectionMaintainOnNonCellPosition: boolean;
   readonly onCellSelectionChange: (change: DataRect[]) => void;
+  readonly ignoreFirstColumn: boolean;
+}
 
+interface CellSelectionContextType {
+  readonly cellSelections: DataRect[];
   readonly cellSelectionsSplit: SectionedRect[];
 }
 
@@ -21,6 +23,7 @@ interface RectCutoffs {
 }
 
 const context = createContext<CellSelectionContextType>({} as any);
+const contextSettings = createContext<CellSelectionSettingsType>({} as any);
 
 function CellSelectionContextBase(
   p: PropsWithChildren<
@@ -31,6 +34,7 @@ function CellSelectionContextBase(
       | "cellSelectionExcludeMarker"
       | "cellSelectionMaintainOnNonCellPosition"
       | "onCellSelectionChange"
+      | "columnMarker"
     >
   > &
     RectCutoffs,
@@ -49,26 +53,37 @@ function CellSelectionContextBase(
     p.onCellSelectionChange?.(change);
   });
 
-  const value = useMemo<CellSelectionContextType>(() => {
+  const markerOn = p.columnMarker?.on ?? false;
+  const settings = useMemo<CellSelectionSettingsType>(() => {
     return {
-      cellSelections,
       onCellSelectionChange,
-      cellSelectionsSplit,
-      cellSelectionExcludeMarker: p.cellSelectionExcludeMarker ?? false,
+      ignoreFirstColumn: markerOn && (p.cellSelectionExcludeMarker ?? false),
       cellSelectionMaintainOnNonCellPosition: p.cellSelectionMaintainOnNonCellPosition ?? false,
       cellSelectionMode: p.cellSelectionMode ?? "none",
     };
   }, [
-    cellSelections,
-    cellSelectionsSplit,
+    markerOn,
     onCellSelectionChange,
     p.cellSelectionExcludeMarker,
     p.cellSelectionMaintainOnNonCellPosition,
     p.cellSelectionMode,
   ]);
 
-  return <context.Provider value={value}>{p.children}</context.Provider>;
+  const value = useMemo<CellSelectionContextType>(() => {
+    return {
+      cellSelections,
+      cellSelectionsSplit,
+    };
+  }, [cellSelections, cellSelectionsSplit]);
+
+  return (
+    <contextSettings.Provider value={settings}>
+      <context.Provider value={value}>{p.children}</context.Provider>;
+    </contextSettings.Provider>
+  );
 }
 
 export const CellSelectionContext = memo(CellSelectionContextBase);
+
 export const useCellSelection = () => useContext(context);
+export const useCellSelectionSettings = () => useContext(contextSettings);

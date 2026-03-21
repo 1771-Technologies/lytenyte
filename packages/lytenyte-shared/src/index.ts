@@ -137,6 +137,7 @@ export type { DataRect, Section, SectionedRect } from "./rect/index.js";
 export {
   deselectRect,
   splitRect,
+  rectFromGridCellPositions,
   rectsOverlap,
   startSection,
   endSection,
