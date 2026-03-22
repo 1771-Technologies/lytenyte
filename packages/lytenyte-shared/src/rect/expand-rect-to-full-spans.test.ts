@@ -44,33 +44,33 @@ describe("expandRectToFullSpans", () => {
   test("Should expand rowStart upward when a span at the top boundary starts above the rect", () => {
     // Span covers rows 0–2, col 1. Rect top boundary (row 2) touches it.
     const cellRoot = makeSpannedCellRoot([{ rowStart: 0, rowEnd: 3, colStart: 1, colEnd: 2 }]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 3 }, cellRoot),
-    ).toEqual({ rowStart: 0, rowEnd: 5, columnStart: 1, columnEnd: 3 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 3 }, cellRoot)).toEqual(
+      { rowStart: 0, rowEnd: 5, columnStart: 1, columnEnd: 3 },
+    );
   });
 
   test("Should expand rowEnd downward when a span at the bottom boundary ends below the rect", () => {
     // Span covers rows 4–6, col 1. Rect bottom boundary (row 4) touches it.
     const cellRoot = makeSpannedCellRoot([{ rowStart: 4, rowEnd: 7, colStart: 1, colEnd: 2 }]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 3 }, cellRoot),
-    ).toEqual({ rowStart: 2, rowEnd: 7, columnStart: 1, columnEnd: 3 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 3 }, cellRoot)).toEqual(
+      { rowStart: 2, rowEnd: 7, columnStart: 1, columnEnd: 3 },
+    );
   });
 
   test("Should expand columnStart leftward when a span at the left boundary starts before the rect", () => {
     // Span covers row 2, cols 0–1. Rect left boundary (col 1) touches it.
     const cellRoot = makeSpannedCellRoot([{ rowStart: 2, rowEnd: 3, colStart: 0, colEnd: 2 }]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 4 }, cellRoot),
-    ).toEqual({ rowStart: 2, rowEnd: 5, columnStart: 0, columnEnd: 4 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 4 }, cellRoot)).toEqual(
+      { rowStart: 2, rowEnd: 5, columnStart: 0, columnEnd: 4 },
+    );
   });
 
   test("Should expand columnEnd rightward when a span at the right boundary ends beyond the rect", () => {
     // Span covers row 2, cols 3–5. Rect right boundary (col 3) touches it.
     const cellRoot = makeSpannedCellRoot([{ rowStart: 2, rowEnd: 3, colStart: 3, colEnd: 6 }]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 4 }, cellRoot),
-    ).toEqual({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 6 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 4 }, cellRoot)).toEqual(
+      { rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 6 },
+    );
   });
 
   test("Should expand in all four directions simultaneously when each boundary touches a span", () => {
@@ -82,9 +82,9 @@ describe("expandRectToFullSpans", () => {
       { rowStart: 2, rowEnd: 5, colStart: 0, colEnd: 2 }, // left
       { rowStart: 2, rowEnd: 5, colStart: 3, colEnd: 5 }, // right
     ]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 4 }, cellRoot),
-    ).toEqual({ rowStart: 0, rowEnd: 7, columnStart: 0, columnEnd: 5 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 4 }, cellRoot)).toEqual(
+      { rowStart: 0, rowEnd: 7, columnStart: 0, columnEnd: 5 },
+    );
   });
 
   test("Should cascade: expanding one boundary reveals a new partial span that also gets expanded", () => {
@@ -95,9 +95,9 @@ describe("expandRectToFullSpans", () => {
       { rowStart: 0, rowEnd: 3, colStart: 0, colEnd: 1 },
       { rowStart: 3, rowEnd: 5, colStart: 0, colEnd: 1 },
     ]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 4, columnStart: 0, columnEnd: 2 }, cellRoot),
-    ).toEqual({ rowStart: 0, rowEnd: 5, columnStart: 0, columnEnd: 2 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 4, columnStart: 0, columnEnd: 2 }, cellRoot)).toEqual(
+      { rowStart: 0, rowEnd: 5, columnStart: 0, columnEnd: 2 },
+    );
   });
 
   test("Should cascade across axes: a row expansion triggers a column expansion", () => {
@@ -108,9 +108,9 @@ describe("expandRectToFullSpans", () => {
       { rowStart: 2, rowEnd: 5, colStart: 0, colEnd: 3 },
       { rowStart: 2, rowEnd: 5, colStart: 3, colEnd: 6 },
     ]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 2, columnEnd: 4 }, cellRoot),
-    ).toEqual({ rowStart: 2, rowEnd: 5, columnStart: 0, columnEnd: 6 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 2, columnEnd: 4 }, cellRoot)).toEqual(
+      { rowStart: 2, rowEnd: 5, columnStart: 0, columnEnd: 6 },
+    );
   });
 
   test("Should not expand when all touched spans are fully contained within the rect", () => {
@@ -123,9 +123,9 @@ describe("expandRectToFullSpans", () => {
   test("Should handle a span that extends in both row and column directions simultaneously", () => {
     // Span covers rows 0–4, cols 0–4. Rect partially overlaps at top-left corner.
     const cellRoot = makeSpannedCellRoot([{ rowStart: 0, rowEnd: 5, colStart: 0, colEnd: 5 }]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 6, columnStart: 2, columnEnd: 7 }, cellRoot),
-    ).toEqual({ rowStart: 0, rowEnd: 6, columnStart: 0, columnEnd: 7 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 6, columnStart: 2, columnEnd: 7 }, cellRoot)).toEqual(
+      { rowStart: 0, rowEnd: 6, columnStart: 0, columnEnd: 7 },
+    );
   });
 
   test("Should stabilise after multiple cascade rounds until no boundary touches a partial span", () => {
@@ -146,8 +146,8 @@ describe("expandRectToFullSpans", () => {
       { rowStart: 3, rowEnd: 6, colStart: 0, colEnd: 1 },
       { rowStart: 6, rowEnd: 9, colStart: 0, colEnd: 1 },
     ]);
-    expect(
-      expandRectToFullSpans({ rowStart: 2, rowEnd: 7, columnStart: 0, columnEnd: 2 }, cellRoot),
-    ).toEqual({ rowStart: 0, rowEnd: 9, columnStart: 0, columnEnd: 2 });
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 7, columnStart: 0, columnEnd: 2 }, cellRoot)).toEqual(
+      { rowStart: 0, rowEnd: 9, columnStart: 0, columnEnd: 2 },
+    );
   });
 });

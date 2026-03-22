@@ -454,12 +454,14 @@ describe("handleRangeSelect", () => {
       // anchor=(3,5)  ->  bounds {row:3..4, col:5..6}
       // current=(7,8)  ->  bounds {row:7..8, col:8..9}
       // union  ->  {rowStart:3, rowEnd:8, columnStart:5, columnEnd:9}
-      expect(selectionCalls.at(-1)).toEqual([{
-        rowStart: 3,
-        rowEnd: 8,
-        columnStart: 5,
-        columnEnd: 9,
-      }]);
+      expect(selectionCalls.at(-1)).toEqual([
+        {
+          rowStart: 3,
+          rowEnd: 8,
+          columnStart: 5,
+          columnEnd: 9,
+        },
+      ]);
     });
 
     test("Should commit the anchor-to-current rect on mouseup after a drag", async () => {
@@ -498,7 +500,7 @@ describe("handleRangeSelect", () => {
       // First mousemove to a DIFFERENT cell triggers the hasDragged branch:
       //   hasDragged = true          (line 218)
       //   setActiveRangeDeduped(...) (synchronous — before RAF, also mirrors to onSelectionChange)
-      const { activeRectCalls, selectionCalls } = setup({
+      const { selectionCalls } = setup({
         clearOnSelfSelect: false,
         currentFocus: cellPos(3, 5),
       });

@@ -1,4 +1,3 @@
-import { useMemo, type CSSProperties } from "react";
 import {
   bottomSection,
   endSection,
@@ -8,7 +7,8 @@ import {
   topSection,
   type SectionedRect,
 } from "@1771technologies/lytenyte-shared";
-import { useRoot } from "@1771technologies/lytenyte-core/internal";
+import { useMemo, type CSSProperties } from "react";
+import { useRoot } from "../../root/root-context.js";
 
 export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; isDeselect?: boolean }) {
   const { xPositions, yPositions, rtl, source, dimensions } = useRoot();

@@ -1,8 +1,8 @@
-import type { PieceWritable } from "@1771technologies/lytenyte-core";
 import { equal, rectFromGridCellPosition, type PositionUnion } from "@1771technologies/lytenyte-shared";
 import { useEffect, useRef } from "react";
 import { useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
 import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
+import type { PieceWritable } from "../../hooks/use-piece.js";
 
 export function useCellFocusChange(focusActive: PieceWritable<PositionUnion | null>) {
   const focus = focusActive.useValue();

@@ -19,9 +19,5 @@ export function computeActiveRect(
 ) {
   const raw = rectFromGridCellPositions(anchorPosition, currentPosition);
   const expanded = expandRectToFullSpans(raw, cellRoot);
-  return clampRectToAccessible(
-    expanded,
-    gridSections,
-    getRangeAccess(gridSections, viewport, force),
-  );
+  return clampRectToAccessible(expanded, gridSections, getRangeAccess(gridSections, viewport, force));
 }

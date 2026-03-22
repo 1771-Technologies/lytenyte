@@ -112,7 +112,9 @@ export function handleRangeSelect({
   // only needed for non-deselect paths.
   const baseSelections =
     shiftOnly || !isMultiRange
-      ? cellSelections.length > 0 ? cellSelections.slice(0, -1) : []
+      ? cellSelections.length > 0
+        ? cellSelections.slice(0, -1)
+        : []
       : ctrlOnly && isMultiRange
         ? cellSelections
         : [];

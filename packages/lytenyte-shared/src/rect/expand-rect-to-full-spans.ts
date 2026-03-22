@@ -14,7 +14,7 @@ export function expandRectToFullSpans(
   let current = rect;
 
   while (true) {
-    let next = { ...current };
+    const next = { ...current };
 
     // Scan top boundary row
     for (let c = current.columnStart; c < current.columnEnd; c++) {

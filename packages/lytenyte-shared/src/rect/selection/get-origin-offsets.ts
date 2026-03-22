@@ -1,4 +1,4 @@
-import type { GridSections } from "../../types";
+import type { GridSections } from "../../types.js";
 
 /**
  * Returns the origin offsets based on the grid sections. The origin offset are the areas of the grid that

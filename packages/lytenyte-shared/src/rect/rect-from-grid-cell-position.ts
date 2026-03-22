@@ -1,4 +1,5 @@
-import type { DataRect, PositionGridCell } from "@1771technologies/lytenyte-shared";
+import type { PositionGridCell } from "../types.js";
+import type { DataRect } from "./types.js";
 
 /**
  * Returns the bounding `DataRect` for a single grid cell position. When the

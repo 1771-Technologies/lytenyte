@@ -71,12 +71,26 @@ function cellWithRoot(
 
 describe("computeActiveRect", () => {
   test("Should return the bounding rect of two plain cells when no sections are inaccessible", () => {
-    const result = computeActiveRect(cell(1, 2), cell(5, 8), noSections, makeViewport(), noForce, noSpanCellRoot);
+    const result = computeActiveRect(
+      cell(1, 2),
+      cell(5, 8),
+      noSections,
+      makeViewport(),
+      noForce,
+      noSpanCellRoot,
+    );
     expect(result).toEqual({ rowStart: 1, rowEnd: 6, columnStart: 2, columnEnd: 9 });
   });
 
   test("Should return a single-cell rect when anchor and current are the same cell", () => {
-    const result = computeActiveRect(cell(3, 4), cell(3, 4), noSections, makeViewport(), noForce, noSpanCellRoot);
+    const result = computeActiveRect(
+      cell(3, 4),
+      cell(3, 4),
+      noSections,
+      makeViewport(),
+      noForce,
+      noSpanCellRoot,
+    );
     expect(result).toEqual({ rowStart: 3, rowEnd: 4, columnStart: 4, columnEnd: 5 });
   });
 
@@ -90,7 +104,14 @@ describe("computeActiveRect", () => {
   test("Should expand rect to cover full span extent when current has a span root", () => {
     // current root at (4, 4) spanning 2 rows × 4 cols
     const current = cellWithRoot(4, 5, 4, 4, 2, 4);
-    const result = computeActiveRect(cell(0, 0), current, noSections, makeViewport(), noForce, noSpanCellRoot);
+    const result = computeActiveRect(
+      cell(0, 0),
+      current,
+      noSections,
+      makeViewport(),
+      noForce,
+      noSpanCellRoot,
+    );
     expect(result).toEqual({ rowStart: 0, rowEnd: 6, columnStart: 0, columnEnd: 8 });
   });
 

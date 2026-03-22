@@ -1,4 +1,4 @@
-import type { DataRect } from "@1771technologies/lytenyte-shared";
+import type { DataRect } from "../types.js";
 
 /**
  * Returns true when `pos` is strictly inside `rect` on all four sides, meaning
