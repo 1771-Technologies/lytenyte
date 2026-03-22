@@ -24,6 +24,7 @@ export interface HandleRangeSelectionArgs {
   readonly gridSections: GridSections;
   readonly isMultiRange: boolean;
   readonly ignoreFirst: boolean;
+  readonly cellRoot: (row: number, column: number) => PositionUnion | null;
 
   readonly anchorRef: { get: () => PositionGridCell | null; set: (pos: PositionGridCell | null) => void };
   readonly currentFocus: PositionUnion | null;
@@ -32,6 +33,7 @@ export interface HandleRangeSelectionArgs {
   readonly onActiveRangeChange: (change: DataRect | null) => void;
   readonly onDeselectChange: (b: boolean) => void;
   readonly onSelectionChange: (change: DataRect[]) => void;
+  readonly onDragChange: (dragging: boolean) => void;
 }
 
 /**
@@ -46,6 +48,7 @@ export function handleRangeSelect({
   gridSections,
   isMultiRange,
   ignoreFirst,
+  cellRoot,
   anchorRef,
   currentFocus,
   clearOnSelfSelect,
@@ -53,6 +56,7 @@ export function handleRangeSelect({
   onActiveRangeChange,
   onSelectionChange,
   onDeselectChange,
+  onDragChange,
 }: HandleRangeSelectionArgs) {
   const cell = getNearestFocusable(gridId, ev.target as HTMLElement);
   if (!cell) return;
@@ -100,29 +104,38 @@ export function handleRangeSelect({
 
   const isSelfClick = isSelectSelfClick(startPosition, currentFocus, clearOnSelfSelect, shiftOnly);
 
-  // Deduplicated setActiveRange — avoids re-renders when the rect hasn't changed.
-  // This matters most during autoscroll at a boundary where the grid can no longer
-  // scroll but the rAF loop keeps firing.
+  const deselect = isDeselect(startPosition, cellSelections, isMultiRange, ctrlOnly, ignoreFirst);
+  onDeselectChange(deselect);
+
+  // Base selections used when mirroring the live rect into committed selections.
+  // Deselect uses onActiveRangeChange for preview instead, so baseSelections is
+  // only needed for non-deselect paths.
+  const baseSelections =
+    shiftOnly || !isMultiRange
+      ? cellSelections.length > 0 ? cellSelections.slice(0, -1) : []
+      : ctrlOnly && isMultiRange
+        ? cellSelections
+        : [];
+
+  // Deduplicated update — avoids re-renders when the rect hasn't changed.
+  // For deselect, the rect is previewed via onActiveRangeChange.
+  // For all other cases, the rect is applied directly to committed selections.
   let lastActiveRect: DataRect | null = null;
   function setActiveRangeDeduped(rect: DataRect | null) {
     if (equal(rect, lastActiveRect)) return;
     lastActiveRect = rect;
-    onActiveRangeChange(rect);
+    if (deselect) {
+      onActiveRangeChange(rect);
+    } else if (rect !== null) {
+      onSelectionChange([...baseSelections, rect]);
+    }
   }
 
-  const deselect = isDeselect(startPosition, cellSelections, isMultiRange, ctrlOnly, ignoreFirst);
-  onDeselectChange(deselect);
-
-  if (!isSelfClick)
-    setActiveRangeDeduped(computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force));
-
-  if (shiftOnly || !isMultiRange) {
-    // Strip the last committed selection so only the active range rect is
-    // visible during the drag (avoids visual doubling while extending).
-    const withoutLast = cellSelections.length > 0 ? cellSelections.slice(0, -1) : [];
-    onSelectionChange(withoutLast);
-  } else if (!ctrlOnly && !isSelfClick) {
-    onSelectionChange([]);
+  if (!isSelfClick) {
+    onDragChange(true);
+    setActiveRangeDeduped(
+      computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force, cellRoot),
+    );
   }
 
   // Use ownerDocument so everything works correctly inside iframes:
@@ -161,7 +174,7 @@ export function handleRangeSelect({
     }
     if (!isSelfClick || hasDragged)
       setActiveRangeDeduped(
-        computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force),
+        computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force, cellRoot),
       );
   }
 
@@ -214,9 +227,9 @@ export function handleRangeSelect({
       const movedRow = position.rowIndex;
       if (isSelfClick && !hasDragged && (movedCol !== startCol || movedRow !== startRow)) {
         hasDragged = true;
-        if (!ctrlOnly) onSelectionChange([]);
+        onDragChange(true);
         setActiveRangeDeduped(
-          computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force),
+          computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force, cellRoot),
         );
       }
 
@@ -224,7 +237,7 @@ export function handleRangeSelect({
         if (selectionFrame) cancelAnimationFrame(selectionFrame);
         selectionFrame = requestAnimationFrame(() => {
           setActiveRangeDeduped(
-            computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force),
+            computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force, cellRoot),
           );
           selectionFrame = null;
         });
@@ -241,9 +254,17 @@ export function handleRangeSelect({
       selectionFrame = null;
     }
 
-    const finalRect = computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force)!;
+    const finalRect = computeActiveRect(
+      anchorPosition,
+      currentPosition,
+      gridSections,
+      viewport,
+      force,
+      cellRoot,
+    )!;
     onActiveRangeChange(null);
     onDeselectChange(false);
+    onDragChange(false);
 
     if (isSelfClick && !hasDragged) return;
 

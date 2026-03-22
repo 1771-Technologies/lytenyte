@@ -17,6 +17,7 @@ interface ActiveRangeContextType {
   readonly deselect: boolean;
   readonly setDeselect: Dispatch<SetStateAction<boolean>>;
   readonly selecting: boolean;
+  readonly setSelecting: Dispatch<SetStateAction<boolean>>;
 }
 
 const context = createContext<ActiveRangeContextType>({} as any);
@@ -25,6 +26,8 @@ export function ActiveRangeProvider(props: PropsWithChildren) {
   const cutoff = useGridSections();
   const [activeRange, setActiveRange] = useState<DataRect | null>(null);
   const [deselect, setDeselect] = useState(false);
+
+  const [selecting, setSelecting] = useState(false);
 
   const activeSplit = useMemo(() => {
     if (!activeRange) return [];
@@ -45,9 +48,10 @@ export function ActiveRangeProvider(props: PropsWithChildren) {
       deselect,
       setDeselect,
       setActiveRange,
-      selecting: !!activeRange,
+      selecting: selecting,
+      setSelecting,
     };
-  }, [activeRange, activeSplit, deselect]);
+  }, [activeRange, activeSplit, deselect, selecting]);
 
   return <context.Provider value={value}>{props.children}</context.Provider>;
 }

@@ -23,8 +23,9 @@ export function expandRectsStart(
 ): DataRect[] | null {
   const pos = rectFromGridCellPosition(position);
   const rect = selections.at(-1);
-  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return null;
+  if (!rect || !rectsOverlap(rect, pos)) return null;
 
+  const fullyInterior = isFullyWithinRect(pos, rect);
   const first = excludeMarker ? 1 : 0;
 
   if (meta) {
@@ -51,7 +52,7 @@ export function expandRectsStart(
 
   let next: DataRect;
 
-  if (rect.columnEnd <= pivotEnd) {
+  if (fullyInterior || rect.columnEnd <= pivotEnd) {
     if (rect.columnStart === first) return null;
 
     let lowestColStart = Infinity;

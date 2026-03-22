@@ -33,17 +33,19 @@ describe("expandRectsEnd", () => {
     ).toEqual(null);
   });
 
-  test("Should return null when the position is strictly interior to the last selection", () => {
+  test("Should expand the end boundary outward when the position is strictly interior (span-grown rect)", () => {
+    const cellRoot = (row: number, col: number) =>
+      ({ kind: "cell", rowIndex: row, colIndex: col, root: null }) as PositionUnion;
     expect(
       expandRectsEnd(
         () => {},
-        () => null,
+        cellRoot,
         [{ rowStart: 4, rowEnd: 8, columnStart: 3, columnEnd: 8 }],
         false,
         { kind: "cell", rowIndex: 5, colIndex: 4, root: null },
         view,
       ),
-    ).toEqual(null);
+    ).toEqual([{ rowStart: 4, rowEnd: 8, columnStart: 3, columnEnd: 9 }]);
   });
 
   test("Should return null when the selection already reaches the last column", () => {

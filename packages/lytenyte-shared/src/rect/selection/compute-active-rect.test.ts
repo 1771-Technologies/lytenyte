@@ -51,6 +51,8 @@ function cell(rowIndex: number, colIndex: number): PositionGridCell {
   return { kind: "cell", rowIndex, colIndex, root: null };
 }
 
+const noSpanCellRoot = (row: number, column: number) => cell(row, column);
+
 function cellWithRoot(
   rowIndex: number,
   colIndex: number,
@@ -69,26 +71,26 @@ function cellWithRoot(
 
 describe("computeActiveRect", () => {
   test("Should return the bounding rect of two plain cells when no sections are inaccessible", () => {
-    const result = computeActiveRect(cell(1, 2), cell(5, 8), noSections, makeViewport(), noForce);
+    const result = computeActiveRect(cell(1, 2), cell(5, 8), noSections, makeViewport(), noForce, noSpanCellRoot);
     expect(result).toEqual({ rowStart: 1, rowEnd: 6, columnStart: 2, columnEnd: 9 });
   });
 
   test("Should return a single-cell rect when anchor and current are the same cell", () => {
-    const result = computeActiveRect(cell(3, 4), cell(3, 4), noSections, makeViewport(), noForce);
+    const result = computeActiveRect(cell(3, 4), cell(3, 4), noSections, makeViewport(), noForce, noSpanCellRoot);
     expect(result).toEqual({ rowStart: 3, rowEnd: 4, columnStart: 4, columnEnd: 5 });
   });
 
   test("Should expand rect to cover full span extent when anchor has a span root", () => {
     // anchor root at (0, 0) spanning 3 rows × 3 cols; current at (5, 5)
     const anchor = cellWithRoot(1, 1, 0, 0, 3, 3);
-    const result = computeActiveRect(anchor, cell(5, 5), noSections, makeViewport(), noForce);
+    const result = computeActiveRect(anchor, cell(5, 5), noSections, makeViewport(), noForce, noSpanCellRoot);
     expect(result).toEqual({ rowStart: 0, rowEnd: 6, columnStart: 0, columnEnd: 6 });
   });
 
   test("Should expand rect to cover full span extent when current has a span root", () => {
     // current root at (4, 4) spanning 2 rows × 4 cols
     const current = cellWithRoot(4, 5, 4, 4, 2, 4);
-    const result = computeActiveRect(cell(0, 0), current, noSections, makeViewport(), noForce);
+    const result = computeActiveRect(cell(0, 0), current, noSections, makeViewport(), noForce, noSpanCellRoot);
     expect(result).toEqual({ rowStart: 0, rowEnd: 6, columnStart: 0, columnEnd: 8 });
   });
 
@@ -96,21 +98,21 @@ describe("computeActiveRect", () => {
     // startCutoff=2, startCount=2 → start not accessible when scrollLeft > 1
     // Rect from cell(3,0) to cell(5,1) → columnStart=0, columnEnd=2 → entirely in start pins
     const vp = makeViewport(100, 0); // scrollLeft=100 → startAccessible=false
-    const result = computeActiveRect(cell(3, 0), cell(5, 1), withPins, vp, noForce);
+    const result = computeActiveRect(cell(3, 0), cell(5, 1), withPins, vp, noForce, noSpanCellRoot);
     expect(result).toBeNull();
   });
 
   test("Should clamp start side but not return null when rect straddles the start-pin boundary", () => {
     // Rect from cell(3,0) to cell(5,5) → columnStart=0→clamped to 2, columnEnd=6
     const vp = makeViewport(100, 0);
-    const result = computeActiveRect(cell(3, 0), cell(5, 5), withPins, vp, noForce);
+    const result = computeActiveRect(cell(3, 0), cell(5, 5), withPins, vp, noForce, noSpanCellRoot);
     expect(result).toEqual({ rowStart: 3, rowEnd: 6, columnStart: 2, columnEnd: 6 });
   });
 
   test("Should not clamp when force flag overrides inaccessible start section", () => {
     // Same scenario as above, but force.start=true → startAccessible=true → no clamping
     const vp = makeViewport(100, 0);
-    const result = computeActiveRect(cell(3, 0), cell(5, 5), withPins, vp, forceStart);
+    const result = computeActiveRect(cell(3, 0), cell(5, 5), withPins, vp, forceStart, noSpanCellRoot);
     expect(result).toEqual({ rowStart: 3, rowEnd: 6, columnStart: 0, columnEnd: 6 });
   });
 });

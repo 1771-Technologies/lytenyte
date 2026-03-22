@@ -21,7 +21,9 @@ export function expandRectsDown(
   const pos = rectFromGridCellPosition(position);
 
   const rect = selections.at(-1);
-  if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return null;
+  if (!rect || !rectsOverlap(rect, pos)) return null;
+
+  const fullyInterior = isFullyWithinRect(pos, rect);
 
   if (meta) {
     const next: DataRect = { ...rect, rowEnd: rowCount, rowStart: pos.rowStart };
@@ -47,7 +49,7 @@ export function expandRectsDown(
 
   let next: DataRect;
   // Reduce our rect by one level
-  if (rect.rowStart < pivotStart) {
+  if (!fullyInterior && rect.rowStart < pivotStart) {
     let highestRowEnd = -Infinity;
     let setCell: DataRect = rect;
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {

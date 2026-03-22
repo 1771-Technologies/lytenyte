@@ -72,7 +72,7 @@ export const RowsContainer = memo(
       width,
     ]);
 
-    const onMouseDown = useRangeSelection(props.onMouseDown, viewport, rtl);
+    const onMouseDown = useRangeSelection(props.onMouseDown, viewport, rtl, api);
     const onKeyDownRange = useKeyboardRangeSelection();
     useCellFocusChange(focusActive);
 

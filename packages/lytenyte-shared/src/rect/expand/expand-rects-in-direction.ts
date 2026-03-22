@@ -5,6 +5,7 @@ import { expandRectsEnd } from "./expand-rects-end.js";
 import { expandRectsStart } from "./expand-rects-start.js";
 import { expandRectsUp } from "./expand-rects-up.js";
 import type { DataRect } from "../types.js";
+import { expandRectToFullSpans } from "../expand-rect-to-full-spans.js";
 
 interface ExpandRectsInDirectionArgs {
   readonly scrollIntoView: (params: { row?: number; column?: number }) => void;
@@ -46,5 +47,10 @@ export function expandRectsInDirection({
     rect = expandRectsEnd(scrollIntoView, cellRoot, selections, meta, pos, view);
   }
 
-  return rect;
+  if (rect === null) return null;
+
+  const last = expandRectToFullSpans(rect[rect.length - 1], cellRoot);
+  const result = [...rect];
+  result[result.length - 1] = last;
+  return result;
 }

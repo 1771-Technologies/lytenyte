@@ -6,16 +6,19 @@ import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/
 import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
 import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 import { useRoot } from "../../root/root-context.js";
+import type { API } from "../../types/api.js";
+
 export function useRangeSelection(
   mouseDown: MouseEventHandler<HTMLDivElement> | undefined,
   viewport: HTMLElement | null,
   rtl: boolean,
+  api: API,
 ) {
   const gridId = useGridId();
   const settings = useCellSelectionSettings();
 
   const { cellSelections } = useCellSelection();
-  const { setActiveRange, setDeselect } = useActiveRangeSelection();
+  const { setActiveRange, setDeselect, setSelecting } = useActiveRangeSelection();
 
   const gridSections = useGridSections();
   const { focusActive } = useRoot();
@@ -45,6 +48,8 @@ export function useRangeSelection(
       onSelectionChange: settings.onCellSelectionChange,
       rtl,
       viewport,
+      cellRoot: api.cellRoot,
+      onDragChange: setSelecting,
     });
   });
 

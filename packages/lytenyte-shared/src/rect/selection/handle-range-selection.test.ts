@@ -93,6 +93,7 @@ function setup(options: SetupOptions = {}) {
   const activeRectCalls: (DataRect | null)[] = [];
   const selectionCalls: DataRect[][] = [];
   const deselectCalls: boolean[] = [];
+  const dragCalls: boolean[] = [];
   let anchor: PositionGridCell | null = null;
 
   const anchorRef = {
@@ -112,16 +113,18 @@ function setup(options: SetupOptions = {}) {
       gridSections: noSections,
       isMultiRange: options.isMultiRange ?? true,
       ignoreFirst: options.ignoreFirst ?? false,
+      cellRoot: (row, col) => cellPos(row, col),
       anchorRef,
       currentFocus: options.currentFocus ?? null,
       clearOnSelfSelect: options.clearOnSelfSelect ?? true,
       onActiveRangeChange: (r) => activeRectCalls.push(r),
       onDeselectChange: (b) => deselectCalls.push(b),
       onSelectionChange: (r) => selectionCalls.push(r),
+      onDragChange: (d) => dragCalls.push(d),
     }),
   );
 
-  return { activeRectCalls, selectionCalls, deselectCalls, getAnchor: () => anchor };
+  return { activeRectCalls, selectionCalls, deselectCalls, dragCalls, getAnchor: () => anchor };
 }
 
 function fireMousedown(target: HTMLElement, init: MouseEventInit = {}): MouseEvent {
@@ -218,24 +221,24 @@ describe("handleRangeSelect", () => {
   });
 
   describe("plain click (no modifier)", () => {
-    test("Should call onActiveRangeChange with the clicked cell rect at mousedown", () => {
+    test("Should not call onActiveRangeChange at mousedown for a plain click", () => {
       const { activeRectCalls } = setup();
       const cellEl = makeCell(3, 5);
       container.appendChild(cellEl);
 
       fireMousedown(cellEl);
 
-      expect(activeRectCalls[0]).toEqual(cellRect(3, 5));
+      expect(activeRectCalls).toHaveLength(0);
     });
 
-    test("Should call onSelectionChange([]) at mousedown to clear existing selections", () => {
+    test("Should mirror the active rect into onSelectionChange at mousedown", () => {
       const { selectionCalls } = setup();
       const cellEl = makeCell(3, 5);
       container.appendChild(cellEl);
 
       fireMousedown(cellEl);
 
-      expect(selectionCalls[0]).toEqual([]);
+      expect(selectionCalls[0]).toEqual([cellRect(3, 5)]);
     });
 
     test("Should call onDeselectChange(false) at mousedown", () => {
@@ -293,7 +296,7 @@ describe("handleRangeSelect", () => {
   });
 
   describe("shift-click (extend selection)", () => {
-    test("Should strip the last committed selection from onSelectionChange at mousedown", () => {
+    test("Should mirror active rect as last selection (stripping previous last) at mousedown", () => {
       const sel1: DataRect = { rowStart: 0, rowEnd: 2, columnStart: 0, columnEnd: 3 };
       const sel2: DataRect = { rowStart: 5, rowEnd: 8, columnStart: 5, columnEnd: 9 };
       const { selectionCalls } = setup({ cellSelections: [sel1, sel2] });
@@ -302,7 +305,7 @@ describe("handleRangeSelect", () => {
 
       fireMousedown(cellEl, { shiftKey: true });
 
-      expect(selectionCalls[0]).toEqual([sel1]);
+      expect(selectionCalls[0]).toEqual([sel1, cellRect(3, 5)]);
     });
 
     test("Should not update the anchor when shift is held", () => {
@@ -353,7 +356,7 @@ describe("handleRangeSelect", () => {
   });
 
   describe("ctrl-click (multi-range additive)", () => {
-    test("Should not call onSelectionChange at mousedown when ctrl is held", () => {
+    test("Should mirror the new rect appended to existing selections at mousedown when ctrl is held", () => {
       const existingSel: DataRect = { rowStart: 0, rowEnd: 2, columnStart: 0, columnEnd: 3 };
       const { selectionCalls } = setup({ cellSelections: [existingSel] });
       const cellEl = makeCell(3, 5);
@@ -361,7 +364,7 @@ describe("handleRangeSelect", () => {
 
       fireMousedown(cellEl, { ctrlKey: true });
 
-      expect(selectionCalls).toHaveLength(0);
+      expect(selectionCalls[0]).toEqual([existingSel, cellRect(3, 5)]);
     });
 
     test("Should append the new rect to existing selections on mouseup when isMultiRange=true", () => {
@@ -437,8 +440,8 @@ describe("handleRangeSelect", () => {
   });
 
   describe("drag (mousemove to a different cell)", () => {
-    test("Should update onActiveRangeChange to the anchor-to-hovered rect after the animation frame", async () => {
-      const { activeRectCalls } = setup();
+    test("Should update onSelectionChange to the anchor-to-hovered rect after the animation frame", async () => {
+      const { selectionCalls } = setup();
       const cellEl = makeCell(3, 5);
       const cell2El = makeCell(7, 8);
       container.appendChild(cellEl);
@@ -451,12 +454,12 @@ describe("handleRangeSelect", () => {
       // anchor=(3,5)  ->  bounds {row:3..4, col:5..6}
       // current=(7,8)  ->  bounds {row:7..8, col:8..9}
       // union  ->  {rowStart:3, rowEnd:8, columnStart:5, columnEnd:9}
-      expect(activeRectCalls.at(-1)).toEqual({
+      expect(selectionCalls.at(-1)).toEqual([{
         rowStart: 3,
         rowEnd: 8,
         columnStart: 5,
         columnEnd: 9,
-      });
+      }]);
     });
 
     test("Should commit the anchor-to-current rect on mouseup after a drag", async () => {
@@ -490,12 +493,11 @@ describe("handleRangeSelect", () => {
   });
 
   describe("self-click drag (lines 218-220)", () => {
-    test("Should break out of self-click mode and call onSelectionChange([]) when dragged to a different cell", () => {
+    test("Should break out of self-click mode and mirror active rect into onSelectionChange when dragged to a different cell", () => {
       // isSelfClick=true (clearOnSelfSelect=false, same focused cell).
       // First mousemove to a DIFFERENT cell triggers the hasDragged branch:
       //   hasDragged = true          (line 218)
-      //   onSelectionChange([])      (line 219, !ctrlOnly=true)
-      //   setActiveRangeDeduped(...) (line 220, synchronous — before RAF)
+      //   setActiveRangeDeduped(...) (synchronous — before RAF, also mirrors to onSelectionChange)
       const { activeRectCalls, selectionCalls } = setup({
         clearOnSelfSelect: false,
         currentFocus: cellPos(3, 5),
@@ -508,14 +510,11 @@ describe("handleRangeSelect", () => {
       fireMousedown(cellEl);
       fireMousemove(cell2El);
 
-      // onSelectionChange([]) fired synchronously (line 219)
-      expect(selectionCalls).toContainEqual([]);
-      // active rect updated synchronously to the anchor-to-current range (line 220)
-      expect(activeRectCalls.at(-1)).toEqual({ rowStart: 3, rowEnd: 8, columnStart: 5, columnEnd: 9 });
+      // selection updated synchronously to the anchor-to-current range
+      expect(selectionCalls.at(-1)).toEqual([{ rowStart: 3, rowEnd: 8, columnStart: 5, columnEnd: 9 }]);
     });
 
-    test("Should not call onSelectionChange when ctrl is held during self-click drag", () => {
-      // Line 219: if (!ctrlOnly) onSelectionChange([]) — false branch (ctrlOnly=true)
+    test("Should mirror rect into onSelectionChange when ctrl is held during self-click drag", () => {
       const { selectionCalls } = setup({
         clearOnSelfSelect: false,
         currentFocus: cellPos(3, 5),
@@ -528,8 +527,8 @@ describe("handleRangeSelect", () => {
       fireMousedown(cellEl, { ctrlKey: true });
       fireMousemove(cell2El);
 
-      // ctrlOnly=true  ->  the onSelectionChange([]) inside hasDragged block is skipped
-      expect(selectionCalls).toHaveLength(0);
+      // ctrlOnly+multiRange: baseSelections=cellSelections=[], rect appended directly
+      expect(selectionCalls.at(-1)).toEqual([{ rowStart: 3, rowEnd: 8, columnStart: 5, columnEnd: 9 }]);
     });
   });
 
@@ -606,7 +605,7 @@ describe("handleRangeSelect", () => {
     });
 
     test("Should skip the position update when the hovered focusable is not a cell kind", async () => {
-      const { activeRectCalls } = setup();
+      const { selectionCalls } = setup();
       const cellEl = makeCell(3, 5);
       container.appendChild(cellEl);
 
@@ -624,9 +623,9 @@ describe("handleRangeSelect", () => {
       await wait(50);
       fireMouseup();
 
-      // currentPosition was NOT updated (header cell skipped), so the active rect
+      // currentPosition was NOT updated (header cell skipped), so the selection
       // stays as the single-cell anchor rect for cell(3,5).
-      expect(activeRectCalls.some((r) => r?.rowStart === 3 && r?.rowEnd === 4)).toBe(true);
+      expect(selectionCalls.some((r) => r.at(-1)?.rowStart === 3 && r.at(-1)?.rowEnd === 4)).toBe(true);
     });
 
     test("Should still call setActiveRangeDeduped when elementFromPoint returns null", async () => {
@@ -724,7 +723,7 @@ describe("handleRangeSelect", () => {
     test("Should cancel the pending RAF and reschedule when a second mousemove fires before the frame runs", async () => {
       // Line 226: if (selectionFrame) cancelAnimationFrame(selectionFrame)  <- true branch.
       // Achieved by firing two mousemoves to different cells without awaiting a frame.
-      const { activeRectCalls } = setup();
+      const { selectionCalls } = setup();
       const cellEl = makeCell(3, 5);
       const cell2El = makeCell(7, 8);
       const cell3El = makeCell(10, 12);
@@ -739,7 +738,7 @@ describe("handleRangeSelect", () => {
       fireMouseup();
 
       // Final rect should reflect the last hovered cell (10,12), not (7,8).
-      expect(activeRectCalls.some((r) => r?.rowEnd === 11 && r?.columnEnd === 13)).toBe(true);
+      expect(selectionCalls.some((r) => r.at(-1)?.rowEnd === 11 && r.at(-1)?.columnEnd === 13)).toBe(true);
     });
   });
 
