@@ -14,6 +14,11 @@ interface AccessFlags {
   readonly bottomAccessible: boolean;
 }
 
+/**
+ * Clamps a rect to the accessible pin regions of the viewport. Each inaccessible
+ * edge is clamped to its pin cutoff boundary. Returns null if the clamped rect
+ * has zero area.
+ */
 export function clampRectToAccessible(
   rect: DataRect,
   cutoffs: Cutoffs,
