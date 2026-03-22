@@ -18,6 +18,7 @@ import { useYPositions } from "./hooks/use-y-positions.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
 import {
   equal,
+  type DataRect,
   type GridSections,
   type LayoutState,
   type RowSource,
@@ -54,6 +55,8 @@ import { CellSelectionContext } from "./contexts/cell-selection-context.js";
 import { GridIdProvider } from "./contexts/grid-id.js";
 import { GridSectionsProvider } from "./contexts/grid-sections-context.js";
 import { ActiveRangeProvider } from "./contexts/active-range-context.js";
+import { useControlled } from "../hooks/use-controlled.js";
+import { useEvent } from "../hooks/use-event.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -146,6 +149,14 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   );
 
   const editValue = useEditContext(view, api, props, source);
+  const [cellSelections, setCellSelections] = useControlled<DataRect[]>({
+    controlled: p.cellSelections,
+    default: [] as DataRect[],
+  });
+  const onCellSelectionChange = useEvent((change: DataRect[]) => {
+    setCellSelections(change);
+    p.onCellSelectionChange?.(change);
+  });
 
   useApi(
     gridId,
@@ -163,6 +174,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     yPositions.positions,
     totalHeaderHeight,
     api,
+    cellSelections,
   );
 
   const prevStyles = useRef(props.styles);
@@ -288,11 +300,11 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
             bottomCutoff={cutoffValue.bottomCutoff}
             endCutoff={cutoffValue.endCutoff}
             startCutoff={cutoffValue.startCutoff}
-            cellSelections={p.cellSelections}
+            cellSelections={cellSelections}
             cellSelectionExcludeMarker={p.cellSelectionExcludeMarker}
             cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
             cellSelectionMode={p.cellSelectionMode}
-            onCellSelectionChange={p.onCellSelectionChange}
+            onCellSelectionChange={onCellSelectionChange}
           >
             <ActiveRangeProvider>
               <RowLayoutContextProvider value={rowLayout}>

@@ -2,6 +2,7 @@ import {
   getNearestFocusable,
   getPositionFromFocusable,
   type ColumnView,
+  type DataRect,
   type LayoutState,
   type RowSource,
   type SpanLayout,
@@ -45,6 +46,7 @@ import { useRowView } from "./api-functions/use-row-view.js";
 import { useColumnView } from "./api-functions/use-column-view.js";
 import { useEditUpdateCells } from "./api-functions/use-edit-update-cells.js";
 import { useEvent } from "../../../internal.js";
+import { useCellSelections } from "./api-functions/use-cell-selections.js";
 
 export function useApi(
   gridId: string,
@@ -62,6 +64,7 @@ export function useApi(
   yPositions: Uint32Array,
   headerHeightTotal: number,
   providedApi: Root.API,
+  cellSelections: DataRect[],
 ) {
   const api: Writable<Root.API> = providedApi;
   const rowTopCount = source.useTopCount();
@@ -110,6 +113,8 @@ export function useApi(
 
     return getPositionFromFocusable(gridId, focusable);
   });
+
+  api.cellSelections = useCellSelections(cellSelections);
 
   api.cellRoot = useCellRoot(
     props,

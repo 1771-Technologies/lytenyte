@@ -14,7 +14,6 @@ import {
   type RefObject,
 } from "react";
 import type { Props } from "../../types";
-import { useControlled, useEvent } from "../../internal.js";
 
 interface CellSelectionSettingsType {
   readonly cellSelectionMode: "range" | "multi-range" | "none";
@@ -30,11 +29,13 @@ interface CellSelectionContextType {
   readonly cellSelectionsSplit: SectionedRect[];
 }
 
-interface RectCutoffs {
+interface CellSelectionContextArgs {
   readonly topCutoff: number;
   readonly bottomCutoff: number;
   readonly startCutoff: number;
   readonly endCutoff: number;
+  readonly cellSelections: DataRect[];
+  readonly onCellSelectionChange: (change: DataRect[]) => void;
 }
 
 const context = createContext<CellSelectionContextType>({} as any);
@@ -44,36 +45,28 @@ function CellSelectionContextBase(
   p: PropsWithChildren<
     Pick<
       Props,
-      | "cellSelections"
       | "cellSelectionMode"
       | "cellSelectionExcludeMarker"
       | "cellSelectionMaintainOnNonCellPosition"
-      | "onCellSelectionChange"
       | "columnMarker"
     >
   > &
-    RectCutoffs,
+    CellSelectionContextArgs,
 ) {
-  const [cellSelections, setCellSelections] = useControlled({ controlled: p.cellSelections, default: [] });
   const cellSelectionsSplit = useMemo(() => {
-    const splits = cellSelections.flatMap((x) =>
+    const splits = p.cellSelections.flatMap((x) =>
       splitRect(x, p.startCutoff, p.endCutoff, p.topCutoff, p.bottomCutoff),
     );
 
     return splits;
-  }, [cellSelections, p.bottomCutoff, p.endCutoff, p.startCutoff, p.topCutoff]);
-
-  const onCellSelectionChange = useEvent((change: DataRect[]) => {
-    setCellSelections(change);
-    p.onCellSelectionChange?.(change);
-  });
+  }, [p.cellSelections, p.bottomCutoff, p.endCutoff, p.startCutoff, p.topCutoff]);
 
   const anchorRef = useRef<PositionGridCell | null>(null);
 
   const markerOn = p.columnMarker?.on ?? false;
   const settings = useMemo<CellSelectionSettingsType>(() => {
     return {
-      onCellSelectionChange,
+      onCellSelectionChange: p.onCellSelectionChange,
       cellSelectionClearOnSelf: true,
       ignoreFirstColumn: markerOn && (p.cellSelectionExcludeMarker ?? false),
       cellSelectionMaintainOnNonCellPosition: p.cellSelectionMaintainOnNonCellPosition ?? false,
@@ -82,18 +75,18 @@ function CellSelectionContextBase(
     };
   }, [
     markerOn,
-    onCellSelectionChange,
     p.cellSelectionExcludeMarker,
     p.cellSelectionMaintainOnNonCellPosition,
     p.cellSelectionMode,
+    p.onCellSelectionChange,
   ]);
 
   const value = useMemo<CellSelectionContextType>(() => {
     return {
-      cellSelections,
+      cellSelections: p.cellSelections,
       cellSelectionsSplit,
     };
-  }, [cellSelections, cellSelectionsSplit]);
+  }, [cellSelectionsSplit, p.cellSelections]);
 
   return (
     <contextSettings.Provider value={settings}>
