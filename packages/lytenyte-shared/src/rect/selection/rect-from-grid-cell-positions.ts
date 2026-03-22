@@ -1,6 +1,10 @@
 import type { PositionGridCell } from "../../types.js";
 import type { DataRect } from "../types.js";
 
+/**
+ * Returns the bounding rect for a single cell, expanding to the full span
+ * extent when the cell has a span root.
+ */
 function cellBounds(cell: PositionGridCell): DataRect {
   if (cell.root === null) {
     return {
@@ -18,6 +22,10 @@ function cellBounds(cell: PositionGridCell): DataRect {
   };
 }
 
+/**
+ * Returns the smallest `DataRect` that covers both cell positions `a` and `b`,
+ * accounting for span extents on either cell.
+ */
 export function rectFromGridCellPositions(a: PositionGridCell, b: PositionGridCell): DataRect {
   const boundsA = cellBounds(a);
   const boundsB = cellBounds(b);

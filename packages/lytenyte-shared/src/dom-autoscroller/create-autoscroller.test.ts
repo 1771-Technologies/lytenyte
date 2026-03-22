@@ -142,8 +142,6 @@ describe("createAutoscroller", () => {
     expect(spy.mock.calls[1]).toEqual([ACCELERATION * 2, -ACCELERATION * 2]);
   });
 
-  // ─── Stopping ───────────────────────────────────────────────────────────────
-
   test("Should stop scrolling when stop() is called", async () => {
     scroller = createAutoscroller(viewport, MAX_SPEED, ACCELERATION, onScrolled);
     scroller.setDirection(1, 0);

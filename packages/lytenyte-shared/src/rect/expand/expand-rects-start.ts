@@ -5,6 +5,13 @@ import { rectFromGridCellPosition } from "../rect-from-grid-cell-position.js";
 import { rectsOverlap } from "./rects-overlap.js";
 import type { DataRect } from "../types.js";
 
+/**
+ * Expands the last selection rect toward the start (left in LTR) by one column
+ * step from the focused cell position. When `meta` is true the rect jumps to
+ * the first visible column. Span roots are respected so the rect always aligns
+ * to full cell extents. Returns the updated selections array, or null if no
+ * expansion is possible.
+ */
 export function expandRectsStart(
   scrollIntoView: (params: { row?: number; column?: number }) => void,
   cellRoot: (row: number, column: number) => PositionUnion | null,

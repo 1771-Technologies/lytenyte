@@ -1,8 +1,30 @@
+/**
+ * Handle returned by `createAutoscroller` for controlling the scroll loop.
+ */
 export interface Autoscroller {
+  /**
+   * Sets the scroll direction for each axis. Pass -1, 0, or 1 for each.
+   * Passing (0, 0) stops the loop. Changing direction while the loop is
+   * running updates the direction without restarting or resetting velocity.
+   */
   setDirection: (dirX: number, dirY: number) => void;
+  /**
+   * Immediately cancels the animation frame loop and resets velocity and
+   * direction to zero. Safe to call when the loop is not running.
+   */
   stop: () => void;
 }
 
+/**
+ * Creates a rAF-driven autoscroller that accelerates a viewport element in a
+ * given direction until it reaches `maxSpeed`, then scrolls at that constant
+ * rate. Velocity resets to zero whenever the loop stops.
+ *
+ * Each frame the viewport is scrolled by the current velocity via
+ * `scrollBy(velocityX, velocityY)` and `onScrolled` is called once, allowing
+ * the caller to re-evaluate which cell is under the cursor and update the
+ * active selection rect.
+ */
 export function createAutoscroller(
   viewport: HTMLElement,
   maxSpeed: number,

@@ -18,6 +18,11 @@ interface ExpandRectsInDirectionArgs {
   readonly ignoreFirst: boolean;
 }
 
+/**
+ * Dispatches to the appropriate directional expand function based on
+ * `direction`. Returns the updated selections array, or null if no expansion
+ * is possible in the given direction.
+ */
 export function expandRectsInDirection({
   scrollIntoView,
   cellRoot,

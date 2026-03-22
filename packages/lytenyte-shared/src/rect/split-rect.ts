@@ -1,5 +1,11 @@
 import type { DataRect, Section, SectionedRect } from "./types.js";
 
+/**
+ * Splits a rect into up to nine non-overlapping sub-rects based on the pin
+ * section cutoff boundaries. Each sub-rect is labelled with its grid section
+ * (e.g. `"top-start"`, `"center-center"`, `"bottom-end"`). Sub-rects with
+ * zero area are omitted from the result.
+ */
 export function splitRect(
   rect: DataRect,
   startCutoff: number,
