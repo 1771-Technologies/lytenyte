@@ -28,7 +28,7 @@ const mapRowsToStrings = (row: (PathMatrixItem | null)[], useSeen: boolean = fal
   });
 
 describe("transposePathTable", () => {
-  test("should return the correct table transposed", () => {
+  test("Should return the correct table transposed", () => {
     const table = computePathMatrix([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y" },
@@ -75,7 +75,7 @@ describe("transposePathTable", () => {
   `);
   });
 
-  test("should handle empty path table correctly", () => {
+  test("Should handle empty path table correctly", () => {
     expect(transposePathMatrix([])).toMatchInlineSnapshot(`[]`);
   });
 });

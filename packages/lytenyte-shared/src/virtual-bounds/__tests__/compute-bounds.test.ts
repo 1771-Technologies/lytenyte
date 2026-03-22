@@ -55,7 +55,7 @@ function printBounds(bounds: ComputeBoundsArgs) {
 }
 
 describe("computeBounds", () => {
-  test("should return the correct value when there are no items", () => {
+  test("Should return the correct value when there are no items", () => {
     const next = { ...base, xPositions: new Uint32Array(), yPositions: new Uint32Array() };
 
     expect(printBounds(next)).toMatchInlineSnapshot(`
@@ -72,7 +72,7 @@ describe("computeBounds", () => {
     `);
   });
 
-  test("should return the correct value when there are no pinned items", () => {
+  test("Should return the correct value when there are no pinned items", () => {
     expect(printBounds(base)).toMatchInlineSnapshot(`
       "
       ┌──────────┬────────┬──────────┬────────┬─────────┬──────────┬────────┐
@@ -156,7 +156,7 @@ describe("computeBounds", () => {
     `);
   });
 
-  test("should return the correct value when there are pinned items", () => {
+  test("Should return the correct value when there are pinned items", () => {
     const pinnedBase = {
       ...base,
       startCount: 2,
@@ -224,7 +224,7 @@ describe("computeBounds", () => {
     );
   });
 
-  test("should return the correct bounds when there are variables sizes", () => {
+  test("Should return the correct bounds when there are variables sizes", () => {
     const xPositions = new Uint32Array([0, 20, 60, 80, 120, 180, 220, 270, 300, 325]);
     const yPositions = new Uint32Array([0, 60, 90, 140, 200, 230, 270, 310, 330, 350, 420]);
 
@@ -276,7 +276,7 @@ describe("computeBounds", () => {
     `);
   });
 
-  test("should return the correct bounds when there are variables sizes and pins", () => {
+  test("Should return the correct bounds when there are variables sizes and pins", () => {
     const xPositions = new Uint32Array([0, 20, 60, 80, 120, 180, 220, 270, 300, 325]);
     const yPositions = new Uint32Array([100, 200, 300, 350, 380, 410, 440, 500, 530, 600, 640]);
 

@@ -50,6 +50,7 @@ export type {
   PositionHeaderCell,
   PositionHeaderGroupCell,
   PositionUnion,
+  GridSections,
 } from "./types.js";
 
 export type {
@@ -133,24 +134,18 @@ export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
 export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 
 // Rectangle
-export type { DataRect, Section, SectionedRect } from "./rect/index.js";
+export type { DataRect, Section, SectionedRect, HandleRangeSelectionArgs } from "./rect/index.js";
 export {
-  clampRectToAccessible,
-  deselectRect,
   splitRect,
-  rectFromGridCellPositions,
   rectFromGridCellPosition,
-  rectsOverlap,
-  isFullyWithinRect,
   startSection,
   endSection,
   topSection,
   centerSection,
   bottomSection,
-  expandRectsDown,
-  expandRectsEnd,
-  expandRectsStart,
-  expandRectsUp,
+  expandRectsInDirection,
+  expandDirectionFromKey,
+  handleRangeSelect,
 } from "./rect/index.js";
 
 // Navigation
@@ -220,7 +215,6 @@ export {
   supportsScrollEnd,
 } from "./dom-utils/predicates/index.js";
 export {
-  isAppleDevice,
   isChrome,
   isFirefox,
   isIOS,

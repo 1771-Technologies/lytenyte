@@ -24,7 +24,6 @@ import type { GridEvents } from "../types/events";
 import type { Column, GridSpec, Props } from "../types";
 
 export interface RootContextValue {
-  readonly id: string;
   readonly source: RowSource;
   readonly rtl: boolean;
   readonly view: ColumnView;

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { rectsOverlap } from "./rects-overlap.js";
-import type { DataRect } from "./types";
+import type { DataRect } from "../types.js";
 
 describe("rectsOverlap", () => {
   const rect: DataRect = {

@@ -1,5 +1,5 @@
-import { splitRect } from "./split-rect.js";
-import type { DataRect } from "./types.js";
+import { splitRect } from "../split-rect.js";
+import type { DataRect } from "../types.js";
 
 export function deselectRect(rect: DataRect, deselection: DataRect): DataRect[] {
   return splitRect(

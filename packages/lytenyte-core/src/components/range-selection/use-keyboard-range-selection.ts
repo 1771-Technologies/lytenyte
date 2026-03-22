@@ -2,14 +2,7 @@ import type { KeyboardEventHandler } from "react";
 import { useEvent } from "../../internal.js";
 import { useRoot } from "../../root/root-context.js";
 import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
-import {
-  expandRectsDown,
-  expandRectsEnd,
-  expandRectsStart,
-  expandRectsUp,
-  rectFromGridCellPosition,
-  type DataRect,
-} from "@1771technologies/lytenyte-shared";
+import { expandDirectionFromKey, expandRectsInDirection } from "@1771technologies/lytenyte-shared";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
   const { api, focusActive, view, source, rtl } = useRoot();
@@ -24,42 +17,23 @@ export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement
     const pos = focusActive.get();
     if (!pos || pos.kind !== "cell") return;
 
-    const meta = e.ctrlKey || e.metaKey;
-    const key = e.key;
-
-    const isUp = key === "ArrowUp";
-    const isDown = key === "ArrowDown";
-    const isStart = key === (rtl ? "ArrowRight" : "ArrowLeft");
-    const isEnd = key === (rtl ? "ArrowLeft" : "ArrowRight");
-
-    if (!isUp && !isDown && !isStart && !isEnd) return;
+    const direction = expandDirectionFromKey(e.key, rtl);
+    if (!direction) return;
 
     e.preventDefault();
     e.stopPropagation();
 
-    // Bootstrap a single-cell selection if none exists
-    let selections = cellSelections;
-    if (selections.length === 0) {
-      selections = [rectFromGridCellPosition(pos)];
-      settings.onCellSelectionChange(selections);
-    }
-
-    let rect: DataRect[] | null = null;
-
-    if (isUp) rect = expandRectsUp(api.scrollIntoView, api.cellRoot, selections, meta, pos, rowCount);
-    else if (isDown)
-      rect = expandRectsDown(api.scrollIntoView, api.cellRoot, selections, meta, pos, rowCount);
-    else if (isStart)
-      rect = expandRectsStart(
-        api.scrollIntoView,
-        api.cellRoot,
-        selections,
-        meta,
-        pos,
-        settings.ignoreFirstColumn,
-        view,
-      );
-    else if (isEnd) rect = expandRectsEnd(api.scrollIntoView, api.cellRoot, selections, meta, pos, view);
+    const rect = expandRectsInDirection({
+      scrollIntoView: api.scrollIntoView,
+      cellRoot: api.cellRoot,
+      selections: cellSelections,
+      meta: e.ctrlKey || e.metaKey,
+      pos,
+      rowCount,
+      view,
+      direction,
+      ignoreFirst: settings.ignoreFirstColumn,
+    });
 
     if (rect) settings.onCellSelectionChange(rect);
   });

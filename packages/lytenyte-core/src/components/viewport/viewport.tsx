@@ -15,9 +15,11 @@ import { ViewMonitor } from "./view-monitor.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { EditDriver } from "./edit-driver.js";
 import { useGridSections } from "../../root/contexts/grid-sections-context.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
+  const id = useGridId();
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
 
   const {
@@ -29,7 +31,6 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     focusActive,
     source,
     rtl,
-    id,
     api,
     view,
     slotShadows: Shadows,

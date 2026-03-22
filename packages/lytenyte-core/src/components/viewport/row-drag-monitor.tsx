@@ -5,6 +5,7 @@ import { useSelector } from "../../signal/signal.js";
 import { getNearestRow, getRowIndexFromEl, type RowNode } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../../root/root.js";
 import { getRowDragData } from "../../internal.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 
 export function RowDragMonitor() {
   const { dropAccept } = useRoot();
@@ -21,7 +22,8 @@ export function RowDragMonitor() {
 }
 
 function RowDragCollider() {
-  const { viewport, id, api, onRowDragLeave: leave, onRowDragEnter: enter, onRowDrop: drop } = useRoot();
+  const id = useGridId();
+  const { viewport, api, onRowDragLeave: leave, onRowDragEnter: enter, onRowDrop: drop } = useRoot();
   const x = useSelector(dragX);
   const y = useSelector(dragY);
 

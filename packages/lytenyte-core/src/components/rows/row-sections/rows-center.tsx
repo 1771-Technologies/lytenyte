@@ -2,18 +2,19 @@ import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "r
 import { NativeScroller } from "../scrollers/native-scroller.js";
 import { RowChildrenDefault } from "../row-children-default.js";
 import { useRowsContainerContext } from "../rows-container/context.js";
-import { useRoot, useRowLayout } from "../../../root/root-context.js";
+import { useRowLayout } from "../../../root/root-context.js";
 import { $centerCount, $centerHeight, $pinHeight, $topCount } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { CellSelectionCenter } from "../../range-selection/cell-selection-container.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const { id } = useRoot();
+    const id = useGridId();
     const layout = useRowLayout();
     const container = useRowsContainerContext();
 

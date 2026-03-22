@@ -22,4 +22,10 @@ describe("testPlatform", () => {
     );
     vi.clearAllMocks();
   });
+
+  test("Should fallback to the navigator", () => {
+    vi.spyOn(window, "navigator", "get").mockImplementation(() => ({ platform: "x" }) as any);
+
+    expect(testPlatform(/x/)).toEqual(true);
+  });
 });

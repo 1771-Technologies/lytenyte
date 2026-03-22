@@ -9,10 +9,12 @@ import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { CellSpacerCenter } from "../../cells/cell-spacers/cell-spacer-center.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
-  const { id, rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api } = ctx;
+  const id = useGridId();
+  const { rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api } = ctx;
 
   const container = useRowsContainerContext();
 

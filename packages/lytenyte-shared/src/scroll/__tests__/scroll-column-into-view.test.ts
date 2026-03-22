@@ -11,7 +11,7 @@ function createViewport({ scrollLeft = 0, clientWidth = 300 }: Partial<HTMLEleme
 describe("columnScrollIntoViewValue", () => {
   const columnPositions = new Uint32Array([0, 100, 200, 300, 400, 500, 600]); // 6 columns, each 100px wide
 
-  test("returns undefined if column index is outside the center range (before)", () => {
+  test("Should return undefined if column index is outside the center range (before)", () => {
     const result = columnScrollIntoViewValue({
       startCount: 1,
       centerCount: 3,
@@ -24,7 +24,7 @@ describe("columnScrollIntoViewValue", () => {
     expect(result).toBeUndefined();
   });
 
-  test("returns undefined if column index is outside the center range (after)", () => {
+  test("Should return undefined if column index is outside the center range (after)", () => {
     const result = columnScrollIntoViewValue({
       startCount: 1,
       centerCount: 3,
@@ -37,7 +37,7 @@ describe("columnScrollIntoViewValue", () => {
     expect(result).toBeUndefined();
   });
 
-  test("returns undefined if column is already fully visible", () => {
+  test("Should return undefined if column is already fully visible", () => {
     const result = columnScrollIntoViewValue({
       startCount: 1,
       centerCount: 3,
@@ -53,7 +53,7 @@ describe("columnScrollIntoViewValue", () => {
     expect(result).toEqual(0);
   });
 
-  test("scrolls back if column is partially out to the left", () => {
+  test("Should scroll back if column is partially out to the left", () => {
     const result = columnScrollIntoViewValue({
       startCount: 1,
       centerCount: 3,
@@ -70,7 +70,7 @@ describe("columnScrollIntoViewValue", () => {
     expect(result).toEqual(100);
   });
 
-  test("scrolls forward if column is entirely off to the left", () => {
+  test("Should scroll forward if column is entirely off to the left", () => {
     const result = columnScrollIntoViewValue({
       startCount: 1,
       centerCount: 3,
@@ -87,7 +87,7 @@ describe("columnScrollIntoViewValue", () => {
     expect(result).toEqual(0);
   });
 
-  test("scrolls forward if column is out of view to the right", () => {
+  test("Should scroll forward if column is out of view to the right", () => {
     const result = columnScrollIntoViewValue({
       startCount: 1,
       centerCount: 3,
@@ -105,7 +105,7 @@ describe("columnScrollIntoViewValue", () => {
     expect(result).toBeGreaterThan(0);
   });
 
-  test("returns scroll offset when column partially overlaps start of viewport", () => {
+  test("Should return scroll offset when column partially overlaps start of viewport", () => {
     const customColumnPositions = new Uint32Array([0, 100, 200, 320, 400, 500, 600]);
     // columnIndex = 2 → position = 200, width = 120
 
@@ -126,7 +126,7 @@ describe("columnScrollIntoViewValue", () => {
     expect(result).toEqual(80);
   });
 
-  test("returns undefined if column's right edge is within the visible scroll range", () => {
+  test("Should return undefined if column's right edge is within the visible scroll range", () => {
     const customColumnPositions = new Uint32Array([0, 200, 800]);
 
     const result = columnScrollIntoViewValue({
@@ -144,7 +144,7 @@ describe("columnScrollIntoViewValue", () => {
     expect(result).toEqual(-400);
   });
 
-  test("return undefined if the column is full in view", () => {
+  test("Should return undefined if the column is full in view", () => {
     const customColumnPositions = new Uint32Array([0, 200, 400, 600, 800]);
 
     const result = columnScrollIntoViewValue({

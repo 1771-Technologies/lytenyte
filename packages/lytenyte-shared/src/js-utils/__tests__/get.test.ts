@@ -2,19 +2,19 @@ import { describe, expect, test } from "vitest";
 import { get } from "../get.js";
 
 describe("get", () => {
-  test("get should return the correct values", () => {
+  test("Should return the correct values", () => {
     expect(get({ x: { y: "122" } }, "x.y")).toEqual("122");
     expect(get({ x: { y: [1, 2] } }, "x.y[0]")).toEqual(1);
   });
 
-  test("handles basic dot notation", () => {
+  test("Should handle basic dot notation", () => {
     const obj = { a: 1, b: { c: 2 }, d: { e: { f: 3 } } };
     expect(get(obj, "a")).toBe(1);
     expect(get(obj, "b.c")).toBe(2);
     expect(get(obj, "d.e.f")).toBe(3);
   });
 
-  test("handles array indexing", () => {
+  test("Should handle array indexing", () => {
     const obj = {
       users: [
         { id: 1, name: "Alice" },
@@ -27,7 +27,7 @@ describe("get", () => {
     expect(get(obj, "numbers[2]")).toBe(3);
   });
 
-  test("handles nested arrays", () => {
+  test("Should handle nested arrays", () => {
     const obj = {
       matrix: [
         [1, 2],
@@ -40,7 +40,7 @@ describe("get", () => {
     expect(get(obj, "deep.array[0][0].value")).toBe("found");
   });
 
-  test("handles undefined and null values", () => {
+  test("Should handle undefined and null values", () => {
     const obj = {
       a: undefined,
       b: null,
@@ -53,7 +53,7 @@ describe("get", () => {
     expect(get(obj, "e.f")).toBeNull();
   });
 
-  test("returns undefined for invalid paths", () => {
+  test("Should return undefined for invalid paths", () => {
     const obj = { a: { b: 1 } };
     expect(get(obj, "x.y")).toBeUndefined();
     expect(get(obj, "a.b.c")).toBeUndefined();
@@ -61,7 +61,7 @@ describe("get", () => {
     expect(get(obj, "a.b[0]")).toBeUndefined();
   });
 
-  test("handles arrays with nested objects", () => {
+  test("Should handle arrays with nested objects", () => {
     const obj = {
       groups: [
         {
@@ -82,7 +82,7 @@ describe("get", () => {
     expect(get(obj, "groups[0].id")).toBe(1);
   });
 
-  test("handles edge cases with empty strings and numbers", () => {
+  test("Should handle edge cases with empty strings and numbers", () => {
     const obj = {
       "": { value: "empty string key" },
       0: "zero",

@@ -1,8 +1,8 @@
-import type { PositionGridCell, PositionUnion } from "../types";
+import type { PositionGridCell, PositionUnion } from "../../types";
 import { isFullyWithinRect } from "./is-fully-within-rect.js";
-import { rectFromGridCellPosition } from "./rect-from-grid-cell-position.js";
+import { rectFromGridCellPosition } from "../rect-from-grid-cell-position.js";
 import { rectsOverlap } from "./rects-overlap.js";
-import type { DataRect } from "./types";
+import type { DataRect } from "../types";
 
 export function expandRectsUp(
   scrollIntoView: (params: { row?: number; column?: number }) => void,
@@ -18,7 +18,7 @@ export function expandRectsUp(
   if (!rect || !rectsOverlap(rect, pos) || isFullyWithinRect(pos, rect)) return null;
 
   if (meta) {
-    const next: DataRect = { ...rect, rowStart: 0, rowEnd: pos.rowStart + 1 };
+    const next: DataRect = { ...rect, rowStart: 0, rowEnd: pos.rowEnd };
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
 
@@ -45,7 +45,6 @@ export function expandRectsUp(
     let c = rect;
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
       const cell = rectFromGridCellPosition(cellRoot(rect.rowEnd - 1, i) as PositionGridCell);
-      lowestRowStart = Math.min(cell.rowStart, lowestRowStart);
       if (cell.rowStart < lowestRowStart) {
         lowestRowStart = cell.rowStart;
         c = cell;
@@ -67,7 +66,6 @@ export function expandRectsUp(
     let c = rect;
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
       const cell = rectFromGridCellPosition(cellRoot(rect.rowStart - 1, i) as PositionGridCell);
-      lowestRowStart = Math.min(cell.rowStart, lowestRowStart);
       if (cell.rowStart < lowestRowStart) {
         lowestRowStart = cell.rowStart;
         c = cell;

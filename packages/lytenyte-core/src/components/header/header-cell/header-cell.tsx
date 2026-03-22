@@ -11,12 +11,14 @@ import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
-  const { id, xPositions, base, view, api, events, styles } = useRoot();
+  const id = useGridId();
+  const { xPositions, base, view, api, events, styles } = useRoot();
 
   const column = view.lookup.get(cell.id)!;
   const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;

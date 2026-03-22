@@ -1,4 +1,4 @@
-import type { DataRect } from "./types.js";
+import type { DataRect } from "../types.js";
 
 interface Cutoffs {
   readonly startCutoff: number;
@@ -14,7 +14,11 @@ interface AccessFlags {
   readonly bottomAccessible: boolean;
 }
 
-export function clampRectToAccessible(rect: DataRect, cutoffs: Cutoffs, access: AccessFlags): DataRect | null {
+export function clampRectToAccessible(
+  rect: DataRect,
+  cutoffs: Cutoffs,
+  access: AccessFlags,
+): DataRect | null {
   let { columnStart, columnEnd, rowStart, rowEnd } = rect;
 
   if (!access.startAccessible) columnStart = Math.max(columnStart, cutoffs.startCutoff);

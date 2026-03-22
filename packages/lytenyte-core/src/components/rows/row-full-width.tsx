@@ -10,13 +10,14 @@ import { useRowsContainerContext } from "./rows-container/context.js";
 import { useRoot } from "../../root/root-context.js";
 import { $topHeight } from "../../selectors.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
   forwarded,
 ) {
+  const id = useGridId();
   const {
-    id,
     rtl,
     view,
     yPositions,

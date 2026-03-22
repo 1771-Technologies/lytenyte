@@ -6,13 +6,15 @@ import { useRoot, useRowLayout } from "../../../root/root-context.js";
 import { $topCount, $topHeight } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
 import { CellSelectionTop } from "../../range-selection/cell-selection-container.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, RowsTop.Props>(function RowsTop(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const { id, totalHeaderHeight: top } = useRoot();
+    const id = useGridId();
+    const { totalHeaderHeight: top } = useRoot();
     const layout = useRowLayout();
 
     const container = useRowsContainerContext();

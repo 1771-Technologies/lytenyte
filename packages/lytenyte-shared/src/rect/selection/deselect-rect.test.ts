@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { deselectRect } from "./deselect-rect.js";
-import type { DataRect } from "./types.js";
+import type { DataRect } from "../types.js";
 
 describe("deselectRect", () => {
   const rect: DataRect = {

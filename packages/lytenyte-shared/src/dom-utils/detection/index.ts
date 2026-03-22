@@ -1,4 +1,3 @@
-export { isAppleDevice } from "./is-apple-device.js";
 export { isChrome } from "./is-chrome.js";
 export { isFirefox } from "./is-firefox.js";
 export { isIOS } from "./is-ios.js";

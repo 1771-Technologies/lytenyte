@@ -1,13 +1,8 @@
-export { clampRectToAccessible } from "./clamp-rect-to-accessible.js";
-export { deselectRect } from "./deselect-rect.js";
-export { rectsOverlap } from "./rects-overlap.js";
-export { rectFromGridCellPositions } from "./rect-from-grid-cell-positions.js";
 export { splitRect } from "./split-rect.js";
 export { bottomSection, endSection, startSection, topSection, centerSection } from "./section-mappings.js";
-export { isFullyWithinRect } from "./is-fully-within-rect.js";
 export { rectFromGridCellPosition } from "./rect-from-grid-cell-position.js";
-export { expandRectsDown } from "./expand-rects-down.js";
-export { expandRectsEnd } from "./expand-rects-end.js";
-export { expandRectsStart } from "./expand-rects-start.js";
-export { expandRectsUp } from "./expand-rects-up.js";
+export { expandRectsInDirection } from "./expand/expand-rects-in-direction.js";
+export { expandDirectionFromKey } from "./expand/expand-direction-from-key.js";
+export type { HandleRangeSelectionArgs } from "./selection/handle-range-selection.js";
+export { handleRangeSelect } from "./selection/handle-range-selection.js";
 export type { DataRect, Section, SectionedRect } from "./types.js";

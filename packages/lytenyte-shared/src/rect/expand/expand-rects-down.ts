@@ -1,8 +1,8 @@
-import type { PositionGridCell, PositionUnion } from "../types.js";
+import type { PositionGridCell, PositionUnion } from "../../types.js";
 import { isFullyWithinRect } from "./is-fully-within-rect.js";
-import { rectFromGridCellPosition } from "./rect-from-grid-cell-position.js";
+import { rectFromGridCellPosition } from "../rect-from-grid-cell-position.js";
 import { rectsOverlap } from "./rects-overlap.js";
-import type { DataRect } from "./types.js";
+import type { DataRect } from "../types.js";
 
 export function expandRectsDown(
   scrollIntoView: (params: { row?: number; column?: number }) => void,
@@ -47,9 +47,11 @@ export function expandRectsDown(
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
       const cell = rectFromGridCellPosition(cellRoot(rect.rowStart + 1, i) as PositionGridCell);
 
-      if (cell.rowStart > highestRowEnd) {
+      const boundary = cell.rowStart <= rect.rowStart ? cell.rowEnd : cell.rowStart;
+
+      if (boundary > highestRowEnd) {
         setCell = cell;
-        highestRowEnd = cell.rowStart;
+        highestRowEnd = boundary;
       }
     }
 
@@ -70,7 +72,6 @@ export function expandRectsDown(
     } else {
       for (let i = rect.columnStart; i < rect.columnEnd; i++) {
         const cell = rectFromGridCellPosition(cellRoot(rect.rowEnd, i) as PositionGridCell);
-        highestRowEnd = Math.max(cell.rowEnd, highestRowEnd);
 
         if (cell.rowEnd > highestRowEnd) {
           setCell = cell;

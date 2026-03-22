@@ -16,7 +16,12 @@ import { useTotalHeaderHeight } from "./hooks/use-total-header-height.js";
 import { useXPositions } from "./hooks/use-x-positions.js";
 import { useYPositions } from "./hooks/use-y-positions.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
-import { equal, type LayoutState, type RowSource } from "@1771technologies/lytenyte-shared";
+import {
+  equal,
+  type GridSections,
+  type LayoutState,
+  type RowSource,
+} from "@1771technologies/lytenyte-shared";
 import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useBounds } from "./hooks/use-bounds.js";
 import { useApi } from "./hooks/use-api/use-api.js";
@@ -47,7 +52,7 @@ import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
 import { CellSelectionContext } from "./contexts/cell-selection-context.js";
 import { GridIdProvider } from "./contexts/grid-id.js";
-import { GridSectionsProvider, type GridSections } from "./contexts/grid-sections-context.js";
+import { GridSectionsProvider } from "./contexts/grid-sections-context.js";
 import { ActiveRangeProvider } from "./contexts/active-range-context.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
@@ -172,7 +177,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   // @TODO lee: remove grid id from this context
   const value = useMemo<RootContextValue>(() => {
     return {
-      id: gridId,
       rtl: props.rtl ?? false,
       api: api,
       xPositions,
@@ -236,7 +240,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     dimensions,
     dropAccept,
     focusPiece,
-    gridId,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,

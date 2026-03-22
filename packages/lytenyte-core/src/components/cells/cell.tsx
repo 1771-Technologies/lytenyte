@@ -9,6 +9,7 @@ import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
   const bounds = useBounds();
@@ -32,8 +33,8 @@ export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, 
 
 const CellImpl = memo(
   forwardRef<HTMLDivElement, Cell.Props>(function Cell({ cell, ...props }, forwarded) {
+    const id = useGridId();
     const {
-      id,
       rtl,
       base,
       xPositions,

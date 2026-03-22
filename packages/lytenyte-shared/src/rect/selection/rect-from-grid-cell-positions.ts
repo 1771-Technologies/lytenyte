@@ -1,5 +1,5 @@
-import type { PositionGridCell } from "../types.js";
-import type { DataRect } from "./types.js";
+import type { PositionGridCell } from "../../types.js";
+import type { DataRect } from "../types.js";
 
 function cellBounds(cell: PositionGridCell): DataRect {
   if (cell.root === null) {

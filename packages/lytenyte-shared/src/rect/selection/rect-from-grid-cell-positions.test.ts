@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { rectFromGridCellPositions } from "./rect-from-grid-cell-positions.js";
-import type { PositionGridCell } from "../types.js";
+import type { PositionGridCell } from "../../types.js";
 
 function cell(rowIndex: number, colIndex: number): PositionGridCell {
   return { kind: "cell", rowIndex, colIndex, root: null };
@@ -14,12 +14,17 @@ function cellWithRoot(
   rowSpan: number,
   colSpan: number,
 ): PositionGridCell {
-  return { kind: "cell", rowIndex, colIndex, root: { rowIndex: rootRow, colIndex: rootCol, rowSpan, colSpan } };
+  return {
+    kind: "cell",
+    rowIndex,
+    colIndex,
+    root: { rowIndex: rootRow, colIndex: rootCol, rowSpan, colSpan },
+  };
 }
 
 describe("rectFromGridCellPositions", () => {
   describe("no spans", () => {
-    test("two single cells — a top-left of b", () => {
+    test("Should handle two single cells — a top-left of b", () => {
       const a = cell(1, 2);
       const b = cell(4, 6);
       expect(rectFromGridCellPositions(a, b)).toEqual({
@@ -30,7 +35,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("two single cells — a bottom-right of b (reversed order)", () => {
+    test("Should handle two single cells — a bottom-right of b (reversed order)", () => {
       const a = cell(4, 6);
       const b = cell(1, 2);
       expect(rectFromGridCellPositions(a, b)).toEqual({
@@ -41,7 +46,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("same cell — rect covers exactly one cell", () => {
+    test("Should handle same cell — rect covers exactly one cell", () => {
       const a = cell(3, 5);
       expect(rectFromGridCellPositions(a, a)).toEqual({
         rowStart: 3,
@@ -51,7 +56,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("cells on the same row", () => {
+    test("Should handle cells on the same row", () => {
       const a = cell(2, 1);
       const b = cell(2, 5);
       expect(rectFromGridCellPositions(a, b)).toEqual({
@@ -62,7 +67,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("cells in the same column", () => {
+    test("Should handle cells in the same column", () => {
       const a = cell(0, 3);
       const b = cell(7, 3);
       expect(rectFromGridCellPositions(a, b)).toEqual({
@@ -75,7 +80,7 @@ describe("rectFromGridCellPositions", () => {
   });
 
   describe("with spans", () => {
-    test("a has a span — rect stretches to cover the full span extent", () => {
+    test("Should stretch rect to cover full span extent when a has a span", () => {
       // a sits inside a 3-row × 2-col span rooted at (2, 4)
       const a = cellWithRoot(3, 5, 2, 4, 3, 2);
       const b = cell(1, 1);
@@ -87,7 +92,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("b has a span — rect stretches to cover the full span extent", () => {
+    test("Should stretch rect to cover full span extent when b has a span", () => {
       const a = cell(0, 0);
       // b sits inside a 2-row × 4-col span rooted at (3, 2)
       const b = cellWithRoot(3, 4, 3, 2, 2, 4);
@@ -99,7 +104,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("both cells have spans — rect covers both full extents", () => {
+    test("Should cover both full extents when both cells have spans", () => {
       // a: 2×3 span rooted at (0, 0)
       const a = cellWithRoot(0, 1, 0, 0, 2, 3);
       // b: 3×2 span rooted at (5, 6)
@@ -112,7 +117,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("span at a extends further than b's position in both axes", () => {
+    test("Should drive rect entirely by span when span at a extends further than b's position in both axes", () => {
       // a: 4×5 span rooted at (1, 1) — extends to row 5, col 6
       const a = cellWithRoot(2, 3, 1, 1, 4, 5);
       // b is inside the span's region — rect should be driven entirely by the span
@@ -125,7 +130,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("same cell with a span — rect equals the span's bounds", () => {
+    test("Should equal the span's bounds when same cell with a span", () => {
       const a = cellWithRoot(2, 3, 1, 2, 3, 4);
       expect(rectFromGridCellPositions(a, a)).toEqual({
         rowStart: 1,
@@ -135,7 +140,7 @@ describe("rectFromGridCellPositions", () => {
       });
     });
 
-    test("reversed — b is top-left span, a is bottom-right plain cell", () => {
+    test("Should handle reversed — b is top-left span, a is bottom-right plain cell", () => {
       // b: 2×2 span rooted at (0, 0)
       const b = cellWithRoot(0, 1, 0, 0, 2, 2);
       const a = cell(5, 5);
