@@ -40,16 +40,58 @@ export interface EmployeeSpec {
 // ── Seed data ─────────────────────────────────────────────────────────────────
 
 const FIRST_NAMES = [
-  "Alice", "Bob", "Carol", "David", "Eve", "Frank", "Grace", "Henry",
-  "Iris", "Jack", "Kate", "Liam", "Mia", "Noah", "Olivia", "Paul",
-  "Quinn", "Rachel", "Sam", "Tara", "Uma", "Victor", "Wendy", "Xander",
+  "Alice",
+  "Bob",
+  "Carol",
+  "David",
+  "Eve",
+  "Frank",
+  "Grace",
+  "Henry",
+  "Iris",
+  "Jack",
+  "Kate",
+  "Liam",
+  "Mia",
+  "Noah",
+  "Olivia",
+  "Paul",
+  "Quinn",
+  "Rachel",
+  "Sam",
+  "Tara",
+  "Uma",
+  "Victor",
+  "Wendy",
+  "Xander",
 ];
 const LAST_NAMES = [
-  "Chen", "Williams", "Davis", "Kim", "Martinez", "Johnson", "Brown",
-  "Taylor", "Wilson", "Moore", "Anderson", "Thomas", "Jackson", "White",
+  "Chen",
+  "Williams",
+  "Davis",
+  "Kim",
+  "Martinez",
+  "Johnson",
+  "Brown",
+  "Taylor",
+  "Wilson",
+  "Moore",
+  "Anderson",
+  "Thomas",
+  "Jackson",
+  "White",
 ];
 const DEPARTMENTS = ["Engineering", "Marketing", "Sales", "Finance", "HR", "Operations", "Design", "Legal"];
-const ROLES = ["Engineer", "Senior Engineer", "Manager", "Director", "Analyst", "Coordinator", "Designer", "Specialist"];
+const ROLES = [
+  "Engineer",
+  "Senior Engineer",
+  "Manager",
+  "Director",
+  "Analyst",
+  "Coordinator",
+  "Designer",
+  "Specialist",
+];
 const COUNTRIES = ["USA", "UK", "Canada", "Germany", "France", "Australia", "Japan", "Brazil"];
 const CITIES = ["New York", "London", "Toronto", "Berlin", "Paris", "Sydney", "Tokyo", "São Paulo"];
 const STATUSES = ["Active", "Remote", "On Leave", "Contract"];

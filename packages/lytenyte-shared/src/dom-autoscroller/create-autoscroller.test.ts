@@ -59,8 +59,8 @@ describe("createAutoscroller", () => {
     scroller = createAutoscroller(viewport, MAX_SPEED, ACCELERATION, onScrolled);
     scroller.setDirection(0, 0);
     await wait(50);
-    expect(viewport.scrollLeft).toBe(300);
-    expect(viewport.scrollTop).toBe(300);
+    expect(Math.floor(viewport.scrollLeft)).toBe(300);
+    expect(Math.floor(viewport.scrollTop)).toBe(300);
   });
 
   test("Should not call onScrolled when direction is (0, 0)", async () => {

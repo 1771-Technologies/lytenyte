@@ -90,12 +90,12 @@ describe("positionsEqual", () => {
   });
 
   test("Should handle header cell types", () => {
-    expect(positionsEqual({ kind: "header-cell", colIndex: 0 }, { kind: "header-cell", colIndex: 0 })).toEqual(
-      true,
-    );
-    expect(positionsEqual({ kind: "header-cell", colIndex: 1 }, { kind: "header-cell", colIndex: 0 })).toEqual(
-      false,
-    );
+    expect(
+      positionsEqual({ kind: "header-cell", colIndex: 0 }, { kind: "header-cell", colIndex: 0 }),
+    ).toEqual(true);
+    expect(
+      positionsEqual({ kind: "header-cell", colIndex: 1 }, { kind: "header-cell", colIndex: 0 }),
+    ).toEqual(false);
     expect(positionsEqual({ kind: "header-cell", colIndex: 1 }, null)).toEqual(false);
   });
 });

@@ -5,7 +5,7 @@ import { employeeData, type EmployeeSpec } from "./areas-data.js";
 const columns: Grid.Column<EmployeeSpec>[] = [
   { id: "id", name: "ID", width: 60 },
   { id: "name", name: "Name", width: 150 },
-  { id: "department", name: "Department", width: 130 },
+  { id: "department", name: "Department", width: 130, colSpan: 3, rowSpan: 3 },
   { id: "role", name: "Role", width: 150 },
   { id: "salary", name: "Salary", width: 100 },
 

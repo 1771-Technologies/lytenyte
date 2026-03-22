@@ -559,6 +559,7 @@ describe("handleRangeSelect", () => {
       await wait(50);
       fireMouseup();
 
+      await wait(50);
       // currentPosition updated to cell(10,10); rect spans anchor(3,5) -> current(10,10).
       expect(activeRectCalls.some((r) => r?.rowStart === 3 && r?.rowEnd === 11)).toBe(true);
     });

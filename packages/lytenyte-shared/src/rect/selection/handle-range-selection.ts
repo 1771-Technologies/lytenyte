@@ -116,7 +116,7 @@ export function handleRangeSelect({
   if (!isSelfClick)
     setActiveRangeDeduped(computeActiveRect(anchorPosition, currentPosition, gridSections, viewport, force));
 
-  if (shiftOnly) {
+  if (shiftOnly || !isMultiRange) {
     // Strip the last committed selection so only the active range rect is
     // visible during the drag (avoids visual doubling while extending).
     const withoutLast = cellSelections.length > 0 ? cellSelections.slice(0, -1) : [];
