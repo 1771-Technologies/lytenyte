@@ -5,7 +5,7 @@ export { useControlled } from "./hooks/use-controlled.js";
 export type { Piece, PieceWritable } from "./hooks/use-piece.js";
 export { usePiece } from "./hooks/use-piece.js";
 export { useCombinedRefs } from "./hooks/use-combine-refs.js";
-export { useBounds, useColumnLayout, useEdit, useFocus, useRoot, useRowLayout } from "./root/root-context.js";
+export { useBounds, useColumnLayout, useEdit, useRoot, useRowLayout } from "./root/root-context.js";
 export type { Signal } from "./signal/signal.js";
 export { createSignal, useSelector } from "./signal/signal.js";
 export { getRowDragData, getDragData, getDragDirection, getDragXY } from "./dnd/get-drag-data.js";

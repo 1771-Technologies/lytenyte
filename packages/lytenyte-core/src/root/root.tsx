@@ -57,6 +57,7 @@ import { GridSectionsProvider } from "./contexts/grid-sections-context.js";
 import { ActiveRangeProvider } from "./contexts/active-range-context.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
+import { usePiece } from "../internal.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -132,7 +133,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     yPositions.positions,
   );
 
-  const { focusPiece, focusValue, position } = usePosition();
+  const { focusPiece, position } = usePosition();
   const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
   const headerLayout = useHeaderLayout(view, props);
 
@@ -158,6 +159,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     setCellSelections(change);
     p.onCellSelectionChange?.(change);
   });
+  const cellSelections$ = usePiece(cellSelections);
 
   useApi(
     gridId,
@@ -193,6 +195,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       api: api,
       xPositions,
       yPositions: yPositions.positions,
+      cellSelections$,
       viewport: vp,
       setViewport: setVp,
       view,
@@ -247,6 +250,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     };
   }, [
     api,
+    cellSelections$,
     controlled.columnGroupExpansions,
     controlled.detailExpansions,
     dimensions,
@@ -311,7 +315,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
                 <ColumnLayoutContextProvider value={headerLayout}>
                   <BoundsContextProvider value={bounds}>
                     <EditProvider value={editValue}>
-                      <FocusProvider value={focusValue}>{children ?? <Fallback />}</FocusProvider>
+                      <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
                     </EditProvider>
                   </BoundsContextProvider>
                 </ColumnLayoutContextProvider>

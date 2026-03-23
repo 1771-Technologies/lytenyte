@@ -19,7 +19,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
   ref,
 ) {
   const id = useGridId();
-  const { xPositions, base, view, api, events, styles } = useRoot();
+  const { xPositions, base, view, api, events, styles, cellSelections$ } = useRoot();
 
   const column = view.lookup.get(cell.id)!;
   const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;
@@ -47,11 +47,10 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
 
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
   const headerStyle = useHeaderCellStyle(cell, xPositions);
-  // const isCellSelected = cellSelections$.useValue((x) =>
-  //   x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
-  // );
+  const cellSelected = cellSelections$.useValue((x) =>
+    x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
+  );
 
-  console.log("i ran");
   return (
     <div
       className={styles?.header?.className}
@@ -70,7 +69,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
       data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
       data-ln-colid={column.id}
       data-ln-gridid={id}
-      data-ln-cell-selected={false}
+      data-ln-cell-selected={cellSelected}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}

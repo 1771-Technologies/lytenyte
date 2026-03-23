@@ -14,7 +14,7 @@ import { useGridId } from "../../../root/contexts/grid-id.js";
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
   const id = useGridId();
-  const { rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api } = ctx;
+  const { rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api, cellSelections$ } = ctx;
 
   const container = useRowsContainerContext();
 
@@ -27,11 +27,9 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   const rowMeta = useRowContextValue(row, ctx);
   const topOffset = container.useValue($topHeight);
 
-  // const isSelected = cellSelections$.useValue((x) =>
-  //   x.some((r) => row.rowIndex >= r.rowStart && row.rowIndex < r.rowEnd),
-  // );
-
-  console.log(" ira ");
+  const cellSelected = cellSelections$.useValue((x) =>
+    x.some((r) => row.rowIndex >= r.rowStart && row.rowIndex < r.rowEnd),
+  );
 
   const styles = useRowStyle(
     yPositions,
@@ -61,7 +59,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-gridid={id}
         data-ln-rowindex={row.rowIndex}
         data-ln-rowpin={row.rowPin ?? "center"}
-        data-ln-cell-selected={false}
+        data-ln-cell-selected={cellSelected}
         data-ln-rowtype="normal-row"
         data-ln-last-top-pin={row.rowLastPinTop}
         data-ln-first-bottom-pin={row.rowFirstPinBottom}

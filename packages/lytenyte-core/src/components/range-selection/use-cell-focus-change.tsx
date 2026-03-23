@@ -11,7 +11,7 @@ export function useCellFocusChange(focusActive: PieceWritable<PositionUnion | nu
   const { selecting } = useActiveRangeSelection();
 
   useEffect(() => {
-    if (!focus) return;
+    if (!focus || settings.cellSelectionMode === "none") return;
 
     if (selecting) {
       prevRef.current = focus;

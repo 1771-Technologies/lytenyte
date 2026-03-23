@@ -13,11 +13,14 @@ import { useGridId } from "../../root/contexts/grid-id.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
   const bounds = useBounds();
-  const focus = useFocus();
   const end = bounds.useValue($colEndBound);
   const start = bounds.useValue($colStartBound);
+  const focus = useFocus().get();
 
-  const isFocused = focus && focus.row === props.cell.rowIndex && focus.column === props.cell.colIndex;
+  const isFocused =
+    focus?.kind === "cell" &&
+    focus.rowIndex === props.cell.rowIndex &&
+    focus.colIndex === props.cell.colIndex;
 
   // This enforces our column virtualization.
   if (

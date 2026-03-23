@@ -1,6 +1,7 @@
 import type {
   ColumnAbstract,
   ColumnView,
+  DataRect,
   LayoutHeader,
   PositionUnion,
   RowNode,
@@ -29,7 +30,7 @@ export interface RootContextValue {
   readonly view: ColumnView;
   readonly api: Root.API;
 
-  // readonly cellSelections$: Piece<DataRect[]>;
+  readonly cellSelections$: Piece<DataRect[]>;
 
   readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;
@@ -126,6 +127,6 @@ const editContext = createContext({} as EditContext);
 export const EditProvider = editContext.Provider;
 export const useEdit = () => useContext(editContext);
 
-const focusContext = createContext<null | { row: number; column: number }>({} as any);
+const focusContext = createContext<Piece<PositionUnion | null>>({} as any);
 export const FocusProvider = focusContext.Provider;
 export const useFocus = () => useContext(focusContext);
