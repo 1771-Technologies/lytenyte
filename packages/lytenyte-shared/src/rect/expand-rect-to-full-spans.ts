@@ -28,7 +28,6 @@ export function expandRectToFullSpans(
     // Scan bottom boundary row
     for (let c = current.columnStart; c < current.columnEnd; c++) {
       const cell = rectFromGridCellPosition(cellRoot(current.rowEnd - 1, c) as PositionGridCell);
-      if (cell.rowStart < next.rowStart) next.rowStart = cell.rowStart;
       if (cell.rowEnd > next.rowEnd) next.rowEnd = cell.rowEnd;
       if (cell.columnStart < next.columnStart) next.columnStart = cell.columnStart;
       if (cell.columnEnd > next.columnEnd) next.columnEnd = cell.columnEnd;
@@ -37,8 +36,6 @@ export function expandRectToFullSpans(
     // Scan left boundary column
     for (let r = current.rowStart; r < current.rowEnd; r++) {
       const cell = rectFromGridCellPosition(cellRoot(r, current.columnStart) as PositionGridCell);
-      if (cell.rowStart < next.rowStart) next.rowStart = cell.rowStart;
-      if (cell.rowEnd > next.rowEnd) next.rowEnd = cell.rowEnd;
       if (cell.columnStart < next.columnStart) next.columnStart = cell.columnStart;
       if (cell.columnEnd > next.columnEnd) next.columnEnd = cell.columnEnd;
     }
@@ -46,9 +43,6 @@ export function expandRectToFullSpans(
     // Scan right boundary column
     for (let r = current.rowStart; r < current.rowEnd; r++) {
       const cell = rectFromGridCellPosition(cellRoot(r, current.columnEnd - 1) as PositionGridCell);
-      if (cell.rowStart < next.rowStart) next.rowStart = cell.rowStart;
-      if (cell.rowEnd > next.rowEnd) next.rowEnd = cell.rowEnd;
-      if (cell.columnStart < next.columnStart) next.columnStart = cell.columnStart;
       if (cell.columnEnd > next.columnEnd) next.columnEnd = cell.columnEnd;
     }
 

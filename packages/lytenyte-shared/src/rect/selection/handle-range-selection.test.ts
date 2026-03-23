@@ -480,6 +480,78 @@ describe("handleRangeSelect", () => {
     });
   });
 
+  describe("ignoreFirst=true (column 0 is ignored)", () => {
+    test("Should return early without calling any callback when mousedown is on column 0", () => {
+      const { activeRectCalls, selectionCalls, deselectCalls } = setup({ ignoreFirst: true });
+      const cellEl = makeCell(3, 0);
+      container.appendChild(cellEl);
+
+      fireMousedown(cellEl);
+
+      expect(activeRectCalls).toHaveLength(0);
+      expect(selectionCalls).toHaveLength(0);
+      expect(deselectCalls).toHaveLength(0);
+    });
+
+    test("Should not update currentPosition when mousemove enters column 0 during a drag", async () => {
+      const { selectionCalls } = setup({ ignoreFirst: true });
+      const anchorEl = makeCell(3, 5);
+      const col0El = makeCell(3, 0);
+      container.appendChild(anchorEl);
+      container.appendChild(col0El);
+
+      fireMousedown(anchorEl);
+      fireMousemove(col0El);
+      await nextFrame();
+      fireMouseup();
+
+      // currentPosition was NOT updated to col 0; rect stays as the single anchor cell
+      expect(selectionCalls.at(-1)).toEqual([cellRect(3, 5)]);
+    });
+
+    test("Should correctly update selection when dragging back to a previous cell after passing through column 0", async () => {
+      const { selectionCalls } = setup({ ignoreFirst: true });
+      const anchorEl = makeCell(3, 5);
+      const col0El = makeCell(3, 0);
+      const col3El = makeCell(3, 3);
+      container.appendChild(anchorEl);
+      container.appendChild(col0El);
+      container.appendChild(col3El);
+
+      fireMousedown(anchorEl);
+      fireMousemove(col0El); // skipped — col 0
+      fireMousemove(col3El); // should process correctly despite col0 being visited
+      await nextFrame();
+      fireMouseup();
+
+      // rect spans anchor(3,5) -> current(3,3)
+      expect(selectionCalls.at(-1)).toEqual([{ rowStart: 3, rowEnd: 4, columnStart: 3, columnEnd: 6 }]);
+    });
+
+    test("Should not update currentPosition to column 0 when autoscroller fires over a column 0 cell", async () => {
+      const { selectionCalls } = setup({ ignoreFirst: true });
+      const anchorEl = makeCell(3, 5);
+      container.appendChild(anchorEl);
+
+      // A column 0 cell positioned at document coords (20,180)-(70,230)
+      // so elementFromPoint(30,200) in updateSelectionAtPoint finds it.
+      const col0El = makeCell(3, 0);
+      col0El.style.cssText = "position:absolute;left:20px;top:180px;width:50px;height:50px;";
+      viewport.appendChild(col0El);
+
+      fireMousedown(anchorEl);
+      // clientX=30 -> x=30 < ZONE(50) -> dirX=-1 -> autoscroller starts
+      // lastMouseX=30, lastMouseY=200 -> elementFromPoint(30,200) returns col0El
+      fireMousemove(container, { clientX: 30, clientY: 200 });
+      await wait(50);
+      fireMouseup();
+
+      // currentPosition must NOT have been updated to col 0;
+      // all committed selections should have columnStart >= 1
+      expect(selectionCalls.every((rects) => rects.every((r) => r.columnStart >= 1))).toBe(true);
+    });
+  });
+
   describe("contextmenu as drag-end", () => {
     test("Should commit the selection and clear the active rect when contextmenu fires on the document", () => {
       const { activeRectCalls, selectionCalls } = setup();

@@ -50,10 +50,15 @@ export default function CellSelectionAreas() {
     { rowStart: 150, rowEnd: 153, columnStart: 26, columnEnd: 29 },
     { rowStart: 150, rowEnd: 153, columnStart: 1, columnEnd: 4 },
   ]);
+
+  const dataSlices = useMemo(() => {
+    return employeeData.slice(0, 2);
+  }, []);
+
   const ds = useClientDataSource({
     data: employeeData,
-    topData: employeeData.slice(0, 2),
-    bottomData: employeeData.slice(0, 2),
+    topData: dataSlices,
+    bottomData: dataSlices,
   });
 
   return (

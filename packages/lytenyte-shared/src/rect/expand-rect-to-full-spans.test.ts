@@ -128,6 +128,70 @@ describe("expandRectToFullSpans", () => {
     );
   });
 
+  test("Should return a 1×1 rect unchanged when the cell has no span", () => {
+    const rect = { rowStart: 3, rowEnd: 4, columnStart: 2, columnEnd: 3 };
+    expect(expandRectToFullSpans(rect, plainCellRoot)).toEqual(rect);
+  });
+
+  test("Should expand a 1×1 rect to the full span when that single cell belongs to a larger span", () => {
+    // All four boundary scans land on the same cell; the span covers rows 2–5, cols 1–4.
+    const cellRoot = makeSpannedCellRoot([{ rowStart: 2, rowEnd: 5, colStart: 1, colEnd: 4 }]);
+    expect(expandRectToFullSpans({ rowStart: 3, rowEnd: 4, columnStart: 2, columnEnd: 3 }, cellRoot)).toEqual(
+      { rowStart: 2, rowEnd: 5, columnStart: 1, columnEnd: 4 },
+    );
+  });
+
+  test("Should expand both rowStart and columnStart when a span protrudes from the top-left corner", () => {
+    // Span rows 0–3, cols 0–3. Top boundary scan (row 2) and left boundary scan (col 2) both
+    // detect it and push rowStart to 0 and columnStart to 0 in the same pass.
+    const cellRoot = makeSpannedCellRoot([{ rowStart: 0, rowEnd: 3, colStart: 0, colEnd: 3 }]);
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 2, columnEnd: 5 }, cellRoot)).toEqual(
+      { rowStart: 0, rowEnd: 5, columnStart: 0, columnEnd: 5 },
+    );
+  });
+
+  test("Should expand both rowEnd and columnEnd when a span protrudes from the bottom-right corner", () => {
+    // Span rows 4–7, cols 4–7. Bottom boundary scan (row 4) and right boundary scan (col 4)
+    // both detect it and push rowEnd to 7 and columnEnd to 7 in the same pass.
+    const cellRoot = makeSpannedCellRoot([{ rowStart: 4, rowEnd: 7, colStart: 4, colEnd: 7 }]);
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 5, columnStart: 2, columnEnd: 5 }, cellRoot)).toEqual(
+      { rowStart: 2, rowEnd: 7, columnStart: 2, columnEnd: 7 },
+    );
+  });
+
+  test("Should expand columnStart and columnEnd via the left boundary column scan when the span is not on the top or bottom boundary row", () => {
+    // Span rows 4–5, cols 1–10: does NOT include top boundary row 2 or bottom boundary row 7, so
+    // top/bottom row scans skip it entirely. Left column scan at col 3, row 4 finds it and
+    // expands both columnStart (1 < 3) and columnEnd (10 > 7).
+    const cellRoot = makeSpannedCellRoot([{ rowStart: 4, rowEnd: 6, colStart: 1, colEnd: 10 }]);
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 8, columnStart: 3, columnEnd: 7 }, cellRoot)).toEqual(
+      { rowStart: 2, rowEnd: 8, columnStart: 1, columnEnd: 10 },
+    );
+  });
+
+  test("Should expand columnEnd via the right boundary column scan when the span is not on the top or bottom boundary row", () => {
+    // Right boundary col = 6. Span rows 4–5, cols 6–10: does NOT include top boundary row 2 or
+    // bottom boundary row 7. Top/bottom row scans skip it; right column scan at col 6, row 4
+    // finds it and expands columnEnd (10 > 7).
+    const cellRoot = makeSpannedCellRoot([{ rowStart: 4, rowEnd: 6, colStart: 6, colEnd: 10 }]);
+    expect(expandRectToFullSpans({ rowStart: 2, rowEnd: 8, columnStart: 3, columnEnd: 7 }, cellRoot)).toEqual(
+      { rowStart: 2, rowEnd: 8, columnStart: 3, columnEnd: 10 },
+    );
+  });
+
+  test("Should expand columnStart via the bottom boundary row scan when the bottom span extends further left than the top span", () => {
+    // Span A is on the top boundary row (row 3) and pushes columnStart to 2.
+    // Span B starts at row 5 so top scan never sees it; bottom scan at row 6 finds it and pushes
+    // columnStart further left to 1.
+    const cellRoot = makeSpannedCellRoot([
+      { rowStart: 3, rowEnd: 5, colStart: 2, colEnd: 4 }, // Span A — visible from top row 3
+      { rowStart: 5, rowEnd: 7, colStart: 1, colEnd: 4 }, // Span B — visible from bottom row 6 only
+    ]);
+    expect(expandRectToFullSpans({ rowStart: 3, rowEnd: 7, columnStart: 3, columnEnd: 6 }, cellRoot)).toEqual(
+      { rowStart: 3, rowEnd: 7, columnStart: 1, columnEnd: 6 },
+    );
+  });
+
   test("Should stabilise after multiple cascade rounds until no boundary touches a partial span", () => {
     // Chain: Span A → row expansion → Span B → column expansion → Span C → row expansion.
     // SpanA: rows 3–5, col 1 (touches top boundary at row 3, expands rowStart to 3... wait)

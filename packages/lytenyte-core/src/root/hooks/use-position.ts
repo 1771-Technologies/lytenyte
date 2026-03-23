@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export function usePosition() {
   const [position, setPosition] = useState<PositionUnion | null>(null);
+
   const focusPiece = usePiece(position, setPosition);
 
   return { focusPiece, position };

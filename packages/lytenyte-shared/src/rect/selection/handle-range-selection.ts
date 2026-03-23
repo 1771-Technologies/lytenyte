@@ -63,6 +63,8 @@ export function handleRangeSelect({
   const startPosition = getPositionFromFocusable(gridId, cell);
   if (startPosition.kind !== "cell") return;
 
+  if (ignoreFirst && startPosition.colIndex === 0) return;
+
   const startCol = startPosition.colIndex;
   const startRow = startPosition.rowIndex;
   // When the user right clicks a cell, by default the browser will focus that cell. This makes
@@ -128,8 +130,8 @@ export function handleRangeSelect({
     lastActiveRect = rect;
     if (deselect) {
       onActiveRangeChange(rect);
-    } else if (rect !== null) {
-      onSelectionChange([...baseSelections, rect]);
+    } else {
+      onSelectionChange([...baseSelections, rect!]);
     }
   }
 
@@ -168,7 +170,9 @@ export function handleRangeSelect({
       if (hoveredCell && hoveredCell !== previousCell) {
         const position = getPositionFromFocusable(gridId, hoveredCell);
         if (position.kind === "cell") {
-          currentPosition = position;
+          if (!(ignoreFirst && position.colIndex === 0)) {
+            currentPosition = position;
+          }
           previousCell = hoveredCell;
           previousTarget = null;
         }
@@ -220,6 +224,12 @@ export function handleRangeSelect({
       if (!hoveredCell || hoveredCell === previousCell) return;
       const position = getPositionFromFocusable(gridId, hoveredCell);
       if (position.kind !== "cell") return;
+
+      if (ignoreFirst && position.colIndex === 0) {
+        previousTarget = target;
+        previousCell = hoveredCell;
+        return;
+      }
 
       currentPosition = position;
       previousTarget = target;

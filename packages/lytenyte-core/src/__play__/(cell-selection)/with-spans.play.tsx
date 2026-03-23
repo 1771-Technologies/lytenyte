@@ -78,7 +78,7 @@ if (import.meta.vitest) {
 
   test("Should handle keybinding expansions through spans", async () => {
     const screen = await r.render(<CellSelectionWithSpans />);
-    await wait();
+    await wait(100);
 
     const grid = screen.getByRole("grid");
     await expect.element(grid).toBeVisible();
@@ -92,7 +92,7 @@ if (import.meta.vitest) {
     await expect.element(grid).toMatchScreenshot("span_001_selection");
 
     await userEvent.click(pivotCell);
-    await wait();
+    await wait(100);
     await userEvent.keyboard("{Shift>}{ArrowLeft}{/Shift}");
     await expect.element(grid).toMatchScreenshot("span_002_selection");
 
