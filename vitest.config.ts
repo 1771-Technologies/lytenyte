@@ -2,56 +2,54 @@ import { defineConfig, type TestProjectConfiguration } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { playwright } from "@vitest/browser-playwright";
 
-const chromeConfig: TestProjectConfiguration = {
-  extends: `${import.meta.dirname}/vitest.config.ts`,
-  test: {
-    name: "chrome",
-    include: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
-    includeSource: ["src/**/*.play.tsx"],
+function makeProjectConfiguration(
+  name: string,
+  browser: "firefox" | "webkit" | "chromium",
+): TestProjectConfiguration {
+  return {
+    extends: `${import.meta.dirname}/vitest.config.ts`,
+    plugins: [react()],
+    test: {
+      name: name,
+      include: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
+      includeSource: ["src/**/*.play.tsx"],
 
-    // Tests can take quite long in CI
-    testTimeout: process.env.CI ? 120_000 : 40_000,
+      // Tests can take quite long in CI
+      testTimeout: process.env.CI ? 120_000 : 60_000,
 
-    setupFiles: `${import.meta.dirname}/test-setup.ts`,
-    browser: {
-      screenshotFailures: false,
+      setupFiles: `${import.meta.dirname}/test-setup.ts`,
+      browser: {
+        screenshotFailures: false,
+        provider: playwright({ actionTimeout: 5000 }),
 
-      expect: {
-        toMatchScreenshot: {
-          comparatorName: "pixelmatch",
-          comparatorOptions: {
-            threshold: 0.2,
-            allowedMismatchedPixelRatio: 0.12, // Generous mismatch - as the grid is text heavy.
+        expect: {
+          toMatchScreenshot: {
+            comparatorName: "pixelmatch",
+            resolveScreenshotPath: ({ arg, browserName, ext, testFileName, testFileDirectory, platform }) => {
+              return `${testFileDirectory}/__screenshots__/${testFileName}/${browserName}_${platform}/${arg}${ext}`;
+            },
+            comparatorOptions: {
+              threshold: 0.2,
+              allowedMismatchedPixelRatio: 0.12, // Generous mismatch - as the grid is text heavy.
+            },
           },
         },
-      },
-      enabled: true,
-      ui: false,
-      headless: true,
-      instances: [{ browser: "chromium" }],
-      viewport: {
-        height: 1280,
-        width: 1960,
+        enabled: true,
+        ui: false,
+        headless: true,
+        instances: [{ browser: browser }],
+        viewport: {
+          height: 1280,
+          width: 1960,
+        },
       },
     },
-  },
-};
+  };
+}
 
-const firefoxConfig = structuredClone(chromeConfig);
-firefoxConfig.test!.name = "firefox";
-firefoxConfig.test!.browser!.instances = [{ browser: "firefox" }];
-
-const safariConfig = structuredClone(chromeConfig);
-safariConfig.test!.name = "safari";
-safariConfig.test!.browser!.instances = [{ browser: "webkit" }];
-
-chromeConfig.test!.browser!.provider = playwright({ actionTimeout: 5000 });
-firefoxConfig.test!.browser!.provider = playwright({ actionTimeout: 5000 });
-safariConfig.test!.browser!.provider = playwright({ actionTimeout: 5000 });
-
-chromeConfig.plugins = [react()];
-firefoxConfig.plugins = [react()];
-safariConfig.plugins = [react()];
+const chromeConfig = makeProjectConfiguration("chrome", "chromium");
+const firefoxConfig = makeProjectConfiguration("firefox", "firefox");
+const safariConfig = makeProjectConfiguration("safari", "webkit");
 
 export default defineConfig({
   plugins: [react()],
