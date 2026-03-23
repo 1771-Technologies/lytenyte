@@ -21,6 +21,8 @@ source.generated.ts
 
 .content-collections/
 
+packages/**/temp.md
+
 # generated content
 .contentlayer
 .content-collections

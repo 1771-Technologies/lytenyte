@@ -66,4 +66,10 @@ export default defineConfig(
       "react-refresh/only-export-components": "off",
     },
   },
+  {
+    files: ["**/*.test.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-unsafe-function-type": "off",
+    },
+  },
 );
