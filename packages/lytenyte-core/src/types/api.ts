@@ -1,5 +1,6 @@
 import type {
   ColumnView,
+  DataRect,
   PositionFullWidthRow,
   PositionGridCell,
   PositionUnion,
@@ -19,13 +20,6 @@ import type { Piece } from "../hooks/use-piece.js";
 type WithId = { readonly id: string };
 type RowSourceOmits = "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected";
 
-export interface DataRect {
-  readonly rowStart: number;
-  readonly rowEnd: number;
-  readonly columnStart: number;
-  readonly columnEnd: number;
-}
-
 export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
   readonly headers: string[];
   readonly groupHeaders: (string | null)[][];
@@ -34,6 +28,7 @@ export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
 }
 
 export type API<Spec extends GridSpec = GridSpec> = {
+  readonly cellSelections: () => DataRect[];
   readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
 
   readonly xPositions$: Piece<Uint32Array>;
@@ -59,7 +54,6 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly columnUpdate: (updates: Record<string, Omit<Partial<Column<Spec>>, "id">>) => void;
   readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
   readonly columnView: () => ColumnView;
-
   readonly rowDetailHeight: (rowId: WithId | string) => number;
   readonly rowDetailExpanded: (rowOrId: RowNode<Spec["data"]> | string | number) => boolean;
   readonly rowDetailToggle: (rowOrId: string | RowNode<Spec["data"]>, state?: boolean) => void;
@@ -111,7 +105,6 @@ export type API<Spec extends GridSpec = GridSpec> = {
   ) => ReturnType<typeof useDraggable>;
 
   readonly props: () => Props<Spec>;
-} & (undefined extends Spec["source"]
-  ? Omit<RowSource, RowSourceOmits>
-  : Omit<Spec["source"], RowSourceOmits>) &
+} & Omit<RowSource, RowSourceOmits> &
+  (undefined extends Spec["source"] ? object : Omit<Spec["source"], RowSourceOmits>) &
   Spec["api"];

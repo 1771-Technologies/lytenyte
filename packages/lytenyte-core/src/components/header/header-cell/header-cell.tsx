@@ -12,21 +12,17 @@ import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
-import { useInternalShare } from "../../../internal.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
-  const { id, xPositions, base, view, api, events, styles } = useRoot();
+  const id = useGridId();
+  const { xPositions, base, view, api, events, styles, cellSelections$ } = useRoot();
 
   const column = view.lookup.get(cell.id)!;
   const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;
-
-  const { cellSelections } = useInternalShare();
-  const isCellSelected = cellSelections.useValue((x) =>
-    x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
-  );
 
   const Renderer =
     cell.kind === "cell"
@@ -51,6 +47,9 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
 
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
   const headerStyle = useHeaderCellStyle(cell, xPositions);
+  const cellSelected = cellSelections$.useValue((x) =>
+    x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
+  );
 
   return (
     <div
@@ -70,7 +69,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
       data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
       data-ln-colid={column.id}
       data-ln-gridid={id}
-      data-ln-cell-selected={isCellSelected}
+      data-ln-cell-selected={cellSelected}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}

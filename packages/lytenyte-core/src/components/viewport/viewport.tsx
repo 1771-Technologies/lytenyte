@@ -14,9 +14,12 @@ import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { EditDriver } from "./edit-driver.js";
+import { useGridSections } from "../../root/contexts/grid-sections-context.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
+  const id = useGridId();
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
 
   const {
@@ -28,21 +31,18 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     focusActive,
     source,
     rtl,
-    id,
     api,
     view,
     slotShadows: Shadows,
     styles,
-    topOffset,
-    bottomOffset,
-    startOffset,
-    endOffset,
     slotViewportOverlay: ViewportOverlay,
     totalHeaderHeight,
     dimensions,
     xPositions,
     yPositions,
   } = useRoot();
+
+  const gridSections = useGridSections();
 
   const edit = useEdit();
 
@@ -189,7 +189,9 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
             return;
           }
-          if (!skipOnEdit) handleNavigation(e, false);
+          if (!skipOnEdit) {
+            handleNavigation(e, false);
+          }
 
           if (!isEditing && editMode !== "readonly") {
             if (e.key === "Enter") {
@@ -282,10 +284,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             "--ln-vp-height": `${dimensions.innerHeight}px`,
             "--ln-vp-row-height": `${dimensions.innerHeight - totalHeaderHeight}px`,
             "--ln-vp-width": `${dimensions.innerWidth}px`,
-            "--ln-start-offset": `${startOffset}px`,
-            "--ln-end-offset": `${endOffset}px`,
-            "--ln-top-offset": `${topOffset}px`,
-            "--ln-bottom-offset": `${bottomOffset}px`,
+            "--ln-start-offset": `${gridSections.startOffset}px`,
+            "--ln-end-offset": `${gridSections.endOffset}px`,
+            "--ln-top-offset": `${gridSections.topOffset}px`,
+            "--ln-bottom-offset": `${gridSections.bottomOffset}px`,
             "--ln-full-width": `${xPositions.at(-1)!}px`,
             "--ln-full-height": `${yPositions.at(-1)!}px`,
             ...(props.style ?? styles?.viewport?.style),

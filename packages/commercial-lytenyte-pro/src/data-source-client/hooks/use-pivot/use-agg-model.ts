@@ -1,4 +1,4 @@
-import type { Column, GridSpec } from "../../../types/index.js";
+import type { Column, GridSpec } from "../../../types.js";
 import type { PivotModel } from "../../use-client-data-source.js";
 import type { AggregationFn, Aggregator } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";

@@ -7,6 +7,7 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { useEffect, useState } from "react";
 import { useRoot } from "../../root/root-context.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 
 export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
   const { detailExpansions: expansions, source } = useRoot();
@@ -18,8 +19,8 @@ export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFu
 }
 
 function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number }) {
+  const id = useGridId();
   const {
-    id,
     rtl,
     dimensions,
     api,

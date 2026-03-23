@@ -1,4 +1,4 @@
-import "../test.css";
+import "./column-header.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, useClientDataSource } from "../../index.js";
 
@@ -32,7 +32,7 @@ export default function FlatColumns() {
   });
 
   return (
-    <div style={{ width: "800px", height: "1000px", border: "1px solid black" }}>
+    <div className="column-header-demo">
       <Grid columns={columns} rowSource={ds} />
     </div>
   );

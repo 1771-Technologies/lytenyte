@@ -41,13 +41,11 @@ import {
   useRowSelectSplitLookup,
   useRowSiblings,
 } from "@1771technologies/lytenyte-core/internal";
-import type { Column, Field } from "../types/column.js";
-import type { GridSpec } from "../types/grid.js";
 import { useFlattenedData } from "./hooks/use-flattened-data.js";
 import { usePivotData } from "./hooks/use-pivot/use-pivot-data.js";
 import type { PivotState } from "./hooks/use-pivot/use-pivot-columns.js";
-import type { Props } from "../types/props.js";
 import { usePivotState } from "./hooks/use-pivot/use-pivot-state.js";
+import type { Column, Field, GridSpec, Props } from "../types.js";
 
 export type PivotField<Spec extends GridSpec = GridSpec> = { field?: Field<Spec["data"]> };
 export type HavingFilterFn = (node: RowGroup) => boolean;

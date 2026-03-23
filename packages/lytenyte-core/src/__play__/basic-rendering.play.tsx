@@ -50,10 +50,10 @@ if (import.meta.vitest) {
 
     const grid = screen.getByRole("grid");
     await expect.element(grid).toBeVisible();
-    await expect.element(grid).toMatchScreenshot("001_render_without_issues.png");
+    await expect.element(grid).toMatchScreenshot("001_render_without_issues");
     utils.scrollGrid(grid, { y: 2000 });
-    await expect.element(grid).toMatchScreenshot("002_render_without_issues.png");
+    await expect.element(grid).toMatchScreenshot("002_render_without_issues");
     utils.scrollGrid(grid, { y: 2_000_000 });
-    await expect.element(grid).toMatchScreenshot("003_render_without_issues.png");
+    await expect.element(grid).toMatchScreenshot("003_render_without_issues");
   });
 }

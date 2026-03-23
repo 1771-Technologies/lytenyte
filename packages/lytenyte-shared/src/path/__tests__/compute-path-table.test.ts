@@ -20,7 +20,7 @@ import { Table } from "@1771technologies/cli-table";
 import { describe, expect, test } from "vitest";
 
 describe("computePathTable", () => {
-  test("should create the correct table", () => {
+  test("Should create the correct table", () => {
     const t = computePathTable([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y" },
@@ -43,7 +43,7 @@ describe("computePathTable", () => {
   `);
   });
 
-  test("should create a flat table when there are no paths", () => {
+  test("Should create a flat table when there are no paths", () => {
     const table = computePathTable([{ id: "x" }, { id: "y" }, { id: "z" }, { id: "f" }, { id: "g" }]);
 
     expect(toGridTable(table)).toMatchInlineSnapshot(`
@@ -54,7 +54,7 @@ describe("computePathTable", () => {
   `);
   });
 
-  test("should compute consecutive group paths", () => {
+  test("Should compute consecutive group paths", () => {
     const table = computePathTable([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y" },
@@ -81,7 +81,7 @@ describe("computePathTable", () => {
   `);
   });
 
-  test("should correctly join paths", () => {
+  test("Should correctly join paths", () => {
     const table = computePathTable([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y" },
@@ -111,7 +111,7 @@ describe("computePathTable", () => {
   `);
   });
 
-  test("should handle empty rows", () => {
+  test("Should handle empty rows", () => {
     const table = computePathTable([]);
 
     expect(toGridTable(table)).toMatchInlineSnapshot(`
@@ -120,7 +120,7 @@ describe("computePathTable", () => {
   `);
   });
 
-  test("computes the max depth correctly when overridden", () => {
+  test("Should compute the max depth correctly when overridden", () => {
     const table = computePathTable(
       [
         { id: "x", groupPath: ["A", "B"] },
@@ -160,7 +160,7 @@ describe("computePathTable", () => {
     expect(table.table.length === 5);
   });
 
-  test("should handle a single path", () => {
+  test("Should handle a single path", () => {
     const table = computePathTable([{ id: "x", groupPath: ["V"] }]);
     expect(toGridTable(table)).toMatchInlineSnapshot(`
     "
@@ -172,7 +172,7 @@ describe("computePathTable", () => {
   `);
   });
 
-  test("should handle really long paths", () => {
+  test("Should handle really long paths", () => {
     const table = computePathTable([
       { id: "x", groupPath: ["A", "B", "C", "D", "E", "V", "A", "T", "A"] },
       { id: "v", groupPath: [] },

@@ -9,14 +9,18 @@ import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
   const bounds = useBounds();
-  const focus = useFocus();
   const end = bounds.useValue($colEndBound);
   const start = bounds.useValue($colStartBound);
+  const focus = useFocus().get();
 
-  const isFocused = focus && focus.row === props.cell.rowIndex && focus.column === props.cell.colIndex;
+  const isFocused =
+    focus?.kind === "cell" &&
+    focus.rowIndex === props.cell.rowIndex &&
+    focus.colIndex === props.cell.colIndex;
 
   // This enforces our column virtualization.
   if (
@@ -32,8 +36,8 @@ export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, 
 
 const CellImpl = memo(
   forwardRef<HTMLDivElement, Cell.Props>(function Cell({ cell, ...props }, forwarded) {
+    const id = useGridId();
     const {
-      id,
       rtl,
       base,
       xPositions,
@@ -58,7 +62,9 @@ const CellImpl = memo(
 
     const editSetting = column.editable ?? (base as Root.Column).editable;
     const isEditable =
-      row && typeof editSetting === "function" ? editSetting({ api, row, column }) : (editSetting ?? false);
+      row && typeof editSetting === "function"
+        ? editSetting({ api, row, column, rowIndex: cell.rowIndex, colIndex: cell.colIndex })
+        : (editSetting ?? false);
 
     const isEditingThis =
       isEditable &&

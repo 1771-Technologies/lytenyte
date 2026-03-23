@@ -7,18 +7,25 @@ import {
 import { RowsContainerContext, type RowsContainerContextType } from "./context.js";
 import { useRoot } from "../../../root/root-context.js";
 import { usePiece } from "../../../hooks/use-piece.js";
+import { useRangeSelection } from "../../range-selection/use-range-selection.js";
+import { useKeyboardRangeSelection } from "../../range-selection/use-keyboard-range-selection.js";
+import { useCellFocusChange } from "../../range-selection/use-cell-focus-change.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
+    const id = useGridId();
     const {
-      id,
       source,
       view,
       xPositions,
       yPositions,
       dimensions,
       api,
+      viewport,
       slotRowsOverlay: RowsOverlay,
+      rtl,
+      focusActive,
     } = useRoot();
 
     const startWidth = xPositions[view.startCount];
@@ -65,6 +72,10 @@ export const RowsContainer = memo(
       width,
     ]);
 
+    const onMouseDown = useRangeSelection(props.onMouseDown, viewport, rtl, api);
+    const onKeyDownRange = useKeyboardRangeSelection();
+    useCellFocusChange(focusActive);
+
     return (
       <RowsContainerContext.Provider value={usePiece(value)}>
         <div
@@ -73,6 +84,11 @@ export const RowsContainer = memo(
           data-ln-rows-container
           data-ln-gridid={id}
           role="presentation"
+          onMouseDown={onMouseDown}
+          onKeyDown={(e) => {
+            props.onKeyDown?.(e);
+            onKeyDownRange(e);
+          }}
           style={
             {
               ...props.style,

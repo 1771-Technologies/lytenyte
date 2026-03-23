@@ -8,10 +8,11 @@ import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
 import { useBounds, useColumnLayout, useRoot } from "../../root/root-context.js";
 import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
+import { useGridId } from "../../root/contexts/grid-id.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
+  const id = useGridId();
   const {
-    id,
     floatingRowEnabled,
     floatingRowHeight,
     headerGroupHeight,

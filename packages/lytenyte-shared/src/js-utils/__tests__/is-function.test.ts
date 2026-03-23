@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { isFunction } from "../is-function.js";
 
 describe("isFunction", () => {
-  test("returns true for regular functions", () => {
+  test("Should return true for regular functions", () => {
     function fn() {}
     const arrow = () => {};
 
@@ -10,7 +10,7 @@ describe("isFunction", () => {
     expect(isFunction(arrow)).toBe(true);
   });
 
-  test("returns true for async and generator functions", () => {
+  test("Should return true for async and generator functions", () => {
     async function asyncFn() {}
     function* generatorFn() {}
 
@@ -18,12 +18,12 @@ describe("isFunction", () => {
     expect(isFunction(generatorFn)).toBe(true);
   });
 
-  test("returns true for built-in functions", () => {
+  test("Should return true for built-in functions", () => {
     expect(isFunction(Math.max)).toBe(true);
     expect(isFunction(setTimeout)).toBe(true);
   });
 
-  test("returns false for non-functions", () => {
+  test("Should return false for non-functions", () => {
     expect(isFunction(undefined)).toBe(false);
     expect(isFunction(null)).toBe(false);
     expect(isFunction(123)).toBe(false);
@@ -32,7 +32,7 @@ describe("isFunction", () => {
     expect(isFunction([])).toBe(false);
   });
 
-  test("returns false for class instances and constructors", () => {
+  test("Should return false for class instances and constructors", () => {
     class MyClass {}
     const instance = new MyClass();
 

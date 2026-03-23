@@ -2,7 +2,7 @@ import type { RowLeaf } from "@1771technologies/lytenyte-shared";
 import type { PivotModel } from "../../../use-client-data-source";
 import { computeField } from "@1771technologies/lytenyte-core/internal";
 import { pivotPathsWithTotals } from "./pivot-paths-with-totals.js";
-import type { GridSpec } from "../../../../types/index.js";
+import type { GridSpec } from "../../../../types.js";
 
 export function pivotPaths<Spec extends GridSpec>(
   filtered: number[],

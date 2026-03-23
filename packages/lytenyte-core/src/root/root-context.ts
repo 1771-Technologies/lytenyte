@@ -1,6 +1,7 @@
 import type {
   ColumnAbstract,
   ColumnView,
+  DataRect,
   LayoutHeader,
   PositionUnion,
   RowNode,
@@ -24,15 +25,12 @@ import type { GridEvents } from "../types/events";
 import type { Column, GridSpec, Props } from "../types";
 
 export interface RootContextValue {
-  readonly id: string;
   readonly source: RowSource;
   readonly rtl: boolean;
   readonly view: ColumnView;
   readonly api: Root.API;
 
-  readonly topComponent?: () => ReactNode;
-  readonly centerComponent?: () => ReactNode;
-  readonly bottomComponent?: () => ReactNode;
+  readonly cellSelections$: Piece<DataRect[]>;
 
   readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;
@@ -41,11 +39,6 @@ export interface RootContextValue {
 
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
-
-  readonly startOffset: number;
-  readonly endOffset: number;
-  readonly topOffset: number;
-  readonly bottomOffset: number;
 
   readonly setDetailCache: Dispatch<SetStateAction<Record<string, number>>>;
   readonly rowDetailHeightCache: Record<string, number>;
@@ -134,6 +127,6 @@ const editContext = createContext({} as EditContext);
 export const EditProvider = editContext.Provider;
 export const useEdit = () => useContext(editContext);
 
-const focusContext = createContext<null | { row: number; column: number }>({} as any);
+const focusContext = createContext<Piece<PositionUnion | null>>({} as any);
 export const FocusProvider = focusContext.Provider;
 export const useFocus = () => useContext(focusContext);

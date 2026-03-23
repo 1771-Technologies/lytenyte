@@ -3,7 +3,7 @@ import { makePositionArray } from "../../coordinates/make-position-array/make-po
 import { sizeFromCoord } from "../size-from-coord.js";
 
 describe("sizeFromCoord", () => {
-  test("sizeFromCoord should return the correct value", () => {
+  test("Should return the correct value", () => {
     const positions = makePositionArray(() => 20, 5);
     expect(sizeFromCoord(1, positions)).toEqual(20);
     expect(sizeFromCoord(1, positions, 2)).toEqual(40);

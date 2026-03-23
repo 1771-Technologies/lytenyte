@@ -1,0 +1,99 @@
+import type { ColumnView } from "../../columns/index.js";
+import type { PositionGridCell, PositionUnion } from "../../types.js";
+import { isFullyWithinRect } from "./is-fully-within-rect.js";
+import { rectFromGridCellPosition } from "../rect-from-grid-cell-position.js";
+import { rectsOverlap } from "./rects-overlap.js";
+import type { DataRect } from "../types.js";
+
+/**
+ * Expands the last selection rect toward the start (left in LTR) by one column
+ * step from the focused cell position. When `meta` is true the rect jumps to
+ * the first visible column. Span roots are respected so the rect always aligns
+ * to full cell extents. Returns the updated selections array, or null if no
+ * expansion is possible.
+ */
+export function expandRectsStart(
+  scrollIntoView: (params: { row?: number; column?: number }) => void,
+  cellRoot: (row: number, column: number) => PositionUnion | null,
+  selections: DataRect[],
+  meta: boolean,
+  position: PositionGridCell,
+  excludeMarker: boolean,
+  view: ColumnView,
+): DataRect[] | null {
+  const pos = rectFromGridCellPosition(position);
+  const rect = selections.at(-1);
+  if (!rect || !rectsOverlap(rect, pos)) return null;
+
+  const fullyInterior = isFullyWithinRect(pos, rect);
+  const first = excludeMarker ? 1 : 0;
+
+  if (meta) {
+    const next: DataRect = { ...rect, columnStart: first, columnEnd: pos.columnEnd };
+    const nextSelections = [...selections];
+    nextSelections[nextSelections.length - 1] = next;
+
+    if (pos.columnStart !== view.visibleColumns.length - 1) scrollIntoView({ column: first });
+    return nextSelections;
+  }
+
+  const isAtEdge = pos.columnStart == rect.columnStart || pos.columnEnd === rect.columnEnd;
+
+  let pivotStart = pos.columnStart;
+  let pivotEnd = pos.columnEnd;
+  // Our cell some how is spanned over. so for the current rowIndex, find the maximum span along the columns
+  if (!isAtEdge) {
+    for (let i = rect.rowStart; i < rect.rowEnd; i++) {
+      const cell = rectFromGridCellPosition(cellRoot(i, pos.columnStart) as PositionGridCell);
+      pivotStart = Math.min(pivotStart, cell.columnStart);
+      pivotEnd = Math.max(pivotEnd, cell.columnEnd);
+    }
+  }
+
+  let next: DataRect;
+
+  if (fullyInterior || rect.columnEnd <= pivotEnd) {
+    if (rect.columnStart === first) return null;
+
+    let lowestColStart = Infinity;
+    let setCell: DataRect = rect;
+    for (let i = rect.rowStart; i < rect.rowEnd; i++) {
+      const cell = rectFromGridCellPosition(cellRoot(i, rect.columnStart - 1) as PositionGridCell);
+      if (cell.columnStart < lowestColStart) {
+        lowestColStart = cell.columnStart;
+        setCell = cell;
+      }
+    }
+
+    next = {
+      ...rect,
+      columnStart: lowestColStart,
+      rowStart: Math.min(setCell!.rowStart, rect.rowStart),
+      rowEnd: Math.max(setCell.rowEnd, rect.rowEnd),
+    };
+    scrollIntoView({ column: lowestColStart });
+  } else {
+    let lowestColStart = Infinity;
+    let setCell: DataRect = rect;
+    for (let i = rect.rowStart; i < rect.rowEnd; i++) {
+      const cell = rectFromGridCellPosition(cellRoot(i, rect.columnEnd - 1) as PositionGridCell);
+      if (cell.columnStart < lowestColStart) {
+        lowestColStart = cell.columnStart;
+        setCell = cell;
+      }
+    }
+
+    next = {
+      ...rect,
+      columnEnd: lowestColStart,
+      rowStart: Math.min(setCell!.rowStart, rect.rowStart),
+      rowEnd: Math.max(setCell.rowEnd, rect.rowEnd),
+    };
+    scrollIntoView({ column: lowestColStart - 1 });
+  }
+
+  const nextSelections = [...selections];
+  nextSelections[nextSelections.length - 1] = next;
+
+  return nextSelections;
+}

@@ -16,7 +16,13 @@ import { useTotalHeaderHeight } from "./hooks/use-total-header-height.js";
 import { useXPositions } from "./hooks/use-x-positions.js";
 import { useYPositions } from "./hooks/use-y-positions.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
-import { equal, type LayoutState, type RowSource } from "@1771technologies/lytenyte-shared";
+import {
+  equal,
+  type DataRect,
+  type GridSections,
+  type LayoutState,
+  type RowSource,
+} from "@1771technologies/lytenyte-shared";
 import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useBounds } from "./hooks/use-bounds.js";
 import { useApi } from "./hooks/use-api/use-api.js";
@@ -36,7 +42,7 @@ import { useDropAccept } from "./hooks/use-drop-accept.js";
 import { useGridId } from "./hooks/use-grid-id.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
-import type { DataRect, API as LnAPI } from "../types/api.js";
+import type { API as LnAPI } from "../types/api.js";
 import type { Props as LnProps } from "../types/props.js";
 import { Viewport } from "../components/viewport/viewport.js";
 import { Header } from "../components/header/header.js";
@@ -45,42 +51,36 @@ import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
+import { CellSelectionContext } from "./contexts/cell-selection-context.js";
+import { GridIdProvider } from "./contexts/grid-id.js";
+import { GridSectionsProvider } from "./contexts/grid-sections-context.js";
+import { ActiveRangeProvider } from "./contexts/active-range-context.js";
+import { useControlled } from "../hooks/use-controlled.js";
+import { useEvent } from "../hooks/use-event.js";
 import { usePiece } from "../internal.js";
-import { LnInternalShareProvider } from "./internal-share.js";
-
-const empty: DataRect[] = [];
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
     children,
-
-    // @ts-expect-error a secret typescript variable for internal use only.
-    __noFallback,
     ...p
   }: PropsWithChildren<
     Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
   >,
   forwarded: Root.Props<Spec>["ref"],
 ) => {
-  const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {
-    ln_topComponent?: () => ReactNode;
-    ln_bottomComponent: () => ReactNode;
-    ln_centerComponent: () => ReactNode;
-  };
+  const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
   const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
+  const controlled = useControlledGridState(props);
+  const view = useColumnView(controlled.columns, props, source, controlled.columnGroupExpansions);
 
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
-  const gridId = useGridId(props.gridId);
-  const selectPivot = useRef<number | null>(null);
-
-  const dropAccept = useDropAccept(props, gridId);
-
   const dimensions = useViewportDimensions(vp);
-  const controlled = useControlledGridState(props);
 
-  const view = useColumnView(controlled.columns, props, source, controlled.columnGroupExpansions);
+  const rowCount = source.useRowCount();
+  const topCount = source.useTopCount();
+  const bottomCount = source.useBottomCount();
+
   const totalHeaderHeight = useTotalHeaderHeight(props, view.maxRow);
-
   const xPositions = useXPositions(props, view, dimensions.innerWidth);
   const yPositions = useYPositions(
     props,
@@ -88,6 +88,36 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     dimensions.innerHeight - totalHeaderHeight,
     controlled.detailExpansions,
   );
+
+  const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
+
+  const cutoffValue = useMemo<GridSections>(() => {
+    const centerCount = rowCount - topCount - bottomCount;
+    const topCutoff = topCount;
+    const botCutoff = centerCount + topCount;
+    const startCutoff = view.startCount;
+    const endCutoff = view.startCount + view.centerCount;
+
+    return {
+      rowCount,
+      topCount,
+      centerCount,
+      bottomCount,
+      startCount: view.startCount,
+      colCenterCount: view.centerCount,
+      endCount: view.endCount,
+      bottomCutoff: botCutoff,
+      startCutoff,
+      endCutoff,
+      topCutoff,
+      ...offsets,
+    };
+  }, [bottomCount, offsets, rowCount, topCount, view.centerCount, view.endCount, view.startCount]);
+
+  const gridId = useGridId(props.gridId);
+  const selectPivot = useRef<number | null>(null);
+
+  const dropAccept = useDropAccept(props, gridId);
 
   const api = useExtendedAPI(props);
   useImperativeHandle(forwarded, () => api as any, [api]);
@@ -103,7 +133,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     yPositions.positions,
   );
 
-  const { focusPiece, focusValue, position } = usePosition();
+  const { focusPiece, position } = usePosition();
   const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
   const headerLayout = useHeaderLayout(view, props);
 
@@ -121,6 +151,16 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   const editValue = useEditContext(view, api, props, source);
 
+  const [cellSelections, setCellSelections] = useControlled<DataRect[]>({
+    controlled: p.cellSelections,
+    default: [] as DataRect[],
+  });
+  const onCellSelectionChange = useEvent((change: DataRect[]) => {
+    setCellSelections(change);
+    p.onCellSelectionChange?.(change);
+  });
+  const cellSelections$ = usePiece(cellSelections);
+
   useApi(
     gridId,
     props,
@@ -137,6 +177,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     yPositions.positions,
     totalHeaderHeight,
     api,
+    cellSelections,
   );
 
   const prevStyles = useRef(props.styles);
@@ -148,16 +189,13 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     return next;
   }, [props.styles]);
 
-  const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
-  const cellSelectionPiece = usePiece((p as any).cellSelections ?? empty);
-
   const value = useMemo<RootContextValue>(() => {
     return {
-      id: gridId,
       rtl: props.rtl ?? false,
       api: api,
       xPositions,
       yPositions: yPositions.positions,
+      cellSelections$,
       viewport: vp,
       setViewport: setVp,
       view,
@@ -172,17 +210,9 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
       dimensions,
       styles,
-      topOffset: offsets.topOffset,
-      bottomOffset: offsets.bottomOffset,
-      startOffset: offsets.startOffset,
-      endOffset: offsets.endOffset,
 
       totalHeaderHeight,
       detailExpansions: controlled.detailExpansions,
-
-      topComponent: props.ln_topComponent,
-      bottomComponent: props.ln_bottomComponent,
-      centerComponent: props.ln_centerComponent,
 
       rowDetailHeight: props.rowDetailHeight ?? 200,
       rowDetailAutoHeightGuess: props.rowDetailAutoHeightGuess ?? 200,
@@ -220,16 +250,12 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     };
   }, [
     api,
+    cellSelections$,
     controlled.columnGroupExpansions,
     controlled.detailExpansions,
     dimensions,
     dropAccept,
     focusPiece,
-    gridId,
-    offsets.bottomOffset,
-    offsets.endOffset,
-    offsets.startOffset,
-    offsets.topOffset,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,
@@ -244,9 +270,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.floatingRowHeight,
     props.headerGroupHeight,
     props.headerHeight,
-    props.ln_bottomComponent,
-    props.ln_centerComponent,
-    props.ln_topComponent,
     props.onColumnMoveOutside,
     props.onRowDragEnter,
     props.onRowDragLeave,
@@ -274,24 +297,33 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   return (
     <RootContextProvider value={value}>
-      <RowLayoutContextProvider value={rowLayout}>
-        <ColumnLayoutContextProvider value={headerLayout}>
-          <BoundsContextProvider value={bounds}>
-            <EditProvider value={editValue}>
-              <FocusProvider value={focusValue}>
-                <LnInternalShareProvider
-                  value={useMemo(
-                    () => ({ cellSelections: cellSelectionPiece, hasCellSelection: false }),
-                    [cellSelectionPiece],
-                  )}
-                >
-                  {__noFallback ? children : (children ?? <Fallback />)}
-                </LnInternalShareProvider>
-              </FocusProvider>
-            </EditProvider>
-          </BoundsContextProvider>
-        </ColumnLayoutContextProvider>
-      </RowLayoutContextProvider>
+      <GridIdProvider value={gridId}>
+        <GridSectionsProvider value={cutoffValue}>
+          <CellSelectionContext
+            topCutoff={cutoffValue.topCutoff}
+            bottomCutoff={cutoffValue.bottomCutoff}
+            endCutoff={cutoffValue.endCutoff}
+            startCutoff={cutoffValue.startCutoff}
+            cellSelections={cellSelections}
+            cellSelectionExcludeMarker={p.cellSelectionExcludeMarker && (p.columnMarker?.on ?? false)}
+            cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
+            cellSelectionMode={p.cellSelectionMode}
+            onCellSelectionChange={onCellSelectionChange}
+          >
+            <ActiveRangeProvider>
+              <RowLayoutContextProvider value={rowLayout}>
+                <ColumnLayoutContextProvider value={headerLayout}>
+                  <BoundsContextProvider value={bounds}>
+                    <EditProvider value={editValue}>
+                      <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
+                    </EditProvider>
+                  </BoundsContextProvider>
+                </ColumnLayoutContextProvider>
+              </RowLayoutContextProvider>
+            </ActiveRangeProvider>
+          </CellSelectionContext>
+        </GridSectionsProvider>
+      </GridIdProvider>
     </RootContextProvider>
   );
 };

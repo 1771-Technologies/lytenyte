@@ -1,6 +1,6 @@
 import { useMemo, useRef } from "react";
 import type { PivotModel } from "../../use-client-data-source";
-import type { Column, GridSpec } from "../../../types/index.js";
+import type { Column, GridSpec } from "../../../types.js";
 import { computeField } from "@1771technologies/lytenyte-core/internal";
 import {
   equal,

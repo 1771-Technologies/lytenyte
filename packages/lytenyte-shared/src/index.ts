@@ -7,6 +7,7 @@ export { rowPositions, columnPositions } from "./coordinates/index.js";
 export { rowSelectLinkWithParents } from "./row-selection/row-select-link-with-parents.js";
 export { rowSelectLinkWithoutParents } from "./row-selection/row-select-link-without-parent.js";
 export type {
+  VirtualTarget,
   Writable,
   PathField,
   Field,
@@ -49,6 +50,7 @@ export type {
   PositionHeaderCell,
   PositionHeaderGroupCell,
   PositionUnion,
+  GridSections,
 } from "./types.js";
 
 export type {
@@ -131,6 +133,21 @@ export { rowIndexForSection } from "./row/row-index-for-section.js";
 export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
 export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 
+// Rectangle
+export type { DataRect, Section, SectionedRect, HandleRangeSelectionArgs } from "./rect/index.js";
+export {
+  splitRect,
+  rectFromGridCellPosition,
+  startSection,
+  endSection,
+  topSection,
+  centerSection,
+  bottomSection,
+  expandRectsInDirection,
+  expandDirectionFromKey,
+  handleRangeSelect,
+} from "./rect/index.js";
+
 // Navigation
 export { focusCell } from "./navigation-x/focus-cell.js";
 export { trackFocus } from "./navigation-x/track-focus.js";
@@ -164,6 +181,8 @@ export {
 } from "./js-utils/index.js";
 
 // DOM Utils
+export type { Autoscroller } from "./dom-autoscroller/index.js";
+export { computeScrollDirection, createAutoscroller } from "./dom-autoscroller/index.js";
 export type { FocusTrapOptions } from "./dom-focus/index.js";
 export { FocusTrap, getTabbables, getFocusables } from "./dom-focus/index.js";
 export {
@@ -196,7 +215,6 @@ export {
   supportsScrollEnd,
 } from "./dom-utils/predicates/index.js";
 export {
-  isAppleDevice,
   isChrome,
   isFirefox,
   isIOS,

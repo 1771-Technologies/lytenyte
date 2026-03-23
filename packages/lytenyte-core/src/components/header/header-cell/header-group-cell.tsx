@@ -5,15 +5,15 @@ import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { HeaderGroupDefault } from "./header-group-default.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
-import { useInternalShare } from "../../../internal.js";
 import { ResizeHandler } from "./resize-handler.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
+  const id = useGridId();
   const {
-    id,
     xPositions,
     api,
     view,
@@ -23,6 +23,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     columnGroupRenderer,
     events,
     styles: sx,
+    cellSelections$,
   } = useRoot();
 
   const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupDefaultExpansion;
@@ -43,8 +44,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
   const handlers = useMappedEvents(events.headerGroup, { layout: cell, columns, api });
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
 
-  const { cellSelections } = useInternalShare();
-  const isCellSelected = cellSelections.useValue((x) =>
+  const isCellSelected = cellSelections$.useValue((x) =>
     x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
   );
 

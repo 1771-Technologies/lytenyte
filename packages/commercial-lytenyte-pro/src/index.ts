@@ -3,7 +3,7 @@ import { Grid as GridCore } from "@1771technologies/lytenyte-core";
 import type { PropsWithChildren, ReactNode } from "react";
 import { Root } from "./root/root.js";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
-import type * as LnTypes from "./types/index.js";
+import type * as LnTypes from "./types.js";
 
 export interface GridComponent {
   <Spec extends Root.GridSpec = Root.GridSpec>(
@@ -132,14 +132,11 @@ export namespace Grid {
     export type PositionUnion = LnTypes.PositionUnion;
 
     // PRO Specific types
-
-    export type DataRectSplit = LnTypes.DataRectSplit;
     export type HavingFilterFn = LnTypes.HavingFilterFn;
     export type LabelFilter = LnTypes.LabelFilter;
     export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
     export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
     export type PivotState = LnTypes.PivotState;
-    export type VirtualTarget = LnTypes.VirtualTarget;
   }
 }
 

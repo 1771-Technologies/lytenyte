@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSlot, type SlotComponent } from "../hooks/use-slot/index.js";
-import type { API, GridSpec } from "../types/index.js";
+import type { API, GridSpec } from "../types.js";
 import { useEvent } from "@1771technologies/lytenyte-core/internal";
 
 export interface SelectAllProps {

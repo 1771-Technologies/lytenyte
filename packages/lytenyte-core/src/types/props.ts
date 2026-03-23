@@ -1,4 +1,4 @@
-import type { RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
+import type { DataRect, RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
 import type { ReactNode, Ref } from "react";
 import type {
   Column,
@@ -14,6 +14,12 @@ import type { ViewportShadowsProps } from "../components/viewport/viewport-shado
 import type { GridEvents } from "./events.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
+  readonly cellSelectionMode?: "range" | "multi-range" | "none";
+  readonly cellSelections?: DataRect[];
+  readonly cellSelectionExcludeMarker?: boolean;
+  readonly cellSelectionMaintainOnNonCellPosition?: boolean;
+  readonly onCellSelectionChange?: (rects: DataRect[]) => void;
+
   readonly columns?: Column<Spec>[];
   readonly columnBase?: Omit<Partial<Column<Spec>>, "id" | "pin" | "field" | "editSetter">;
   readonly columnMarker?: Omit<Partial<Column<Spec>>, "id" | "field" | "pin"> & { on?: boolean };

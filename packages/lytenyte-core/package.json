@@ -49,6 +49,11 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./types": {
+      "types": "./src/types/index.ts",
+      "import": "./src/types/index.ts",
+      "require": "./src/types/index.ts"
+    },
     "./components": {
       "types": "./src/components.ts",
       "import": "./src/components.ts",
@@ -80,6 +85,11 @@
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js",
         "require": "./dist/index.js"
+      },
+      "./types": {
+        "types": "./src/types/index.d.ts",
+        "import": "./src/types/index.js",
+        "require": "./src/types/index.js"
       },
       "./components": {
         "types": "./dist/components.d.ts",

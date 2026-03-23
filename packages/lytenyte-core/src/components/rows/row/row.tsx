@@ -9,11 +9,12 @@ import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { CellSpacerCenter } from "../../cells/cell-spacers/cell-spacer-center.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
-import { useInternalShare } from "../../../internal.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
-  const { id, rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api } = ctx;
+  const id = useGridId();
+  const { rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api, cellSelections$ } = ctx;
 
   const container = useRowsContainerContext();
 
@@ -26,8 +27,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   const rowMeta = useRowContextValue(row, ctx);
   const topOffset = container.useValue($topHeight);
 
-  const { cellSelections, hasCellSelection } = useInternalShare();
-  const isSelected = cellSelections.useValue((x) =>
+  const cellSelected = cellSelections$.useValue((x) =>
     x.some((r) => row.rowIndex >= r.rowStart && row.rowIndex < r.rowEnd),
   );
 
@@ -37,7 +37,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     row.rowPin,
     topOffset,
     !!row.rowIsFocusRow,
-    hasSpans || hasCellSelection,
+    hasSpans || true,
     rowMeta.detailHeight,
     props.style ?? sx?.row?.style,
   );
@@ -59,7 +59,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-gridid={id}
         data-ln-rowindex={row.rowIndex}
         data-ln-rowpin={row.rowPin ?? "center"}
-        data-ln-cell-selected={isSelected}
+        data-ln-cell-selected={cellSelected}
         data-ln-rowtype="normal-row"
         data-ln-last-top-pin={row.rowLastPinTop}
         data-ln-first-bottom-pin={row.rowFirstPinBottom}

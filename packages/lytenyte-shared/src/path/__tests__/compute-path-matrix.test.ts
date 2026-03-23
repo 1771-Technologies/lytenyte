@@ -27,7 +27,7 @@ const mapRowsToStrings = (row: (PathMatrixItem | null)[], useSeen: boolean = fal
   });
 
 describe("computePathMatrix", () => {
-  test("should create the correct table", () => {
+  test("Should create the correct table", () => {
     const table = computePathMatrix([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y" },
@@ -55,7 +55,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should be able to join two top level items", () => {
+  test("Should be able to join two top level items", () => {
     const table = computePathMatrix([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y", groupPath: ["A", "B"] },
@@ -87,7 +87,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("handles the case where there are no group paths", () => {
+  test("Should handle the case where there are no group paths", () => {
     const table = computePathMatrix([{ id: "x" }, { id: "y" }, { id: "z" }, { id: "f" }, { id: "g" }]);
 
     const t = new Table();
@@ -99,7 +99,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should compute consecutive group paths", () => {
+  test("Should compute consecutive group paths", () => {
     const table = computePathMatrix([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y" },
@@ -139,7 +139,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should correctly join on paths", () => {
+  test("Should correctly join on paths", () => {
     const table = computePathMatrix([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y" },
@@ -205,7 +205,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should handle the case where there are no groups", () => {
+  test("Should handle the case where there are no groups", () => {
     const table = computePathMatrix([{ id: "x" }, { id: "y" }, { id: "z" }, { id: "d" }, { id: "v" }]);
 
     const t = new Table();
@@ -217,7 +217,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should handle empty items", () => {
+  test("Should handle empty items", () => {
     const table = computePathMatrix([]);
 
     const t = new Table();
@@ -228,7 +228,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should correctly compute seen ids", () => {
+  test("Should correctly compute seen ids", () => {
     const table = computePathMatrix([
       { id: "x", groupPath: ["A", "B"] },
       { id: "y" },
@@ -277,7 +277,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should correctly compute seen ids when a seen record is passed in.", () => {
+  test("Should correctly compute seen ids when a seen record is passed in.", () => {
     const table = computePathMatrix(
       [
         { id: "x", groupPath: ["A", "B"] },
@@ -330,7 +330,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("computes the max depth correctly when overridden", () => {
+  test("Should compute the max depth correctly when overridden", () => {
     const table = computePathMatrix(
       [
         { id: "x", groupPath: ["A", "B"] },
@@ -382,7 +382,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should ignore max depth override ", () => {
+  test("Should ignore max depth override ", () => {
     const table = computePathMatrix(
       [
         { id: "x", groupPath: ["A", "B"] },
@@ -434,7 +434,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should handle paths at the edges", () => {
+  test("Should handle paths at the edges", () => {
     const table = computePathMatrix([
       { id: "x", groupPath: ["A"] },
       { id: "v" },
@@ -456,7 +456,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should handle a single path", () => {
+  test("Should handle a single path", () => {
     const table = computePathMatrix([{ id: "x", groupPath: ["V"] }]);
 
     const t = new Table();
@@ -470,7 +470,7 @@ describe("computePathMatrix", () => {
   `);
   });
 
-  test("should handle really long paths", () => {
+  test("Should handle really long paths", () => {
     const table = computePathMatrix([
       { id: "x", groupPath: ["A", "B", "C", "D", "E", "V", "A", "T", "A"] },
       { id: "v", groupPath: [] },

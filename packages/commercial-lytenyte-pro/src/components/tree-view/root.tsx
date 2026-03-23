@@ -19,12 +19,10 @@ import { TreeChildren } from "./tree-children.js";
 import type { TreeViewChildParams, TreeViewItem, TreeViewSelectAllParams } from "./types.js";
 import { SelectAll } from "./select-all.js";
 import { useClientDataSource } from "../../data-source-client/use-client-data-source.js";
-import type { Column } from "../../types/column.js";
-import type { API } from "../../types/api.js";
 import { usePiece } from "@1771technologies/lytenyte-core/internal";
 import { Root } from "../../root/root.js";
-import type { GridEvents } from "../../types/events.js";
 import { Grid } from "@1771technologies/lytenyte-core";
+import type { API, Column, GridEvents } from "../../types.js";
 
 export interface TreeViewProps<T extends TreeViewItem> {
   readonly items: T[];
