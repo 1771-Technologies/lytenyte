@@ -43,13 +43,7 @@ const contextSettings = createContext<CellSelectionSettingsType>({} as any);
 
 function CellSelectionContextBase(
   p: PropsWithChildren<
-    Pick<
-      Props,
-      | "cellSelectionMode"
-      | "cellSelectionExcludeMarker"
-      | "cellSelectionMaintainOnNonCellPosition"
-      | "columnMarker"
-    >
+    Pick<Props, "cellSelectionMode" | "cellSelectionExcludeMarker" | "cellSelectionMaintainOnNonCellPosition">
   > &
     CellSelectionContextArgs,
 ) {
@@ -63,18 +57,16 @@ function CellSelectionContextBase(
 
   const anchorRef = useRef<PositionGridCell | null>(null);
 
-  const markerOn = p.columnMarker?.on ?? false;
   const settings = useMemo<CellSelectionSettingsType>(() => {
     return {
       onCellSelectionChange: p.onCellSelectionChange,
       cellSelectionClearOnSelf: true,
-      ignoreFirstColumn: markerOn && (p.cellSelectionExcludeMarker ?? false),
+      ignoreFirstColumn: p.cellSelectionExcludeMarker ?? false,
       cellSelectionMaintainOnNonCellPosition: p.cellSelectionMaintainOnNonCellPosition ?? false,
       cellSelectionMode: p.cellSelectionMode ?? "none",
       anchorRef,
     };
   }, [
-    markerOn,
     p.cellSelectionExcludeMarker,
     p.cellSelectionMaintainOnNonCellPosition,
     p.cellSelectionMode,

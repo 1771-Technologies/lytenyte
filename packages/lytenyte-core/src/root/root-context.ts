@@ -29,6 +29,8 @@ export interface RootContextValue {
   readonly view: ColumnView;
   readonly api: Root.API;
 
+  // readonly cellSelections$: Piece<DataRect[]>;
+
   readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;
   readonly dimensions: Dimension;

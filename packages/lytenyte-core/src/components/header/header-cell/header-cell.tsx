@@ -2,6 +2,7 @@ import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import {
   COLUMN_MARKER_ID,
+  rangesOverlap,
   sizeFromCoord,
   type LayoutHeaderCell,
   type LayoutHeaderFloating,
@@ -46,8 +47,11 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
 
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
   const headerStyle = useHeaderCellStyle(cell, xPositions);
-  const isCellSelected = false;
+  // const isCellSelected = cellSelections$.useValue((x) =>
+  //   x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
+  // );
 
+  console.log("i ran");
   return (
     <div
       className={styles?.header?.className}
@@ -66,7 +70,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
       data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
       data-ln-colid={column.id}
       data-ln-gridid={id}
-      data-ln-cell-selected={isCellSelected}
+      data-ln-cell-selected={false}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}

@@ -27,7 +27,11 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   const rowMeta = useRowContextValue(row, ctx);
   const topOffset = container.useValue($topHeight);
 
-  const hasCellSelection = true;
+  // const isSelected = cellSelections$.useValue((x) =>
+  //   x.some((r) => row.rowIndex >= r.rowStart && row.rowIndex < r.rowEnd),
+  // );
+
+  console.log(" ira ");
 
   const styles = useRowStyle(
     yPositions,
@@ -35,7 +39,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     row.rowPin,
     topOffset,
     !!row.rowIsFocusRow,
-    hasSpans || hasCellSelection,
+    hasSpans || true,
     rowMeta.detailHeight,
     props.style ?? sx?.row?.style,
   );
@@ -57,7 +61,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-gridid={id}
         data-ln-rowindex={row.rowIndex}
         data-ln-rowpin={row.rowPin ?? "center"}
-        data-ln-cell-selected={hasCellSelection}
+        data-ln-cell-selected={false}
         data-ln-rowtype="normal-row"
         data-ln-last-top-pin={row.rowLastPinTop}
         data-ln-first-bottom-pin={row.rowFirstPinBottom}

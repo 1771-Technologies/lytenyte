@@ -149,6 +149,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   );
 
   const editValue = useEditContext(view, api, props, source);
+
   const [cellSelections, setCellSelections] = useControlled<DataRect[]>({
     controlled: p.cellSelections,
     default: [] as DataRect[],
@@ -186,7 +187,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     return next;
   }, [props.styles]);
 
-  // @TODO lee: remove grid id from this context
   const value = useMemo<RootContextValue>(() => {
     return {
       rtl: props.rtl ?? false,
@@ -301,7 +301,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
             endCutoff={cutoffValue.endCutoff}
             startCutoff={cutoffValue.startCutoff}
             cellSelections={cellSelections}
-            cellSelectionExcludeMarker={p.cellSelectionExcludeMarker}
+            cellSelectionExcludeMarker={p.cellSelectionExcludeMarker && (p.columnMarker?.on ?? false)}
             cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
             cellSelectionMode={p.cellSelectionMode}
             onCellSelectionChange={onCellSelectionChange}
