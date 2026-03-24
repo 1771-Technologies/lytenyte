@@ -7,52 +7,71 @@ import { scanString } from "./scan-string.js";
 import { scanIdentifier } from "./scan-identifier.js";
 import { scanOperator } from "./scan-operator.js";
 import type { Plugin } from "../../plugin.js";
+import { ExpressionError } from "../../errors/expression-error.js";
 
-export function tokenize(source: string, plugins?: Plugin[]): Token[] {
+export function tokenizeSafe(
+  source: string,
+  plugins?: Plugin[],
+): { tokens: Token[]; error: ExpressionError | null } {
   const tokens: Token[] = [];
-  let i = 0;
+  try {
+    let i = 0;
 
-  while (i < source.length) {
-    const ch = source[i];
+    while (i < source.length) {
+      const ch = source[i];
 
-    if (/\s/.test(ch)) {
-      i++;
-      continue;
-    }
+      if (/\s/.test(ch)) {
+        i++;
+        continue;
+      }
 
-    const start = i;
-    let result: { type: string; value: string; end: number } | null = null;
+      const start = i;
+      let result: { type: string; value: string; end: number } | null = null;
 
-    if (plugins) {
-      for (const plugin of plugins) {
-        if (plugin.scan) {
-          result = plugin.scan(source, i);
-          if (result) break;
+      if (plugins) {
+        for (const plugin of plugins) {
+          if (plugin.scan) {
+            result = plugin.scan(source, i);
+            if (result) break;
+          }
         }
       }
-    }
 
-    if (!result) {
-      if (isDigit(ch)) {
-        const r = scanNumber(source, i);
-        result = { type: "Number", value: r.value, end: r.end };
-      } else if (ch === '"' || ch === "'") {
-        const r = scanString(source, i);
-        result = { type: "String", value: r.value, end: r.end };
-      } else if (ch === "`") {
-        const r = scanTemplateLiteral(source, i);
-        result = { type: "TemplateLiteral", value: r.raw, end: r.end };
-      } else if (isAlpha(ch)) {
-        result = scanIdentifier(source, i);
-      } else {
-        result = scanOperator(source, i);
+      if (!result) {
+        if (isDigit(ch)) {
+          const r = scanNumber(source, i);
+          result = { type: "Number", value: r.value, end: r.end };
+        } else if (ch === '"' || ch === "'") {
+          const r = scanString(source, i);
+          result = { type: "String", value: r.value, end: r.end };
+        } else if (ch === "`") {
+          const r = scanTemplateLiteral(source, i);
+          result = { type: "TemplateLiteral", value: r.raw, end: r.end };
+        } else if (isAlpha(ch)) {
+          result = scanIdentifier(source, i);
+        } else {
+          result = scanOperator(source, i);
+        }
       }
+
+      i = result.end;
+      tokens.push({ type: result.type, value: result.value, start, end: i } as Token);
     }
 
-    i = result.end;
-    tokens.push({ type: result.type, value: result.value, start, end: i } as Token);
+    tokens.push({ type: "EOF", value: "", start: i, end: i });
+  } catch (e) {
+    if (e instanceof ExpressionError) {
+      return { tokens, error: e };
+    } else {
+      throw e;
+    }
   }
+  return { tokens, error: null };
+}
 
-  tokens.push({ type: "EOF", value: "", start: i, end: i });
-  return tokens;
+export function tokenize(source: string, plugins?: Plugin[]): Token[] {
+  const result = tokenizeSafe(source, plugins);
+
+  if (result.error) throw result.error;
+  return result.tokens;
 }

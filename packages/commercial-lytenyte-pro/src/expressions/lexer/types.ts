@@ -23,7 +23,7 @@ export type OperatorValue = BinaryOperator | UnaryOperator;
 
 export type PunctuationValue = "(" | ")" | "[" | "]" | "{" | "}" | "," | "." | ":" | "?";
 
-interface BaseToken {
+export interface BaseToken {
   start: number;
   end: number;
 }

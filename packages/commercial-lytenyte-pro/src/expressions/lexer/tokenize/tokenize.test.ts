@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { tokenize } from "./tokenize";
+import { tokenize } from "./tokenize.js";
 
 describe("tokenize", () => {
   test("Should tokenize numbers", () => {
@@ -66,11 +66,7 @@ describe("tokenize", () => {
 
   test("Should tokenize logical operators", () => {
     const tokens = tokenize("&& || !");
-    expect(tokens.filter((t) => t.type === "Operator").map((t) => t.value)).toEqual([
-      "&&",
-      "||",
-      "!",
-    ]);
+    expect(tokens.filter((t) => t.type === "Operator").map((t) => t.value)).toEqual(["&&", "||", "!"]);
   });
 
   test("Should tokenize pipe operator |>", () => {

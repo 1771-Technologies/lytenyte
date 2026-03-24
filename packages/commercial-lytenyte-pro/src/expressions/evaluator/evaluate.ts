@@ -2,10 +2,11 @@ import type { ASTNode } from "../parser/types.js";
 import type { Token } from "../lexer/types.js";
 import { parse } from "../parser/parse.js";
 import { compile } from "../compiler/compile.js";
-import { tokenize } from "../lexer/tokenize/tokenize.js";
+import { tokenize, tokenizeSafe } from "../lexer/tokenize/tokenize.js";
 import { evaluateBinary } from "./evaluate-binary.js";
 import { evaluateUnary } from "./evaluate-unary.js";
 import type { Plugin } from "../plugin.js";
+import type { ExpressionError } from "../errors/expression-error.js";
 
 const MAX_DEPTH = 1000;
 
@@ -29,6 +30,10 @@ export class Evaluator {
 
   tokens(input: string): Token[] {
     return tokenize(input, this.plugins);
+  }
+
+  tokensSafe(input: string): { tokens: Token[]; error: ExpressionError | null } {
+    return tokenizeSafe(input, this.plugins);
   }
 }
 

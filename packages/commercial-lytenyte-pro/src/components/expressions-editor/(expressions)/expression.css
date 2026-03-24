@@ -1,0 +1,108 @@
+/* ─── Theme tokens ────────────────────────────────────────────────────────── */
+[data-ln-expression-root] {
+  --ln-expr-completion-bg: light-dark(#ffffff, #1e1e2e);
+  --ln-expr-completion-border: light-dark(#d0d5dd, #45475a);
+  --ln-expr-completion-shadow: light-dark(
+    0 8px 24px rgb(0 0 0 / 0.1),
+    0 8px 24px rgb(0 0 0 / 0.4)
+  );
+  --ln-expr-completion-active: light-dark(#eff6ff, #313244);
+  --ln-expr-completion-label: light-dark(#0369a1, #89b4fa);
+  --ln-expr-completion-detail: light-dark(#9ca3af, #6c7086);
+  --ln-expr-completion-kind-fn: light-dark(#7c3aed, #cba6f7);
+  --ln-expr-completion-kind-var: light-dark(#15803d, #a6e3a1);
+  --ln-expr-completion-kind-kw: light-dark(#b45309, #fab387);
+  --ln-expr-completion-loading: light-dark(#9ca3af, #6c7086);
+  --ln-expr-radius: 6px;
+}
+
+/* ─── Editor field ────────────────────────────────────────────────────────── */
+.expr2-field {
+  position: relative;
+  display: inline-grid;
+  border: 1px solid light-dark(#d0d5dd, #45475a);
+  border-radius: var(--ln-expr-radius);
+  background: light-dark(#ffffff, #1e1e2e);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.expr2-field:focus-within {
+  border-color: light-dark(#3b82f6, #89b4fa);
+  box-shadow: 0 0 0 3px light-dark(rgb(59 130 246 / 0.15), rgb(137 180 250 / 0.2));
+}
+
+/* ─── Completions dropdown ────────────────────────────────────────────────── */
+[data-ln-expression-completions] {
+  position: absolute;
+  z-index: 100;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  background: var(--ln-expr-completion-bg);
+  border: 1px solid var(--ln-expr-completion-border);
+  border-radius: var(--ln-expr-radius);
+  box-shadow: var(--ln-expr-completion-shadow);
+  min-width: 220px;
+  max-width: 400px;
+  max-height: 220px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+[data-ln-expression-completions] li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco,
+    Consolas, monospace;
+  font-size: 13px;
+  user-select: none;
+  color: light-dark(#374151, #cdd6f4);
+}
+
+[data-ln-expression-completions] li:hover,
+[data-ln-expression-completions] li[data-active] {
+  background: var(--ln-expr-completion-active);
+}
+
+[data-ln-completion-label] {
+  color: var(--ln-expr-completion-label);
+  font-weight: 500;
+}
+
+[data-ln-completion-kind] {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ln-expr-completion-detail);
+  flex-shrink: 0;
+}
+
+[data-ln-completion-kind="function"] { color: var(--ln-expr-completion-kind-fn); }
+[data-ln-completion-kind="variable"] { color: var(--ln-expr-completion-kind-var); }
+[data-ln-completion-kind="keyword"]  { color: var(--ln-expr-completion-kind-kw); }
+
+[data-ln-completion-detail] {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--ln-expr-completion-detail);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+[data-ln-completion-loading] {
+  padding: 5px 8px;
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco,
+    Consolas, monospace;
+  font-size: 12px;
+  color: var(--ln-expr-completion-loading);
+  font-style: italic;
+  cursor: default;
+  user-select: none;
+}
