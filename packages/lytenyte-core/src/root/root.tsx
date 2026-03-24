@@ -191,6 +191,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   const value = useMemo<RootContextValue>(() => {
     return {
+      animate: props.animate ?? false,
       rtl: props.rtl ?? false,
       api: api,
       xPositions,
@@ -256,6 +257,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     dimensions,
     dropAccept,
     focusPiece,
+    props.animate,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,
