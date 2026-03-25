@@ -37,20 +37,26 @@ export default function RowAnimationsPlay() {
   const ds = useClientDataSource({ data });
 
   const handleShuffle = () => setData((d) => shuffle([...d]));
-
-  const handleSortByScore = () => setData((d) => [...d].sort((a, b) => b.age - a.age));
-
-  const handleSortByName = () => setData((d) => [...d].sort((a, b) => a.marital.localeCompare(b.marital)));
-
+  const handleSortByAge = () => setData((d) => [...d].sort((a, b) => b.age - a.age));
+  const handleSortByMarital = () => setData((d) => [...d].sort((a, b) => a.marital.localeCompare(b.marital)));
   const handleReset = () => setData(bankDataSmall);
+
+  const handleAddRow = () =>
+    setData((d) => [{ ...bankDataSmall[Math.floor(Math.random() * bankDataSmall.length)] }, ...d]);
+
+  const handleRemoveFirst = () => setData((d) => (d.length > 1 ? d.slice(1) : d));
+  const handleRemoveLast = () => setData((d) => (d.length > 1 ? d.slice(0, -1) : d));
 
   return (
     <div style={{ fontFamily: "sans-serif", padding: 16 }}>
-      <div style={{ marginBottom: 12, display: "flex", gap: 8 }}>
+      <div style={{ marginBottom: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
         <button onClick={handleShuffle}>Shuffle</button>
-        <button onClick={handleSortByScore}>Sort by score ↓</button>
-        <button onClick={handleSortByName}>Sort by name A→Z</button>
+        <button onClick={handleSortByAge}>Sort by age ↓</button>
+        <button onClick={handleSortByMarital}>Sort by marital A→Z</button>
         <button onClick={handleReset}>Reset</button>
+        <button onClick={handleAddRow}>Add row</button>
+        <button onClick={handleRemoveFirst}>Remove first</button>
+        <button onClick={handleRemoveLast}>Remove last</button>
       </div>
 
       <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
