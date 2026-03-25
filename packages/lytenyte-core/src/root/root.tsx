@@ -196,6 +196,8 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       api: api,
       xPositions,
       yPositions: yPositions.positions,
+      idToPositions: yPositions.idToPositions,
+
       cellSelections$,
       viewport: vp,
       setViewport: setVp,
@@ -293,6 +295,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     vp,
     xPositions,
     yPositions.detailCache,
+    yPositions.idToPositions,
     yPositions.positions,
     yPositions.setDetailCache,
   ]);

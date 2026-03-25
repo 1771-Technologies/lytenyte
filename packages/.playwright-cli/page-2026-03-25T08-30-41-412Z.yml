@@ -1,0 +1,10 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - button "Shuffle" [ref=e5]
+    - button "Sort by age ↓" [ref=e6]
+    - button "Sort by marital A→Z" [ref=e7]
+    - button "Reset" [ref=e8]
+    - button "Add row" [ref=e9]
+    - button "Remove first" [ref=e10]
+    - button "Remove last" [ref=e11]
+  - grid [ref=e13]

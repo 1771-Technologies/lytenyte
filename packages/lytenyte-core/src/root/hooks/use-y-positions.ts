@@ -29,20 +29,27 @@ export function useYPositions(
     const rowHeight = props.rowHeight ?? 40;
     const rowHeightGuess = props.rowAutoHeightGuess ?? 40;
 
-    const detailHeightCalc = (i: number) => {
-      const id = rowIndexToRowId(i);
+    const detailHeightCalc = (id: string | null) => {
       if (!id || !detailExpansions.has(id)) return 0;
 
       if (detailHeight === "auto") return detailCache[id] ?? detailHeightGuess;
       return detailHeight;
     };
 
-    const positions =
+    const [positions, idToPositions] =
       height <= 0 && typeof rowHeight === "string"
-        ? EMPTY_POSITION_ARRAY
-        : rowPositions(rowCount, rowHeight, rowHeightGuess, rowCache, detailHeightCalc, height);
+        ? [EMPTY_POSITION_ARRAY, new Map()]
+        : rowPositions(
+            rowCount,
+            rowHeight,
+            rowHeightGuess,
+            rowCache,
+            detailHeightCalc,
+            height,
+            rowIndexToRowId,
+          );
 
-    return { positions, setRowCache, setDetailCache, detailCache };
+    return { positions, setRowCache, setDetailCache, detailCache, idToPositions };
   }, [
     detailCache,
     detailExpansions,

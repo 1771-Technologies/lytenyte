@@ -1,7 +1,9 @@
-import "./test.css";
+import "../test.css";
 import { useState } from "react";
-import { Grid, useClientDataSource } from "../index.js";
+import { Grid, useClientDataSource } from "../../index.js";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+
+import "./test.js";
 
 function shuffle<T>(arr: T[]): T[] {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -31,18 +33,23 @@ const columns: Grid.Column[] = [
   { id: "y" },
 ];
 
-export default function RowAnimationsPlay() {
-  const [data, setData] = useState(bankDataSmall);
+const dataWithId = bankDataSmall.map((x) => ({ ...x, id: crypto.randomUUID() }));
 
-  const ds = useClientDataSource({ data });
+export default function RowAnimationsPlay() {
+  const [data, setData] = useState(dataWithId);
+
+  const ds = useClientDataSource({ data, leafIdFn: (d) => d.id });
 
   const handleShuffle = () => setData((d) => shuffle([...d]));
   const handleSortByAge = () => setData((d) => [...d].sort((a, b) => b.age - a.age));
   const handleSortByMarital = () => setData((d) => [...d].sort((a, b) => a.marital.localeCompare(b.marital)));
-  const handleReset = () => setData(bankDataSmall);
+  const handleReset = () => setData(dataWithId);
 
   const handleAddRow = () =>
-    setData((d) => [{ ...bankDataSmall[Math.floor(Math.random() * bankDataSmall.length)] }, ...d]);
+    setData((d) => [
+      { ...{ ...dataWithId[Math.floor(Math.random() * bankDataSmall.length)], id: crypto.randomUUID() } },
+      ...d,
+    ]);
 
   const handleRemoveFirst = () => setData((d) => (d.length > 1 ? d.slice(1) : d));
   const handleRemoveLast = () => setData((d) => (d.length > 1 ? d.slice(0, -1) : d));

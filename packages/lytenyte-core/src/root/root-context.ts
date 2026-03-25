@@ -41,6 +41,7 @@ export interface RootContextValue {
 
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
+  readonly idToPositions: Map<string, number>;
 
   readonly setDetailCache: Dispatch<SetStateAction<Record<string, number>>>;
   readonly rowDetailHeightCache: Record<string, number>;

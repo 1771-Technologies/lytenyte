@@ -57,6 +57,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         aria-rowindex={row.rowIndex + 1}
         // Data Attributes
         data-ln-gridid={id}
+        data-ln-rowid={row.id}
         data-ln-rowindex={row.rowIndex}
         data-ln-rowpin={row.rowPin ?? "center"}
         data-ln-cell-selected={cellSelected}

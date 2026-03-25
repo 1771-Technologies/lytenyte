@@ -1,5 +1,4 @@
 import type { RowHeight } from "../../types.js";
-import { makePositionArray } from "../make-position-array/make-position-array.js";
 
 /**
  * Calculates vertical (y) coordinates for rows in a virtualized grid view.
@@ -12,13 +11,24 @@ export function rowPositions(
   rowHeight: RowHeight,
   autoHeightGuess: number,
   autoHeightCache: Record<number, number>,
-  getDetailHeight: (i: number) => number,
+  getDetailHeight: (id: string | null) => number,
   containerHeight: number,
-) {
+  rowIndexToRowId: (i: number) => string | null,
+): readonly [Uint32Array, Map<string, number>] {
   const n = Math.max(0, rowCount);
 
-  const makeFixed = (getH: (i: number) => number) =>
-    makePositionArray((i) => Math.max(getH(i) + getDetailHeight(i), 0), n);
+  const makeFixed = (getH: (i: number) => number) => {
+    const idToPosition = new Map<string, number>();
+    const positions = new Uint32Array(n + 1);
+    for (let i = 0; i < n; i++) {
+      const id = rowIndexToRowId(i);
+      positions[i + 1] = positions[i] + Math.max(getH(i) + getDetailHeight(id), 0);
+
+      if (id) idToPosition.set(id, positions[i]);
+    }
+
+    return [positions as Uint32Array, idToPosition] as const;
+  };
 
   if (typeof rowHeight === "number") return makeFixed(() => rowHeight);
   if (rowHeight === "auto") return makeFixed((i) => autoHeightCache[i] ?? autoHeightGuess);
