@@ -28,7 +28,6 @@ import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useBounds } from "./hooks/use-bounds.js";
 import { useApi } from "./hooks/use-api/use-api.js";
 import {
-  BoundsContextProvider,
   ColumnLayoutContextProvider,
   EditProvider,
   RootContextProvider,
@@ -58,6 +57,8 @@ import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { usePiece } from "../internal.js";
 import { PositionProvider } from "./contexts/position-context.js";
+import { BoundsContextProvider, ColumnBoundsProvider } from "./contexts/bounds-context.js";
+import { AnimationProvider } from "./contexts/animation/animation.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -170,7 +171,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     controlled,
     editValue,
     selectPivot,
-    bounds.get(),
+    bounds,
     layoutStateRef,
     yPositions.detailCache,
     vp,
@@ -323,11 +324,25 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
               <RowLayoutContextProvider value={rowLayout}>
                 <ColumnLayoutContextProvider value={headerLayout}>
                   <BoundsContextProvider value={bounds}>
-                    <EditProvider value={editValue}>
-                      <PositionProvider position={position} setPosition={setPosition}>
-                        {children ?? <Fallback />}
-                      </PositionProvider>
-                    </EditProvider>
+                    <ColumnBoundsProvider
+                      value={useMemo(
+                        () => ({
+                          colCenterEnd: bounds.colCenterEnd,
+                          colCenterStart: bounds.colCenterStart,
+                          colEndStart: bounds.colEndStart,
+                          colStartEnd: bounds.colStartEnd,
+                        }),
+                        [bounds.colCenterEnd, bounds.colCenterStart, bounds.colEndStart, bounds.colStartEnd],
+                      )}
+                    >
+                      <EditProvider value={editValue}>
+                        <PositionProvider position={position} setPosition={setPosition}>
+                          <AnimationProvider rowLayout={rowLayout} idToPosition={yPositions.idToPositions}>
+                            {children ?? <Fallback />}
+                          </AnimationProvider>
+                        </PositionProvider>
+                      </EditProvider>
+                    </ColumnBoundsProvider>
                   </BoundsContextProvider>
                 </ColumnLayoutContextProvider>
               </RowLayoutContextProvider>

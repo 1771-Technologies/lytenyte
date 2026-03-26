@@ -5,10 +5,10 @@ import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
 import { useVirtualizedHeader } from "./use-virtualized-header.js";
 import { useHeaderCellReactNodes } from "./use-header-cell-react-nodes.js";
 import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
-import { useBounds, useColumnLayout, useRoot } from "../../root/root-context.js";
-import { $colEndBound, $colStartBound } from "../../selectors.js";
+import { useColumnLayout, useRoot } from "../../root/root-context.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
+import { useColumnBounds } from "../../root/contexts/bounds-context.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridId();
@@ -16,9 +16,7 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
     useRoot();
   const columnLayout = useColumnLayout();
 
-  const bounds = useBounds();
-  const colStartBound = bounds.useValue($colStartBound);
-  const colEndBound = bounds.useValue($colEndBound);
+  const { colCenterStart: colStartBound, colCenterEnd: colEndBound } = useColumnBounds();
 
   const gridRowTemplate = useHeaderRowTemplate(
     columnLayout.length,

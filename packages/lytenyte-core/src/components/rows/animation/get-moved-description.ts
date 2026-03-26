@@ -7,8 +7,8 @@ export function getMovedDescriptions(
   prevIdPositions: Map<string, number>,
 ) {
   const movedElements = moved.map((x) => {
-    const from = prevIdPositions.get(x.id)!;
-    const to = idPositions.get(x.id)!;
+    const to = prevIdPositions.get(x.id)!;
+    const from = idPositions.get(x.id)!;
     const delta = to - from;
 
     const element = document.querySelector(
@@ -16,6 +16,7 @@ export function getMovedDescriptions(
     ) as HTMLElement | null;
 
     return {
+      id: x.id,
       delta,
       element,
     };

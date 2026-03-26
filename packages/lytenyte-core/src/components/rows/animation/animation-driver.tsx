@@ -4,6 +4,7 @@ import { useGridId } from "../../../root/contexts/grid-id.js";
 import { getChangedRows } from "./get-changed-rows.js";
 import { getMovedDescriptions } from "./get-moved-description.js";
 import { getCurrentYOffsetAndCancelInflight } from "./get-current-y-offset.js";
+import { useChangedRows } from "../../../root/contexts/animation/animation.js";
 
 export interface AnimationSpec {
   readonly duration?: number;
@@ -29,6 +30,8 @@ const AnimationDriverImpl = memo(function AnimationDriver() {
   const layout = useRowLayout();
   const config = typeof animate === "boolean" ? DEFAULTS : animate;
 
+  const changed = useChangedRows();
+
   const prevLayoutRef = useRef(layout);
   const prevPositionsRef = useRef(idToPositions);
 
@@ -37,20 +40,17 @@ const AnimationDriverImpl = memo(function AnimationDriver() {
     // There has been no movement, and no row changes
     if (prevPositionsRef.current === idToPositions) return;
 
-    const prevLayout = prevLayoutRef.current;
     const prevIds = prevPositionsRef.current;
 
     prevPositionsRef.current = idToPositions;
     prevLayoutRef.current = layout;
 
     // Determine the moved IDs
-    const { moved } = getChangedRows(layout, prevLayout, idToPositions, prevIds);
-    const movedElements = getMovedDescriptions(gridId, moved, idToPositions, prevIds);
+    const movedElements = getMovedDescriptions(gridId, changed.moved, idToPositions, prevIds);
 
     const moveSpec = config.move as AnimationSpec;
-    const duration = moveSpec.duration ?? 300;
+    const duration = 2000;
     const easing = moveSpec.easing ?? "ease-in-out";
-    const maxDelta = dimensions.innerHeight * 1.5;
 
     for (const x of movedElements) {
       const el = x.element;
@@ -63,30 +63,38 @@ const AnimationDriverImpl = memo(function AnimationDriver() {
       const currentAnimY = getCurrentYOffsetAndCancelInflight(el);
 
       // Cap the delta so off-screen rows don't fly in from very far away.
-      const clampedDelta = Math.sign(x.delta) * Math.min(Math.abs(x.delta), maxDelta);
 
       // FLIP invert: for a fresh animation currentAnimY=0 so startY=-delta (classic FLIP).
       // For an interrupted animation startY continues from the mid-flight visual position.
-      const startY = currentAnimY - clampedDelta;
+      const startY = -x.delta;
 
+      if (x.id === "0") console.log(idToPositions.get(x.id)! - prevIds.get(x.id)!, x.delta);
       // Start the animation directly in useLayoutEffect (before paint) so the browser
       // applies the t=0 keyframe in this same frame. Using RAF here would clear the
       // inline transform one frame too late, causing the new position to flash briefly.
+      el.style.willChange = "transform";
       const anim = el.animate([{ transform: `translateY(${startY}px)` }, { transform: "translateY(0)" }], {
         duration,
         easing,
         fill: "none",
       });
       anim.addEventListener("finish", () => {
-        // el.style.willChange = "";
+        el.style.willChange = "";
       });
     }
 
-    // const prevCenterIds = new Set(layout.center.)
-
     const end = performance.now();
     console.log("Animation compute time: ", end - start);
-  }, [config.move, dimensions.innerHeight, gridId, idToPositions, layout]);
+  }, [
+    changed.added,
+    changed.moved,
+    config.enter,
+    config.move,
+    dimensions.innerHeight,
+    gridId,
+    idToPositions,
+    layout,
+  ]);
 
   return null;
 });

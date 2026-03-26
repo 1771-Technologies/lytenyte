@@ -6,7 +6,6 @@ import type {
   RowNode,
   RowSource,
   RowView,
-  SpanLayout,
 } from "@1771technologies/lytenyte-shared";
 import {
   createContext,
@@ -101,10 +100,6 @@ export const useRowLayout = () => useContext(rowContextLayout);
 const colContextLayout = createContext<LayoutHeader[][]>({} as any);
 export const ColumnLayoutContextProvider = colContextLayout.Provider;
 export const useColumnLayout = () => useContext(colContextLayout);
-
-const boundsContext = createContext<Piece<SpanLayout>>({} as any);
-export const BoundsContextProvider = boundsContext.Provider;
-export const useBounds = () => useContext(boundsContext);
 
 export interface EditContext {
   readonly activeEdit: null | { readonly rowId: string; readonly column: string };

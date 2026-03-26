@@ -10,7 +10,6 @@ import {
   type RowView,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import type { Piece } from "../../../hooks/use-piece.js";
 import { useCallback, useMemo, type RefObject } from "react";
 import { getSpanFn } from "./get-span-fn.js";
 import { getFullWidthFn } from "./get-full-width-fn.js";
@@ -22,13 +21,11 @@ export function useRowLayout(
   view: ColumnView,
   vp: HTMLElement | null,
   api: Root.API,
-  bounds$: Piece<SpanLayout>,
+  bounds: SpanLayout,
   layoutStateRef: RefObject<LayoutState>,
   rowDetailExpansions: Set<string>,
   position: PositionUnion | null,
 ) {
-  const bounds = bounds$.useValue();
-
   const topCount = rs.useTopCount();
   const botCount = rs.useBottomCount();
   const rowCount = rs.useRowCount();

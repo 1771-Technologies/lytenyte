@@ -1,7 +1,6 @@
 import type { RowMeta } from "../../rows/row/context.js";
 import { memo } from "react";
-import { useBounds } from "../../../root/root-context.js";
-import { $colStartBound } from "../../../selectors.js";
+import { useColumnBounds } from "../../../root/contexts/bounds-context.js";
 
 interface CellSpacerCenterProps {
   readonly xPositions: Uint32Array;
@@ -10,10 +9,7 @@ interface CellSpacerCenterProps {
 }
 
 function CellSpacerCenterBase({ rowMeta, xPositions, visibleStartCount }: CellSpacerCenterProps) {
-  const bounds = useBounds();
-  const colStartEnd = bounds.useValue((x) => x.colStartEnd);
-  const start = bounds.useValue($colStartBound);
-
+  const { colStartEnd, colCenterStart: start } = useColumnBounds();
   if (visibleStartCount > 0) return null;
 
   const colOffset = rowMeta.layout.cells.findIndex(

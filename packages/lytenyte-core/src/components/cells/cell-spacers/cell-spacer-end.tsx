@@ -1,6 +1,5 @@
 import { memo } from "react";
-import { $colEndBound, $colEndStart } from "../../../selectors.js";
-import { useBounds } from "../../../root/root-context.js";
+import { useColumnBounds } from "../../../root/contexts/bounds-context.js";
 
 interface CellSpacerEndProps {
   readonly viewportWidth: number;
@@ -8,9 +7,7 @@ interface CellSpacerEndProps {
   readonly xPositions: Uint32Array;
 }
 function CellSpacerEndBase({ viewportWidth, visibleEndCount, xPositions }: CellSpacerEndProps) {
-  const bounds = useBounds();
-  const colCenterEnd = bounds.useValue($colEndBound);
-  const colEndStart = bounds.useValue($colEndStart);
+  const { colCenterEnd, colEndStart } = useColumnBounds();
 
   const startOffset = xPositions[colCenterEnd];
   let offset = xPositions[colEndStart] - startOffset;

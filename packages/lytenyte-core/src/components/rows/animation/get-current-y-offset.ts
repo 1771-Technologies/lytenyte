@@ -4,7 +4,6 @@ export function getCurrentYOffsetAndCancelInflight(el: HTMLElement) {
   if (inflight.length > 0) {
     const raw = getComputedStyle(el).transform;
     if (raw !== "none") currentAnimY = new DOMMatrix(raw).m42;
-    inflight.forEach((a) => a.cancel());
   }
 
   return currentAnimY;
