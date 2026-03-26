@@ -7,6 +7,7 @@ export { rowPositions, columnPositions } from "./coordinates/index.js";
 export { rowSelectLinkWithParents } from "./row-selection/row-select-link-with-parents.js";
 export { rowSelectLinkWithoutParents } from "./row-selection/row-select-link-without-parent.js";
 export type {
+  PositionState,
   VirtualTarget,
   Writable,
   PathField,

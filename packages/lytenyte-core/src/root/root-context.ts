@@ -3,7 +3,6 @@ import type {
   ColumnView,
   DataRect,
   LayoutHeader,
-  PositionUnion,
   RowNode,
   RowSource,
   RowView,
@@ -17,7 +16,7 @@ import {
   type RefObject,
   type SetStateAction,
 } from "react";
-import type { Piece, PieceWritable } from "../hooks/use-piece";
+import type { Piece } from "../hooks/use-piece";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
@@ -60,8 +59,6 @@ export interface RootContextValue {
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
 
   readonly styles: Props["styles"];
-
-  readonly focusActive: PieceWritable<PositionUnion | null>;
 
   readonly events: GridEvents<GridSpec>;
 
@@ -129,7 +126,3 @@ export interface EditContext {
 const editContext = createContext({} as EditContext);
 export const EditProvider = editContext.Provider;
 export const useEdit = () => useContext(editContext);
-
-const focusContext = createContext<Piece<PositionUnion | null>>({} as any);
-export const FocusProvider = focusContext.Provider;
-export const useFocus = () => useContext(focusContext);

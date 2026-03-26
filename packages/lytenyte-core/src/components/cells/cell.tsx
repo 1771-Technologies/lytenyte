@@ -4,18 +4,19 @@ import { CellDefault } from "./cell-default.js";
 import { useCellStyle } from "./use-cell-style.js";
 import { CellSpacerEnd } from "./cell-spacers/cell-spacer-end.js";
 import { CellSpacerStart } from "./cell-spacers/cell-spacer-start.js";
-import { useBounds, useFocus, useRoot } from "../../root/root-context.js";
+import { useBounds, useRoot } from "../../root/root-context.js";
 import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
+import { usePositionNR } from "../../root/contexts/position-context.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
   const bounds = useBounds();
   const end = bounds.useValue($colEndBound);
   const start = bounds.useValue($colStartBound);
-  const focus = useFocus().get();
+  const focus = usePositionNR().get();
 
   const isFocused =
     focus?.kind === "cell" &&

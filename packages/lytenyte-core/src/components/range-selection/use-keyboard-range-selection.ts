@@ -1,16 +1,21 @@
 import type { KeyboardEventHandler } from "react";
 import { useEvent } from "../../internal.js";
 import { useRoot } from "../../root/root-context.js";
-import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
+import {
+  useRangeSelection,
+  useRangeSelectionSettings,
+} from "../../root/contexts/range-selection/range-selection-context.js";
 import { expandDirectionFromKey, expandRectsInDirection } from "@1771technologies/lytenyte-shared";
+import { usePositionNR } from "../../root/contexts/position-context.js";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
-  const { api, focusActive, view, source, rtl } = useRoot();
-  const { cellSelections } = useCellSelection();
-  const settings = useCellSelectionSettings();
+  const { api, view, source, rtl } = useRoot();
+  const { cellSelections } = useRangeSelection();
+  const settings = useRangeSelectionSettings();
 
   const rowCount = source.useRowCount();
 
+  const focusActive = usePositionNR();
   return useEvent((e) => {
     if (!e.shiftKey || settings.cellSelectionMode === "none") return;
 

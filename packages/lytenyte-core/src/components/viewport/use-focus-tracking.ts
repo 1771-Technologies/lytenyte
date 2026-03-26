@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import { trackFocus, type PositionUnion } from "@1771technologies/lytenyte-shared";
-import type { PieceWritable } from "../../hooks/use-piece";
+import { trackFocus, type PositionState } from "@1771technologies/lytenyte-shared";
 
-export function useFocusTracking(
-  vp: HTMLElement | null,
-  focusActive: PieceWritable<PositionUnion | null>,
-  gridId: string,
-) {
+export function useFocusTracking(vp: HTMLElement | null, focusActive: PositionState, gridId: string) {
   const [focused, setFocused] = useState(false);
   const [vpFocused, setVpFocused] = useState(false);
 

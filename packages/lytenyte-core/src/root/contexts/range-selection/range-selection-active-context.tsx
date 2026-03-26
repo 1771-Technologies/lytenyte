@@ -1,6 +1,7 @@
 import { splitRect, type DataRect, type SectionedRect } from "@1771technologies/lytenyte-shared";
 import {
   createContext,
+  memo,
   useContext,
   useMemo,
   useState,
@@ -8,9 +9,8 @@ import {
   type PropsWithChildren,
   type SetStateAction,
 } from "react";
-import { useGridSections } from "./grid-sections-context.js";
 
-interface ActiveRangeContextType {
+interface RangeSelectionActiveContextType {
   readonly activeRange: DataRect | null;
   readonly setActiveRange: Dispatch<SetStateAction<DataRect | null>>;
   readonly activeSplit: SectionedRect[];
@@ -19,41 +19,42 @@ interface ActiveRangeContextType {
   readonly selecting: boolean;
   readonly setSelecting: Dispatch<SetStateAction<boolean>>;
 }
+const context = createContext<RangeSelectionActiveContextType>({} as any);
 
-const context = createContext<ActiveRangeContextType>({} as any);
-
-export function ActiveRangeProvider(props: PropsWithChildren) {
-  const cutoff = useGridSections();
+const RangeSelectionActiveProviderImpl = (
+  props: PropsWithChildren<{
+    topCutoff: number;
+    bottomCutoff: number;
+    startCutoff: number;
+    endCutoff: number;
+  }>,
+) => {
   const [activeRange, setActiveRange] = useState<DataRect | null>(null);
   const [deselect, setDeselect] = useState(false);
-
   const [selecting, setSelecting] = useState(false);
 
   const activeSplit = useMemo(() => {
     if (!activeRange) return [];
 
-    return splitRect(
-      activeRange,
-      cutoff.startCutoff,
-      cutoff.endCutoff,
-      cutoff.topCutoff,
-      cutoff.bottomCutoff,
-    );
-  }, [activeRange, cutoff.bottomCutoff, cutoff.endCutoff, cutoff.startCutoff, cutoff.topCutoff]);
+    return splitRect(activeRange, props.startCutoff, props.endCutoff, props.topCutoff, props.bottomCutoff);
+  }, [activeRange, props.bottomCutoff, props.endCutoff, props.startCutoff, props.topCutoff]);
 
-  const value = useMemo<ActiveRangeContextType>(() => {
+  const value = useMemo<RangeSelectionActiveContextType>(() => {
     return {
       activeRange,
+      setActiveRange,
       activeSplit,
+
       deselect,
       setDeselect,
-      setActiveRange,
-      selecting: selecting,
+
+      selecting,
       setSelecting,
     };
   }, [activeRange, activeSplit, deselect, selecting]);
 
   return <context.Provider value={value}>{props.children}</context.Provider>;
-}
+};
 
-export const useActiveRangeSelection = () => useContext(context);
+export const RangeSelectionActiveProvider = memo(RangeSelectionActiveProviderImpl);
+export const useRangeActiveSelection = () => useContext(context);

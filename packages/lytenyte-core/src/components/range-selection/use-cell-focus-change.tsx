@@ -1,14 +1,14 @@
 import { equal, rectFromGridCellPosition, type PositionUnion } from "@1771technologies/lytenyte-shared";
 import { useEffect, useRef } from "react";
-import { useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
-import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
-import type { PieceWritable } from "../../hooks/use-piece.js";
+import { useRangeSelectionSettings } from "../../root/contexts/range-selection/range-selection-context.js";
+import { useRangeActiveSelection } from "../../root/contexts/range-selection/range-selection-active-context.js";
+import { usePosition } from "../../root/contexts/position-context.js";
 
-export function useCellFocusChange(focusActive: PieceWritable<PositionUnion | null>) {
-  const focus = focusActive.useValue();
+export function useCellFocusChange() {
+  const focus = usePosition().get();
   const prevRef = useRef<PositionUnion | null>(null);
-  const settings = useCellSelectionSettings();
-  const { selecting } = useActiveRangeSelection();
+  const settings = useRangeSelectionSettings();
+  const { selecting } = useRangeActiveSelection();
 
   useEffect(() => {
     if (!focus || settings.cellSelectionMode === "none") return;

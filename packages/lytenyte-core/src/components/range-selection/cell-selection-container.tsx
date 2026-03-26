@@ -1,13 +1,13 @@
 import { memo, useMemo } from "react";
-import { useCellSelection } from "../../root/contexts/cell-selection-context.js";
+import { useRangeSelection } from "../../root/contexts/range-selection/range-selection-context.js";
 import { bottomSection, centerSection, topSection } from "@1771technologies/lytenyte-shared";
 import { CellSelectionRect } from "./cell-selection-rect.js";
-import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
+import { useRangeActiveSelection } from "../../root/contexts/range-selection/range-selection-active-context.js";
 
 export const CellSelectionTop = memo(function CellSelectionTop() {
-  const { cellSelectionsSplit: allRects } = useCellSelection();
+  const { cellSelectionsSplit: allRects } = useRangeSelection();
 
-  const { activeSplit, deselect } = useActiveRangeSelection();
+  const { activeSplit, deselect } = useRangeActiveSelection();
 
   const topRects = useMemo(() => {
     return allRects.filter((rect) => topSection[rect.section]);
@@ -38,8 +38,8 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
 });
 
 export const CellSelectionCenter = memo(function CellSelectionCenter() {
-  const { cellSelectionsSplit: allRects } = useCellSelection();
-  const { activeSplit, deselect } = useActiveRangeSelection();
+  const { cellSelectionsSplit: allRects } = useRangeSelection();
+  const { activeSplit, deselect } = useRangeActiveSelection();
 
   const centerRects = useMemo(() => {
     return allRects.filter((rect) => centerSection[rect.section]);
@@ -71,8 +71,8 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
 });
 
 export const CellSelectionBottom = memo(function CellSelectionBottom() {
-  const { cellSelectionsSplit: allRects } = useCellSelection();
-  const { activeSplit, deselect } = useActiveRangeSelection();
+  const { cellSelectionsSplit: allRects } = useRangeSelection();
+  const { activeSplit, deselect } = useRangeActiveSelection();
 
   const bottomRects = useMemo(() => {
     return allRects.filter((rect) => bottomSection[rect.section]);

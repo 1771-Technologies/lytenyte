@@ -21,6 +21,7 @@ import {
   type DataRect,
   type GridSections,
   type LayoutState,
+  type PositionUnion,
   type RowSource,
 } from "@1771technologies/lytenyte-shared";
 import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
@@ -30,14 +31,12 @@ import {
   BoundsContextProvider,
   ColumnLayoutContextProvider,
   EditProvider,
-  FocusProvider,
   RootContextProvider,
   RowLayoutContextProvider,
   type RootContextValue,
 } from "./root-context.js";
 import { useEditContext } from "./hooks/use-edit-context.js";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
-import { usePosition } from "./hooks/use-position.js";
 import { useDropAccept } from "./hooks/use-drop-accept.js";
 import { useGridId } from "./hooks/use-grid-id.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
@@ -51,13 +50,14 @@ import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
-import { CellSelectionContext } from "./contexts/cell-selection-context.js";
+import { RangeSelectionProvider } from "./contexts/range-selection/range-selection-context.js";
 import { GridIdProvider } from "./contexts/grid-id.js";
 import { GridSectionsProvider } from "./contexts/grid-sections-context.js";
-import { ActiveRangeProvider } from "./contexts/active-range-context.js";
+import { RangeSelectionActiveProvider } from "./contexts/range-selection/range-selection-active-context.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { usePiece } from "../internal.js";
+import { PositionProvider } from "./contexts/position-context.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -91,7 +91,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
 
-  const cutoffValue = useMemo<GridSections>(() => {
+  const sections = useMemo<GridSections>(() => {
     const centerCount = rowCount - topCount - bottomCount;
     const topCutoff = topCount;
     const botCutoff = centerCount + topCount;
@@ -133,9 +133,10 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     yPositions.positions,
   );
 
-  const { focusPiece, position } = usePosition();
   const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
   const headerLayout = useHeaderLayout(view, props);
+
+  const [position, setPosition] = useState<PositionUnion | null>(null);
 
   const rowLayout = useRowLayout(
     props,
@@ -202,7 +203,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       viewport: vp,
       setViewport: setVp,
       view,
-      focusActive: focusPiece,
       source,
 
       events: props.events ?? {},
@@ -258,7 +258,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     controlled.detailExpansions,
     dimensions,
     dropAccept,
-    focusPiece,
     props.animate,
     props.columnBase,
     props.columnDoubleClickToAutosize,
@@ -303,30 +302,37 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   return (
     <RootContextProvider value={value}>
       <GridIdProvider value={gridId}>
-        <GridSectionsProvider value={cutoffValue}>
-          <CellSelectionContext
-            topCutoff={cutoffValue.topCutoff}
-            bottomCutoff={cutoffValue.bottomCutoff}
-            endCutoff={cutoffValue.endCutoff}
-            startCutoff={cutoffValue.startCutoff}
+        <GridSectionsProvider value={sections}>
+          <RangeSelectionProvider
+            topCutoff={sections.topCutoff}
+            bottomCutoff={sections.bottomCutoff}
+            endCutoff={sections.endCutoff}
+            startCutoff={sections.startCutoff}
             cellSelections={cellSelections}
-            cellSelectionExcludeMarker={p.cellSelectionExcludeMarker && (p.columnMarker?.on ?? false)}
-            cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
-            cellSelectionMode={p.cellSelectionMode}
+            excludeMarker={(p.cellSelectionExcludeMarker ?? false) && (p.columnMarker?.on ?? false)}
+            maintainOnNonCell={p.cellSelectionMaintainOnNonCellPosition ?? false}
+            mode={p.cellSelectionMode ?? "none"}
             onCellSelectionChange={onCellSelectionChange}
           >
-            <ActiveRangeProvider>
+            <RangeSelectionActiveProvider
+              topCutoff={sections.topCutoff}
+              bottomCutoff={sections.bottomCutoff}
+              endCutoff={sections.endCutoff}
+              startCutoff={sections.startCutoff}
+            >
               <RowLayoutContextProvider value={rowLayout}>
                 <ColumnLayoutContextProvider value={headerLayout}>
                   <BoundsContextProvider value={bounds}>
                     <EditProvider value={editValue}>
-                      <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
+                      <PositionProvider position={position} setPosition={setPosition}>
+                        {children ?? <Fallback />}
+                      </PositionProvider>
                     </EditProvider>
                   </BoundsContextProvider>
                 </ColumnLayoutContextProvider>
               </RowLayoutContextProvider>
-            </ActiveRangeProvider>
-          </CellSelectionContext>
+            </RangeSelectionActiveProvider>
+          </RangeSelectionProvider>
         </GridSectionsProvider>
       </GridIdProvider>
     </RootContextProvider>

@@ -13,9 +13,8 @@ import {
   type PropsWithChildren,
   type RefObject,
 } from "react";
-import type { Props } from "../../types";
 
-interface CellSelectionSettingsType {
+interface RangeSelectionSettingsType {
   readonly cellSelectionMode: "range" | "multi-range" | "none";
   readonly cellSelectionMaintainOnNonCellPosition: boolean;
   readonly cellSelectionClearOnSelf: boolean;
@@ -24,29 +23,29 @@ interface CellSelectionSettingsType {
   readonly anchorRef: RefObject<PositionGridCell | null>;
 }
 
-interface CellSelectionContextType {
+interface RangeSelectionContextType {
   readonly cellSelections: DataRect[];
   readonly cellSelectionsSplit: SectionedRect[];
 }
 
-interface CellSelectionContextArgs {
+interface RangeSelectionProviderProps {
   readonly topCutoff: number;
   readonly bottomCutoff: number;
   readonly startCutoff: number;
   readonly endCutoff: number;
+
   readonly cellSelections: DataRect[];
   readonly onCellSelectionChange: (change: DataRect[]) => void;
+
+  readonly mode: "multi-range" | "range" | "none";
+  readonly excludeMarker: boolean;
+  readonly maintainOnNonCell: boolean;
 }
 
-const context = createContext<CellSelectionContextType>({} as any);
-const contextSettings = createContext<CellSelectionSettingsType>({} as any);
+const context = createContext<RangeSelectionContextType>({} as any);
+const contextSettings = createContext<RangeSelectionSettingsType>({} as any);
 
-function CellSelectionContextBase(
-  p: PropsWithChildren<
-    Pick<Props, "cellSelectionMode" | "cellSelectionExcludeMarker" | "cellSelectionMaintainOnNonCellPosition">
-  > &
-    CellSelectionContextArgs,
-) {
+function RangeSelectionContextBase(p: PropsWithChildren<RangeSelectionProviderProps>) {
   const cellSelectionsSplit = useMemo(() => {
     const splits = p.cellSelections.flatMap((x) =>
       splitRect(x, p.startCutoff, p.endCutoff, p.topCutoff, p.bottomCutoff),
@@ -57,23 +56,18 @@ function CellSelectionContextBase(
 
   const anchorRef = useRef<PositionGridCell | null>(null);
 
-  const settings = useMemo<CellSelectionSettingsType>(() => {
+  const settings = useMemo<RangeSelectionSettingsType>(() => {
     return {
       onCellSelectionChange: p.onCellSelectionChange,
       cellSelectionClearOnSelf: true,
-      ignoreFirstColumn: p.cellSelectionExcludeMarker ?? false,
-      cellSelectionMaintainOnNonCellPosition: p.cellSelectionMaintainOnNonCellPosition ?? false,
-      cellSelectionMode: p.cellSelectionMode ?? "none",
+      ignoreFirstColumn: p.excludeMarker,
+      cellSelectionMaintainOnNonCellPosition: p.maintainOnNonCell,
+      cellSelectionMode: p.mode,
       anchorRef,
     };
-  }, [
-    p.cellSelectionExcludeMarker,
-    p.cellSelectionMaintainOnNonCellPosition,
-    p.cellSelectionMode,
-    p.onCellSelectionChange,
-  ]);
+  }, [p.excludeMarker, p.maintainOnNonCell, p.mode, p.onCellSelectionChange]);
 
-  const value = useMemo<CellSelectionContextType>(() => {
+  const value = useMemo<RangeSelectionContextType>(() => {
     return {
       cellSelections: p.cellSelections,
       cellSelectionsSplit,
@@ -87,7 +81,7 @@ function CellSelectionContextBase(
   );
 }
 
-export const CellSelectionContext = memo(CellSelectionContextBase);
+export const RangeSelectionProvider = memo(RangeSelectionContextBase);
 
-export const useCellSelection = () => useContext(context);
-export const useCellSelectionSettings = () => useContext(contextSettings);
+export const useRangeSelection = () => useContext(context);
+export const useRangeSelectionSettings = () => useContext(contextSettings);
