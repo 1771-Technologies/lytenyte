@@ -1,6 +1,9 @@
 import { memo, useLayoutEffect, useRef } from "react";
-import { useRoot, useRowLayout } from "../../root/root-context.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
+import { useRoot, useRowLayout } from "../../../root/root-context.js";
+import { useGridId } from "../../../root/contexts/grid-id.js";
+import { getChangedRows } from "./get-changed-rows.js";
+import { getMovedDescriptions } from "./get-moved-description.js";
+import { getCurrentYOffsetAndCancelInflight } from "./get-current-y-offset.js";
 
 export interface AnimationSpec {
   readonly duration?: number;
@@ -21,7 +24,7 @@ const DEFAULTS = {
 } satisfies Required<AnimationConfig>;
 
 const AnimationDriverImpl = memo(function AnimationDriver() {
-  const { animate, source, yPositions, idToPositions, dimensions } = useRoot();
+  const { animate, idToPositions, dimensions } = useRoot();
   const gridId = useGridId();
   const layout = useRowLayout();
   const config = typeof animate === "boolean" ? DEFAULTS : animate;
@@ -41,57 +44,23 @@ const AnimationDriverImpl = memo(function AnimationDriver() {
     prevLayoutRef.current = layout;
 
     // Determine the moved IDs
-    const moved = [];
-    const newIds = [];
-
-    const deletedIds = [...prevLayout.top, ...prevLayout.bottom, ...prevLayout.center]
-      .map((x) => (!idToPositions.has(x.id) ? x.id : null))
-      .filter((x) => x) as string[];
-
-    for (const x of [...layout.top, ...layout.center, ...layout.bottom]) {
-      if (!idToPositions.has(x.id)) continue;
-      if (!prevIds.has(x.id)) {
-        newIds.push(x.id);
-        continue;
-      }
-      const posNow = idToPositions.get(x.id);
-      const posBefore = prevIds.get(x.id);
-
-      if (posNow !== posBefore) moved.push(x);
-    }
-
-    const movedElements = moved.map((x) => {
-      const from = prevIds.get(x.id)!;
-      const to = idToPositions.get(x.id)!;
-      const delta = to - from;
-
-      return {
-        delta,
-        element: document.querySelector(
-          `[data-ln-row="true"][data-ln-rowid="${x.id}"][data-ln-gridid="${gridId}"]`,
-        ) as HTMLElement | null,
-      };
-    });
+    const { moved } = getChangedRows(layout, prevLayout, idToPositions, prevIds);
+    const movedElements = getMovedDescriptions(gridId, moved, idToPositions, prevIds);
 
     const moveSpec = config.move as AnimationSpec;
     const duration = moveSpec.duration ?? 300;
-    const easing = moveSpec.easing ?? "ease-out";
+    const easing = moveSpec.easing ?? "ease-in-out";
     const maxDelta = dimensions.innerHeight * 1.5;
 
     for (const x of movedElements) {
       const el = x.element;
       if (!el) continue;
+
       if (el.dataset.lnRowpin !== "center") continue;
 
       // For interrupted animations: read the current mid-animation Y offset so we
       // continue smoothly from where the element visually is rather than snapping back.
-      let currentAnimY = 0;
-      const inflight = el.getAnimations();
-      if (inflight.length > 0) {
-        const raw = getComputedStyle(el).transform;
-        if (raw !== "none") currentAnimY = new DOMMatrix(raw).m42;
-        inflight.forEach((a) => a.cancel());
-      }
+      const currentAnimY = getCurrentYOffsetAndCancelInflight(el);
 
       // Cap the delta so off-screen rows don't fly in from very far away.
       const clampedDelta = Math.sign(x.delta) * Math.min(Math.abs(x.delta), maxDelta);
@@ -99,17 +68,17 @@ const AnimationDriverImpl = memo(function AnimationDriver() {
       // FLIP invert: for a fresh animation currentAnimY=0 so startY=-delta (classic FLIP).
       // For an interrupted animation startY continues from the mid-flight visual position.
       const startY = currentAnimY - clampedDelta;
-      el.style.willChange = "transform";
 
       // Start the animation directly in useLayoutEffect (before paint) so the browser
       // applies the t=0 keyframe in this same frame. Using RAF here would clear the
       // inline transform one frame too late, causing the new position to flash briefly.
-      const anim = el.animate(
-        [{ transform: `translateY(${startY}px)` }, { transform: "translateY(0)" }],
-        { duration, easing, fill: "none" },
-      );
+      const anim = el.animate([{ transform: `translateY(${startY}px)` }, { transform: "translateY(0)" }], {
+        duration,
+        easing,
+        fill: "none",
+      });
       anim.addEventListener("finish", () => {
-        el.style.willChange = "";
+        // el.style.willChange = "";
       });
     }
 

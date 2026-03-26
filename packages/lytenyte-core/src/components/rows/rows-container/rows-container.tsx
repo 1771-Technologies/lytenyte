@@ -11,7 +11,7 @@ import { useRangeSelection } from "../../range-selection/use-range-selection.js"
 import { useKeyboardRangeSelection } from "../../range-selection/use-keyboard-range-selection.js";
 import { useCellFocusChange } from "../../range-selection/use-cell-focus-change.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
-import { AnimationDriver } from "../animation-driver.js";
+import { AnimationDriver } from "../animation/animation-driver.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {

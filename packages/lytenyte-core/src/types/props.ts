@@ -12,7 +12,7 @@ import type { GridSpec, GridStyle } from "./grid.js";
 import type { API } from "./api.js";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows.js";
 import type { GridEvents } from "./events.js";
-import type { AnimationConfig } from "../components/rows/animation-driver.js";
+import type { AnimationConfig } from "../components/rows/animation/animation-driver.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
   readonly animate?: AnimationConfig | boolean;

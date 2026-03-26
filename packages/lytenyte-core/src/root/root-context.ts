@@ -23,7 +23,7 @@ import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 import type { GridEvents } from "../types/events";
 import type { Column, GridSpec, Props } from "../types";
-import type { AnimationConfig } from "../components/rows/animation-driver";
+import type { AnimationConfig } from "../components/rows/animation/animation-driver";
 
 export interface RootContextValue {
   readonly animate: AnimationConfig | boolean;
