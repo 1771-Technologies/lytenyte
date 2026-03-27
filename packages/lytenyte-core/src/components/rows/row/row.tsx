@@ -7,14 +7,13 @@ import { useRowsContainerContext } from "../rows-container/context.js";
 import { $topHeight } from "../../../selectors.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
-import { CellSpacerCenter } from "../../cells/cell-spacers/cell-spacer-center.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
   const id = useGridId();
-  const { rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api, cellSelections$ } = ctx;
+  const { rowAlternateAttr, yPositions, view, events, styles: sx, api, cellSelections$ } = ctx;
 
   const container = useRowsContainerContext();
 
@@ -67,7 +66,6 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-selected={rowMeta.row?.__selected}
         data-ln-row
       >
-        <CellSpacerCenter rowMeta={rowMeta} visibleStartCount={view.startCount} xPositions={xPositions} />
         {props.children}
         <RowDetailRow layout={row} />
       </div>

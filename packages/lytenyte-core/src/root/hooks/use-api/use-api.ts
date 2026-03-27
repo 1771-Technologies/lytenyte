@@ -3,7 +3,7 @@ import {
   getPositionFromFocusable,
   type ColumnView,
   type DataRect,
-  type LayoutState,
+  type RowLayout,
   type RowSource,
   type SpanLayout,
   type Writable,
@@ -57,7 +57,7 @@ export function useApi(
   edit: EditContext,
   selectPivot: RefObject<number | null>,
   bounds: SpanLayout,
-  layoutStateRef: RefObject<LayoutState>,
+  rowLayout: RowLayout,
   detailHeightCache: Record<string, number>,
   vp: HTMLElement | null,
   xPositions: Uint32Array,
@@ -116,17 +116,7 @@ export function useApi(
 
   api.cellSelections = useCellSelections(cellSelections);
 
-  api.cellRoot = useCellRoot(
-    props,
-    api,
-    view,
-    source,
-    rowCount,
-    rowBottomCount,
-    rowTopCount,
-    controlled,
-    layoutStateRef,
-  );
+  api.cellRoot = useCellRoot(rowLayout);
 
   api.scrollIntoView = useScrollIntoView(
     props,

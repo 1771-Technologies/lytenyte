@@ -16,13 +16,7 @@ import { useTotalHeaderHeight } from "./hooks/use-total-header-height.js";
 import { useXPositions } from "./hooks/use-x-positions.js";
 import { useYPositions } from "./hooks/use-y-positions.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
-import {
-  equal,
-  type DataRect,
-  type GridSections,
-  type LayoutState,
-  type RowSource,
-} from "@1771technologies/lytenyte-shared";
+import { equal, type DataRect, type GridSections, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useBounds } from "./hooks/use-bounds.js";
 import { useApi } from "./hooks/use-api/use-api.js";
@@ -133,20 +127,18 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     yPositions.positions,
   );
 
-  const { focusPiece, position } = usePosition();
-  const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
+  const { focusPiece } = usePosition();
   const headerLayout = useHeaderLayout(view, props);
 
-  const rowLayout = useRowLayout(
+  const { rowLayout, rowView } = useRowLayout(
     props,
+    cutoffValue,
     source,
     view,
     vp,
     api,
     bounds,
-    layoutStateRef,
     controlled.detailExpansions,
-    position,
   );
 
   const editValue = useEditContext(view, api, props, source);
@@ -170,7 +162,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     editValue,
     selectPivot,
     bounds.get(),
-    layoutStateRef,
+    rowLayout,
     yPositions.detailCache,
     vp,
     xPositions,
@@ -311,7 +303,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
             onCellSelectionChange={onCellSelectionChange}
           >
             <ActiveRangeProvider>
-              <RowLayoutContextProvider value={rowLayout}>
+              <RowLayoutContextProvider value={rowView}>
                 <ColumnLayoutContextProvider value={headerLayout}>
                   <BoundsContextProvider value={bounds}>
                     <EditProvider value={editValue}>

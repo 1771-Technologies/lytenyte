@@ -82,7 +82,7 @@ function CellSelectionContextBase(
 
   return (
     <contextSettings.Provider value={settings}>
-      <context.Provider value={value}>{p.children}</context.Provider>;
+      <context.Provider value={value}>{p.children}</context.Provider>
     </contextSettings.Provider>
   );
 }

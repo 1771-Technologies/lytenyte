@@ -1,9 +1,7 @@
 import { forwardRef, memo, useCallback, type JSX } from "react";
-import { sizeFromCoord, type LayoutCell } from "@1771technologies/lytenyte-shared";
+import { type LayoutCell } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default.js";
 import { useCellStyle } from "./use-cell-style.js";
-import { CellSpacerEnd } from "./cell-spacers/cell-spacer-end.js";
-import { CellSpacerStart } from "./cell-spacers/cell-spacer-start.js";
 import { useBounds, useFocus, useRoot } from "../../root/root-context.js";
 import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { useRowMeta } from "../rows/row/context.js";
@@ -37,18 +35,7 @@ export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, 
 const CellImpl = memo(
   forwardRef<HTMLDivElement, Cell.Props>(function Cell({ cell, ...props }, forwarded) {
     const id = useGridId();
-    const {
-      rtl,
-      base,
-      xPositions,
-      yPositions,
-      api,
-      view,
-      editMode,
-      events,
-      styles,
-      dimensions: { innerWidth },
-    } = useRoot();
+    const { base, xPositions, yPositions, api, view, editMode, events, styles } = useRoot();
 
     const rowMeta = useRowMeta();
     const row = rowMeta.row;
@@ -72,7 +59,7 @@ const CellImpl = memo(
 
     const willDisplayEdit = isEditing && isEditingThis;
 
-    const style = useCellStyle(xPositions, yPositions, cell, rtl, rowMeta.detailHeight, undefined);
+    const style = useCellStyle(xPositions, yPositions, cell, rowMeta.detailHeight);
 
     const handlers = useMappedEvents(events.cell, { column, row, api, layout: cell });
 
@@ -83,98 +70,86 @@ const CellImpl = memo(
       [column, rowMeta],
     );
 
-    if (!row || cell.isDeadCol) return null;
-
-    if (cell.isDeadRow) return <div style={{ width: sizeFromCoord(cell.colIndex, xPositions) }} />;
+    if (!row || cell.isDeadCol || cell.isDeadRow) return null;
 
     const selected = row.__selected;
     const indeterminate = row.__indeterminate;
 
     const handleFocus = willDisplayEdit && !!EditRenderer;
     return (
-      <>
-        {cell.colFirstEndPin && (
-          <CellSpacerEnd viewportWidth={innerWidth} visibleEndCount={view.endCount} xPositions={xPositions} />
+      <div
+        className={styles?.cell?.className}
+        {...handlers}
+        {...props}
+        ref={forwarded}
+        role="gridcell"
+        aria-colindex={cell.colIndex + 1}
+        tabIndex={isEditingThis ? -1 : 0}
+        onFocus={
+          handleFocus
+            ? (e) => {
+                (props.onFocus ?? handlers.onFocus)?.(e);
+                if (e.isPropagationStopped()) return;
+
+                rowMeta.setActiveEdit((prev) => {
+                  if (!prev) return prev;
+
+                  return { ...prev, column: column.id };
+                });
+              }
+            : (props.onFocus ?? handlers.onFocus)
+        }
+        style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
+        // Data Properties
+        data-ln-type={column.type ?? base.type ?? "string"}
+        data-ln-rowindex={cell.rowIndex}
+        data-ln-colindex={cell.colIndex}
+        data-ln-colspan={cell.colSpan}
+        data-ln-rowspan={cell.rowSpan}
+        data-ln-colpin={cell.colPin ?? "center"}
+        data-ln-rowpin={cell.rowPin ?? "center"}
+        data-ln-colid={cell.id}
+        data-ln-gridid={id}
+        data-ln-cell
+        data-ln-edit-active={willDisplayEdit || undefined}
+        data-ln-edit-valid={rowMeta.editValidation == null ? undefined : rowMeta.editValidation === true}
+        data-ln-last-top-pin={cell.rowLastPinTop}
+        data-ln-first-bottom-pin={cell.rowFirstPinBottom}
+        data-ln-last-start-pin={cell.colLastStartPin}
+        data-ln-first-end-pin={cell.colFirstEndPin}
+      >
+        {willDisplayEdit && (
+          <EditRenderer
+            api={api}
+            cancel={rowMeta.cancel}
+            commit={rowMeta.commit}
+            changeData={rowMeta.changeData}
+            changeValue={changeValue}
+            rowIndex={cell.rowIndex}
+            colIndex={cell.colIndex}
+            column={column}
+            row={row}
+            layout={cell}
+            editData={rowMeta.editData}
+            editValidation={rowMeta.editValidation!}
+            editValue={api.columnField(column, { ...row, data: rowMeta.editData })}
+          />
         )}
-
-        <div
-          className={styles?.cell?.className}
-          {...handlers}
-          {...props}
-          ref={forwarded}
-          role="gridcell"
-          aria-colindex={cell.colIndex + 1}
-          tabIndex={isEditingThis ? -1 : 0}
-          onFocus={
-            handleFocus
-              ? (e) => {
-                  (props.onFocus ?? handlers.onFocus)?.(e);
-                  if (e.isPropagationStopped()) return;
-
-                  rowMeta.setActiveEdit((prev) => {
-                    if (!prev) return prev;
-
-                    return { ...prev, column: column.id };
-                  });
-                }
-              : (props.onFocus ?? handlers.onFocus)
-          }
-          style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
-          // Data Properties
-          data-ln-type={column.type ?? base.type ?? "string"}
-          data-ln-rowindex={cell.rowIndex}
-          data-ln-colindex={cell.colIndex}
-          data-ln-colspan={cell.colSpan}
-          data-ln-rowspan={cell.rowSpan}
-          data-ln-colpin={cell.colPin ?? "center"}
-          data-ln-rowpin={cell.rowPin ?? "center"}
-          data-ln-colid={cell.id}
-          data-ln-gridid={id}
-          data-ln-cell
-          data-ln-edit-active={willDisplayEdit || undefined}
-          data-ln-edit-valid={rowMeta.editValidation == null ? undefined : rowMeta.editValidation === true}
-          data-ln-last-top-pin={cell.rowLastPinTop}
-          data-ln-first-bottom-pin={cell.rowFirstPinBottom}
-          data-ln-last-start-pin={cell.colLastStartPin}
-          data-ln-first-end-pin={cell.colFirstEndPin}
-        >
-          {willDisplayEdit && (
-            <EditRenderer
-              api={api}
-              cancel={rowMeta.cancel}
-              commit={rowMeta.commit}
-              changeData={rowMeta.changeData}
-              changeValue={changeValue}
-              rowIndex={cell.rowIndex}
-              colIndex={cell.colIndex}
-              column={column}
-              row={row}
-              layout={cell}
-              editData={rowMeta.editData}
-              editValidation={rowMeta.editValidation!}
-              editValue={api.columnField(column, { ...row, data: rowMeta.editData })}
-            />
-          )}
-          {!willDisplayEdit && (
-            <Renderer
-              column={column}
-              editData={rowMeta.editData}
-              row={row}
-              api={api}
-              layout={cell}
-              rowIndex={cell.rowIndex}
-              colIndex={cell.colIndex}
-              selected={selected}
-              indeterminate={indeterminate}
-              detailExpanded={rowMeta.detailExpanded}
-            />
-          )}
-        </div>
-
-        {cell.colLastStartPin && (
-          <CellSpacerStart xPositions={xPositions} rowMeta={rowMeta} visibleStartCount={view.startCount} />
+        {!willDisplayEdit && (
+          <Renderer
+            column={column}
+            editData={rowMeta.editData}
+            row={row}
+            api={api}
+            layout={cell}
+            rowIndex={cell.rowIndex}
+            colIndex={cell.colIndex}
+            selected={selected}
+            indeterminate={indeterminate}
+            detailExpanded={rowMeta.detailExpanded}
+          />
         )}
-      </>
+      </div>
     );
   }),
 );

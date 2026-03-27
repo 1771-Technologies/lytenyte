@@ -5,9 +5,7 @@ export function useCellStyle(
   xPositions: Uint32Array,
   yPositions: Uint32Array,
   cell: LayoutCell,
-  rtl: boolean,
   detailHeight: number,
-  additional: CSSProperties | undefined,
 ): CSSProperties {
   const width = sizeFromCoord(cell.colIndex, xPositions, cell.colSpan);
   const height = sizeFromCoord(cell.rowIndex, yPositions, cell.rowSpan) - detailHeight;
@@ -25,37 +23,24 @@ export function useCellStyle(
       overflow: "hidden",
     };
     if (cell.colPin === "end") {
-      styles.position = "sticky";
       const x = xPositions.at(-1)! - xPositions[cell.colIndex + cell.colSpan];
 
-      if (rtl) styles.left = x;
-      else styles.right = x;
-
+      styles.position = "sticky";
+      styles.insetInlineStart = `calc(100% - ${x + width}px)`;
       styles.zIndex = isRowPinned ? 5 : 2;
     } else if (isSticky) {
-      styles.position = "sticky";
-
       const x = xPositions[cell.colIndex];
 
-      if (rtl) styles.right = x;
-      else styles.left = x;
-
+      styles.position = "sticky";
+      styles.insetInlineStart = x;
       styles.zIndex = isRowPinned ? 5 : 2;
+    } else {
+      styles.position = "absolute";
+      styles.insetInlineStart = `${xPositions[cell.colIndex]}px`;
     }
 
-    return { ...additional, ...styles };
-  }, [
-    additional,
-    cell.colIndex,
-    cell.colPin,
-    cell.colSpan,
-    height,
-    isRowPinned,
-    isSticky,
-    rtl,
-    width,
-    xPositions,
-  ]);
+    return { ...styles };
+  }, [cell.colIndex, cell.colPin, cell.colSpan, height, isRowPinned, isSticky, width, xPositions]);
 
   return styles;
 }
