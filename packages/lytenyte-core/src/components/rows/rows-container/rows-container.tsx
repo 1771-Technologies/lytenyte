@@ -11,6 +11,7 @@ import { useRangeSelection } from "../../range-selection/use-range-selection.js"
 import { useKeyboardRangeSelection } from "../../range-selection/use-keyboard-range-selection.js";
 import { useCellFocusChange } from "../../range-selection/use-cell-focus-change.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
+import { AnimationDriver } from "../animation/animation-driver.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
@@ -25,7 +26,6 @@ export const RowsContainer = memo(
       viewport,
       slotRowsOverlay: RowsOverlay,
       rtl,
-      focusActive,
     } = useRoot();
 
     const startWidth = xPositions[view.startCount];
@@ -74,7 +74,7 @@ export const RowsContainer = memo(
 
     const onMouseDown = useRangeSelection(props.onMouseDown, viewport, rtl, api);
     const onKeyDownRange = useKeyboardRangeSelection();
-    useCellFocusChange(focusActive);
+    useCellFocusChange();
 
     return (
       <RowsContainerContext.Provider value={usePiece(value)}>
@@ -112,6 +112,7 @@ export const RowsContainer = memo(
           )}
           {props.children}
         </div>
+        <AnimationDriver />
       </RowsContainerContext.Provider>
     );
   }),

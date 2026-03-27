@@ -287,3 +287,8 @@ export interface GridSections {
   /** Pixel width of the end-pinned column area. */
   readonly endOffset: number;
 }
+
+export type PositionState = {
+  get: () => PositionUnion | null;
+  set: (p: PositionUnion | null | ((prev: PositionUnion | null) => PositionUnion | null)) => void;
+};

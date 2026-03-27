@@ -7,7 +7,6 @@ import {
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
-import { usePiece } from "../../hooks/use-piece.js";
 import type { Root } from "../root.js";
 
 export function useBounds(
@@ -85,7 +84,5 @@ export function useBounds(
     return () => controller.abort();
   }, [viewport]);
 
-  const piece = usePiece(bounds);
-
-  return piece;
+  return bounds;
 }

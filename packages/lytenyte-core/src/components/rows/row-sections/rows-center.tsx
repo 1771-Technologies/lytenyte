@@ -8,6 +8,7 @@ import { RowsSection } from "./rows-section.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { CellSelectionCenter } from "../../range-selection/cell-selection-container.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useAdditionalMoveRender } from "../../../root/contexts/animation/animation.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -16,6 +17,7 @@ export const RowsCenter = memo(
   ) {
     const id = useGridId();
     const layout = useRowLayout();
+    const additional = useAdditionalMoveRender();
     const container = useRowsContainerContext();
 
     const pinSectionHeights = container.useValue($pinHeight);
@@ -30,8 +32,12 @@ export const RowsCenter = memo(
         rows.push(<Fragment key={layout.center[i].id}>{children(layout.center[i])}</Fragment>);
       }
 
+      for (let i = 0; i < additional.rows.length; i++) {
+        rows.push(<Fragment key={additional.rows[i].id}>{children(additional.rows[i])}</Fragment>);
+      }
+
       return rows;
-    }, [children, layout.center]);
+    }, [additional.rows, children, layout.center]);
 
     if (centerHeight <= 0) {
       return <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 0px)` }} />;

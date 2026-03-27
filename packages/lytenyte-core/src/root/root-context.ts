@@ -3,11 +3,9 @@ import type {
   ColumnView,
   DataRect,
   LayoutHeader,
-  PositionUnion,
   RowNode,
   RowSource,
   RowView,
-  SpanLayout,
 } from "@1771technologies/lytenyte-shared";
 import {
   createContext,
@@ -17,14 +15,16 @@ import {
   type RefObject,
   type SetStateAction,
 } from "react";
-import type { Piece, PieceWritable } from "../hooks/use-piece";
+import type { Piece } from "../hooks/use-piece";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 import type { GridEvents } from "../types/events";
 import type { Column, GridSpec, Props } from "../types";
+import type { AnimationConfig } from "../components/rows/animation/animation-driver";
 
 export interface RootContextValue {
+  readonly animate: AnimationConfig | boolean;
   readonly source: RowSource;
   readonly rtl: boolean;
   readonly view: ColumnView;
@@ -39,6 +39,7 @@ export interface RootContextValue {
 
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
+  readonly idToPositions: Map<string, number>;
 
   readonly setDetailCache: Dispatch<SetStateAction<Record<string, number>>>;
   readonly rowDetailHeightCache: Record<string, number>;
@@ -57,8 +58,6 @@ export interface RootContextValue {
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
 
   readonly styles: Props["styles"];
-
-  readonly focusActive: PieceWritable<PositionUnion | null>;
 
   readonly events: GridEvents<GridSpec>;
 
@@ -102,10 +101,6 @@ const colContextLayout = createContext<LayoutHeader[][]>({} as any);
 export const ColumnLayoutContextProvider = colContextLayout.Provider;
 export const useColumnLayout = () => useContext(colContextLayout);
 
-const boundsContext = createContext<Piece<SpanLayout>>({} as any);
-export const BoundsContextProvider = boundsContext.Provider;
-export const useBounds = () => useContext(boundsContext);
-
 export interface EditContext {
   readonly activeEdit: null | { readonly rowId: string; readonly column: string };
   readonly setActiveEdit: Dispatch<
@@ -126,7 +121,3 @@ export interface EditContext {
 const editContext = createContext({} as EditContext);
 export const EditProvider = editContext.Provider;
 export const useEdit = () => useContext(editContext);
-
-const focusContext = createContext<Piece<PositionUnion | null>>({} as any);
-export const FocusProvider = focusContext.Provider;
-export const useFocus = () => useContext(focusContext);

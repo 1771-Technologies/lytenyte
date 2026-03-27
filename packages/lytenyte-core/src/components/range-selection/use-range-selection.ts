@@ -2,11 +2,14 @@ import { type MouseEventHandler } from "react";
 import { useEvent } from "../../internal.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
 import { handleRangeSelect } from "@1771technologies/lytenyte-shared";
-import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
-import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
+import {
+  useRangeSelection as useRangeSelectionContext,
+  useRangeSelectionSettings,
+} from "../../root/contexts/range-selection/range-selection-context.js";
+import { useRangeActiveSelection } from "../../root/contexts/range-selection/range-selection-active-context.js";
 import { useGridSections } from "../../root/contexts/grid-sections-context.js";
-import { useRoot } from "../../root/root-context.js";
 import type { API } from "../../types/api.js";
+import { usePositionNR } from "../../root/contexts/position-context.js";
 
 export function useRangeSelection(
   mouseDown: MouseEventHandler<HTMLDivElement> | undefined,
@@ -15,13 +18,13 @@ export function useRangeSelection(
   api: API,
 ) {
   const gridId = useGridId();
-  const settings = useCellSelectionSettings();
+  const settings = useRangeSelectionSettings();
 
-  const { cellSelections } = useCellSelection();
-  const { setActiveRange, setDeselect, setSelecting } = useActiveRangeSelection();
+  const { cellSelections } = useRangeSelectionContext();
+  const { setActiveRange, setDeselect, setSelecting } = useRangeActiveSelection();
 
   const gridSections = useGridSections();
-  const { focusActive } = useRoot();
+  const position = usePositionNR();
 
   const onMouseDown: MouseEventHandler<HTMLDivElement> = useEvent((e) => {
     mouseDown?.(e);
@@ -38,7 +41,7 @@ export function useRangeSelection(
       anchorRef: { get: () => settings.anchorRef.current, set: (v) => (settings.anchorRef.current = v) },
       cellSelections,
       clearOnSelfSelect: settings.cellSelectionClearOnSelf,
-      currentFocus: focusActive.get(),
+      currentFocus: position.get(),
       gridId,
       gridSections,
       ignoreFirst: settings.ignoreFirstColumn,

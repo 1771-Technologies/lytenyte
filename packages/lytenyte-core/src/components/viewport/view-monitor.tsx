@@ -1,12 +1,15 @@
 import { supportsScrollEnd } from "@1771technologies/lytenyte-shared";
-import { useEffect } from "react";
-import { useBounds, useRoot } from "../../root/root-context.js";
+import { useEffect, useRef } from "react";
+import { useRoot } from "../../root/root-context.js";
+import { useBounds } from "../../root/contexts/bounds-context.js";
 
 export function ViewMonitor({ viewport }: { viewport: HTMLElement }) {
   const { source } = useRoot();
-  const bounds = useBounds();
+  const boundsValue = useBounds();
 
-  const boundsValue = bounds.useValue();
+  const boundsRef = useRef(boundsValue);
+  boundsRef.current = boundsValue;
+
   useEffect(() => {
     source.onViewChange(boundsValue);
   }, [boundsValue, source]);
@@ -18,7 +21,7 @@ export function ViewMonitor({ viewport }: { viewport: HTMLElement }) {
       viewport.addEventListener(
         "scrollend",
         () => {
-          source.onViewChange(bounds.get());
+          source.onViewChange(boundsRef.current);
         },
         { signal: controller.signal },
       );
@@ -29,7 +32,7 @@ export function ViewMonitor({ viewport }: { viewport: HTMLElement }) {
         () => {
           if (!timeout)
             timeout = setTimeout(() => {
-              source.onViewChange(bounds.get());
+              source.onViewChange(boundsRef.current);
               timeout = null;
             }, 200);
         },
@@ -38,7 +41,7 @@ export function ViewMonitor({ viewport }: { viewport: HTMLElement }) {
     }
 
     return () => controller.abort();
-  }, [bounds, source, viewport]);
+  }, [source, viewport]);
 
   return null;
 }

@@ -5,27 +5,18 @@ import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
 import { useVirtualizedHeader } from "./use-virtualized-header.js";
 import { useHeaderCellReactNodes } from "./use-header-cell-react-nodes.js";
 import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
-import { useBounds, useColumnLayout, useRoot } from "../../root/root-context.js";
-import { $colEndBound, $colStartBound } from "../../selectors.js";
+import { useColumnLayout, useRoot } from "../../root/root-context.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
+import { useColumnBounds } from "../../root/contexts/bounds-context.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridId();
-  const {
-    floatingRowEnabled,
-    floatingRowHeight,
-    headerGroupHeight,
-    headerHeight,
-    view,
-    xPositions,
-    focusActive,
-  } = useRoot();
+  const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view, xPositions } =
+    useRoot();
   const columnLayout = useColumnLayout();
 
-  const bounds = useBounds();
-  const colStartBound = bounds.useValue($colStartBound);
-  const colEndBound = bounds.useValue($colEndBound);
+  const { colCenterStart: colStartBound, colCenterEnd: colEndBound } = useColumnBounds();
 
   const gridRowTemplate = useHeaderRowTemplate(
     columnLayout.length,
@@ -37,13 +28,7 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
   const gridColTemplate = useHeaderColTemplate(view, xPositions);
 
   const [active, setActive] = useState<LayoutHeader | null>(null);
-  const virtualizedHeaderCells = useVirtualizedHeader(
-    columnLayout,
-    active,
-    colStartBound,
-    colEndBound,
-    focusActive,
-  );
+  const virtualizedHeaderCells = useVirtualizedHeader(columnLayout, active, colStartBound, colEndBound);
   const headerRows = useHeaderCellReactNodes(virtualizedHeaderCells, children);
 
   const value = useMemo<HeaderContextType>(() => {
