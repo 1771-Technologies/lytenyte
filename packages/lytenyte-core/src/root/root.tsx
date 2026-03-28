@@ -21,7 +21,6 @@ import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useBounds } from "./hooks/use-bounds.js";
 import { useApi } from "./hooks/use-api/use-api.js";
 import {
-  BoundsContextProvider,
   ColumnLayoutContextProvider,
   EditProvider,
   FocusProvider,
@@ -53,6 +52,7 @@ import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { usePiece } from "../internal.js";
 import { ColumnSettingProvider } from "./contexts/column-settings/column-settings.js";
+import { BoundsContextProvider, StartBoundsProvider } from "./contexts/bounds.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -117,7 +117,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   const api = useExtendedAPI(props);
   useImperativeHandle(forwarded, () => api as any, [api]);
 
-  const bounds = useBounds(
+  const { startBounds, bounds } = useBounds(
     props,
     source,
     view,
@@ -162,7 +162,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     controlled,
     editValue,
     selectPivot,
-    bounds.get(),
+    bounds,
     rowLayout,
     yPositions.detailCache,
     vp,
@@ -307,11 +307,13 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
               <RowLayoutContextProvider value={rowView}>
                 <ColumnLayoutContextProvider value={headerLayout}>
                   <BoundsContextProvider value={bounds}>
-                    <EditProvider value={editValue}>
-                      <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
-                        <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
-                      </ColumnSettingProvider>
-                    </EditProvider>
+                    <StartBoundsProvider value={startBounds}>
+                      <EditProvider value={editValue}>
+                        <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
+                          <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
+                        </ColumnSettingProvider>
+                      </EditProvider>
+                    </StartBoundsProvider>
                   </BoundsContextProvider>
                 </ColumnLayoutContextProvider>
               </RowLayoutContextProvider>

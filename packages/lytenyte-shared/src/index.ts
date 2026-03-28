@@ -64,7 +64,6 @@ export type {
   DeadCells,
   LayoutDiffers,
   RootCellSpanLookup,
-  RowView,
 } from "./layout/index.js";
 
 export type {
@@ -73,6 +72,7 @@ export type {
   LayoutFullWidthRow,
   LayoutRow,
   LayoutRowWithCells,
+  RowView,
 } from "./layout-row/index.js";
 export { createRowLayout } from "./layout-row/index.js";
 

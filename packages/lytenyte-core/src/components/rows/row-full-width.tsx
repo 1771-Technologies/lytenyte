@@ -1,4 +1,4 @@
-import { forwardRef, memo, useMemo, type JSX } from "react";
+import { forwardRef, memo, type JSX } from "react";
 import {
   sizeFromCoord,
   VIEWPORT_WIDTH_VARIABLE_USE,
@@ -19,7 +19,6 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
   const id = useGridId();
   const {
     rtl,
-    view,
     yPositions,
     rowFullWidthRenderer,
     rowAlternateAttr,
@@ -33,12 +32,6 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
     styles,
   } = useRoot();
   const container = useRowsContainerContext();
-
-  const hasSpans = useMemo(() => {
-    const visible = view.visibleColumns;
-    // @ts-expect-error the column will have potentially have these but they are untyped.
-    return !visible.every((c) => !(c.colSpan || c.rowSpan));
-  }, [view.visibleColumns]);
 
   const Renderer = rowFullWidthRenderer;
 
@@ -82,7 +75,6 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
         rowPin,
         topOffset,
         rowIsFocusRow,
-        hasSpans,
         detailHeight,
         props.style ?? styles?.row?.style,
       )}

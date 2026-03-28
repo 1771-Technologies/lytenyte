@@ -1,18 +1,16 @@
 import { forwardRef, memo, useCallback, useMemo, type JSX } from "react";
 import { type LayoutCell } from "@1771technologies/lytenyte-shared";
 import { useCellStyle } from "./use-cell-style.js";
-import { useBounds, useFocus, useRoot } from "../../root/root-context.js";
-import { $colEndBound, $colStartBound } from "../../selectors.js";
+import { useFocus, useRoot } from "../../root/root-context.js";
 import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
 import { useColumnSettings } from "../../root/contexts/column-settings/column-settings.js";
+import { useStartBounds } from "../../root/contexts/bounds.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
-  const bounds = useBounds();
-  const end = bounds.useValue($colEndBound);
-  const start = bounds.useValue($colStartBound);
+  const [start, end] = useStartBounds();
   const focus = useFocus().get();
 
   const isFocused =

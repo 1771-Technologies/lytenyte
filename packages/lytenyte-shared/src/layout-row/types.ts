@@ -46,3 +46,11 @@ export interface LayoutRowWithCells {
 }
 
 export type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
+
+export interface RowView {
+  readonly top: LayoutRow[];
+  readonly center: LayoutRow[];
+  readonly bottom: LayoutRow[];
+  readonly rowFocusedIndex: number | null;
+  readonly rowFirstCenter: number;
+}
