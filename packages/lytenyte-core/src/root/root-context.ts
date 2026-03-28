@@ -5,7 +5,6 @@ import type {
   LayoutHeader,
   RowNode,
   RowSource,
-  RowView,
 } from "@1771technologies/lytenyte-shared";
 import {
   createContext,
@@ -89,10 +88,6 @@ const context = createContext<RootContextValue>({} as any);
 
 export const RootContextProvider = context.Provider;
 export const useRoot = () => useContext(context);
-
-const rowContextLayout = createContext<RowView>({} as any);
-export const RowLayoutContextProvider = rowContextLayout.Provider;
-export const useRowLayout = () => useContext(rowContextLayout);
 
 const colContextLayout = createContext<LayoutHeader[][]>({} as any);
 export const ColumnLayoutContextProvider = colContextLayout.Provider;

@@ -24,7 +24,6 @@ import {
   ColumnLayoutContextProvider,
   EditProvider,
   RootContextProvider,
-  RowLayoutContextProvider,
   type RootContextValue,
 } from "./root-context.js";
 import { useEditContext } from "./hooks/use-edit-context.js";
@@ -52,6 +51,7 @@ import { usePiece } from "../internal.js";
 import { ColumnSettingProvider } from "./contexts/column-settings/column-settings.js";
 import { BoundsContextProvider, StartBoundsProvider } from "./contexts/bounds.js";
 import { FocusPositionProvider } from "./contexts/focus-position.js";
+import { RowLayoutProvider, RowViewContextProvider } from "./contexts/row-view.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -300,19 +300,21 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
             onCellSelectionChange={onCellSelectionChange}
           >
             <ActiveRangeProvider>
-              <RowLayoutContextProvider value={rowView}>
-                <ColumnLayoutContextProvider value={headerLayout}>
-                  <BoundsContextProvider value={bounds}>
-                    <StartBoundsProvider value={startBounds}>
-                      <EditProvider value={editValue}>
-                        <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
-                          <FocusPositionProvider>{children ?? <Fallback />}</FocusPositionProvider>
-                        </ColumnSettingProvider>
-                      </EditProvider>
-                    </StartBoundsProvider>
-                  </BoundsContextProvider>
-                </ColumnLayoutContextProvider>
-              </RowLayoutContextProvider>
+              <RowViewContextProvider value={rowView}>
+                <RowLayoutProvider value={rowLayout}>
+                  <ColumnLayoutContextProvider value={headerLayout}>
+                    <BoundsContextProvider value={bounds}>
+                      <StartBoundsProvider value={startBounds}>
+                        <EditProvider value={editValue}>
+                          <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
+                            <FocusPositionProvider>{children ?? <Fallback />}</FocusPositionProvider>
+                          </ColumnSettingProvider>
+                        </EditProvider>
+                      </StartBoundsProvider>
+                    </BoundsContextProvider>
+                  </ColumnLayoutContextProvider>
+                </RowLayoutProvider>
+              </RowViewContextProvider>
             </ActiveRangeProvider>
           </CellSelectionContext>
         </GridSectionsProvider>
