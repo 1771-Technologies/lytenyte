@@ -4,7 +4,7 @@ import { RowChildrenDefault } from "../row-children-default.js";
 import { RowsSection } from "./rows-section.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { CellSelectionCenter } from "../../range-selection/cell-selection-container.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../../root/contexts/focus-position.js";
 import { useRowLayout, useRowView } from "../../../root/contexts/row-view.js";
 import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
@@ -15,7 +15,7 @@ export const RowsCenter = memo(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const id = useGridId();
+    const id = useGridIdContext();
     const rowView = useRowView();
     const focus = useFocusNonReactive().get();
     const rowLayout = useRowLayout();

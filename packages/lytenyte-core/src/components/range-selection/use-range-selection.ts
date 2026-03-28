@@ -1,6 +1,6 @@
 import { type MouseEventHandler } from "react";
 import { useEvent } from "../../internal.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { handleRangeSelect } from "@1771technologies/lytenyte-shared";
 import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 import type { API } from "../../types/api.js";
@@ -17,7 +17,7 @@ export function useRangeSelection(
   rtl: boolean,
   api: API,
 ) {
-  const gridId = useGridId();
+  const gridId = useGridIdContext();
   const settings = useCellRangeSelectionSettings();
 
   const { cellSelections } = useCellRangeSelection();

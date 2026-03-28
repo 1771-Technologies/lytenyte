@@ -6,13 +6,13 @@ import { useDragMove } from "./use-drag-move.js";
 import { HeaderGroupDefault } from "./header-group-default.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { ResizeHandler } from "./resize-handler.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
-  const id = useGridId();
+  const id = useGridIdContext();
   const {
     xPositions,
     api,

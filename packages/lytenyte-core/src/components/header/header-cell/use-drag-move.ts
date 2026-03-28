@@ -13,13 +13,13 @@ import { useDraggable } from "../../../dnd/use-draggable.js";
 import { useHeader } from "../header-context.js";
 import { useRoot } from "../../../root/root-context.js";
 import { HeaderMovePlaceholder } from "./header-move-placer.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 
 export function useDragMove(
   cell: LayoutHeaderGroup | LayoutHeaderCell | LayoutHeaderFloating,
   onDragStart?: JSX.IntrinsicElements["div"]["onDragStart"],
 ) {
-  const id = useGridId();
+  const id = useGridIdContext();
   const {
     view,
     viewport: vp,

@@ -7,11 +7,11 @@ import { useHeaderCellReactNodes } from "./use-header-cell-react-nodes.js";
 import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
 import { useColumnLayout, useRoot } from "../../root/root-context.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useStartBounds } from "../../root/contexts/bounds.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
-  const id = useGridId();
+  const id = useGridIdContext();
   const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view, xPositions } =
     useRoot();
   const columnLayout = useColumnLayout();

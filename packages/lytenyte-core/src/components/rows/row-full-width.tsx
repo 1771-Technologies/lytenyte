@@ -8,14 +8,14 @@ import { RowDetailRow } from "./row-detail-row.js";
 import { useRowStyle } from "./use-row-style.js";
 import { useRoot } from "../../root/root-context.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
   forwarded,
 ) {
-  const id = useGridId();
+  const id = useGridIdContext();
   const {
     rtl,
     yPositions,

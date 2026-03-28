@@ -1,10 +1,10 @@
 import { forwardRef, memo, type JSX } from "react";
 import { useHeaderRow } from "./context.js";
 import { useRoot } from "../../../root/root-context.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 
 function HeaderRowImpl(props: HeaderRow.Props, ref: HeaderRow.Props["ref"]) {
-  const id = useGridId();
+  const id = useGridIdContext();
   const { view } = useRoot();
   const headerRowIndex = useHeaderRow();
 

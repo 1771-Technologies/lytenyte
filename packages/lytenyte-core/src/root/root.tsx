@@ -10,7 +10,7 @@ import {
 import { useControlledGridState } from "./hooks/use-controlled-grid-state.js";
 import { DEFAULT_ROW_SOURCE } from "./constants.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
-import { equal, type DataRect, type GridSections, type RowSource } from "@1771technologies/lytenyte-shared";
+import { equal, type DataRect, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useBounds } from "./hooks/use-bounds.js";
 import { useApi } from "./hooks/use-api/use-api.js";
@@ -23,7 +23,6 @@ import {
 import { useEditContext } from "./hooks/use-edit-context.js";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
 import { useDropAccept } from "./hooks/use-drop-accept.js";
-import { useGridId } from "./hooks/use-grid-id.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
 import type { API as LnAPI } from "../types/api.js";
@@ -34,7 +33,7 @@ import { RowsContainer } from "../components/rows/rows-container/rows-container.
 import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
-import { GridIdProvider } from "./contexts/grid-id.js";
+import { GridIdProvider, useGridIdContext } from "./contexts/grid-id.js";
 import { GridSectionsProvider } from "./contexts/grid-sections-context.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
@@ -72,55 +71,57 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
 
   return (
-    <ColumnContextProvider
-      columnBase={props.columnBase}
-      columnGroupDefaultExpansion={props.columnGroupDefaultExpansion}
-      columnGroupExpansions={props.columnGroupExpansions}
-      columnMarker={props.columnMarker}
-      columns={props.columns}
-      onColumnGroupExpansionChange={props.onColumnGroupExpansionChange}
-      onColumnsChange={props.onColumnsChange}
-      rowGroupColumn={props.rowGroupColumn}
-      source={source}
-    >
-      <RowDetailProvider
-        onRowDetailExpansionsChange={props.onRowDetailExpansionsChange}
-        rowDetailExpansions={props.rowDetailExpansions}
+    <GridIdProvider gridId={props.gridId}>
+      <ColumnContextProvider
+        columnBase={props.columnBase}
+        columnGroupDefaultExpansion={props.columnGroupDefaultExpansion}
+        columnGroupExpansions={props.columnGroupExpansions}
+        columnMarker={props.columnMarker}
+        columns={props.columns}
+        onColumnGroupExpansionChange={props.onColumnGroupExpansionChange}
+        onColumnsChange={props.onColumnsChange}
+        rowGroupColumn={props.rowGroupColumn}
+        source={source}
       >
-        <HeaderLayoutProvider
-          floatingRowEnabled={p.floatingRowEnabled}
-          floatingRowHeight={p.floatingRowHeight}
-          headerGroupHeight={p.headerGroupHeight}
-          headerHeight={p.headerHeight}
+        <RowDetailProvider
+          onRowDetailExpansionsChange={props.onRowDetailExpansionsChange}
+          rowDetailExpansions={props.rowDetailExpansions}
         >
-          <CoordinatesProvider
-            columnBase={props.columnBase}
-            columnSizeToFit={props.columnSizeToFit}
-            rowAutoHeightGuess={props.rowAutoHeightGuess}
-            rowDetailAutoHeightGuess={props.rowDetailAutoHeightGuess}
-            rowDetailHeight={props.rowDetailHeight}
-            rowHeight={props.rowHeight}
-            source={source}
+          <HeaderLayoutProvider
+            floatingRowEnabled={p.floatingRowEnabled}
+            floatingRowHeight={p.floatingRowHeight}
+            headerGroupHeight={p.headerGroupHeight}
+            headerHeight={p.headerHeight}
           >
-            <ViewportContext>
-              <DimensionsContext>
-                <RowCountsProvider source={source}>
-                  <OffsetProvider>
-                    <CutoffProvider>
-                      <GridSectionsContextProvider>
-                        <RootImpl {...props} ref={forwarded as any}>
-                          {children}
-                        </RootImpl>
-                      </GridSectionsContextProvider>
-                    </CutoffProvider>
-                  </OffsetProvider>
-                </RowCountsProvider>
-              </DimensionsContext>
-            </ViewportContext>
-          </CoordinatesProvider>
-        </HeaderLayoutProvider>
-      </RowDetailProvider>
-    </ColumnContextProvider>
+            <CoordinatesProvider
+              columnBase={props.columnBase}
+              columnSizeToFit={props.columnSizeToFit}
+              rowAutoHeightGuess={props.rowAutoHeightGuess}
+              rowDetailAutoHeightGuess={props.rowDetailAutoHeightGuess}
+              rowDetailHeight={props.rowDetailHeight}
+              rowHeight={props.rowHeight}
+              source={source}
+            >
+              <ViewportContext>
+                <DimensionsContext>
+                  <RowCountsProvider source={source}>
+                    <OffsetProvider>
+                      <CutoffProvider>
+                        <GridSectionsContextProvider>
+                          <RootImpl {...props} ref={forwarded as any}>
+                            {children}
+                          </RootImpl>
+                        </GridSectionsContextProvider>
+                      </CutoffProvider>
+                    </OffsetProvider>
+                  </RowCountsProvider>
+                </DimensionsContext>
+              </ViewportContext>
+            </CoordinatesProvider>
+          </HeaderLayoutProvider>
+        </RowDetailProvider>
+      </ColumnContextProvider>
+    </GridIdProvider>
   );
 };
 
@@ -147,10 +148,9 @@ const RootImpl = forwardRef(
 
     const xPositions = useXCoordinates();
     const yPositions = useYCoordinates();
-
     const cutoffValue = useGridSectionsContext();
 
-    const gridId = useGridId(props.gridId);
+    const gridId = useGridIdContext();
     const selectPivot = useRef<number | null>(null);
 
     const dropAccept = useDropAccept(props, gridId);
@@ -341,39 +341,37 @@ const RootImpl = forwardRef(
           source={source}
         >
           <RowCountsProvider source={source}>
-            <GridIdProvider value={gridId}>
-              <GridSectionsProvider value={cutoffValue}>
-                <CellSelectionContext
-                  topCutoff={cutoffValue.topCutoff}
-                  bottomCutoff={cutoffValue.bottomCutoff}
-                  endCutoff={cutoffValue.endCutoff}
-                  startCutoff={cutoffValue.startCutoff}
-                  cellSelections={cellSelections}
-                  cellSelectionExcludeMarker={p.cellSelectionExcludeMarker && (p.columnMarker?.on ?? false)}
-                  cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
-                  cellSelectionMode={p.cellSelectionMode}
-                  onCellSelectionChange={onCellSelectionChange}
-                >
-                  <CellRangeSelectionActive>
-                    <RowViewContextProvider value={rowView}>
-                      <RowLayoutProvider value={rowLayout}>
-                        <ColumnLayoutContextProvider value={headerLayout}>
-                          <BoundsContextProvider value={bounds}>
-                            <StartBoundsProvider value={startBounds}>
-                              <EditProvider value={editValue}>
-                                <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
-                                  <FocusPositionProvider>{children ?? <Fallback />}</FocusPositionProvider>
-                                </ColumnSettingProvider>
-                              </EditProvider>
-                            </StartBoundsProvider>
-                          </BoundsContextProvider>
-                        </ColumnLayoutContextProvider>
-                      </RowLayoutProvider>
-                    </RowViewContextProvider>
-                  </CellRangeSelectionActive>
-                </CellSelectionContext>
-              </GridSectionsProvider>
-            </GridIdProvider>
+            <GridSectionsProvider value={cutoffValue}>
+              <CellSelectionContext
+                topCutoff={cutoffValue.topCutoff}
+                bottomCutoff={cutoffValue.bottomCutoff}
+                endCutoff={cutoffValue.endCutoff}
+                startCutoff={cutoffValue.startCutoff}
+                cellSelections={cellSelections}
+                cellSelectionExcludeMarker={p.cellSelectionExcludeMarker && (p.columnMarker?.on ?? false)}
+                cellSelectionMaintainOnNonCellPosition={p.cellSelectionMaintainOnNonCellPosition}
+                cellSelectionMode={p.cellSelectionMode}
+                onCellSelectionChange={onCellSelectionChange}
+              >
+                <CellRangeSelectionActive>
+                  <RowViewContextProvider value={rowView}>
+                    <RowLayoutProvider value={rowLayout}>
+                      <ColumnLayoutContextProvider value={headerLayout}>
+                        <BoundsContextProvider value={bounds}>
+                          <StartBoundsProvider value={startBounds}>
+                            <EditProvider value={editValue}>
+                              <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
+                                <FocusPositionProvider>{children ?? <Fallback />}</FocusPositionProvider>
+                              </ColumnSettingProvider>
+                            </EditProvider>
+                          </StartBoundsProvider>
+                        </BoundsContextProvider>
+                      </ColumnLayoutContextProvider>
+                    </RowLayoutProvider>
+                  </RowViewContextProvider>
+                </CellRangeSelectionActive>
+              </CellSelectionContext>
+            </GridSectionsProvider>
           </RowCountsProvider>
         </ColumnContextProvider>
       </RootContextProvider>

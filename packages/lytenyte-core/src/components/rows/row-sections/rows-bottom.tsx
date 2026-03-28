@@ -3,7 +3,7 @@ import { RowChildrenDefault } from "../row-children-default.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { RowsSection } from "./rows-section.js";
 import { CellSelectionBottom } from "../../range-selection/cell-selection-container.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useRowView } from "../../../root/contexts/row-view.js";
 import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
 
@@ -12,7 +12,7 @@ export const RowsBottom = memo(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const id = useGridId();
+    const id = useGridIdContext();
     const rowView = useRowView();
 
     const {

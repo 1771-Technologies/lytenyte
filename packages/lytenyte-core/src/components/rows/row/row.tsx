@@ -6,12 +6,12 @@ import { useRoot } from "../../../root/root-context.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
-  const id = useGridId();
+  const id = useGridIdContext();
   const { rowAlternateAttr, yPositions, events, styles: sx, api, cellSelections$ } = ctx;
 
   const { topOffset, headerHeight } = useGridSections();

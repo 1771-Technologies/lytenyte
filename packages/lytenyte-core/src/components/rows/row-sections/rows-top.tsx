@@ -4,7 +4,7 @@ import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
 import { RowsSection } from "./rows-section.js";
 import { CellSelectionTop } from "../../range-selection/cell-selection-container.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useRowView } from "../../../root/contexts/row-view.js";
 import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
 
@@ -13,7 +13,7 @@ export const RowsTop = memo(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const id = useGridId();
+    const id = useGridIdContext();
     const { totalHeaderHeight: top } = useRoot();
     const rowView = useRowView();
 
