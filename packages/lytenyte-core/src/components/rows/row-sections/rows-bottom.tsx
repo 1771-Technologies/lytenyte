@@ -2,11 +2,11 @@ import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "r
 import { RowChildrenDefault } from "../row-children-default.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { RowsSection } from "./rows-section.js";
-import { useRowLayout } from "../../../root/root-context.js";
 import { useRowsContainerContext } from "../rows-container/context.js";
 import { $botCount, $botHeight, $centerCount, $topCount } from "../../../selectors.js";
 import { CellSelectionBottom } from "../../range-selection/cell-selection-container.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useRowView } from "../../../root/contexts/row-view.js";
 
 export const RowsBottom = memo(
   forwardRef<HTMLDivElement, RowsBottom.Props>(function RowsBottom(
@@ -14,7 +14,7 @@ export const RowsBottom = memo(
     forwarded,
   ) {
     const id = useGridId();
-    const layout = useRowLayout();
+    const rowView = useRowView();
     const container = useRowsContainerContext();
 
     const rowTopCount = container.useValue($topCount);
@@ -25,12 +25,12 @@ export const RowsBottom = memo(
     const rows = useMemo(() => {
       const rows: ReactNode[] = [];
 
-      for (let i = 0; i < layout.bottom.length; i++) {
-        rows.push(<Fragment key={layout.bottom[i].id}>{children(layout.bottom[i])}</Fragment>);
+      for (let i = 0; i < rowView.bottom.length; i++) {
+        rows.push(<Fragment key={rowView.bottom[i].id}>{children(rowView.bottom[i])}</Fragment>);
       }
 
       return rows;
-    }, [children, layout.bottom]);
+    }, [children, rowView.bottom]);
 
     if (height <= 0) return null;
 

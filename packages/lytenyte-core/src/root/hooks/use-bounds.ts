@@ -7,7 +7,6 @@ import {
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
-import { usePiece } from "../../hooks/use-piece.js";
 import type { Root } from "../root.js";
 
 export function useBounds(
@@ -85,7 +84,9 @@ export function useBounds(
     return () => controller.abort();
   }, [viewport]);
 
-  const piece = usePiece(bounds);
+  const startBounds = useMemo<[start: number, end: number]>(() => {
+    return [bounds.colCenterStart, bounds.colCenterEnd];
+  }, [bounds.colCenterEnd, bounds.colCenterStart]);
 
-  return piece;
+  return { startBounds, bounds };
 }

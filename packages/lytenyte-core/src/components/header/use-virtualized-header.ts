@@ -1,15 +1,14 @@
-import type { LayoutHeader, PositionUnion } from "@1771technologies/lytenyte-shared";
+import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
-import type { Piece } from "../../hooks/use-piece";
+import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 
 export function useVirtualizedHeader(
   layout: LayoutHeader[][],
   dragged: LayoutHeader | null,
   colStartBound: number,
   colEndBound: number,
-  focusActive: Piece<PositionUnion | null>,
 ): LayoutHeader[][] {
-  const position = focusActive.useValue();
+  const position = useFocusNonReactive().get();
   const headerFocusIndex =
     position?.kind === "header-cell" || position?.kind === "header-group-cell" ? position.colIndex : null;
 

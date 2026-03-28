@@ -1,42 +1,26 @@
 import {
-  makeLayoutState,
-  makeRowLayout,
-  updateFull,
+  createRowLayout,
   type ColumnView,
-  type LayoutRow,
-  type LayoutState,
-  type PositionUnion,
+  type GridSections,
   type RowSource,
   type RowView,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import type { Piece } from "../../../hooks/use-piece.js";
-import { useCallback, useMemo, type RefObject } from "react";
+import { useCallback, useMemo } from "react";
 import { getSpanFn } from "./get-span-fn.js";
 import { getFullWidthFn } from "./get-full-width-fn.js";
 import type { Root } from "../../root.js";
 
 export function useRowLayout(
   props: Root.Props,
+  sections: GridSections,
   rs: RowSource,
   view: ColumnView,
   vp: HTMLElement | null,
   api: Root.API,
-  bounds$: Piece<SpanLayout>,
-  layoutStateRef: RefObject<LayoutState>,
+  bounds: SpanLayout,
   rowDetailExpansions: Set<string>,
-  position: PositionUnion | null,
 ) {
-  const bounds = bounds$.useValue();
-
-  const topCount = rs.useTopCount();
-  const botCount = rs.useBottomCount();
-  const rowCount = rs.useRowCount();
-  const centerCount = rowCount - topCount - botCount;
-  const columnCount = view.visibleColumns.length;
-
-  if (!layoutStateRef.current) layoutStateRef.current = makeLayoutState(0);
-
   const rows = rs.useRows();
   const rowByIndex = useCallback(
     (i: number) => {
@@ -44,28 +28,6 @@ export function useRowLayout(
     },
     [rows],
   );
-
-  const layoutCache = useMemo(() => {
-    void rowByIndex;
-    void rowDetailExpansions;
-    void view;
-
-    // Directly compute row count here so that the different row count parts are part of the
-    // memo's dependency array.
-    const rowCount = topCount + botCount + centerCount;
-
-    const layoutState = layoutStateRef.current;
-
-    if (rowCount > layoutState.computed.length || columnCount != layoutState.base.length) {
-      Object.assign(layoutState, makeLayoutState(columnCount, rowCount + 2000));
-    } else {
-      layoutState.computed.fill(0);
-      layoutState.special.fill(0);
-      layoutState.lookup.clear();
-    }
-
-    return { layout: { ...layoutState }, cache: new Map<number, LayoutRow>() };
-  }, [botCount, centerCount, columnCount, layoutStateRef, rowByIndex, rowDetailExpansions, topCount, view]);
 
   const columns = view.visibleColumns;
   const [computeColSpan, computeRowSpan] = useMemo(() => {
@@ -90,100 +52,63 @@ export function useRowLayout(
     [rowByIndex, rowDetailExpansions],
   );
 
-  const spanLayout = useMemo<SpanLayout>(() => {
-    return {
-      rowTopStart: bounds.rowTopStart,
-      rowTopEnd: bounds.rowTopEnd,
-      rowBotEnd: bounds.rowBotEnd,
-      rowBotStart: bounds.rowBotStart,
-      rowCenterStart: bounds.rowCenterStart,
-      rowCenterEnd: bounds.rowCenterEnd,
-      rowCenterLast: bounds.rowCenterLast,
-      colStartStart: 0,
-      colStartEnd: view.startCount,
-      colCenterStart: view.startCount,
-      colCenterEnd: view.centerCount + view.startCount,
-      colCenterLast: view.centerCount + view.startCount,
-      colEndStart: view.centerCount + view.startCount,
-      colEndEnd: view.visibleColumns.length,
-    };
+  const rowLayout = useMemo(() => {
+    const l = createRowLayout({
+      topCutoff: sections.topCutoff,
+      bottomCutoff: sections.bottomCutoff,
+      startCutoff: sections.startCutoff,
+      endCutoff: sections.endCutoff,
+      columns: view.visibleColumns,
+      computeColSpan,
+      computeRowSpan,
+      hasSpans: Boolean(computeColSpan || computeRowSpan),
+      isCutoff: isRowCutoff,
+      isFullWidth: isFullWidth,
+      rowByIndex,
+      rowLookback: 100,
+    });
+
+    return l;
   }, [
-    bounds.rowBotEnd,
-    bounds.rowBotStart,
-    bounds.rowCenterEnd,
-    bounds.rowCenterLast,
-    bounds.rowCenterStart,
-    bounds.rowTopEnd,
-    bounds.rowTopStart,
-    view.centerCount,
-    view.startCount,
-    view.visibleColumns.length,
+    computeColSpan,
+    computeRowSpan,
+    isFullWidth,
+    isRowCutoff,
+    rowByIndex,
+    sections.bottomCutoff,
+    sections.endCutoff,
+    sections.startCutoff,
+    sections.topCutoff,
+    view.visibleColumns,
   ]);
 
-  const layout = useMemo<RowView>(() => {
+  const rowView = useMemo<RowView>(() => {
     if (!vp) return { top: [], bottom: [], center: [], rowFirstCenter: 0, rowFocusedIndex: null };
 
-    let n = spanLayout;
+    let n = bounds;
     if (props.virtualizeRows === false)
       n = { ...n, rowCenterStart: n.rowTopEnd, rowCenterEnd: n.rowCenterLast };
     if (props.virtualizeCols === false)
       n = { ...n, colCenterStart: n.colStartEnd, colCenterEnd: n.colCenterLast };
 
-    const hasSpans = Boolean(computeColSpan || computeRowSpan);
-    const { layout, cache } = layoutCache;
-
-    updateFull({
-      topCount,
-      botCount,
-      startCount: n.colStartEnd,
-      endCount: n.colEndEnd - n.colEndStart,
-      centerCount: n.colCenterLast - n.colStartEnd,
-
-      computeColSpan,
-      computeRowSpan,
-      isFullWidth,
-      isRowCutoff,
-
-      rowScanDistance: props.rowScanDistance ?? 50,
-      rowStart: n.rowCenterStart,
-      rowEnd: n.rowCenterEnd,
-      rowMax: n.rowCenterLast,
-
-      ...layout,
-    });
-
-    const view = makeRowLayout({
-      view: spanLayout,
-      viewCache: cache,
-      rowScan: hasSpans ? 0 : (props.rowScanDistance ?? 50),
-      layout,
-      rowByIndex,
-      columns,
-      focus: position,
-    });
+    const top = Array.from({ length: n.rowTopEnd }, (_, i) => rowLayout.layoutByIndex(i)!);
+    const center = Array.from(
+      { length: n.rowCenterEnd - n.rowCenterStart },
+      (_, i) => rowLayout.layoutByIndex(i + n.rowCenterStart)!,
+    );
+    const bottom = Array.from(
+      { length: n.rowBotEnd - n.rowBotStart },
+      (_, i) => rowLayout.layoutByIndex(i + n.rowBotStart)!,
+    );
 
     return {
-      ...view,
       rowFirstCenter: n.rowCenterStart,
-      rowFocusedIndex: null, // TODO
+      rowFocusedIndex: null,
+      top,
+      center,
+      bottom,
     };
-  }, [
-    botCount,
-    columns,
-    computeColSpan,
-    computeRowSpan,
-    isFullWidth,
-    isRowCutoff,
-    layoutCache,
-    position,
-    props.rowScanDistance,
-    props.virtualizeCols,
-    props.virtualizeRows,
-    rowByIndex,
-    spanLayout,
-    topCount,
-    vp,
-  ]);
+  }, [bounds, props.virtualizeCols, props.virtualizeRows, rowLayout, vp]);
 
-  return layout;
+  return { rowView, rowLayout };
 }

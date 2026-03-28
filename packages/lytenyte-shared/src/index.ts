@@ -64,12 +64,18 @@ export type {
   DeadCells,
   LayoutDiffers,
   RootCellSpanLookup,
+} from "./layout/index.js";
+
+export type {
+  RowLayout,
   LayoutCell,
   LayoutFullWidthRow,
   LayoutRow,
   LayoutRowWithCells,
   RowView,
-} from "./layout/index.js";
+} from "./layout-row/index.js";
+export { createRowLayout } from "./layout-row/index.js";
+
 export {
   makeColumnLayout,
   makeLayoutState,

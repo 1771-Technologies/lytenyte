@@ -16,6 +16,7 @@ import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { EditDriver } from "./edit-driver.js";
 import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
+import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -28,7 +29,6 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     editMode,
     editClickActivator,
     selectActivator,
-    focusActive,
     source,
     rtl,
     api,
@@ -46,6 +46,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
   const edit = useEdit();
 
+  const focusActive = useFocusNonReactive();
   const [focused, vpFocused] = useFocusTracking(vp, focusActive, id);
 
   const shouldCapture = !focused && !vpFocused;

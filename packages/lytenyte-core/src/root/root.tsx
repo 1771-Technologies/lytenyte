@@ -16,28 +16,18 @@ import { useTotalHeaderHeight } from "./hooks/use-total-header-height.js";
 import { useXPositions } from "./hooks/use-x-positions.js";
 import { useYPositions } from "./hooks/use-y-positions.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
-import {
-  equal,
-  type DataRect,
-  type GridSections,
-  type LayoutState,
-  type RowSource,
-} from "@1771technologies/lytenyte-shared";
+import { equal, type DataRect, type GridSections, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useBounds } from "./hooks/use-bounds.js";
 import { useApi } from "./hooks/use-api/use-api.js";
 import {
-  BoundsContextProvider,
   ColumnLayoutContextProvider,
   EditProvider,
-  FocusProvider,
   RootContextProvider,
-  RowLayoutContextProvider,
   type RootContextValue,
 } from "./root-context.js";
 import { useEditContext } from "./hooks/use-edit-context.js";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
-import { usePosition } from "./hooks/use-position.js";
 import { useDropAccept } from "./hooks/use-drop-accept.js";
 import { useGridId } from "./hooks/use-grid-id.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
@@ -58,6 +48,10 @@ import { ActiveRangeProvider } from "./contexts/active-range-context.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { usePiece } from "../internal.js";
+import { ColumnSettingProvider } from "./contexts/column-settings/column-settings.js";
+import { BoundsContextProvider, StartBoundsProvider } from "./contexts/bounds.js";
+import { FocusPositionProvider } from "./contexts/focus-position.js";
+import { RowLayoutProvider, RowViewContextProvider } from "./contexts/row-view.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -122,7 +116,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   const api = useExtendedAPI(props);
   useImperativeHandle(forwarded, () => api as any, [api]);
 
-  const bounds = useBounds(
+  const { startBounds, bounds } = useBounds(
     props,
     source,
     view,
@@ -133,20 +127,17 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     yPositions.positions,
   );
 
-  const { focusPiece, position } = usePosition();
-  const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
   const headerLayout = useHeaderLayout(view, props);
 
-  const rowLayout = useRowLayout(
+  const { rowLayout, rowView } = useRowLayout(
     props,
+    cutoffValue,
     source,
     view,
     vp,
     api,
     bounds,
-    layoutStateRef,
     controlled.detailExpansions,
-    position,
   );
 
   const editValue = useEditContext(view, api, props, source);
@@ -169,8 +160,8 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     controlled,
     editValue,
     selectPivot,
-    bounds.get(),
-    layoutStateRef,
+    bounds,
+    rowLayout,
     yPositions.detailCache,
     vp,
     xPositions,
@@ -199,7 +190,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       viewport: vp,
       setViewport: setVp,
       view,
-      focusActive: focusPiece,
       source,
 
       events: props.events ?? {},
@@ -255,7 +245,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     controlled.detailExpansions,
     dimensions,
     dropAccept,
-    focusPiece,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,
@@ -311,15 +300,21 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
             onCellSelectionChange={onCellSelectionChange}
           >
             <ActiveRangeProvider>
-              <RowLayoutContextProvider value={rowLayout}>
-                <ColumnLayoutContextProvider value={headerLayout}>
-                  <BoundsContextProvider value={bounds}>
-                    <EditProvider value={editValue}>
-                      <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
-                    </EditProvider>
-                  </BoundsContextProvider>
-                </ColumnLayoutContextProvider>
-              </RowLayoutContextProvider>
+              <RowViewContextProvider value={rowView}>
+                <RowLayoutProvider value={rowLayout}>
+                  <ColumnLayoutContextProvider value={headerLayout}>
+                    <BoundsContextProvider value={bounds}>
+                      <StartBoundsProvider value={startBounds}>
+                        <EditProvider value={editValue}>
+                          <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
+                            <FocusPositionProvider>{children ?? <Fallback />}</FocusPositionProvider>
+                          </ColumnSettingProvider>
+                        </EditProvider>
+                      </StartBoundsProvider>
+                    </BoundsContextProvider>
+                  </ColumnLayoutContextProvider>
+                </RowLayoutProvider>
+              </RowViewContextProvider>
             </ActiveRangeProvider>
           </CellSelectionContext>
         </GridSectionsProvider>

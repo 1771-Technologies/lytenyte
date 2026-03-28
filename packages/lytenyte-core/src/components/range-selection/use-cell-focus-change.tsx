@@ -2,10 +2,10 @@ import { equal, rectFromGridCellPosition, type PositionUnion } from "@1771techno
 import { useEffect, useRef } from "react";
 import { useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
 import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
-import type { PieceWritable } from "../../hooks/use-piece.js";
+import { useFocusReactive } from "../../root/contexts/focus-position.js";
 
-export function useCellFocusChange(focusActive: PieceWritable<PositionUnion | null>) {
-  const focus = focusActive.useValue();
+export function useCellFocusChange() {
+  const [focus] = useFocusReactive();
   const prevRef = useRef<PositionUnion | null>(null);
   const settings = useCellSelectionSettings();
   const { selecting } = useActiveRangeSelection();

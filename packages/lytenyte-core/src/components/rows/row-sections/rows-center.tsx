@@ -2,12 +2,13 @@ import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "r
 import { NativeScroller } from "../scrollers/native-scroller.js";
 import { RowChildrenDefault } from "../row-children-default.js";
 import { useRowsContainerContext } from "../rows-container/context.js";
-import { useRowLayout } from "../../../root/root-context.js";
 import { $centerCount, $centerHeight, $pinHeight, $topCount } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { CellSelectionCenter } from "../../range-selection/cell-selection-container.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useFocusNonReactive } from "../../../root/contexts/focus-position.js";
+import { useRowLayout, useRowView } from "../../../root/contexts/row-view.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -15,23 +16,37 @@ export const RowsCenter = memo(
     forwarded,
   ) {
     const id = useGridId();
-    const layout = useRowLayout();
+    const rowView = useRowView();
     const container = useRowsContainerContext();
+    const focus = useFocusNonReactive().get();
+    const rowLayout = useRowLayout();
 
     const pinSectionHeights = container.useValue($pinHeight);
     const centerHeight = container.useValue($centerHeight);
     const rowCenterCount = container.useValue($centerCount);
     const rowTopCount = container.useValue($topCount);
 
+    const layoutRows = useMemo(() => {
+      if (focus?.kind !== "cell" && focus?.kind !== "full-width") return rowView.center;
+
+      const layout = rowLayout.layoutByIndex(focus.rowIndex);
+      if (layout?.rowPin || !layout) return rowView.center;
+
+      if (layout.rowIndex < rowView.center[0].rowIndex) return [layout, ...rowView.center];
+      else if (layout.rowIndex > rowView.center.at(-1)!.rowIndex) return [...rowView.center, layout];
+
+      return rowView.center;
+    }, [focus, rowLayout, rowView.center]);
+
     const rows = useMemo(() => {
       const rows: ReactNode[] = [];
 
-      for (let i = 0; i < layout.center.length; i++) {
-        rows.push(<Fragment key={layout.center[i].id}>{children(layout.center[i])}</Fragment>);
+      for (let i = 0; i < layoutRows.length; i++) {
+        rows.push(<Fragment key={layoutRows[i].id}>{children(layoutRows[i])}</Fragment>);
       }
 
       return rows;
-    }, [children, layout.center]);
+    }, [children, layoutRows]);
 
     if (centerHeight <= 0) {
       return <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 0px)` }} />;

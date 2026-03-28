@@ -1,5 +1,11 @@
 # @1771technologies/grid-sample-data
 
+## 2.0.4-dev.1
+
+### Patch Changes
+
+- Reworked virtualization%"
+
 ## 2.0.4-dev.0
 
 ### Patch Changes

@@ -1,4 +1,4 @@
-import { forwardRef, memo, useMemo, type JSX } from "react";
+import { forwardRef, memo, type JSX } from "react";
 import { useRowContextValue } from "./use-row-context-value.js";
 import { equal, type LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
 import { RowContext } from "./context.js";
@@ -7,22 +7,15 @@ import { useRowsContainerContext } from "../rows-container/context.js";
 import { $topHeight } from "../../../selectors.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
-import { CellSpacerCenter } from "../../cells/cell-spacers/cell-spacer-center.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
   const id = useGridId();
-  const { rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api, cellSelections$ } = ctx;
+  const { rowAlternateAttr, yPositions, events, styles: sx, api, cellSelections$ } = ctx;
 
   const container = useRowsContainerContext();
-
-  const hasSpans = useMemo(() => {
-    const visible = view.visibleColumns;
-    // @ts-expect-error this could be defined, but we don't full type it for simplicity.
-    return !visible.every((c) => !(c.colSpan || c.rowSpan));
-  }, [view.visibleColumns]);
 
   const rowMeta = useRowContextValue(row, ctx);
   const topOffset = container.useValue($topHeight);
@@ -37,7 +30,6 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     row.rowPin,
     topOffset,
     !!row.rowIsFocusRow,
-    hasSpans || true,
     rowMeta.detailHeight,
     props.style ?? sx?.row?.style,
   );
@@ -67,7 +59,6 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-selected={rowMeta.row?.__selected}
         data-ln-row
       >
-        <CellSpacerCenter rowMeta={rowMeta} visibleStartCount={view.startCount} xPositions={xPositions} />
         {props.children}
         <RowDetailRow layout={row} />
       </div>

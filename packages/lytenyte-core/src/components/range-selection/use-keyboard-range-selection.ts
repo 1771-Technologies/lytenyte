@@ -3,11 +3,13 @@ import { useEvent } from "../../internal.js";
 import { useRoot } from "../../root/root-context.js";
 import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
 import { expandDirectionFromKey, expandRectsInDirection } from "@1771technologies/lytenyte-shared";
+import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
-  const { api, focusActive, view, source, rtl } = useRoot();
+  const { api, view, source, rtl } = useRoot();
   const { cellSelections } = useCellSelection();
   const settings = useCellSelectionSettings();
+  const focusActive = useFocusNonReactive();
 
   const rowCount = source.useRowCount();
 

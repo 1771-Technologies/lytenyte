@@ -13,7 +13,7 @@ const columns: Grid.Column[] = [
   { id: "default" },
   { id: "housing", colSpan: 2 },
   { id: "loan" },
-  { id: "contact", pin: "end" },
+  { id: "contact", pin: "end", width: 120 },
   { id: "day", pin: "end" },
   { id: "month" },
   { id: "duration" },

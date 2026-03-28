@@ -5,8 +5,8 @@ import { handleRangeSelect } from "@1771technologies/lytenyte-shared";
 import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
 import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
 import { useGridSections } from "../../root/contexts/grid-sections-context.js";
-import { useRoot } from "../../root/root-context.js";
 import type { API } from "../../types/api.js";
+import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 
 export function useRangeSelection(
   mouseDown: MouseEventHandler<HTMLDivElement> | undefined,
@@ -21,7 +21,7 @@ export function useRangeSelection(
   const { setActiveRange, setDeselect, setSelecting } = useActiveRangeSelection();
 
   const gridSections = useGridSections();
-  const { focusActive } = useRoot();
+  const focusActive = useFocusNonReactive();
 
   const onMouseDown: MouseEventHandler<HTMLDivElement> = useEvent((e) => {
     mouseDown?.(e);

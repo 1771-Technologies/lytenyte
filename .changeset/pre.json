@@ -18,6 +18,7 @@
     "@1771technologies/grid-sample-data": "2.0.3"
   },
   "changesets": [
-    "fluffy-rabbits-carry"
+    "fluffy-rabbits-carry",
+    "tender-toys-run"
   ]
 }

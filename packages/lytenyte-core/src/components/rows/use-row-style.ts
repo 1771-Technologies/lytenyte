@@ -1,13 +1,10 @@
 import { useMemo, type CSSProperties } from "react";
-import { isFirefox, type RowPin } from "@1771technologies/lytenyte-shared";
+import { type RowPin } from "@1771technologies/lytenyte-shared";
 import {
-  getTranslate,
   SCROLL_WIDTH_VARIABLE_USE,
   sizeFromCoord,
   VIEWPORT_WIDTH_VARIABLE_USE,
 } from "@1771technologies/lytenyte-shared";
-
-const isFF = typeof window === "undefined" ? false : isFirefox();
 
 export function useRowStyle(
   yPositions: Uint32Array,
@@ -15,7 +12,6 @@ export function useRowStyle(
   rowPin: RowPin,
   topOffset: number,
   rowIsFocusRow: boolean,
-  hasSpans: boolean,
   detailHeight: number,
   propStyles: CSSProperties | undefined,
 ): CSSProperties {
@@ -31,8 +27,6 @@ export function useRowStyle(
     // @Lee: is there a reason to prefer transform over top? It seems like performance wise
     // they are the same, and we don't actually change the translation. It also seems using positioning
     // results in fewer cross browsers issues.
-    const shouldBeRelative = isTranslated && (isFF || hasSpans);
-    const isTranslatedButNotRelative = isTranslated && !hasSpans && !isFF;
 
     const styles: CSSProperties = {
       boxSizing: "border-box",
@@ -43,15 +37,14 @@ export function useRowStyle(
       opacity: rowIsFocusRow ? "0" : undefined,
       whiteSpace: "nowrap",
       display: "flex",
-      transform: isTranslatedButNotRelative ? getTranslate(0, yPositions[rowIndex] - topOffset) : undefined,
-      position: shouldBeRelative ? "relative" : undefined,
-      top: shouldBeRelative ? yPositions[rowIndex] - topOffset : undefined,
+      position: isTranslated ? "relative" : undefined,
+      top: isTranslated ? yPositions[rowIndex] - topOffset : undefined,
 
       "--ln-row-height": `${height - detailHeight}px`,
     } as CSSProperties;
 
     return { ...propStyles, ...styles };
-  }, [detailHeight, hasSpans, height, propStyles, rowIndex, rowIsFocusRow, rowPin, topOffset, yPositions]);
+  }, [detailHeight, height, propStyles, rowIndex, rowIsFocusRow, rowPin, topOffset, yPositions]);
 
   return styles;
 }
