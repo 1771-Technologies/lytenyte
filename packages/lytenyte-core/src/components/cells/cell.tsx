@@ -6,7 +6,7 @@ import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
-import { useColumnSettings } from "../../root/contexts/column-settings/column-settings.js";
+import { useColumnSettingsContext } from "../../root/contexts/columns/column-settings-context.js";
 import { useStartBounds } from "../../root/contexts/bounds.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 
@@ -35,7 +35,7 @@ const CellImpl = memo(
   forwardRef<HTMLDivElement, Cell.Props>(function Cell({ cell, ...props }, forwarded) {
     const id = useGridId();
     const { xPositions, yPositions, api, view, editMode, events, styles } = useRoot();
-    const settings = useColumnSettings()[cell.id];
+    const settings = useColumnSettingsContext()[cell.id];
     const rowMeta = useRowMeta();
     const row = rowMeta.row;
 

@@ -2,8 +2,9 @@ import { makeColumnView, type ColumnAbstract, type RowSource } from "@1771techno
 import { useMemo } from "react";
 import type { Root } from "../root";
 
+const EMPTY_ARRAY: ColumnAbstract[] = [];
+
 export function useColumnView(
-  columns: ColumnAbstract[],
   props: Root.Props,
   source: RowSource,
   columnGroupExpansions: Record<string, boolean>,
@@ -12,7 +13,7 @@ export function useColumnView(
 
   const columnView = useMemo(() => {
     const columnView = makeColumnView({
-      columns,
+      columns: props.columns ?? EMPTY_ARRAY,
       rowGroupDepth: maxRowDepth,
       rowGroupTemplate: props.rowGroupColumn ?? {},
       marker: props.columnMarker ?? {},
@@ -27,12 +28,12 @@ export function useColumnView(
     return columnView;
   }, [
     columnGroupExpansions,
-    columns,
     maxRowDepth,
     props.columnBase,
     props.columnGroupDefaultExpansion,
     props.columnGroupJoinDelimiter,
     props.columnMarker,
+    props.columns,
     props.rowGroupColumn,
   ]);
 

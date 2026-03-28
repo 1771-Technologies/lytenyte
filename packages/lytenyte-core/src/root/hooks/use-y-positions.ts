@@ -9,6 +9,7 @@ export function useYPositions(
   rowSource: RowSource,
   height: number,
   detailExpansions: Set<string>,
+  detailCache: Record<string, number>,
 ) {
   const rowCount = rowSource.useRowCount();
 
@@ -20,8 +21,7 @@ export function useYPositions(
     [rows],
   );
 
-  const [rowCache, setRowCache] = useState<Record<string, number>>({});
-  const [detailCache, setDetailCache] = useState<Record<string, number>>({});
+  const [rowCache] = useState<Record<string, number>>({});
 
   return useMemo(() => {
     const detailHeight = props.rowDetailHeight ?? 200;
@@ -42,7 +42,7 @@ export function useYPositions(
         ? EMPTY_POSITION_ARRAY
         : rowPositions(rowCount, rowHeight, rowHeightGuess, rowCache, detailHeightCalc, height);
 
-    return { positions, setRowCache, setDetailCache, detailCache };
+    return positions;
   }, [
     detailCache,
     detailExpansions,

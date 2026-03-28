@@ -51,6 +51,7 @@ export type {
   PositionHeaderGroupCell,
   PositionUnion,
   GridSections,
+  PartialMandatory,
 } from "./types.js";
 
 export type {

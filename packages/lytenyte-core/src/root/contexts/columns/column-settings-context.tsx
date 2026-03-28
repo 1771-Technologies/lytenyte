@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo, type PropsWithChildren, type ReactNode } from "react";
-import type { CellRendererParams, Column, EditParams } from "../../../types";
-import { CellDefault } from "./cell-default.js";
+import type { CellParams, CellRendererParams, Column, EditParams } from "../../../types/index.js";
 
 interface ColumnSetting {
   readonly cellRenderer: (params: CellRendererParams<any>) => ReactNode;
@@ -38,4 +37,10 @@ export function ColumnSettingProvider({
   return <context.Provider value={settings}>{children}</context.Provider>;
 }
 
-export const useColumnSettings = () => useContext(context);
+export const useColumnSettingsContext = () => useContext(context);
+
+function CellDefault({ column, row, api }: CellParams<any>) {
+  if (row.data == null && row.loading) return <div>Loading...</div>;
+  const field = api.columnField(column, row);
+  return <div>{`${field ?? "-"}`}</div>;
+}

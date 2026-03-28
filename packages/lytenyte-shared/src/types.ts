@@ -276,7 +276,7 @@ export interface GridSections {
   readonly endCutoff: number;
 
   /** The total header height in px */
-  readonly headerHeight: number;
+  readonly topRowOffset: number;
   /**
    * Pixel distance from the top of the viewport to the first scrollable row.
    * Includes the total header height plus the height of all top-pinned rows.
@@ -289,3 +289,5 @@ export interface GridSections {
   /** Pixel width of the end-pinned column area. */
   readonly endOffset: number;
 }
+
+export type PartialMandatory<T> = { [k in keyof Required<T>]: Required<T>[k] | undefined };
