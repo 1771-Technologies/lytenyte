@@ -23,14 +23,12 @@ import { useApi } from "./hooks/use-api/use-api.js";
 import {
   ColumnLayoutContextProvider,
   EditProvider,
-  FocusProvider,
   RootContextProvider,
   RowLayoutContextProvider,
   type RootContextValue,
 } from "./root-context.js";
 import { useEditContext } from "./hooks/use-edit-context.js";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
-import { usePosition } from "./hooks/use-position.js";
 import { useDropAccept } from "./hooks/use-drop-accept.js";
 import { useGridId } from "./hooks/use-grid-id.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
@@ -53,6 +51,7 @@ import { useEvent } from "../hooks/use-event.js";
 import { usePiece } from "../internal.js";
 import { ColumnSettingProvider } from "./contexts/column-settings/column-settings.js";
 import { BoundsContextProvider, StartBoundsProvider } from "./contexts/bounds.js";
+import { FocusPositionProvider } from "./contexts/focus-position.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -128,7 +127,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     yPositions.positions,
   );
 
-  const { focusPiece } = usePosition();
   const headerLayout = useHeaderLayout(view, props);
 
   const { rowLayout, rowView } = useRowLayout(
@@ -192,7 +190,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       viewport: vp,
       setViewport: setVp,
       view,
-      focusActive: focusPiece,
       source,
 
       events: props.events ?? {},
@@ -248,7 +245,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     controlled.detailExpansions,
     dimensions,
     dropAccept,
-    focusPiece,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,
@@ -310,7 +306,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
                     <StartBoundsProvider value={startBounds}>
                       <EditProvider value={editValue}>
                         <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
-                          <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
+                          <FocusPositionProvider>{children ?? <Fallback />}</FocusPositionProvider>
                         </ColumnSettingProvider>
                       </EditProvider>
                     </StartBoundsProvider>

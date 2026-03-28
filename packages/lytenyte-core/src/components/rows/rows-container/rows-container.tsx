@@ -25,7 +25,6 @@ export const RowsContainer = memo(
       viewport,
       slotRowsOverlay: RowsOverlay,
       rtl,
-      focusActive,
     } = useRoot();
 
     const startWidth = xPositions[view.startCount];
@@ -74,7 +73,7 @@ export const RowsContainer = memo(
 
     const onMouseDown = useRangeSelection(props.onMouseDown, viewport, rtl, api);
     const onKeyDownRange = useKeyboardRangeSelection();
-    useCellFocusChange(focusActive);
+    useCellFocusChange();
 
     return (
       <RowsContainerContext.Provider value={usePiece(value)}>

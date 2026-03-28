@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { trackFocus, type PositionUnion } from "@1771technologies/lytenyte-shared";
-import type { PieceWritable } from "../../hooks/use-piece";
 
 export function useFocusTracking(
   vp: HTMLElement | null,
-  focusActive: PieceWritable<PositionUnion | null>,
+  focusActive: { get: () => PositionUnion | null; set: Dispatch<SetStateAction<PositionUnion | null>> },
   gridId: string,
 ) {
   const [focused, setFocused] = useState(false);

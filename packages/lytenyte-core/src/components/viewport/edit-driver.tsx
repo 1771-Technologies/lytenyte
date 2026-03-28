@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useEdit, useRoot } from "../../root/root-context.js";
+import { useFocusReactive } from "../../root/contexts/focus-position.js";
 
 export function EditDriver() {
-  const { editMode, focusActive, api } = useRoot();
+  const { editMode, api } = useRoot();
   const edit = useEdit();
 
-  const focus = focusActive.useValue();
+  const [focus] = useFocusReactive();
   const activeEdit = edit.activeEdit;
 
   useEffect(() => {

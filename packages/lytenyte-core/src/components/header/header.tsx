@@ -12,15 +12,8 @@ import { useStartBounds } from "../../root/contexts/bounds.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridId();
-  const {
-    floatingRowEnabled,
-    floatingRowHeight,
-    headerGroupHeight,
-    headerHeight,
-    view,
-    xPositions,
-    focusActive,
-  } = useRoot();
+  const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view, xPositions } =
+    useRoot();
   const columnLayout = useColumnLayout();
 
   const [colStartBound, colEndBound] = useStartBounds();
@@ -35,13 +28,7 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
   const gridColTemplate = useHeaderColTemplate(view, xPositions);
 
   const [active, setActive] = useState<LayoutHeader | null>(null);
-  const virtualizedHeaderCells = useVirtualizedHeader(
-    columnLayout,
-    active,
-    colStartBound,
-    colEndBound,
-    focusActive,
-  );
+  const virtualizedHeaderCells = useVirtualizedHeader(columnLayout, active, colStartBound, colEndBound);
   const headerRows = useHeaderCellReactNodes(virtualizedHeaderCells, children);
 
   const value = useMemo<HeaderContextType>(() => {
