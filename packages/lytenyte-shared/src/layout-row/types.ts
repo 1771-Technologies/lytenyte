@@ -16,6 +16,10 @@ export interface LayoutCell {
   readonly colLastStartPin?: boolean;
   readonly rowLastPinTop?: boolean;
   readonly rowFirstPinBottom?: boolean;
+
+  /**
+   * @deprecated
+   */
   readonly rowIsFocusRow?: boolean;
   readonly root: LayoutCell | null;
 }
@@ -41,6 +45,10 @@ export interface LayoutRowWithCells {
   readonly rowPin: RowPin;
   readonly rowLastPinTop?: boolean;
   readonly rowFirstPinBottom?: boolean;
+
+  /**
+   * @deprecated
+   */
   readonly rowIsFocusRow?: boolean;
   readonly cells: LayoutCell[];
 }

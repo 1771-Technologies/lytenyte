@@ -171,6 +171,10 @@ export function createRowLayout({
 
           if (rowSpan > 1) {
             for (let x = ri + 1; x < ri + rowSpan; x++) {
+              if (isCutoff(x)) {
+                (root.rowSpan as any) = x - ri;
+                break;
+              }
               let xFlags = occupiedFlags.get(x);
               let xRoots = occupiedRoots.get(x);
               if (!xFlags) {
@@ -201,8 +205,6 @@ export function createRowLayout({
         };
         indexToLayout.set(ri, lookbackRow);
         idToLayout.set(row.id, lookbackRow);
-
-        if (isCutoff(ri)) break;
       }
     }
 
@@ -237,6 +239,11 @@ export function createRowLayout({
 
       if (rowSpan > 1) {
         for (let x = index + 1; x < index + rowSpan; x++) {
+          if (isCutoff(x)) {
+            (root.rowSpan as any) = x - index;
+            break;
+          }
+
           let xFlags = occupiedFlags.get(x);
           let xRoots = occupiedRoots.get(x);
           if (!xFlags) {
