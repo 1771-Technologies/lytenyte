@@ -1,8 +1,8 @@
 import { equal, rectFromGridCellPosition, type PositionUnion } from "@1771technologies/lytenyte-shared";
 import { useEffect, useRef } from "react";
-import { useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
-import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
 import { useFocusReactive } from "../../root/contexts/focus-position.js";
+import { useCellSelectionSettings } from "../../root/contexts/cell-range-selection/cell-selection-context.js";
+import { useActiveRangeSelection } from "../../root/contexts/cell-range-selection/active-range-context.js";
 
 export function useCellFocusChange() {
   const [focus] = useFocusReactive();

@@ -1,12 +1,11 @@
 import { memo, useMemo } from "react";
-import { useCellSelection } from "../../root/contexts/cell-selection-context.js";
 import { bottomSection, centerSection, topSection } from "@1771technologies/lytenyte-shared";
 import { CellSelectionRect } from "./cell-selection-rect.js";
-import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
+import { useCellSelection } from "../../root/contexts/cell-range-selection/cell-selection-context.js";
+import { useActiveRangeSelection } from "../../root/contexts/cell-range-selection/active-range-context.js";
 
 export const CellSelectionTop = memo(function CellSelectionTop() {
   const { cellSelectionsSplit: allRects } = useCellSelection();
-
   const { activeSplit, deselect } = useActiveRangeSelection();
 
   const topRects = useMemo(() => {

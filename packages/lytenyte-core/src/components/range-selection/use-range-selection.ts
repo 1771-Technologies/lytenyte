@@ -2,11 +2,14 @@ import { type MouseEventHandler } from "react";
 import { useEvent } from "../../internal.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
 import { handleRangeSelect } from "@1771technologies/lytenyte-shared";
-import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
-import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
 import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 import type { API } from "../../types/api.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
+import {
+  useCellSelection,
+  useCellSelectionSettings,
+} from "../../root/contexts/cell-range-selection/cell-selection-context.js";
+import { useActiveRangeSelection } from "../../root/contexts/cell-range-selection/active-range-context.js";
 
 export function useRangeSelection(
   mouseDown: MouseEventHandler<HTMLDivElement> | undefined,

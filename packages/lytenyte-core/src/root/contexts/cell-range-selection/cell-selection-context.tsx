@@ -13,7 +13,7 @@ import {
   type PropsWithChildren,
   type RefObject,
 } from "react";
-import type { Props } from "../../types";
+import type { Props } from "../../../types/index.js";
 
 interface CellSelectionSettingsType {
   readonly cellSelectionMode: "range" | "multi-range" | "none";

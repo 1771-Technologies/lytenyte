@@ -8,7 +8,7 @@ import {
   type PropsWithChildren,
   type SetStateAction,
 } from "react";
-import { useGridSections } from "./grid-sections-context.js";
+import { useGridSections } from "../grid-sections-context.js";
 
 interface ActiveRangeContextType {
   readonly activeRange: DataRect | null;

@@ -41,10 +41,8 @@ import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
-import { CellSelectionContext } from "./contexts/cell-selection-context.js";
 import { GridIdProvider } from "./contexts/grid-id.js";
 import { GridSectionsProvider } from "./contexts/grid-sections-context.js";
-import { ActiveRangeProvider } from "./contexts/active-range-context.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { usePiece } from "../internal.js";
@@ -52,6 +50,8 @@ import { ColumnSettingProvider } from "./contexts/column-settings/column-setting
 import { BoundsContextProvider, StartBoundsProvider } from "./contexts/bounds.js";
 import { FocusPositionProvider } from "./contexts/focus-position.js";
 import { RowLayoutProvider, RowViewContextProvider } from "./contexts/row-view.js";
+import { ActiveRangeProvider } from "./contexts/cell-range-selection/active-range-context.js";
+import { CellSelectionContext } from "./contexts/cell-range-selection/cell-selection-context.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {

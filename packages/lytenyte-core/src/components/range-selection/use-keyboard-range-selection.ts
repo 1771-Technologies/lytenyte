@@ -1,9 +1,12 @@
 import type { KeyboardEventHandler } from "react";
 import { useEvent } from "../../internal.js";
 import { useRoot } from "../../root/root-context.js";
-import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
 import { expandDirectionFromKey, expandRectsInDirection } from "@1771technologies/lytenyte-shared";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
+import {
+  useCellSelection,
+  useCellSelectionSettings,
+} from "../../root/contexts/cell-range-selection/cell-selection-context.js";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
   const { api, view, source, rtl } = useRoot();
