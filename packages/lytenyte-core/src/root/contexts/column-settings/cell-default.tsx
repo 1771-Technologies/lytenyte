@@ -1,4 +1,4 @@
-import type { CellParams } from "../../types/column.js";
+import type { CellParams } from "../../../types";
 
 export function CellDefault({ column, row, api }: CellParams<any>) {
   if (row.data == null && row.loading) return <div>Loading...</div>;

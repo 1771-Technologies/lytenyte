@@ -1,6 +1,5 @@
-import { forwardRef, memo, useCallback, type JSX } from "react";
+import { forwardRef, memo, useCallback, useMemo, type JSX } from "react";
 import { type LayoutCell } from "@1771technologies/lytenyte-shared";
-import { CellDefault } from "./cell-default.js";
 import { useCellStyle } from "./use-cell-style.js";
 import { useBounds, useFocus, useRoot } from "../../root/root-context.js";
 import { $colEndBound, $colStartBound } from "../../selectors.js";
@@ -8,6 +7,7 @@ import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
+import { useColumnSettings } from "../../root/contexts/column-settings/column-settings.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
   const bounds = useBounds();
@@ -35,40 +35,52 @@ export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, 
 const CellImpl = memo(
   forwardRef<HTMLDivElement, Cell.Props>(function Cell({ cell, ...props }, forwarded) {
     const id = useGridId();
-    const { base, xPositions, yPositions, api, view, editMode, events, styles } = useRoot();
+    const { xPositions, yPositions, api, view, editMode, events, styles } = useRoot();
+    const settings = useColumnSettings()[cell.id];
 
     const rowMeta = useRowMeta();
     const row = rowMeta.row;
 
     const column = view.lookup.get(cell.id)! as Root.Column;
 
-    const Renderer = column.cellRenderer ?? (base as Root.Column).cellRenderer ?? CellDefault;
-    const EditRenderer = column.editRenderer ?? (base as Root.Column).editRenderer!;
+    const Renderer = settings.cellRenderer;
+    const EditRenderer = settings.editRenderer!;
+    const editSetting = settings.editable;
 
-    const isEditing = Boolean(editMode !== "readonly" && rowMeta.isEditing && EditRenderer);
+    const { willDisplayEdit, isEditingThis } = useMemo(() => {
+      const isEditing = Boolean(editMode !== "readonly" && rowMeta.isEditing && EditRenderer);
+      const isEditable =
+        row && typeof editSetting === "function"
+          ? editSetting({ api, row, column, rowIndex: cell.rowIndex, colIndex: cell.colIndex })
+          : editSetting;
 
-    const editSetting = column.editable ?? (base as Root.Column).editable;
-    const isEditable =
-      row && typeof editSetting === "function"
-        ? editSetting({ api, row, column, rowIndex: cell.rowIndex, colIndex: cell.colIndex })
-        : (editSetting ?? false);
+      const isEditingThis =
+        isEditable &&
+        ((editMode === "row" && isEditing) || (editMode === "cell" && rowMeta.editColumn === column.id));
 
-    const isEditingThis =
-      isEditable &&
-      ((editMode === "row" && isEditing) || (editMode === "cell" && rowMeta.editColumn === column.id));
-
-    const willDisplayEdit = isEditing && isEditingThis;
-
-    const style = useCellStyle(xPositions, yPositions, cell, rowMeta.detailHeight);
-
-    const handlers = useMappedEvents(events.cell, { column, row, api, layout: cell });
-
+      const willDisplayEdit = isEditing && isEditingThis;
+      return { isEditingThis, willDisplayEdit };
+    }, [
+      EditRenderer,
+      api,
+      cell.colIndex,
+      cell.rowIndex,
+      column,
+      editMode,
+      editSetting,
+      row,
+      rowMeta.editColumn,
+      rowMeta.isEditing,
+    ]);
     const changeValue = useCallback(
       (value: unknown) => {
         return rowMeta.changeValue(value, column);
       },
       [column, rowMeta],
     );
+
+    const style = useCellStyle(xPositions, yPositions, cell, rowMeta.detailHeight);
+    const handlers = useMappedEvents(events.cell, { column, row, api, layout: cell });
 
     if (!row || cell.isDeadCol || cell.isDeadRow) return null;
 
@@ -101,7 +113,7 @@ const CellImpl = memo(
         }
         style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
         // Data Properties
-        data-ln-type={column.type ?? base.type ?? "string"}
+        data-ln-type={settings.type}
         data-ln-rowindex={cell.rowIndex}
         data-ln-colindex={cell.colIndex}
         data-ln-colspan={cell.colSpan}

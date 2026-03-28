@@ -52,6 +52,7 @@ import { ActiveRangeProvider } from "./contexts/active-range-context.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { usePiece } from "../internal.js";
+import { ColumnSettingProvider } from "./contexts/column-settings/column-settings.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -307,7 +308,9 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
                 <ColumnLayoutContextProvider value={headerLayout}>
                   <BoundsContextProvider value={bounds}>
                     <EditProvider value={editValue}>
-                      <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
+                      <ColumnSettingProvider columns={view.visibleColumns} base={props.columnBase}>
+                        <FocusProvider value={focusPiece}>{children ?? <Fallback />}</FocusProvider>
+                      </ColumnSettingProvider>
                     </EditProvider>
                   </BoundsContextProvider>
                 </ColumnLayoutContextProvider>

@@ -1,4 +1,4 @@
-import { forwardRef, memo, useMemo, type JSX } from "react";
+import { forwardRef, memo, type JSX } from "react";
 import { useRowContextValue } from "./use-row-context-value.js";
 import { equal, type LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
 import { RowContext } from "./context.js";
@@ -13,15 +13,9 @@ import { useGridId } from "../../../root/contexts/grid-id.js";
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
   const id = useGridId();
-  const { rowAlternateAttr, yPositions, view, events, styles: sx, api, cellSelections$ } = ctx;
+  const { rowAlternateAttr, yPositions, events, styles: sx, api, cellSelections$ } = ctx;
 
   const container = useRowsContainerContext();
-
-  const hasSpans = useMemo(() => {
-    const visible = view.visibleColumns;
-    // @ts-expect-error this could be defined, but we don't full type it for simplicity.
-    return !visible.every((c) => !(c.colSpan || c.rowSpan));
-  }, [view.visibleColumns]);
 
   const rowMeta = useRowContextValue(row, ctx);
   const topOffset = container.useValue($topHeight);
@@ -36,7 +30,6 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     row.rowPin,
     topOffset,
     !!row.rowIsFocusRow,
-    hasSpans || true,
     rowMeta.detailHeight,
     props.style ?? sx?.row?.style,
   );

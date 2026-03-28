@@ -39,7 +39,7 @@ export function useCellStyle(
       styles.insetInlineStart = `${xPositions[cell.colIndex]}px`;
     }
 
-    return { ...styles };
+    return styles;
   }, [cell.colIndex, cell.colPin, cell.colSpan, height, isRowPinned, isSticky, width, xPositions]);
 
   return styles;
