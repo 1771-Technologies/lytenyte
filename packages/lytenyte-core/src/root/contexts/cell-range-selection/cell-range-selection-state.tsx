@@ -89,5 +89,5 @@ function CellSelectionContextBase(
 
 export const CellSelectionContext = memo(CellSelectionContextBase);
 
-export const useCellSelection = () => useContext(context);
-export const useCellSelectionSettings = () => useContext(contextSettings);
+export const useCellRangeSelection = () => useContext(context);
+export const useCellRangeSelectionSettings = () => useContext(contextSettings);

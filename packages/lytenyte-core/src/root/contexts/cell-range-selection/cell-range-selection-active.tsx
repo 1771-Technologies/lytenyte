@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useGridSections } from "../grid-sections-context.js";
 
-interface ActiveRangeContextType {
+interface CellRangeSelectionActiveType {
   readonly activeRange: DataRect | null;
   readonly setActiveRange: Dispatch<SetStateAction<DataRect | null>>;
   readonly activeSplit: SectionedRect[];
@@ -20,10 +20,11 @@ interface ActiveRangeContextType {
   readonly setSelecting: Dispatch<SetStateAction<boolean>>;
 }
 
-const context = createContext<ActiveRangeContextType>({} as any);
+const context = createContext<CellRangeSelectionActiveType>({} as any);
 
-export function ActiveRangeProvider(props: PropsWithChildren) {
+export function CellRangeSelectionActive(props: PropsWithChildren) {
   const cutoff = useGridSections();
+
   const [activeRange, setActiveRange] = useState<DataRect | null>(null);
   const [deselect, setDeselect] = useState(false);
 
@@ -41,7 +42,7 @@ export function ActiveRangeProvider(props: PropsWithChildren) {
     );
   }, [activeRange, cutoff.bottomCutoff, cutoff.endCutoff, cutoff.startCutoff, cutoff.topCutoff]);
 
-  const value = useMemo<ActiveRangeContextType>(() => {
+  const value = useMemo<CellRangeSelectionActiveType>(() => {
     return {
       activeRange,
       activeSplit,
@@ -56,4 +57,4 @@ export function ActiveRangeProvider(props: PropsWithChildren) {
   return <context.Provider value={value}>{props.children}</context.Provider>;
 }
 
-export const useActiveRangeSelection = () => useContext(context);
+export const useCellRangeSelectionActive = () => useContext(context);

@@ -50,8 +50,8 @@ import { ColumnSettingProvider } from "./contexts/column-settings/column-setting
 import { BoundsContextProvider, StartBoundsProvider } from "./contexts/bounds.js";
 import { FocusPositionProvider } from "./contexts/focus-position.js";
 import { RowLayoutProvider, RowViewContextProvider } from "./contexts/row-view.js";
-import { ActiveRangeProvider } from "./contexts/cell-range-selection/active-range-context.js";
-import { CellSelectionContext } from "./contexts/cell-range-selection/cell-selection-context.js";
+import { CellRangeSelectionActive } from "./contexts/cell-range-selection/cell-range-selection-active.js";
+import { CellSelectionContext } from "./contexts/cell-range-selection/cell-range-selection-state.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -299,7 +299,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
             cellSelectionMode={p.cellSelectionMode}
             onCellSelectionChange={onCellSelectionChange}
           >
-            <ActiveRangeProvider>
+            <CellRangeSelectionActive>
               <RowViewContextProvider value={rowView}>
                 <RowLayoutProvider value={rowLayout}>
                   <ColumnLayoutContextProvider value={headerLayout}>
@@ -315,7 +315,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
                   </ColumnLayoutContextProvider>
                 </RowLayoutProvider>
               </RowViewContextProvider>
-            </ActiveRangeProvider>
+            </CellRangeSelectionActive>
           </CellSelectionContext>
         </GridSectionsProvider>
       </GridIdProvider>

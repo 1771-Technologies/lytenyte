@@ -6,10 +6,10 @@ import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 import type { API } from "../../types/api.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 import {
-  useCellSelection,
-  useCellSelectionSettings,
-} from "../../root/contexts/cell-range-selection/cell-selection-context.js";
-import { useActiveRangeSelection } from "../../root/contexts/cell-range-selection/active-range-context.js";
+  useCellRangeSelection,
+  useCellRangeSelectionSettings,
+} from "../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useCellRangeSelectionActive } from "../../root/contexts/cell-range-selection/cell-range-selection-active.js";
 
 export function useRangeSelection(
   mouseDown: MouseEventHandler<HTMLDivElement> | undefined,
@@ -18,10 +18,10 @@ export function useRangeSelection(
   api: API,
 ) {
   const gridId = useGridId();
-  const settings = useCellSelectionSettings();
+  const settings = useCellRangeSelectionSettings();
 
-  const { cellSelections } = useCellSelection();
-  const { setActiveRange, setDeselect, setSelecting } = useActiveRangeSelection();
+  const { cellSelections } = useCellRangeSelection();
+  const { setActiveRange, setDeselect, setSelecting } = useCellRangeSelectionActive();
 
   const gridSections = useGridSections();
   const focusActive = useFocusNonReactive();
