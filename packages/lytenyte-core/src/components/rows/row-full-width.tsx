@@ -6,11 +6,10 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { RowDetailRow } from "./row-detail-row.js";
 import { useRowStyle } from "./use-row-style.js";
-import { useRowsContainerContext } from "./rows-container/context.js";
 import { useRoot } from "../../root/root-context.js";
-import { $topHeight } from "../../selectors.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { useGridId } from "../../root/contexts/grid-id.js";
+import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
@@ -31,9 +30,8 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
     events,
     styles,
   } = useRoot();
-  const container = useRowsContainerContext();
-
   const Renderer = rowFullWidthRenderer;
+  const { topOffset, headerHeight } = useGridSections();
 
   const row = source.rowByIndex(layout.rowIndex).useValue();
 
@@ -42,8 +40,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
   const rowIndex = layout.rowIndex;
   const rowPin = layout.rowPin;
 
-  const topOffset = container.useValue($topHeight);
-  const rowIsFocusRow = !!layout.rowIsFocusRow;
+  const topHeight = topOffset - headerHeight;
 
   const detailExpanded = row && detailExpansions.has(row.id);
   const detailHeight = !detailExpanded
@@ -73,8 +70,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
         yPositions,
         rowIndex,
         rowPin,
-        topOffset,
-        rowIsFocusRow,
+        topHeight,
         detailHeight,
         props.style ?? styles?.row?.style,
       )}

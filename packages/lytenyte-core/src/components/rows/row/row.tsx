@@ -3,22 +3,21 @@ import { useRowContextValue } from "./use-row-context-value.js";
 import { equal, type LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
 import { RowContext } from "./context.js";
 import { useRoot } from "../../../root/root-context.js";
-import { useRowsContainerContext } from "../rows-container/context.js";
-import { $topHeight } from "../../../selectors.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
   const id = useGridId();
   const { rowAlternateAttr, yPositions, events, styles: sx, api, cellSelections$ } = ctx;
 
-  const container = useRowsContainerContext();
+  const { topOffset, headerHeight } = useGridSections();
 
   const rowMeta = useRowContextValue(row, ctx);
-  const topOffset = container.useValue($topHeight);
+  const topHeight = topOffset - headerHeight;
 
   const cellSelected = cellSelections$.useValue((x) =>
     x.some((r) => row.rowIndex >= r.rowStart && row.rowIndex < r.rowEnd),
@@ -28,8 +27,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     yPositions,
     row.rowIndex,
     row.rowPin,
-    topOffset,
-    !!row.rowIsFocusRow,
+    topHeight,
     rowMeta.detailHeight,
     props.style ?? sx?.row?.style,
   );

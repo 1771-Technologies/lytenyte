@@ -1,14 +1,14 @@
 import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "react";
 import { NativeScroller } from "../scrollers/native-scroller.js";
 import { RowChildrenDefault } from "../row-children-default.js";
-import { useRowsContainerContext } from "../rows-container/context.js";
-import { $centerCount, $centerHeight, $pinHeight, $topCount } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { CellSelectionCenter } from "../../range-selection/cell-selection-container.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../../root/contexts/focus-position.js";
 import { useRowLayout, useRowView } from "../../../root/contexts/row-view.js";
+import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
+import { useRoot } from "../../../internal.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -17,14 +17,22 @@ export const RowsCenter = memo(
   ) {
     const id = useGridId();
     const rowView = useRowView();
-    const container = useRowsContainerContext();
     const focus = useFocusNonReactive().get();
     const rowLayout = useRowLayout();
 
-    const pinSectionHeights = container.useValue($pinHeight);
-    const centerHeight = container.useValue($centerHeight);
-    const rowCenterCount = container.useValue($centerCount);
-    const rowTopCount = container.useValue($topCount);
+    const { yPositions } = useRoot();
+
+    const {
+      topCount: rowTopCount,
+      centerCount: rowCenterCount,
+      topOffset,
+      bottomOffset,
+      headerHeight,
+    } = useGridSections();
+
+    const topHeight = topOffset - headerHeight;
+    const pinSectionHeights = topHeight + bottomOffset;
+    const centerHeight = yPositions.at(-1)! - bottomOffset - topHeight;
 
     const layoutRows = useMemo(() => {
       if (focus?.kind !== "cell" && focus?.kind !== "full-width") return rowView.center;

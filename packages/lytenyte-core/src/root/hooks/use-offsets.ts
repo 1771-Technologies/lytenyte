@@ -17,5 +17,5 @@ export function useOffsets(
   const startOffset = xPositions[view.startCount];
   const endOffset = xPositions.at(-1)! - xPositions[view.centerCount + view.startCount];
 
-  return { startOffset, topOffset, bottomOffset, endOffset };
+  return { startOffset, topOffset, bottomOffset, endOffset, headerHeight: totalHeaderHeight };
 }

@@ -1,13 +1,12 @@
 import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "react";
 import { RowChildrenDefault } from "../row-children-default.js";
-import { useRowsContainerContext } from "../rows-container/context.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
-import { $topCount, $topHeight } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
 import { CellSelectionTop } from "../../range-selection/cell-selection-container.js";
 import { useGridId } from "../../../root/contexts/grid-id.js";
 import { useRowView } from "../../../root/contexts/row-view.js";
+import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, RowsTop.Props>(function RowsTop(
@@ -18,10 +17,8 @@ export const RowsTop = memo(
     const { totalHeaderHeight: top } = useRoot();
     const rowView = useRowView();
 
-    const container = useRowsContainerContext();
-
-    const topCount = container.useValue($topCount);
-    const height = container.useValue($topHeight);
+    const { topCount, topOffset, headerHeight } = useGridSections();
+    const height = topOffset - headerHeight;
 
     const rows = useMemo(() => {
       const rows: ReactNode[] = [];
