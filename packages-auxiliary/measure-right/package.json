@@ -1,7 +1,7 @@
 {
   "name": "@1771technologies/measure-right",
   "description": "Measure the JavaScript, Layout, and Paint performance of your frontend code.",
-  "version": "0.0.6-dev.0",
+  "version": "0.0.6-dev.1",
   "type": "module",
   "license": "Apache-2.0",
   "files": [
