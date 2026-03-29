@@ -1,5 +1,4 @@
 export { contains } from "./contains.js";
-export { isAnchorElement } from "./is-anchor-element.js";
 export { isDocument } from "./is-document.js";
 export { isEditableElement } from "./is-editable-element.js";
 export { isFrame } from "./is-frame.js";
