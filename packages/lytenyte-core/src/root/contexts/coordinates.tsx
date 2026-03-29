@@ -6,7 +6,7 @@ import { useDimensionContext } from "./viewport/dimensions-context.js";
 import { useHeaderLayoutContext } from "./header-layout.js";
 import { useXPositions } from "../hooks/use-x-positions.js";
 import { useColumnsContext } from "./columns/column-context.js";
-import { useRowDetailContext } from "./state/row-detail.js";
+import { useRowDetailContext } from "./row-detail.js";
 
 const xCoordinates = createContext<Uint32Array>(null as unknown as Uint32Array);
 const yCoordinates = createContext<Uint32Array>(null as unknown as Uint32Array);

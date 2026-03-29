@@ -24,15 +24,10 @@ export interface RootContextValue {
   readonly rtl: boolean;
   readonly view: ColumnView;
 
-  readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;
   readonly dimensions: Dimension;
   readonly base: Omit<ColumnAbstract, "id">;
 
-  readonly setDetailCache: Dispatch<SetStateAction<Record<string, number>>>;
-  readonly rowDetailHeightCache: Record<string, number>;
-  readonly rowDetailAutoHeightGuess: number;
-  readonly rowDetailHeight: number | "auto";
   readonly rowDetailRenderer: Root.Props["rowDetailRenderer"];
   readonly rowFullWidthRenderer: Root.Props["rowFullWidthRenderer"];
 

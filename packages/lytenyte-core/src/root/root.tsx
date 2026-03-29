@@ -35,7 +35,7 @@ import { DimensionsContext, useDimensionContext } from "./contexts/viewport/dime
 import { useViewportContext, ViewportContext } from "./contexts/viewport/viewport-context.js";
 import { HeaderLayoutProvider, useHeaderLayoutContext } from "./contexts/header-layout.js";
 import { CoordinatesProvider } from "./contexts/coordinates.js";
-import { RowDetailProvider, useRowDetailContext } from "./contexts/state/row-detail.js";
+import { RowDetailProvider } from "./contexts/row-detail.js";
 import { OffsetProvider } from "./contexts/grid-areas/offset-context.js";
 import { CutoffProvider } from "./contexts/grid-areas/cutoff-context.js";
 import { GridSectionsContextProvider } from "./contexts/grid-areas/grid-sections-context.js";
@@ -78,6 +78,8 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
             <RowDetailProvider
               onRowDetailExpansionsChange={props.onRowDetailExpansionsChange}
               rowDetailExpansions={props.rowDetailExpansions}
+              rowDetailAutoHeightGuess={props.rowAutoHeightGuess}
+              rowDetailHeight={props.rowDetailHeight}
             >
               <HeaderLayoutProvider
                 floatingRowEnabled={p.floatingRowEnabled}
@@ -179,7 +181,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
   const { viewport: vp, setViewport: setVp } = useViewportContext();
   const dimensions = useDimensionContext();
   const { totalHeaderHeight } = useHeaderLayoutContext();
-  const { detailCache, setDetailCache } = useRowDetailContext();
 
   const controlled = useControlledGridState(props);
 
@@ -215,14 +216,9 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
       styles,
 
       totalHeaderHeight,
-      detailExpansions: controlled.detailExpansions,
 
-      rowDetailHeight: props.rowDetailHeight ?? 200,
-      rowDetailAutoHeightGuess: props.rowDetailAutoHeightGuess ?? 200,
-      rowDetailHeightCache: detailCache,
       rowDetailRenderer: props.rowDetailRenderer,
       rowFullWidthRenderer: props.rowFullWidthRenderer,
-      setDetailCache: setDetailCache,
 
       base: props.columnBase ?? {},
 
@@ -250,11 +246,9 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
       onRowDragEnter: props.onRowDragEnter,
       onRowDragLeave: props.onRowDragLeave,
       onRowDrop: props.onRowDrop,
-    };
+    } satisfies RootContextValue;
   }, [
     controlled.columnGroupExpansions,
-    controlled.detailExpansions,
-    detailCache,
     dimensions,
     dropAccept,
     props.columnBase,
@@ -276,8 +270,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     props.onRowDragLeave,
     props.onRowDrop,
     props.rowAlternateAttr,
-    props.rowDetailAutoHeightGuess,
-    props.rowDetailHeight,
     props.rowDetailRenderer,
     props.rowFullWidthRenderer,
     props.rowSelectionActivator,
@@ -285,7 +277,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     props.slotRowsOverlay,
     props.slotShadows,
     props.slotViewportOverlay,
-    setDetailCache,
     setVp,
     source,
     styles,

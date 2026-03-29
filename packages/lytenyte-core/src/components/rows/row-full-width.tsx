@@ -12,45 +12,29 @@ import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
 import { useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
+import { useRowDetailHeightFn } from "../../root/contexts/row-detail.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
   forwarded,
 ) {
   const id = useGridIdContext();
-  const {
-    rtl,
-    rowFullWidthRenderer,
-    rowAlternateAttr,
-    source,
-    detailExpansions,
-    rowDetailHeight,
-    rowDetailAutoHeightGuess,
-    rowDetailHeightCache,
-    events,
-    styles,
-  } = useRoot();
+  const { rtl, rowFullWidthRenderer, rowAlternateAttr, source, events, styles } = useRoot();
   const Renderer = rowFullWidthRenderer;
   const { topOffset, headerHeight } = useOffsetContext();
 
   const yPositions = useYCoordinates();
 
   const row = source.rowByIndex(layout.rowIndex).useValue();
-
+  const detailHeightFn = useRowDetailHeightFn();
   const api = useAPI();
   const handlers = useMappedEvents(events.row, { row, api, layout });
 
   const rowIndex = layout.rowIndex;
   const rowPin = layout.rowPin;
-
   const topHeight = topOffset - headerHeight;
 
-  const detailExpanded = row && detailExpansions.has(row.id);
-  const detailHeight = !detailExpanded
-    ? 0
-    : rowDetailHeight === "auto"
-      ? (rowDetailHeightCache[row.id] ?? rowDetailAutoHeightGuess)
-      : rowDetailHeight;
+  const detailHeight = detailHeightFn(row!.id);
   const height = sizeFromCoord(rowIndex, yPositions) - detailHeight;
 
   return (

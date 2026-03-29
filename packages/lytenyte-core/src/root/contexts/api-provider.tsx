@@ -23,7 +23,7 @@ import { useCellRangeSelection } from "./cell-range-selection/cell-range-selecti
 import { useColumnsContext } from "./columns/column-context.js";
 import { useXCoordinates, useYCoordinates } from "./coordinates.js";
 import { useViewportContext } from "./viewport/viewport-context.js";
-import { useRowDetailContext } from "./state/row-detail.js";
+import { useRowDetailContext } from "./row-detail.js";
 import { useEvent } from "../../hooks/use-event.js";
 import { usePiece } from "../../hooks/use-piece.js";
 import { useColumnToggleGroup } from "../hooks/use-api/api-functions/use-column-toggle-group.js";

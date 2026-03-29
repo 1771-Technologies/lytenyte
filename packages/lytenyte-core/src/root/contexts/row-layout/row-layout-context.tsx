@@ -12,7 +12,7 @@ import { useColumnsContext } from "../columns/column-context.js";
 import { useViewportContext } from "../viewport/viewport-context.js";
 import type { API } from "../../../types";
 import { useBoundsContext } from "../bounds.js";
-import { useRowDetailContext } from "../state/row-detail.js";
+import { useRowDetailContext } from "../row-detail.js";
 import { getFullWidthFn } from "./get-full-width-fn.js";
 import { getSpanFn } from "./get-span-fn.js";
 
