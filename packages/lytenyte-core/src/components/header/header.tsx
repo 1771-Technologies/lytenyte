@@ -8,7 +8,7 @@ import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
 import { useColumnLayout, useRoot } from "../../root/root-context.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
-import { useStartBounds } from "../../root/contexts/bounds.js";
+import { useStartBoundsContext } from "../../root/contexts/bounds.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridIdContext();
@@ -16,7 +16,7 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
     useRoot();
   const columnLayout = useColumnLayout();
 
-  const [colStartBound, colEndBound] = useStartBounds();
+  const [colStartBound, colEndBound] = useStartBoundsContext();
 
   const gridRowTemplate = useHeaderRowTemplate(
     columnLayout.length,
