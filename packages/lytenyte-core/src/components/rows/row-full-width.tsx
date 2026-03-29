@@ -14,14 +14,15 @@ import { useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
 import { useRowDetailHeightFn } from "../../root/contexts/row-detail.js";
 import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
+import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
   forwarded,
 ) {
   const id = useGridIdContext();
-  const { rtl, rowFullWidthRenderer, rowAlternateAttr, events, styles } = useRoot();
-  const Renderer = rowFullWidthRenderer;
+  const { rtl, rowAlternateAttr, events, styles } = useRoot();
+  const { FullWidthRenderer } = useGridRenderer();
   const { topOffset, headerHeight } = useOffsetContext();
 
   const source = useRowSourceContext();
@@ -76,7 +77,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
           pointerEvents: "all",
         }}
       >
-        {row && Renderer ? <Renderer api={api} row={row} rowIndex={layout.rowIndex} layout={layout} /> : null}
+        {row ? <FullWidthRenderer api={api} row={row} rowIndex={layout.rowIndex} layout={layout} /> : null}
       </div>
       <RowDetailRow layout={layout} />
     </div>

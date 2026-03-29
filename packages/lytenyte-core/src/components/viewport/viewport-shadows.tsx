@@ -7,6 +7,7 @@ import { useColumnsContext } from "../../root/contexts/columns/column-context.js
 import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
 import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
+import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
 
 export interface ViewportShadowsProps {
   readonly start?: boolean;
@@ -21,7 +22,9 @@ export function ViewportShadows({
   top = true,
   bottom = true,
 }: ViewportShadowsProps) {
-  const { rtl, totalHeaderHeight } = useRoot();
+  const { rtl } = useRoot();
+
+  const { totalHeaderHeight } = useHeaderLayoutContext();
   const dimensions = useDimensionContext();
 
   const { viewport } = useViewportContext();

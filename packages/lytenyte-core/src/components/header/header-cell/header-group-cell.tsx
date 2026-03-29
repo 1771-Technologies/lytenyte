@@ -11,6 +11,7 @@ import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-r
 import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
+import { useHeaderLayoutContext } from "../../../root/contexts/header-layout.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
@@ -18,7 +19,6 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
 ) {
   const id = useGridIdContext();
   const {
-    headerGroupHeight,
     columnGroupDefaultExpansion,
     columnGroupExpansions,
     columnGroupRenderer,
@@ -32,6 +32,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
   const { view } = useColumnsContext();
 
   const xPositions = useXCoordinates();
+  const { headerGroupHeight } = useHeaderLayoutContext();
 
   const x = xPositions[cell.colStart];
   const width = xPositions[cell.colEnd] - x;

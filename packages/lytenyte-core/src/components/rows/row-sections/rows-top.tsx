@@ -1,13 +1,13 @@
 import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "react";
 import { RowChildrenDefault } from "../row-children-default.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
-import { useRoot } from "../../../root/root-context.js";
 import { RowsSection } from "./rows-section.js";
 import { CellSelectionTop } from "../../range-selection/cell-selection-container.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-counts-context.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import { useRowViewContext } from "../../../root/contexts/row-layout/row-layout-context.js";
+import { useHeaderLayoutContext } from "../../../root/contexts/header-layout.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, RowsTop.Props>(function RowsTop(
@@ -15,7 +15,7 @@ export const RowsTop = memo(
     forwarded,
   ) {
     const id = useGridIdContext();
-    const { totalHeaderHeight: top } = useRoot();
+    const { totalHeaderHeight: top } = useHeaderLayoutContext();
     const rowView = useRowViewContext();
 
     const { topCount } = useRowCountsContext();

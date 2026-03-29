@@ -8,10 +8,7 @@ import type { GridSpec, Props } from "../types";
 export interface RootContextValue {
   readonly rtl: boolean;
 
-  readonly totalHeaderHeight: number;
   readonly base: Omit<ColumnAbstract, "id">;
-
-  readonly rowFullWidthRenderer: Root.Props["rowFullWidthRenderer"];
 
   readonly columnDoubleClickToAutosize: boolean;
   readonly columnMoveDragPlaceholder: Root.Props["columnMoveDragPlaceholder"];
@@ -25,11 +22,6 @@ export interface RootContextValue {
 
   readonly columnGroupDefaultExpansion: boolean;
   readonly columnGroupExpansions: Record<string, boolean>;
-
-  readonly floatingRowEnabled: boolean;
-  readonly floatingRowHeight: number;
-  readonly headerGroupHeight: number;
-  readonly headerHeight: number;
 
   readonly editMode: "cell" | "row" | "readonly";
   readonly editClickActivator: "single-click" | "double-click" | "none";

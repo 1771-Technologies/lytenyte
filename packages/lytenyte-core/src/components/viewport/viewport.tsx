@@ -24,6 +24,7 @@ import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-c
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
+import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -40,10 +41,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     slotShadows: Shadows,
     styles,
     slotViewportOverlay: ViewportOverlay,
-    totalHeaderHeight,
   } = useRoot();
 
   const dimensions = useDimensionContext();
+  const { totalHeaderHeight } = useHeaderLayoutContext();
 
   const { setViewport } = useViewportContext();
 

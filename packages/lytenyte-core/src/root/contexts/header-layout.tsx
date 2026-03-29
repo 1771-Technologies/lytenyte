@@ -5,6 +5,10 @@ import { useColumnsContext } from "./columns/column-context.js";
 
 interface HeaderLayoutType {
   readonly totalHeaderHeight: number;
+  readonly headerGroupHeight: number;
+  readonly headerHeight: number;
+  readonly floatingHeight: number;
+  readonly floatingEnabled: boolean;
 }
 
 const context = createContext({} as HeaderLayoutType);
@@ -19,19 +23,19 @@ export const HeaderLayoutProvider = memo((p: PropsWithChildren<Props>) => {
     view: { maxRow },
   } = useColumnsContext();
 
-  const totalHeaderHeight = useMemo(() => {
+  const value = useMemo<HeaderLayoutType>(() => {
     const headerGroupHeight = p.headerGroupHeight ?? 40;
     const headerHeight = p.headerHeight ?? 40;
     const floatingHeight = p.floatingRowEnabled ? (p.floatingRowHeight ?? 40) : 0;
-
-    return (maxRow - 1) * headerGroupHeight + headerHeight + floatingHeight;
-  }, [maxRow, p.floatingRowEnabled, p.floatingRowHeight, p.headerGroupHeight, p.headerHeight]);
-
-  const value = useMemo<HeaderLayoutType>(() => {
+    const totalHeaderHeight = (maxRow - 1) * headerGroupHeight + headerHeight + floatingHeight;
     return {
       totalHeaderHeight,
+      headerGroupHeight,
+      headerHeight,
+      floatingHeight,
+      floatingEnabled: p.floatingRowEnabled ?? false,
     };
-  }, [totalHeaderHeight]);
+  }, [maxRow, p.floatingRowEnabled, p.floatingRowHeight, p.headerGroupHeight, p.headerHeight]);
 
   return <context.Provider value={value}>{p.children}</context.Provider>;
 });

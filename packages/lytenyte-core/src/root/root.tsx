@@ -32,7 +32,7 @@ import { RowCountsProvider } from "./contexts/grid-areas/row-counts-context.js";
 import { ColumnContextProvider } from "./contexts/columns/column-context.js";
 import { DimensionsContext } from "./contexts/viewport/dimensions-context.js";
 import { ViewportContext } from "./contexts/viewport/viewport-context.js";
-import { HeaderLayoutProvider, useHeaderLayoutContext } from "./contexts/header-layout.js";
+import { HeaderLayoutProvider } from "./contexts/header-layout.js";
 import { CoordinatesProvider } from "./contexts/coordinates.js";
 import { RowDetailProvider } from "./contexts/row-detail.js";
 import { OffsetProvider } from "./contexts/grid-areas/offset-context.js";
@@ -189,8 +189,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
 >) => {
   const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
 
-  const { totalHeaderHeight } = useHeaderLayoutContext();
-
   const controlled = useControlledGridState(props);
 
   const selectPivot = useRef<number | null>(null);
@@ -216,20 +214,11 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
 
       styles,
 
-      totalHeaderHeight,
-
-      rowFullWidthRenderer: props.rowFullWidthRenderer,
-
       base: props.columnBase ?? {},
 
       onColumnMoveOutside: props.onColumnMoveOutside,
       columnGroupDefaultExpansion: props.columnGroupDefaultExpansion ?? true,
       columnGroupExpansions: controlled.columnGroupExpansions,
-
-      floatingRowEnabled: props.floatingRowEnabled ?? false,
-      floatingRowHeight: props.floatingRowHeight ?? 40,
-      headerGroupHeight: props.headerGroupHeight ?? 40,
-      headerHeight: props.headerHeight ?? 40,
 
       slotShadows: props.slotShadows,
       slotRowsOverlay: props.slotRowsOverlay,
@@ -258,23 +247,17 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     props.editMode,
     props.editRowValidatorFn,
     props.events,
-    props.floatingRowEnabled,
-    props.floatingRowHeight,
-    props.headerGroupHeight,
-    props.headerHeight,
     props.onColumnMoveOutside,
     props.onRowDragEnter,
     props.onRowDragLeave,
     props.onRowDrop,
     props.rowAlternateAttr,
-    props.rowFullWidthRenderer,
     props.rowSelectionActivator,
     props.rtl,
     props.slotRowsOverlay,
     props.slotShadows,
     props.slotViewportOverlay,
     styles,
-    totalHeaderHeight,
   ]);
 
   return <RootContextProvider value={value}>{children ?? <Fallback />} </RootContextProvider>;
