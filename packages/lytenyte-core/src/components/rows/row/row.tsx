@@ -8,11 +8,14 @@ import { RowDetailRow } from "../row-detail-row.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
+import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
   const id = useGridIdContext();
-  const { rowAlternateAttr, yPositions, events, styles: sx, api, cellSelections$ } = ctx;
+  const { rowAlternateAttr, yPositions, events, styles: sx, api } = ctx;
+
+  const cellSelections$ = useCellRangeSelectionPieceContext();
 
   const { topOffset, headerHeight } = useOffsetContext();
 

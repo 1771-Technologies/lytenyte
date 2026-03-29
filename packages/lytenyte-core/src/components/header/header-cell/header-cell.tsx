@@ -13,13 +13,16 @@ import { useDragMove } from "./use-drag-move.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
+import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
   const id = useGridIdContext();
-  const { xPositions, base, view, api, events, styles, cellSelections$ } = useRoot();
+  const { xPositions, base, view, api, events, styles } = useRoot();
+
+  const cellSelections$ = useCellRangeSelectionPieceContext();
 
   const column = view.lookup.get(cell.id)!;
   const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;

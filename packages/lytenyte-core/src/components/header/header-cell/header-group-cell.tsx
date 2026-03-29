@@ -7,6 +7,7 @@ import { HeaderGroupDefault } from "./header-group-default.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
+import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
@@ -23,10 +24,10 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     columnGroupRenderer,
     events,
     styles: sx,
-    cellSelections$,
   } = useRoot();
 
   const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupDefaultExpansion;
+  const cellSelections$ = useCellRangeSelectionPieceContext();
 
   const x = xPositions[cell.colStart];
   const width = xPositions[cell.colEnd] - x;

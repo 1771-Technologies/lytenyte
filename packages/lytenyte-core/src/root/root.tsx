@@ -11,7 +11,6 @@ import { useControlledGridState } from "./hooks/use-controlled-grid-state.js";
 import { DEFAULT_ROW_SOURCE } from "./constants.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
 import { equal, type RowSource } from "@1771technologies/lytenyte-shared";
-import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useApi } from "./hooks/use-api/use-api.js";
 import {
   ColumnLayoutContextProvider,
@@ -35,12 +34,10 @@ import { GridIdProvider, useGridIdContext } from "./contexts/grid-id.js";
 import { ColumnSettingProvider } from "./contexts/columns/column-settings-context.js";
 import { BoundsProvider, useBoundsContext } from "./contexts/bounds.js";
 import { FocusPositionProvider } from "./contexts/focus-position.js";
-import { RowLayoutProvider, RowViewContextProvider } from "./contexts/row-view.js";
 import { CellRangeSelectionActive } from "./contexts/cell-range-selection/cell-range-selection-active.js";
 import {
   CellSelectionContext,
   useCellRangeSelection,
-  useCellRangeSelectionPieceContext,
 } from "./contexts/cell-range-selection/cell-range-selection-state.js";
 import { RowCountsProvider } from "./contexts/grid-areas/row-counts-context.js";
 import { ColumnContextProvider, useColumnsContext } from "./contexts/columns/column-context.js";
@@ -51,11 +48,9 @@ import { CoordinatesProvider, useXCoordinates, useYCoordinates } from "./context
 import { RowDetailProvider, useRowDetailContext } from "./contexts/state/row-detail.js";
 import { OffsetProvider } from "./contexts/grid-areas/offset-context.js";
 import { CutoffProvider } from "./contexts/grid-areas/cutoff-context.js";
-import {
-  GridSectionsContextProvider,
-  useGridSectionsContext,
-} from "./contexts/grid-areas/grid-sections-context.js";
+import { GridSectionsContextProvider } from "./contexts/grid-areas/grid-sections-context.js";
 import { DropAcceptProvider, useDropAcceptContext } from "./contexts/drop-accept.js";
+import { RowLayoutProvider, useRowLayoutContext } from "./contexts/row-layout/row-layout-context.js";
 
 const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -131,9 +126,19 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                                   onCellSelectionChange={props.onCellSelectionChange}
                                 >
                                   <CellRangeSelectionActive>
-                                    <RootImpl {...props} ref={forwarded as any}>
-                                      {children}
-                                    </RootImpl>
+                                    <FocusPositionProvider>
+                                      <RowLayoutProvider
+                                        api={api}
+                                        source={source}
+                                        rowFullWidthPredicate={props.rowFullWidthPredicate}
+                                        virtualizeCols={props.virtualizeCols}
+                                        virtualizeRows={props.virtualizeRows}
+                                      >
+                                        <RootImpl {...props} ref={forwarded as any}>
+                                          {children}
+                                        </RootImpl>
+                                      </RowLayoutProvider>
+                                    </FocusPositionProvider>
                                   </CellRangeSelectionActive>
                                 </CellSelectionContext>
                               </BoundsProvider>
@@ -176,7 +181,6 @@ const RootImpl = forwardRef(
 
     const xPositions = useXCoordinates();
     const yPositions = useYCoordinates();
-    const cutoffValue = useGridSectionsContext();
 
     const gridId = useGridIdContext();
     const selectPivot = useRef<number | null>(null);
@@ -188,21 +192,11 @@ const RootImpl = forwardRef(
     const bounds = useBoundsContext();
     const headerLayout = useHeaderLayout(view, props);
 
-    const { rowLayout, rowView } = useRowLayout(
-      props,
-      cutoffValue,
-      source,
-      view,
-      vp,
-      api,
-      bounds,
-      controlled.detailExpansions,
-    );
+    const rowLayout = useRowLayoutContext();
 
     const editValue = useEditContext(view, api, props, source);
 
     const { cellSelections } = useCellRangeSelection();
-    const cellSelections$ = useCellRangeSelectionPieceContext();
 
     useApi(
       gridId,
@@ -238,7 +232,6 @@ const RootImpl = forwardRef(
         api: api,
         xPositions,
         yPositions: yPositions,
-        cellSelections$,
         viewport: vp,
         setViewport: setVp,
         view,
@@ -292,7 +285,6 @@ const RootImpl = forwardRef(
       };
     }, [
       api,
-      cellSelections$,
       controlled.columnGroupExpansions,
       controlled.detailExpansions,
       detailCache,
@@ -339,15 +331,9 @@ const RootImpl = forwardRef(
 
     return (
       <RootContextProvider value={value}>
-        <RowViewContextProvider value={rowView}>
-          <RowLayoutProvider value={rowLayout}>
-            <ColumnLayoutContextProvider value={headerLayout}>
-              <EditProvider value={editValue}>
-                <FocusPositionProvider>{children ?? <Fallback />}</FocusPositionProvider>
-              </EditProvider>
-            </ColumnLayoutContextProvider>
-          </RowLayoutProvider>
-        </RowViewContextProvider>
+        <ColumnLayoutContextProvider value={headerLayout}>
+          <EditProvider value={editValue}>{children ?? <Fallback />}</EditProvider>
+        </ColumnLayoutContextProvider>
       </RootContextProvider>
     );
   },

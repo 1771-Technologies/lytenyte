@@ -1,7 +1,6 @@
 import type {
   ColumnAbstract,
   ColumnView,
-  DataRect,
   LayoutHeader,
   RowNode,
   RowSource,
@@ -14,7 +13,6 @@ import {
   type RefObject,
   type SetStateAction,
 } from "react";
-import type { Piece } from "../hooks/use-piece";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
@@ -26,8 +24,6 @@ export interface RootContextValue {
   readonly rtl: boolean;
   readonly view: ColumnView;
   readonly api: Root.API;
-
-  readonly cellSelections$: Piece<DataRect[]>;
 
   readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;
