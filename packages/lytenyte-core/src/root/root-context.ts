@@ -15,10 +15,6 @@ export interface RootContextValue {
 
   readonly events: GridEvents<GridSpec>;
 
-  readonly onRowDragLeave: Root.Props["onRowDragLeave"];
-  readonly onRowDragEnter: Root.Props["onRowDragEnter"];
-  readonly onRowDrop: Root.Props["onRowDrop"];
-
   readonly rowAlternateAttr: boolean;
 
   readonly selectActivator: Root.Props["rowSelectionActivator"];

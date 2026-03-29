@@ -15,6 +15,7 @@ import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
 import type { API as LnAPI } from "../types/api.js";
 import type { Props as LnProps } from "../types/props.js";
+
 import { Viewport } from "../components/viewport/viewport.js";
 import { Header } from "../components/header/header.js";
 import { RowsContainer } from "../components/rows/rows-container/rows-container.js";
@@ -64,7 +65,12 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   return (
     <RowSourceProvider value={source}>
       <GridIdProvider gridId={props.gridId}>
-        <DropAcceptProvider rowDropAccept={props.rowDropAccept}>
+        <DropAcceptProvider
+          rowDropAccept={props.rowDropAccept}
+          onRowDragEnter={props.onRowDragEnter}
+          onRowDragLeave={props.onRowDragLeave}
+          onRowDrop={props.onRowDrop}
+        >
           <ColumnContextProvider
             columnBase={props.columnBase}
             columnGroupDefaultExpansion={props.columnGroupDefaultExpansion}
@@ -212,14 +218,12 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
 
       columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
       columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
-      columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
       onColumnMoveOutside: props.onColumnMoveOutside,
+
+      columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
 
       rowAlternateAttr: props.rowAlternateAttr ?? true,
       selectActivator: props.rowSelectionActivator ?? "single-click",
-      onRowDragEnter: props.onRowDragEnter,
-      onRowDragLeave: props.onRowDragLeave,
-      onRowDrop: props.onRowDrop,
     } satisfies RootContextValue;
   }, [
     props.columnDoubleClickToAutosize,
@@ -227,9 +231,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     props.columnMoveDragPlaceholder,
     props.events,
     props.onColumnMoveOutside,
-    props.onRowDragEnter,
-    props.onRowDragLeave,
-    props.onRowDrop,
     props.rowAlternateAttr,
     props.rowSelectionActivator,
     props.rtl,
