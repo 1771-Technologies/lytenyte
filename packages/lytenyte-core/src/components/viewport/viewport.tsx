@@ -25,6 +25,7 @@ import { useColumnsContext } from "../../root/contexts/columns/column-context.js
 import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
+import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -32,16 +33,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const api = useAPI();
 
-  const {
-    events,
-    selectActivator,
-    rtl,
-    slotShadows: Shadows,
-    styles,
-    slotViewportOverlay: ViewportOverlay,
-  } = useRoot();
+  const { events, selectActivator, rtl, styles } = useRoot();
 
   const { editClickActivator, editMode } = useEditSettings();
+  const { Shadows, ViewportOverlay } = useGridRenderer();
 
   const dimensions = useDimensionContext();
   const { totalHeaderHeight } = useHeaderLayoutContext();

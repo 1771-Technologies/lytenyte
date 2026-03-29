@@ -13,11 +13,13 @@ import { useXCoordinates, useYCoordinates } from "../../../root/contexts/coordin
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
 import { useDimensionContext } from "../../../root/contexts/viewport/dimensions-context.js";
+import { useGridRenderer } from "../../../root/contexts/grid-renderer-context.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
     const id = useGridIdContext();
-    const { slotRowsOverlay: RowsOverlay, rtl } = useRoot();
+    const { rtl } = useRoot();
+    const { RowsOverlay } = useGridRenderer();
 
     const dimensions = useDimensionContext();
     const { viewport } = useViewportContext();

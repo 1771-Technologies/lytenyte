@@ -1,6 +1,5 @@
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext } from "react";
 import type { Root } from "./root";
-import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 import type { GridEvents } from "../types/events";
 import type { GridSpec, Props } from "../types";
 
@@ -16,9 +15,6 @@ export interface RootContextValue {
 
   readonly events: GridEvents<GridSpec>;
 
-  // readonly editMode: "cell" | "row" | "readonly";
-  // readonly editClickActivator: "single-click" | "double-click" | "none";
-
   readonly onRowDragLeave: Root.Props["onRowDragLeave"];
   readonly onRowDragEnter: Root.Props["onRowDragEnter"];
   readonly onRowDrop: Root.Props["onRowDrop"];
@@ -26,10 +22,6 @@ export interface RootContextValue {
   readonly rowAlternateAttr: boolean;
 
   readonly selectActivator: Root.Props["rowSelectionActivator"];
-
-  readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
-  readonly slotViewportOverlay?: ((props: { api: Root.API }) => ReactNode) | ReactNode;
-  readonly slotRowsOverlay?: ((props: { api: Root.API }) => ReactNode) | ReactNode;
 }
 
 const context = createContext<RootContextValue>({} as any);

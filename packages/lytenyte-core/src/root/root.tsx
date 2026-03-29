@@ -87,6 +87,9 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                   rowDetailRenderer={props.rowDetailRenderer}
                   rowFullWidthRenderer={props.rowFullWidthRenderer}
                   columnGroupRenderer={props.columnGroupRenderer}
+                  slotRowsOverlay={props.slotRowsOverlay}
+                  slotShadows={props.slotShadows}
+                  slotViewportOverlay={props.slotViewportOverlay}
                 >
                   <HeaderLayoutProvider
                     floatingRowEnabled={p.floatingRowEnabled}
@@ -210,12 +213,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
       columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
       columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
       columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
-
       onColumnMoveOutside: props.onColumnMoveOutside,
-
-      slotShadows: props.slotShadows,
-      slotRowsOverlay: props.slotRowsOverlay,
-      slotViewportOverlay: props.slotViewportOverlay,
 
       rowAlternateAttr: props.rowAlternateAttr ?? true,
       selectActivator: props.rowSelectionActivator ?? "single-click",
@@ -235,9 +233,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     props.rowAlternateAttr,
     props.rowSelectionActivator,
     props.rtl,
-    props.slotRowsOverlay,
-    props.slotShadows,
-    props.slotViewportOverlay,
     styles,
   ]);
 
