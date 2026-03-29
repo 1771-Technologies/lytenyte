@@ -1,21 +1,17 @@
 import { useMemo } from "react";
 import type { RowMeta } from "./context.js";
 import type { LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
-import { useEdit, type RootContextValue } from "../../../root/root-context.js";
+import { useEditContext } from "../../../root/contexts/edit-context.js";
+import { useRowDetailContext, useRowDetailHeightFn } from "../../../root/contexts/row-detail.js";
+import { useRowSourceContext } from "../../../root/contexts/row-source-provider.js";
 
-export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValue) {
-  const {
-    source,
-    yPositions,
-    xPositions,
-    detailExpansions,
-    rowDetailHeight,
-    rowDetailHeightCache,
-    rowDetailAutoHeightGuess,
-  } = ctx;
+export function useRowContextValue(row: LayoutRowWithCells) {
+  const source = useRowSourceContext();
   const r = source.rowByIndex(row.rowIndex).useValue() as RowMeta["row"];
+  const detailHeightFn = useRowDetailHeightFn();
+  const { detailExpansions } = useRowDetailContext();
 
-  const edit = useEdit();
+  const edit = useEditContext();
 
   const isEditing = edit.activeEdit?.rowId === row.id;
   const editColumn = isEditing ? edit.activeEdit.column! : null;
@@ -24,18 +20,12 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
   const editValidation = isEditing ? edit.editValidation : null;
 
   const detailExpanded = row && detailExpansions.has(row.id);
-  const detailHeight = !detailExpanded
-    ? 0
-    : rowDetailHeight === "auto"
-      ? (rowDetailHeightCache[row.id] ?? rowDetailAutoHeightGuess)
-      : rowDetailHeight;
+  const detailHeight = row ? detailHeightFn(row.id) : 0;
 
   const value = useMemo<RowMeta>(() => {
     return {
       row: r,
       layout: row,
-      xPositions,
-      yPositions,
 
       detailExpanded,
       detailHeight,
@@ -71,8 +61,6 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
     r?.__globalSnapshot,
     r?.__localSnapshot,
     row,
-    xPositions,
-    yPositions,
   ]);
 
   return value;

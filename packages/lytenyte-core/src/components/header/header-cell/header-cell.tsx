@@ -1,33 +1,41 @@
 import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import {
-  COLUMN_MARKER_ID,
   rangesOverlap,
   sizeFromCoord,
   type LayoutHeaderCell,
   type LayoutHeaderFloating,
 } from "@1771technologies/lytenyte-shared";
-import { DefaultRenderer } from "./header-default.js";
-import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
+import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useXCoordinates } from "../../../root/contexts/coordinates.js";
+import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
+import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
+import { useGridEvents } from "../../../root/contexts/events-context.js";
+import { useStyleContext } from "../../../root/contexts/styles-context.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
-  const id = useGridId();
-  const { xPositions, base, view, api, events, styles, cellSelections$ } = useRoot();
+  const id = useGridIdContext();
+  const events = useGridEvents();
+  const styles = useStyleContext();
+  const api = useAPI();
+  const { view } = useColumnsContext();
+
+  const xPositions = useXCoordinates();
+
+  const cellSelections$ = useCellRangeSelectionPieceContext();
 
   const column = view.lookup.get(cell.id)!;
-  const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;
+  const settings = useColumnSettingsContext()[column.id];
 
-  const Renderer =
-    cell.kind === "cell"
-      ? ((column as any).headerRenderer ?? (base as any).headerRenderer ?? DefaultRenderer)
-      : ((column as any).floatingCellRenderer ?? (base as any).floatingCellRenderer ?? DefaultRenderer);
+  const Renderer = cell.kind === "cell" ? settings.headerRenderer : settings.floatingCellRenderer;
 
   const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
   const rowSpan = cell.rowEnd - cell.rowStart;
@@ -65,7 +73,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
       role="columnheader"
       // DATA Attributes Start
       data-ln-header-cell
-      data-ln-type={column.type ?? base.type ?? "string"}
+      data-ln-type={settings.type}
       data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
       data-ln-colid={column.id}
       data-ln-gridid={id}
@@ -89,7 +97,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
       }}
     >
       {<Renderer column={column} api={api} />}
-      {resizable && cell.kind === "cell" && (
+      {settings.resizable && cell.kind === "cell" && (
         <ResizeHandler cell={cell} style={resizerStyle} className={resizerClassName} />
       )}
       {placeholder}

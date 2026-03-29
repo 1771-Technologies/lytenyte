@@ -1,11 +1,11 @@
 import { supportsScrollEnd } from "@1771technologies/lytenyte-shared";
 import { useEffect, useRef } from "react";
-import { useRoot } from "../../root/root-context.js";
-import { useBounds } from "../../root/contexts/bounds.js";
+import { useBoundsContext } from "../../root/contexts/bounds.js";
+import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
 
 export function ViewMonitor({ viewport }: { viewport: HTMLElement }) {
-  const { source } = useRoot();
-  const boundsValue = useBounds();
+  const source = useRowSourceContext();
+  const boundsValue = useBoundsContext();
 
   const ref = useRef(boundsValue);
   ref.current = boundsValue;

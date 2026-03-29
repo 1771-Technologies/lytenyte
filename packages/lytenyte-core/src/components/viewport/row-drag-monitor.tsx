@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useRef } from "react";
 import { clearDragGlobals, dragData, dragX, dragY } from "../../dnd/global.js";
-import { useRoot } from "../../root/root-context.js";
 import { useSelector } from "../../signal/signal.js";
 import { getNearestRow, getRowIndexFromEl, type RowNode } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../../root/root.js";
 import { getRowDragData } from "../../internal.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
+import { useDragContext, useDropAcceptContext } from "../../root/contexts/drop-accept.js";
+import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
 
 export function RowDragMonitor() {
-  const { dropAccept } = useRoot();
+  const dropAccept = useDropAcceptContext();
 
   const d = useSelector(dragData);
 
@@ -22,8 +24,9 @@ export function RowDragMonitor() {
 }
 
 function RowDragCollider() {
-  const id = useGridId();
-  const { viewport, api, onRowDragLeave: leave, onRowDragEnter: enter, onRowDrop: drop } = useRoot();
+  const id = useGridIdContext();
+  const { onRowDragLeave: leave, onRowDragEnter: enter, onRowDrop: drop } = useDragContext();
+  const api = useAPI();
   const x = useSelector(dragX);
   const y = useSelector(dragY);
 
@@ -31,6 +34,8 @@ function RowDragCollider() {
   const overRef = useRef<null | Over>(null);
 
   const dropped = useRef(false);
+
+  const { viewport } = useViewportContext();
 
   useEffect(() => {
     if (!viewport) return;

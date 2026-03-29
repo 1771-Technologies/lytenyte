@@ -11,26 +11,30 @@ import {
 import { useMemo, useRef, type DragEvent, type JSX } from "react";
 import { useDraggable } from "../../../dnd/use-draggable.js";
 import { useHeader } from "../header-context.js";
-import { useRoot } from "../../../root/root-context.js";
 import { HeaderMovePlaceholder } from "./header-move-placer.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
+import { useXCoordinates } from "../../../root/contexts/coordinates.js";
+import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
+import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
+import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
+import { useColumnMoveContext } from "../../../root/contexts/column-move-context.js";
+import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
 
 export function useDragMove(
   cell: LayoutHeaderGroup | LayoutHeaderCell | LayoutHeaderFloating,
   onDragStart?: JSX.IntrinsicElements["div"]["onDragStart"],
 ) {
-  const id = useGridId();
-  const {
-    view,
-    viewport: vp,
-    base,
-    rtl,
-    xPositions,
-    api,
-    columnGroupMoveDragPlaceholder,
-    columnMoveDragPlaceholder,
-    onColumnMoveOutside,
-  } = useRoot();
+  const id = useGridIdContext();
+  const rtl = useRtlContext();
+  const { columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder, onColumnMoveOutside } =
+    useColumnMoveContext();
+  const { view } = useColumnsContext();
+  const { viewport: vp } = useViewportContext();
+
+  const api = useAPI();
+
+  const xPositions = useXCoordinates();
 
   const placeholderSetting =
     cell.kind === "group" ? columnGroupMoveDragPlaceholder : columnMoveDragPlaceholder;
@@ -51,14 +55,10 @@ export function useDragMove(
     return columns;
   }, [cell.colEnd, cell.colStart, view.visibleColumns]);
 
+  const settings = useColumnSettingsContext();
   const isMovable = useMemo(() => {
-    return columns.every(
-      (c) =>
-        !c.id.startsWith(GROUP_COLUMN_PREFIX) &&
-        c.id !== COLUMN_MARKER_ID &&
-        (c.movable ?? base.movable ?? false),
-    );
-  }, [base.movable, columns]);
+    return columns.every((c) => settings[c.id].movable);
+  }, [columns, settings]);
 
   const swapDirection = useRef<null | boolean>(null);
   const swapIndex = useRef(-1);

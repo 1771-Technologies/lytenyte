@@ -1,6 +1,6 @@
 import { useEvent } from "../../../../hooks/use-event.js";
+import type { EditContext } from "../../../contexts/edit-context.js";
 import type { Root } from "../../../root.js";
-import type { EditContext } from "../../../root-context.js";
 
 export function useEditIsCellActive(api: Root.API, edit: EditContext): Root.API["editIsCellActive"] {
   return useEvent(({ column: c, rowIndex }) => {

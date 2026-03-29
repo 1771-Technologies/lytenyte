@@ -1,7 +1,13 @@
 import { useEffect } from "react";
-import { useRoot } from "../../root/root-context.js";
 import { getScrollStatus } from "@1771technologies/lytenyte-shared";
-import { useGridSections } from "../../root/contexts/grid-sections-context.js";
+import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
+import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
+import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
+import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
+import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
+import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
+import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 
 export interface ViewportShadowsProps {
   readonly start?: boolean;
@@ -16,13 +22,19 @@ export function ViewportShadows({
   top = true,
   bottom = true,
 }: ViewportShadowsProps) {
-  const { rtl, view, viewport, totalHeaderHeight, source, xPositions, yPositions, dimensions } = useRoot();
+  const rtl = useRtlContext();
 
-  const { startOffset: startWidth, endOffset: endWidth, bottomOffset: botHeight } = useGridSections();
+  const { totalHeaderHeight } = useHeaderLayoutContext();
+  const dimensions = useDimensionContext();
 
-  const rowTopCount = source.useTopCount();
-  const rowBotCount = source.useBottomCount();
-  const rowCount = source.useRowCount();
+  const { viewport } = useViewportContext();
+
+  const xPositions = useXCoordinates();
+  const yPositions = useYCoordinates();
+  const { view } = useColumnsContext();
+
+  const { startOffset, endOffset, bottomOffset } = useOffsetContext();
+  const { rowCount, topCount: rowTopCount, bottomCount: rowBotCount } = useRowCountsContext();
 
   const heightExcludingBot = yPositions[rowCount - rowBotCount] + totalHeaderHeight;
   const widthExcludingEnd = xPositions[view.startCount + view.centerCount];
@@ -98,7 +110,7 @@ export function ViewportShadows({
           style={{
             width: hasXSplit ? widthExcludingEnd : dimensions.innerWidth,
             position: "absolute",
-            top: dimensions.innerHeight - botHeight,
+            top: dimensions.innerHeight - bottomOffset,
             insetInlineStart: 0,
           }}
         />
@@ -109,7 +121,7 @@ export function ViewportShadows({
           style={{
             width: xPositions.at(-1)! - widthExcludingEnd,
             position: "absolute",
-            top: dimensions.innerHeight - botHeight,
+            top: dimensions.innerHeight - bottomOffset,
             insetInlineStart: dimensions.innerWidth - (xPositions.at(-1)! - widthExcludingEnd),
           }}
         />
@@ -122,7 +134,7 @@ export function ViewportShadows({
             height: hasYSplit ? heightExcludingBot : dimensions.innerHeight,
             position: "absolute",
             top: 0,
-            insetInlineStart: startWidth,
+            insetInlineStart: startOffset,
           }}
         />
       )}
@@ -130,10 +142,10 @@ export function ViewportShadows({
         <div
           data-ln-start-shadow
           style={{
-            height: botHeight,
+            height: bottomOffset,
             position: "absolute",
-            top: dimensions.innerHeight - botHeight,
-            insetInlineStart: startWidth,
+            top: dimensions.innerHeight - bottomOffset,
+            insetInlineStart: startOffset,
           }}
         />
       )}
@@ -144,7 +156,7 @@ export function ViewportShadows({
             height: hasYSplit ? heightExcludingBot : dimensions.innerHeight,
             position: "absolute",
             top: 0,
-            insetInlineStart: `calc(${dimensions.innerWidth - endWidth}px)`,
+            insetInlineStart: `calc(${dimensions.innerWidth - endOffset}px)`,
           }}
         />
       )}
@@ -152,10 +164,10 @@ export function ViewportShadows({
         <div
           data-ln-end-shadow
           style={{
-            height: botHeight,
+            height: bottomOffset,
             position: "absolute",
-            top: dimensions.innerHeight - botHeight,
-            insetInlineStart: `calc(${dimensions.innerWidth - endWidth}px)`,
+            top: dimensions.innerHeight - bottomOffset,
+            insetInlineStart: `calc(${dimensions.innerWidth - endOffset}px)`,
           }}
         />
       )}

@@ -6,51 +6,44 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { RowDetailRow } from "./row-detail-row.js";
 import { useRowStyle } from "./use-row-style.js";
-import { useRowsContainerContext } from "./rows-container/context.js";
-import { useRoot } from "../../root/root-context.js";
-import { $topHeight } from "../../selectors.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
+import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
+import { useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
+import { useRowDetailHeightFn } from "../../root/contexts/row-detail.js";
+import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
+import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
+import { useStyleContext, useStyleSettings } from "../../root/contexts/styles-context.js";
+import { useGridEvents } from "../../root/contexts/events-context.js";
+import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
   forwarded,
 ) {
-  const id = useGridId();
-  const {
-    rtl,
-    yPositions,
-    rowFullWidthRenderer,
-    rowAlternateAttr,
-    api,
-    source,
-    detailExpansions,
-    rowDetailHeight,
-    rowDetailAutoHeightGuess,
-    rowDetailHeightCache,
-    events,
-    styles,
-  } = useRoot();
-  const container = useRowsContainerContext();
+  const id = useGridIdContext();
+  const styles = useStyleContext();
+  const events = useGridEvents();
+  const rtl = useRtlContext();
+  const { rowAlternateAttr } = useStyleSettings();
 
-  const Renderer = rowFullWidthRenderer;
+  const { FullWidthRenderer } = useGridRenderer();
+  const { topOffset, headerHeight } = useOffsetContext();
+
+  const source = useRowSourceContext();
+  const yPositions = useYCoordinates();
 
   const row = source.rowByIndex(layout.rowIndex).useValue();
-
+  const detailHeightFn = useRowDetailHeightFn();
+  const api = useAPI();
   const handlers = useMappedEvents(events.row, { row, api, layout });
 
   const rowIndex = layout.rowIndex;
   const rowPin = layout.rowPin;
+  const topHeight = topOffset - headerHeight;
 
-  const topOffset = container.useValue($topHeight);
-  const rowIsFocusRow = !!layout.rowIsFocusRow;
-
-  const detailExpanded = row && detailExpansions.has(row.id);
-  const detailHeight = !detailExpanded
-    ? 0
-    : rowDetailHeight === "auto"
-      ? (rowDetailHeightCache[row.id] ?? rowDetailAutoHeightGuess)
-      : rowDetailHeight;
+  const detailHeight = detailHeightFn(row!.id);
   const height = sizeFromCoord(rowIndex, yPositions) - detailHeight;
 
   return (
@@ -73,8 +66,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
         yPositions,
         rowIndex,
         rowPin,
-        topOffset,
-        rowIsFocusRow,
+        topHeight,
         detailHeight,
         props.style ?? styles?.row?.style,
       )}
@@ -91,7 +83,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
           pointerEvents: "all",
         }}
       >
-        {row && Renderer ? <Renderer api={api} row={row} rowIndex={layout.rowIndex} layout={layout} /> : null}
+        {row ? <FullWidthRenderer api={api} row={row} rowIndex={layout.rowIndex} layout={layout} /> : null}
       </div>
       <RowDetailRow layout={layout} />
     </div>

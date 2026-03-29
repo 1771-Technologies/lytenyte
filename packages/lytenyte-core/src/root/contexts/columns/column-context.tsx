@@ -1,0 +1,74 @@
+import type {
+  ColumnAbstract,
+  ColumnView,
+  PartialMandatory,
+  RowSource,
+} from "@1771technologies/lytenyte-shared";
+import { createContext, memo, useContext, useMemo, type PropsWithChildren } from "react";
+import type { Root } from "../../root";
+import { useControlled } from "../../../hooks/use-controlled.js";
+import { useEvent } from "../../../hooks/use-event.js";
+import { useColumnView } from "../../hooks/use-column-view.js";
+import type { Column } from "../../../types/index.js";
+
+interface ColumnContext {
+  readonly view: ColumnView;
+  readonly columns: Column[];
+  readonly columnGroupExpansions: Record<string, boolean>;
+  readonly columnGroupExpansionsDefault: boolean;
+  readonly onColumnGroupExpansionChange: (change: Record<string, boolean>) => void;
+  readonly onColumnsChange: (change: ColumnAbstract[]) => void;
+}
+
+const context = createContext(null as unknown as ColumnContext);
+
+const EMPTY: any = {};
+const EMPTY_COLUMNS = [] as any;
+
+type Picks =
+  | "columns"
+  | "columnGroupExpansions"
+  | "rowGroupColumn"
+  | "columnMarker"
+  | "columnBase"
+  | "columnGroupDefaultExpansion"
+  | "onColumnsChange"
+  | "onColumnGroupExpansionChange";
+
+type Props = Pick<PartialMandatory<Root.Props>, Picks> & { source: RowSource };
+
+function ColumnContextProviderBase({ children, source, ...p }: PropsWithChildren<Props>) {
+  const [columnGroupExpansions, setColumnGroupExpansions] = useControlled({
+    controlled: p.columnGroupExpansions,
+    default: EMPTY as Record<string, boolean>,
+  });
+  const onColumnGroupExpansionChange = useEvent((change: Record<string, boolean>) => {
+    p.onColumnGroupExpansionChange?.(change);
+    setColumnGroupExpansions(change);
+  });
+
+  const view = useColumnView(p, source, columnGroupExpansions);
+
+  const value = useMemo<ColumnContext>(() => {
+    return {
+      view,
+      columnGroupExpansions,
+      columnGroupExpansionsDefault: p.columnGroupDefaultExpansion ?? true,
+      columns: p.columns ?? EMPTY_COLUMNS,
+      onColumnGroupExpansionChange,
+      onColumnsChange: p.onColumnsChange ?? (() => {}),
+    };
+  }, [
+    columnGroupExpansions,
+    onColumnGroupExpansionChange,
+    p.columnGroupDefaultExpansion,
+    p.columns,
+    p.onColumnsChange,
+    view,
+  ]);
+
+  return <context.Provider value={value}>{children}</context.Provider>;
+}
+
+export const ColumnContextProvider = memo(ColumnContextProviderBase);
+export const useColumnsContext = () => useContext(context);

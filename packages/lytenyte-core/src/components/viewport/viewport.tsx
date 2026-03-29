@@ -1,5 +1,4 @@
 import { forwardRef, memo, useMemo, useState, type CSSProperties, type JSX } from "react";
-import { useEdit, useRoot } from "../../root/root-context.js";
 import { useCombinedRefs } from "../../hooks/use-combine-refs.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
 import {
@@ -14,43 +13,55 @@ import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { EditDriver } from "./edit-driver.js";
-import { useGridSections } from "../../root/contexts/grid-sections-context.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
+import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
+import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
+import { useEditContext, useEditSettings } from "../../root/contexts/edit-context.js";
+import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
+import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
+import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
+import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
+import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
+import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
+import { useGridEvents } from "../../root/contexts/events-context.js";
+import { useRtlContext } from "../../root/contexts/rtl-provider.js";
+import { useStyleContext } from "../../root/contexts/styles-context.js";
+import { useRowSelectionSettings } from "../../root/contexts/row-select-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
-  const id = useGridId();
+  const id = useGridIdContext();
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
+  const api = useAPI();
 
-  const {
-    events,
-    setViewport,
-    editMode,
-    editClickActivator,
-    selectActivator,
-    source,
-    rtl,
-    api,
-    view,
-    slotShadows: Shadows,
-    styles,
-    slotViewportOverlay: ViewportOverlay,
-    totalHeaderHeight,
-    dimensions,
-    xPositions,
-    yPositions,
-  } = useRoot();
+  const selectActivator = useRowSelectionSettings().selectActivator;
+  const events = useGridEvents();
+  const rtl = useRtlContext();
+  const styles = useStyleContext();
 
-  const gridSections = useGridSections();
+  const { editClickActivator, editMode } = useEditSettings();
+  const { Shadows, ViewportOverlay } = useGridRenderer();
 
-  const edit = useEdit();
+  const dimensions = useDimensionContext();
+  const { totalHeaderHeight } = useHeaderLayoutContext();
+
+  const { setViewport } = useViewportContext();
+
+  const xPositions = useXCoordinates();
+  const yPositions = useYCoordinates();
+
+  const offsets = useOffsetContext();
+
+  const edit = useEditContext();
 
   const focusActive = useFocusNonReactive();
   const [focused, vpFocused] = useFocusTracking(vp, focusActive, id);
 
   const shouldCapture = !focused && !vpFocused;
-  const rowCount = source.useRowCount();
+  const { rowCount } = useRowCountsContext();
+  const { view } = useColumnsContext();
 
   const handlers = useMappedEvents(events.viewport, { viewport: vp, api });
 
@@ -285,10 +296,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             "--ln-vp-height": `${dimensions.innerHeight}px`,
             "--ln-vp-row-height": `${dimensions.innerHeight - totalHeaderHeight}px`,
             "--ln-vp-width": `${dimensions.innerWidth}px`,
-            "--ln-start-offset": `${gridSections.startOffset}px`,
-            "--ln-end-offset": `${gridSections.endOffset}px`,
-            "--ln-top-offset": `${gridSections.topOffset}px`,
-            "--ln-bottom-offset": `${gridSections.bottomOffset}px`,
+            "--ln-start-offset": `${offsets.startOffset}px`,
+            "--ln-end-offset": `${offsets.endOffset}px`,
+            "--ln-top-offset": `${offsets.topOffset}px`,
+            "--ln-bottom-offset": `${offsets.bottomOffset}px`,
             "--ln-full-width": `${xPositions.at(-1)!}px`,
             "--ln-full-height": `${yPositions.at(-1)!}px`,
             ...(props.style ?? styles?.viewport?.style),

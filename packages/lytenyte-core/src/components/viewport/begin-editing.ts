@@ -1,6 +1,6 @@
 import type { PositionUnion } from "@1771technologies/lytenyte-shared";
-import type { EditContext } from "../../root/root-context";
 import type { Root } from "../../root/root";
+import type { EditContext } from "../../root/contexts/edit-context";
 
 export function beginEditing(
   api: Root.API,

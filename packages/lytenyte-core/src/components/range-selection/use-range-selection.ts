@@ -1,12 +1,15 @@
 import { type MouseEventHandler } from "react";
 import { useEvent } from "../../internal.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { handleRangeSelect } from "@1771technologies/lytenyte-shared";
-import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
-import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
-import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 import type { API } from "../../types/api.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
+import {
+  useCellRangeSelection,
+  useCellRangeSelectionSettings,
+} from "../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useCellRangeSelectionActive } from "../../root/contexts/cell-range-selection/cell-range-selection-active.js";
+import { useGridSectionsContext } from "../../root/contexts/grid-areas/grid-sections-context.js";
 
 export function useRangeSelection(
   mouseDown: MouseEventHandler<HTMLDivElement> | undefined,
@@ -14,13 +17,13 @@ export function useRangeSelection(
   rtl: boolean,
   api: API,
 ) {
-  const gridId = useGridId();
-  const settings = useCellSelectionSettings();
+  const gridId = useGridIdContext();
+  const settings = useCellRangeSelectionSettings();
 
-  const { cellSelections } = useCellSelection();
-  const { setActiveRange, setDeselect, setSelecting } = useActiveRangeSelection();
+  const { cellSelections } = useCellRangeSelection();
+  const { setActiveRange, setDeselect, setSelecting } = useCellRangeSelectionActive();
 
-  const gridSections = useGridSections();
+  const gridSections = useGridSectionsContext();
   const focusActive = useFocusNonReactive();
 
   const onMouseDown: MouseEventHandler<HTMLDivElement> = useEvent((e) => {

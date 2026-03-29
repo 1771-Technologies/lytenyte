@@ -1,35 +1,43 @@
 import { forwardRef, memo, type JSX } from "react";
 import { useRowContextValue } from "./use-row-context-value.js";
-import { equal, type LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
+import { type LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
 import { RowContext } from "./context.js";
-import { useRoot } from "../../../root/root-context.js";
-import { useRowsContainerContext } from "../rows-container/context.js";
-import { $topHeight } from "../../../selectors.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
+import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
+import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useYCoordinates } from "../../../root/contexts/coordinates.js";
+import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useStyleContext, useStyleSettings } from "../../../root/contexts/styles-context.js";
+import { useGridEvents } from "../../../root/contexts/events-context.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
-  const ctx = useRoot();
-  const id = useGridId();
-  const { rowAlternateAttr, yPositions, events, styles: sx, api, cellSelections$ } = ctx;
+  const id = useGridIdContext();
 
-  const container = useRowsContainerContext();
+  const sx = useStyleContext();
+  const events = useGridEvents();
+  const { rowAlternateAttr } = useStyleSettings();
 
-  const rowMeta = useRowContextValue(row, ctx);
-  const topOffset = container.useValue($topHeight);
+  const api = useAPI();
+  const cellSelections$ = useCellRangeSelectionPieceContext();
+
+  const { topOffset, headerHeight } = useOffsetContext();
+
+  const rowMeta = useRowContextValue(row);
+  const topHeight = topOffset - headerHeight;
 
   const cellSelected = cellSelections$.useValue((x) =>
     x.some((r) => row.rowIndex >= r.rowStart && row.rowIndex < r.rowEnd),
   );
 
+  const yPositions = useYCoordinates();
   const styles = useRowStyle(
     yPositions,
     row.rowIndex,
     row.rowPin,
-    topOffset,
-    !!row.rowIsFocusRow,
+    topHeight,
     rowMeta.detailHeight,
     props.style ?? sx?.row?.style,
   );
@@ -66,15 +74,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   );
 });
 
-export const Row = memo(RowImpl, (prev, next) => {
-  const { row: rowP, ...propsP } = prev;
-  const { row: rowN, ...propsN } = next;
-
-  const { cells: _, ...rowPropsP } = rowP;
-  const { cells: __, ...rowPropsN } = rowN;
-
-  return equal(rowPropsN, rowPropsP) && equal(propsP, propsN);
-});
+export const Row = memo(RowImpl);
 
 export namespace Row {
   export type Props = JSX.IntrinsicElements["div"] & {

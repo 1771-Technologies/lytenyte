@@ -1,30 +1,38 @@
 import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "react";
 import { NativeScroller } from "../scrollers/native-scroller.js";
 import { RowChildrenDefault } from "../row-children-default.js";
-import { useRowsContainerContext } from "../rows-container/context.js";
-import { $centerCount, $centerHeight, $pinHeight, $topCount } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { CellSelectionCenter } from "../../range-selection/cell-selection-container.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../../root/contexts/focus-position.js";
-import { useRowLayout, useRowView } from "../../../root/contexts/row-view.js";
+import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-counts-context.js";
+import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
+import {
+  useRowLayoutContext,
+  useRowViewContext,
+} from "../../../root/contexts/row-layout/row-layout-context.js";
+import { useYCoordinates } from "../../../root/contexts/coordinates.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const id = useGridId();
-    const rowView = useRowView();
-    const container = useRowsContainerContext();
+    const id = useGridIdContext();
     const focus = useFocusNonReactive().get();
-    const rowLayout = useRowLayout();
 
-    const pinSectionHeights = container.useValue($pinHeight);
-    const centerHeight = container.useValue($centerHeight);
-    const rowCenterCount = container.useValue($centerCount);
-    const rowTopCount = container.useValue($topCount);
+    const rowView = useRowViewContext();
+    const rowLayout = useRowLayoutContext();
+
+    const yPositions = useYCoordinates();
+
+    const { topCount, centerCount } = useRowCountsContext();
+    const { topOffset, bottomOffset, headerHeight } = useOffsetContext();
+
+    const topHeight = topOffset - headerHeight;
+    const pinSectionHeights = topHeight + bottomOffset;
+    const centerHeight = yPositions.at(-1)! - bottomOffset - topHeight;
 
     const layoutRows = useMemo(() => {
       if (focus?.kind !== "cell" && focus?.kind !== "full-width") return rowView.center;
@@ -54,8 +62,8 @@ export const RowsCenter = memo(
     return (
       <RowsSection
         {...props}
-        rowFirst={rowTopCount}
-        rowLast={rowCenterCount + rowTopCount}
+        rowFirst={topCount}
+        rowLast={centerCount + topCount}
         ref={forwarded}
         role="rowgroup"
         data-ln-rows-center

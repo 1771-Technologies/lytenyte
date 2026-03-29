@@ -5,25 +5,31 @@ import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
 import { useVirtualizedHeader } from "./use-virtualized-header.js";
 import { useHeaderCellReactNodes } from "./use-header-cell-react-nodes.js";
 import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
-import { useColumnLayout, useRoot } from "../../root/root-context.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
-import { useGridId } from "../../root/contexts/grid-id.js";
-import { useStartBounds } from "../../root/contexts/bounds.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
+import { useStartBoundsContext } from "../../root/contexts/bounds.js";
+import { useXCoordinates } from "../../root/contexts/coordinates.js";
+import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
+import { useHeaderHierarchyContext } from "../../root/contexts/header-hierarchy.js";
+import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
-  const id = useGridId();
-  const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view, xPositions } =
-    useRoot();
-  const columnLayout = useColumnLayout();
+  const id = useGridIdContext();
+  const { floatingEnabled, floatingHeight, headerGroupHeight, headerHeight } = useHeaderLayoutContext();
+  const columnLayout = useHeaderHierarchyContext();
 
-  const [colStartBound, colEndBound] = useStartBounds();
+  const { view } = useColumnsContext();
+
+  const xPositions = useXCoordinates();
+
+  const [colStartBound, colEndBound] = useStartBoundsContext();
 
   const gridRowTemplate = useHeaderRowTemplate(
     columnLayout.length,
     headerGroupHeight,
     headerHeight,
-    floatingRowHeight,
-    floatingRowEnabled,
+    floatingHeight,
+    floatingEnabled,
   );
   const gridColTemplate = useHeaderColTemplate(view, xPositions);
 
@@ -46,8 +52,8 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
         role="rowgroup"
         data-ln-header
         data-ln-gridid={id}
-        data-ln-rowcount={columnLayout.length - (floatingRowEnabled ? 1 : 0)}
-        data-ln-floating={floatingRowEnabled ? true : undefined}
+        data-ln-rowcount={columnLayout.length - (floatingEnabled ? 1 : 0)}
+        data-ln-floating={floatingEnabled ? true : undefined}
         style={{
           width: xPositions.at(-1)!,
           minWidth: "100%",

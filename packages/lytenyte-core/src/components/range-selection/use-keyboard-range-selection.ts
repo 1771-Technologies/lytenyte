@@ -1,17 +1,24 @@
 import type { KeyboardEventHandler } from "react";
 import { useEvent } from "../../internal.js";
-import { useRoot } from "../../root/root-context.js";
-import { useCellSelection, useCellSelectionSettings } from "../../root/contexts/cell-selection-context.js";
 import { expandDirectionFromKey, expandRectsInDirection } from "@1771technologies/lytenyte-shared";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
+import {
+  useCellRangeSelection,
+  useCellRangeSelectionSettings,
+} from "../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
+import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
+import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
+import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
-  const { api, view, source, rtl } = useRoot();
-  const { cellSelections } = useCellSelection();
-  const settings = useCellSelectionSettings();
+  const rtl = useRtlContext();
+  const { cellSelections } = useCellRangeSelection();
+  const settings = useCellRangeSelectionSettings();
   const focusActive = useFocusNonReactive();
-
-  const rowCount = source.useRowCount();
+  const api = useAPI();
+  const { view } = useColumnsContext();
+  const { rowCount } = useRowCountsContext();
 
   return useEvent((e) => {
     if (!e.shiftKey || settings.cellSelectionMode === "none") return;

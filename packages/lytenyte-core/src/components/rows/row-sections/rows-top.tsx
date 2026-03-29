@@ -1,27 +1,27 @@
 import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "react";
 import { RowChildrenDefault } from "../row-children-default.js";
-import { useRowsContainerContext } from "../rows-container/context.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
-import { useRoot } from "../../../root/root-context.js";
-import { $topCount, $topHeight } from "../../../selectors.js";
 import { RowsSection } from "./rows-section.js";
 import { CellSelectionTop } from "../../range-selection/cell-selection-container.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
-import { useRowView } from "../../../root/contexts/row-view.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
+import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-counts-context.js";
+import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
+import { useRowViewContext } from "../../../root/contexts/row-layout/row-layout-context.js";
+import { useHeaderLayoutContext } from "../../../root/contexts/header-layout.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, RowsTop.Props>(function RowsTop(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const id = useGridId();
-    const { totalHeaderHeight: top } = useRoot();
-    const rowView = useRowView();
+    const id = useGridIdContext();
+    const { totalHeaderHeight: top } = useHeaderLayoutContext();
+    const rowView = useRowViewContext();
 
-    const container = useRowsContainerContext();
+    const { topCount } = useRowCountsContext();
+    const { topOffset, headerHeight } = useOffsetContext();
 
-    const topCount = container.useValue($topCount);
-    const height = container.useValue($topHeight);
+    const height = topOffset - headerHeight;
 
     const rows = useMemo(() => {
       const rows: ReactNode[] = [];

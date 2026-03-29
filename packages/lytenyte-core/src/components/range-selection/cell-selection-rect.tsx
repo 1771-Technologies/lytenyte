@@ -8,14 +8,19 @@ import {
   type SectionedRect,
 } from "@1771technologies/lytenyte-shared";
 import { useMemo, type CSSProperties } from "react";
-import { useRoot } from "../../root/root-context.js";
+import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
+import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
+import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 
 export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; isDeselect?: boolean }) {
-  const { xPositions, yPositions, rtl, source, dimensions } = useRoot();
+  const rtl = useRtlContext();
+  const dimensions = useDimensionContext();
 
-  const rowCount = source.useRowCount();
-  const rowTopCount = source.useTopCount();
-  const rowBotCount = source.useBottomCount();
+  const xPositions = useXCoordinates();
+  const yPositions = useYCoordinates();
+
+  const { rowCount, topCount: rowTopCount, bottomCount: rowBotCount } = useRowCountsContext();
 
   const vpWidth = dimensions.innerWidth;
 

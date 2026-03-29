@@ -1,6 +1,6 @@
 import { useEvent } from "../../../../hooks/use-event.js";
+import type { EditContext } from "../../../contexts/edit-context.js";
 import type { Root } from "../../../root.js";
-import type { EditContext } from "../../../root-context.js";
 
 export function useEditEnd(edit: EditContext): Root.API["editEnd"] {
   return useEvent((cancel) => {

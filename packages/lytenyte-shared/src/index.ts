@@ -51,6 +51,7 @@ export type {
   PositionHeaderGroupCell,
   PositionUnion,
   GridSections,
+  PartialMandatory,
 } from "./types.js";
 
 export type {
@@ -135,7 +136,8 @@ export type {
   PathTableLeaf,
 } from "./path/+types.path-table.js";
 
-export { rowIndexForSection } from "./row/row-index-for-section.js";
+export { rowIsExpanded, rowIsExpandable, rowIsAggregated, rowIsBranch, rowIsLeaf } from "./row/index.js";
+
 export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
 export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 

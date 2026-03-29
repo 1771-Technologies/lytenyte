@@ -1,37 +1,40 @@
 import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import { rangesOverlap, type LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
-import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
-import { HeaderGroupDefault } from "./header-group-default.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { ResizeHandler } from "./resize-handler.js";
-import { useGridId } from "../../../root/contexts/grid-id.js";
+import { useGridIdContext } from "../../../root/contexts/grid-id.js";
+import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useXCoordinates } from "../../../root/contexts/coordinates.js";
+import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
+import { useHeaderLayoutContext } from "../../../root/contexts/header-layout.js";
+import { useGridRenderer } from "../../../root/contexts/grid-renderer-context.js";
+import { useStyleContext } from "../../../root/contexts/styles-context.js";
+import { useGridEvents } from "../../../root/contexts/events-context.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
-  const id = useGridId();
-  const {
-    xPositions,
-    api,
-    view,
-    headerGroupHeight,
-    columnGroupDefaultExpansion,
-    columnGroupExpansions,
-    columnGroupRenderer,
-    events,
-    styles: sx,
-    cellSelections$,
-  } = useRoot();
+  const id = useGridIdContext();
+  const sx = useStyleContext();
+  const events = useGridEvents();
 
-  const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupDefaultExpansion;
+  const api = useAPI();
+  const { view, columnGroupExpansions, columnGroupExpansionsDefault } = useColumnsContext();
+  const cellSelections$ = useCellRangeSelectionPieceContext();
+
+  const xPositions = useXCoordinates();
+  const { headerGroupHeight } = useHeaderLayoutContext();
 
   const x = xPositions[cell.colStart];
   const width = xPositions[cell.colEnd] - x;
 
   const styles = useHeaderCellStyle(cell, xPositions);
+
+  const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupExpansionsDefault;
 
   const columns = useMemo(() => {
     return cell.columnIds.map((x) => view.lookup.get(x)!);
@@ -48,7 +51,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
   );
 
-  const Renderer = columnGroupRenderer ?? HeaderGroupDefault;
+  const { ColumnGroupRenderer } = useGridRenderer();
 
   return (
     <div
@@ -88,7 +91,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
         ...(props.style ?? sx?.headerGroup?.style),
       }}
     >
-      <Renderer
+      <ColumnGroupRenderer
         api={api}
         columns={columns}
         groupPath={cell.groupPath}

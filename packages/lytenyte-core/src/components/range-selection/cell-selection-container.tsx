@@ -1,13 +1,12 @@
 import { memo, useMemo } from "react";
-import { useCellSelection } from "../../root/contexts/cell-selection-context.js";
 import { bottomSection, centerSection, topSection } from "@1771technologies/lytenyte-shared";
 import { CellSelectionRect } from "./cell-selection-rect.js";
-import { useActiveRangeSelection } from "../../root/contexts/active-range-context.js";
+import { useCellRangeSelection } from "../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useCellRangeSelectionActive } from "../../root/contexts/cell-range-selection/cell-range-selection-active.js";
 
 export const CellSelectionTop = memo(function CellSelectionTop() {
-  const { cellSelectionsSplit: allRects } = useCellSelection();
-
-  const { activeSplit, deselect } = useActiveRangeSelection();
+  const { cellSelectionsSplit: allRects } = useCellRangeSelection();
+  const { activeSplit, deselect } = useCellRangeSelectionActive();
 
   const topRects = useMemo(() => {
     return allRects.filter((rect) => topSection[rect.section]);
@@ -38,8 +37,8 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
 });
 
 export const CellSelectionCenter = memo(function CellSelectionCenter() {
-  const { cellSelectionsSplit: allRects } = useCellSelection();
-  const { activeSplit, deselect } = useActiveRangeSelection();
+  const { cellSelectionsSplit: allRects } = useCellRangeSelection();
+  const { activeSplit, deselect } = useCellRangeSelectionActive();
 
   const centerRects = useMemo(() => {
     return allRects.filter((rect) => centerSection[rect.section]);
@@ -71,8 +70,8 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
 });
 
 export const CellSelectionBottom = memo(function CellSelectionBottom() {
-  const { cellSelectionsSplit: allRects } = useCellSelection();
-  const { activeSplit, deselect } = useActiveRangeSelection();
+  const { cellSelectionsSplit: allRects } = useCellRangeSelection();
+  const { activeSplit, deselect } = useCellRangeSelectionActive();
 
   const bottomRects = useMemo(() => {
     return allRects.filter((rect) => bottomSection[rect.section]);
