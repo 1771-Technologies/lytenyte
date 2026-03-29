@@ -59,7 +59,8 @@ export type {
   LayoutHeaderCell,
   LayoutHeaderFloating,
   LayoutHeaderGroup,
-} from "./layout/index.js";
+} from "./layout-column/index.js";
+export { makeColumnLayout } from "./layout-column/index.js";
 
 export type {
   RowLayout,
@@ -69,9 +70,7 @@ export type {
   LayoutRowWithCells,
   RowView,
 } from "./layout-row/index.js";
-export { createRowLayout, warmup } from "./layout-row/index.js";
-
-export { makeColumnLayout } from "./layout/index.js";
+export { createRowLayout } from "./layout-row/index.js";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
