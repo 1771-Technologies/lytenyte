@@ -17,21 +17,17 @@ import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
+import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
 
 export function useDragMove(
   cell: LayoutHeaderGroup | LayoutHeaderCell | LayoutHeaderFloating,
   onDragStart?: JSX.IntrinsicElements["div"]["onDragStart"],
 ) {
   const id = useGridIdContext();
-  const {
-    viewport: vp,
-    base,
-    rtl,
-    columnGroupMoveDragPlaceholder,
-    columnMoveDragPlaceholder,
-    onColumnMoveOutside,
-  } = useRoot();
+  const { base, rtl, columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder, onColumnMoveOutside } =
+    useRoot();
   const { view } = useColumnsContext();
+  const { viewport: vp } = useViewportContext();
 
   const api = useAPI();
 

@@ -1,12 +1,5 @@
 import type { ColumnAbstract } from "@1771technologies/lytenyte-shared";
-import {
-  createContext,
-  useContext,
-  type Dispatch,
-  type ReactNode,
-  type RefObject,
-  type SetStateAction,
-} from "react";
+import { createContext, useContext, type ReactNode, type RefObject } from "react";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
@@ -27,9 +20,6 @@ export interface RootContextValue {
   readonly columnGroupMoveDragPlaceholder: Root.Props["columnGroupMoveDragPlaceholder"];
   readonly columnGroupRenderer: Root.Props["columnGroupRenderer"];
   readonly onColumnMoveOutside: Root.Props["onColumnMoveOutside"];
-
-  readonly viewport: HTMLDivElement | null;
-  readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
 
   readonly styles: Props["styles"];
 

@@ -31,7 +31,7 @@ import { CellSelectionContext } from "./contexts/cell-range-selection/cell-range
 import { RowCountsProvider } from "./contexts/grid-areas/row-counts-context.js";
 import { ColumnContextProvider } from "./contexts/columns/column-context.js";
 import { DimensionsContext, useDimensionContext } from "./contexts/viewport/dimensions-context.js";
-import { useViewportContext, ViewportContext } from "./contexts/viewport/viewport-context.js";
+import { ViewportContext } from "./contexts/viewport/viewport-context.js";
 import { HeaderLayoutProvider, useHeaderLayoutContext } from "./contexts/header-layout.js";
 import { CoordinatesProvider } from "./contexts/coordinates.js";
 import { RowDetailProvider } from "./contexts/row-detail.js";
@@ -189,7 +189,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
 >) => {
   const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
 
-  const { viewport: vp, setViewport: setVp } = useViewportContext();
   const dimensions = useDimensionContext();
   const { totalHeaderHeight } = useHeaderLayoutContext();
 
@@ -209,8 +208,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
   const value = useMemo<RootContextValue>(() => {
     return {
       rtl: props.rtl ?? false,
-      viewport: vp,
-      setViewport: setVp,
 
       events: props.events ?? {},
       columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
@@ -279,10 +276,8 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     props.slotRowsOverlay,
     props.slotShadows,
     props.slotViewportOverlay,
-    setVp,
     styles,
     totalHeaderHeight,
-    vp,
   ]);
 
   return <RootContextProvider value={value}>{children ?? <Fallback />} </RootContextProvider>;

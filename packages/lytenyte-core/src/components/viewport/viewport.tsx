@@ -22,6 +22,7 @@ import { useAPI } from "../../root/contexts/api-provider.js";
 import { useEditContext } from "../../root/contexts/edit-context.js";
 import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
+import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -31,7 +32,6 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
   const {
     events,
-    setViewport,
     editMode,
     editClickActivator,
     selectActivator,
@@ -42,6 +42,8 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     totalHeaderHeight,
     dimensions,
   } = useRoot();
+
+  const { setViewport } = useViewportContext();
 
   const xPositions = useXCoordinates();
   const yPositions = useYCoordinates();

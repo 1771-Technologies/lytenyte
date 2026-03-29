@@ -11,11 +11,14 @@ import { useCellFocusChange } from "../../range-selection/use-cell-focus-change.
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useXCoordinates, useYCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
     const id = useGridIdContext();
-    const { dimensions, viewport, slotRowsOverlay: RowsOverlay, rtl } = useRoot();
+    const { dimensions, slotRowsOverlay: RowsOverlay, rtl } = useRoot();
+
+    const { viewport } = useViewportContext();
 
     const api = useAPI();
     const xPositions = useXCoordinates();

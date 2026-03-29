@@ -1,5 +1,6 @@
 import type { ReactPlaceholderFn } from "../../../dnd/types.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
 import { useRoot } from "../../../root/root-context.js";
 import type { ColumnAbstract, LayoutHeader } from "@1771technologies/lytenyte-shared";
 
@@ -7,8 +8,9 @@ export const HeaderMovePlaceholder: ReactPlaceholderFn = ({ x, y, data }) => {
   const moving = data.moving.data as { columns: ColumnAbstract[]; cell: LayoutHeader };
   const cell = moving.cell;
 
-  const { viewport, columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder } = useRoot();
+  const { columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder } = useRoot();
   const api = useAPI();
+  const { viewport } = useViewportContext();
 
   const Placeholder = cell.kind === "group" ? columnGroupMoveDragPlaceholder : columnMoveDragPlaceholder;
   if (typeof Placeholder !== "function") return null;

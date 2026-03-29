@@ -5,6 +5,7 @@ import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.
 import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
+import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
 
 export interface ViewportShadowsProps {
   readonly start?: boolean;
@@ -19,7 +20,9 @@ export function ViewportShadows({
   top = true,
   bottom = true,
 }: ViewportShadowsProps) {
-  const { rtl, viewport, totalHeaderHeight, dimensions } = useRoot();
+  const { rtl, totalHeaderHeight, dimensions } = useRoot();
+
+  const { viewport } = useViewportContext();
 
   const xPositions = useXCoordinates();
   const yPositions = useYCoordinates();
