@@ -288,7 +288,9 @@ export function createRowLayout({
     layoutById: (id) => idToLayout.get(id),
     layoutByIndex: (index) => {
       const layout = indexToLayout.get(index);
-      if (layout) return layout;
+      if (layout) {
+        return layout;
+      }
 
       return computeRow(index);
     },

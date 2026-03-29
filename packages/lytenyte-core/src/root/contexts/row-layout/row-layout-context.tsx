@@ -1,11 +1,20 @@
 import {
   createRowLayout,
+  warmup,
   type PartialMandatory,
   type RowLayout,
   type RowSource,
   type RowView,
 } from "@1771technologies/lytenyte-shared";
-import { createContext, memo, useCallback, useContext, useMemo, type PropsWithChildren } from "react";
+import {
+  createContext,
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  type PropsWithChildren,
+} from "react";
 import type { Root } from "../../root";
 import { useCutoffContext } from "../grid-areas/cutoff-context.js";
 import { useColumnsContext } from "../columns/column-context.js";
@@ -15,6 +24,7 @@ import { useBoundsContext } from "../bounds.js";
 import { useRowDetailContext } from "../row-detail.js";
 import { getFullWidthFn } from "./get-full-width-fn.js";
 import { getSpanFn } from "./get-span-fn.js";
+import { useRowCountsContext } from "../grid-areas/row-counts-context.js";
 
 const rowViewContext = createContext(null as unknown as RowView);
 const rowLayoutContext = createContext(null as unknown as RowLayout);
@@ -34,6 +44,7 @@ export const RowLayoutProvider = memo(
     children,
   }: PropsWithChildren<Props>) => {
     const cutoffs = useCutoffContext();
+    const { rowCount } = useRowCountsContext();
     const { view } = useColumnsContext();
     const { viewport: vp } = useViewportContext();
     const bounds = useBoundsContext();
@@ -126,6 +137,12 @@ export const RowLayoutProvider = memo(
         bottom,
       };
     }, [bounds, virtualizeCols, virtualizeRows, rowLayout, vp]);
+
+    useEffect(() => {
+      const clean = warmup(rowLayout, 0, rowCount);
+
+      return clean;
+    }, [rowCount, rowLayout]);
 
     return (
       <rowViewContext.Provider value={rowView}>

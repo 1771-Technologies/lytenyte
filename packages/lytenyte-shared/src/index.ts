@@ -59,12 +59,6 @@ export type {
   LayoutHeaderCell,
   LayoutHeaderFloating,
   LayoutHeaderGroup,
-  LayoutState,
-  UpdateLayoutArgs,
-  Computed,
-  DeadCells,
-  LayoutDiffers,
-  RootCellSpanLookup,
 } from "./layout/index.js";
 
 export type {
@@ -75,17 +69,9 @@ export type {
   LayoutRowWithCells,
   RowView,
 } from "./layout-row/index.js";
-export { createRowLayout } from "./layout-row/index.js";
+export { createRowLayout, warmup } from "./layout-row/index.js";
 
-export {
-  makeColumnLayout,
-  makeLayoutState,
-  makeRowLayout,
-  updateFull,
-  updateLayout,
-  FULL_WIDTH,
-  CONTAINS_DEAD_CELLS,
-} from "./layout/index.js";
+export { makeColumnLayout } from "./layout/index.js";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
@@ -208,7 +194,6 @@ export {
 } from "./dom-utils/getters/index.js";
 export {
   contains,
-  isAnchorElement,
   isDocument,
   isEditableElement,
   isFrame,
