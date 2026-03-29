@@ -10,6 +10,7 @@ import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
@@ -17,7 +18,6 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
 ) {
   const id = useGridIdContext();
   const {
-    view,
     headerGroupHeight,
     columnGroupDefaultExpansion,
     columnGroupExpansions,
@@ -29,6 +29,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
   const api = useAPI();
   const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupDefaultExpansion;
   const cellSelections$ = useCellRangeSelectionPieceContext();
+  const { view } = useColumnsContext();
 
   const xPositions = useXCoordinates();
 

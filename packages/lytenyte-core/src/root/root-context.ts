@@ -1,10 +1,4 @@
-import type {
-  ColumnAbstract,
-  ColumnView,
-  LayoutHeader,
-  RowNode,
-  RowSource,
-} from "@1771technologies/lytenyte-shared";
+import type { ColumnAbstract, LayoutHeader, RowNode } from "@1771technologies/lytenyte-shared";
 import {
   createContext,
   useContext,
@@ -20,9 +14,7 @@ import type { GridEvents } from "../types/events";
 import type { Column, GridSpec, Props } from "../types";
 
 export interface RootContextValue {
-  readonly source: RowSource;
   readonly rtl: boolean;
-  readonly view: ColumnView;
 
   readonly totalHeaderHeight: number;
   readonly dimensions: Dimension;
@@ -55,7 +47,6 @@ export interface RootContextValue {
   readonly editClickActivator: "single-click" | "double-click" | "none";
   readonly editValidator: null | ((x: any) => any);
 
-  readonly dropAccept: string[];
   readonly onRowDragLeave: Root.Props["onRowDragLeave"];
   readonly onRowDragEnter: Root.Props["onRowDragEnter"];
   readonly onRowDrop: Root.Props["onRowDrop"];

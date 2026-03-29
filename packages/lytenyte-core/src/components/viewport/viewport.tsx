@@ -20,6 +20,8 @@ import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.
 import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
 import { useEditContext } from "../../root/contexts/edit-context.js";
+import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
+import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -33,9 +35,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     editMode,
     editClickActivator,
     selectActivator,
-    source,
     rtl,
-    view,
     slotShadows: Shadows,
     styles,
     slotViewportOverlay: ViewportOverlay,
@@ -54,7 +54,8 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
   const [focused, vpFocused] = useFocusTracking(vp, focusActive, id);
 
   const shouldCapture = !focused && !vpFocused;
-  const rowCount = source.useRowCount();
+  const { rowCount } = useRowCountsContext();
+  const { view } = useColumnsContext();
 
   const handlers = useMappedEvents(events.viewport, { viewport: vp, api });
 

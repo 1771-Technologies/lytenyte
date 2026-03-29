@@ -13,16 +13,18 @@ import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.
 import { useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
 import { useRowDetailHeightFn } from "../../root/contexts/row-detail.js";
+import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
   forwarded,
 ) {
   const id = useGridIdContext();
-  const { rtl, rowFullWidthRenderer, rowAlternateAttr, source, events, styles } = useRoot();
+  const { rtl, rowFullWidthRenderer, rowAlternateAttr, events, styles } = useRoot();
   const Renderer = rowFullWidthRenderer;
   const { topOffset, headerHeight } = useOffsetContext();
 
+  const source = useRowSourceContext();
   const yPositions = useYCoordinates();
 
   const row = source.rowByIndex(layout.rowIndex).useValue();

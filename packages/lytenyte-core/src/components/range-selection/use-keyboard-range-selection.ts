@@ -8,15 +8,17 @@ import {
   useCellRangeSelectionSettings,
 } from "../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
+import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
+import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
-  const { view, source, rtl } = useRoot();
+  const { rtl } = useRoot();
   const { cellSelections } = useCellRangeSelection();
   const settings = useCellRangeSelectionSettings();
   const focusActive = useFocusNonReactive();
   const api = useAPI();
-
-  const rowCount = source.useRowCount();
+  const { view } = useColumnsContext();
+  const { rowCount } = useRowCountsContext();
 
   return useEvent((e) => {
     if (!e.shiftKey || settings.cellSelectionMode === "none") return;

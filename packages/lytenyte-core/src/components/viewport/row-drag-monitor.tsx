@@ -7,9 +7,10 @@ import type { Root } from "../../root/root.js";
 import { getRowDragData } from "../../internal.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
+import { useDropAcceptContext } from "../../root/contexts/drop-accept.js";
 
 export function RowDragMonitor() {
-  const { dropAccept } = useRoot();
+  const dropAccept = useDropAcceptContext();
 
   const d = useSelector(dragData);
 

@@ -10,11 +10,14 @@ import { HeaderProvider, type HeaderContextType } from "./header-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useStartBoundsContext } from "../../root/contexts/bounds.js";
 import { useXCoordinates } from "../../root/contexts/coordinates.js";
+import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridIdContext();
-  const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view } = useRoot();
+  const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight } = useRoot();
   const columnLayout = useColumnLayout();
+
+  const { view } = useColumnsContext();
 
   const xPositions = useXCoordinates();
 

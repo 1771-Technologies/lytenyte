@@ -3,6 +3,8 @@ import { useRoot } from "../../root/root-context.js";
 import { getScrollStatus } from "@1771technologies/lytenyte-shared";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
 import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
+import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
 
 export interface ViewportShadowsProps {
   readonly start?: boolean;
@@ -17,16 +19,14 @@ export function ViewportShadows({
   top = true,
   bottom = true,
 }: ViewportShadowsProps) {
-  const { rtl, view, viewport, totalHeaderHeight, source, dimensions } = useRoot();
+  const { rtl, viewport, totalHeaderHeight, dimensions } = useRoot();
 
   const xPositions = useXCoordinates();
   const yPositions = useYCoordinates();
+  const { view } = useColumnsContext();
 
   const { startOffset, endOffset, bottomOffset } = useOffsetContext();
-
-  const rowTopCount = source.useTopCount();
-  const rowBotCount = source.useBottomCount();
-  const rowCount = source.useRowCount();
+  const { rowCount, topCount: rowTopCount, bottomCount: rowBotCount } = useRowCountsContext();
 
   const heightExcludingBot = yPositions[rowCount - rowBotCount] + totalHeaderHeight;
   const widthExcludingEnd = xPositions[view.startCount + view.centerCount];

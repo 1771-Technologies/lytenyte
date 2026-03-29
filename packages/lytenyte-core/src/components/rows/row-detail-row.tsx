@@ -12,9 +12,10 @@ import { useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
 import { useRowDetailContext, useRowDetailHeightFn } from "../../root/contexts/row-detail.js";
 import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
+import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
 
 export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
-  const { source } = useRoot();
+  const source = useRowSourceContext();
   const row = source.rowByIndex(layout.rowIndex).useValue();
 
   const { detailExpansions } = useRowDetailContext();

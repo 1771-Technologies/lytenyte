@@ -16,14 +16,16 @@ import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
   const id = useGridIdContext();
-  const { base, view, events, styles } = useRoot();
+  const { base, events, styles } = useRoot();
   const api = useAPI();
+  const { view } = useColumnsContext();
 
   const xPositions = useXCoordinates();
 

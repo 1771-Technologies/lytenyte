@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import type { RowMeta } from "./context.js";
 import type { LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
-import { type RootContextValue } from "../../../root/root-context.js";
 import { useEditContext } from "../../../root/contexts/edit-context.js";
 import { useRowDetailContext, useRowDetailHeightFn } from "../../../root/contexts/row-detail.js";
+import { useRowSourceContext } from "../../../root/contexts/row-source-provider.js";
 
-export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValue) {
-  const { source } = ctx;
+export function useRowContextValue(row: LayoutRowWithCells) {
+  const source = useRowSourceContext();
   const r = source.rowByIndex(row.rowIndex).useValue() as RowMeta["row"];
   const detailHeightFn = useRowDetailHeightFn();
   const { detailExpansions } = useRowDetailContext();

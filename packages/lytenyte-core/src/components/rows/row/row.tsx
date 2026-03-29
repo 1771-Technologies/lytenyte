@@ -22,7 +22,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
 
   const { topOffset, headerHeight } = useOffsetContext();
 
-  const rowMeta = useRowContextValue(row, ctx);
+  const rowMeta = useRowContextValue(row);
   const topHeight = topOffset - headerHeight;
 
   const cellSelected = cellSelections$.useValue((x) =>
