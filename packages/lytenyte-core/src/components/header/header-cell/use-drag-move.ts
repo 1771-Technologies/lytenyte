@@ -18,14 +18,14 @@ import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
+import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
 
 export function useDragMove(
   cell: LayoutHeaderGroup | LayoutHeaderCell | LayoutHeaderFloating,
   onDragStart?: JSX.IntrinsicElements["div"]["onDragStart"],
 ) {
   const id = useGridIdContext();
-  const { base, rtl, columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder, onColumnMoveOutside } =
-    useRoot();
+  const { rtl, columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder, onColumnMoveOutside } = useRoot();
   const { view } = useColumnsContext();
   const { viewport: vp } = useViewportContext();
 
@@ -52,14 +52,10 @@ export function useDragMove(
     return columns;
   }, [cell.colEnd, cell.colStart, view.visibleColumns]);
 
+  const settings = useColumnSettingsContext();
   const isMovable = useMemo(() => {
-    return columns.every(
-      (c) =>
-        !c.id.startsWith(GROUP_COLUMN_PREFIX) &&
-        c.id !== COLUMN_MARKER_ID &&
-        (c.movable ?? base.movable ?? false),
-    );
-  }, [base.movable, columns]);
+    return columns.every((c) => settings[c.id].movable);
+  }, [columns, settings]);
 
   const swapDirection = useRef<null | boolean>(null);
   const swapIndex = useRef(-1);

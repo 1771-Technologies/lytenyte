@@ -10,6 +10,7 @@ import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
+import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
 
 interface ResizeHandlerProps {
   readonly cell: LayoutHeaderCell | LayoutHeaderGroup;
@@ -18,7 +19,7 @@ interface ResizeHandlerProps {
 }
 
 export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
-  const { columnDoubleClickToAutosize: double, base, rtl } = useRoot();
+  const { columnDoubleClickToAutosize: double, rtl } = useRoot();
   const { view } = useColumnsContext();
   const { viewport: vp } = useViewportContext();
 
@@ -32,9 +33,10 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
     return cell.columnIds.map((x) => view.lookup.get(x)!);
   }, [cell, view.lookup]);
 
+  const settings = useColumnSettingsContext();
   const resizable = useMemo(() => {
-    return columns.every((x) => x?.resizable ?? base.resizable ?? false);
-  }, [base.resizable, columns]);
+    return columns.every((x) => settings[x.id].resizable);
+  }, [columns, settings]);
 
   if (!resizable) return null;
 

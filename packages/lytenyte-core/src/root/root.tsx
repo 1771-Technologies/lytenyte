@@ -7,7 +7,6 @@ import {
   type PropsWithChildren,
   type ReactNode,
 } from "react";
-import { useControlledGridState } from "./hooks/use-controlled-grid-state.js";
 import { DEFAULT_ROW_SOURCE } from "./constants.js";
 import { equal, type RowSource } from "@1771technologies/lytenyte-shared";
 import { RootContextProvider, type RootContextValue } from "./root-context.js";
@@ -87,6 +86,7 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                 <GridRendererContext
                   rowDetailRenderer={props.rowDetailRenderer}
                   rowFullWidthRenderer={props.rowFullWidthRenderer}
+                  columnGroupRenderer={props.columnGroupRenderer}
                 >
                   <HeaderLayoutProvider
                     floatingRowEnabled={p.floatingRowEnabled}
@@ -189,10 +189,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
 >) => {
   const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
 
-  const controlled = useControlledGridState(props);
-
-  const selectPivot = useRef<number | null>(null);
-
   const prevStyles = useRef(props.styles);
   const styles = useMemo(() => {
     const next = props.styles;
@@ -207,18 +203,13 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
       rtl: props.rtl ?? false,
 
       events: props.events ?? {},
+      styles,
+
       columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
-      columnGroupRenderer: props.columnGroupRenderer,
       columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
       columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
 
-      styles,
-
-      base: props.columnBase ?? {},
-
       onColumnMoveOutside: props.onColumnMoveOutside,
-      columnGroupDefaultExpansion: props.columnGroupDefaultExpansion ?? true,
-      columnGroupExpansions: controlled.columnGroupExpansions,
 
       slotShadows: props.slotShadows,
       slotRowsOverlay: props.slotRowsOverlay,
@@ -226,26 +217,19 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
 
       editMode: props.editMode ?? "readonly",
       editClickActivator: props.editClickActivator ?? "double-click",
-      editValidator: props.editRowValidatorFn ?? null,
 
       rowAlternateAttr: props.rowAlternateAttr ?? true,
       selectActivator: props.rowSelectionActivator ?? "single-click",
-      selectPivot,
       onRowDragEnter: props.onRowDragEnter,
       onRowDragLeave: props.onRowDragLeave,
       onRowDrop: props.onRowDrop,
     } satisfies RootContextValue;
   }, [
-    controlled.columnGroupExpansions,
-    props.columnBase,
     props.columnDoubleClickToAutosize,
-    props.columnGroupDefaultExpansion,
     props.columnGroupMoveDragPlaceholder,
-    props.columnGroupRenderer,
     props.columnMoveDragPlaceholder,
     props.editClickActivator,
     props.editMode,
-    props.editRowValidatorFn,
     props.events,
     props.onColumnMoveOutside,
     props.onRowDragEnter,

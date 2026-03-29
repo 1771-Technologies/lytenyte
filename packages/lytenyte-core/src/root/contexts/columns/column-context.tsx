@@ -15,6 +15,7 @@ interface ColumnContext {
   readonly view: ColumnView;
   readonly columns: Column[];
   readonly columnGroupExpansions: Record<string, boolean>;
+  readonly columnGroupExpansionsDefault: boolean;
   readonly onColumnGroupExpansionChange: (change: Record<string, boolean>) => void;
   readonly onColumnsChange: (change: ColumnAbstract[]) => void;
 }
@@ -52,11 +53,19 @@ function ColumnContextProviderBase({ children, source, ...p }: PropsWithChildren
     return {
       view,
       columnGroupExpansions,
+      columnGroupExpansionsDefault: p.columnGroupDefaultExpansion ?? true,
       columns: p.columns ?? EMPTY_COLUMNS,
       onColumnGroupExpansionChange,
       onColumnsChange: p.onColumnsChange ?? (() => {}),
     };
-  }, [columnGroupExpansions, onColumnGroupExpansionChange, p.columns, p.onColumnsChange, view]);
+  }, [
+    columnGroupExpansions,
+    onColumnGroupExpansionChange,
+    p.columnGroupDefaultExpansion,
+    p.columns,
+    p.onColumnsChange,
+    view,
+  ]);
 
   return <context.Provider value={value}>{children}</context.Provider>;
 }
