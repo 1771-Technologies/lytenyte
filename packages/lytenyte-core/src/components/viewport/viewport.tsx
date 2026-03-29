@@ -19,7 +19,7 @@ import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
 import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
-import { useEditContext } from "../../root/contexts/edit-context.js";
+import { useEditContext, useEditSettings } from "../../root/contexts/edit-context.js";
 import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
@@ -34,14 +34,14 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
   const {
     events,
-    editMode,
-    editClickActivator,
     selectActivator,
     rtl,
     slotShadows: Shadows,
     styles,
     slotViewportOverlay: ViewportOverlay,
   } = useRoot();
+
+  const { editClickActivator, editMode } = useEditSettings();
 
   const dimensions = useDimensionContext();
   const { totalHeaderHeight } = useHeaderLayoutContext();

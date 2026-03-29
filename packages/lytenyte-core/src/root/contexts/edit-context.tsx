@@ -31,11 +31,24 @@ export interface EditContext {
   readonly cancel: () => void;
 }
 
+interface EditSettings {
+  readonly editMode: "cell" | "row" | "readonly";
+  readonly editClickActivator: "single-click" | "double-click" | "none";
+}
+
 const context = createContext(null as unknown as EditContext);
+const contextSettings = createContext(null as unknown as EditSettings);
 
 type Props = Pick<
   PartialMandatory<Root.Props>,
-  "columnBase" | "editRowValidatorFn" | "onEditCancel" | "onEditBegin" | "onEditFail" | "onEditEnd"
+  | "columnBase"
+  | "editRowValidatorFn"
+  | "onEditCancel"
+  | "onEditBegin"
+  | "onEditFail"
+  | "onEditEnd"
+  | "editMode"
+  | "editClickActivator"
 > & {
   readonly api: API;
   readonly source: RowSource;
@@ -198,7 +211,19 @@ export function EditProvider({ api, source, ...props }: PropsWithChildren<Props>
     };
   }, [activeEdit, cancel, changeData, changeValue, changeWithInit, commit, editData, editValidation]);
 
-  return <context.Provider value={value}>{props.children}</context.Provider>;
+  const settings = useMemo<EditSettings>(() => {
+    return {
+      editMode: props.editMode ?? "readonly",
+      editClickActivator: props.editClickActivator ?? "double-click",
+    };
+  }, [props.editClickActivator, props.editMode]);
+
+  return (
+    <context.Provider value={value}>
+      <contextSettings.Provider value={settings}>{props.children}</contextSettings.Provider>
+    </context.Provider>
+  );
 }
 
 export const useEditContext = () => useContext(context);
+export const useEditSettings = () => useContext(contextSettings);

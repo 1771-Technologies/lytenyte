@@ -39,12 +39,12 @@ import { CutoffProvider } from "./contexts/grid-areas/cutoff-context.js";
 import { GridSectionsContextProvider } from "./contexts/grid-areas/grid-sections-context.js";
 import { DropAcceptProvider } from "./contexts/drop-accept.js";
 import { RowLayoutProvider } from "./contexts/row-layout/row-layout-context.js";
-import { SelectPivotProvider } from "./contexts/select-pivot-context.js";
 import { EditProvider } from "./contexts/edit-context.js";
 import { APIProvider } from "./contexts/api-provider.js";
 import { GridRendererContext } from "./contexts/grid-renderer-context.js";
 import { RowSourceProvider } from "./contexts/row-source-provider.js";
 import { HeaderHierarchyProvider } from "./contexts/header-hierarchy.js";
+import { SelectPivotProvider } from "./contexts/row-select-context.js";
 
 const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -146,6 +146,8 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                                                 onEditCancel={props.onEditCancel}
                                                 onEditEnd={props.onEditEnd}
                                                 onEditFail={props.onEditFail}
+                                                editMode={props.editMode}
+                                                editClickActivator={props.editClickActivator}
                                               >
                                                 <APIProvider api={api} source={source} {...props}>
                                                   <HeaderHierarchyProvider
@@ -215,9 +217,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
       slotRowsOverlay: props.slotRowsOverlay,
       slotViewportOverlay: props.slotViewportOverlay,
 
-      editMode: props.editMode ?? "readonly",
-      editClickActivator: props.editClickActivator ?? "double-click",
-
       rowAlternateAttr: props.rowAlternateAttr ?? true,
       selectActivator: props.rowSelectionActivator ?? "single-click",
       onRowDragEnter: props.onRowDragEnter,
@@ -228,8 +227,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     props.columnDoubleClickToAutosize,
     props.columnGroupMoveDragPlaceholder,
     props.columnMoveDragPlaceholder,
-    props.editClickActivator,
-    props.editMode,
     props.events,
     props.onColumnMoveOutside,
     props.onRowDragEnter,

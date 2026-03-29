@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { useFocusReactive } from "../../root/contexts/focus-position.js";
-import { useRoot } from "../../root/root-context.js";
-import { useEditContext } from "../../root/contexts/edit-context.js";
+import { useEditContext, useEditSettings } from "../../root/contexts/edit-context.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
 
 export function EditDriver() {
-  const { editMode } = useRoot();
+  const { editMode } = useEditSettings();
   const edit = useEditContext();
   const api = useAPI();
 

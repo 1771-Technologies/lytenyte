@@ -4,7 +4,6 @@ const context = createContext(null as unknown as RefObject<number | null>);
 
 export function SelectPivotProvider(props: PropsWithChildren) {
   const selectPivot = useRef<number | null>(null);
-
   return <context.Provider value={selectPivot}>{props.children}</context.Provider>;
 }
 

@@ -12,7 +12,6 @@ import {
   type Writable,
 } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../root.js";
-import { useSelectPivotRef } from "./select-pivot-context.js";
 import { useEditContext } from "./edit-context.js";
 import { useGridIdContext } from "./grid-id.js";
 import { useRowLayoutContext } from "./row-layout/row-layout-context.js";
@@ -23,7 +22,6 @@ import { useCellRangeSelection } from "./cell-range-selection/cell-range-selecti
 import { useColumnsContext } from "./columns/column-context.js";
 import { useXCoordinates, useYCoordinates } from "./coordinates.js";
 import { useViewportContext } from "./viewport/viewport-context.js";
-import { useRowDetailContext } from "./row-detail.js";
 import { useEvent } from "../../hooks/use-event.js";
 import { usePiece } from "../../hooks/use-piece.js";
 import { useColumnToggleGroup } from "../hooks/use-api/api-functions/use-column-toggle-group.js";
@@ -50,6 +48,8 @@ import { useRowDetailToggle } from "../hooks/use-api/api-functions/use-row-detai
 import { useRowGroupToggle } from "../hooks/use-api/api-functions/use-row-group-toggle.js";
 import { useUseRowDrag } from "../hooks/use-api/api-functions/use-row-drag.js";
 import { useViewport } from "../hooks/use-api/api-functions/use-viewport.js";
+import { useSelectPivotRef } from "./row-select-context.js";
+import { useRowDetailContext } from "./row-detail.js";
 
 const context = createContext<API>(null as unknown as API);
 

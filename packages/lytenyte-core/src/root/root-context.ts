@@ -16,8 +16,8 @@ export interface RootContextValue {
 
   readonly events: GridEvents<GridSpec>;
 
-  readonly editMode: "cell" | "row" | "readonly";
-  readonly editClickActivator: "single-click" | "double-click" | "none";
+  // readonly editMode: "cell" | "row" | "readonly";
+  // readonly editClickActivator: "single-click" | "double-click" | "none";
 
   readonly onRowDragLeave: Root.Props["onRowDragLeave"];
   readonly onRowDragEnter: Root.Props["onRowDragEnter"];
