@@ -14,9 +14,9 @@ import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { EditDriver } from "./edit-driver.js";
-import { useGridSections } from "../../root/contexts/grid-sections-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
+import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -42,7 +42,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     yPositions,
   } = useRoot();
 
-  const gridSections = useGridSections();
+  const offsets = useOffsetContext();
 
   const edit = useEdit();
 
@@ -285,10 +285,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             "--ln-vp-height": `${dimensions.innerHeight}px`,
             "--ln-vp-row-height": `${dimensions.innerHeight - totalHeaderHeight}px`,
             "--ln-vp-width": `${dimensions.innerWidth}px`,
-            "--ln-start-offset": `${gridSections.startOffset}px`,
-            "--ln-end-offset": `${gridSections.endOffset}px`,
-            "--ln-top-offset": `${gridSections.topOffset}px`,
-            "--ln-bottom-offset": `${gridSections.bottomOffset}px`,
+            "--ln-start-offset": `${offsets.startOffset}px`,
+            "--ln-end-offset": `${offsets.endOffset}px`,
+            "--ln-top-offset": `${offsets.topOffset}px`,
+            "--ln-bottom-offset": `${offsets.bottomOffset}px`,
             "--ln-full-width": `${xPositions.at(-1)!}px`,
             "--ln-full-height": `${yPositions.at(-1)!}px`,
             ...(props.style ?? styles?.viewport?.style),

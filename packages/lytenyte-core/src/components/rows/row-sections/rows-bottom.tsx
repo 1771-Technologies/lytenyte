@@ -5,7 +5,8 @@ import { RowsSection } from "./rows-section.js";
 import { CellSelectionBottom } from "../../range-selection/cell-selection-container.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useRowView } from "../../../root/contexts/row-view.js";
-import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
+import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-counts-context.js";
+import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 
 export const RowsBottom = memo(
   forwardRef<HTMLDivElement, RowsBottom.Props>(function RowsBottom(
@@ -15,12 +16,8 @@ export const RowsBottom = memo(
     const id = useGridIdContext();
     const rowView = useRowView();
 
-    const {
-      topCount: rowTopCount,
-      bottomCount: rowBottomCount,
-      centerCount: rowCenterCount,
-      bottomOffset: height,
-    } = useGridSections();
+    const { topCount, centerCount, bottomCount } = useRowCountsContext();
+    const { bottomOffset } = useOffsetContext();
 
     const rows = useMemo(() => {
       const rows: ReactNode[] = [];
@@ -32,21 +29,21 @@ export const RowsBottom = memo(
       return rows;
     }, [children, rowView.bottom]);
 
-    if (height <= 0) return null;
+    if (bottomOffset <= 0) return null;
 
     return (
       <RowsSection
         {...props}
         ref={forwarded}
-        rowFirst={rowCenterCount + rowTopCount}
-        rowLast={rowCenterCount + rowBottomCount + rowTopCount}
+        rowFirst={centerCount + topCount}
+        rowLast={centerCount + bottomCount + topCount}
         role="rowgroup"
         data-ln-rows-bottom
         data-ln-gridid={id}
         style={{
           ...props.style,
 
-          height,
+          height: bottomOffset,
           boxSizing: "border-box",
           position: "sticky",
           bottom: 0,

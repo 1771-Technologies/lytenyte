@@ -7,8 +7,9 @@ import { CellSelectionCenter } from "../../range-selection/cell-selection-contai
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../../root/contexts/focus-position.js";
 import { useRowLayout, useRowView } from "../../../root/contexts/row-view.js";
-import { useGridSections } from "../../../root/contexts/grid-sections-context.js";
 import { useRoot } from "../../../internal.js";
+import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-counts-context.js";
+import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -22,13 +23,8 @@ export const RowsCenter = memo(
 
     const { yPositions } = useRoot();
 
-    const {
-      topCount: rowTopCount,
-      centerCount: rowCenterCount,
-      topOffset,
-      bottomOffset,
-      headerHeight,
-    } = useGridSections();
+    const { topCount, centerCount } = useRowCountsContext();
+    const { topOffset, bottomOffset, headerHeight } = useOffsetContext();
 
     const topHeight = topOffset - headerHeight;
     const pinSectionHeights = topHeight + bottomOffset;
@@ -62,8 +58,8 @@ export const RowsCenter = memo(
     return (
       <RowsSection
         {...props}
-        rowFirst={rowTopCount}
-        rowLast={rowCenterCount + rowTopCount}
+        rowFirst={topCount}
+        rowLast={centerCount + topCount}
         ref={forwarded}
         role="rowgroup"
         data-ln-rows-center

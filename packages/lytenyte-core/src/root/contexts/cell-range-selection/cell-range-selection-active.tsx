@@ -8,7 +8,7 @@ import {
   type PropsWithChildren,
   type SetStateAction,
 } from "react";
-import { useGridSections } from "../grid-sections-context.js";
+import { useCutoffContext } from "../grid-areas/cutoff-context.js";
 
 interface CellRangeSelectionActiveType {
   readonly activeRange: DataRect | null;
@@ -23,7 +23,7 @@ interface CellRangeSelectionActiveType {
 const context = createContext<CellRangeSelectionActiveType>({} as any);
 
 export function CellRangeSelectionActive(props: PropsWithChildren) {
-  const cutoff = useGridSections();
+  const cutoff = useCutoffContext();
 
   const [activeRange, setActiveRange] = useState<DataRect | null>(null);
   const [deselect, setDeselect] = useState(false);

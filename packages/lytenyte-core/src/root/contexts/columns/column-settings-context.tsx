@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, type PropsWithChildren, type ReactNode } from "react";
 import type { CellParams, CellRendererParams, Column, EditParams } from "../../../types/index.js";
+import { useColumnsContext } from "./column-context.js";
 
 interface ColumnSetting {
   readonly cellRenderer: (params: CellRendererParams<any>) => ReactNode;
@@ -11,13 +12,13 @@ interface ColumnSetting {
 const context = createContext<Record<string, ColumnSetting>>({});
 
 export function ColumnSettingProvider({
-  columns,
   base,
   children,
 }: PropsWithChildren<{
-  columns: Column[];
   base: Omit<Partial<Column>, "id" | "pin" | "field" | "editSetter"> | undefined;
 }>) {
+  const columns = useColumnsContext().view.visibleColumns as Column[];
+
   const settings = useMemo<Record<string, ColumnSetting>>(() => {
     const settings = columns.map((x) => {
       return [

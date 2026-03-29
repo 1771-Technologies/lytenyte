@@ -9,7 +9,7 @@ import { useRowStyle } from "./use-row-style.js";
 import { useRoot } from "../../root/root-context.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
-import { useGridSections } from "../../root/contexts/grid-sections-context.js";
+import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
@@ -31,7 +31,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
     styles,
   } = useRoot();
   const Renderer = rowFullWidthRenderer;
-  const { topOffset, headerHeight } = useGridSections();
+  const { topOffset, headerHeight } = useOffsetContext();
 
   const row = source.rowByIndex(layout.rowIndex).useValue();
 
