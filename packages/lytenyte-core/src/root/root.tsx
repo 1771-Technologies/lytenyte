@@ -9,9 +9,8 @@ import {
 } from "react";
 import { useControlledGridState } from "./hooks/use-controlled-grid-state.js";
 import { DEFAULT_ROW_SOURCE } from "./constants.js";
-import { useHeaderLayout } from "./hooks/use-header-layout.js";
 import { equal, type RowSource } from "@1771technologies/lytenyte-shared";
-import { ColumnLayoutContextProvider, RootContextProvider, type RootContextValue } from "./root-context.js";
+import { RootContextProvider, type RootContextValue } from "./root-context.js";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
@@ -30,7 +29,7 @@ import { FocusPositionProvider } from "./contexts/focus-position.js";
 import { CellRangeSelectionActive } from "./contexts/cell-range-selection/cell-range-selection-active.js";
 import { CellSelectionContext } from "./contexts/cell-range-selection/cell-range-selection-state.js";
 import { RowCountsProvider } from "./contexts/grid-areas/row-counts-context.js";
-import { ColumnContextProvider, useColumnsContext } from "./contexts/columns/column-context.js";
+import { ColumnContextProvider } from "./contexts/columns/column-context.js";
 import { DimensionsContext, useDimensionContext } from "./contexts/viewport/dimensions-context.js";
 import { useViewportContext, ViewportContext } from "./contexts/viewport/viewport-context.js";
 import { HeaderLayoutProvider, useHeaderLayoutContext } from "./contexts/header-layout.js";
@@ -46,6 +45,7 @@ import { EditProvider } from "./contexts/edit-context.js";
 import { APIProvider } from "./contexts/api-provider.js";
 import { GridRendererContext } from "./contexts/grid-renderer-context.js";
 import { RowSourceProvider } from "./contexts/row-source-provider.js";
+import { HeaderHierarchyProvider } from "./contexts/header-hierarchy.js";
 
 const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -148,9 +148,13 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                                                 onEditFail={props.onEditFail}
                                               >
                                                 <APIProvider api={api} source={source} {...props}>
-                                                  <RootImpl {...props} ref={forwarded as any}>
-                                                    {children}
-                                                  </RootImpl>
+                                                  <HeaderHierarchyProvider
+                                                    floatingRowEnabled={props.floatingRowEnabled}
+                                                  >
+                                                    <RootImpl {...props} ref={forwarded as any}>
+                                                      {children}
+                                                    </RootImpl>
+                                                  </HeaderHierarchyProvider>
                                                 </APIProvider>
                                               </EditProvider>
                                             </SelectPivotProvider>
@@ -185,7 +189,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
 >) => {
   const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
 
-  const { view } = useColumnsContext();
   const { viewport: vp, setViewport: setVp } = useViewportContext();
   const dimensions = useDimensionContext();
   const { totalHeaderHeight } = useHeaderLayoutContext();
@@ -193,8 +196,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
   const controlled = useControlledGridState(props);
 
   const selectPivot = useRef<number | null>(null);
-
-  const headerLayout = useHeaderLayout(view, props);
 
   const prevStyles = useRef(props.styles);
   const styles = useMemo(() => {
@@ -284,13 +285,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     vp,
   ]);
 
-  return (
-    <RootContextProvider value={value}>
-      <ColumnLayoutContextProvider value={headerLayout}>
-        {children ?? <Fallback />}{" "}
-      </ColumnLayoutContextProvider>
-    </RootContextProvider>
-  );
+  return <RootContextProvider value={value}>{children ?? <Fallback />} </RootContextProvider>;
 };
 
 export const Fallback = memo(() => {

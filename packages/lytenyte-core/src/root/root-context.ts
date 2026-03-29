@@ -1,4 +1,4 @@
-import type { ColumnAbstract, LayoutHeader, RowNode } from "@1771technologies/lytenyte-shared";
+import type { ColumnAbstract } from "@1771technologies/lytenyte-shared";
 import {
   createContext,
   useContext,
@@ -11,7 +11,7 @@ import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 import type { GridEvents } from "../types/events";
-import type { Column, GridSpec, Props } from "../types";
+import type { GridSpec, Props } from "../types";
 
 export interface RootContextValue {
   readonly rtl: boolean;
@@ -65,24 +65,3 @@ const context = createContext<RootContextValue>({} as any);
 
 export const RootContextProvider = context.Provider;
 export const useRoot = () => useContext(context);
-
-const colContextLayout = createContext<LayoutHeader[][]>({} as any);
-export const ColumnLayoutContextProvider = colContextLayout.Provider;
-export const useColumnLayout = () => useContext(colContextLayout);
-
-export interface EditContext {
-  readonly activeEdit: null | { readonly rowId: string; readonly column: string };
-  readonly setActiveEdit: Dispatch<
-    SetStateAction<null | { readonly rowId: string; readonly column: string }>
-  >;
-  readonly editData: any;
-  readonly setEditData: Dispatch<SetStateAction<any>>;
-  readonly editValidation: boolean | Record<string, unknown>;
-
-  readonly changeValue: (value: any, column: Column) => boolean | Record<string, unknown>;
-  readonly changeWithInit: (value: any, row: RowNode<any>, column: ColumnAbstract) => any;
-  readonly changeData: (data: any) => boolean | Record<string, unknown>;
-
-  readonly commit: () => boolean | Record<string, unknown>;
-  readonly cancel: () => void;
-}

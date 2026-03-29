@@ -5,17 +5,18 @@ import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
 import { useVirtualizedHeader } from "./use-virtualized-header.js";
 import { useHeaderCellReactNodes } from "./use-header-cell-react-nodes.js";
 import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
-import { useColumnLayout, useRoot } from "../../root/root-context.js";
+import { useRoot } from "../../root/root-context.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useStartBoundsContext } from "../../root/contexts/bounds.js";
 import { useXCoordinates } from "../../root/contexts/coordinates.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
+import { useHeaderHierarchyContext } from "../../root/contexts/header-hierarchy.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridIdContext();
   const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight } = useRoot();
-  const columnLayout = useColumnLayout();
+  const columnLayout = useHeaderHierarchyContext();
 
   const { view } = useColumnsContext();
 
