@@ -1,6 +1,5 @@
 import type { ColumnAbstract } from "@1771technologies/lytenyte-shared";
 import { createContext, useContext, type ReactNode, type RefObject } from "react";
-import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 import type { GridEvents } from "../types/events";
@@ -10,7 +9,6 @@ export interface RootContextValue {
   readonly rtl: boolean;
 
   readonly totalHeaderHeight: number;
-  readonly dimensions: Dimension;
   readonly base: Omit<ColumnAbstract, "id">;
 
   readonly rowFullWidthRenderer: Root.Props["rowFullWidthRenderer"];

@@ -23,6 +23,7 @@ import { useEditContext } from "../../root/contexts/edit-context.js";
 import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 import { useViewportContext } from "../../root/contexts/viewport/viewport-context.js";
+import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -40,8 +41,9 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     styles,
     slotViewportOverlay: ViewportOverlay,
     totalHeaderHeight,
-    dimensions,
   } = useRoot();
+
+  const dimensions = useDimensionContext();
 
   const { setViewport } = useViewportContext();
 

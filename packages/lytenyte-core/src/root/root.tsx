@@ -30,7 +30,7 @@ import { CellRangeSelectionActive } from "./contexts/cell-range-selection/cell-r
 import { CellSelectionContext } from "./contexts/cell-range-selection/cell-range-selection-state.js";
 import { RowCountsProvider } from "./contexts/grid-areas/row-counts-context.js";
 import { ColumnContextProvider } from "./contexts/columns/column-context.js";
-import { DimensionsContext, useDimensionContext } from "./contexts/viewport/dimensions-context.js";
+import { DimensionsContext } from "./contexts/viewport/dimensions-context.js";
 import { ViewportContext } from "./contexts/viewport/viewport-context.js";
 import { HeaderLayoutProvider, useHeaderLayoutContext } from "./contexts/header-layout.js";
 import { CoordinatesProvider } from "./contexts/coordinates.js";
@@ -189,7 +189,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
 >) => {
   const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
 
-  const dimensions = useDimensionContext();
   const { totalHeaderHeight } = useHeaderLayoutContext();
 
   const controlled = useControlledGridState(props);
@@ -215,7 +214,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
       columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
       columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
 
-      dimensions,
       styles,
 
       totalHeaderHeight,
@@ -250,7 +248,6 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
     } satisfies RootContextValue;
   }, [
     controlled.columnGroupExpansions,
-    dimensions,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,

@@ -13,6 +13,7 @@ import { useAPI } from "../../root/contexts/api-provider.js";
 import { useRowDetailContext, useRowDetailHeightFn } from "../../root/contexts/row-detail.js";
 import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
 import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
+import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 
 export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
   const source = useRowSourceContext();
@@ -28,7 +29,9 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
   const id = useGridIdContext();
   const api = useAPI();
 
-  const { dimensions, styles } = useRoot();
+  const { styles } = useRoot();
+
+  const dimensions = useDimensionContext();
 
   const yPositions = useYCoordinates();
 

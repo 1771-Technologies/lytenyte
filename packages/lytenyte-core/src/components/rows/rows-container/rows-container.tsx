@@ -12,12 +12,14 @@ import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useXCoordinates, useYCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
+import { useDimensionContext } from "../../../root/contexts/viewport/dimensions-context.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
     const id = useGridIdContext();
-    const { dimensions, slotRowsOverlay: RowsOverlay, rtl } = useRoot();
+    const { slotRowsOverlay: RowsOverlay, rtl } = useRoot();
 
+    const dimensions = useDimensionContext();
     const { viewport } = useViewportContext();
 
     const api = useAPI();
