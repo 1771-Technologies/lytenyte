@@ -6,7 +6,6 @@ import {
   type LayoutHeaderCell,
   type LayoutHeaderFloating,
 } from "@1771technologies/lytenyte-shared";
-import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
@@ -16,13 +15,16 @@ import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
 import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
+import { useGridEvents } from "../../../root/contexts/events-context.js";
+import { useStyleContext } from "../../../root/contexts/styles-context.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
   const id = useGridIdContext();
-  const { events, styles } = useRoot();
+  const events = useGridEvents();
+  const styles = useStyleContext();
   const api = useAPI();
   const { view } = useColumnsContext();
 

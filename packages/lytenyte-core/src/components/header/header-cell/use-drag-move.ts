@@ -11,7 +11,6 @@ import {
 import { useMemo, useRef, type DragEvent, type JSX } from "react";
 import { useDraggable } from "../../../dnd/use-draggable.js";
 import { useHeader } from "../header-context.js";
-import { useRoot } from "../../../root/root-context.js";
 import { HeaderMovePlaceholder } from "./header-move-placer.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useXCoordinates } from "../../../root/contexts/coordinates.js";
@@ -20,13 +19,14 @@ import { useColumnsContext } from "../../../root/contexts/columns/column-context
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
 import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
 import { useColumnMoveContext } from "../../../root/contexts/column-move-context.js";
+import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
 
 export function useDragMove(
   cell: LayoutHeaderGroup | LayoutHeaderCell | LayoutHeaderFloating,
   onDragStart?: JSX.IntrinsicElements["div"]["onDragStart"],
 ) {
   const id = useGridIdContext();
-  const { rtl } = useRoot();
+  const rtl = useRtlContext();
   const { columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder, onColumnMoveOutside } =
     useColumnMoveContext();
   const { view } = useColumnsContext();

@@ -5,13 +5,13 @@ import {
   type LayoutHeaderGroup,
 } from "@1771technologies/lytenyte-shared";
 import { getClientX } from "@1771technologies/lytenyte-shared";
-import { useRoot } from "../../../root/root-context.js";
 import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
 import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
 import { useColumnMoveContext } from "../../../root/contexts/column-move-context.js";
+import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
 
 interface ResizeHandlerProps {
   readonly cell: LayoutHeaderCell | LayoutHeaderGroup;
@@ -20,7 +20,7 @@ interface ResizeHandlerProps {
 }
 
 export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
-  const { rtl } = useRoot();
+  const rtl = useRtlContext();
   const { columnDoubleClickToAutosize: double } = useColumnMoveContext();
   const { view } = useColumnsContext();
   const { viewport: vp } = useViewportContext();

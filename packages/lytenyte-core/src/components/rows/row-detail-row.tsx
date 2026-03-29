@@ -6,7 +6,6 @@ import {
   type RowNode,
 } from "@1771technologies/lytenyte-shared";
 import { useEffect, useState } from "react";
-import { useRoot } from "../../root/root-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
@@ -14,6 +13,7 @@ import { useRowDetailContext, useRowDetailHeightFn } from "../../root/contexts/r
 import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
 import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
+import { useStyleContext } from "../../root/contexts/styles-context.js";
 
 export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
   const source = useRowSourceContext();
@@ -29,7 +29,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
   const id = useGridIdContext();
   const api = useAPI();
 
-  const { styles } = useRoot();
+  const styles = useStyleContext();
 
   const dimensions = useDimensionContext();
 

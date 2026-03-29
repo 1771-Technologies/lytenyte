@@ -1,7 +1,6 @@
 import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import { rangesOverlap, type LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
-import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { ResizeHandler } from "./resize-handler.js";
@@ -12,13 +11,16 @@ import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
 import { useHeaderLayoutContext } from "../../../root/contexts/header-layout.js";
 import { useGridRenderer } from "../../../root/contexts/grid-renderer-context.js";
+import { useStyleContext } from "../../../root/contexts/styles-context.js";
+import { useGridEvents } from "../../../root/contexts/events-context.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
   const id = useGridIdContext();
-  const { events, styles: sx } = useRoot();
+  const sx = useStyleContext();
+  const events = useGridEvents();
 
   const api = useAPI();
   const { view, columnGroupExpansions, columnGroupExpansionsDefault } = useColumnsContext();

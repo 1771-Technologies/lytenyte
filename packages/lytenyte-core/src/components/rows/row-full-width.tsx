@@ -6,7 +6,6 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { RowDetailRow } from "./row-detail-row.js";
 import { useRowStyle } from "./use-row-style.js";
-import { useRoot } from "../../root/root-context.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
@@ -15,13 +14,20 @@ import { useAPI } from "../../root/contexts/api-provider.js";
 import { useRowDetailHeightFn } from "../../root/contexts/row-detail.js";
 import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
 import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
+import { useStyleContext, useStyleSettings } from "../../root/contexts/styles-context.js";
+import { useGridEvents } from "../../root/contexts/events-context.js";
+import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
   forwarded,
 ) {
   const id = useGridIdContext();
-  const { rtl, rowAlternateAttr, events, styles } = useRoot();
+  const styles = useStyleContext();
+  const events = useGridEvents();
+  const rtl = useRtlContext();
+  const { rowAlternateAttr } = useStyleSettings();
+
   const { FullWidthRenderer } = useGridRenderer();
   const { topOffset, headerHeight } = useOffsetContext();
 

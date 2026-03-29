@@ -1,7 +1,6 @@
 import { forwardRef, memo, useCallback, useMemo, type JSX } from "react";
 import { type LayoutCell } from "@1771technologies/lytenyte-shared";
 import { useCellStyle } from "./use-cell-style.js";
-import { useRoot } from "../../root/root-context.js";
 import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
@@ -13,6 +12,8 @@ import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinate
 import { useAPI } from "../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 import { useEditSettings } from "../../root/contexts/edit-context.js";
+import { useGridEvents } from "../../root/contexts/events-context.js";
+import { useStyleContext } from "../../root/contexts/styles-context.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
   const [start, end] = useStartBoundsContext();
@@ -38,7 +39,8 @@ export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, 
 const CellImpl = memo(
   forwardRef<HTMLDivElement, Cell.Props>(function Cell({ cell, ...props }, forwarded) {
     const id = useGridIdContext();
-    const { events, styles } = useRoot();
+    const events = useGridEvents();
+    const styles = useStyleContext();
     const { view } = useColumnsContext();
     const { editMode } = useEditSettings();
 

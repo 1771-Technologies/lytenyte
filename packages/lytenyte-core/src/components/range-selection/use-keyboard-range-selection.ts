@@ -1,6 +1,5 @@
 import type { KeyboardEventHandler } from "react";
 import { useEvent } from "../../internal.js";
-import { useRoot } from "../../root/root-context.js";
 import { expandDirectionFromKey, expandRectsInDirection } from "@1771technologies/lytenyte-shared";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 import {
@@ -10,9 +9,10 @@ import {
 import { useAPI } from "../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
+import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
-  const { rtl } = useRoot();
+  const rtl = useRtlContext();
   const { cellSelections } = useCellRangeSelection();
   const settings = useCellRangeSelectionSettings();
   const focusActive = useFocusNonReactive();

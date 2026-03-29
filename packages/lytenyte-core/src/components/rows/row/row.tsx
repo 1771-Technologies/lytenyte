@@ -1,8 +1,7 @@
 import { forwardRef, memo, type JSX } from "react";
 import { useRowContextValue } from "./use-row-context-value.js";
-import { equal, type LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
+import { type LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
 import { RowContext } from "./context.js";
-import { useRoot } from "../../../root/root-context.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
@@ -11,11 +10,15 @@ import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-conte
 import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 import { useYCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useStyleContext, useStyleSettings } from "../../../root/contexts/styles-context.js";
+import { useGridEvents } from "../../../root/contexts/events-context.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
-  const ctx = useRoot();
   const id = useGridIdContext();
-  const { rowAlternateAttr, events, styles: sx } = ctx;
+
+  const sx = useStyleContext();
+  const events = useGridEvents();
+  const { rowAlternateAttr } = useStyleSettings();
 
   const api = useAPI();
   const cellSelections$ = useCellRangeSelectionPieceContext();
@@ -71,15 +74,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   );
 });
 
-export const Row = memo(RowImpl, (prev, next) => {
-  const { row: rowP, ...propsP } = prev;
-  const { row: rowN, ...propsN } = next;
-
-  const { cells: _, ...rowPropsP } = rowP;
-  const { cells: __, ...rowPropsN } = rowN;
-
-  return equal(rowPropsN, rowPropsP) && equal(propsP, propsN);
-});
+export const Row = memo(RowImpl);
 
 export namespace Row {
   export type Props = JSX.IntrinsicElements["div"] & {

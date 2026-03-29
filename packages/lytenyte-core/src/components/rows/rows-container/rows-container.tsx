@@ -4,7 +4,6 @@ import {
   VIEWPORT_HEIGHT_VARIABLE,
   VIEWPORT_WIDTH_VARIABLE,
 } from "@1771technologies/lytenyte-shared";
-import { useRoot } from "../../../root/root-context.js";
 import { useRangeSelection } from "../../range-selection/use-range-selection.js";
 import { useKeyboardRangeSelection } from "../../range-selection/use-keyboard-range-selection.js";
 import { useCellFocusChange } from "../../range-selection/use-cell-focus-change.js";
@@ -14,11 +13,12 @@ import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
 import { useDimensionContext } from "../../../root/contexts/viewport/dimensions-context.js";
 import { useGridRenderer } from "../../../root/contexts/grid-renderer-context.js";
+import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
     const id = useGridIdContext();
-    const { rtl } = useRoot();
+    const rtl = useRtlContext();
     const { RowsOverlay } = useGridRenderer();
 
     const dimensions = useDimensionContext();

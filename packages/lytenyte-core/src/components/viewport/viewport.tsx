@@ -1,5 +1,4 @@
 import { forwardRef, memo, useMemo, useState, type CSSProperties, type JSX } from "react";
-import { useRoot } from "../../root/root-context.js";
 import { useCombinedRefs } from "../../hooks/use-combine-refs.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
 import {
@@ -26,6 +25,10 @@ import { useViewportContext } from "../../root/contexts/viewport/viewport-contex
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
 import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
+import { useGridEvents } from "../../root/contexts/events-context.js";
+import { useRtlContext } from "../../root/contexts/rtl-provider.js";
+import { useStyleContext } from "../../root/contexts/styles-context.js";
+import { useRowSelectionSettings } from "../../root/contexts/row-select-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -33,7 +36,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const api = useAPI();
 
-  const { events, selectActivator, rtl, styles } = useRoot();
+  const selectActivator = useRowSelectionSettings().selectActivator;
+  const events = useGridEvents();
+  const rtl = useRtlContext();
+  const styles = useStyleContext();
 
   const { editClickActivator, editMode } = useEditSettings();
   const { Shadows, ViewportOverlay } = useGridRenderer();

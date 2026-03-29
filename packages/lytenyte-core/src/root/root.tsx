@@ -1,15 +1,6 @@
-import {
-  forwardRef,
-  memo,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  type PropsWithChildren,
-  type ReactNode,
-} from "react";
+import { forwardRef, memo, useImperativeHandle, type PropsWithChildren, type ReactNode } from "react";
 import { DEFAULT_ROW_SOURCE } from "./constants.js";
-import { equal, type RowSource } from "@1771technologies/lytenyte-shared";
-import { RootContextProvider, type RootContextValue } from "./root-context.js";
+import { type RowSource } from "@1771technologies/lytenyte-shared";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
@@ -47,6 +38,9 @@ import { RowSourceProvider } from "./contexts/row-source-provider.js";
 import { HeaderHierarchyProvider } from "./contexts/header-hierarchy.js";
 import { SelectPivotProvider } from "./contexts/row-select-context.js";
 import { ColumnMoveAndSizeProvider } from "./contexts/column-move-context.js";
+import { StylesProvider } from "./contexts/styles-context.js";
+import { GridEventsProvider } from "./contexts/events-context.js";
+import { RTLProvider } from "./contexts/rtl-provider.js";
 
 const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -65,177 +59,152 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
 
   return (
     <RowSourceProvider value={source}>
-      <GridIdProvider gridId={props.gridId}>
-        <DropAcceptProvider
-          rowDropAccept={props.rowDropAccept}
-          onRowDragEnter={props.onRowDragEnter}
-          onRowDragLeave={props.onRowDragLeave}
-          onRowDrop={props.onRowDrop}
-        >
-          <ColumnContextProvider
-            columnBase={props.columnBase}
-            columnGroupDefaultExpansion={props.columnGroupDefaultExpansion}
-            columnGroupExpansions={props.columnGroupExpansions}
-            columnMarker={props.columnMarker}
-            columns={props.columns}
-            onColumnGroupExpansionChange={props.onColumnGroupExpansionChange}
-            onColumnsChange={props.onColumnsChange}
-            rowGroupColumn={props.rowGroupColumn}
-            source={source}
-          >
-            <ColumnSettingProvider base={props.columnBase}>
-              <RowDetailProvider
-                onRowDetailExpansionsChange={props.onRowDetailExpansionsChange}
-                rowDetailExpansions={props.rowDetailExpansions}
-                rowDetailAutoHeightGuess={props.rowAutoHeightGuess}
-                rowDetailHeight={props.rowDetailHeight}
+      <RTLProvider value={props.rtl ?? false}>
+        <StylesProvider styles={props.styles} rowAlternateAttr={props.rowAlternateAttr}>
+          <GridEventsProvider events={props.events}>
+            <GridIdProvider gridId={props.gridId}>
+              <DropAcceptProvider
+                rowDropAccept={props.rowDropAccept}
+                onRowDragEnter={props.onRowDragEnter}
+                onRowDragLeave={props.onRowDragLeave}
+                onRowDrop={props.onRowDrop}
               >
-                <GridRendererContext
-                  rowDetailRenderer={props.rowDetailRenderer}
-                  rowFullWidthRenderer={props.rowFullWidthRenderer}
-                  columnGroupRenderer={props.columnGroupRenderer}
-                  slotRowsOverlay={props.slotRowsOverlay}
-                  slotShadows={props.slotShadows}
-                  slotViewportOverlay={props.slotViewportOverlay}
+                <ColumnContextProvider
+                  columnBase={props.columnBase}
+                  columnGroupDefaultExpansion={props.columnGroupDefaultExpansion}
+                  columnGroupExpansions={props.columnGroupExpansions}
+                  columnMarker={props.columnMarker}
+                  columns={props.columns}
+                  onColumnGroupExpansionChange={props.onColumnGroupExpansionChange}
+                  onColumnsChange={props.onColumnsChange}
+                  rowGroupColumn={props.rowGroupColumn}
+                  source={source}
                 >
-                  <HeaderLayoutProvider
-                    floatingRowEnabled={p.floatingRowEnabled}
-                    floatingRowHeight={p.floatingRowHeight}
-                    headerGroupHeight={p.headerGroupHeight}
-                    headerHeight={p.headerHeight}
-                  >
-                    <CoordinatesProvider
-                      columnBase={props.columnBase}
-                      columnSizeToFit={props.columnSizeToFit}
-                      rowAutoHeightGuess={props.rowAutoHeightGuess}
-                      rowDetailAutoHeightGuess={props.rowDetailAutoHeightGuess}
+                  <ColumnSettingProvider base={props.columnBase}>
+                    <RowDetailProvider
+                      onRowDetailExpansionsChange={props.onRowDetailExpansionsChange}
+                      rowDetailExpansions={props.rowDetailExpansions}
+                      rowDetailAutoHeightGuess={props.rowAutoHeightGuess}
                       rowDetailHeight={props.rowDetailHeight}
-                      rowHeight={props.rowHeight}
-                      source={source}
                     >
-                      <ViewportContext>
-                        <DimensionsContext>
-                          <RowCountsProvider source={source}>
-                            <OffsetProvider>
-                              <CutoffProvider>
-                                <GridSectionsContextProvider>
-                                  <BoundsProvider
-                                    colOverscanEnd={props.colOverscanEnd}
-                                    colOverscanStart={props.colOverscanStart}
-                                    rowOverscanBottom={props.rowOverscanBottom}
-                                    rowOverscanTop={props.rowOverscanTop}
-                                    source={source}
-                                  >
-                                    <CellSelectionContext
-                                      cellSelections={props.cellSelections}
-                                      cellSelectionExcludeMarker={
-                                        props.cellSelectionExcludeMarker && (props.columnMarker?.on ?? false)
-                                      }
-                                      cellSelectionMaintainOnNonCellPosition={
-                                        props.cellSelectionMaintainOnNonCellPosition
-                                      }
-                                      cellSelectionMode={props.cellSelectionMode}
-                                      onCellSelectionChange={props.onCellSelectionChange}
-                                    >
-                                      <CellRangeSelectionActive>
-                                        <FocusPositionProvider>
-                                          <RowLayoutProvider
-                                            api={api}
-                                            source={source}
-                                            rowFullWidthPredicate={props.rowFullWidthPredicate}
-                                            virtualizeCols={props.virtualizeCols}
-                                            virtualizeRows={props.virtualizeRows}
+                      <GridRendererContext
+                        rowDetailRenderer={props.rowDetailRenderer}
+                        rowFullWidthRenderer={props.rowFullWidthRenderer}
+                        columnGroupRenderer={props.columnGroupRenderer}
+                        slotRowsOverlay={props.slotRowsOverlay}
+                        slotShadows={props.slotShadows}
+                        slotViewportOverlay={props.slotViewportOverlay}
+                      >
+                        <HeaderLayoutProvider
+                          floatingRowEnabled={p.floatingRowEnabled}
+                          floatingRowHeight={p.floatingRowHeight}
+                          headerGroupHeight={p.headerGroupHeight}
+                          headerHeight={p.headerHeight}
+                        >
+                          <CoordinatesProvider
+                            columnBase={props.columnBase}
+                            columnSizeToFit={props.columnSizeToFit}
+                            rowAutoHeightGuess={props.rowAutoHeightGuess}
+                            rowDetailAutoHeightGuess={props.rowDetailAutoHeightGuess}
+                            rowDetailHeight={props.rowDetailHeight}
+                            rowHeight={props.rowHeight}
+                            source={source}
+                          >
+                            <ViewportContext>
+                              <DimensionsContext>
+                                <RowCountsProvider source={source}>
+                                  <OffsetProvider>
+                                    <CutoffProvider>
+                                      <GridSectionsContextProvider>
+                                        <BoundsProvider
+                                          colOverscanEnd={props.colOverscanEnd}
+                                          colOverscanStart={props.colOverscanStart}
+                                          rowOverscanBottom={props.rowOverscanBottom}
+                                          rowOverscanTop={props.rowOverscanTop}
+                                          source={source}
+                                        >
+                                          <CellSelectionContext
+                                            cellSelections={props.cellSelections}
+                                            cellSelectionExcludeMarker={
+                                              props.cellSelectionExcludeMarker &&
+                                              (props.columnMarker?.on ?? false)
+                                            }
+                                            cellSelectionMaintainOnNonCellPosition={
+                                              props.cellSelectionMaintainOnNonCellPosition
+                                            }
+                                            cellSelectionMode={props.cellSelectionMode}
+                                            onCellSelectionChange={props.onCellSelectionChange}
                                           >
-                                            <SelectPivotProvider>
-                                              <EditProvider
-                                                api={api}
-                                                source={source}
-                                                columnBase={props.columnBase}
-                                                editRowValidatorFn={props.editRowValidatorFn}
-                                                onEditBegin={props.onEditBegin}
-                                                onEditCancel={props.onEditCancel}
-                                                onEditEnd={props.onEditEnd}
-                                                onEditFail={props.onEditFail}
-                                                editMode={props.editMode}
-                                                editClickActivator={props.editClickActivator}
-                                              >
-                                                <APIProvider api={api} source={source} {...props}>
-                                                  <HeaderHierarchyProvider
-                                                    floatingRowEnabled={props.floatingRowEnabled}
+                                            <CellRangeSelectionActive>
+                                              <FocusPositionProvider>
+                                                <RowLayoutProvider
+                                                  api={api}
+                                                  source={source}
+                                                  rowFullWidthPredicate={props.rowFullWidthPredicate}
+                                                  virtualizeCols={props.virtualizeCols}
+                                                  virtualizeRows={props.virtualizeRows}
+                                                >
+                                                  <SelectPivotProvider
+                                                    rowSelectionActivator={props.rowSelectionActivator}
                                                   >
-                                                    <ColumnMoveAndSizeProvider
-                                                      columnDoubleClickToAutosize={
-                                                        props.columnDoubleClickToAutosize
-                                                      }
-                                                      columnGroupMoveDragPlaceholder={
-                                                        props.columnGroupMoveDragPlaceholder
-                                                      }
-                                                      columnMoveDragPlaceholder={
-                                                        props.columnMoveDragPlaceholder
-                                                      }
-                                                      onColumnMoveOutside={props.onColumnMoveOutside}
+                                                    <EditProvider
+                                                      api={api}
+                                                      source={source}
+                                                      columnBase={props.columnBase}
+                                                      editRowValidatorFn={props.editRowValidatorFn}
+                                                      onEditBegin={props.onEditBegin}
+                                                      onEditCancel={props.onEditCancel}
+                                                      onEditEnd={props.onEditEnd}
+                                                      onEditFail={props.onEditFail}
+                                                      editMode={props.editMode}
+                                                      editClickActivator={props.editClickActivator}
                                                     >
-                                                      <RootImpl {...props} ref={forwarded as any}>
-                                                        {children}
-                                                      </RootImpl>
-                                                    </ColumnMoveAndSizeProvider>
-                                                  </HeaderHierarchyProvider>
-                                                </APIProvider>
-                                              </EditProvider>
-                                            </SelectPivotProvider>
-                                          </RowLayoutProvider>
-                                        </FocusPositionProvider>
-                                      </CellRangeSelectionActive>
-                                    </CellSelectionContext>
-                                  </BoundsProvider>
-                                </GridSectionsContextProvider>
-                              </CutoffProvider>
-                            </OffsetProvider>
-                          </RowCountsProvider>
-                        </DimensionsContext>
-                      </ViewportContext>
-                    </CoordinatesProvider>
-                  </HeaderLayoutProvider>
-                </GridRendererContext>
-              </RowDetailProvider>
-            </ColumnSettingProvider>
-          </ColumnContextProvider>
-        </DropAcceptProvider>
-      </GridIdProvider>
+                                                      <APIProvider api={api} source={source} {...props}>
+                                                        <HeaderHierarchyProvider
+                                                          floatingRowEnabled={props.floatingRowEnabled}
+                                                        >
+                                                          <ColumnMoveAndSizeProvider
+                                                            columnDoubleClickToAutosize={
+                                                              props.columnDoubleClickToAutosize
+                                                            }
+                                                            columnGroupMoveDragPlaceholder={
+                                                              props.columnGroupMoveDragPlaceholder
+                                                            }
+                                                            columnMoveDragPlaceholder={
+                                                              props.columnMoveDragPlaceholder
+                                                            }
+                                                            onColumnMoveOutside={props.onColumnMoveOutside}
+                                                          >
+                                                            {children ?? <Fallback />}
+                                                          </ColumnMoveAndSizeProvider>
+                                                        </HeaderHierarchyProvider>
+                                                      </APIProvider>
+                                                    </EditProvider>
+                                                  </SelectPivotProvider>
+                                                </RowLayoutProvider>
+                                              </FocusPositionProvider>
+                                            </CellRangeSelectionActive>
+                                          </CellSelectionContext>
+                                        </BoundsProvider>
+                                      </GridSectionsContextProvider>
+                                    </CutoffProvider>
+                                  </OffsetProvider>
+                                </RowCountsProvider>
+                              </DimensionsContext>
+                            </ViewportContext>
+                          </CoordinatesProvider>
+                        </HeaderLayoutProvider>
+                      </GridRendererContext>
+                    </RowDetailProvider>
+                  </ColumnSettingProvider>
+                </ColumnContextProvider>
+              </DropAcceptProvider>
+            </GridIdProvider>
+          </GridEventsProvider>
+        </StylesProvider>
+      </RTLProvider>
     </RowSourceProvider>
   );
-};
-
-const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
-  children,
-  ...p
-}: PropsWithChildren<
-  Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
->) => {
-  const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
-
-  const prevStyles = useRef(props.styles);
-  const styles = useMemo(() => {
-    const next = props.styles;
-    if (equal(prevStyles.current, next)) return prevStyles.current;
-
-    prevStyles.current = next;
-    return next;
-  }, [props.styles]);
-
-  const value = useMemo<RootContextValue>(() => {
-    return {
-      rtl: props.rtl ?? false,
-
-      events: props.events ?? {},
-      styles,
-
-      rowAlternateAttr: props.rowAlternateAttr ?? true,
-      selectActivator: props.rowSelectionActivator ?? "single-click",
-    } satisfies RootContextValue;
-  }, [props.events, props.rowAlternateAttr, props.rowSelectionActivator, props.rtl, styles]);
-
-  return <RootContextProvider value={value}>{children ?? <Fallback />} </RootContextProvider>;
 };
 
 export const Fallback = memo(() => {
