@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useRoot } from "../../root/root-context.js";
 import { getScrollStatus } from "@1771technologies/lytenyte-shared";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
+import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
 
 export interface ViewportShadowsProps {
   readonly start?: boolean;
@@ -16,7 +17,10 @@ export function ViewportShadows({
   top = true,
   bottom = true,
 }: ViewportShadowsProps) {
-  const { rtl, view, viewport, totalHeaderHeight, source, xPositions, yPositions, dimensions } = useRoot();
+  const { rtl, view, viewport, totalHeaderHeight, source, dimensions } = useRoot();
+
+  const xPositions = useXCoordinates();
+  const yPositions = useYCoordinates();
 
   const { startOffset, endOffset, bottomOffset } = useOffsetContext();
 

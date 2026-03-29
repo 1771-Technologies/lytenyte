@@ -9,12 +9,14 @@ import { useColumnLayout, useRoot } from "../../root/root-context.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useStartBoundsContext } from "../../root/contexts/bounds.js";
+import { useXCoordinates } from "../../root/contexts/coordinates.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridIdContext();
-  const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view, xPositions } =
-    useRoot();
+  const { floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view } = useRoot();
   const columnLayout = useColumnLayout();
+
+  const xPositions = useXCoordinates();
 
   const [colStartBound, colEndBound] = useStartBoundsContext();
 

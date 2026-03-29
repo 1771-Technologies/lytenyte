@@ -9,11 +9,12 @@ import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useYCoordinates } from "../../../root/contexts/coordinates.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
   const id = useGridIdContext();
-  const { rowAlternateAttr, yPositions, events, styles: sx, api } = ctx;
+  const { rowAlternateAttr, events, styles: sx, api } = ctx;
 
   const cellSelections$ = useCellRangeSelectionPieceContext();
 
@@ -26,6 +27,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     x.some((r) => row.rowIndex >= r.rowStart && row.rowIndex < r.rowEnd),
   );
 
+  const yPositions = useYCoordinates();
   const styles = useRowStyle(
     yPositions,
     row.rowIndex,

@@ -9,9 +9,13 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { useMemo, type CSSProperties } from "react";
 import { useRoot } from "../../root/root-context.js";
+import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
 
 export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; isDeselect?: boolean }) {
-  const { xPositions, yPositions, rtl, source, dimensions } = useRoot();
+  const { rtl, source, dimensions } = useRoot();
+
+  const xPositions = useXCoordinates();
+  const yPositions = useYCoordinates();
 
   const rowCount = source.useRowCount();
   const rowTopCount = source.useTopCount();

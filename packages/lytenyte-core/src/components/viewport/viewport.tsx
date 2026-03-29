@@ -17,6 +17,7 @@ import { EditDriver } from "./edit-driver.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
+import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -38,9 +39,10 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     slotViewportOverlay: ViewportOverlay,
     totalHeaderHeight,
     dimensions,
-    xPositions,
-    yPositions,
   } = useRoot();
+
+  const xPositions = useXCoordinates();
+  const yPositions = useYCoordinates();
 
   const offsets = useOffsetContext();
 

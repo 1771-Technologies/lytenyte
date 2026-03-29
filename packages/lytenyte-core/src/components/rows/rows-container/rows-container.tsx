@@ -9,19 +9,15 @@ import { useRangeSelection } from "../../range-selection/use-range-selection.js"
 import { useKeyboardRangeSelection } from "../../range-selection/use-keyboard-range-selection.js";
 import { useCellFocusChange } from "../../range-selection/use-cell-focus-change.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
+import { useXCoordinates, useYCoordinates } from "../../../root/contexts/coordinates.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
     const id = useGridIdContext();
-    const {
-      xPositions,
-      yPositions,
-      dimensions,
-      api,
-      viewport,
-      slotRowsOverlay: RowsOverlay,
-      rtl,
-    } = useRoot();
+    const { dimensions, api, viewport, slotRowsOverlay: RowsOverlay, rtl } = useRoot();
+
+    const xPositions = useXCoordinates();
+    const yPositions = useYCoordinates();
 
     const height = yPositions.at(-1)!;
     const width = xPositions.at(-1)!;

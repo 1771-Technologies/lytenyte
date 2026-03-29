@@ -30,9 +30,6 @@ export interface RootContextValue {
   readonly dimensions: Dimension;
   readonly base: Omit<ColumnAbstract, "id">;
 
-  readonly xPositions: Uint32Array;
-  readonly yPositions: Uint32Array;
-
   readonly setDetailCache: Dispatch<SetStateAction<Record<string, number>>>;
   readonly rowDetailHeightCache: Record<string, number>;
   readonly rowDetailAutoHeightGuess: number;

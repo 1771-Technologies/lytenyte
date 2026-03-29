@@ -6,6 +6,7 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { getClientX } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
+import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 
 interface ResizeHandlerProps {
   readonly cell: LayoutHeaderCell | LayoutHeaderGroup;
@@ -14,7 +15,9 @@ interface ResizeHandlerProps {
 }
 
 export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
-  const { api, xPositions, columnDoubleClickToAutosize: double, view, base, viewport: vp, rtl } = useRoot();
+  const { api, columnDoubleClickToAutosize: double, view, base, viewport: vp, rtl } = useRoot();
+
+  const xPositions = useXCoordinates();
 
   const columns = useMemo(() => {
     if (cell.kind === "cell") return [view.lookup.get(cell.id)!];

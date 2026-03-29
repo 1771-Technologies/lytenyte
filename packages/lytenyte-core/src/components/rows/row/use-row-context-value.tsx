@@ -4,15 +4,7 @@ import type { LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
 import { useEdit, type RootContextValue } from "../../../root/root-context.js";
 
 export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValue) {
-  const {
-    source,
-    yPositions,
-    xPositions,
-    detailExpansions,
-    rowDetailHeight,
-    rowDetailHeightCache,
-    rowDetailAutoHeightGuess,
-  } = ctx;
+  const { source, detailExpansions, rowDetailHeight, rowDetailHeightCache, rowDetailAutoHeightGuess } = ctx;
   const r = source.rowByIndex(row.rowIndex).useValue() as RowMeta["row"];
 
   const edit = useEdit();
@@ -34,8 +26,6 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
     return {
       row: r,
       layout: row,
-      xPositions,
-      yPositions,
 
       detailExpanded,
       detailHeight,
@@ -71,8 +61,6 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
     r?.__globalSnapshot,
     r?.__localSnapshot,
     row,
-    xPositions,
-    yPositions,
   ]);
 
   return value;

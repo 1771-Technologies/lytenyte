@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { useRoot } from "../../root/root-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
+import { useYCoordinates } from "../../root/contexts/coordinates.js";
 
 export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
   const { detailExpansions: expansions, source } = useRoot();
@@ -24,7 +25,6 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
     rtl,
     dimensions,
     api,
-    yPositions,
     rowDetailRenderer,
     setDetailCache,
     rowDetailHeight,
@@ -32,6 +32,8 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
     rowDetailHeightCache,
     styles,
   } = useRoot();
+
+  const yPositions = useYCoordinates();
 
   const height =
     rowDetailHeight === "auto" ? (rowDetailHeightCache[row.id] ?? rowDetailAutoHeightGuess) : rowDetailHeight;

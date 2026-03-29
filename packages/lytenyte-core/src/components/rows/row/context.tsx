@@ -12,8 +12,6 @@ export interface RowMeta {
       })
     | null;
   readonly layout: LayoutRowWithCells;
-  readonly xPositions: Uint32Array;
-  readonly yPositions: Uint32Array;
 
   readonly isEditing: boolean;
   readonly editData: any;

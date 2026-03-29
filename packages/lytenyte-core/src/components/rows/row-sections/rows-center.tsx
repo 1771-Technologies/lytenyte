@@ -6,13 +6,13 @@ import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { CellSelectionCenter } from "../../range-selection/cell-selection-container.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../../root/contexts/focus-position.js";
-import { useRoot } from "../../../internal.js";
 import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-counts-context.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import {
   useRowLayoutContext,
   useRowViewContext,
 } from "../../../root/contexts/row-layout/row-layout-context.js";
+import { useYCoordinates } from "../../../root/contexts/coordinates.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -25,7 +25,7 @@ export const RowsCenter = memo(
     const rowView = useRowViewContext();
     const rowLayout = useRowLayoutContext();
 
-    const { yPositions } = useRoot();
+    const yPositions = useYCoordinates();
 
     const { topCount, centerCount } = useRowCountsContext();
     const { topOffset, bottomOffset, headerHeight } = useOffsetContext();

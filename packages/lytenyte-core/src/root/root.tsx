@@ -230,8 +230,6 @@ const RootImpl = forwardRef(
       return {
         rtl: props.rtl ?? false,
         api: api,
-        xPositions,
-        yPositions: yPositions,
         viewport: vp,
         setViewport: setVp,
         view,
@@ -325,8 +323,6 @@ const RootImpl = forwardRef(
       totalHeaderHeight,
       view,
       vp,
-      xPositions,
-      yPositions,
     ]);
 
     return (

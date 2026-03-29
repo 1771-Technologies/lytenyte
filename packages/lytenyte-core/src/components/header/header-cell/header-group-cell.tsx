@@ -8,6 +8,7 @@ import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
@@ -15,7 +16,6 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
 ) {
   const id = useGridIdContext();
   const {
-    xPositions,
     api,
     view,
     headerGroupHeight,
@@ -28,6 +28,8 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
 
   const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupDefaultExpansion;
   const cellSelections$ = useCellRangeSelectionPieceContext();
+
+  const xPositions = useXCoordinates();
 
   const x = xPositions[cell.colStart];
   const width = xPositions[cell.colEnd] - x;

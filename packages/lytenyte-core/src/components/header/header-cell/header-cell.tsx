@@ -14,13 +14,16 @@ import { ResizeHandler } from "./resize-handler.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
   const id = useGridIdContext();
-  const { xPositions, base, view, api, events, styles } = useRoot();
+  const { base, view, api, events, styles } = useRoot();
+
+  const xPositions = useXCoordinates();
 
   const cellSelections$ = useCellRangeSelectionPieceContext();
 
