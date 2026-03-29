@@ -1,5 +1,5 @@
 import { forwardRef, memo, useMemo, useState, type CSSProperties, type JSX } from "react";
-import { useEdit, useRoot } from "../../root/root-context.js";
+import { useRoot } from "../../root/root-context.js";
 import { useCombinedRefs } from "../../hooks/use-combine-refs.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
 import {
@@ -18,11 +18,14 @@ import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
 import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
+import { useEditContext } from "../../root/contexts/edit-context.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
   const id = useGridIdContext();
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
+  const api = useAPI();
 
   const {
     events,
@@ -32,7 +35,6 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     selectActivator,
     source,
     rtl,
-    api,
     view,
     slotShadows: Shadows,
     styles,
@@ -46,7 +48,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
   const offsets = useOffsetContext();
 
-  const edit = useEdit();
+  const edit = useEditContext();
 
   const focusActive = useFocusNonReactive();
   const [focused, vpFocused] = useFocusTracking(vp, focusActive, id);

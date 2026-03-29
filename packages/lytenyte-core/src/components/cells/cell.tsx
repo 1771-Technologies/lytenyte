@@ -10,6 +10,7 @@ import { useColumnSettingsContext } from "../../root/contexts/columns/column-set
 import { useStartBoundsContext } from "../../root/contexts/bounds.js";
 import { useFocusNonReactive } from "../../root/contexts/focus-position.js";
 import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
   const [start, end] = useStartBoundsContext();
@@ -35,7 +36,8 @@ export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, 
 const CellImpl = memo(
   forwardRef<HTMLDivElement, Cell.Props>(function Cell({ cell, ...props }, forwarded) {
     const id = useGridIdContext();
-    const { api, view, editMode, events, styles } = useRoot();
+    const { view, editMode, events, styles } = useRoot();
+    const api = useAPI();
     const settings = useColumnSettingsContext()[cell.id];
     const rowMeta = useRowMeta();
     const row = rowMeta.row;

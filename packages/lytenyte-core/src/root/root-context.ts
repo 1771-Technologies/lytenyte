@@ -23,7 +23,6 @@ export interface RootContextValue {
   readonly source: RowSource;
   readonly rtl: boolean;
   readonly view: ColumnView;
-  readonly api: Root.API;
 
   readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;
@@ -102,7 +101,3 @@ export interface EditContext {
   readonly commit: () => boolean | Record<string, unknown>;
   readonly cancel: () => void;
 }
-
-const editContext = createContext({} as EditContext);
-export const EditProvider = editContext.Provider;
-export const useEdit = () => useContext(editContext);

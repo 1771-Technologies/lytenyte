@@ -1,13 +1,14 @@
 import { useMemo } from "react";
 import type { RowMeta } from "./context.js";
 import type { LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
-import { useEdit, type RootContextValue } from "../../../root/root-context.js";
+import { type RootContextValue } from "../../../root/root-context.js";
+import { useEditContext } from "../../../root/contexts/edit-context.js";
 
 export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValue) {
   const { source, detailExpansions, rowDetailHeight, rowDetailHeightCache, rowDetailAutoHeightGuess } = ctx;
   const r = source.rowByIndex(row.rowIndex).useValue() as RowMeta["row"];
 
-  const edit = useEdit();
+  const edit = useEditContext();
 
   const isEditing = edit.activeEdit?.rowId === row.id;
   const editColumn = isEditing ? edit.activeEdit.column! : null;

@@ -6,6 +6,7 @@ import { getNearestRow, getRowIndexFromEl, type RowNode } from "@1771technologie
 import type { Root } from "../../root/root.js";
 import { getRowDragData } from "../../internal.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
 
 export function RowDragMonitor() {
   const { dropAccept } = useRoot();
@@ -23,7 +24,8 @@ export function RowDragMonitor() {
 
 function RowDragCollider() {
   const id = useGridIdContext();
-  const { viewport, api, onRowDragLeave: leave, onRowDragEnter: enter, onRowDrop: drop } = useRoot();
+  const { viewport, onRowDragLeave: leave, onRowDragEnter: enter, onRowDrop: drop } = useRoot();
+  const api = useAPI();
   const x = useSelector(dragX);
   const y = useSelector(dragY);
 

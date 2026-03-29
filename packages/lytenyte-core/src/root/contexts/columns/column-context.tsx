@@ -9,9 +9,11 @@ import type { Root } from "../../root";
 import { useControlled } from "../../../hooks/use-controlled.js";
 import { useEvent } from "../../../hooks/use-event.js";
 import { useColumnView } from "../../hooks/use-column-view.js";
+import type { Column } from "../../../types/index.js";
 
 interface ColumnContext {
   readonly view: ColumnView;
+  readonly columns: Column[];
   readonly columnGroupExpansions: Record<string, boolean>;
   readonly onColumnGroupExpansionChange: (change: Record<string, boolean>) => void;
   readonly onColumnsChange: (change: ColumnAbstract[]) => void;
@@ -20,6 +22,7 @@ interface ColumnContext {
 const context = createContext(null as unknown as ColumnContext);
 
 const EMPTY: any = {};
+const EMPTY_COLUMNS = [] as any;
 
 type Picks =
   | "columns"
@@ -49,10 +52,11 @@ function ColumnContextProviderBase({ children, source, ...p }: PropsWithChildren
     return {
       view,
       columnGroupExpansions,
+      columns: p.columns ?? EMPTY_COLUMNS,
       onColumnGroupExpansionChange,
       onColumnsChange: p.onColumnsChange ?? (() => {}),
     };
-  }, [columnGroupExpansions, onColumnGroupExpansionChange, p.onColumnsChange, view]);
+  }, [columnGroupExpansions, onColumnGroupExpansionChange, p.columns, p.onColumnsChange, view]);
 
   return <context.Provider value={value}>{children}</context.Provider>;
 }

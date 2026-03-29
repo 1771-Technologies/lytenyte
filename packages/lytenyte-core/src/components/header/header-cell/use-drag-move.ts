@@ -15,6 +15,7 @@ import { useRoot } from "../../../root/root-context.js";
 import { HeaderMovePlaceholder } from "./header-move-placer.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useXCoordinates } from "../../../root/contexts/coordinates.js";
+import { useAPI } from "../../../root/contexts/api-provider.js";
 
 export function useDragMove(
   cell: LayoutHeaderGroup | LayoutHeaderCell | LayoutHeaderFloating,
@@ -26,11 +27,11 @@ export function useDragMove(
     viewport: vp,
     base,
     rtl,
-    api,
     columnGroupMoveDragPlaceholder,
     columnMoveDragPlaceholder,
     onColumnMoveOutside,
   } = useRoot();
+  const api = useAPI();
 
   const xPositions = useXCoordinates();
 

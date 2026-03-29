@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useRoot } from "../../root/root-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
 
 export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
   const { detailExpansions: expansions, source } = useRoot();
@@ -21,10 +22,11 @@ export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFu
 
 function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number }) {
   const id = useGridIdContext();
+  const api = useAPI();
+
   const {
     rtl,
     dimensions,
-    api,
     rowDetailRenderer,
     setDetailCache,
     rowDetailHeight,

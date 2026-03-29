@@ -11,6 +11,7 @@ import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
 import { useYCoordinates } from "../../root/contexts/coordinates.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
@@ -21,7 +22,6 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
     rtl,
     rowFullWidthRenderer,
     rowAlternateAttr,
-    api,
     source,
     detailExpansions,
     rowDetailHeight,
@@ -37,6 +37,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
 
   const row = source.rowByIndex(layout.rowIndex).useValue();
 
+  const api = useAPI();
   const handlers = useMappedEvents(events.row, { row, api, layout });
 
   const rowIndex = layout.rowIndex;

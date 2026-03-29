@@ -7,12 +7,14 @@ import {
   useCellRangeSelection,
   useCellRangeSelectionSettings,
 } from "../../root/contexts/cell-range-selection/cell-range-selection-state.js";
+import { useAPI } from "../../root/contexts/api-provider.js";
 
 export function useKeyboardRangeSelection(): KeyboardEventHandler<HTMLDivElement> {
-  const { api, view, source, rtl } = useRoot();
+  const { view, source, rtl } = useRoot();
   const { cellSelections } = useCellRangeSelection();
   const settings = useCellRangeSelectionSettings();
   const focusActive = useFocusNonReactive();
+  const api = useAPI();
 
   const rowCount = source.useRowCount();
 

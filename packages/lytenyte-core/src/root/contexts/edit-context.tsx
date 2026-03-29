@@ -1,12 +1,48 @@
-import { useMemo, useRef, useState } from "react";
-import type { ColumnAbstract, RowNode } from "@1771technologies/lytenyte-shared";
-import { type ColumnView, type RowSource } from "@1771technologies/lytenyte-shared";
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+  type Dispatch,
+  type PropsWithChildren,
+  type SetStateAction,
+} from "react";
+import type { API, Column, RowNode } from "../../types";
+import type { ColumnAbstract, PartialMandatory, RowSource } from "@1771technologies/lytenyte-shared";
+import { useColumnsContext } from "./columns/column-context.js";
 import { useEvent } from "../../hooks/use-event.js";
-import type { Root } from "../root.js";
-import type { EditContext } from "../root-context.js";
-import type { Column } from "../../types/index.js";
+import type { Root } from "../root";
 
-export function useEditContext(view: ColumnView, api: Root.API, props: Root.Props, source: RowSource) {
+export interface EditContext {
+  readonly activeEdit: null | { readonly rowId: string; readonly column: string };
+  readonly setActiveEdit: Dispatch<
+    SetStateAction<null | { readonly rowId: string; readonly column: string }>
+  >;
+  readonly editData: any;
+  readonly setEditData: Dispatch<SetStateAction<any>>;
+  readonly editValidation: boolean | Record<string, unknown>;
+
+  readonly changeValue: (value: any, column: Column) => boolean | Record<string, unknown>;
+  readonly changeWithInit: (value: any, row: RowNode<any>, column: ColumnAbstract) => any;
+  readonly changeData: (data: any) => boolean | Record<string, unknown>;
+
+  readonly commit: () => boolean | Record<string, unknown>;
+  readonly cancel: () => void;
+}
+
+const context = createContext(null as unknown as EditContext);
+
+type Props = Pick<
+  PartialMandatory<Root.Props>,
+  "columnBase" | "editRowValidatorFn" | "onEditCancel" | "onEditBegin" | "onEditFail" | "onEditEnd"
+> & {
+  readonly api: API;
+  readonly source: RowSource;
+};
+
+export function EditProvider({ api, source, ...props }: PropsWithChildren<Props>) {
+  const { view, columns } = useColumnsContext();
   const [activeEdit, setActiveEdit] = useState<null | {
     readonly rowId: string;
     readonly column: string;
@@ -117,7 +153,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
       }
     }
 
-    for (const c of props.columns ?? []) {
+    for (const c of columns) {
       const mutateEdit = c?.editMutateCommit ?? props.columnBase?.editMutateCommit;
       if (!mutateEdit) continue;
       mutateEdit({ api, column: c, editData: editDataState, row });
@@ -162,5 +198,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     };
   }, [activeEdit, cancel, changeData, changeValue, changeWithInit, commit, editData, editValidation]);
 
-  return value;
+  return <context.Provider value={value}>{props.children}</context.Provider>;
 }
+
+export const useEditContext = () => useContext(context);

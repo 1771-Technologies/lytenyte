@@ -10,12 +10,14 @@ import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 import { useYCoordinates } from "../../../root/contexts/coordinates.js";
+import { useAPI } from "../../../root/contexts/api-provider.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
   const id = useGridIdContext();
-  const { rowAlternateAttr, events, styles: sx, api } = ctx;
+  const { rowAlternateAttr, events, styles: sx } = ctx;
 
+  const api = useAPI();
   const cellSelections$ = useCellRangeSelectionPieceContext();
 
   const { topOffset, headerHeight } = useOffsetContext();

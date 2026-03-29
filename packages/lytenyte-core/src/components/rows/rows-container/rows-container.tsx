@@ -10,12 +10,14 @@ import { useKeyboardRangeSelection } from "../../range-selection/use-keyboard-ra
 import { useCellFocusChange } from "../../range-selection/use-cell-focus-change.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useXCoordinates, useYCoordinates } from "../../../root/contexts/coordinates.js";
+import { useAPI } from "../../../root/contexts/api-provider.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
     const id = useGridIdContext();
-    const { dimensions, api, viewport, slotRowsOverlay: RowsOverlay, rtl } = useRoot();
+    const { dimensions, viewport, slotRowsOverlay: RowsOverlay, rtl } = useRoot();
 
+    const api = useAPI();
     const xPositions = useXCoordinates();
     const yPositions = useYCoordinates();
 

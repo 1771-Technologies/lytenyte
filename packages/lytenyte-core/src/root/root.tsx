@@ -11,14 +11,7 @@ import { useControlledGridState } from "./hooks/use-controlled-grid-state.js";
 import { DEFAULT_ROW_SOURCE } from "./constants.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
 import { equal, type RowSource } from "@1771technologies/lytenyte-shared";
-import { useApi } from "./hooks/use-api/use-api.js";
-import {
-  ColumnLayoutContextProvider,
-  EditProvider,
-  RootContextProvider,
-  type RootContextValue,
-} from "./root-context.js";
-import { useEditContext } from "./hooks/use-edit-context.js";
+import { ColumnLayoutContextProvider, RootContextProvider, type RootContextValue } from "./root-context.js";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
@@ -30,15 +23,12 @@ import { RowsContainer } from "../components/rows/rows-container/rows-container.
 import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
-import { GridIdProvider, useGridIdContext } from "./contexts/grid-id.js";
+import { GridIdProvider } from "./contexts/grid-id.js";
 import { ColumnSettingProvider } from "./contexts/columns/column-settings-context.js";
-import { BoundsProvider, useBoundsContext } from "./contexts/bounds.js";
+import { BoundsProvider } from "./contexts/bounds.js";
 import { FocusPositionProvider } from "./contexts/focus-position.js";
 import { CellRangeSelectionActive } from "./contexts/cell-range-selection/cell-range-selection-active.js";
-import {
-  CellSelectionContext,
-  useCellRangeSelection,
-} from "./contexts/cell-range-selection/cell-range-selection-state.js";
+import { CellSelectionContext } from "./contexts/cell-range-selection/cell-range-selection-state.js";
 import { RowCountsProvider } from "./contexts/grid-areas/row-counts-context.js";
 import { ColumnContextProvider, useColumnsContext } from "./contexts/columns/column-context.js";
 import { DimensionsContext, useDimensionContext } from "./contexts/viewport/dimensions-context.js";
@@ -50,7 +40,10 @@ import { OffsetProvider } from "./contexts/grid-areas/offset-context.js";
 import { CutoffProvider } from "./contexts/grid-areas/cutoff-context.js";
 import { GridSectionsContextProvider } from "./contexts/grid-areas/grid-sections-context.js";
 import { DropAcceptProvider, useDropAcceptContext } from "./contexts/drop-accept.js";
-import { RowLayoutProvider, useRowLayoutContext } from "./contexts/row-layout/row-layout-context.js";
+import { RowLayoutProvider } from "./contexts/row-layout/row-layout-context.js";
+import { SelectPivotProvider } from "./contexts/select-pivot-context.js";
+import { EditProvider } from "./contexts/edit-context.js";
+import { APIProvider } from "./contexts/api-provider.js";
 
 const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -134,9 +127,24 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                                         virtualizeCols={props.virtualizeCols}
                                         virtualizeRows={props.virtualizeRows}
                                       >
-                                        <RootImpl {...props} ref={forwarded as any}>
-                                          {children}
-                                        </RootImpl>
+                                        <SelectPivotProvider>
+                                          <EditProvider
+                                            api={api}
+                                            source={source}
+                                            columnBase={props.columnBase}
+                                            editRowValidatorFn={props.editRowValidatorFn}
+                                            onEditBegin={props.onEditBegin}
+                                            onEditCancel={props.onEditCancel}
+                                            onEditEnd={props.onEditEnd}
+                                            onEditFail={props.onEditFail}
+                                          >
+                                            <APIProvider api={api} source={source} {...props}>
+                                              <RootImpl {...props} ref={forwarded as any}>
+                                                {children}
+                                              </RootImpl>
+                                            </APIProvider>
+                                          </EditProvider>
+                                        </SelectPivotProvider>
                                       </RowLayoutProvider>
                                     </FocusPositionProvider>
                                   </CellRangeSelectionActive>
@@ -158,156 +166,142 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   );
 };
 
-const RootImpl = forwardRef(
-  <Spec extends Root.GridSpec = Root.GridSpec>(
-    {
-      children,
-      ...p
-    }: PropsWithChildren<
-      Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
-    >,
-    forwarded: Root.Props<Spec>["ref"],
-  ) => {
-    const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
-    const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
+const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
+  children,
+  ...p
+}: PropsWithChildren<
+  Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
+>) => {
+  const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {};
+  const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
 
-    const { view } = useColumnsContext();
-    const { viewport: vp, setViewport: setVp } = useViewportContext();
-    const dimensions = useDimensionContext();
-    const { totalHeaderHeight } = useHeaderLayoutContext();
-    const { detailCache, setDetailCache } = useRowDetailContext();
+  const { view } = useColumnsContext();
+  const { viewport: vp, setViewport: setVp } = useViewportContext();
+  const dimensions = useDimensionContext();
+  const { totalHeaderHeight } = useHeaderLayoutContext();
+  const { detailCache, setDetailCache } = useRowDetailContext();
 
-    const controlled = useControlledGridState(props);
+  const controlled = useControlledGridState(props);
 
-    const selectPivot = useRef<number | null>(null);
-    const dropAccept = useDropAcceptContext();
+  const selectPivot = useRef<number | null>(null);
+  const dropAccept = useDropAcceptContext();
 
-    const api = useExtendedAPI(props);
-    useImperativeHandle(forwarded, () => api as any, [api]);
+  const headerLayout = useHeaderLayout(view, props);
 
-    const headerLayout = useHeaderLayout(view, props);
+  const prevStyles = useRef(props.styles);
+  const styles = useMemo(() => {
+    const next = props.styles;
+    if (equal(prevStyles.current, next)) return prevStyles.current;
 
-    const editValue = useEditContext(view, api, props, source);
+    prevStyles.current = next;
+    return next;
+  }, [props.styles]);
 
-    useApi(props, source, editValue, selectPivot, api);
-
-    const prevStyles = useRef(props.styles);
-    const styles = useMemo(() => {
-      const next = props.styles;
-      if (equal(prevStyles.current, next)) return prevStyles.current;
-
-      prevStyles.current = next;
-      return next;
-    }, [props.styles]);
-
-    const value = useMemo<RootContextValue>(() => {
-      return {
-        rtl: props.rtl ?? false,
-        api: api,
-        viewport: vp,
-        setViewport: setVp,
-        view,
-        source,
-
-        events: props.events ?? {},
-        columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
-        columnGroupRenderer: props.columnGroupRenderer,
-        columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
-        columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
-
-        dimensions,
-        styles,
-
-        totalHeaderHeight,
-        detailExpansions: controlled.detailExpansions,
-
-        rowDetailHeight: props.rowDetailHeight ?? 200,
-        rowDetailAutoHeightGuess: props.rowDetailAutoHeightGuess ?? 200,
-        rowDetailHeightCache: detailCache,
-        rowDetailRenderer: props.rowDetailRenderer,
-        rowFullWidthRenderer: props.rowFullWidthRenderer,
-        setDetailCache: setDetailCache,
-
-        base: props.columnBase ?? {},
-
-        onColumnMoveOutside: props.onColumnMoveOutside,
-        columnGroupDefaultExpansion: props.columnGroupDefaultExpansion ?? true,
-        columnGroupExpansions: controlled.columnGroupExpansions,
-
-        floatingRowEnabled: props.floatingRowEnabled ?? false,
-        floatingRowHeight: props.floatingRowHeight ?? 40,
-        headerGroupHeight: props.headerGroupHeight ?? 40,
-        headerHeight: props.headerHeight ?? 40,
-
-        slotShadows: props.slotShadows,
-        slotRowsOverlay: props.slotRowsOverlay,
-        slotViewportOverlay: props.slotViewportOverlay,
-
-        editMode: props.editMode ?? "readonly",
-        editClickActivator: props.editClickActivator ?? "double-click",
-        editValidator: props.editRowValidatorFn ?? null,
-
-        rowAlternateAttr: props.rowAlternateAttr ?? true,
-        selectActivator: props.rowSelectionActivator ?? "single-click",
-        selectPivot,
-        dropAccept,
-        onRowDragEnter: props.onRowDragEnter,
-        onRowDragLeave: props.onRowDragLeave,
-        onRowDrop: props.onRowDrop,
-      };
-    }, [
-      api,
-      controlled.columnGroupExpansions,
-      controlled.detailExpansions,
-      detailCache,
-      dimensions,
-      dropAccept,
-      props.columnBase,
-      props.columnDoubleClickToAutosize,
-      props.columnGroupDefaultExpansion,
-      props.columnGroupMoveDragPlaceholder,
-      props.columnGroupRenderer,
-      props.columnMoveDragPlaceholder,
-      props.editClickActivator,
-      props.editMode,
-      props.editRowValidatorFn,
-      props.events,
-      props.floatingRowEnabled,
-      props.floatingRowHeight,
-      props.headerGroupHeight,
-      props.headerHeight,
-      props.onColumnMoveOutside,
-      props.onRowDragEnter,
-      props.onRowDragLeave,
-      props.onRowDrop,
-      props.rowAlternateAttr,
-      props.rowDetailAutoHeightGuess,
-      props.rowDetailHeight,
-      props.rowDetailRenderer,
-      props.rowFullWidthRenderer,
-      props.rowSelectionActivator,
-      props.rtl,
-      props.slotRowsOverlay,
-      props.slotShadows,
-      props.slotViewportOverlay,
-      setDetailCache,
-      setVp,
-      source,
-      styles,
-      totalHeaderHeight,
+  const value = useMemo<RootContextValue>(() => {
+    return {
+      rtl: props.rtl ?? false,
+      viewport: vp,
+      setViewport: setVp,
       view,
-      vp,
-    ]);
+      source,
 
-    return (
-      <RootContextProvider value={value}>
-        <ColumnLayoutContextProvider value={headerLayout}>
-          <EditProvider value={editValue}>{children ?? <Fallback />}</EditProvider>
-        </ColumnLayoutContextProvider>
-      </RootContextProvider>
-    );
-  },
-);
+      events: props.events ?? {},
+      columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
+      columnGroupRenderer: props.columnGroupRenderer,
+      columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
+      columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
+
+      dimensions,
+      styles,
+
+      totalHeaderHeight,
+      detailExpansions: controlled.detailExpansions,
+
+      rowDetailHeight: props.rowDetailHeight ?? 200,
+      rowDetailAutoHeightGuess: props.rowDetailAutoHeightGuess ?? 200,
+      rowDetailHeightCache: detailCache,
+      rowDetailRenderer: props.rowDetailRenderer,
+      rowFullWidthRenderer: props.rowFullWidthRenderer,
+      setDetailCache: setDetailCache,
+
+      base: props.columnBase ?? {},
+
+      onColumnMoveOutside: props.onColumnMoveOutside,
+      columnGroupDefaultExpansion: props.columnGroupDefaultExpansion ?? true,
+      columnGroupExpansions: controlled.columnGroupExpansions,
+
+      floatingRowEnabled: props.floatingRowEnabled ?? false,
+      floatingRowHeight: props.floatingRowHeight ?? 40,
+      headerGroupHeight: props.headerGroupHeight ?? 40,
+      headerHeight: props.headerHeight ?? 40,
+
+      slotShadows: props.slotShadows,
+      slotRowsOverlay: props.slotRowsOverlay,
+      slotViewportOverlay: props.slotViewportOverlay,
+
+      editMode: props.editMode ?? "readonly",
+      editClickActivator: props.editClickActivator ?? "double-click",
+      editValidator: props.editRowValidatorFn ?? null,
+
+      rowAlternateAttr: props.rowAlternateAttr ?? true,
+      selectActivator: props.rowSelectionActivator ?? "single-click",
+      selectPivot,
+      dropAccept,
+      onRowDragEnter: props.onRowDragEnter,
+      onRowDragLeave: props.onRowDragLeave,
+      onRowDrop: props.onRowDrop,
+    };
+  }, [
+    controlled.columnGroupExpansions,
+    controlled.detailExpansions,
+    detailCache,
+    dimensions,
+    dropAccept,
+    props.columnBase,
+    props.columnDoubleClickToAutosize,
+    props.columnGroupDefaultExpansion,
+    props.columnGroupMoveDragPlaceholder,
+    props.columnGroupRenderer,
+    props.columnMoveDragPlaceholder,
+    props.editClickActivator,
+    props.editMode,
+    props.editRowValidatorFn,
+    props.events,
+    props.floatingRowEnabled,
+    props.floatingRowHeight,
+    props.headerGroupHeight,
+    props.headerHeight,
+    props.onColumnMoveOutside,
+    props.onRowDragEnter,
+    props.onRowDragLeave,
+    props.onRowDrop,
+    props.rowAlternateAttr,
+    props.rowDetailAutoHeightGuess,
+    props.rowDetailHeight,
+    props.rowDetailRenderer,
+    props.rowFullWidthRenderer,
+    props.rowSelectionActivator,
+    props.rtl,
+    props.slotRowsOverlay,
+    props.slotShadows,
+    props.slotViewportOverlay,
+    setDetailCache,
+    setVp,
+    source,
+    styles,
+    totalHeaderHeight,
+    view,
+    vp,
+  ]);
+
+  return (
+    <RootContextProvider value={value}>
+      <ColumnLayoutContextProvider value={headerLayout}>
+        {children ?? <Fallback />}{" "}
+      </ColumnLayoutContextProvider>
+    </RootContextProvider>
+  );
+};
 
 export const Fallback = memo(() => {
   return (
