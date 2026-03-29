@@ -11,6 +11,7 @@ import { useGridIdContext } from "../../root/contexts/grid-id.js";
 import { useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useAPI } from "../../root/contexts/api-provider.js";
 import { useRowDetailContext, useRowDetailHeightFn } from "../../root/contexts/row-detail.js";
+import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
 
 export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
   const { source } = useRoot();
@@ -26,7 +27,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
   const id = useGridIdContext();
   const api = useAPI();
 
-  const { rtl, dimensions, rowDetailRenderer, styles } = useRoot();
+  const { dimensions, styles } = useRoot();
 
   const yPositions = useYCoordinates();
 
@@ -34,10 +35,9 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
   const detailHeightFn = useRowDetailHeightFn();
 
   const height = detailHeightFn(row.id);
-
   const rowHeight = sizeFromCoord(rowIndex, yPositions) - height;
+  const { DetailRenderer } = useGridRenderer();
 
-  const Renderer = rowDetailRenderer;
   const [detailEl, setDetailEl] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -77,14 +77,13 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
         style={{
           position: "sticky",
           pointerEvents: "all",
-          right: rtl ? "0px" : undefined,
-          left: rtl ? undefined : "0px",
+          insetInlineStart: "0px",
           marginTop: rowHeight,
           width: dimensions.innerWidth,
           height: isAuto ? "auto" : height,
         }}
       >
-        {Renderer ? <Renderer row={row} rowIndex={rowIndex} api={api} /> : null}
+        <DetailRenderer row={row} rowIndex={rowIndex} api={api} />
       </div>
     </div>
   );

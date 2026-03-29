@@ -28,7 +28,6 @@ export interface RootContextValue {
   readonly dimensions: Dimension;
   readonly base: Omit<ColumnAbstract, "id">;
 
-  readonly rowDetailRenderer: Root.Props["rowDetailRenderer"];
   readonly rowFullWidthRenderer: Root.Props["rowFullWidthRenderer"];
 
   readonly columnDoubleClickToAutosize: boolean;
