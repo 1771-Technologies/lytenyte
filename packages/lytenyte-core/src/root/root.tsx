@@ -46,6 +46,7 @@ import { GridRendererContext } from "./contexts/grid-renderer-context.js";
 import { RowSourceProvider } from "./contexts/row-source-provider.js";
 import { HeaderHierarchyProvider } from "./contexts/header-hierarchy.js";
 import { SelectPivotProvider } from "./contexts/row-select-context.js";
+import { ColumnMoveAndSizeProvider } from "./contexts/column-move-context.js";
 
 const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -162,9 +163,22 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                                                   <HeaderHierarchyProvider
                                                     floatingRowEnabled={props.floatingRowEnabled}
                                                   >
-                                                    <RootImpl {...props} ref={forwarded as any}>
-                                                      {children}
-                                                    </RootImpl>
+                                                    <ColumnMoveAndSizeProvider
+                                                      columnDoubleClickToAutosize={
+                                                        props.columnDoubleClickToAutosize
+                                                      }
+                                                      columnGroupMoveDragPlaceholder={
+                                                        props.columnGroupMoveDragPlaceholder
+                                                      }
+                                                      columnMoveDragPlaceholder={
+                                                        props.columnMoveDragPlaceholder
+                                                      }
+                                                      onColumnMoveOutside={props.onColumnMoveOutside}
+                                                    >
+                                                      <RootImpl {...props} ref={forwarded as any}>
+                                                        {children}
+                                                      </RootImpl>
+                                                    </ColumnMoveAndSizeProvider>
                                                   </HeaderHierarchyProvider>
                                                 </APIProvider>
                                               </EditProvider>
@@ -216,26 +230,10 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>({
       events: props.events ?? {},
       styles,
 
-      columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
-      columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
-      onColumnMoveOutside: props.onColumnMoveOutside,
-
-      columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
-
       rowAlternateAttr: props.rowAlternateAttr ?? true,
       selectActivator: props.rowSelectionActivator ?? "single-click",
     } satisfies RootContextValue;
-  }, [
-    props.columnDoubleClickToAutosize,
-    props.columnGroupMoveDragPlaceholder,
-    props.columnMoveDragPlaceholder,
-    props.events,
-    props.onColumnMoveOutside,
-    props.rowAlternateAttr,
-    props.rowSelectionActivator,
-    props.rtl,
-    styles,
-  ]);
+  }, [props.events, props.rowAlternateAttr, props.rowSelectionActivator, props.rtl, styles]);
 
   return <RootContextProvider value={value}>{children ?? <Fallback />} </RootContextProvider>;
 };

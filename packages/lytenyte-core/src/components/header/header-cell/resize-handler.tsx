@@ -11,6 +11,7 @@ import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
 import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
+import { useColumnMoveContext } from "../../../root/contexts/column-move-context.js";
 
 interface ResizeHandlerProps {
   readonly cell: LayoutHeaderCell | LayoutHeaderGroup;
@@ -19,7 +20,8 @@ interface ResizeHandlerProps {
 }
 
 export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
-  const { columnDoubleClickToAutosize: double, rtl } = useRoot();
+  const { rtl } = useRoot();
+  const { columnDoubleClickToAutosize: double } = useColumnMoveContext();
   const { view } = useColumnsContext();
   const { viewport: vp } = useViewportContext();
 

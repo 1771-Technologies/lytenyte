@@ -1,14 +1,14 @@
 import type { ReactPlaceholderFn } from "../../../dnd/types.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
+import { useColumnMoveContext } from "../../../root/contexts/column-move-context.js";
 import { useViewportContext } from "../../../root/contexts/viewport/viewport-context.js";
-import { useRoot } from "../../../root/root-context.js";
 import type { ColumnAbstract, LayoutHeader } from "@1771technologies/lytenyte-shared";
 
 export const HeaderMovePlaceholder: ReactPlaceholderFn = ({ x, y, data }) => {
   const moving = data.moving.data as { columns: ColumnAbstract[]; cell: LayoutHeader };
   const cell = moving.cell;
 
-  const { columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder } = useRoot();
+  const { columnGroupMoveDragPlaceholder, columnMoveDragPlaceholder } = useColumnMoveContext();
   const api = useAPI();
   const { viewport } = useViewportContext();
 
