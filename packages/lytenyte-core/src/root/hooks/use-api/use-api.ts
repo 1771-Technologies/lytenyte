@@ -1,19 +1,17 @@
 import {
   getNearestFocusable,
   getPositionFromFocusable,
-  type ColumnView,
-  type DataRect,
-  type RowLayout,
+  rowIsAggregated,
+  rowIsBranch,
+  rowIsExpandable,
+  rowIsExpanded,
+  rowIsLeaf,
   type RowSource,
-  type SpanLayout,
   type Writable,
 } from "@1771technologies/lytenyte-shared";
 import type { RefObject } from "react";
-import type { Controlled } from "../use-controlled-grid-state.js";
 import type { EditContext } from "../../root-context.js";
 import type { Root } from "../../root.js";
-import { useRowIsLeaf } from "./api-functions/use-row-is-leaf.js";
-import { useRowIsGroup } from "./api-functions/use-row-is-group.js";
 import { useColumnToggleGroup } from "./api-functions/use-column-toggle-group.js";
 import { useExportData } from "./api-functions/use-export-data.js";
 import { useRowHandleSelect } from "./api-functions/use-row-handle-select.js";
@@ -37,57 +35,66 @@ import { useRowGroupToggle } from "./api-functions/use-row-group-toggle.js";
 import { useUseRowDrag } from "./api-functions/use-row-drag.js";
 import { useViewport } from "./api-functions/use-viewport.js";
 import { useProps } from "./api-functions/use-props.js";
-import { useRowIsAggregated } from "./api-functions/use-row-is-aggregated.js";
-import { useRowIsExpandable } from "./api-functions/use-row-is-expandable.js";
-import { useRowIsExpanded } from "./api-functions/use-row-is-expanded.js";
 import { useRowDetailToggle } from "./api-functions/use-row-detail-toggle.js";
 import { usePiece } from "../../../hooks/use-piece.js";
-import { useRowView } from "./api-functions/use-row-view.js";
-import { useColumnView } from "./api-functions/use-column-view.js";
 import { useEditUpdateCells } from "./api-functions/use-edit-update-cells.js";
 import { useEvent } from "../../../internal.js";
 import { useCellSelections } from "./api-functions/use-cell-selections.js";
+import { useXCoordinates, useYCoordinates } from "../../contexts/coordinates.js";
+import { useViewportContext } from "../../contexts/viewport/viewport-context.js";
+import { useRowCountsContext } from "../../contexts/grid-areas/row-counts-context.js";
+import { useColumnsContext } from "../../contexts/columns/column-context.js";
+import { useRowDetailContext } from "../../contexts/state/row-detail.js";
+import { useRowLayoutContext } from "../../contexts/row-layout/row-layout-context.js";
+import { useBoundsContext } from "../../contexts/bounds.js";
+import { useHeaderLayoutContext } from "../../contexts/header-layout.js";
+import { useCellRangeSelection } from "../../contexts/cell-range-selection/cell-range-selection-state.js";
+import { useGridIdContext } from "../../contexts/grid-id.js";
 
 export function useApi(
-  gridId: string,
   props: Root.Props,
   source: RowSource,
-  view: ColumnView,
-  controlled: Controlled,
   edit: EditContext,
   selectPivot: RefObject<number | null>,
-  bounds: SpanLayout,
-  rowLayout: RowLayout,
-  detailHeightCache: Record<string, number>,
-  vp: HTMLElement | null,
-  xPositions: Uint32Array,
-  yPositions: Uint32Array,
-  headerHeightTotal: number,
   providedApi: Root.API,
-  cellSelections: DataRect[],
 ) {
   const api: Writable<Root.API> = providedApi;
-  const rowTopCount = source.useTopCount();
-  const rowBottomCount = source.useBottomCount();
-  const rowCount = source.useRowCount();
 
-  const x$ = usePiece(xPositions);
-  const y$ = usePiece(yPositions);
-  const v$ = usePiece(vp);
+  const gridId = useGridIdContext();
+  const rowLayout = useRowLayoutContext();
+  const bounds = useBoundsContext();
+  const rc = useRowCountsContext();
+  const { totalHeaderHeight } = useHeaderLayoutContext();
+  const { cellSelections } = useCellRangeSelection();
 
-  api.rowView = useRowView(rowCount, rowBottomCount, rowTopCount);
-  api.columnView = useColumnView(view);
+  const { view, onColumnsChange, columnGroupExpansions, onColumnGroupExpansionChange } = useColumnsContext();
+  const { rowCount, topCount: rowTopCount, bottomCount: rowBottomCount } = rc;
 
-  api.xPositions$ = x$;
-  api.yPositions$ = y$;
-  api.viewport$ = v$;
+  const xPositions = useXCoordinates();
+  const yPositions = useYCoordinates();
+  const { viewport: vp } = useViewportContext();
 
-  api.rowIsLeaf = useRowIsLeaf();
-  api.rowIsGroup = useRowIsGroup();
-  api.rowIsAggregated = useRowIsAggregated();
-  api.rowIsExpandable = useRowIsExpandable();
-  api.rowIsExpanded = useRowIsExpanded();
-  api.columnToggleGroup = useColumnToggleGroup(props, controlled);
+  const { detailExpansions, detailCache, onRowDetailExpansionsChange } = useRowDetailContext();
+
+  api.rowView = useEvent(() => rc);
+  api.columnView = useEvent(() => view);
+
+  api.xPositions$ = usePiece(xPositions);
+  api.yPositions$ = usePiece(yPositions);
+  api.viewport$ = usePiece(vp);
+
+  api.rowIsLeaf = rowIsLeaf;
+  api.rowIsGroup = rowIsBranch;
+  api.rowIsAggregated = rowIsAggregated;
+  api.rowIsExpandable = rowIsExpandable;
+  api.rowIsExpanded = rowIsExpanded;
+
+  api.columnToggleGroup = useColumnToggleGroup(
+    props.columnGroupJoinDelimiter,
+    props.columnGroupDefaultExpansion,
+    columnGroupExpansions,
+    onColumnGroupExpansionChange,
+  );
   api.exportData = useExportData(view, source, api, rowCount);
   api.rowHandleSelect = useRowHandleSelect(props, api, gridId, selectPivot);
   api.rowSelect = useRowSelect(props, api, source);
@@ -97,13 +104,18 @@ export function useApi(
   api.editIsCellActive = useEditIsCellActive(api, edit);
   api.editUpdateRows = useEditUpdateRows(props, api, source);
   api.editUpdateCells = useEditUpdateCells(props, api, source, view);
-  api.columnUpdate = useColumnUpdate(view, controlled);
+  api.columnUpdate = useColumnUpdate(
+    view,
+    props.columns ?? [],
+    onColumnsChange,
+    props.onRowGroupColumnChange,
+  );
   api.columnAutosize = useColumnAutosize(props, api, bounds, view, rowCount, rowBottomCount, rowTopCount);
 
   api.columnResize = useColumnResize(api);
   api.columnById = useColumnById(view);
   api.columnByIndex = useColumnByIndex(view);
-  api.columnMove = useColumnMove(view, controlled);
+  api.columnMove = useColumnMove(view, props.columns ?? [], onColumnsChange);
 
   api.columnField = useColumnField(view);
 
@@ -127,12 +139,18 @@ export function useApi(
     rowCount,
     rowBottomCount,
     rowTopCount,
-    headerHeightTotal,
+    totalHeaderHeight,
   );
 
-  api.rowDetailHeight = useRowDetailHeight(props, controlled, detailHeightCache);
-  api.rowDetailExpanded = useRowDetailExpanded(controlled, source);
-  api.rowDetailToggle = useRowDetailToggle(api, controlled);
+  api.rowDetailHeight = useRowDetailHeight(
+    props.rowDetailHeight,
+    props.rowDetailAutoHeightGuess,
+    detailExpansions,
+    detailCache,
+  );
+
+  api.rowDetailExpanded = useRowDetailExpanded(detailExpansions, source);
+  api.rowDetailToggle = useRowDetailToggle(api, detailExpansions, onRowDetailExpansionsChange);
   api.rowGroupToggle = useRowGroupToggle(source);
   api.useRowDrag = useUseRowDrag(api, gridId);
   api.viewport = useViewport(vp);

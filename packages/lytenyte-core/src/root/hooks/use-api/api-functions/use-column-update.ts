@@ -1,11 +1,15 @@
-import { GROUP_COLUMN_PREFIX, type ColumnView } from "@1771technologies/lytenyte-shared";
+import { GROUP_COLUMN_PREFIX, type ColumnAbstract, type ColumnView } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
-import type { Controlled } from "../../use-controlled-grid-state.js";
 
-export function useColumnUpdate(view: ColumnView, controlled: Controlled): Root.API["columnUpdate"] {
+export function useColumnUpdate(
+  view: ColumnView,
+  providedColumns: ColumnAbstract[],
+  onColumnsChange: (change: ColumnAbstract[]) => void,
+  onRowGroupColumnChange: ((change: ColumnAbstract) => void) | undefined,
+): Root.API["columnUpdate"] {
   return useEvent((updates) => {
-    const columns = [...controlled.columns];
+    const columns = [...providedColumns];
 
     const groupColumns = view.visibleColumns.filter((c) => c.id.startsWith(GROUP_COLUMN_PREFIX));
     const groupColumn = groupColumns[0];
@@ -13,7 +17,7 @@ export function useColumnUpdate(view: ColumnView, controlled: Controlled): Root.
     if (groupColumn) {
       if (updates[groupColumn.id]) {
         const next = { ...groupColumn, ...updates[groupColumn.id] };
-        controlled.onRowGroupColumnChange(next);
+        onRowGroupColumnChange?.(next);
       }
     }
 
@@ -25,6 +29,6 @@ export function useColumnUpdate(view: ColumnView, controlled: Controlled): Root.
         columns[i] = next;
       }
     }
-    controlled.onColumnsChange(columns);
+    onColumnsChange(columns);
   });
 }

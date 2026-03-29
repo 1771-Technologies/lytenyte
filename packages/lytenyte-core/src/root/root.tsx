@@ -44,7 +44,7 @@ import { ColumnContextProvider, useColumnsContext } from "./contexts/columns/col
 import { DimensionsContext, useDimensionContext } from "./contexts/viewport/dimensions-context.js";
 import { useViewportContext, ViewportContext } from "./contexts/viewport/viewport-context.js";
 import { HeaderLayoutProvider, useHeaderLayoutContext } from "./contexts/header-layout.js";
-import { CoordinatesProvider, useXCoordinates, useYCoordinates } from "./contexts/coordinates.js";
+import { CoordinatesProvider } from "./contexts/coordinates.js";
 import { RowDetailProvider, useRowDetailContext } from "./contexts/state/row-detail.js";
 import { OffsetProvider } from "./contexts/grid-areas/offset-context.js";
 import { CutoffProvider } from "./contexts/grid-areas/cutoff-context.js";
@@ -179,43 +179,17 @@ const RootImpl = forwardRef(
 
     const controlled = useControlledGridState(props);
 
-    const xPositions = useXCoordinates();
-    const yPositions = useYCoordinates();
-
-    const gridId = useGridIdContext();
     const selectPivot = useRef<number | null>(null);
     const dropAccept = useDropAcceptContext();
 
     const api = useExtendedAPI(props);
     useImperativeHandle(forwarded, () => api as any, [api]);
 
-    const bounds = useBoundsContext();
     const headerLayout = useHeaderLayout(view, props);
-
-    const rowLayout = useRowLayoutContext();
 
     const editValue = useEditContext(view, api, props, source);
 
-    const { cellSelections } = useCellRangeSelection();
-
-    useApi(
-      gridId,
-      props,
-      source,
-      view,
-      controlled,
-      editValue,
-      selectPivot,
-      bounds,
-      rowLayout,
-      detailCache,
-      vp,
-      xPositions,
-      yPositions,
-      totalHeaderHeight,
-      api,
-      cellSelections,
-    );
+    useApi(props, source, editValue, selectPivot, api);
 
     const prevStyles = useRef(props.styles);
     const styles = useMemo(() => {
