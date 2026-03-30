@@ -40,7 +40,7 @@
  *
  * @param a - First value to compare
  * @param b - Second value to compare
- * @param compareFunctionsAsStrings - When true, functions are compared by their string
+ * @para - When true, functions are compared by their string
  *                                   representation rather than reference equality.
  *                                   Defaults to false.
  *
@@ -74,11 +74,7 @@
  * @note This is a fork of the fast-deep-equal library optimized for additional
  * JavaScript types and special cases.
  */
-export function equal(a: any, b: any, compareFunctionsAsStrings: boolean = false) {
-  if (compareFunctionsAsStrings && typeof a === "function" && typeof b === "function") {
-    return String(b) === String(a);
-  }
-
+export function equal(a: any, b: any) {
   if (a === b) return true;
 
   if (a && b && typeof a == "object" && typeof b == "object") {
@@ -88,14 +84,14 @@ export function equal(a: any, b: any, compareFunctionsAsStrings: boolean = false
     if (Array.isArray(a)) {
       length = a.length;
       if (length != b.length) return false;
-      for (i = length; i-- !== 0; ) if (!equal(a[i], b[i], compareFunctionsAsStrings)) return false;
+      for (i = length; i-- !== 0; ) if (!equal(a[i], b[i])) return false;
       return true;
     }
 
     if (a instanceof Map && b instanceof Map) {
       if (a.size !== b.size) return false;
       for (i of a.entries()) if (!b.has(i[0])) return false;
-      for (i of a.entries()) if (!equal(i[1], b.get(i[0]), compareFunctionsAsStrings)) return false;
+      for (i of a.entries()) if (!equal(i[1], b.get(i[0]))) return false;
       return true;
     }
 
@@ -123,10 +119,6 @@ export function equal(a: any, b: any, compareFunctionsAsStrings: boolean = false
     length = keys.length;
     if (length !== Object.keys(b).length) return false;
 
-    for (i = length; i-- !== 0; )
-      /* v8 ignore next 1 */
-      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
-
     for (i = length; i-- !== 0; ) {
       const key = keys[i];
 
@@ -137,7 +129,7 @@ export function equal(a: any, b: any, compareFunctionsAsStrings: boolean = false
         continue;
       }
 
-      if (!equal(a[key], b[key], compareFunctionsAsStrings)) return false;
+      if (!equal(a[key], b[key])) return false;
     }
 
     return true;

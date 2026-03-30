@@ -55,22 +55,18 @@ export type {
 } from "./types.js";
 
 export type {
-  LayoutHeader,
-  LayoutHeaderCell,
-  LayoutHeaderFloating,
-  LayoutHeaderGroup,
-} from "./layout-column/index.js";
-export { makeColumnLayout } from "./layout-column/index.js";
-
-export type {
   RowLayout,
   LayoutCell,
   LayoutFullWidthRow,
   LayoutRow,
   LayoutRowWithCells,
+  LayoutHeader,
+  LayoutHeaderCell,
+  LayoutHeaderFloating,
+  LayoutHeaderGroup,
   RowView,
-} from "./layout-row/index.js";
-export { createRowLayout } from "./layout-row/index.js";
+} from "./layout/index.js";
+export { createColumnLayout, createRowLayout } from "./layout/index.js";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
@@ -161,8 +157,6 @@ export {
   get,
   getClientX,
   getClientY,
-  getRelativeXPosition,
-  getRelativeYPosition,
   isFunction,
   itemsWithIdToMap,
   rangedBinarySearch,
@@ -190,6 +184,8 @@ export {
   getParentNode,
   getWindow,
   getScrollStatus,
+  getRelativeXPosition,
+  getRelativeYPosition,
 } from "./dom-utils/getters/index.js";
 export {
   contains,

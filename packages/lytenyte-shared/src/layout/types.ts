@@ -62,3 +62,56 @@ export interface RowView {
   readonly rowFocusedIndex: number | null;
   readonly rowFirstCenter: number;
 }
+
+export interface LayoutHeaderCell {
+  readonly kind: "cell";
+  readonly type: string;
+  readonly id: string;
+  readonly rowStart: number;
+  readonly rowEnd: number;
+  readonly rowSpan: number;
+  readonly colStart: number;
+  readonly colEnd: number;
+  readonly colSpan: number;
+  readonly colPin: ColumnPin;
+  readonly colFirstEndPin?: boolean;
+  readonly colLastStartPin?: boolean;
+}
+
+export interface LayoutHeaderFloating {
+  readonly kind: "floating";
+  readonly id: string;
+  readonly type: string;
+  readonly rowStart: number;
+  readonly rowEnd: number;
+  readonly rowSpan: number;
+  readonly colStart: number;
+  readonly colEnd: number;
+  readonly colSpan: number;
+  readonly colPin: ColumnPin;
+  readonly colFirstEndPin?: boolean;
+  readonly colLastStartPin?: boolean;
+}
+
+export interface LayoutHeaderGroup {
+  readonly kind: "group";
+  readonly id: string;
+  readonly idOccurrence: string;
+  readonly rowStart: number;
+  readonly rowEnd: number;
+  readonly rowSpan: number;
+  readonly colStart: number;
+  readonly colEnd: number;
+  readonly colSpan: number;
+  readonly colPin: ColumnPin;
+  readonly colFirstEndPin?: boolean;
+  readonly colLastStartPin?: boolean;
+  readonly isCollapsible: boolean;
+  readonly groupPath: string[];
+  readonly columnIds: string[];
+  readonly start: number;
+  readonly end: number;
+  readonly isHiddenMove?: boolean;
+}
+
+export type LayoutHeader = LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup;

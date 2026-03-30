@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { fastShallowCompare } from "../fast-shallow-compare.js";
+import { fastShallowCompare } from "./fast-shallow-compare.js";
 
 describe("fastCompare", () => {
   test("should return true for the same object reference", () => {

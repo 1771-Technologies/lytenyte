@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { equal } from "../equal.js";
+import { equal } from "./equal.js";
 
 describe("equal", () => {
   // Basic equality tests
@@ -141,24 +141,6 @@ describe("equal", () => {
     const obj6 = { toString: () => "test2" };
     expect(equal(obj4, obj5)).toBe(true);
     expect(equal(obj4, obj6)).toBe(false);
-  });
-
-  // Function comparison tests
-  test("should handle functions with compareFunctionsAsStrings", () => {
-    const fn1 = function () {
-      return 1;
-    };
-    const fn2 = function () {
-      return 1;
-    };
-    const fn3 = function () {
-      return 2;
-    };
-
-    expect(equal(fn1, fn1)).toBe(true);
-    expect(equal(fn1, fn2)).toBe(false);
-    expect(equal(fn1, fn2, true)).toBe(true);
-    expect(equal(fn1, fn3, true)).toBe(false);
   });
 
   // Constructor check tests

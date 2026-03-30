@@ -1,8 +1,8 @@
 import { describe, expect, test, vi } from "vitest";
-import { runWithBackoff } from "../run-with-backoff.js";
+import { runWithBackoff } from "./run-with-backoff.js";
 
 describe("runWithBackoffTest", () => {
-  test("should run correctly", async () => {
+  test("Should run correctly", async () => {
     let count = 0;
 
     const fn = vi.fn(() => {
