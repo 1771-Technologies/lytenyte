@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { distance } from "../distance.js";
+import { distance } from "./distance.js";
 
 describe("distance", () => {
   test("Should return 0 when both points are the same", () => {

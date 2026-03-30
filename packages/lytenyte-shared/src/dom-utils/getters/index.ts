@@ -9,3 +9,5 @@ export { getNodeName } from "./get-node-name.js";
 export { getScrollStatus } from "./get-scroll-status.js";
 export { getParentNode } from "./get-parent-node.js";
 export { getWindow } from "./get-window.js";
+export { getRelativeXPosition } from "./get-relative-x-position.js";
+export { getRelativeYPosition } from "./get-relative-y-position.js";

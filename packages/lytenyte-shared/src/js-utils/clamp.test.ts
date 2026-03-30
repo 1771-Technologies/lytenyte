@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { clamp } from "../clamp.js";
+import { clamp } from "./clamp.js";
 
 describe("clamp", () => {
   test("should return the correct value", () => {

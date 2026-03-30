@@ -1,4 +1,4 @@
-import { makeColumnLayout, type LayoutHeader } from "@1771technologies/lytenyte-shared";
+import { createColumnLayout, type LayoutHeader } from "@1771technologies/lytenyte-shared";
 import { createContext, memo, useContext, useMemo, type PropsWithChildren } from "react";
 import { useColumnsContext } from "./columns/column-context.js";
 
@@ -9,7 +9,7 @@ export const HeaderHierarchyProvider = memo(
     const { view } = useColumnsContext();
 
     const fullHeaderLayout = useMemo(() => {
-      return makeColumnLayout(view, props.floatingRowEnabled ?? false);
+      return createColumnLayout(view, props.floatingRowEnabled ?? false);
     }, [props.floatingRowEnabled, view]);
 
     return <context.Provider value={fullHeaderLayout}>{props.children}</context.Provider>;

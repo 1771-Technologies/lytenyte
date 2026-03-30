@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { rangedBinarySearch } from "../ranged-binary-search.js";
+import { rangedBinarySearch } from "./ranged-binary-search.js";
 
 describe("rangedBinarySearch", () => {
   test("Should return the correct values", () => {

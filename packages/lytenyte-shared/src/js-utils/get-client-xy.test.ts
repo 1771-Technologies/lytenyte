@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getClientX, getClientY } from "../get-client-xy.js";
+import { getClientX, getClientY } from "./get-client-xy.js";
 
 describe("getClientXY", () => {
   test("Should return clientX for MouseEvent", () => {

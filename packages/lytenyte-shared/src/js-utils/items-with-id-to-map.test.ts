@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { itemsWithIdToMap } from "../items-with-id-to-map.js";
+import { itemsWithIdToMap } from "./items-with-id-to-map.js";
 
 describe("itemsWithIdToMap", () => {
   test(" should return the correct value", () => {
