@@ -103,7 +103,8 @@ export function tokenizeSafe(
 export function tokenize(source: string, plugins?: Plugin[], tokensizeWhitespace?: boolean): Token[] {
   const result = tokenizeSafe(source, plugins, tokensizeWhitespace);
 
-  if (result.at(-1)?.type === "ExpressionError") throw result.at(-1)!.error!;
+  if (result.at(-2)?.type === "ExpressionError") throw result.at(-2)!.error!;
+  if (result.at(-3)?.type === "ExpressionError") throw result.at(-3)!.error!;
 
   return result;
 }
