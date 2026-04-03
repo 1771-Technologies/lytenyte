@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { scanString } from "./scan-string";
+import { scanString } from "./scan-string.js";
 
 describe("scanString", () => {
   test("Should scan a double-quoted string", () => {

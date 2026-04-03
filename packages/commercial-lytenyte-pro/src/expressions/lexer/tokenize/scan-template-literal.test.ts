@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { scanTemplateLiteral } from "./scan-template-literal";
+import { scanTemplateLiteral } from "./scan-template-literal.js";
 
 describe("scanTemplateLiteral", () => {
   test("Should scan a simple template literal with no interpolation", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isDigit } from "./is-digit";
+import { isDigit } from "./is-digit.js";
 
 describe("isDigit", () => {
   test("Should return true when the character provided is a digit", () => {

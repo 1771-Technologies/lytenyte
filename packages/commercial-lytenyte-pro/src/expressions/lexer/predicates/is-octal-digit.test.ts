@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isOctalDigit } from "./is-octal-digit";
+import { isOctalDigit } from "./is-octal-digit.js";
 
 describe("isOctalDigit", () => {
   test("Should return true when the character provided is an octal digit", () => {

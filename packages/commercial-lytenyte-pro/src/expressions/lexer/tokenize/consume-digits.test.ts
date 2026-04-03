@@ -1,8 +1,8 @@
 import { describe, test, expect } from "vitest";
-import { consumeDigits } from "./consume-digits";
-import { isDigit } from "../predicates/is-digit";
-import { isHexDigit } from "../predicates/is-hex-digit";
-import { isBinaryDigit } from "../predicates/is-binary-digit";
+import { consumeDigits } from "./consume-digits.js";
+import { isDigit } from "../predicates/is-digit.js";
+import { isHexDigit } from "../predicates/is-hex-digit.js";
+import { isBinaryDigit } from "../predicates/is-binary-digit.js";
 
 describe("consumeDigits", () => {
   test("Should consume matching digits from the start position", () => {

@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { scanOperator } from "./scan-operator";
+import { scanOperator } from "./scan-operator.js";
 
 describe("scanOperator", () => {
   test("Should scan the spread operator ...", () => {

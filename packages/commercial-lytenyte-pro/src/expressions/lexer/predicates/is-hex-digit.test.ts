@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isHexDigit } from "./is-hex-digit";
+import { isHexDigit } from "./is-hex-digit.js";
 
 describe("isHexDigit", () => {
   test("Should return true when the character provided is a hex digit", () => {

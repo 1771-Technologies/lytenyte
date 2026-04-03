@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isBinaryDigit } from "./is-binary-digit";
+import { isBinaryDigit } from "./is-binary-digit.js";
 
 describe("isBinaryDigit", () => {
   test("Should return true when the character provided is a binary digit", () => {

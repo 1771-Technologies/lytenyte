@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { scanNumber } from "./scan-number";
+import { scanNumber } from "./scan-number.js";
 
 describe("scanNumber", () => {
   test("Should scan a single digit", () => {

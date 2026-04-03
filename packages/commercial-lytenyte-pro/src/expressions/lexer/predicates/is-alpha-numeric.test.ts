@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isAlphaNumeric } from "./is-alpha-numeric";
+import { isAlphaNumeric } from "./is-alpha-numeric.js";
 
 describe("isAlphaNumeric", () => {
   test("Should return true when the character provided is a digit or alpha", () => {

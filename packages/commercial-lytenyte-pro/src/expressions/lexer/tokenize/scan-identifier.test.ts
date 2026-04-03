@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { scanIdentifier } from "./scan-identifier";
+import { scanIdentifier } from "./scan-identifier.js";
 
 describe("scanIdentifier", () => {
   test("Should scan a simple identifier", () => {

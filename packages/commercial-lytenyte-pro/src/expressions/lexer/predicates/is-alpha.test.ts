@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isAlpha } from "./is-alpha";
+import { isAlpha } from "./is-alpha.js";
 
 describe("isAlpha", () => {
   test("Should return true when the character provided is a letter", () => {
