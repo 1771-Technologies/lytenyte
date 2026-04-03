@@ -18,7 +18,10 @@ export const stringsPlugin: Plugin = {
   },
   optimize: (node, opt) => {
     if (node.type === "TemplateLiteral") {
-      return { ...node, parts: (node as any).parts.map((p: any) => p.type === "StringLiteral" ? p : opt(p)) };
+      return {
+        ...node,
+        parts: (node as any).parts.map((p: any) => (p.type === "StringLiteral" ? p : opt(p))),
+      };
     }
     return null;
   },

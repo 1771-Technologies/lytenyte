@@ -77,9 +77,7 @@ export const logicalPlugin: Plugin = {
     }
     if (
       node.type === "BinaryExpression" &&
-      ((node as any).operator === "&&" ||
-        (node as any).operator === "||" ||
-        (node as any).operator === "??")
+      ((node as any).operator === "&&" || (node as any).operator === "||" || (node as any).operator === "??")
     ) {
       const left = opt((node as any).left);
       const right = opt((node as any).right);
