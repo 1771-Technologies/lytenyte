@@ -6,7 +6,6 @@ import { tokenize, tokenizeSafe } from "../lexer/tokenize/tokenize.js";
 import { evaluateBinary } from "./evaluate-binary.js";
 import { evaluateUnary } from "./evaluate-unary.js";
 import type { Plugin } from "../plugin.js";
-import type { ExpressionError } from "../errors/expression-error.js";
 
 const MAX_DEPTH = 1000;
 
@@ -17,24 +16,24 @@ export class Evaluator {
     this.plugins = plugins;
   }
 
-  run(input: string | ASTNode, context: Record<string, unknown> = {}): unknown {
+  run = (input: string | ASTNode, context: Record<string, unknown> = {}): unknown => {
     const node: ASTNode =
       typeof input === "string" ? compile(parse(input, 0, this.plugins), this.plugins) : input;
 
     return evaluateNode(node, context, 0, this.plugins);
-  }
+  };
 
-  ast(input: string): ASTNode {
+  ast = (input: string): ASTNode => {
     return compile(parse(input, 0, this.plugins), this.plugins);
-  }
+  };
 
-  tokens(input: string): Token[] {
-    return tokenize(input, this.plugins);
-  }
+  tokens = (input: string, tokensizeWhitespace?: boolean): Token[] => {
+    return tokenize(input, this.plugins, tokensizeWhitespace);
+  };
 
-  tokensSafe(input: string): { tokens: Token[]; error: ExpressionError | null } {
-    return tokenizeSafe(input, this.plugins);
-  }
+  tokensSafe = (input: string, tokensizeWhitespace?: boolean): Token[] => {
+    return tokenizeSafe(input, this.plugins, tokensizeWhitespace);
+  };
 }
 
 export function evaluateNode(

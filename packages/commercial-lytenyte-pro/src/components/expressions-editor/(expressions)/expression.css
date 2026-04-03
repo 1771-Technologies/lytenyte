@@ -136,10 +136,6 @@ body {
   color: var(--arrow);
 }
 
-.token-whitespace {
-  /* preserve whitespace rendering */
-}
-
 .token-unknown {
   color: var(--text-muted);
 }

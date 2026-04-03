@@ -9,7 +9,11 @@ import { scanOperator } from "./scan-operator.js";
 import type { Plugin } from "../../plugin.js";
 import { ExpressionError } from "../../errors/expression-error.js";
 
-export function tokenizeSafe(source: string, plugins?: Plugin[]): Token[] {
+export function tokenizeSafe(
+  source: string,
+  plugins?: Plugin[],
+  tokensizeWhitespace: boolean = false,
+): Token[] {
   const tokens: Token[] = [];
   try {
     let i = 0;
@@ -18,6 +22,15 @@ export function tokenizeSafe(source: string, plugins?: Plugin[]): Token[] {
       const ch = source[i];
 
       if (/\s/.test(ch)) {
+        if (tokensizeWhitespace) {
+          tokens.push({
+            value: ch,
+            start: i,
+            end: i + 1,
+            type: "Whitespace",
+          });
+        }
+
         i++;
         continue;
       }
@@ -73,8 +86,8 @@ export function tokenizeSafe(source: string, plugins?: Plugin[]): Token[] {
   return tokens;
 }
 
-export function tokenize(source: string, plugins?: Plugin[]): Token[] {
-  const result = tokenizeSafe(source, plugins);
+export function tokenize(source: string, plugins?: Plugin[], tokensizeWhitespace?: boolean): Token[] {
+  const result = tokenizeSafe(source, plugins, tokensizeWhitespace);
 
   if (result.at(-1)?.type === "ExpressionError") throw result.at(-1)!.error!;
 

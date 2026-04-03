@@ -123,31 +123,40 @@ function renderCompletionItem(item: CompletionItem<ExprCompletion>) {
   );
 }
 
-const EXAMPLES: { label: string; value: string; multiline?: boolean }[] = [
+const MULTILINE_EXAMPLES: { label: string; value: string }[] = [
   {
-    label: "Property access",
-    value: "user.address.city",
+    label: "Arrow function",
+    value: `const discount = (total) => {
+  if total > 100
+    return total * 0.9
+  else
+    return total
+}`,
   },
   {
-    label: "Math",
-    value: "Math.round(order.total * 1.08)",
+    label: "Data transform",
+    value: `const result = {
+  name: user.name,
+  email: user.email,
+  city: user.address.city,
+  order_total: Math.round(order.total),
+  status: order.status
+}`,
   },
   {
-    label: "Conditional",
-    value: "if order.total > 100 and user.age >= 18",
-  },
-  {
-    label: "Object literal",
-    value: "{name: user.name, total: order.total, tax: order.total * 0.08}",
-  },
-  {
-    label: "Error token",
-    value: "user.name or undefined",
+    label: "Validation",
+    value: `const valid = (
+  typeof user.name == "string"
+  and user.age >= 18
+  and order.total > 0
+  and not (order.status == "cancelled")
+)`,
   },
 ];
 
 export default function App() {
-  const [value, setValue] = useState("user.name");
+  const [multilineValue, setMultilineValue] = useState(MULTILINE_EXAMPLES[0].value);
+
   const evaluator = useMemo(() => new Evaluator(standardPlugins), []);
 
   const tokensize = useCallback((input: string) => evaluator.tokensSafe(input, true), [evaluator]);
@@ -157,33 +166,43 @@ export default function App() {
   return (
     <div className="demo-container">
       <section className="demo-section">
-        <label className="demo-label">Single-line</label>
-        <ExpressionEditor
-          value={value}
-          onValueChange={setValue}
+        <label className="demo-label">Multiline</label>
+        <ExpressionEditor<ExprCompletion>
+          value={multilineValue}
+          onValueChange={setMultilineValue}
           tokenize={tokensize}
           highlight={handleHighlight}
           completionProvider={completionProvider}
           renderCompletionItem={renderCompletionItem}
-          placeholder="Type an expression..."
-          className="expr-editor"
+          multiline
+          placeholder="Write a multi-line expression..."
+          className="expr-editor-multi"
           completionClassName="completion-popover"
         />
         <div className="examples-row">
-          {EXAMPLES.map((ex) => (
+          {MULTILINE_EXAMPLES.map((ex) => (
             <button
               key={ex.label}
-              className={`example-btn${value === ex.value ? "active" : ""}`}
-              onClick={() => setValue(ex.value)}
+              className={`example-btn${multilineValue === ex.value ? "active" : ""}`}
+              onClick={() => setMultilineValue(ex.value)}
             >
               {ex.label}
             </button>
           ))}
         </div>
         <span className="hint">
-          Try <code>user.</code> or <code>order.</code> — press <kbd>Ctrl+Space</kbd> for suggestions. Type{" "}
-          <code>undefined</code> for error squiggles.
+          Multiline mode with auto-indentation. Use <kbd>Enter</kbd> for new lines.
         </span>
+      </section>
+
+      <section className="output-section">
+        <label className="demo-label">Output</label>
+        <div className="output-box">
+          <div className="output-row">
+            <span className="output-key">multi</span>
+            <span className="output-val">{multilineValue.split("\n")[0] || "—"}...</span>
+          </div>
+        </div>
       </section>
     </div>
   );

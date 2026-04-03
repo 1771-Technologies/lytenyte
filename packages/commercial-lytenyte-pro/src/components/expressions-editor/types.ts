@@ -1,12 +1,5 @@
 import type { CSSProperties, ReactNode, KeyboardEvent } from "react";
-
-export type Token = {
-  type: string;
-  text: string;
-  start: number;
-  end: number;
-  error?: { message: string };
-};
+import type { Token } from "../../expressions/lexer/types.js";
 
 export type CompletionItem<T = unknown> = {
   label: string;
