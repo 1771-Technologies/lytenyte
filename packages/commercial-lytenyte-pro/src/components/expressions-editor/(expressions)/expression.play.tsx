@@ -1,8 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
-import { ExpressionEditor } from "../index.js";
+import { createCompletionProvider, ExpressionEditor } from "../index.js";
 import type { CompletionItem } from "../index.js";
 import { Evaluator, standardPlugins } from "../../../expressions/index.js";
-import type { Token } from "../../../expressions/lexer/types.js";
 
 import "../../../../css/light-dark.css";
 import "../../../../css/components/expression-editor.css";
@@ -36,78 +35,6 @@ const CONTEXT: Record<string, Record<string, unknown> | string | number> = {
     round: "function",
   },
 };
-
-function resolveContext(path: string[]): Record<string, unknown> | null {
-  let current: unknown = CONTEXT;
-
-  for (const segment of path) {
-    if (current && typeof current === "object" && segment in current) {
-      current = (current as Record<string, unknown>)[segment];
-    } else {
-      return null;
-    }
-  }
-
-  if (current && typeof current === "object") {
-    return current as Record<string, unknown>;
-  }
-
-  return null;
-}
-
-function buildPathBeforeCursor(
-  tokens: Token[],
-  cursorPosition: number,
-): { path: string[]; endsWithDot: boolean } {
-  const relevantTokens = tokens.filter((t) => t.end <= cursorPosition);
-  const path: string[] = [];
-  let endsWithDot = false;
-
-  let i = relevantTokens.length - 1;
-
-  if (i >= 0 && relevantTokens[i].type === "dot") {
-    endsWithDot = true;
-    i--;
-  }
-
-  while (i >= 0) {
-    const token = relevantTokens[i];
-    if (token.type === "identifier") {
-      path.unshift(token.value);
-      i--;
-      if (i >= 0 && relevantTokens[i].type === "dot") {
-        i--;
-        continue;
-      }
-    }
-    break;
-  }
-
-  return { path, endsWithDot };
-}
-
-function completionProvider(tokens: Token[], cursorPosition: number): CompletionItem<ExprCompletion>[] {
-  const { path, endsWithDot } = buildPathBeforeCursor(tokens, cursorPosition);
-
-  let target: Record<string, unknown> | null;
-
-  if (endsWithDot) {
-    target = resolveContext(path);
-  } else if (path.length > 1) {
-    target = resolveContext(path.slice(0, -1));
-  } else {
-    target = CONTEXT;
-  }
-
-  if (!target) return [];
-
-  return Object.entries(target).map(([key, val]) => ({
-    label: key,
-    kind: typeof val === "object" && val !== null ? "object" : typeof val,
-    id: key,
-    description: typeof val === "object" ? "{...}" : String(val),
-  }));
-}
 
 function renderCompletionItem(item: CompletionItem<ExprCompletion>) {
   return (
@@ -147,6 +74,9 @@ export default function App() {
   const evaluator = useMemo(() => new Evaluator(standardPlugins), []);
 
   const tokenize = useCallback((input: string) => evaluator.tokensSafe(input, true), [evaluator]);
+  const provider = useMemo(() => {
+    return createCompletionProvider(CONTEXT);
+  }, []);
 
   return (
     <div className="demo-container">
@@ -155,7 +85,7 @@ export default function App() {
         value={value}
         onValueChange={setValue}
         tokenize={tokenize}
-        completionProvider={completionProvider}
+        completionProvider={provider}
         renderCompletionItem={renderCompletionItem}
         placeholder="Type an expression..."
       />

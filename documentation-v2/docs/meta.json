@@ -12,6 +12,7 @@
     "(filtering)",
     "(client-source)",
     "(pivoting)",
+    "(expressions)",
     "(server-data-loading)",
     "(paginated-row-source)",
     "(infinite-row-source)",
