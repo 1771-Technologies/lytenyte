@@ -166,8 +166,6 @@ export default function App() {
           completionProvider={completionProvider}
           renderCompletionItem={renderCompletionItem}
           placeholder="Type an expression..."
-          className="expr-editor"
-          completionClassName="completion-popover"
         />
         <div className="examples-row">
           {EXAMPLES.map((ex) => (

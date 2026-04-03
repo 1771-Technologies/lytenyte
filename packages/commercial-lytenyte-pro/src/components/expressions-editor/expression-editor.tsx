@@ -169,6 +169,7 @@ export function ExpressionEditor<T>({
         display: "grid",
         ...style,
       }}
+      data-ln-expression-editor
     >
       <textarea
         ref={textareaRef}
@@ -181,6 +182,7 @@ export function ExpressionEditor<T>({
         readOnly={readOnly}
         placeholder={placeholder}
         rows={multiline ? undefined : 1}
+        data-ln-expression-editor-input
         style={{
           ...gridCell,
           display: "block",
@@ -204,12 +206,8 @@ export function ExpressionEditor<T>({
       />
       <div
         aria-hidden="true"
-        style={{
-          ...gridCell,
-          pointerEvents: "none",
-          overflow: "hidden",
-          zIndex: 0,
-        }}
+        style={{ ...gridCell, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}
+        data-ln-expression-editor-tokens
       >
         {tokens.map((token) => (
           <Fragment key={token.start}>{highlight(token)}</Fragment>

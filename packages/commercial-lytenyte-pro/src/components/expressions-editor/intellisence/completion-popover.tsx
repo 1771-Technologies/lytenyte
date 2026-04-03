@@ -27,13 +27,13 @@ export function CompletionPopover({ isOpen, coordinates, className, children }: 
       ref={popoverRef}
       popover="manual"
       className={className}
+      data-ln-expression-editor-popover
       style={{
         position: "fixed",
         top: coordinates.top + coordinates.lineHeight,
         left: coordinates.left,
         margin: 0,
         inset: "unset",
-        zIndex: 9999,
       }}
     >
       {isOpen ? children : null}
