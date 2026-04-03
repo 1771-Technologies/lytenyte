@@ -1,0 +1,56 @@
+@layer ln-grid {
+  [data-ln-expression-root] {
+    position: relative;
+
+    --ln-expr-number: light-dark(#b45309, #fab387);
+    --ln-expr-string: light-dark(#15803d, #a6e3a1);
+    --ln-expr-keyword: light-dark(#7c3aed, #cba6f7);
+    --ln-expr-identifier: light-dark(#0369a1, #89b4fa);
+    --ln-expr-operator: light-dark(#be185d, #f38ba8);
+    --ln-expr-punctuation: light-dark(#6b7280, #6c7086);
+    --ln-expr-error: light-dark(#dc2626, #f38ba8);
+  }
+
+  /* These must be identical otherwise the highlight will not match the input. */
+  [data-ln-expression-input],
+  [data-ln-expression-highlight] {
+    font-family:
+      ui-monospace, "Cascadia Code", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 16px;
+    line-height: 4px;
+    padding: 16px;
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+    tab-size: 2;
+    box-sizing: border-box;
+  }
+
+  [data-ln-expression-highlight] {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  [data-ln-expression-input] {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0;
+    resize: none;
+    outline: none;
+    background: transparent;
+    color: transparent;
+    border: 0px solid transparent;
+    caret-color: var(--ln-gray-90, light-dark(black, white));
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  [data-ln-expression-input]::-webkit-scrollbar {
+    display: none;
+  }
+}
