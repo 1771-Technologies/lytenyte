@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { CursorCoordinates } from "./types";
+import type { CursorCoordinates } from "../types";
 import { measureCursorPosition } from "./measure-cursor-at-pointer.js";
 
 export function useCursorPosition(textareaRef: React.RefObject<HTMLTextAreaElement | null>) {

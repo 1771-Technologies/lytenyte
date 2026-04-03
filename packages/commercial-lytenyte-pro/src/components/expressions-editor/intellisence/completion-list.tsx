@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { CompletionItem } from "./types.js";
+import type { CompletionItem } from "../types.js";
 
 interface CompletionListProps<T> {
   readonly items: CompletionItem<T>[];

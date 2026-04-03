@@ -1,15 +1,14 @@
-import { useRef, useCallback, useMemo } from "react";
+import { useRef, useCallback, useMemo, Fragment } from "react";
 import type { ExpressionEditorProps, CompletionItem } from "./types";
-import { HighlightOverlay } from "./highlight-overlay.js";
-import { useCompletions } from "./use-completions.js";
-import { useCompletionTrigger } from "./use-complete-trigger.js";
+import { useCompletions } from "./intellisence/use-completions.js";
+import { useCompletionTrigger } from "./intellisence/use-complete-trigger.js";
 import { useKeyboardNavigation } from "./use-keyboard-navigation.js";
-import { useCursorPosition } from "./use-cursor-position.js";
+import { useCursorPosition } from "./cursor-position/use-cursor-position.js";
 import { createKeyDownHandler } from "./create-key-down-handler.js";
-import { getWordAtCursor } from "./get-word-at-cursor.js";
+import { getWordAtCursor } from "./intellisence/get-word-at-cursor.js";
 import type { CSSProperties } from "react";
-import { CompletionPopover } from "./completion-popover.js";
-import { CompletionList } from "./completion-list.js";
+import { CompletionPopover } from "./intellisence/completion-popover.js";
+import { CompletionList } from "./intellisence/completion-list.js";
 
 const sharedFontStyle: CSSProperties = {
   fontFamily: "inherit",
@@ -212,7 +211,9 @@ export function ExpressionEditor<T>({
           zIndex: 0,
         }}
       >
-        <HighlightOverlay tokens={tokens} highlight={highlight} />
+        {tokens.map((token) => (
+          <Fragment key={token.start}>{highlight(token)}</Fragment>
+        ))}
       </div>
       {completionProvider && (
         <CompletionPopover

@@ -1,4 +1,4 @@
-import type { CompletionItem } from "./types.js";
+import type { CompletionItem } from "../types.js";
 
 export function filterCompletionsByPrefix<T>(
   items: CompletionItem<T>[],

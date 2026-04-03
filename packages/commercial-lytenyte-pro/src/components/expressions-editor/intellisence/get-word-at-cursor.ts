@@ -1,4 +1,4 @@
-import type { WordAtCursor } from "./types.js";
+import type { WordAtCursor } from "../types.js";
 
 export function getWordAtCursor(text: string, cursorPosition: number): WordAtCursor {
   const wordPattern = /[a-zA-Z0-9_]/;

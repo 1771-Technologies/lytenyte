@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
-import type { Token, CompletionItem, WordAtCursor } from "./types.js";
+import type { CompletionItem, WordAtCursor } from "../types.js";
 import { filterCompletionsByPrefix } from "./filter-completions-by-prefix.js";
+import type { Token } from "../../../expressions/lexer/types.js";
 
 type CompletionState<T> = {
   items: CompletionItem<T>[];

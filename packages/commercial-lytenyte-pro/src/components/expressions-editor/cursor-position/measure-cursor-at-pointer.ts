@@ -1,4 +1,4 @@
-import type { CursorCoordinates } from "./types.js";
+import type { CursorCoordinates } from "../types.js";
 
 export function measureCursorPosition(textarea: HTMLTextAreaElement, cursorIndex: number): CursorCoordinates {
   const mirror = document.createElement("div");

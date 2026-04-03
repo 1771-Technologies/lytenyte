@@ -1,5 +1,5 @@
 import { useRef, useEffect, type ReactNode } from "react";
-import type { CursorCoordinates } from "./types.js";
+import type { CursorCoordinates } from "../types.js";
 
 interface CompletionPopoverProps {
   readonly isOpen: boolean;

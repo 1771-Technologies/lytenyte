@@ -1,6 +1,7 @@
 import { useCallback, useRef, useEffect } from "react";
-import type { Token, WordAtCursor } from "./types";
+import type { WordAtCursor } from "../types";
 import { getWordAtCursor } from "./get-word-at-cursor.js";
+import type { Token } from "../../../expressions/lexer/types";
 
 const DEBOUNCE_DELAY = 150;
 
