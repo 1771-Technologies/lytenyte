@@ -18,7 +18,7 @@ const sharedFontStyle: CSSProperties = {
   fontStyle: "inherit",
   letterSpacing: "inherit",
   lineHeight: "inherit",
-  padding: "var(--ab-expr-padding, 0)",
+  padding: "0",
 };
 
 export function ExpressionEditor<T>({

@@ -78,7 +78,21 @@ export function tokenizeSafe(
         value: source.slice(e.start, e.end),
         error: e,
       };
-      return [...tokens, error];
+      tokens.push(error);
+      const left = source.slice(e.end);
+      if (left) {
+        const remaining: Token = {
+          type: "Unparsed",
+          start: e.end,
+          end: source.length,
+          value: left,
+        };
+
+        tokens.push(remaining);
+      }
+      tokens.push({ type: "EOF", value: "", start: source.length, end: source.length });
+
+      return tokens;
     } else {
       throw e;
     }
