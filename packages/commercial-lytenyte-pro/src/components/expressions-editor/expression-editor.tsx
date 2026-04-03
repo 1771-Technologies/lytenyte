@@ -9,6 +9,7 @@ import { getWordAtCursor } from "./intellisence/get-word-at-cursor.js";
 import type { CSSProperties } from "react";
 import { CompletionPopover } from "./intellisence/completion-popover.js";
 import { CompletionList } from "./intellisence/completion-list.js";
+import { DefaultTokenHighlighter } from "./token-highlighter-default.js";
 
 const sharedFontStyle: CSSProperties = {
   fontFamily: "inherit",
@@ -24,11 +25,10 @@ export function ExpressionEditor<T>({
   value,
   onValueChange,
   tokenize,
-  highlight,
+  highlight: Highlighter = DefaultTokenHighlighter,
   completionProvider,
   renderCompletionItem,
   triggerCharacters = ["."],
-  multiline = false,
   placeholder,
   disabled,
   readOnly,
@@ -41,6 +41,10 @@ export function ExpressionEditor<T>({
   onBlur,
   onFocus,
 }: ExpressionEditorProps<T>) {
+  // TODO @Lee: we should eventually allow multiline expressions but for now there isn't really a valid
+  // use case that requires multiline expressions without also allow variable support.
+  const multiline = false;
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const depsRef = useRef<{
     isOpen: boolean;
@@ -182,7 +186,7 @@ export function ExpressionEditor<T>({
         readOnly={readOnly}
         placeholder={placeholder}
         rows={multiline ? undefined : 1}
-        data-ln-expression-editor-input
+        data-ln-expression-input
         style={{
           ...gridCell,
           display: "block",
@@ -191,7 +195,6 @@ export function ExpressionEditor<T>({
           background: "transparent",
           color: "transparent",
           WebkitTextFillColor: "transparent",
-          caretColor: "inherit",
           outline: "none",
           overflow: multiline ? "auto" : "hidden",
           margin: 0,
@@ -202,15 +205,16 @@ export function ExpressionEditor<T>({
         autoComplete="off"
         autoCorrect="off"
         spellCheck={false}
-        data-gramm={false}
       />
       <div
         aria-hidden="true"
         style={{ ...gridCell, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}
-        data-ln-expression-editor-tokens
+        data-ln-expression--tokens
       >
         {tokens.map((token) => (
-          <Fragment key={token.start}>{highlight(token)}</Fragment>
+          <Fragment key={token.start}>
+            <Highlighter token={token} />
+          </Fragment>
         ))}
       </div>
       {completionProvider && (

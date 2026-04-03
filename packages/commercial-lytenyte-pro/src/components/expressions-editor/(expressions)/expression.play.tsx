@@ -1,9 +1,12 @@
 import { useState, useCallback, useMemo } from "react";
 import { ExpressionEditor } from "../index.js";
 import type { CompletionItem } from "../index.js";
-import "./expression.css";
 import { Evaluator, standardPlugins } from "../../../expressions/index.js";
 import type { Token } from "../../../expressions/lexer/types.js";
+
+import "../../../../css/light-dark.css";
+import "../../../../css/components/expression-editor.css";
+import "./expression.css";
 
 type ExprCompletion = {
   description: string;
@@ -33,13 +36,6 @@ const CONTEXT: Record<string, Record<string, unknown> | string | number> = {
     round: "function",
   },
 };
-
-function highlightToken(token: Token) {
-  const className = `token-unknown`;
-  const element = <span className={className}>{token.value}</span>;
-
-  return element;
-}
 
 function resolveContext(path: string[]): Record<string, unknown> | null {
   let current: unknown = CONTEXT;
@@ -150,39 +146,30 @@ export default function App() {
   const [value, setValue] = useState("user.name");
   const evaluator = useMemo(() => new Evaluator(standardPlugins), []);
 
-  const tokensize = useCallback((input: string) => evaluator.tokensSafe(input, true), [evaluator]);
-
-  const handleHighlight = useCallback((t: Token) => highlightToken(t), []);
+  const tokenize = useCallback((input: string) => evaluator.tokensSafe(input, true), [evaluator]);
 
   return (
     <div className="demo-container">
-      <section className="demo-section">
-        <label className="demo-label">Single-line</label>
-        <ExpressionEditor
-          value={value}
-          onValueChange={setValue}
-          tokenize={tokensize}
-          highlight={handleHighlight}
-          completionProvider={completionProvider}
-          renderCompletionItem={renderCompletionItem}
-          placeholder="Type an expression..."
-        />
-        <div className="examples-row">
-          {EXAMPLES.map((ex) => (
-            <button
-              key={ex.label}
-              className={`example-btn${value === ex.value ? "active" : ""}`}
-              onClick={() => setValue(ex.value)}
-            >
-              {ex.label}
-            </button>
-          ))}
-        </div>
-        <span className="hint">
-          Try <code>user.</code> or <code>order.</code> — press <kbd>Ctrl+Space</kbd> for suggestions. Type{" "}
-          <code>undefined</code> for error squiggles.
-        </span>
-      </section>
+      <label className="demo-label">Single-line</label>
+      <ExpressionEditor
+        value={value}
+        onValueChange={setValue}
+        tokenize={tokenize}
+        completionProvider={completionProvider}
+        renderCompletionItem={renderCompletionItem}
+        placeholder="Type an expression..."
+      />
+      <div className="examples-row">
+        {EXAMPLES.map((ex) => (
+          <button
+            key={ex.label}
+            className={`example-btn${value === ex.value ? "active" : ""}`}
+            onClick={() => setValue(ex.value)}
+          >
+            {ex.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

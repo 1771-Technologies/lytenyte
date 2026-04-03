@@ -27,7 +27,7 @@ export function CompletionPopover({ isOpen, coordinates, className, children }: 
       ref={popoverRef}
       popover="manual"
       className={className}
-      data-ln-expression-editor-popover
+      data-ln-expression-popover
       style={{
         position: "fixed",
         top: coordinates.top + coordinates.lineHeight,

@@ -35,9 +35,9 @@ export type CursorCoordinates = {
 export type ExpressionEditorProps<T = unknown> = {
   value: string;
   onValueChange: (value: string) => void;
-
   tokenize: (value: string) => Token[];
-  highlight: (token: Token) => ReactNode;
+
+  highlight?: (props: { token: Token }) => ReactNode;
 
   completionProvider?: (
     tokens: Token[],
@@ -48,8 +48,6 @@ export type ExpressionEditorProps<T = unknown> = {
   renderLoading?: () => ReactNode;
 
   triggerCharacters?: string[];
-  multiline?: boolean;
-
   placeholder?: string;
   disabled?: boolean;
   readOnly?: boolean;

@@ -1,3 +1,18 @@
-[data-ln-expression-editor] {
-  caret-color: black;
+.demo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+.demo-label {
+  font-size: 12px;
+  margin-block: 12px;
+}
+
+.examples-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid light-dark(black, white);
 }

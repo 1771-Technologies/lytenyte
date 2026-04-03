@@ -10,7 +10,7 @@ interface CompletionListProps<T> {
 
 export function CompletionList<T>({ items, selectedIndex, renderItem, onSelect }: CompletionListProps<T>) {
   return (
-    <ul role="listbox" data-ln-expression-editor-completion-list>
+    <ul role="listbox" data-ln-expression-completion-list>
       {items.map((item, index) => (
         <li
           key={item.id}
@@ -21,7 +21,7 @@ export function CompletionList<T>({ items, selectedIndex, renderItem, onSelect }
             e.preventDefault();
             onSelect(item);
           }}
-          data-ln-expression-editor-completion-item
+          data-ln-expression-completion-item
         >
           {renderItem(item)}
         </li>
