@@ -1,9 +1,9 @@
 import { describe, test, expect } from "vitest";
 import { parse as rawParse } from "./parse.js";
-import { parseExpression } from "./parse-expression";
-import { tokenize } from "../lexer/tokenize/tokenize";
-import type { ParserContext } from "./parser-context";
-import { standardPlugins } from "../plugins/standard";
+import { parseExpression } from "./parse-expression.js";
+import { tokenize } from "../lexer/tokenize/tokenize.js";
+import type { ParserContext } from "./parser-context.js";
+import { standardPlugins } from "../plugins/standard.js";
 
 const parse = (source: string, depth = 0, plugins = standardPlugins) => rawParse(source, depth, plugins);
 
