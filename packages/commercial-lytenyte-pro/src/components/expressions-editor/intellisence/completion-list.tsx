@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useRef, useEffect, type ReactNode } from "react";
 import type { CompletionItem } from "../types.js";
 
 interface CompletionListProps<T> {
@@ -9,8 +9,17 @@ interface CompletionListProps<T> {
 }
 
 export function CompletionList<T>({ items, selectedIndex, renderItem, onSelect }: CompletionListProps<T>) {
+  const listRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const selected = list.querySelector<HTMLElement>("[data-selected]");
+    selected?.scrollIntoView({ block: "nearest" });
+  }, [selectedIndex]);
+
   return (
-    <ul role="listbox" data-ln-expression-completion-list>
+    <ul ref={listRef} role="listbox" data-ln-expression-completion-list>
       {items.map((item, index) => (
         <li
           key={item.id}

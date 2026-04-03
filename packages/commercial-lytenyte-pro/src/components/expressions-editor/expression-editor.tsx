@@ -131,7 +131,12 @@ export function ExpressionEditor<T>({
 
     const word = getWordAtCursor(newValue, selectionStart);
     if (deps.isOpen) {
-      deps.updateFilter(word.word);
+      if (word.word.length === 0) {
+        deps.dismiss();
+        deps.cancel();
+      } else {
+        deps.updateFilter(word.word);
+      }
     }
 
     deps.handleInputChange(newValue, selectionStart);
