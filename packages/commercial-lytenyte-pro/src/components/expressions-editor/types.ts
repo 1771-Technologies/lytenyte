@@ -1,11 +1,11 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { Token } from "../../expressions/lexer/types.js";
 
-export type CompletionItem<T = unknown> = {
+export type CompletionItem = {
   label: string;
   kind: string;
   id: string;
-} & T;
+};
 
 export type KeybindingConfig = {
   accept?: string[];
@@ -32,20 +32,14 @@ export type CursorCoordinates = {
   lineHeight: number;
 };
 
-export type ExpressionEditorProps<T = unknown> = {
+export type ExpressionEditorProps = {
   value: string;
   onChange: (value: string) => void;
 
   tokenize: (value: string) => Token[];
   highlight?: (props: { token: Token }) => ReactNode;
 
-  completionProvider?: (
-    tokens: Token[],
-    cursorPosition: number,
-  ) => CompletionItem<T>[] | Promise<CompletionItem<T>[]>;
-
-  renderCompletionItem?: (item: CompletionItem<T>) => ReactNode;
-  renderLoading?: () => ReactNode;
+  completionProvider?: (tokens: Token[], index: number) => CompletionItem[] | Promise<CompletionItem[]>;
 
   placeholder?: string;
   disabled?: boolean;

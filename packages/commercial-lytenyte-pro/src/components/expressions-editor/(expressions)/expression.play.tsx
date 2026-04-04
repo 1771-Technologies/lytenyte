@@ -1,15 +1,13 @@
 import { useState, useCallback, useMemo } from "react";
 import { createCompletionProvider, ExpressionEditor } from "../index.js";
-import type { CompletionItem } from "../index.js";
 import { Evaluator, standardPlugins } from "../../../expressions/index.js";
 
 import "../../../../css/light-dark.css";
 import "../../../../css/components/expression-editor.css";
 import "./expression.css";
-
-type ExprCompletion = {
-  description: string;
-};
+import { CompletionPopover } from "../intellisence/completion-popover.js";
+import { CompletionList } from "../intellisence/completion-list.js";
+import { CompletionListItem } from "../intellisence/completion-item.js";
 
 const CONTEXT: Record<string, Record<string, unknown> | string | number> = {
   user: {
@@ -35,16 +33,6 @@ const CONTEXT: Record<string, Record<string, unknown> | string | number> = {
     round: "function",
   },
 };
-
-function renderCompletionItem(item: CompletionItem<ExprCompletion>) {
-  return (
-    <div className="completion-item">
-      <span className="completion-kind">{item.kind}</span>
-      <span className="completion-label">{item.label}</span>
-      <span className="completion-desc">{item.description}</span>
-    </div>
-  );
-}
 
 const EXAMPLES: { label: string; value: string; multiline?: boolean }[] = [
   {
@@ -86,9 +74,23 @@ export default function App() {
         onChange={setValue}
         tokenize={tokenize}
         completionProvider={provider}
-        renderCompletionItem={renderCompletionItem}
         placeholder="Type an expression..."
-      />
+      >
+        <CompletionPopover>
+          <CompletionList>
+            {({ items }) => {
+              return items.map((item, index) => {
+                return (
+                  <CompletionListItem key={item.id} item={item} index={index} className="completion-item">
+                    <span className="completion-kind">{item.kind}</span>
+                    <span className="completion-label">{item.label}</span>
+                  </CompletionListItem>
+                );
+              });
+            }}
+          </CompletionList>
+        </CompletionPopover>
+      </ExpressionEditor>
       <div className="examples-row">
         {EXAMPLES.map((ex) => (
           <button

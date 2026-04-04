@@ -93,7 +93,7 @@
       background-color: var(--ln-bg-row-hover);
     }
 
-    &[data-selected] {
+    &[data-ln-selected] {
       background-color: var(--ln-primary-10);
       color: var(--ln-text-dark);
 

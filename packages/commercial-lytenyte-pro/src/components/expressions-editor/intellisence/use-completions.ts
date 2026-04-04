@@ -3,21 +3,21 @@ import type { CompletionItem, WordAtCursor } from "../types.js";
 import { filterCompletionsByPrefix } from "./filter-completions-by-prefix.js";
 import type { Token } from "../../../expressions/lexer/types.js";
 
-type CompletionState<T> = {
-  items: CompletionItem<T>[];
-  filteredItems: CompletionItem<T>[];
+type CompletionState = {
+  items: CompletionItem[];
+  filteredItems: CompletionItem[];
   selectedIndex: number;
   isOpen: boolean;
   isLoading: boolean;
 };
 
-export function useCompletions<T>(
+export function useCompletions(
   completionProvider?: (
     tokens: Token[],
     cursorPosition: number,
-  ) => CompletionItem<T>[] | Promise<CompletionItem<T>[]>,
+  ) => CompletionItem[] | Promise<CompletionItem[]>,
 ) {
-  const [state, setState] = useState<CompletionState<T>>({
+  const [state, setState] = useState<CompletionState>({
     items: [],
     filteredItems: [],
     selectedIndex: 0,

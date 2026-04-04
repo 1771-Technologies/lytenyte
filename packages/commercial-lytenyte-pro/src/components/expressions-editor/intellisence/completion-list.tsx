@@ -1,40 +1,35 @@
-import { useRef, useEffect, type ReactNode } from "react";
+import { useRef, useEffect, type JSX, forwardRef, type ReactNode } from "react";
+import { useCompletionListContext } from "./completion-context.js";
 import type { CompletionItem } from "../types.js";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
-interface CompletionListProps<T> {
-  readonly items: CompletionItem<T>[];
-  readonly selectedIndex: number;
-  readonly renderItem: (item: CompletionItem<T>) => ReactNode;
-  readonly onSelect: (item: CompletionItem<T>) => void;
-}
+function CompletionListBase(
+  {
+    children,
+    ...props
+  }: Omit<JSX.IntrinsicElements["ul"], "children"> & {
+    children?: (props: { readonly items: CompletionItem[]; readonly loading: boolean }) => ReactNode;
+  },
+  ref: JSX.IntrinsicElements["ul"]["ref"],
+) {
+  const { selectedIndex, items, loading } = useCompletionListContext();
 
-export function CompletionList<T>({ items, selectedIndex, renderItem, onSelect }: CompletionListProps<T>) {
   const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const list = listRef.current;
     if (!list) return;
-    const selected = list.querySelector<HTMLElement>("[data-selected]");
+    const selected = list.querySelector<HTMLElement>("[data-ln-selected]");
     selected?.scrollIntoView({ block: "nearest" });
   }, [selectedIndex]);
 
+  const combined = useCombinedRefs(listRef, ref);
+
   return (
-    <ul ref={listRef} role="listbox" data-ln-expression-completion-list>
-      {items.map((item, index) => (
-        <li
-          key={item.id}
-          role="option"
-          aria-selected={index === selectedIndex}
-          data-selected={index === selectedIndex ? "" : undefined}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            onSelect(item);
-          }}
-          data-ln-expression-completion-item
-        >
-          {renderItem(item)}
-        </li>
-      ))}
+    <ul {...props} ref={combined} role="listbox" data-ln-expression-completion-list>
+      {children?.({ items, loading })}
     </ul>
   );
 }
+
+export const CompletionList = forwardRef(CompletionListBase);
