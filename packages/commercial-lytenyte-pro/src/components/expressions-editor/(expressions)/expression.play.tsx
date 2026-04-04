@@ -1,13 +1,13 @@
 import { useState, useCallback, useMemo } from "react";
-import { ExpressionEditor } from "../index.js";
-import type { CompletionItem } from "../index.js";
-import "./expression.css";
+import { createCompletionProvider, ExpressionEditor } from "../index.js";
 import { Evaluator, standardPlugins } from "../../../expressions/index.js";
-import type { Token } from "../../../expressions/lexer/types.js";
 
-type ExprCompletion = {
-  description: string;
-};
+import "../../../../css/light-dark.css";
+import "../../../../css/components/expression-editor.css";
+import "./expression.css";
+import { CompletionPopover } from "../intellisence/completion-popover.js";
+import { CompletionList } from "../intellisence/completion-list.js";
+import { CompletionListItem } from "../intellisence/completion-item.js";
 
 const CONTEXT: Record<string, Record<string, unknown> | string | number> = {
   user: {
@@ -33,95 +33,6 @@ const CONTEXT: Record<string, Record<string, unknown> | string | number> = {
     round: "function",
   },
 };
-
-function highlightToken(token: Token) {
-  const className = `token-unknown`;
-  const element = <span className={className}>{token.value}</span>;
-
-  return element;
-}
-
-function resolveContext(path: string[]): Record<string, unknown> | null {
-  let current: unknown = CONTEXT;
-
-  for (const segment of path) {
-    if (current && typeof current === "object" && segment in current) {
-      current = (current as Record<string, unknown>)[segment];
-    } else {
-      return null;
-    }
-  }
-
-  if (current && typeof current === "object") {
-    return current as Record<string, unknown>;
-  }
-
-  return null;
-}
-
-function buildPathBeforeCursor(
-  tokens: Token[],
-  cursorPosition: number,
-): { path: string[]; endsWithDot: boolean } {
-  const relevantTokens = tokens.filter((t) => t.end <= cursorPosition);
-  const path: string[] = [];
-  let endsWithDot = false;
-
-  let i = relevantTokens.length - 1;
-
-  if (i >= 0 && relevantTokens[i].type === "dot") {
-    endsWithDot = true;
-    i--;
-  }
-
-  while (i >= 0) {
-    const token = relevantTokens[i];
-    if (token.type === "identifier") {
-      path.unshift(token.value);
-      i--;
-      if (i >= 0 && relevantTokens[i].type === "dot") {
-        i--;
-        continue;
-      }
-    }
-    break;
-  }
-
-  return { path, endsWithDot };
-}
-
-function completionProvider(tokens: Token[], cursorPosition: number): CompletionItem<ExprCompletion>[] {
-  const { path, endsWithDot } = buildPathBeforeCursor(tokens, cursorPosition);
-
-  let target: Record<string, unknown> | null;
-
-  if (endsWithDot) {
-    target = resolveContext(path);
-  } else if (path.length > 1) {
-    target = resolveContext(path.slice(0, -1));
-  } else {
-    target = CONTEXT;
-  }
-
-  if (!target) return [];
-
-  return Object.entries(target).map(([key, val]) => ({
-    label: key,
-    kind: typeof val === "object" && val !== null ? "object" : typeof val,
-    id: key,
-    description: typeof val === "object" ? "{...}" : String(val),
-  }));
-}
-
-function renderCompletionItem(item: CompletionItem<ExprCompletion>) {
-  return (
-    <div className="completion-item">
-      <span className="completion-kind">{item.kind}</span>
-      <span className="completion-label">{item.label}</span>
-      <span className="completion-desc">{item.description}</span>
-    </div>
-  );
-}
 
 const EXAMPLES: { label: string; value: string; multiline?: boolean }[] = [
   {
@@ -150,39 +61,47 @@ export default function App() {
   const [value, setValue] = useState("user.name");
   const evaluator = useMemo(() => new Evaluator(standardPlugins), []);
 
-  const tokensize = useCallback((input: string) => evaluator.tokensSafe(input, true), [evaluator]);
-
-  const handleHighlight = useCallback((t: Token) => highlightToken(t), []);
+  const tokenize = useCallback((input: string) => evaluator.tokensSafe(input, true), [evaluator]);
+  const provider = useMemo(() => {
+    return createCompletionProvider(CONTEXT);
+  }, []);
 
   return (
     <div className="demo-container">
-      <section className="demo-section">
-        <label className="demo-label">Single-line</label>
-        <ExpressionEditor
-          value={value}
-          onValueChange={setValue}
-          tokenize={tokensize}
-          highlight={handleHighlight}
-          completionProvider={completionProvider}
-          renderCompletionItem={renderCompletionItem}
-          placeholder="Type an expression..."
-        />
-        <div className="examples-row">
-          {EXAMPLES.map((ex) => (
-            <button
-              key={ex.label}
-              className={`example-btn${value === ex.value ? "active" : ""}`}
-              onClick={() => setValue(ex.value)}
-            >
-              {ex.label}
-            </button>
-          ))}
-        </div>
-        <span className="hint">
-          Try <code>user.</code> or <code>order.</code> — press <kbd>Ctrl+Space</kbd> for suggestions. Type{" "}
-          <code>undefined</code> for error squiggles.
-        </span>
-      </section>
+      <label className="demo-label">Single-line</label>
+      <ExpressionEditor.Root
+        value={value}
+        onChange={setValue}
+        tokenize={tokenize}
+        completionProvider={provider}
+        placeholder="Type an expression..."
+      >
+        <CompletionPopover>
+          <CompletionList>
+            {({ items }) => {
+              return items.map((item, index) => {
+                return (
+                  <CompletionListItem key={item.id} item={item} index={index} className="completion-item">
+                    <span className="completion-kind">{item.kind}</span>
+                    <span className="completion-label">{item.label}</span>
+                  </CompletionListItem>
+                );
+              });
+            }}
+          </CompletionList>
+        </CompletionPopover>
+      </ExpressionEditor.Root>
+      <div className="examples-row">
+        {EXAMPLES.map((ex) => (
+          <button
+            key={ex.label}
+            className={`example-btn${value === ex.value ? "active" : ""}`}
+            onClick={() => setValue(ex.value)}
+          >
+            {ex.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

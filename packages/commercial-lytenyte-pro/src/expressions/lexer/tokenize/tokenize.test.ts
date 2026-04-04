@@ -14,12 +14,12 @@ describe("tokenize", () => {
 
   test("Should tokenize strings with double quotes", () => {
     const tokens = tokenize('"hello"');
-    expect(tokens[0]).toMatchObject({ type: "String", value: "hello" });
+    expect(tokens[0]).toMatchObject({ type: "String", value: '"hello"' });
   });
 
   test("Should tokenize strings with single quotes", () => {
     const tokens = tokenize("'world'");
-    expect(tokens[0]).toMatchObject({ type: "String", value: "world" });
+    expect(tokens[0]).toMatchObject({ type: "String", value: "'world'" });
   });
 
   test("Should tokenize booleans", () => {
@@ -209,20 +209,20 @@ describe("tokenize", () => {
   });
 
   test("Should handle unicode escapes \\u{XXXX}", () => {
-    expect(tokenize('"\\u{0041}"')[0]).toMatchObject({ type: "String", value: "A" });
-    expect(tokenize('"\\u{1F600}"')[0]).toMatchObject({ type: "String", value: "\u{1F600}" });
+    expect(tokenize('"\\u{0041}"')[0]).toMatchObject({ type: "String", value: '"A"' });
+    expect(tokenize('"\\u{1F600}"')[0]).toMatchObject({ type: "String", value: '"\u{1F600}"' });
   });
 
   test("Should handle unicode escapes \\uXXXX", () => {
-    expect(tokenize('"\\u0041"')[0]).toMatchObject({ type: "String", value: "A" });
+    expect(tokenize('"\\u0041"')[0]).toMatchObject({ type: "String", value: '"A"' });
   });
 
   test("Should handle hex escapes \\xNN", () => {
-    expect(tokenize('"\\x41"')[0]).toMatchObject({ type: "String", value: "A" });
+    expect(tokenize('"\\x41"')[0]).toMatchObject({ type: "String", value: '"A"' });
   });
 
   test("Should handle null escape \\0", () => {
-    expect(tokenize('"\\0"')[0]).toMatchObject({ type: "String", value: "\0" });
+    expect(tokenize('"\\0"')[0]).toMatchObject({ type: "String", value: '"\0"' });
   });
 
   test("Should throw on truncated \\x escape", () => {

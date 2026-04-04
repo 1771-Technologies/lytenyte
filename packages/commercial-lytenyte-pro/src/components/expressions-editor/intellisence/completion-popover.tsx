@@ -1,14 +1,13 @@
-import { useRef, useEffect, type ReactNode } from "react";
-import type { CursorCoordinates } from "../types.js";
+import { useRef, useEffect, type JSX, forwardRef } from "react";
+import { useCompletionPopover } from "./completion-context.js";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 
-interface CompletionPopoverProps {
-  readonly isOpen: boolean;
-  readonly coordinates: CursorCoordinates;
-  readonly className?: string;
-  readonly children: ReactNode;
-}
+function CompletionPopoverImpl(
+  { children, ...props }: JSX.IntrinsicElements["div"],
+  ref: JSX.IntrinsicElements["div"]["ref"],
+) {
+  const { isOpen, coordinates } = useCompletionPopover();
 
-export function CompletionPopover({ isOpen, coordinates, className, children }: CompletionPopoverProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,12 +21,14 @@ export function CompletionPopover({ isOpen, coordinates, className, children }: 
     }
   }, [isOpen]);
 
+  const combined = useCombinedRefs(ref, popoverRef);
+
   return (
     <div
-      ref={popoverRef}
+      {...props}
+      ref={combined}
       popover="manual"
-      className={className}
-      data-ln-expression-editor-popover
+      data-ln-expression-popover
       style={{
         position: "fixed",
         top: coordinates.top + coordinates.lineHeight,
@@ -40,3 +41,5 @@ export function CompletionPopover({ isOpen, coordinates, className, children }: 
     </div>
   );
 }
+
+export const CompletionPopover = forwardRef(CompletionPopoverImpl);

@@ -1,7 +1,5 @@
 @layer ln-grid {
-  [data-ln-expression-root] {
-    position: relative;
-
+  [data-ln-expression-editor] {
     --ln-expr-number: light-dark(#b45309, #fab387);
     --ln-expr-string: light-dark(#15803d, #a6e3a1);
     --ln-expr-keyword: light-dark(#7c3aed, #cba6f7);
@@ -12,13 +10,10 @@
   }
 
   /* These must be identical otherwise the highlight will not match the input. */
-  [data-ln-expression-input],
-  [data-ln-expression-highlight] {
+  [data-ln-expression-editor] {
     font-family:
       ui-monospace, "Cascadia Code", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
     font-size: 16px;
-    line-height: 4px;
-    padding: 16px;
     white-space: nowrap;
     word-break: normal;
     overflow-wrap: normal;
@@ -26,31 +21,85 @@
     box-sizing: border-box;
   }
 
-  [data-ln-expression-highlight] {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 0;
-  }
-
   [data-ln-expression-input] {
-    position: relative;
-    z-index: 1;
-    display: block;
-    margin: 0;
-    resize: none;
-    outline: none;
-    background: transparent;
-    color: transparent;
-    border: 0px solid transparent;
-    caret-color: var(--ln-gray-90, light-dark(black, white));
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
+    caret-color: var(--ln-text);
+    box-sizing: border-box;
+
+    transition-property: border-color;
+    transition-duration: var(--ln-transition-duration);
+    transition-timing-function: var(--ln-transition-fn);
   }
 
-  [data-ln-expression-input]::-webkit-scrollbar {
-    display: none;
+  /* Completion popover */
+  @keyframes ln-expr-popover-in {
+    from {
+      opacity: 0;
+      translate: 0 -4px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  [data-ln-expression-popover] {
+    background-color: var(--ln-bg-popover);
+    border: 1px solid var(--ln-border-popover);
+    border-radius: var(--ln-radius-md);
+    box-shadow: var(--ln-shadow-400);
+    padding: var(--ln-space-05);
+    min-width: 200px;
+    max-width: 360px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    &:popover-open {
+      animation: ln-expr-popover-in var(--ln-transition-duration) var(--ln-transition-fn) both;
+    }
+  }
+
+  [data-ln-expression-completion-list] {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    /* Thin scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--ln-border-strong) transparent;
+  }
+
+  [data-ln-expression-completion-item] {
+    display: flex;
+    align-items: center;
+    gap: var(--ln-space-10);
+    padding-block: var(--ln-space-05);
+    padding-inline: var(--ln-space-10);
+    border-radius: var(--ln-radius);
+    font-family:
+      ui-monospace, "Cascadia Code", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: var(--ln-font-sm);
+    color: var(--ln-text);
+    cursor: pointer;
+    user-select: none;
+
+    transition-property: background-color, color;
+    transition-duration: var(--ln-transition-duration);
+    transition-timing-function: var(--ln-transition-fn);
+
+    &:hover {
+      background-color: var(--ln-bg-row-hover);
+    }
+
+    &[data-ln-selected] {
+      background-color: var(--ln-primary-10);
+      color: var(--ln-text-dark);
+
+      &:hover {
+        background-color: var(--ln-primary-10);
+      }
+    }
   }
 }
