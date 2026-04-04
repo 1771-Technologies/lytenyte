@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode, KeyboardEvent } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { Token } from "../../expressions/lexer/types.js";
 
 export type CompletionItem<T = unknown> = {
@@ -34,20 +34,19 @@ export type CursorCoordinates = {
 
 export type ExpressionEditorProps<T = unknown> = {
   value: string;
-  onValueChange: (value: string) => void;
-  tokenize: (value: string) => Token[];
+  onChange: (value: string) => void;
 
+  tokenize: (value: string) => Token[];
   highlight?: (props: { token: Token }) => ReactNode;
 
   completionProvider?: (
     tokens: Token[],
     cursorPosition: number,
   ) => CompletionItem<T>[] | Promise<CompletionItem<T>[]>;
+
   renderCompletionItem?: (item: CompletionItem<T>) => ReactNode;
-  completionClassName?: string;
   renderLoading?: () => ReactNode;
 
-  triggerCharacters?: string[];
   placeholder?: string;
   disabled?: boolean;
   readOnly?: boolean;
@@ -55,8 +54,6 @@ export type ExpressionEditorProps<T = unknown> = {
   className?: string;
   style?: CSSProperties;
 
-  keybindings?: KeybindingConfig;
-  onKeyDown?: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 };

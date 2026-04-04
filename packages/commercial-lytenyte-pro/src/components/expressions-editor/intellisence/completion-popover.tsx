@@ -4,11 +4,10 @@ import type { CursorCoordinates } from "../types.js";
 interface CompletionPopoverProps {
   readonly isOpen: boolean;
   readonly coordinates: CursorCoordinates;
-  readonly className?: string;
   readonly children: ReactNode;
 }
 
-export function CompletionPopover({ isOpen, coordinates, className, children }: CompletionPopoverProps) {
+export function CompletionPopover({ isOpen, coordinates, children }: CompletionPopoverProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,7 +25,6 @@ export function CompletionPopover({ isOpen, coordinates, className, children }: 
     <div
       ref={popoverRef}
       popover="manual"
-      className={className}
       data-ln-expression-popover
       style={{
         position: "fixed",

@@ -83,7 +83,7 @@ export default function App() {
       <label className="demo-label">Single-line</label>
       <ExpressionEditor
         value={value}
-        onValueChange={setValue}
+        onChange={setValue}
         tokenize={tokenize}
         completionProvider={provider}
         renderCompletionItem={renderCompletionItem}

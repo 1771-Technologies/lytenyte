@@ -59,10 +59,16 @@
       "import": "./src/components.ts",
       "require": "./src/components.ts"
     },
+    "./expressions": {
+      "types": "./src/expressions.ts",
+      "import": "./src/expressions.ts",
+      "require": "./src/expressions.ts"
+    },
     "./grid.css": "./css/grid.css",
     "./grid-full.css": "./css/grid-full.css",
     "./light-dark.css": "./css/light-dark.css",
     "./all-colors.css": "./css/all-colors.css",
+    "./expression-editor.css": "./css/components/expression-editor.css",
     "./cotton-candy.css": "./css/cotton-candy.css",
     "./dark.css": "./css/dark.css",
     "./design.css": "./css/design.css",
@@ -93,10 +99,16 @@
         "import": "./dist/components.js",
         "require": "./dist/components.js"
       },
+      "./expressions": {
+        "types": "./dist/expressions.d.ts",
+        "import": "./dist/expressions.js",
+        "require": "./dist/expressions.js"
+      },
       "./grid.css": "./css/grid.css",
       "./grid-full.css": "./css/grid-full.css",
       "./light-dark.css": "./css/light-dark.css",
       "./all-colors.css": "./css/all-colors.css",
+      "./expression-editor.css": "./css/components/expression-editor.css",
       "./cotton-candy.css": "./css/cotton-candy.css",
       "./dark.css": "./css/dark.css",
       "./design.css": "./css/design.css",

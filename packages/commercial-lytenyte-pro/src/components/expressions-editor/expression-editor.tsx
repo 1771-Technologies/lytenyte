@@ -21,23 +21,21 @@ const sharedFontStyle: CSSProperties = {
   padding: "0",
 };
 
+const triggerCharacters = ["."];
+
 export function ExpressionEditor<T>({
   value,
-  onValueChange,
+  onChange: onValueChange,
   tokenize,
   highlight: Highlighter = DefaultTokenHighlighter,
   completionProvider,
   renderCompletionItem,
-  triggerCharacters = ["."],
   placeholder,
   disabled,
   readOnly,
   className,
-  completionClassName,
   renderLoading,
   style,
-  keybindings,
-  onKeyDown: onExternalKeyDown,
   onBlur,
   onFocus,
 }: ExpressionEditorProps<T>) {
@@ -56,7 +54,6 @@ export function ExpressionEditor<T>({
     onValueChange: (value: string) => void;
     onExternalKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
     multiline: boolean;
-    keybindings?: typeof keybindings;
     updateFilter: (prefix: string) => void;
     handleInputChange: (value: string, cursorPosition: number) => void;
     cancel: () => void;
@@ -90,9 +87,7 @@ export function ExpressionEditor<T>({
     acceptCompletion: navigation.acceptCompletion,
     triggerManually: trigger.triggerManually,
     onValueChange,
-    onExternalKeyDown,
     multiline,
-    keybindings,
     updateFilter: completions.updateFilter,
     handleInputChange: trigger.handleInputChange,
     cancel: trigger.cancel,
@@ -107,7 +102,6 @@ export function ExpressionEditor<T>({
     const handler = createKeyDownHandler<T>({
       isPopoverOpen: deps.isOpen,
       multiline: deps.multiline,
-      keybindings: deps.keybindings,
       selectedItem: deps.selectedItem,
       wordAtCursor,
       onAcceptCompletion: deps.acceptCompletion,
@@ -131,12 +125,7 @@ export function ExpressionEditor<T>({
 
     const word = getWordAtCursor(newValue, selectionStart);
     if (deps.isOpen) {
-      if (word.word.length === 0) {
-        deps.dismiss();
-        deps.cancel();
-      } else {
-        deps.updateFilter(word.word);
-      }
+      deps.updateFilter(word.word);
     }
 
     deps.handleInputChange(newValue, selectionStart);
@@ -223,11 +212,7 @@ export function ExpressionEditor<T>({
         ))}
       </div>
       {completionProvider && (
-        <CompletionPopover
-          isOpen={completions.isOpen}
-          coordinates={cursorPosition.coordinates}
-          className={completionClassName}
-        >
+        <CompletionPopover isOpen={completions.isOpen} coordinates={cursorPosition.coordinates}>
           {completions.isLoading && renderLoading ? (
             renderLoading()
           ) : (
