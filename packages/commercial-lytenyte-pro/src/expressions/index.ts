@@ -15,3 +15,5 @@ export {
   stringsPlugin,
   ternaryPlugin,
 } from "./plugins/standard.js";
+
+export { createResolvedIdentifierPlugin } from "./plugins/resolved-identifier.js";

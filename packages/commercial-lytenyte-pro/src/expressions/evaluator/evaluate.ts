@@ -9,6 +9,10 @@ import type { Plugin } from "../plugin.js";
 
 const MAX_DEPTH = 1000;
 
+export interface RunOptions {
+  undefinedIdentifierFallback?: unknown;
+}
+
 export class Evaluator {
   private plugins?: Plugin[];
 
@@ -16,11 +20,11 @@ export class Evaluator {
     this.plugins = plugins;
   }
 
-  run = (input: string | ASTNode, context: Record<string, unknown> = {}): unknown => {
+  run = (input: string | ASTNode, context: Record<string, unknown> = {}, options?: RunOptions): unknown => {
     const node: ASTNode =
       typeof input === "string" ? compile(parse(input, 0, this.plugins), this.plugins) : input;
 
-    return evaluateNode(node, context, 0, this.plugins);
+    return evaluateNode(node, context, 0, this.plugins, options);
   };
 
   ast = (input: string): ASTNode => {
@@ -41,6 +45,7 @@ export function evaluateNode(
   context: Record<string, unknown>,
   depth: number,
   plugins?: Plugin[],
+  options?: RunOptions,
 ): unknown {
   if (depth > MAX_DEPTH) {
     throw new Error("Maximum evaluation depth exceeded");
@@ -48,7 +53,7 @@ export function evaluateNode(
 
   // Try plugin evaluation first
   if (plugins) {
-    const evalFn = (n: ASTNode, ctx: Record<string, unknown>) => evaluateNode(n, ctx, depth + 1, plugins);
+    const evalFn = (n: ASTNode, ctx: Record<string, unknown>) => evaluateNode(n, ctx, depth + 1, plugins, options);
     for (const plugin of plugins) {
       if (plugin.evaluate) {
         const result = plugin.evaluate(node, context, evalFn);
@@ -61,12 +66,17 @@ export function evaluateNode(
   switch (node.type) {
     case "NumberLiteral":
       return node.value;
-    case "Identifier":
+    case "Identifier": {
+      if (!(node.name in context)) {
+        if (options && "undefinedIdentifierFallback" in options) return options.undefinedIdentifierFallback;
+        throw new Error(`Identifier "${node.name}" is not defined`);
+      }
       return context[node.name];
+    }
     case "BinaryExpression":
-      return evaluateBinary(node, context, depth, plugins);
+      return evaluateBinary(node, context, depth, plugins, options);
     case "UnaryExpression":
-      return evaluateUnary(node.operator, evaluateNode(node.operand, context, depth + 1, plugins));
+      return evaluateUnary(node.operator, evaluateNode(node.operand, context, depth + 1, plugins, options));
     case "SpreadElement":
       throw new Error("Unexpected spread element outside of array literal");
     default:

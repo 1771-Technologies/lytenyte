@@ -37,7 +37,7 @@ export default function EvaluatorBasics() {
         </div>
 
         <div data-ln-input="true" className="h-10 text-base">
-          <ExpressionEditor value={value} onChange={setValue} tokenize={tokenize} />
+          <ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} />
         </div>
       </label>
 

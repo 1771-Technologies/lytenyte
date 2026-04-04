@@ -3,6 +3,7 @@ import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/expression-editor.css";
 import { Evaluator, ExpressionEditor, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
 import { useCallback, useMemo, useState } from "react";
+import { ContextRows } from "./components.js";
 
 const evaluator = new Evaluator(standardPlugins);
 
@@ -52,7 +53,7 @@ export default function EvaluatorBasics() {
         </div>
 
         <div data-ln-input="true" className="h-10 text-base">
-          <ExpressionEditor value={value} onChange={setValue} tokenize={tokenize} />
+          <ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} />
         </div>
       </label>
 
@@ -69,6 +70,14 @@ export default function EvaluatorBasics() {
               {expr}
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Context */}
+      <div className="flex flex-col gap-2">
+        <div className="text-ln-text-light text-xs font-medium">Context</div>
+        <div className="border-ln-border bg-ln-bg-light divide-ln-border divide-y overflow-hidden rounded-lg border">
+          <ContextRows obj={context as Record<string, unknown>} />
         </div>
       </div>
 

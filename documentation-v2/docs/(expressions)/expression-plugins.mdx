@@ -1,4 +1,116 @@
 ---
 title: Expression Plugins
 pro: true
+step: Extend the capabilities of the expression evaluator with custom plugins.
+description: Expression plugins allow you to extend the syntax and evaluation capabilities of
+  expressions provided by LyteNyte.
 ---
+
+:::note
+
+This guide assumes you understand how expressions work in LyteNyte Grid. Read the
+[Expressions Overview guide](/docs/expressions-overview) for more guidance.
+
+Furthermore, basic understanding of lexers, parsers, and abstract syntax trees
+is recommended to fully make the most of creating expression plugins.
+
+:::
+
+## Extending Expression Syntax
+
+LyteNyte Grid provides the `Evaluator` class that accepts an array of plugins when
+being instantiated. The plugins provided can be used to extend the evaluators
+capabilities and extend the range and type of expressions the evaluator is capable
+of handling.
+
+A `Plugin` is any object that conforms to the type interface shown below. You do not have to implement
+every part of the interface, only the parts that matter to the plugin you are creating.
+
+```ts
+export interface Plugin {
+  name: string;
+  scan?: (source: string, pos: number) => { type: string; value: string; end: number } | null;
+  parsePrefix?: (ctx: ParserContext) => ASTNode | null;
+  parseInfix?: (ctx: ParserContext, left: ASTNode, minPrec: number) => ASTNode | null;
+  parsePostfix?: (ctx: ParserContext, node: ASTNode) => ASTNode | null;
+  parseUnary?: (ctx: ParserContext, parseNext: (ctx: ParserContext) => ASTNode) => ASTNode | null;
+  infixPrecedence?: (ctx: ParserContext) => number | undefined;
+  optimize?: (node: ASTNode, optimize: (n: ASTNode) => ASTNode) => ASTNode | null;
+  evaluate?: (node: ASTNode, context: Record<string, unknown>, evaluate: EvalFn) => { value: unknown } | null;
+}
+```
+
+The different methods correspond to different stages of the evaluators flow (tokenizing, parsing, evaluating).
+Created plugin's is best illustrated through examples. The following sections provide some illustrative examples
+you can use as a reference for your own plugins.
+
+### AST Enhancement Example
+
+The code below shows the `createResolvedIdentifierPlugin`, which is a plugin that allows specific identifiers
+to be treated as implicit functions calls when being evaluated, see the [Expression Filter guide](/docs/expression-filters)
+for a demonstration.
+
+```ts
+export function createResolvedIdentifierPlugin(options: { identifiers: string[]; args: string[] }): Plugin {
+  const identifierSet = new Set(options.identifiers);
+  const argKeys = options.args;
+
+  return {
+    name: "resolved-identifier",
+    evaluate: (node, context) => {
+      if (node.type !== "Identifier") return null;
+      if (!identifierSet.has(node.name)) return null;
+
+      const fn = context[node.name];
+      if (typeof fn !== "function") {
+        throw new Error(`Resolved identifier "${node.name}" is not a function in context`);
+      }
+
+      const args = argKeys.map((key) => context[key]);
+      return { value: fn(...args) };
+    },
+  };
+}
+```
+
+### Boolean Support Example
+
+The plugin code below is used by the standard plugins code to add booleans to the expression syntax.
+
+```ts
+export const booleansPlugin: Plugin = {
+  name: "booleans",
+  parsePrefix: (ctx: ParserContext) => {
+    const tok = current(ctx);
+    if (tok.type === "Boolean") {
+      advance(ctx);
+      return {
+        type: "BooleanLiteral",
+        value: tok.value === "true",
+        start: tok.start,
+        end: tok.end,
+      };
+    }
+    if (tok.type === "Null") {
+      advance(ctx);
+      return { type: "NullLiteral", value: null, start: tok.start, end: tok.end };
+    }
+    if (tok.type === "Undefined") {
+      advance(ctx);
+      return { type: "UndefinedLiteral", value: undefined, start: tok.start, end: tok.end };
+    }
+    return null;
+  },
+  evaluate: (node) => {
+    if (node.type === "BooleanLiteral") return { value: (node as any).value };
+    if (node.type === "NullLiteral") return { value: null };
+    if (node.type === "UndefinedLiteral") return { value: undefined };
+    return null;
+  },
+};
+```
+
+## Next Steps
+
+::next[/docs/expressions-overview]
+::next[/docs/expression-filters]

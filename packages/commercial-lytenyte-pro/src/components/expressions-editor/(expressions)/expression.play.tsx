@@ -69,7 +69,7 @@ export default function App() {
   return (
     <div className="demo-container">
       <label className="demo-label">Single-line</label>
-      <ExpressionEditor
+      <ExpressionEditor.Root
         value={value}
         onChange={setValue}
         tokenize={tokenize}
@@ -90,7 +90,7 @@ export default function App() {
             }}
           </CompletionList>
         </CompletionPopover>
-      </ExpressionEditor>
+      </ExpressionEditor.Root>
       <div className="examples-row">
         {EXAMPLES.map((ex) => (
           <button

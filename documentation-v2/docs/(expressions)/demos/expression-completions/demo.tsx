@@ -1,12 +1,34 @@
 import "@1771technologies/lytenyte-pro/light-dark.css";
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/expression-editor.css";
-import { Evaluator, ExpressionEditor } from "@1771technologies/lytenyte-pro/expressions";
+import {
+  createCompletionProvider,
+  Evaluator,
+  ExpressionEditor,
+  standardPlugins,
+} from "@1771technologies/lytenyte-pro/expressions";
 import { useCallback, useMemo, useState } from "react";
+import { ContextRows, KindBadge } from "./components.js";
 
-const evaluator = new Evaluator();
+const evaluator = new Evaluator(standardPlugins);
 
-const EXAMPLE_PILLS = ["1 + 1", "2 * 3 + 4", "20 + 10 / 4 - (2 * 4)"];
+const context = {
+  user: {
+    firstName: "John",
+    lastName: "Smith",
+  },
+  age: 23,
+  location: "London",
+
+  fullName: () => context.user.firstName + "  " + context.user.lastName,
+};
+
+const EXAMPLE_PILLS = [
+  'user.firstName + " " + user.lastName',
+  "`${user.firstName} is ${age} old`",
+  "age * 2",
+  "fullName()",
+];
 
 export default function EvaluatorBasics() {
   const [value, setValue] = useState("1 + 1");
@@ -15,19 +37,22 @@ export default function EvaluatorBasics() {
     try {
       if (!value) return "";
 
-      return evaluator.run(value);
+      return evaluator.run(value, context);
     } catch (e) {
       return e instanceof Error ? e : new Error(String(e));
     }
   }, [value]);
 
   const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
+  //!next 4
+  const provider = useMemo(() => {
+    return createCompletionProvider(context);
+  }, []);
 
   const isError = result instanceof Error;
 
   return (
     <div className="flex flex-col gap-5 p-5">
-      {/* Label + editor */}
       <label className="flex w-full flex-col gap-2">
         <div>
           <div className="text-ln-text-dark text-sm font-semibold">Expression</div>
@@ -37,11 +62,35 @@ export default function EvaluatorBasics() {
         </div>
 
         <div data-ln-input="true" className="h-10 text-base">
-          <ExpressionEditor value={value} onChange={setValue} tokenize={tokenize} />
+          <ExpressionEditor.Root
+            value={value}
+            onChange={setValue}
+            tokenize={tokenize}
+            completionProvider={provider}
+          >
+            {/*!next 18 */}
+            <ExpressionEditor.CompletionPopover className="border-ln-border bg-ln-bg-popover shadow-ln-shadow-400 overflow-hidden rounded-lg border py-1">
+              <ExpressionEditor.CompletionList className="flex min-w-48 flex-col">
+                {({ items }) =>
+                  items.map((item, index) => (
+                    <ExpressionEditor.CompletionListItem
+                      key={item.id}
+                      item={item}
+                      index={index}
+                      className="text-ln-text-dark hover:bg-ln-bg-strong aria-selected:bg-ln-primary-10 aria-selected:text-ln-primary-70 flex cursor-pointer select-none items-center gap-2.5 px-3 py-1.5 outline-none"
+                    >
+                      <KindBadge kind={item.kind} />
+                      <span className="min-w-0 flex-1 truncate font-mono text-sm">{item.label}</span>
+                      <span className="text-ln-text-xlight shrink-0 font-sans text-[10px]">{item.kind}</span>
+                    </ExpressionEditor.CompletionListItem>
+                  ))
+                }
+              </ExpressionEditor.CompletionList>
+            </ExpressionEditor.CompletionPopover>
+          </ExpressionEditor.Root>
         </div>
       </label>
 
-      {/* Example pills */}
       <div className="flex flex-col gap-2">
         <div className="text-ln-text-light text-xs font-medium">Try an example</div>
         <div className="flex flex-wrap gap-2">
@@ -58,7 +107,14 @@ export default function EvaluatorBasics() {
         </div>
       </div>
 
-      {/* Result */}
+      {/* Context */}
+      <div className="flex flex-col gap-2">
+        <div className="text-ln-text-light text-xs font-medium">Context</div>
+        <div className="border-ln-border bg-ln-bg-light divide-ln-border divide-y overflow-hidden rounded-lg border">
+          <ContextRows obj={context as Record<string, unknown>} />
+        </div>
+      </div>
+
       <div className="flex flex-col gap-2">
         <div className="text-ln-text-light text-xs font-medium">Result</div>
         <div

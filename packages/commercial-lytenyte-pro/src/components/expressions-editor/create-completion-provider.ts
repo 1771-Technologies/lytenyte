@@ -155,7 +155,7 @@ function builtinCompletions(methods: BuiltinMethod[]): CompletionItem[] {
 }
 
 export function createCompletionProvider(context: Record<string, unknown>) {
-  return function completionProvider(tokens: Token[], cursorPosition: number): CompletionItem<any>[] {
+  return function completionProvider(tokens: Token[], cursorPosition: number): CompletionItem[] {
     const analysis = analyzeTokens(tokens, cursorPosition);
 
     switch (analysis.kind) {
