@@ -53,7 +53,8 @@ export function evaluateNode(
 
   // Try plugin evaluation first
   if (plugins) {
-    const evalFn = (n: ASTNode, ctx: Record<string, unknown>) => evaluateNode(n, ctx, depth + 1, plugins, options);
+    const evalFn = (n: ASTNode, ctx: Record<string, unknown>) =>
+      evaluateNode(n, ctx, depth + 1, plugins, options);
     for (const plugin of plugins) {
       if (plugin.evaluate) {
         const result = plugin.evaluate(node, context, evalFn);

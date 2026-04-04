@@ -1,9 +1,6 @@
 import type { Plugin } from "../plugin.js";
 
-export function createResolvedIdentifierPlugin(options: {
-  identifiers: string[];
-  args: string[];
-}): Plugin {
+export function createResolvedIdentifierPlugin(options: { identifiers: string[]; args: string[] }): Plugin {
   const identifierSet = new Set(options.identifiers);
   const argKeys = options.args;
 
