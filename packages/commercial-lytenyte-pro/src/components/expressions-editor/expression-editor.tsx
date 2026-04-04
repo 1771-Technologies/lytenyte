@@ -33,8 +33,6 @@ export function ExpressionEditor({
   readOnly,
   className,
   style,
-  onBlur,
-  onFocus,
   children,
 }: PropsWithChildren<ExpressionEditorProps>) {
   // TODO @Lee: we should eventually allow multiline expressions but for now there isn't really a valid
@@ -55,7 +53,6 @@ export function ExpressionEditor({
     updateFilter: (prefix: string) => void;
     handleInputChange: (value: string, cursorPosition: number) => void;
     cancel: () => void;
-    onBlur?: typeof onBlur;
   }>(null!);
 
   const tokens = useMemo(() => tokenize(value), [value, tokenize]);
@@ -89,7 +86,6 @@ export function ExpressionEditor({
     updateFilter: completions.updateFilter,
     handleInputChange: trigger.handleInputChange,
     cancel: trigger.cancel,
-    onBlur,
   };
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -129,11 +125,10 @@ export function ExpressionEditor({
     deps.handleInputChange(newValue, selectionStart);
   }, []);
 
-  const handleBlur = useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
+  const handleBlur = useCallback(() => {
     const deps = depsRef.current;
     deps.dismiss();
     deps.cancel();
-    deps.onBlur?.(e);
   }, []);
 
   const handleItemSelect = useCallback((item: CompletionItem) => {
@@ -172,6 +167,7 @@ export function ExpressionEditor({
       className={className}
       style={{
         display: "grid",
+        width: "100%",
         ...style,
       }}
       data-ln-expression-editor
@@ -182,7 +178,6 @@ export function ExpressionEditor({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
-        onFocus={onFocus}
         disabled={disabled}
         readOnly={readOnly}
         placeholder={placeholder}

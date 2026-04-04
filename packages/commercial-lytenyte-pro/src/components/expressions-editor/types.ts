@@ -47,7 +47,4 @@ export type ExpressionEditorProps = {
 
   className?: string;
   style?: CSSProperties;
-
-  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
-  onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 };
