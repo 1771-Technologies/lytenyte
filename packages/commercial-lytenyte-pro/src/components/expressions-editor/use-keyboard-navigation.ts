@@ -8,9 +8,9 @@ interface NavigationDeps {
   readonly textareaRef: React.RefObject<HTMLTextAreaElement | null>;
 }
 
-export function useKeyboardNavigation<T>({ onValueChange, onDismiss, textareaRef }: NavigationDeps) {
+export function useKeyboardNavigation({ onValueChange, onDismiss, textareaRef }: NavigationDeps) {
   const acceptCompletion = useCallback(
-    (item: CompletionItem<T>, word: WordAtCursor) => {
+    (item: CompletionItem, word: WordAtCursor) => {
       const textarea = textareaRef.current;
       if (!textarea) return;
 

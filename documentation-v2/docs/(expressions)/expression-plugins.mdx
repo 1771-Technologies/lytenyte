@@ -1,0 +1,113 @@
+---
+title: Expression Plugins
+pro: true
+step: Extend the capabilities of the expression evaluator with custom plugins.
+description: Expression plugins allow you to extend the syntax and evaluation capabilities of
+  expressions provided by LyteNyte.
+---
+
+:::note
+
+This guide assumes you understand how expressions work in LyteNyte Grid. Read the
+[Expressions Overview guide](/docs/expressions-overview) for more guidance.
+
+A basic understanding of lexers, parsers, and abstract syntax trees is recommended to
+get the most out of creating expression plugins.
+
+:::
+
+## Extending Expression Syntax
+
+LyteNyte Grid provides the `Evaluator` class, which accepts an array of plugins when you instantiate it.
+These plugins extend the evaluator's capabilities and allow it to handle a wider range of expressions.
+
+A `Plugin` is any object that conforms to the interface shown below. You only need to implement the parts
+of the interface that your plugin requires.
+
+```ts
+export interface Plugin {
+  name: string;
+  scan?: (source: string, pos: number) => { type: string; value: string; end: number } | null;
+  parsePrefix?: (ctx: ParserContext) => ASTNode | null;
+  parseInfix?: (ctx: ParserContext, left: ASTNode, minPrec: number) => ASTNode | null;
+  parsePostfix?: (ctx: ParserContext, node: ASTNode) => ASTNode | null;
+  parseUnary?: (ctx: ParserContext, parseNext: (ctx: ParserContext) => ASTNode) => ASTNode | null;
+  infixPrecedence?: (ctx: ParserContext) => number | undefined;
+  optimize?: (node: ASTNode, optimize: (n: ASTNode) => ASTNode) => ASTNode | null;
+  evaluate?: (node: ASTNode, context: Record<string, unknown>, evaluate: EvalFn) => { value: unknown } | null;
+}
+```
+
+Each method corresponds to a stage in the evaluator's flow (tokenizing, parsing, and evaluating).
+Plugins are best understood through examples. The following sections provide examples you can use
+as a reference when building your own plugins.
+
+### AST Enhancement Example
+
+The code below shows `createResolvedIdentifierPlugin`. This plugin treats specific identifiers as implicit
+function calls during evaluation. See the [Expression Filter guide](/docs/expression-filters) for a demonstration.
+
+```ts
+export function createResolvedIdentifierPlugin(options: { identifiers: string[]; args: string[] }): Plugin {
+  const identifierSet = new Set(options.identifiers);
+  const argKeys = options.args;
+
+  return {
+    name: "resolved-identifier",
+    evaluate: (node, context) => {
+      if (node.type !== "Identifier") return null;
+      if (!identifierSet.has(node.name)) return null;
+
+      const fn = context[node.name];
+      if (typeof fn !== "function") {
+        throw new Error(`Resolved identifier "${node.name}" is not a function in context`);
+      }
+
+      const args = argKeys.map((key) => context[key]);
+      return { value: fn(...args) };
+    },
+  };
+}
+```
+
+### Boolean Support Example
+
+The plugin below adds boolean support to the expression syntax. It is used by the standard plugins.
+
+```ts
+export const booleansPlugin: Plugin = {
+  name: "booleans",
+  parsePrefix: (ctx: ParserContext) => {
+    const tok = current(ctx);
+    if (tok.type === "Boolean") {
+      advance(ctx);
+      return {
+        type: "BooleanLiteral",
+        value: tok.value === "true",
+        start: tok.start,
+        end: tok.end,
+      };
+    }
+    if (tok.type === "Null") {
+      advance(ctx);
+      return { type: "NullLiteral", value: null, start: tok.start, end: tok.end };
+    }
+    if (tok.type === "Undefined") {
+      advance(ctx);
+      return { type: "UndefinedLiteral", value: undefined, start: tok.start, end: tok.end };
+    }
+    return null;
+  },
+  evaluate: (node) => {
+    if (node.type === "BooleanLiteral") return { value: (node as any).value };
+    if (node.type === "NullLiteral") return { value: null };
+    if (node.type === "UndefinedLiteral") return { value: undefined };
+    return null;
+  },
+};
+```
+
+## Next Steps
+
+::next[/docs/expressions-overview]
+::next[/docs/expression-filters]

@@ -4,13 +4,13 @@ import { handleCompletionKeyDown } from "./handle-completion-key-down.js";
 import { handleEnterKey } from "./handle-enter-key.js";
 import { isManualTrigger } from "./handle-manual-trigger.js";
 
-interface KeyDownDeps<T> {
+interface KeyDownDeps {
   readonly isPopoverOpen: boolean;
   readonly multiline: boolean;
   readonly keybindings?: KeybindingConfig;
-  readonly selectedItem: CompletionItem<T> | null;
+  readonly selectedItem: CompletionItem | null;
   readonly wordAtCursor: WordAtCursor | null;
-  readonly onAcceptCompletion: (item: CompletionItem<T>, word: WordAtCursor) => void;
+  readonly onAcceptCompletion: (item: CompletionItem, word: WordAtCursor) => void;
   readonly onNavigate: (direction: "up" | "down") => void;
   readonly onDismiss: () => void;
   readonly onCancelTrigger: () => void;
@@ -19,7 +19,7 @@ interface KeyDownDeps<T> {
   readonly onExternalKeyDown?: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
-export function createKeyDownHandler<T>(deps: KeyDownDeps<T>) {
+export function createKeyDownHandler(deps: KeyDownDeps) {
   return (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (deps.onExternalKeyDown) {
       deps.onExternalKeyDown(e);

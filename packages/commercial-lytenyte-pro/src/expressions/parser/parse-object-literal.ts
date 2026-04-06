@@ -46,7 +46,8 @@ export function parseObjectLiteral(ctx: ParserContext): ASTNode {
         }
       } else if (tok.type === "String") {
         advance(ctx);
-        key = { type: "StringLiteral", value: tok.value, start: tok.start, end: tok.end };
+
+        key = { type: "StringLiteral", value: tok.value.slice(1, -1), start: tok.start, end: tok.end };
       } else {
         throw new ExpressionError(`Expected property name but got "${tok.value}"`, {
           source: ctx.source,

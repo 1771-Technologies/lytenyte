@@ -1,0 +1,67 @@
+---
+title: Expression Filters
+description: Create complex grid filters using a custom filter language with LyteNyte's expression capabilities.
+pro: true
+step: Filter grid rows based on the predicate value of an expression.
+---
+
+:::note
+
+This guide assumes you are already familiar with how filters work in LyteNyte Grid. In particular,
+the demos in this guide use the client source to demonstrate expression filters.
+
+See the [Client Row Filtering guide](/docs/client-source-filtering) for more guidance.
+
+:::
+
+## Filtering With An Expression
+
+A filter expression is a standard expression that evaluates to a boolean value.
+The expression defines the predicate, and the evaluator checks
+whether each row satisfies that predicate.
+
+The example below demonstrates filter expressions in action. You can perform any type of comparison on the
+columns. The expression is preloaded with `Gender == "Male" && Quantity > 10`, which translates to "any
+row with a gender of 'Male' and a quantity greater than 10."
+
+::demo[Expression Filters="./demos/expression-filter"]
+
+To handle expression filters for columns, configure the `Evaluator` with a custom plugin provided by
+LyteNyte Grid: `createResolvedIdentifierPlugin`. This function returns a plugin that treats specific
+identifiers as values. The code is shown below:
+
+```ts
+const evaluator = new Evaluator(
+  standardPlugins.concat([
+    //!next 4
+    createResolvedIdentifierPlugin({
+      args: ["row"],
+      identifiers: columns.map((x) => x.name ?? x.id),
+    }),
+  ]),
+);
+```
+
+Each column evaluates per row, so the evaluator must resolve the column value for a given row. However,
+you do not want to treat columns as functions in the expression (for example, the user should
+be able to write `Gender` instead of `Gender()` in the expression).
+
+The plugin performs this substitution at the AST level, so when a user
+writes `Gender`, the evaluator resolves it to the correct cell value. See the demo code for the full usage.
+
+## Filter Expressions Considerations
+
+Filter expressions evaluated on the client are more expensive than hard-coded filter functions. This is because
+the evaluator processes the expression from an AST, which adds an extra computation step. In return, you gain
+more flexibility in the types of filters users can create.
+
+Evaluating an expression AST on the client works well for client-side data, but it is less suitable for
+server-side data. In these cases, you can serialize the AST and send it to the server. The AST produced by the
+`Evaluator` is serializable unless you provide a custom plugin that generates nodes that cannot be converted
+to JSON.
+
+## Next Steps
+
+::next[/docs/expressions-overview]
+::next[/docs/expression-plugins]
+::next[/docs/client-source-filtering]

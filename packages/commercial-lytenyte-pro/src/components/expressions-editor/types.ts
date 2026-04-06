@@ -1,11 +1,11 @@
-import type { CSSProperties, ReactNode, KeyboardEvent } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { Token } from "../../expressions/lexer/types.js";
 
-export type CompletionItem<T = unknown> = {
+export type CompletionItem = {
   label: string;
   kind: string;
   id: string;
-} & T;
+};
 
 export type KeybindingConfig = {
   accept?: string[];
@@ -32,23 +32,14 @@ export type CursorCoordinates = {
   lineHeight: number;
 };
 
-export type ExpressionEditorProps<T = unknown> = {
+export type ExpressionEditorProps = {
   value: string;
-  onValueChange: (value: string) => void;
+  onChange: (value: string) => void;
 
   tokenize: (value: string) => Token[];
-  highlight: (token: Token) => ReactNode;
+  highlight?: (props: { token: Token }) => ReactNode;
 
-  completionProvider?: (
-    tokens: Token[],
-    cursorPosition: number,
-  ) => CompletionItem<T>[] | Promise<CompletionItem<T>[]>;
-  renderCompletionItem?: (item: CompletionItem<T>) => ReactNode;
-  completionClassName?: string;
-  renderLoading?: () => ReactNode;
-
-  triggerCharacters?: string[];
-  multiline?: boolean;
+  completionProvider?: (tokens: Token[], index: number) => CompletionItem[] | Promise<CompletionItem[]>;
 
   placeholder?: string;
   disabled?: boolean;
@@ -56,9 +47,4 @@ export type ExpressionEditorProps<T = unknown> = {
 
   className?: string;
   style?: CSSProperties;
-
-  keybindings?: KeybindingConfig;
-  onKeyDown?: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
-  onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 };

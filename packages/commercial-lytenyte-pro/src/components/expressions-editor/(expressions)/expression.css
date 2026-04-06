@@ -1,3 +1,80 @@
-[data-ln-expression-editor] {
-  caret-color: black;
+.demo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+.demo-label {
+  font-size: 12px;
+  margin-block: 12px;
+}
+
+.examples-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid light-dark(black, white);
+}
+
+/* Completion item layout */
+.completion-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.completion-kind {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-block: 1px;
+  padding-inline: 5px;
+  border-radius: 4px;
+  min-width: 52px;
+  text-align: center;
+
+  /* Default / object — blue */
+  background-color: light-dark(hsla(217, 100%, 54%, 0.1), hsla(217, 100%, 70%, 0.15));
+  color: light-dark(hsla(217, 94%, 32%, 1), hsla(217, 100%, 75%, 1));
+
+  &[data-kind="string"] {
+    background-color: light-dark(hsla(142, 60%, 45%, 0.12), hsla(142, 50%, 55%, 0.18));
+    color: light-dark(hsla(142, 60%, 28%, 1), hsla(142, 60%, 72%, 1));
+  }
+
+  &[data-kind="number"] {
+    background-color: light-dark(hsla(35, 90%, 50%, 0.12), hsla(35, 90%, 65%, 0.18));
+    color: light-dark(hsla(30, 80%, 36%, 1), hsla(35, 90%, 72%, 1));
+  }
+
+  &[data-kind="function"] {
+    background-color: light-dark(hsla(265, 70%, 55%, 0.12), hsla(265, 70%, 70%, 0.18));
+    color: light-dark(hsla(265, 70%, 38%, 1), hsla(265, 70%, 78%, 1));
+  }
+}
+
+.completion-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.completion-desc {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: light-dark(hsla(222, 8%, 51%, 1), hsla(222, 8%, 60%, 1));
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

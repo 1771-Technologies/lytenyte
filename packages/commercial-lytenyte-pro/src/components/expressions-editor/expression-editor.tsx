@@ -6,9 +6,9 @@ import { useKeyboardNavigation } from "./use-keyboard-navigation.js";
 import { useCursorPosition } from "./cursor-position/use-cursor-position.js";
 import { createKeyDownHandler } from "./create-key-down-handler.js";
 import { getWordAtCursor } from "./intellisence/get-word-at-cursor.js";
-import type { CSSProperties } from "react";
-import { CompletionPopover } from "./intellisence/completion-popover.js";
-import { CompletionList } from "./intellisence/completion-list.js";
+import type { CSSProperties, PropsWithChildren } from "react";
+import { DefaultTokenHighlighter } from "./token-highlighter-default.js";
+import { CompletionListProvider, CompletionPopoverProvider } from "./intellisence/completion-context.js";
 
 const sharedFontStyle: CSSProperties = {
   fontFamily: "inherit",
@@ -20,50 +20,46 @@ const sharedFontStyle: CSSProperties = {
   padding: "0",
 };
 
-export function ExpressionEditor<T>({
+const triggerCharacters = ["."];
+
+export function ExpressionEditor({
   value,
-  onValueChange,
+  onChange: onValueChange,
   tokenize,
-  highlight,
+  highlight: Highlighter = DefaultTokenHighlighter,
   completionProvider,
-  renderCompletionItem,
-  triggerCharacters = ["."],
-  multiline = false,
   placeholder,
   disabled,
   readOnly,
   className,
-  completionClassName,
-  renderLoading,
   style,
-  keybindings,
-  onKeyDown: onExternalKeyDown,
-  onBlur,
-  onFocus,
-}: ExpressionEditorProps<T>) {
+  children,
+}: PropsWithChildren<ExpressionEditorProps>) {
+  // TODO @Lee: we should eventually allow multiline expressions but for now there isn't really a valid
+  // use case that requires multiline expressions without also allow variable support.
+  const multiline = false;
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const depsRef = useRef<{
     isOpen: boolean;
-    selectedItem: CompletionItem<T> | null;
+    selectedItem: CompletionItem | null;
     navigate: (direction: "up" | "down") => void;
     dismiss: () => void;
-    acceptCompletion: (item: CompletionItem<T>, word: ReturnType<typeof getWordAtCursor>) => void;
+    acceptCompletion: (item: CompletionItem, word: ReturnType<typeof getWordAtCursor>) => void;
     triggerManually: (value: string, cursorPosition: number) => void;
     onValueChange: (value: string) => void;
     onExternalKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
     multiline: boolean;
-    keybindings?: typeof keybindings;
     updateFilter: (prefix: string) => void;
     handleInputChange: (value: string, cursorPosition: number) => void;
     cancel: () => void;
-    onBlur?: typeof onBlur;
   }>(null!);
 
   const tokens = useMemo(() => tokenize(value), [value, tokenize]);
 
-  const completions = useCompletions<T>(completionProvider);
+  const completions = useCompletions(completionProvider);
   const cursorPosition = useCursorPosition(textareaRef);
-  const navigation = useKeyboardNavigation<T>({
+  const navigation = useKeyboardNavigation({
     onValueChange,
     onDismiss: completions.dismiss,
     textareaRef,
@@ -86,13 +82,10 @@ export function ExpressionEditor<T>({
     acceptCompletion: navigation.acceptCompletion,
     triggerManually: trigger.triggerManually,
     onValueChange,
-    onExternalKeyDown,
     multiline,
-    keybindings,
     updateFilter: completions.updateFilter,
     handleInputChange: trigger.handleInputChange,
     cancel: trigger.cancel,
-    onBlur,
   };
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -100,10 +93,9 @@ export function ExpressionEditor<T>({
     const textarea = e.currentTarget;
     const wordAtCursor = getWordAtCursor(textarea.value, textarea.selectionStart);
 
-    const handler = createKeyDownHandler<T>({
+    const handler = createKeyDownHandler({
       isPopoverOpen: deps.isOpen,
       multiline: deps.multiline,
-      keybindings: deps.keybindings,
       selectedItem: deps.selectedItem,
       wordAtCursor,
       onAcceptCompletion: deps.acceptCompletion,
@@ -133,17 +125,13 @@ export function ExpressionEditor<T>({
     deps.handleInputChange(newValue, selectionStart);
   }, []);
 
-  const handleBlur = useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
+  const handleBlur = useCallback(() => {
     const deps = depsRef.current;
     deps.dismiss();
     deps.cancel();
-    deps.onBlur?.(e);
   }, []);
 
-  const defaultRenderItem = useCallback((item: { label: string }) => <span>{item.label}</span>, []);
-  const renderItem = renderCompletionItem ?? defaultRenderItem;
-
-  const handleItemSelect = useCallback((item: CompletionItem<T>) => {
+  const handleItemSelect = useCallback((item: CompletionItem) => {
     const textarea = textareaRef.current;
     if (!textarea) return;
     const wordAtCursor = getWordAtCursor(textarea.value, textarea.selectionStart);
@@ -162,11 +150,24 @@ export function ExpressionEditor<T>({
     boxSizing: "border-box",
   };
 
+  const popoverValue = useMemo(() => {
+    return { isOpen: completions.isOpen, coordinates: cursorPosition.coordinates };
+  }, [completions.isOpen, cursorPosition.coordinates]);
+  const listValue = useMemo(() => {
+    return {
+      items: completions.filteredItems,
+      loading: completions.isLoading,
+      selectedIndex: completions.selectedIndex,
+      onSelect: handleItemSelect,
+    };
+  }, [completions.filteredItems, completions.isLoading, completions.selectedIndex, handleItemSelect]);
+
   return (
     <div
       className={className}
       style={{
         display: "grid",
+        width: "100%",
         ...style,
       }}
       data-ln-expression-editor
@@ -177,12 +178,11 @@ export function ExpressionEditor<T>({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
-        onFocus={onFocus}
         disabled={disabled}
         readOnly={readOnly}
         placeholder={placeholder}
         rows={multiline ? undefined : 1}
-        data-ln-expression-editor-input
+        data-ln-expression-input
         style={{
           ...gridCell,
           display: "block",
@@ -191,7 +191,6 @@ export function ExpressionEditor<T>({
           background: "transparent",
           color: "transparent",
           WebkitTextFillColor: "transparent",
-          caretColor: "inherit",
           outline: "none",
           overflow: multiline ? "auto" : "hidden",
           margin: 0,
@@ -202,35 +201,21 @@ export function ExpressionEditor<T>({
         autoComplete="off"
         autoCorrect="off"
         spellCheck={false}
-        data-gramm={false}
       />
       <div
         aria-hidden="true"
         style={{ ...gridCell, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}
-        data-ln-expression-editor-tokens
+        data-ln-expression--tokens
       >
         {tokens.map((token) => (
-          <Fragment key={token.start}>{highlight(token)}</Fragment>
+          <Fragment key={token.start}>
+            <Highlighter token={token} />
+          </Fragment>
         ))}
       </div>
-      {completionProvider && (
-        <CompletionPopover
-          isOpen={completions.isOpen}
-          coordinates={cursorPosition.coordinates}
-          className={completionClassName}
-        >
-          {completions.isLoading && renderLoading ? (
-            renderLoading()
-          ) : (
-            <CompletionList
-              items={completions.filteredItems}
-              selectedIndex={completions.selectedIndex}
-              renderItem={renderItem}
-              onSelect={handleItemSelect}
-            />
-          )}
-        </CompletionPopover>
-      )}
+      <CompletionPopoverProvider value={popoverValue}>
+        <CompletionListProvider value={listValue}>{children}</CompletionListProvider>
+      </CompletionPopoverProvider>
     </div>
   );
 }

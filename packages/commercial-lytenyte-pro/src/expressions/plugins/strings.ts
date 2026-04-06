@@ -9,7 +9,7 @@ export const stringsPlugin: Plugin = {
     const tok = current(ctx);
     if (tok.type === "String") {
       advance(ctx);
-      return { type: "StringLiteral", value: tok.value, start: tok.start, end: tok.end };
+      return { type: "StringLiteral", value: tok.value.slice(1, -1), start: tok.start, end: tok.end };
     }
     if (tok.type === "TemplateLiteral") {
       return parseTemplateLiteral(ctx);

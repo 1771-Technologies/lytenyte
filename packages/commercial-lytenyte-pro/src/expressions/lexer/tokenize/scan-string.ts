@@ -87,6 +87,7 @@ export function scanString(source: string, start: number): { value: string; end:
   if (i >= source.length) {
     throw new ExpressionError("Unterminated string", { source, start, end: i });
   }
-  i++; // skip closing quote
-  return { value, end: i };
+  i++;
+  // We keep the string literals in the token.
+  return { value: quote + value + quote, end: i };
 }

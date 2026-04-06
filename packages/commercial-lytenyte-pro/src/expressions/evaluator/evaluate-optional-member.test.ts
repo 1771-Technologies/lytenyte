@@ -3,7 +3,8 @@ import { Evaluator } from "./evaluate.js";
 import { standardPlugins } from "../plugins/standard.js";
 
 const evaluator = new Evaluator(standardPlugins);
-const evaluate = (expr: string, ctx?: Record<string, unknown>) => evaluator.run(expr, ctx);
+const evaluate = (expr: string, ctx?: Record<string, unknown>) =>
+  evaluator.run(expr, ctx, { undefinedIdentifierFallback: undefined });
 
 describe("evaluateOptionalMember", () => {
   test("Should return property when object exists", () => {

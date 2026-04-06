@@ -1,9 +1,6 @@
 import type { CompletionItem } from "../types.js";
 
-export function filterCompletionsByPrefix<T>(
-  items: CompletionItem<T>[],
-  prefix: string,
-): CompletionItem<T>[] {
+export function filterCompletionsByPrefix(items: CompletionItem[], prefix: string): CompletionItem[] {
   if (!prefix) return items;
 
   const lower = prefix.toLowerCase();

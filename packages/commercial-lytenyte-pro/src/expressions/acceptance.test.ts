@@ -3,7 +3,8 @@ import { Evaluator } from "./evaluator/evaluate.js";
 import { standardPlugins } from "./plugins/standard.js";
 
 const std = new Evaluator(standardPlugins);
-const evaluate = (expr: string, context?: Record<string, unknown>) => std.run(expr, context);
+const evaluate = (expr: string, context?: Record<string, unknown>) =>
+  std.run(expr, context, { undefinedIdentifierFallback: undefined });
 
 // === Literals ===
 
