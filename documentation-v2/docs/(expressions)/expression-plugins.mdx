@@ -11,20 +11,18 @@ description: Expression plugins allow you to extend the syntax and evaluation ca
 This guide assumes you understand how expressions work in LyteNyte Grid. Read the
 [Expressions Overview guide](/docs/expressions-overview) for more guidance.
 
-Furthermore, basic understanding of lexers, parsers, and abstract syntax trees
-is recommended to fully make the most of creating expression plugins.
+A basic understanding of lexers, parsers, and abstract syntax trees is recommended to
+get the most out of creating expression plugins.
 
 :::
 
 ## Extending Expression Syntax
 
-LyteNyte Grid provides the `Evaluator` class that accepts an array of plugins when
-being instantiated. The plugins provided can be used to extend the evaluators
-capabilities and extend the range and type of expressions the evaluator is capable
-of handling.
+LyteNyte Grid provides the `Evaluator` class, which accepts an array of plugins when you instantiate it.
+These plugins extend the evaluator's capabilities and allow it to handle a wider range of expressions.
 
-A `Plugin` is any object that conforms to the type interface shown below. You do not have to implement
-every part of the interface, only the parts that matter to the plugin you are creating.
+A `Plugin` is any object that conforms to the interface shown below. You only need to implement the parts
+of the interface that your plugin requires.
 
 ```ts
 export interface Plugin {
@@ -40,15 +38,14 @@ export interface Plugin {
 }
 ```
 
-The different methods correspond to different stages of the evaluators flow (tokenizing, parsing, evaluating).
-Created plugin's is best illustrated through examples. The following sections provide some illustrative examples
-you can use as a reference for your own plugins.
+Each method corresponds to a stage in the evaluator's flow (tokenizing, parsing, and evaluating).
+Plugins are best understood through examples. The following sections provide examples you can use
+as a reference when building your own plugins.
 
 ### AST Enhancement Example
 
-The code below shows the `createResolvedIdentifierPlugin`, which is a plugin that allows specific identifiers
-to be treated as implicit functions calls when being evaluated, see the [Expression Filter guide](/docs/expression-filters)
-for a demonstration.
+The code below shows `createResolvedIdentifierPlugin`. This plugin treats specific identifiers as implicit
+function calls during evaluation. See the [Expression Filter guide](/docs/expression-filters) for a demonstration.
 
 ```ts
 export function createResolvedIdentifierPlugin(options: { identifiers: string[]; args: string[] }): Plugin {
@@ -75,7 +72,7 @@ export function createResolvedIdentifierPlugin(options: { identifiers: string[];
 
 ### Boolean Support Example
 
-The plugin code below is used by the standard plugins code to add booleans to the expression syntax.
+The plugin below adds boolean support to the expression syntax. It is used by the standard plugins.
 
 ```ts
 export const booleansPlugin: Plugin = {
