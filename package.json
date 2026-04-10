@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@1771technologies/cli-table": "1.0.1",
+    "@1771technologies/lytenyte-cli": "workspace:*",
     "@1771technologies/eslint-preset": "workspace:*",
     "@1771technologies/play-frame": "workspace:*",
     "@changesets/cli": "2.29.4",
