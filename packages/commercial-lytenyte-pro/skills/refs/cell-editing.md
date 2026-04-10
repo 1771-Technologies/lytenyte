@@ -45,7 +45,9 @@ function DateEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
       type="date"
       defaultValue={formatted}
       onChange={(e) => {
-        try { changeValue(format(new Date(e.target.value), "yyyy-MM-dd")); } catch {}
+        try {
+          changeValue(format(new Date(e.target.value), "yyyy-MM-dd"));
+        } catch {}
       }}
     />
   );
@@ -54,14 +56,14 @@ function DateEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
 
 ### Edit Params — Key Properties
 
-| Property | Description |
-|---|---|
-| `editValue` | Current value being edited (from `field`) |
-| `editData` | Full copy of the row's data during editing |
-| `changeValue(v)` | Update `editValue` for this cell |
-| `changeData(obj)` | Update the entire `editData` object |
-| `commit()` | Commit and end editing |
-| `cancel()` | Discard and end editing |
+| Property          | Description                                |
+| ----------------- | ------------------------------------------ |
+| `editValue`       | Current value being edited (from `field`)  |
+| `editData`        | Full copy of the row's data during editing |
+| `changeValue(v)`  | Update `editValue` for this cell           |
+| `changeData(obj)` | Update the entire `editData` object        |
+| `commit()`        | Commit and end editing                     |
+| `cancel()`        | Discard and end editing                    |
 
 ### Popover Editors
 
@@ -139,7 +141,7 @@ function ProductEditor({ editValue, changeValue, changeData, editData }: Grid.T.
     changeData({
       ...editData,
       product: product.name,
-      price: product.defaultPrice,  // linked update
+      price: product.defaultPrice, // linked update
     });
   };
   // ...
@@ -160,10 +162,18 @@ Double-clicking any editable cell starts editing for **all** editable cells in t
 
 ```tsx
 <Grid
-  onEditBegin={(p) => { /* p.preventDefault() to block */ }}
-  onEditEnd={(p)   => { /* p.preventDefault() to block commit */ }}
-  onEditCancel={(p) => { /* editing was discarded */ }}
-  onEditFail={(p)  => { /* validation failed */ }}
+  onEditBegin={(p) => {
+    /* p.preventDefault() to block */
+  }}
+  onEditEnd={(p) => {
+    /* p.preventDefault() to block commit */
+  }}
+  onEditCancel={(p) => {
+    /* editing was discarded */
+  }}
+  onEditFail={(p) => {
+    /* validation failed */
+  }}
 />
 ```
 
@@ -181,7 +191,7 @@ Set `editRowValidatorFn` on the grid — runs at row level (even for single-cell
       return { price: "Price must be greater than 0." };
     }
 
-    return true;  // valid
+    return true; // valid
     // return false; // invalid, no details
     // return { fieldId: "error message" }; // invalid, with details
   }, [])}
@@ -198,9 +208,7 @@ Update many rows at once through the editing pipeline (runs validation):
 
 ```ts
 // By row index (number key) or row ID (string key)
-const updates = new Map(
-  data.map((row, i) => [i, { ...row, price: row.price + 10 }])
-);
+const updates = new Map(data.map((row, i) => [i, { ...row, price: row.price + 10 }]));
 
 apiRef.current?.editUpdate(updates);
 // Returns validation result — check it to provide feedback on failure
@@ -216,9 +224,9 @@ api.editUpdateCells(cellUpdateMap);
 
 ```ts
 api.editBegin({ rowIndex, columnId });
-api.editEnd({ cancel: false });   // commit
-api.editEnd({ cancel: true });    // cancel
-api.rowIsLeaf(row);               // type guard before accessing row.data
+api.editEnd({ cancel: false }); // commit
+api.editEnd({ cancel: true }); // cancel
+api.rowIsLeaf(row); // type guard before accessing row.data
 ```
 
 ## Handling the `onRowDataChange` Callback
@@ -230,11 +238,11 @@ const ds = useClientDataSource({
   data,
   onRowDataChange: (params) => {
     // params is a Map<RowNode, NewData>
-    setData(prev =>
-      prev.map(row => {
+    setData((prev) =>
+      prev.map((row) => {
         const updated = params.get(/* find row node */);
         return updated ?? row;
-      })
+      }),
     );
   },
 });
@@ -244,7 +252,7 @@ For the client source, `onRowsUpdated` on the `useClientDataSource` hook handles
 
 ## Gotchas
 
-- **`editMutateCommit` fires for every column when any cell is committed** — a common mistake is writing `editMutateCommit` on a column that converts strings to numbers, but forgetting it fires even when a *different* column is edited. The hook receives the full `editData`, so each column's `editMutateCommit` should only transform its own field and leave others untouched.
+- **`editMutateCommit` fires for every column when any cell is committed** — a common mistake is writing `editMutateCommit` on a column that converts strings to numbers, but forgetting it fires even when a _different_ column is edited. The hook receives the full `editData`, so each column's `editMutateCommit` should only transform its own field and leave others untouched.
 - **`editSetter` must return the full `editData` object** — returning only the changed field (e.g. `{ price: newValue }`) replaces the entire row data with a partial object. Always spread: `{ ...editData, price: newValue }`.
 - **Controlled date inputs cause "jumping" bugs** — for date inputs, use `defaultValue` (uncontrolled) rather than `value` (controlled). A controlled date input can enter invalid intermediate states as the user types (e.g. `"2024-"` mid-entry), causing the input to jump. See the date editor example above.
 - **Popover editors: set `editOnPrintable: false`** — if your editor component responds to keyboard input (e.g. opens a dropdown on keypress), the grid would otherwise open editing on every printable key typed while the cell is focused.
