@@ -13,7 +13,7 @@ export function SelectPivotProvider(
   const selectPivot = useRef<number | null>(null);
   const settings = useMemo(
     () => ({
-      selectActivator: props.rowSelectionActivator ?? "none",
+      selectActivator: props.rowSelectionActivator ?? "single-click",
     }),
     [props.rowSelectionActivator],
   );

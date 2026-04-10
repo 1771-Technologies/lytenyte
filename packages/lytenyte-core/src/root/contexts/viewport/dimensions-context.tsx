@@ -29,6 +29,7 @@ export const DimensionsContext = memo((props: PropsWithChildren) => {
     let frame: number | null = null;
     const obs = new ResizeObserver(() => {
       if (frame) return;
+
       frame = requestAnimationFrame(() => {
         setViewportDimensions({
           outerHeight: vp.offsetHeight,

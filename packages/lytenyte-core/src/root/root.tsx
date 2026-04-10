@@ -101,17 +101,17 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                           headerGroupHeight={p.headerGroupHeight}
                           headerHeight={p.headerHeight}
                         >
-                          <CoordinatesProvider
-                            columnBase={props.columnBase}
-                            columnSizeToFit={props.columnSizeToFit}
-                            rowAutoHeightGuess={props.rowAutoHeightGuess}
-                            rowDetailAutoHeightGuess={props.rowDetailAutoHeightGuess}
-                            rowDetailHeight={props.rowDetailHeight}
-                            rowHeight={props.rowHeight}
-                            source={source}
-                          >
-                            <ViewportContext>
-                              <DimensionsContext>
+                          <ViewportContext>
+                            <DimensionsContext>
+                              <CoordinatesProvider
+                                columnBase={props.columnBase}
+                                columnSizeToFit={props.columnSizeToFit}
+                                rowAutoHeightGuess={props.rowAutoHeightGuess}
+                                rowDetailAutoHeightGuess={props.rowDetailAutoHeightGuess}
+                                rowDetailHeight={props.rowDetailHeight}
+                                rowHeight={props.rowHeight}
+                                source={source}
+                              >
                                 <RowCountsProvider source={source}>
                                   <OffsetProvider>
                                     <CutoffProvider>
@@ -190,9 +190,9 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                                     </CutoffProvider>
                                   </OffsetProvider>
                                 </RowCountsProvider>
-                              </DimensionsContext>
-                            </ViewportContext>
-                          </CoordinatesProvider>
+                              </CoordinatesProvider>
+                            </DimensionsContext>
+                          </ViewportContext>
                         </HeaderLayoutProvider>
                       </GridRendererContext>
                     </RowDetailProvider>
