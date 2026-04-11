@@ -1,6 +1,6 @@
 ---
 title: Skills Installation
-step: Install the LyteNyte Grid AI skill for Claude Code, Codex, or other AI coding agents.
+step: Install the LyteNyte Grid AI skill for Claude Code, Codex, Cursor, and other AI coding agents.
 description: >
   Install the LyteNyte Grid skill using the Vercel Skills CLI. The skill gives AI coding
   agents deep, up-to-date context about LyteNyte Grid so they can help you build faster
@@ -9,10 +9,10 @@ description: >
 
 ## What Are Skills?
 
-Skills are structured context files that AI coding agents (such as Claude Code) load when
-working on a specific library or framework. Instead of pasting documentation into every
-chat or hoping the AI's training covers the latest API, a skill gives the agent accurate,
-curated knowledge about LyteNyte Grid on demand.
+Skills are structured context files that AI coding agents (Claude Code, Codex, Cursor, and
+others) load when working on a specific library or framework. Instead of pasting documentation
+into every chat or hoping the AI's training covers the latest API, a skill gives the agent
+accurate, curated knowledge about LyteNyte Grid on demand.
 
 The LyteNyte Grid skill covers:
 
@@ -33,7 +33,7 @@ Skills are maintained by 1771 Technologies and versioned alongside each LyteNyte
 
 - **Node.js** 18 or later
 - The [Vercel Skills CLI](https://www.npmjs.com/package/skills) (installed on-demand via `npx`)
-- An AI coding agent that supports skills — e.g. [Claude Code](https://claude.ai/code)
+- An AI coding agent that supports skills, such as Claude Code, Codex, or Cursor
 
 No global installation is required. All commands below use `npx` to run the Skills CLI directly.
 
@@ -136,7 +136,7 @@ npx skills add 1771-Technologies/lytenyte -s '*'
 
 ### Skip Confirmation Prompts
 
-The `-y` / `--yes` flag skips interactive confirmation prompts — useful for CI or scripted setups:
+The `-y` / `--yes` flag skips interactive confirmation prompts, useful for CI or scripted setups:
 
 ```bash
 npx skills add 1771-Technologies/lytenyte -y
@@ -195,7 +195,7 @@ If your project includes a `skills-lock.json`, restore the exact versions it spe
 npx skills experimental_install
 ```
 
-This is the equivalent of `npm ci` for skills — deterministic restoration from a locked state.
+This is the equivalent of `npm ci` for skills, providing deterministic restoration from a locked state.
 
 ## Next Steps
 
