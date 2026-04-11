@@ -176,6 +176,97 @@ const ds = useClientDataSource({
 
 > Ensure the selection `kind` matches the `rowsIsolatedSelection` setting.
 
+### Understanding the `RowSelectionLinked` Tree
+
+`RowSelectionLinked` is a sparse tree, not a flat set of IDs:
+
+```ts
+interface RowSelectionLinked {
+  kind: "linked";
+  selected: boolean; // default — applies to all rows not in children
+  children: Map<string, RowSelectNode>; // sparse overrides keyed by row id
+}
+
+interface RowSelectNode {
+  id: string;
+  selected?: boolean; // undefined = inherit from parent node
+  children?: Map<string, RowSelectNode>; // only present when row has children
+}
+```
+
+- `selected` at the root is the **default state** — `true` means "all selected unless overridden"
+- `children` only contains rows that **deviate** from their parent's state — it is sparse
+- A node with `selected: undefined` inherits from its parent
+- When grouping is active, the tree mirrors the group hierarchy; leaf rows live at the bottom
+
+### Checking if a Specific Row is Selected
+
+For a **flat list** (no grouping), each row is a direct entry in `children`:
+
+```ts
+function isRowSelected(selection: Grid.T.RowSelectionLinked, rowId: string): boolean {
+  const node = selection.children.get(rowId);
+  if (!node) return selection.selected; // not in overrides — use default
+  if (node.selected != null) return node.selected; // explicit override
+  return selection.selected; // in tree but no explicit value — inherit default
+}
+
+// Usage
+const isSelected = isRowSelected(selection, "row-42");
+```
+
+For **grouped data**, rows are nested under group nodes. Walk the path from root through each group:
+
+```ts
+function isRowSelectedByPath(selection: Grid.T.RowSelectionLinked, path: string[]): boolean {
+  let defaultSelected = selection.selected;
+  let current: Map<string, Grid.T.RowSelectNode> | undefined = selection.children;
+
+  for (const id of path) {
+    const node = current?.get(id);
+    if (!node) return defaultSelected; // not in tree — inherit current default
+    if (node.selected != null) defaultSelected = node.selected; // explicit override
+    current = node.children;
+  }
+
+  return defaultSelected;
+}
+
+// For a row at path: Group "North America" → leaf row "cust-007"
+const isSelected = isRowSelectedByPath(selection, ["North America", "cust-007"]);
+```
+
+### Getting All Selected Row IDs
+
+Walk the entire tree to collect all IDs that resolve to `selected: true`:
+
+```ts
+function getSelectedIds(selection: Grid.T.RowSelectionLinked): string[] {
+  const result: string[] = [];
+
+  function walk(nodes: Map<string, Grid.T.RowSelectNode>, parentSelected: boolean) {
+    for (const [id, node] of nodes) {
+      const nodeSelected = node.selected ?? parentSelected;
+      if (!node.children) {
+        // leaf row
+        if (nodeSelected) result.push(id);
+      } else {
+        // branch/group row — recurse into children
+        walk(node.children, nodeSelected);
+      }
+    }
+  }
+
+  walk(selection.children, selection.selected);
+
+  // Also include any leaf rows NOT in children that inherit the default
+  // (use ds.rowsSelected() for this — the grid tracks all IDs)
+  return result;
+}
+```
+
+In practice, prefer `ds.rowsSelected()` or `api.rowsSelected()` which handles all edge cases (server-loaded rows, universe additions, etc.). Walk the tree manually only when you need to check a specific row synchronously without going through the API — for example, inside a `cellRenderer` that receives only the selection state.
+
 ## Row Selection Reset Key
 
 Selection resets automatically when the view changes significantly (grouping, filtering, sorting). Override with `rowSelectKey`:
