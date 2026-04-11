@@ -1,0 +1,165 @@
+---
+title: Using LyteNyte Skills
+step: Get the most out of the LyteNyte Grid AI skill in Claude Code, Codex, Cursor, and other agents.
+description: >
+  Learn how the LyteNyte Grid skill works, what knowledge it gives your AI agent,
+  and how to get the most accurate and useful results when building with LyteNyte Grid.
+---
+
+## How Skills Work
+
+Once installed, the skill is automatically available to your AI coding agent whenever
+you are working on a LyteNyte Grid task. The agent does not need to be prompted to use it,
+it activates based on context, such as when you mention the package name, describe grid
+behavior, or ask about specific features.
+
+The skill consists of a root `SKILL.md` file and a set of reference files (`refs/*.md`).
+The root file contains a quick-start example, common gotchas, key patterns, and a table
+that maps topics to the appropriate reference file. Reference files are loaded on demand.
+Only the files relevant to your current task are read, keeping context usage efficient.
+
+## **lytenyte-grid** Skill
+
+The skill activates when you describe any of the following tasks or problems:
+
+- Installing, licensing, or setting up LyteNyte Grid
+- Configuring or customizing columns
+- Building cell renderers or cell editors
+- Filtering, sorting, grouping, or aggregating rows
+- Pivoting or working with tree data
+- Loading data from a server
+- Exporting to CSV, Excel, Parquet, or Arrow
+- Row selection or cell range selection
+- Theming, styling, or configuring CSS
+- Working with TypeScript and `GridSpec`
+- Using PRO components (SmartSelect, Menu, PillManager, TreeView, etc.)
+- Debugging problems like "my rows won't group", "the filter isn't working", or "cells appear blank"
+
+The skill also covers shadcn/ui integration, infinite scroll, pagination, expressions, and more.
+
+## Available Reference Files
+
+Each reference file covers a focused area of the grid. The agent loads only the files
+relevant to your current question:
+
+| Reference                           | Topics covered                                                                    |
+| ----------------------------------- | --------------------------------------------------------------------------------- |
+| `refs/installation.md`              | Installation, licensing, CSS imports, CDN, watermark errors, trial mode           |
+| `refs/grid-core.md`                 | Grid setup, reactivity, `apiExtension`, `usePiece`, events system                 |
+| `refs/typescript.md`                | `GridSpec`, renderer types, `RowNode` type guards                                 |
+| `refs/columns.md`                   | Column `id`/`name`/`field`, sizing, pinning, groups, header renderers, spanning   |
+| `refs/rows.md`                      | Row height, master-detail, full-width rows, row spanning, row drag                |
+| `refs/row-selection.md`             | Checkboxes, `SelectAll`, linked vs isolated selection, `RowSelectionLinked` tree  |
+| `refs/client-data-source.md`        | `useClientDataSource`, sort, filter, group, aggregation, pivot, add/delete rows   |
+| `refs/server-data-source.md`        | `useServerDataSource`, `DataRequest`/`DataResponse`, loading state, refresh       |
+| `refs/tree-data-source.md`          | `useTreeDataSource`, nested objects, `rowRootFn`/`rowChildrenFn`                  |
+| `refs/infinite-paginated-source.md` | Infinite scroll and pagination on server data                                     |
+| `refs/cells.md`                     | Cell renderers, tooltips, diff flashing, cell range selection, clipboard copy     |
+| `refs/cell-editing.md`              | Edit mode, validators, edit renderers, bulk edit, `onRowDataChange`               |
+| `refs/filtering.md`                 | Text, number, date, set, and quick-search filter patterns; filter model design    |
+| `refs/expressions.md`               | Expression DSL, `Evaluator`, `ExpressionEditor`, expression filters               |
+| `refs/pivoting.md`                  | `pivotMode`, `PivotModel`, measures, grand totals                                 |
+| `refs/export.md`                    | CSV, Excel, Parquet, Arrow, clipboard export                                      |
+| `refs/components.md`                | SmartSelect, Menu, Popover, Dialog, PillManager, TreeView, RowGroupCell, overlays |
+| `refs/theming.md`                   | Prebuilt themes, Tailwind plugin, design tokens, CSS Modules, custom themes       |
+| `refs/shadcn.md`                    | shadcn/ui CLI install, `ln-shadcn` theme, using shadcn components in the grid     |
+| `refs/misc.md`                      | Keyboard shortcuts, RTL, accessibility, React Compiler, bundling                  |
+
+## Getting Good Results
+
+### Be Specific About Your Setup
+
+Mention which edition you are using (Core or PRO), your styling approach (Tailwind, shadcn,
+CSS Modules, or plain CSS), and any relevant context:
+
+> "I'm using LyteNyte Grid PRO with shadcn/ui and Tailwind. I need to add a filter bar below the column headers."
+
+> "Using the Core edition with CSS Modules. How do I add a custom header renderer that shows a sort icon?"
+
+### Name the Feature You Want
+
+LyteNyte Grid has precise names for its features. Using them gives the agent the clearest
+signal about which reference to load:
+
+| Instead of...                 | Say...                                        |
+| ----------------------------- | --------------------------------------------- |
+| "expandable rows"             | "row master-detail" or "row detail"           |
+| "checkbox column"             | "marker column with row selection"            |
+| "tree view"                   | "tree data source" or `useTreeDataSource`     |
+| "formula filter"              | "expression filter" or `Evaluator`            |
+| "group rows"                  | "row grouping" with `useClientDataSource`     |
+| "select a rectangle of cells" | "cell range selection" or `cellSelectionMode` |
+| "sticky column"               | "pinned column" with `pin: "start"`           |
+
+### Describe Problems Naturally
+
+The agent activates on natural descriptions too, you do not need to use exact feature names:
+
+> "My grid renders with zero height and I can't see any rows."
+
+> "The filter works on initial load but stops working after I change the grouping."
+
+> "How do I make a column that shows a dropdown when the user double-clicks a cell?"
+
+### Mention Your Data Shape
+
+For data source and filtering questions, describing your data type helps the agent generate
+immediately usable code:
+
+> "My rows have type `{ id: string; name: string; revenue: number; region: string }`. I want to filter by region using a set filter."
+
+### PRO vs Core
+
+The agent knows which features are PRO-only. If you ask about a PRO feature without having
+mentioned which edition you use, it will check. Core features include: sorting, filtering,
+grouping, aggregation, row selection, master-detail, exporting, and cell range selection.
+PRO adds: server-side data, tree data, pivoting, expressions, and the full component library
+(SmartSelect, PillManager, Menu, etc.).
+
+### Trial and Evaluation
+
+You do not need a PRO license to start building. The grid is fully functional without a key,
+it shows a small watermark until you activate a license. Ask the agent to help you build
+without worrying about the license until you are ready to ship.
+
+## Example Prompts
+
+The following prompts show the kinds of tasks the skill handles well:
+
+```
+Add a floating filter row below the column headers. Each column should have a text input
+that filters that column's data. Use debounced inputs to avoid filtering on every keystroke.
+```
+
+```
+I need a server-side data source that calls /api/rows. The API accepts offset and limit
+params and returns { rows: MyRow[], total: number }. Show me how to set this up with
+useServerDataSource.
+```
+
+```
+I have a shadcn/ui project. Install LyteNyte Grid with the shadcn CLI and show me how to
+use a shadcn Select component as a cell editor for a "status" column.
+```
+
+```
+My grid uses Tailwind. I don't want to import any LyteNyte CSS, show me how to style
+all grid elements (cells, headers, alternating rows, pinned column borders) using only
+Tailwind classes.
+```
+
+```
+Add row selection with checkboxes and a select-all in the header. The selection state
+should be stored in React state so I can read it outside the grid.
+```
+
+```
+I need to export the current filtered view to Excel. Show me the full implementation
+using ExcelJS.
+```
+
+## Next Steps
+
+::next[/docs/intro-getting-started]
+::next[/docs/intro-installation]
+::next[/docs/intro-installation-shadcn]

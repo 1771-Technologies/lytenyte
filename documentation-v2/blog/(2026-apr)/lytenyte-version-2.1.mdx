@@ -1,0 +1,215 @@
+---
+title: LyteNyte 2.1
+description: AI Skills, Advanced expressions, and cell range selection now available for free.
+blog:
+  author: RoarLyte
+  date: 17 April 2026
+  time: 6
+---
+
+LyteNyte Grid 2.1 is here, and it's a release that reflects how we think about building developer
+tools: give you more power, remove paywalls where they don't belong, and make the AI-assisted
+workflow a first-class experience. Three things ship today.
+
+- **AI Skills:** For Claude Code, Codex, Cursor, and other AI coding agents
+- **Expressions:** A new general-purpose DSL engine for PRO users
+- **Cell Range Selection**: Moved to Core, free for everyone
+
+## AI Skills
+
+![Skills image showing claude code in action](/blog-assets/lytenyte-v2.1-skills.png)
+
+AI coding agents have become a serious part of how developers build software. The catch is that
+most grids have APIs that agents routinely get wrong: outdated prop names, incorrect hook usage,
+invented options that don't exist. You end up spending more time correcting the AI than writing
+code.
+
+LyteNyte 2.1 ships a dedicated **AI skill** that solves this. A skill is a structured context file
+the agent loads on demand when you are working on a LyteNyte Grid task. Instead of relying on
+training data that may be months out of date, the agent reads accurate, curated knowledge about
+the exact version of the grid you have installed.
+
+The skill works with Claude Code, Codex, Cursor, and any other agent that supports the
+[Vercel Skills CLI](https://www.npmjs.com/package/skills). Install it in one command:
+
+```bash
+npx skills add 1771-Technologies/lytenyte
+```
+
+The skill installs into your project and activates automatically. You don't need to
+paste documentation into the chat or tell the agent to use it. When you describe a grid task,
+the agent picks up the skill and starts using it.
+
+### What the Skill Covers
+
+The skill is organized as a root `SKILL.md` file and a set of focused reference files. The root
+file contains a quick-start example, common gotchas, and key patterns. Reference files are loaded
+only when relevant, so the agent doesn't burn context on parts of the API it doesn't need.
+
+Topics covered include installation and licensing, column and row configuration, cell renderers
+and editors, filtering, sorting, grouping and aggregation, pivoting, tree data, server-side
+loading, exporting, theming (Tailwind, shadcn, CSS Modules, headless), TypeScript `GridSpec`
+patterns, and all PRO components.
+
+### Fewer Mistakes, Better Code
+
+The skill includes the kinds of knowledge that prevent the most common AI mistakes with LyteNyte:
+
+- The grid container must have a defined height, or it renders blank
+- All non-primitive props (`columns`, `events`, `apiExtension`) must be stable references
+- `columns` always needs an `onColumnsChange` handler, or user interactions are silently discarded
+- Pivoting requires spreading `ds.usePivotProps()` onto `<Grid />` in addition to `pivotMode: true`
+
+These gotchas are explicitly surfaced to the agent before it writes any code, which means the
+code it generates is far more likely to work correctly the first time.
+
+See the [Skills Installation guide](/docs/ai-skills-installation) for global install, version
+pinning, and multi-agent setup options.
+
+## Expressions
+
+Version 2.1 introduces a new **expressions engine** for PRO users. Expressions are a
+general-purpose domain-specific language (DSL) you can embed in your application to let users
+write dynamic logic, such as filter predicates or computed values.
+
+::demo[Expression Filters="../../docs/(expressions)/demos/expression-filter"]
+
+The expressions engine is completely grid-agnostic. It is a standalone evaluator you can wire
+up to anything. The grid integration is one use case, not the only one.
+
+### Evaluator
+
+At the core is the `Evaluator` class. Import it from the expressions subpath and run it against
+any string expression:
+
+```ts
+import { Evaluator, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
+
+const evaluator = new Evaluator(standardPlugins);
+
+evaluator.run("1 + 2"); // 3
+evaluator.run("age > 18", { age: 25 }); // true
+evaluator.run('"Hello, " + name', { name: "Lee" }); // "Hello, Lee"
+```
+
+The `standardPlugins` gives the evaluator a JavaScript-like expression language: arithmetic,
+comparisons, boolean logic, string operations, object access, template literals, and more.
+The `context` argument supplies values for any identifiers used in the expression.
+
+### Expression Filters
+
+The most powerful use case in the grid is expression-based row filtering. Users can write
+arbitrary predicates against their data columns:
+
+```
+Age > 30 && Country == "UK"
+Gender == "Female" || Quantity > 50
+Name.startsWith("A") && Revenue > 10000
+```
+
+### Expression Editor
+
+For user-facing expression inputs, `ExpressionEditor` provides syntax highlighting and
+IntelliSense out of the box. It's a compound component so you control exactly how the
+completion UI looks:
+
+```tsx
+import "@1771technologies/lytenyte-pro/expression-editor.css";
+import { ExpressionEditor, createCompletionProvider } from "@1771technologies/lytenyte-pro/expressions";
+
+const provider = createCompletionProvider(context);
+
+<ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} completionProvider={provider}>
+  <ExpressionEditor.CompletionPopover>
+    <ExpressionEditor.CompletionList>
+      {({ items }) =>
+        items.map((item, index) => (
+          <ExpressionEditor.CompletionListItem key={item.id} item={item} index={index}>
+            {item.label}
+          </ExpressionEditor.CompletionListItem>
+        ))
+      }
+    </ExpressionEditor.CompletionList>
+  </ExpressionEditor.CompletionPopover>
+</ExpressionEditor.Root>;
+```
+
+The `createCompletionProvider` builds completions from your context object automatically, inferring
+type information from the values. Pass a `Record<displayName, id>` map instead if your display
+names differ from your field IDs.
+
+### Extensible by Design
+
+The evaluator is built on a plugin architecture. Every capability, including the standard ones,
+is implemented as a plugin. You can add new token types, new operators, new literal forms, and
+new evaluation rules without touching the core:
+
+```ts
+// Add a #YYYY-MM-DD date literal to your expression language
+const dateLiteralPlugin: Plugin = {
+  name: "date-literal",
+  scan: (source, pos) => {
+    const match = /^#(\d{4}-\d{2}-\d{2})/.exec(source.slice(pos));
+    if (!match) return null;
+    return { type: "DateLiteral", value: match[1], end: pos + match[0].length };
+  },
+  parsePrefix: (ctx) => {
+    const tok = current(ctx);
+    if (tok.type !== "DateLiteral") return null;
+    advance(ctx);
+    return { type: "DateLiteralNode", isoValue: tok.value, start: tok.start, end: tok.end };
+  },
+  evaluate: (node) => {
+    if (node.type !== "DateLiteralNode") return null;
+    return { value: new Date((node as any).isoValue) };
+  },
+};
+
+const evaluator = new Evaluator([...standardPlugins, dateLiteralPlugin]);
+evaluator.run("#2024-01-15"); // new Date("2024-01-15")
+```
+
+The AST is also fully serializable, which means expression filters work equally well
+server-side. Serialize the AST, send it in your `DataRequest`, and evaluate it on your server
+using the same plugin stack.
+
+Read the [Expressions Overview](/docs/expressions-overview), [Expression Filters](/docs/expression-filters),
+and [Expression Plugins](/docs/expression-plugins) guides to get started.
+
+## Cell Range Selection is Now Free
+
+Cell range selection lets users click and drag to select a rectangular block of cells, copy
+selections to the clipboard, and build spreadsheet-like interactions. As of 2.1, it is a
+**Core feature**, available for free.
+
+Enable it with a single prop:
+
+```tsx
+// Single range selection
+<Grid cellSelectionMode="range" ... />
+
+// Multiple independent ranges
+<Grid cellSelectionMode="multi-range" ... />
+```
+
+Control the selection state from outside the grid with the `cellSelections` prop and
+`onCellSelectionChange` event:
+
+```tsx
+const [selections, setSelections] = useState<DataRect[]>([]);
+
+<Grid
+  cellSelectionMode="multi-range"
+  cellSelections={selections}
+  onCellSelectionChange={setSelections}
+  ...
+/>
+```
+
+::demo[Cell Range Selection="../../docs/(cells)/demos/cell-selection-multi-range"]
+
+## Summary
+
+- **AI Skills** for Claude Code, Codex, Cursor, and other agents. Install with `npx skills add 1771-Technologies/lytenyte` and get accurate, on-demand grid knowledge without pasting docs into every chat.
+- **Expressions** (PRO). A general-purpose DSL engine with a live editor, IntelliSense, plugin system, and grid filter integration out of the box.
+- **Cell Range Selection** is now free in Core. Single and multi-range selection, controlled state, clipboard copy — no license required.

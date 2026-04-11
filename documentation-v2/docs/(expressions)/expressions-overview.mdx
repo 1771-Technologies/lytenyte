@@ -6,89 +6,175 @@ step: Create advanced domain-specific expressions.
 ---
 
 Expressions are a lightweight domain-specific language (DSL) that produces a value when evaluated.
-For example, `1 + 1` is an expression that produces the value `2`. Common use cases include:
+For example, `1 + 1` evaluates to `2`. Common use cases include:
 
-- **Grid Filtering:** Expressions provide a concise way to represent complex filters.
-- **Column Fields:** Expressions can compute the value of a given column's cell.
+- **Grid filtering:** Write a predicate expression like `Age > 30 && Country == "UK"` to filter rows.
+- **Computed column fields:** Use an expression to compute a cell's value at runtime.
 
-Expressions in LyteNyte are general-purpose. You are not limited to grid usage. The
-expression evaluator can be used to create any DSL that fits your application's needs.
+The expression evaluator is general-purpose. You are not limited to grid usage. Use it to build
+any DSL that fits your application's needs.
 
-## Expression Flow
+## Running an Expression
 
-LyteNyte Grid exports the `Evaluator` class. To get started, import this class as shown below:
+Import `Evaluator` from the expressions subpath:
 
 ```ts
 import { Evaluator } from "@1771technologies/lytenyte-pro/expressions";
 ```
 
-The `Evaluator` class evaluates a string expression and returns a value. For example:
+Call `run` with an expression string to get the result:
 
 ```ts
-const result = new Evaluator().run("1 + 1"); // results in 2
+const result = new Evaluator().run("1 + 1"); // 2
 ```
 
-The demo below allows you to perform basic mathematical calculations using the evaluator.
+The demo below runs basic mathematical expressions:
 
 ::demo[Basic Evaluator="./demos/evaluate-basics"]
 
-The expression evaluator follows the same flow:
+### How the Evaluator Works
 
-1. **Tokenization:** The evaluator parses the expression and breaks it into tokens. The `ExpressionEditor` component
-   uses these tokens to provide syntax highlighting.
-2. **Parsing:** The evaluator converts the tokens into an Abstract Syntax Tree (AST). The AST represents the calculation.
-3. **Evaluation:** The evaluator processes the AST to produce the result.
+`Evaluator` processes every expression in three stages:
 
-If you are familiar with programming language development, this flow will be familiar.
-The `Evaluator` class provides methods to access each stage:
+1. **Tokenization:** Splits the input string into tokens. `ExpressionEditor` uses these tokens for syntax highlighting.
+2. **Parsing:** Converts the token stream into an Abstract Syntax Tree (AST). The AST represents the calculation structure.
+3. **Evaluation:** Walks the AST and produces the final value.
 
-- `Evaluator.run` evaluates an expression string and returns the result.
-- `Evaluator.tokens` or `Evaluator.tokensSafe` return the tokenized output.
-- `Evaluator.ast` returns the AST.
+Each stage is accessible through the `Evaluator` API:
 
-## Expression Plugins and Context
+| Method                       | What it does                                                      |
+| ---------------------------- | ----------------------------------------------------------------- |
+| `evaluator.run(expr)`        | Runs all three stages and returns the result                      |
+| `evaluator.ast(expr)`        | Parses the expression and returns the AST (without evaluating it) |
+| `evaluator.tokens(expr)`     | Returns the token array (throws on invalid input)                 |
+| `evaluator.tokensSafe(expr)` | Returns the token array (returns partial tokens on invalid input) |
 
-The `Evaluator` class uses a plugin-based architecture. By default, it behaves like a basic
-calculator, but plugins allow you to define a full domain-specific language.
+Pass a pre-parsed AST directly to `run` to skip re-parsing on every evaluation:
 
-LyteNyte Grid provides a set of standard plugins for common operations such as boolean logic,
-string handling, comparisons, and object membership.
+```ts
+const ast = evaluator.ast(expression);
+const result = evaluator.run(ast, context); // no re-parse
+```
 
-The `Evaluator.run` method accepts a `context` object that provides values for identifiers
-used in the expression.
+This pattern is useful in filter functions that run on every row, parse once, evaluate many times.
 
-The example below demonstrates this using the `standardPlugins` export, which provides support
-for a JavaScript-like expression language. It also passes a context object that the expression
-uses during evaluation.
+## Plugins and Context
+
+By default, `Evaluator` behaves like a basic calculator. Plugins extend it with additional syntax
+and evaluation rules, such as boolean logic, string operations, comparisons, object access, and more.
+
+LyteNyte exports the `standardPlugins`, a ready-made set of plugins that gives the evaluator a JavaScript-like
+expression language:
+
+```ts
+import { Evaluator, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
+
+const evaluator = new Evaluator(standardPlugins);
+```
+
+Pass a `context` object to `run` to supply values for identifiers used in the expression:
+
+```ts
+const context = {
+  user: { firstName: "John", lastName: "Smith" },
+  age: 23,
+  fullName: () => context.user.firstName + " " + context.user.lastName,
+};
+
+evaluator.run('user.firstName + " is " + age', context); // "John is 23"
+evaluator.run("fullName()", context); // "John Smith"
+```
+
+The context can include primitives, functions, objects, and arrays. The demo below lets you
+explore standard plugins and a live context:
 
 ::demo[Standard Plugins="./demos/evaluate-standard-plugins"]
 
-In the demo, the `context` can include primitive values, functions, objects, and any other
-values the evaluator needs to compute the result.
-
 ## Expression Editor
 
-Use the `ExpressionEditor` component to create an input with syntax highlighting and IntelliSense.
-The `ExpressionEditor` is a single-line input that represents an expression. It requires a `tokenizer`
-and a string expression.
+Use `ExpressionEditor` to build an input with syntax highlighting and IntelliSense.
+`ExpressionEditor` is a **compound component**, compose it from its sub-components to control
+exactly how the completion UI renders.
 
-The `ExpressionEditor` completion subcomponents provide contextual IntelliSense. To enable this,
-pass a **completion provider** as a prop. A completion provider is a function that returns a set of
-completions based on the current cursor position.
+Import the CSS before using `ExpressionEditor`:
 
-LyteNyte Grid provides a helper for creating completion providers when completions derive from a
-context object. The demo below shows an `ExpressionEditor` that uses completion list components.
+```ts
+import "@1771technologies/lytenyte-pro/expression-editor.css";
+```
 
-Try typing `user.` in the editor. The completion list appears. Completion lists are optional, but
-they improve usability.
+Then build the editor:
 
-::demo[Expression Completions="./demos/expression-completions"]
+```tsx
+import {
+  createCompletionProvider,
+  Evaluator,
+  ExpressionEditor,
+  standardPlugins,
+} from "@1771technologies/lytenyte-pro/expressions";
+import { useCallback, useMemo, useState } from "react";
+
+const evaluator = new Evaluator(standardPlugins);
+
+const context = {
+  user: { firstName: "John", lastName: "Smith" },
+  age: 23,
+  fullName: () => context.user.firstName + " " + context.user.lastName,
+};
+
+function MyEditor() {
+  const [value, setValue] = useState("");
+
+  const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
+  const provider = useMemo(() => createCompletionProvider(context), []);
+
+  return (
+    <ExpressionEditor.Root
+      value={value}
+      onChange={setValue}
+      tokenize={tokenize}
+      completionProvider={provider}
+    >
+      <ExpressionEditor.CompletionPopover>
+        <ExpressionEditor.CompletionList>
+          {({ items }) =>
+            items.map((item, index) => (
+              <ExpressionEditor.CompletionListItem key={item.id} item={item} index={index}>
+                {item.label}
+              </ExpressionEditor.CompletionListItem>
+            ))
+          }
+        </ExpressionEditor.CompletionList>
+      </ExpressionEditor.CompletionPopover>
+    </ExpressionEditor.Root>
+  );
+}
+```
+
+### Sub-components
+
+| Sub-component                         | Role                                                                            |
+| ------------------------------------- | ------------------------------------------------------------------------------- |
+| `ExpressionEditor.Root`               | The input itself. Accepts `value`, `onChange`, `tokenize`, `completionProvider` |
+| `ExpressionEditor.CompletionPopover`  | Positions the completion list as a floating panel near the cursor               |
+| `ExpressionEditor.CompletionList`     | Renders the list; receives `{ items }` via render prop                          |
+| `ExpressionEditor.CompletionListItem` | Renders a single item; handles keyboard selection and mouse interaction         |
+
+All sub-components accept a `className` prop so you can style them with Tailwind or CSS Modules.
+Omit `CompletionPopover` entirely to disable completion UI.
 
 ### Completion Provider
 
-The `createCompletionProvider` function, used in the demo above, creates the default completion function
-that the `ExpressionEditor` uses. Depending on your use case, you may want to create a custom provider.
-A completion provider follows this interface:
+The `createCompletionProvider` builds a completion function from a context object or a `Record<displayName, id>` map:
+
+```ts
+// From a context object — infers type information from values
+const provider = createCompletionProvider(context);
+
+// From a name→id map — useful when display names differ from field ids
+const provider = createCompletionProvider({ "First Name": "firstName", Age: "age" });
+```
+
+To write a custom provider, implement the `CompletionProvider` interface:
 
 ```ts
 type CompletionProvider = (
@@ -97,12 +183,13 @@ type CompletionProvider = (
 ) => CompletionItem[] | Promise<CompletionItem[]>;
 ```
 
-The `cursorPosition` parameter represents the current token index. Use this value to determine which
-token the cursor is over and return appropriate completions.
+The `cursorPosition` is the index of the token under the cursor. Return an empty array when no
+completions apply. `ExpressionEditor` supports async providers for large or remote completion sets,
+but synchronous providers give a snappier experience.
 
-The return type may be a promise. The `ExpressionEditor` supports asynchronous completion loading,
-which is useful for large completion sets. However, synchronous providers typically provide a better
-user experience.
+The demo below shows a live editor with completions:
+
+::demo[Expression Completions="./demos/expression-completions"]
 
 ## Next Steps
 

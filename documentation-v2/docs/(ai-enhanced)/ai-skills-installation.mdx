@@ -1,0 +1,203 @@
+---
+title: Skills Installation
+step: Install the LyteNyte Grid AI skill for Claude Code, Codex, Cursor, and other AI coding agents.
+description: >
+  Install the LyteNyte Grid skill using the Vercel Skills CLI. The skill gives AI coding
+  agents deep, up-to-date context about LyteNyte Grid so they can help you build faster
+  and with fewer mistakes.
+---
+
+## What Are Skills?
+
+Skills are structured context files that AI coding agents (Claude Code, Codex, Cursor, and
+others) load when working on a specific library or framework. Instead of pasting documentation
+into every chat or hoping the AI's training covers the latest API, a skill gives the agent
+accurate, curated knowledge about LyteNyte Grid on demand.
+
+The LyteNyte Grid skill covers:
+
+- Installation, licensing, and CSS setup
+- Column and row configuration
+- Cell renderers, editors, and events
+- Filtering, sorting, grouping, and aggregation
+- Pivoting, tree data, and server-side loading
+- Exporting data (CSV, Excel, Parquet, Arrow)
+- Theming (prebuilt themes, Tailwind, CSS Modules, headless)
+- shadcn/ui integration
+- TypeScript patterns and `GridSpec`
+- All PRO components (SmartSelect, Menu, PillManager, TreeView, and more)
+
+Skills are maintained by 1771 Technologies and versioned alongside each LyteNyte Grid release.
+
+## Prerequisites
+
+- **Node.js** 18 or later
+- The [Vercel Skills CLI](https://www.npmjs.com/package/skills) (installed on-demand via `npx`)
+- An AI coding agent that supports skills, such as Claude Code, Codex, or Cursor
+
+No global installation is required. All commands below use `npx` to run the Skills CLI directly.
+
+## Installing the Skill
+
+### Latest Version
+
+Install the latest skill from the 1771 Technologies GitHub repository:
+
+```bash
+npx skills add 1771-Technologies/lytenyte
+```
+
+This installs the skill into your current project's `.claude/skills/` directory and makes it
+available to Claude Code when working in that project.
+
+### Specific Version
+
+To pin the skill to a specific release tag, append `@<tag>` to the repository path:
+
+```bash
+# Pin to a specific release
+npx skills add 1771-Technologies/lytenyte@v2.1.0
+```
+
+Pinning is useful when you want the skill's documentation to match a specific version of
+the LyteNyte Grid package you have installed in your project.
+
+### Listing Available Skills Before Installing
+
+To browse the skills in the repository without installing anything, use the `--list` flag:
+
+```bash
+npx skills add 1771-Technologies/lytenyte --list
+```
+
+## Install Modes
+
+### Project-Level (Default)
+
+The default mode installs the skill into the current project only. The skill directory is
+created at `.claude/skills/lytenyte-grid/` relative to the project root.
+
+```bash
+npx skills add 1771-Technologies/lytenyte
+```
+
+Use this when you want the skill available only while working in this repository. Commit
+`.claude/skills/` to version control to share it with your team.
+
+### Global Install
+
+The `--global` (or `-g`) flag installs the skill at the user level, making it available
+in every project on your machine:
+
+```bash
+npx skills add 1771-Technologies/lytenyte --global
+# or
+npx skills add 1771-Technologies/lytenyte -g
+```
+
+Use this if you work on LyteNyte Grid projects frequently and want the skill active
+everywhere without per-project setup.
+
+### Copy Mode
+
+By default, the CLI symlinks skill files from a cache into the agent directory. Use
+`--copy` to copy the files instead:
+
+```bash
+npx skills add 1771-Technologies/lytenyte --copy
+```
+
+Use copy mode when symlinks are not suitable for your environment (e.g. Docker containers,
+certain CI setups, or Windows environments with symlink restrictions).
+
+### Install for Specific Agents
+
+The `-a` / `--agent` flag restricts installation to a named agent:
+
+```bash
+# Install only for Claude Code
+npx skills add 1771-Technologies/lytenyte -a claude-code
+
+# Install for all detected agents
+npx skills add 1771-Technologies/lytenyte -a '*'
+```
+
+### Install Specific Skills
+
+If the repository contains multiple skills, the `-s` / `--skill` flag selects which ones to install:
+
+```bash
+# Install only the lytenyte-grid skill
+npx skills add 1771-Technologies/lytenyte -s lytenyte-grid
+
+# Install all skills in the repository
+npx skills add 1771-Technologies/lytenyte -s '*'
+```
+
+### Skip Confirmation Prompts
+
+The `-y` / `--yes` flag skips interactive confirmation prompts, useful for CI or scripted setups:
+
+```bash
+npx skills add 1771-Technologies/lytenyte -y
+```
+
+### Install Everything Non-Interactively
+
+Combine `--skill '*'`, `--agent '*'`, and `-y` with the `--all` shorthand:
+
+```bash
+npx skills add 1771-Technologies/lytenyte --all
+```
+
+## Verifying the Installation
+
+List all installed skills in the current project and globally:
+
+```bash
+npx skills list
+```
+
+The output shows each skill name, its location on disk, and which agents it is active for.
+
+## Updating the Skill
+
+To update all installed skills to their latest versions:
+
+```bash
+npx skills update
+```
+
+To check whether updates are available without applying them:
+
+```bash
+npx skills check
+```
+
+## Removing the Skill
+
+```bash
+# Remove from the current project
+npx skills remove lytenyte-grid
+
+# Remove globally
+npx skills remove lytenyte-grid --global
+
+# Remove from all agents in the current project
+npx skills remove lytenyte-grid --all
+```
+
+## Restoring from Lock File
+
+If your project includes a `skills-lock.json`, restore the exact versions it specifies:
+
+```bash
+npx skills experimental_install
+```
+
+This is the equivalent of `npm ci` for skills, providing deterministic restoration from a locked state.
+
+## Next Steps
+
+::next[/docs/ai-skills-usage]
+::next[/docs/intro-getting-started]

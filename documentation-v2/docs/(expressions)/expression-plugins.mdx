@@ -16,36 +16,59 @@ get the most out of creating expression plugins.
 
 :::
 
-## Extending Expression Syntax
+## Plugin Interface
 
-LyteNyte Grid provides the `Evaluator` class, which accepts an array of plugins when you instantiate it.
-These plugins extend the evaluator's capabilities and allow it to handle a wider range of expressions.
-
-A `Plugin` is any object that conforms to the interface shown below. You only need to implement the parts
-of the interface that your plugin requires.
+`Evaluator` accepts an array of plugins at construction time. Each plugin is an object that
+implements any subset of the `Plugin` interface — implement only the hooks your plugin needs:
 
 ```ts
 export interface Plugin {
   name: string;
+
+  // Tokenization
   scan?: (source: string, pos: number) => { type: string; value: string; end: number } | null;
+
+  // Parsing
   parsePrefix?: (ctx: ParserContext) => ASTNode | null;
   parseInfix?: (ctx: ParserContext, left: ASTNode, minPrec: number) => ASTNode | null;
   parsePostfix?: (ctx: ParserContext, node: ASTNode) => ASTNode | null;
   parseUnary?: (ctx: ParserContext, parseNext: (ctx: ParserContext) => ASTNode) => ASTNode | null;
   infixPrecedence?: (ctx: ParserContext) => number | undefined;
+
+  // Optimization
   optimize?: (node: ASTNode, optimize: (n: ASTNode) => ASTNode) => ASTNode | null;
+
+  // Evaluation
   evaluate?: (node: ASTNode, context: Record<string, unknown>, evaluate: EvalFn) => { value: unknown } | null;
 }
 ```
 
-Each method corresponds to a stage in the evaluator's flow (tokenizing, parsing, and evaluating).
-Plugins are best understood through examples. The following sections provide examples you can use
-as a reference when building your own plugins.
+Each hook corresponds to a stage in the evaluator pipeline:
 
-### AST Enhancement Example
+| Hook              | Stage        | Use when…                                                                                                    |
+| ----------------- | ------------ | ------------------------------------------------------------------------------------------------------------ |
+| `scan`            | Tokenization | You need a new token type (e.g. a `#date` literal or a `@variable` prefix)                                   |
+| `parsePrefix`     | Parsing      | You need a new expression form that starts a new term (literals, unary prefix operators, grouping)           |
+| `parseInfix`      | Parsing      | You need a binary or ternary operator that sits between two terms                                            |
+| `infixPrecedence` | Parsing      | You defined an infix operator and need to set its binding strength                                           |
+| `parsePostfix`    | Parsing      | You need a postfix operator (e.g. `!` factorial, `?` optional chaining)                                      |
+| `parseUnary`      | Parsing      | You need a unary wrapper that consumes the next term (rarely needed, most unary operators fit `parsePrefix`) |
+| `optimize`        | Optimization | You want to fold constants or simplify your custom AST nodes before evaluation                               |
+| `evaluate`        | Evaluation   | You need to compute a value from one of your custom (or existing) AST node types                             |
 
-The code below shows `createResolvedIdentifierPlugin`. This plugin treats specific identifiers as implicit
-function calls during evaluation. See the [Expression Filter guide](/docs/expression-filters) for a demonstration.
+Plugins are tried in order. Return `null` from any hook to signal "not handled by this plugin"
+and let the evaluator continue to the next plugin.
+
+## Examples
+
+### Evaluation Hook: Resolving Column Identifiers
+
+`createResolvedIdentifierPlugin` uses only the `evaluate` hook. It intercepts `Identifier` nodes
+and treats them as implicit function calls — so the user writes `Gender` in the expression and
+the evaluator reads the column value from the current row automatically.
+
+Use this pattern whenever you want bare identifiers to resolve to runtime values rather than
+looking up a context key directly:
 
 ```ts
 export function createResolvedIdentifierPlugin(options: { identifiers: string[]; args: string[] }): Plugin {
@@ -55,8 +78,8 @@ export function createResolvedIdentifierPlugin(options: { identifiers: string[];
   return {
     name: "resolved-identifier",
     evaluate: (node, context) => {
-      if (node.type !== "Identifier") return null;
-      if (!identifierSet.has(node.name)) return null;
+      if (node.type !== "Identifier") return null; // not our node
+      if (!identifierSet.has(node.name)) return null; // not a registered identifier
 
       const fn = context[node.name];
       if (typeof fn !== "function") {
@@ -70,9 +93,15 @@ export function createResolvedIdentifierPlugin(options: { identifiers: string[];
 }
 ```
 
-### Boolean Support Example
+See the [Expression Filters guide](/docs/expression-filters) for a full usage example.
 
-The plugin below adds boolean support to the expression syntax. It is used by the standard plugins.
+### Parse + Evaluate: Adding Boolean Literals
+
+This plugin uses both `parsePrefix` (to emit `BooleanLiteral`, `NullLiteral`, and `UndefinedLiteral`
+AST nodes) and `evaluate` (to produce the corresponding runtime values). It is included in `standardPlugins`.
+
+Use this pattern whenever you need to add a new literal form — a new token type maps to a new AST
+node, and the evaluate hook produces its value:
 
 ```ts
 export const booleansPlugin: Plugin = {
@@ -81,12 +110,7 @@ export const booleansPlugin: Plugin = {
     const tok = current(ctx);
     if (tok.type === "Boolean") {
       advance(ctx);
-      return {
-        type: "BooleanLiteral",
-        value: tok.value === "true",
-        start: tok.start,
-        end: tok.end,
-      };
+      return { type: "BooleanLiteral", value: tok.value === "true", start: tok.start, end: tok.end };
     }
     if (tok.type === "Null") {
       advance(ctx);
@@ -105,6 +129,87 @@ export const booleansPlugin: Plugin = {
     return null;
   },
 };
+```
+
+### Scan + Parse + Evaluate: A Custom Token Type
+
+Add a `scan` hook when the expression needs a token form that does not exist yet. The following
+plugin adds a `#YYYY-MM-DD` date literal:
+
+```ts
+const dateLiteralPlugin: Plugin = {
+  name: "date-literal",
+
+  // 1. Emit a "DateLiteral" token for #YYYY-MM-DD
+  scan: (source, pos) => {
+    if (source[pos] !== "#") return null;
+    const match = /^#(\d{4}-\d{2}-\d{2})/.exec(source.slice(pos));
+    if (!match) return null;
+    return { type: "DateLiteral", value: match[1], end: pos + match[0].length };
+  },
+
+  // 2. Parse it into an AST node
+  parsePrefix: (ctx) => {
+    const tok = current(ctx);
+    if (tok.type !== "DateLiteral") return null;
+    advance(ctx);
+    return { type: "DateLiteralNode", isoValue: tok.value, start: tok.start, end: tok.end };
+  },
+
+  // 3. Evaluate it to a JavaScript Date
+  evaluate: (node) => {
+    if (node.type !== "DateLiteralNode") return null;
+    return { value: new Date((node as any).isoValue) };
+  },
+};
+
+// Usage: evaluator.run("#2024-01-15") returns new Date("2024-01-15")
+```
+
+### Infix Operator: Adding (Exponentiation)
+
+Add `parseInfix` and `infixPrecedence` to introduce a new binary operator. Higher precedence
+numbers bind more tightly (multiply `*` is conventionally ~13, add `+` ~12):
+
+```ts
+const exponentiationPlugin: Plugin = {
+  name: "exponentiation",
+
+  infixPrecedence: (ctx) => {
+    if (current(ctx).value === "**") return 14; // tighter than multiply
+    return undefined;
+  },
+
+  parseInfix: (ctx, left, minPrec) => {
+    const tok = current(ctx);
+    if (tok.value !== "**") return null;
+    advance(ctx);
+    const right = parseExpression(ctx, 14 - 1); // right-associative: minPrec - 1
+    return { type: "ExponentiationExpr", left, right, start: left.start, end: right.end };
+  },
+
+  evaluate: (node, _ctx, evaluate) => {
+    if (node.type !== "ExponentiationExpr") return null;
+    const base = evaluate((node as any).left);
+    const exp = evaluate((node as any).right);
+    return { value: Math.pow(base as number, exp as number) };
+  },
+};
+```
+
+## Composing Plugins
+
+Pass plugins as an array to `Evaluator`. The evaluator tries each plugin in order and uses the
+first non-null result. Always add your custom plugins after `standardPlugins` so they can build
+on the standard AST node types:
+
+```ts
+const evaluator = new Evaluator([
+  ...standardPlugins,
+  dateLiteralPlugin,
+  exponentiationPlugin,
+  createResolvedIdentifierPlugin({ args: ["row"], identifiers: columnNames }),
+]);
 ```
 
 ## Next Steps

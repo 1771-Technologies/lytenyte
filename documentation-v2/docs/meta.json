@@ -3,6 +3,7 @@
   "pages": [
     "(introduction)",
     "(prodready)",
+    "(ai-enhanced)",
     "(grid)",
     "(theming)",
     "(column)",
@@ -11,6 +12,7 @@
     "(cell-editing)",
     "(filtering)",
     "(client-source)",
+    "(expressions)",
     "(pivoting)",
     "(server-data-loading)",
     "(paginated-row-source)",

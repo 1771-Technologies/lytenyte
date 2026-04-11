@@ -64,6 +64,27 @@ LyteNyte Grid is available in two editions:
    and advanced filtering. Build custom menus, popovers and dialogs,
    and workflow-driven UIs with ease.
 
+## AI-Enhanced Workflows
+
+LyteNyte Grid ships a first-class **AI skill** for Claude Code, Codex, Cursor, and other AI
+coding agents. The skill gives your agent deep, up-to-date knowledge of the grid API so it can
+generate accurate code without hallucinating outdated patterns.
+
+**Install the skill into your project:**
+
+```bash
+npx skills add 1771-Technologies/lytenyte
+```
+
+Once installed, the skill activates automatically whenever you work on a LyteNyte Grid task,
+no special prompting needed. It covers installation, column and row configuration, cell renderers
+and editors, filtering, sorting, grouping, pivoting, server-side data, exporting, theming,
+shadcn/ui integration, TypeScript patterns, and all PRO components.
+
+> The skill is maintained by 1771 Technologies and versioned alongside each LyteNyte Grid release.
+> See the [Skills Installation guide](https://1771technologies.com/docs/ai-skills-installation) for
+> global install, version pinning, and other options.
+
 ## Features
 
 <details>
@@ -198,8 +219,8 @@ LyteNyte Grid is available in two editions:
 | &nbsp;&nbsp;&nbsp;↳ [Checkbox Row Selection](https://www.1771technologies.com/docs/row-selection#checkbox-selection)     |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Isolated Row Selection](https://www.1771technologies.com/docs/row-selection#isolated-row-selection) |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Linked Row Selection](https://www.1771technologies.com/docs/row-selection#linked-row-selection)     |  ✅  | ✅  |
-| [Cell Selection](https://www.1771technologies.com/docs/cell-selection#single-range-selection)                            |  —   | ✅  |
-| [Cell Range Selection](https://www.1771technologies.com/docs/cell-selection#multi-range-selection)                       |  —   | ✅  |
+| [Cell Selection](https://www.1771technologies.com/docs/cell-selection#single-range-selection)                            |  ✅  | ✅  |
+| [Cell Range Selection](https://www.1771technologies.com/docs/cell-selection#multi-range-selection)                       |  ✅  | ✅  |
 
 </details>
 
