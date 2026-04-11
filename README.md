@@ -385,6 +385,44 @@ npm install --save @1771technologies/lytenyte-pro
 npm install --save @1771technologies/lytenyte-core
 ```
 
+## AI Agent Skills
+
+LyteNyte Grid ships with a set of [agent skills](https://agentskills.io/) — reusable instruction sets that give AI coding agents (Cursor, Kiro, Claude Code, Codex, and [more](https://www.npmjs.com/package/skills)) deep knowledge of the grid's APIs, patterns, and best practices.
+
+Install the skills into your project with the `skills` CLI:
+
+```sh
+npx skills add https://github.com/1771-technologies/lytenyte/tree/main/.agents/skills
+```
+
+Or install specific skills only:
+
+```sh
+npx skills add https://github.com/1771-technologies/lytenyte/tree/main/.agents/skills --skill generate_grid_from_intent --skill generate_grid_code
+```
+
+Once installed, your agent can generate complete, production-ready grid implementations from a natural language prompt, a dataset, or a partial config — using the correct Core or PRO APIs, proper TypeScript generics, and all required CSS imports.
+
+**Available skills:**
+
+| Skill | What it does |
+|---|---|
+| `generate_grid_from_intent` | Parses natural language or a dataset into a structured grid plan |
+| `design_grid_structure` | Scaffolds columns, `GridSpec` types, `rowId`, and `useClientDataSource` |
+| `configure_grid_features` | Wires sorting, filtering, grouping, aggregation, and row selection |
+| `apply_ui_customization` | Cell/header renderers, conditional styling, column layout |
+| `setup_data_integration` | Picks and wires the right data source hook |
+| `configure_server_data_source` | PRO server-side load callbacks, pagination, optimistic updates |
+| `setup_cell_editing` | Editable cells, custom editors, validation, bulk/row/linked edits |
+| `apply_business_logic` | Custom aggregations, KPIs, expression filters, having filters, pivots |
+| `enhance_grid_with_extensions` | Export (CSV/Excel/Parquet/Arrow), clipboard, row actions, API extensions |
+| `configure_theming` | CSS imports, theme selection, CSS custom properties, Tailwind/CSS Modules |
+| `optimize_grid_performance` | Row height strategy, buffering, stable refs, React Compiler, update batching |
+| `enable_realtime_updates` | WebSocket/SSE integration, diff-patching, cell flash, high-frequency updates |
+| `validate_and_refine_config` | Type-checks config, fixes common mistakes, enforces best practices |
+| `apply_security_controls` | Column visibility by role, data masking, conditional editability |
+| `generate_grid_code` | Produces the final React component with all imports and JSX |
+
 ## Quick Start
 
 - Begin with our comprehensive [getting started guide](https://www.1771technologies.com/docs/intro-getting-started).
