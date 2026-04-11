@@ -1,6 +1,7 @@
 # Row Selection
 
 **Step-by-step to add checkbox row selection:**
+
 1. Set `rowSelectionMode="multiple"` and `rowSelectionActivator="none"` on the grid (activator `"none"` means clicking a row doesn't auto-select — only your checkbox does)
 2. Add a marker column with a `cellRenderer` that uses `api.rowHandleSelect` in `onClick`/`onKeyDown`
 3. Add a `headerRenderer` to the marker column that uses the `SelectAll` component for select-all behavior
@@ -59,8 +60,13 @@ function MarkerHeader(params: Grid.T.HeaderParams<GridSpec>) {
         <Checkbox
           checked={selected}
           indeterminate={indeterminate}
-          onClick={(ev) => { ev.preventDefault(); toggle(); }}
-          onKeyDown={(ev) => { if (ev.key === "Enter" || ev.key === " ") toggle(); }}
+          onClick={(ev) => {
+            ev.preventDefault();
+            toggle();
+          }}
+          onKeyDown={(ev) => {
+            if (ev.key === "Enter" || ev.key === " ") toggle();
+          }}
         />
       )}
     />
@@ -77,8 +83,8 @@ const marker: Grid.ColumnMarker<GridSpec> = {
 ## Select / Deselect All Programmatically
 
 ```ts
-api.rowSelect({ selected: "all" });                  // select all
-api.rowSelect({ selected: "all", deselect: true });  // deselect all
+api.rowSelect({ selected: "all" }); // select all
+api.rowSelect({ selected: "all", deselect: true }); // deselect all
 ```
 
 Requires `rowSelectionMode="multiple"`.
@@ -90,7 +96,7 @@ const { rows, state } = ds.rowsSelected();
 // or equivalently:
 const { rows, state } = api.rowsSelected();
 
-rows.forEach(row => console.log(row.data));
+rows.forEach((row) => console.log(row.data));
 ```
 
 For server-side sources, only loaded rows are returned.
@@ -107,7 +113,7 @@ Use the `onRowSelect` callback and call `preventDefault()` to block a selection:
     if (rows === "all" || deselect) return;
 
     const current = api.rowsSelected().rows;
-    const finalSet = new Set([...rows, ...current.map(x => x.id)]);
+    const finalSet = new Set([...rows, ...current.map((x) => x.id)]);
     if (finalSet.size > 3) {
       alert("Maximum 3 rows");
       preventDefault();
@@ -127,7 +133,7 @@ Each row is individually selectable — selecting a group row does NOT select ch
 ```ts
 const ds = useClientDataSource({
   data,
-  rowsIsolatedSelection: true,  // isolated mode
+  rowsIsolatedSelection: true, // isolated mode
 });
 ```
 
@@ -136,7 +142,7 @@ State shape:
 ```ts
 interface RowSelectionIsolated {
   readonly kind: "isolated";
-  readonly selected: boolean;   // default selection state
+  readonly selected: boolean; // default selection state
   readonly exceptions: Set<string>; // rows that invert the default
 }
 ```
@@ -187,9 +193,7 @@ LyteNyte Grid validates selected row IDs against the "ID universe" (all known ro
 
 ```ts
 const ds = useClientDataSource({
-  rowSelectionIdUniverseAdditions: [
-    { id: "not-yet-loaded-row", root: true },
-  ],
+  rowSelectionIdUniverseAdditions: [{ id: "not-yet-loaded-row", root: true }],
   rowSelectionIdUniverseSubtractions: new Set(["unselectable-row"]),
 });
 ```

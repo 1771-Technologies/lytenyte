@@ -3,6 +3,7 @@
 LyteNyte Grid exports data via `api.exportData()`. This returns a structured snapshot of grid data that you transform into any format. No built-in file format is included — you supply the serialization.
 
 **Step-by-step export pattern:**
+
 1. Get a ref to the grid API: `const ref = useRef<Grid.API | null>(null)` + `<Grid ref={ref} />`
 2. In a button handler: `const rect = await ref.current!.exportData()`
 3. Transform `rect.data` (2D array, row-major) into your target format
@@ -26,10 +27,10 @@ Returns `Promise<ExportDataRectResult>`:
 
 ```ts
 interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
-  readonly headers: string[];           // column display names
-  readonly groupHeaders: (string | null)[][];  // column group names (one array per group row)
-  readonly data: unknown[][];           // row-major data matrix
-  readonly columns: Column<Spec>[];     // column definitions
+  readonly headers: string[]; // column display names
+  readonly groupHeaders: (string | null)[][]; // column group names (one array per group row)
+  readonly data: unknown[][]; // row-major data matrix
+  readonly columns: Column<Spec>[]; // column definitions
 }
 ```
 
@@ -82,7 +83,7 @@ async function downloadExcel(api: Grid.API) {
   const sheet = workbook.addWorksheet("Data");
 
   // Headers
-  sheet.addRow(rect.columns.map(c => c.name ?? c.id));
+  sheet.addRow(rect.columns.map((c) => c.name ?? c.id));
 
   // Data rows
   for (const rowData of rect.data) {
@@ -90,7 +91,10 @@ async function downloadExcel(api: Grid.API) {
   }
 
   const buffer = await workbook.xlsx.writeBuffer();
-  downloadBlob(new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }), "data.xlsx");
+  downloadBlob(
+    new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }),
+    "data.xlsx",
+  );
 }
 ```
 
@@ -108,7 +112,7 @@ async function downloadParquet(api: Grid.API) {
 
   // Build columnar format
   const columns = Object.fromEntries(
-    rect.columns.map(c => [c.id, { name: c.id, data: [] as unknown[] } satisfies ColumnSource])
+    rect.columns.map((c) => [c.id, { name: c.id, data: [] as unknown[] } satisfies ColumnSource]),
   );
 
   for (let i = 0; i < rect.data.length; i++) {
@@ -134,7 +138,7 @@ import { tableFromArrays, tableToIPC } from "apache-arrow";
 async function downloadArrow(api: Grid.API) {
   const rect = await api.exportData();
 
-  const columns = Object.fromEntries(rect.columns.map(c => [c.id, [] as unknown[]]));
+  const columns = Object.fromEntries(rect.columns.map((c) => [c.id, [] as unknown[]]));
   for (let i = 0; i < rect.data.length; i++) {
     for (let j = 0; j < rect.columns.length; j++) {
       columns[rect.columns[j].id].push(rect.data[i][j]);
@@ -154,9 +158,7 @@ const handleCopy = async () => {
   const selection = getFirstSelection(); // your cell selection state
   const rect = await api.exportData({ rect: selection });
 
-  const text = rect.data
-    .map(row => row.map(cell => `${cell}`).join("\t"))
-    .join("\n");
+  const text = rect.data.map((row) => row.map((cell) => `${cell}`).join("\t")).join("\n");
 
   await navigator.clipboard.writeText(text);
 };
@@ -164,7 +166,7 @@ const handleCopy = async () => {
 // Paste from clipboard into grid
 const handlePaste = async () => {
   const text = await navigator.clipboard.readText();
-  const rows = text.split("\n").map(r => r.split("\t"));
+  const rows = text.split("\n").map((r) => r.split("\t"));
 
   const position = api.positionFromElement(document.activeElement as HTMLElement);
   if (position?.kind !== "cell") return;

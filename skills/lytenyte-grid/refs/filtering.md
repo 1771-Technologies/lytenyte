@@ -4,12 +4,60 @@ All filter types in LyteNyte Grid are custom predicate functions you write. The 
 
 Filters apply to **leaf rows before** grouping and aggregation. For post-grouping filtering, see `having` filters in [client-data-source.md](./client-data-source.md).
 
+## Filter Model Design
+
+A **filter model** is just a plain JavaScript value — an object, string, Set, Map, or anything else — that represents the current filter state. LyteNyte Grid does not prescribe any shape. You design the model to fit the use case.
+
+**If the project already has a filter model** (e.g. a `Record<columnId, FilterValue>` from an existing filter bar, a Zod schema, or a third-party filter library), use it directly. Just write a `FilterFn` that reads from it.
+
+**If there is no existing model**, choose the simplest shape that works:
+
+```ts
+// Simple: one value per column (quick search, set filter)
+type FilterModel = Record<string, string>;
+
+// Structured: operator + value pairs (text/number filter UI)
+type FilterModel = Record<string, { operator: "contains" | "equals"; value: string }>;
+
+// Rich: multiple conditions with AND/OR (advanced filter panel)
+type FilterModel = Record<
+  string,
+  {
+    left: { operator: string; value: string };
+    right?: { operator: string; value: string };
+    combinator: "AND" | "OR";
+  }
+>;
+```
+
+The `FilterFn` is then derived from whichever model you have:
+
+```ts
+// The filter function is always the same shape — whatever model you have, derive it here
+const filterFn = useMemo<Grid.T.FilterFn<GridSpec["data"]> | null>(() => {
+  if (Object.keys(filterModel).length === 0) return null; // no active filters
+
+  return (row) => {
+    // evaluate each column filter against row.data
+    return Object.entries(filterModel).every(([colId, filter]) => {
+      const value = (row.data as any)[colId];
+      // ...your evaluation logic
+      return true;
+    });
+  };
+}, [filterModel]);
+
+const ds = useClientDataSource({ data, filter: filterFn });
+```
+
 **Step-by-step pattern for adding a filter:**
-1. Define a filter state (e.g., `useState<FilterModel>({})`)
-2. Build a `FilterFn` from that state with `useMemo` (return `null` when no filter is active)
-3. Pass the function to `useClientDataSource({ filter: filterFn })`
-4. Render a filter UI (input, button, popover) that updates your filter state
-5. The grid re-renders automatically when `filterFn` reference changes
+
+1. Identify or design the filter model shape — reuse an existing one from the project if it exists
+2. Hold the model in state: `useState<FilterModel>({})`
+3. Derive a `FilterFn` with `useMemo` — return `null` when the model is empty/inactive
+4. Pass the function to `useClientDataSource({ filter: filterFn })`
+5. Render a filter UI (input, popover, filter bar) that updates the filter model state
+6. The grid re-renders automatically when `filterFn` reference changes
 
 ## How Filters Work
 
@@ -35,8 +83,7 @@ Return `true` to keep the row, `false` to exclude it.
 
 ```ts
 // Simple contains
-const filter: Grid.T.FilterFn<GridSpec["data"]> = (row) =>
-  row.data.product.toLowerCase().includes("xbox");
+const filter: Grid.T.FilterFn<GridSpec["data"]> = (row) => row.data.product.toLowerCase().includes("xbox");
 
 // Case-insensitive with Intl.Collator
 const collator = new Intl.Collator("en", { sensitivity: "case" });
@@ -48,36 +95,38 @@ const filter: Grid.T.FilterFn<GridSpec["data"]> = (row) =>
 
 ```ts
 type FilterStringOperator =
-  | "equals" | "not_equals"
-  | "contains" | "not_contains"
-  | "begins_with" | "not_begins_with"
-  | "ends_with" | "not_ends_with";
+  | "equals"
+  | "not_equals"
+  | "contains"
+  | "not_contains"
+  | "begins_with"
+  | "not_begins_with"
+  | "ends_with"
+  | "not_ends_with";
 
 const evaluate = (op: FilterStringOperator, compare: string, value: string): boolean => {
-  if (op === "equals")       return compare === value;
-  if (op === "contains")     return compare.includes(value);
-  if (op === "begins_with")  return compare.startsWith(value);
-  if (op === "ends_with")    return compare.endsWith(value);
-  if (op === "not_equals")   return compare !== value;
+  if (op === "equals") return compare === value;
+  if (op === "contains") return compare.includes(value);
+  if (op === "begins_with") return compare.startsWith(value);
+  if (op === "ends_with") return compare.endsWith(value);
+  if (op === "not_equals") return compare !== value;
   if (op === "not_contains") return !compare.includes(value);
   if (op === "not_begins_with") return !compare.startsWith(value);
-  if (op === "not_ends_with")   return !compare.endsWith(value);
+  if (op === "not_ends_with") return !compare.endsWith(value);
   return false;
 };
 
 // Build filter function from model
 const filterFn = useMemo(() => {
-  return Object.entries(filterModel).map(([col, f]) =>
-    (row: Grid.T.RowLeaf<GridSpec["data"]>) => {
-      const value = (row.data as any)[col];
-      if (typeof value !== "string") return false;
-      const v = value.toLowerCase();
-      const left = evaluate(f.left.operator, v, f.left.value.toLowerCase());
-      if (!f.right) return left;
-      const right = evaluate(f.right.operator, v, f.right.value.toLowerCase());
-      return f.operator === "OR" ? left || right : left && right;
-    }
-  );
+  return Object.entries(filterModel).map(([col, f]) => (row: Grid.T.RowLeaf<GridSpec["data"]>) => {
+    const value = (row.data as any)[col];
+    if (typeof value !== "string") return false;
+    const v = value.toLowerCase();
+    const left = evaluate(f.left.operator, v, f.left.value.toLowerCase());
+    if (!f.right) return left;
+    const right = evaluate(f.right.operator, v, f.right.value.toLowerCase());
+    return f.operator === "OR" ? left || right : left && right;
+  });
 }, [filterModel]);
 ```
 
@@ -92,17 +141,20 @@ const filter: Grid.T.FilterFn<GridSpec["data"]> = (row) => row.data.price > 50;
 
 ```ts
 type FilterNumberOperator =
-  | "equals" | "not_equals"
-  | "greater_than" | "greater_than_or_equals"
-  | "less_than" | "less_than_or_equals";
+  | "equals"
+  | "not_equals"
+  | "greater_than"
+  | "greater_than_or_equals"
+  | "less_than"
+  | "less_than_or_equals";
 
 const evaluate = (op: FilterNumberOperator, compare: number, value: number): boolean => {
-  if (op === "equals")                  return compare === value;
-  if (op === "not_equals")              return compare !== value;
-  if (op === "greater_than")            return compare > value;
-  if (op === "greater_than_or_equals")  return compare >= value;
-  if (op === "less_than")               return compare < value;
-  if (op === "less_than_or_equals")     return compare <= value;
+  if (op === "equals") return compare === value;
+  if (op === "not_equals") return compare !== value;
+  if (op === "greater_than") return compare > value;
+  if (op === "greater_than_or_equals") return compare >= value;
+  if (op === "less_than") return compare < value;
+  if (op === "less_than_or_equals") return compare <= value;
   return false;
 };
 ```
@@ -113,8 +165,7 @@ const evaluate = (op: FilterNumberOperator, compare: number, value: number): boo
 import { getYear, isAfter, isBefore, getMonth, getQuarter } from "date-fns";
 
 // Year filter
-const filter2025: Grid.T.FilterFn<GridSpec["data"]> = (row) =>
-  getYear(row.data.saleDate) === 2025;
+const filter2025: Grid.T.FilterFn<GridSpec["data"]> = (row) => getYear(row.data.saleDate) === 2025;
 ```
 
 ### Date Filter Model Pattern
@@ -123,10 +174,10 @@ const filter2025: Grid.T.FilterFn<GridSpec["data"]> = (row) =>
 type FilterDateOperator = "equals" | "before" | "after" | "quarter" | "month";
 
 const evaluate = (op: FilterDateOperator, compare: string, value: string | number): boolean => {
-  if (op === "equals")  return compare === value;
-  if (op === "after")   return isAfter(compare, value as string);
-  if (op === "before")  return isBefore(compare, value as string);
-  if (op === "month")   return getMonth(compare) === value;
+  if (op === "equals") return compare === value;
+  if (op === "after") return isAfter(compare, value as string);
+  if (op === "before") return isBefore(compare, value as string);
+  if (op === "month") return getMonth(compare) === value;
   if (op === "quarter") return getQuarter(compare) === value;
   return false;
 };
@@ -152,10 +203,12 @@ Debounce the input to avoid filtering on every keystroke:
 ```tsx
 const t = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-<input onChange={(e) => {
-  if (t.current) clearTimeout(t.current);
-  t.current = setTimeout(() => setQuery(e.target.value), 100);
-}} />
+<input
+  onChange={(e) => {
+    if (t.current) clearTimeout(t.current);
+    t.current = setTimeout(() => setQuery(e.target.value), 100);
+  }}
+/>;
 ```
 
 ## Set Filtering
@@ -163,8 +216,7 @@ const t = useRef<ReturnType<typeof setTimeout> | null>(null);
 ```ts
 const activePaymentMethods = new Set(["Visa", "Mastercard"]);
 
-const filterFn: Grid.T.FilterFn<GridSpec["data"]> = (row) =>
-  activePaymentMethods.has(row.data.paymentMethod);
+const filterFn: Grid.T.FilterFn<GridSpec["data"]> = (row) => activePaymentMethods.has(row.data.paymentMethod);
 ```
 
 ### Tree Set Filter

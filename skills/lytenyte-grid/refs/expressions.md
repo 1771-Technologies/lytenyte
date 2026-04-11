@@ -3,6 +3,7 @@
 LyteNyte Grid provides a lightweight DSL (domain-specific language) for building evaluatable expressions. Common uses: complex filter UIs, computed column fields, custom query builders.
 
 **Step-by-step to add an expression filter:**
+
 1. Create a memoized `Evaluator` instance with `standardPlugins` (+ optional `createResolvedIdentifierPlugin` for column-name shortcuts)
 2. Track the expression string in state: `const [expr, setExpr] = useState("")`
 3. Build a `filterFn` with `useMemo` — wrap `evaluator.run()` in try/catch; return `true` on parse errors to keep all rows visible
@@ -12,14 +13,18 @@ LyteNyte Grid provides a lightweight DSL (domain-specific language) for building
 ## Import
 
 ```ts
-import { Evaluator, standardPlugins, createResolvedIdentifierPlugin } from "@1771technologies/lytenyte-pro/expressions";
+import {
+  Evaluator,
+  standardPlugins,
+  createResolvedIdentifierPlugin,
+} from "@1771technologies/lytenyte-pro/expressions";
 ```
 
 ## Basic Evaluation
 
 ```ts
 const evaluator = new Evaluator();
-const result = evaluator.run("1 + 1");  // 2
+const result = evaluator.run("1 + 1"); // 2
 ```
 
 ## Standard Plugins (JavaScript-like syntax)
@@ -27,10 +32,10 @@ const result = evaluator.run("1 + 1");  // 2
 ```ts
 const evaluator = new Evaluator(standardPlugins);
 
-evaluator.run("1 + 2 * 3");                         // 7
-evaluator.run("true && false");                      // false
-evaluator.run("\"hello\".includes(\"ell\")");        // true
-evaluator.run("x > 10", { x: 15 });                 // true — context provides variables
+evaluator.run("1 + 2 * 3"); // 7
+evaluator.run("true && false"); // false
+evaluator.run('"hello".includes("ell")'); // true
+evaluator.run("x > 10", { x: 15 }); // true — context provides variables
 evaluator.run("greet(name)", { greet: (n) => `Hello ${n}`, name: "World" }); // "Hello World"
 ```
 
@@ -51,10 +56,7 @@ import { ExpressionEditor, createCompletionProvider } from "@1771technologies/ly
 
 function FilterInput({ value, onChange, context }) {
   const tokenizer = useMemo(() => new Evaluator(standardPlugins), []);
-  const completionProvider = useMemo(
-    () => createCompletionProvider(context),
-    [context]
-  );
+  const completionProvider = useMemo(() => createCompletionProvider(context), [context]);
 
   return (
     <ExpressionEditor
@@ -72,7 +74,7 @@ function FilterInput({ value, onChange, context }) {
 ```ts
 type CompletionProvider = (
   tokens: Token[],
-  cursorPosition: number,  // current token index
+  cursorPosition: number, // current token index
 ) => CompletionItem[] | Promise<CompletionItem[]>;
 ```
 
@@ -85,9 +87,9 @@ const evaluator = new Evaluator(
   standardPlugins.concat([
     createResolvedIdentifierPlugin({
       args: ["row"],
-      identifiers: columns.map(c => c.name ?? c.id),
+      identifiers: columns.map((c) => c.name ?? c.id),
     }),
-  ])
+  ]),
 );
 
 // Users can now write: Gender == "Male" && Quantity > 10
@@ -97,17 +99,17 @@ const evaluator = new Evaluator(
 Wire to the client data source filter:
 
 ```ts
-const [expression, setExpression] = useState("Gender == \"Male\"");
+const [expression, setExpression] = useState('Gender == "Male"');
 
 const filterFn = useMemo(() => {
   if (!expression.trim()) return null;
 
   // Build context: each column name maps to a function that reads its value from the row
   const context = Object.fromEntries(
-    columns.map(col => [
+    columns.map((col) => [
       col.name ?? col.id,
       (row: Grid.T.RowLeaf<GridSpec["data"]>) => api.columnField(col, row),
-    ])
+    ]),
   );
 
   return (row: Grid.T.RowLeaf<GridSpec["data"]>) => {

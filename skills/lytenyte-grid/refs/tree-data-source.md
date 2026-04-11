@@ -3,10 +3,12 @@
 Use `useTreeDataSource` for hierarchical object-based data (nested JSON, file trees, org charts). This is **not** for array-based hierarchies — use client source `group` with a function for those.
 
 **When to use `useTreeDataSource` vs. client source `group`:**
+
 - **`useTreeDataSource`** — your data is already a nested object/tree structure (e.g., file system, org chart, JSON tree). Each node can have children that are also data objects.
 - **Client source `group`** — your data is a flat array and you want to group rows by field values (e.g., group orders by country). The grouping is derived from data, not inherent in the structure.
 
 **Step-by-step to set up the tree data source:**
+
 1. Provide `data` as a nested object (or use `rowRootFn` + `rowChildrenFn` for custom structures)
 2. Set `rowGroupDefaultExpansion` to control initial expansion depth
 3. Add a group column to display the tree hierarchy (use `RowGroupCell` from components, or a custom renderer)
@@ -62,9 +64,9 @@ const ds = useTreeDataSource({
 ```ts
 const ds = useTreeDataSource({
   data,
-  rowGroupDefaultExpansion: true,   // expand all
-  rowGroupDefaultExpansion: false,  // collapse all
-  rowGroupDefaultExpansion: 1,      // expand depth ≤ 1
+  rowGroupDefaultExpansion: true, // expand all
+  rowGroupDefaultExpansion: false, // collapse all
+  rowGroupDefaultExpansion: 1, // expand depth ≤ 1
 });
 ```
 
@@ -76,8 +78,7 @@ const [expansions, setExpansions] = useState<Record<string, boolean>>({});
 const ds = useTreeDataSource({
   data,
   rowGroupExpansions: expansions,
-  onRowGroupExpansionChange: (delta) =>
-    setExpansions(prev => ({ ...prev, ...delta })),
+  onRowGroupExpansionChange: (delta) => setExpansions((prev) => ({ ...prev, ...delta })),
 });
 ```
 
@@ -98,10 +99,7 @@ Dynamic filtering:
 ```ts
 const [showHidden, setShowHidden] = useState(false);
 
-const filter = useMemo(
-  () => showHidden ? null : (v) => !v.name.startsWith("."),
-  [showHidden],
-);
+const filter = useMemo(() => (showHidden ? null : (v) => !v.name.startsWith(".")), [showHidden]);
 
 const ds = useTreeDataSource({ data, filter });
 ```
@@ -131,7 +129,7 @@ Multi-way sort: array of `DimensionSort` objects applied in order.
 ```ts
 const ds = useTreeDataSource({
   data,
-  topData: [pinnedTopRow],     // RowLeaf or RowAggregated nodes
+  topData: [pinnedTopRow], // RowLeaf or RowAggregated nodes
   botData: [pinnedBottomRow],
 });
 ```
