@@ -432,7 +432,6 @@ Provide these props to the `Grid` component to configure the grid.
       - \`"none"\` disables cell selection. This is the default.
       `,
       type: '"range" | "multi-range" | "none"',
-      pro: true,
       see: ["/docs/cell-selection"]
     },
     {
@@ -442,28 +441,24 @@ Provide these props to the `Grid` component to configure the grid.
         the selection areas of the grid.
       `,
       type: "DataRect[]",
-      pro: true,
       see: ["/docs/cell-selection"]
     },
     {
       name: "cellSelectionExcludeMarker",
       description: `Whether the grid allows marker column selection in cell selection ranges.`,
       type: "boolean",
-      pro: true,
       see: ["/docs/cell-selection", "/docs/marker-columns"]
     },
     {
       name: "cellSelectionMaintainOnNonCellPosition",
       description: `Whether the grid clears the cell selection when focus moves to a non-cell position, such as a header cell.`,
       type: "boolean",
-      pro: true,
       see: ["/docs/cell-selection"]
     },
     {
       name: `onCellSelectionChange`,
       description: `An event callback that fires when the cell selection area in the grid changes.`,
       type: `(rects: DataRect[]) => void`,
-      pro: true,
       see: ["/docs/cell-selection"]
     },
 
