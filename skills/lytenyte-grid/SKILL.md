@@ -19,8 +19,10 @@ metadata:
 
 LyteNyte Grid is a headless React data grid with two editions:
 
-- **Core** — `@1771technologies/lytenyte-core` (Apache 2.0, free)
+- **Core** — `@1771technologies/lytenyte-core` (Apache 2.0, free, no license required)
 - **PRO** — `@1771technologies/lytenyte-pro` (commercial, superset of Core)
+
+**PRO licensing:** PRO can be installed and used freely for evaluation — no license key is needed to try it. A watermark ("used for evaluation") appears when no key is set. A license key is required to remove the watermark for **production deployments**. License validation is offline; no network request is made. If the user is building/prototyping and hasn't set up a license yet, that is fine — they can add it before shipping.
 
 ## Quick Start
 
@@ -94,4 +96,5 @@ Read a reference file only when the task requires it. Do not load all files upfr
 | Exporting data — CSV, Excel, Parquet, Arrow, clipboard                                                                                                | [refs/export.md](refs/export.md)                                       |
 | UI components — `SmartSelect`, `Menu`, `Popover`, `Dialog`, `PillManager`, `ColumnManager`, `TreeView`, `RowGroupCell`, overlays, `ViewportShadows`   | [refs/components.md](refs/components.md)                               |
 | Theming — pre-built themes, `data-ln-*` attributes, CSS tokens, Tailwind, CSS Modules, Emotion                                                        | [refs/theming.md](refs/theming.md)                                     |
+| shadcn/ui — CLI install, `ln-shadcn` theme, using shadcn components as renderers/editors/filters, dark mode, `cn` utility                             | [refs/shadcn.md](refs/shadcn.md)                                       |
 | Keyboard shortcuts, RTL, accessibility, React Compiler, bundling, security, versioning                                                                | [refs/misc.md](refs/misc.md)                                           |
