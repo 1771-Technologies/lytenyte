@@ -23,10 +23,17 @@ Make individual columns editable with `editable` and `editRenderer`:
 
 ## Edit Renderers
 
-An edit renderer is a React component receiving `Grid.T.EditParams<GridSpec>`:
+An edit renderer is a **standard React component** — LyteNyte Grid provides the editing state and wiring props (`editValue`, `changeValue`, `commit`, `cancel`), and you bring whatever input or UI element you need. This means you can use:
+
+- Native HTML elements: `<input type="text">`, `<input type="number">`, `<input type="date">`, `<select>`, `<textarea>`
+- Existing form components already in the project (e.g. a `NumberInput` or `DatePicker` the user already has)
+- Third-party libraries: React Select, Radix UI, shadcn/ui inputs, etc.
+- Custom components built from scratch
+
+**The pattern is always the same:** read `editValue` for the initial value, call `changeValue(newVal)` when the value changes. LyteNyte Grid handles the rest.
 
 ```tsx
-// Text editor
+// Text editor — native input
 function TextEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
   return (
     <input
@@ -37,7 +44,34 @@ function TextEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
   );
 }
 
-// Date editor (uncontrolled — avoid controlled date inputs to prevent invalid states)
+// Number editor — native input, parse on change
+function NumberEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
+  return (
+    <input
+      type="number"
+      defaultValue={typeof editValue === "number" ? editValue : ""}
+      onChange={(e) => changeValue(e.target.valueAsNumber)}
+      className="h-full w-full px-2 text-right"
+    />
+  );
+}
+
+// Select editor — native select (or drop in a SmartSelect, React Select, etc.)
+function StatusEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
+  return (
+    <select
+      value={`${editValue}`}
+      onChange={(e) => changeValue(e.target.value)}
+      className="h-full w-full px-2"
+    >
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+      <option value="pending">Pending</option>
+    </select>
+  );
+}
+
+// Date editor — use uncontrolled (defaultValue) to avoid jumping on intermediate input states
 function DateEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
   const formatted = typeof editValue === "string" ? format(editValue, "yyyy-MM-dd") : "";
   return (
@@ -49,6 +83,16 @@ function DateEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
           changeValue(format(new Date(e.target.value), "yyyy-MM-dd"));
         } catch {}
       }}
+    />
+  );
+}
+
+// Using an existing project component — just wire editValue/changeValue to its props
+function PriceEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
+  return (
+    <MyCurrencyInput
+      value={typeof editValue === "number" ? editValue : 0}
+      onValueChange={(val) => changeValue(val)}
     />
   );
 }
@@ -229,36 +273,111 @@ api.editEnd({ cancel: true }); // cancel
 api.rowIsLeaf(row); // type guard before accessing row.data
 ```
 
-## Handling Data Updates After Editing
+## Row Source Must Handle Edit Updates
 
-When a cell is committed, the grid fires `onRowDataChange` on the row source. For the client source, implement it to write back the updated row data:
+**The grid never mutates row data directly.** When a cell edit is committed, LyteNyte Grid calls `onRowDataChange` on the row source. Your callback is responsible for persisting the change — updating React state, calling a server API, mutating the tree object, etc. Until the row source receives and applies the update, the grid displays the old value.
+
+The shape of `onRowDataChange` differs by row source type:
+
+---
+
+### Client Source
+
+`onRowDataChange` receives `{ center, top, bottom }`:
+
+- `center` — `Map<number, T>` mapping **row index → new data object** for scrollable rows
+- `top` / `bottom` — `Map<number, T>` for pinned rows
+
+The map key is the **source index** (position in the original `data` array), stable across filtering/sorting.
 
 ```ts
 const [data, setData] = useState(initialData);
 
 const ds = useClientDataSource({
   data,
-  onRowDataChange: ({ changes }) => {
-    // `changes` is an array of { row, next } pairs.
-    // `row` is the RowLeaf node, `next` is the updated data object.
-    setData((prev) =>
-      prev.map((item) => {
-        const change = changes.find((c) => c.row.data === item);
-        return change ? change.next : item;
-      })
-    );
+  onRowDataChange: ({ center }) => {
+    setData((prev) => prev.map((row, i) => (center.has(i) ? center.get(i)! : row)));
   },
 });
 ```
 
-**Step-by-step flow:**
-1. User double-clicks a cell (or presses Enter) → grid enters edit mode, calls `editRenderer`
-2. User modifies the value → `changeValue` / `changeData` update internal `editData`
-3. User presses Enter or blurs the cell → grid runs `editMutateCommit` on all columns, then `editRowValidatorFn`
-4. If valid → grid fires `onEditEnd`, then fires `onRowDataChange` on the row source with the changed rows
-5. Your `onRowDataChange` callback updates `data` state → grid re-renders with new values
+---
 
-If validation fails (step 4) → grid fires `onEditFail` and keeps the cell in edit mode.
+### Server Source
+
+`onRowDataChange` receives `{ rows }`:
+
+- `rows` — `Map<RowLeaf, T>` mapping the row node → new data object
+
+Send the update to the server, then call `ds.refresh()` to reload the affected rows. The callback may be `async`:
+
+```ts
+const ds = useServerDataSource({
+  queryFn: (params) => Server(params.requests, params.queryKey),
+  queryKey: [],
+  onRowDataChange: async ({ rows }) => {
+    const updates = new Map([...rows.entries()].map(([rowNode, newData]) => [rowNode.id, newData]));
+    await sendUpdatesToServer(updates);
+    ds.refresh(); // reload from server after update
+  },
+});
+```
+
+#### Optimistic Updates (Server Source)
+
+Set `rowUpdateOptimistically: true` to apply the change on the client immediately, before the server responds. The updated value shows instantly. If the server fails, you must handle rollback manually.
+It's recommended to set this property to true unless there is a good reason not to.
+
+```ts
+const ds = useServerDataSource({
+  queryFn: ...,
+  queryKey: [],
+  rowUpdateOptimistically: true,
+  onRowDataChange: async ({ rows }) => {
+    const updates = new Map([...rows.entries()].map(([node, data]) => [node.id, data]));
+    await sendUpdatesToServer(updates);
+    // skip ds.refresh() if optimistic value matches expected server result
+  },
+});
+```
+
+---
+
+### Tree Source
+
+`onRowDataChange` receives `{ changes, top, bottom }`:
+
+- `changes` — array of `{ next, prev, parent, key, path }` objects
+  - `parent` — the parent object in the tree that contains this node
+  - `key` — the property name on `parent` where this node lives
+  - `next` — the new data object to write
+
+Mutate the parent in place, then update the data reference to trigger a re-render:
+
+```ts
+const [data, setData] = useState(() => structuredClone(initialData));
+
+const ds = useTreeDataSource({
+  data,
+  onRowDataChange: ({ changes }) => {
+    for (const { parent, key, next } of changes) {
+      parent[key] = next; // mutate in place
+    }
+    setData({ ...data }); // new reference triggers re-render
+  },
+});
+```
+
+---
+
+### Edit Lifecycle (All Sources)
+
+1. User double-clicks (or presses Enter / a printable key) → grid enters edit mode, mounts `editRenderer`
+2. User types → `changeValue` / `changeData` update internal `editData`
+3. User presses Enter or focus leaves the cell → grid runs `editMutateCommit` on every column, then `editRowValidatorFn`
+4. **Valid** → grid fires `onEditEnd`, then fires `onRowDataChange` on the row source
+5. Row source callback updates data → grid re-renders with the new value
+6. **Invalid** → grid fires `onEditFail`, cell stays in edit mode
 
 ## Gotchas
 
@@ -276,3 +395,5 @@ If validation fails (step 4) → grid fires `onEditFail` and keeps the cell in e
 - [Full Row Editing](/docs/cell-editing-full-row)
 - [Linked Cell Edits](/docs/cell-editing-linked-cell-edits)
 - [Bulk Cell Editing](/docs/cell-editing-bulk-editing)
+- [Server Data Editing](/docs/server-data-loading-cell-editing)
+- [Tree Data Editing](/docs/tree-source-data-editing)

@@ -17,22 +17,24 @@ const ds = useServerDataSource<GridSpec["data"]>({
 <Grid
   rowSource={ds}
   columns={columns}
-  events={useMemo<Grid.Events<GridSpec>>(() => ({
-    viewport: {
-      scrollEnd: ({ viewport }) => {
-        const distanceFromBottom =
-          viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop;
+  events={useMemo<Grid.Events<GridSpec>>(
+    () => ({
+      viewport: {
+        scrollEnd: ({ viewport }) => {
+          const distanceFromBottom = viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop;
 
-        if (distanceFromBottom < 100) {
-          const req = ds.requestsForView.get().at(-1)!;
-          // Request the next block of rows
-          const next = { ...req, start: req.end, end: req.end + 100 };
-          ds.pushRequests([next]);
-        }
+          if (distanceFromBottom < 100) {
+            const req = ds.requestsForView.get().at(-1)!;
+            // Request the next block of rows
+            const next = { ...req, start: req.end, end: req.end + 100 };
+            ds.pushRequests([next]);
+          }
+        },
       },
-    },
-  }), [ds])}
-/>
+    }),
+    [ds],
+  )}
+/>;
 ```
 
 The key pattern: take the last request from `ds.requestsForView`, extend its `start`/`end` range, and push it with `ds.pushRequests`.
@@ -66,7 +68,7 @@ const ds = useServerDataSource<GridSpec["data"], [page: number]>({
 
     // Cache to avoid refetching visited pages
     if (responseCache.current[page]) {
-      return responseCache.current[page].map(x => ({ ...x, asOfTime: Date.now() }));
+      return responseCache.current[page].map((x) => ({ ...x, asOfTime: Date.now() }));
     }
 
     const result = await Server(requests, page, pageSize);
@@ -107,12 +109,12 @@ const handleSortChange = (sort) => {
 
 ## Key Differences
 
-| | Infinite Scroll | Pagination |
-|---|---|---|
-| Data grows | Yes — appends | No — replaces per page |
-| `queryKey` changes | Only for sort/filter | Every page change |
-| Cache strategy | Grid caches loaded rows | App-level cache recommended |
-| UX | Scroll to load more | Explicit page navigation |
+|                    | Infinite Scroll         | Pagination                  |
+| ------------------ | ----------------------- | --------------------------- |
+| Data grows         | Yes — appends           | No — replaces per page      |
+| `queryKey` changes | Only for sort/filter    | Every page change           |
+| Cache strategy     | Grid caches loaded rows | App-level cache recommended |
+| UX                 | Scroll to load more     | Explicit page navigation    |
 
 ## Gotchas
 

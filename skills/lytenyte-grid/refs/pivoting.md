@@ -3,6 +3,7 @@
 Pivoting creates dynamic columns from the unique values of a column, then aggregates measures for each pivot intersection. Managed entirely through the **client data source**.
 
 **Step-by-step to enable pivoting:**
+
 1. Set `pivotMode: true` on `useClientDataSource`
 2. Define a `pivotModel` with `columns` (what generates the dynamic column headers), `rows` (grouping axis), and `measures` (what to aggregate)
 3. Register named aggregator functions with `aggregateFns` on the data source
@@ -19,8 +20,8 @@ function PivotGrid() {
     data: salesData,
     pivotMode: true,
     pivotModel: {
-      columns: [{ id: "ageGroup" }],    // pivot column dimension
-      rows: [{ id: "country" }],         // pivot row grouping
+      columns: [{ id: "ageGroup" }], // pivot column dimension
+      rows: [{ id: "country" }], // pivot row grouping
       measures: [
         {
           dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 120 },
@@ -31,7 +32,7 @@ function PivotGrid() {
     aggregateFns: { sum: aggSum },
   });
 
-  const pivotProps = ds.usePivotProps();  // must call this and spread onto Grid
+  const pivotProps = ds.usePivotProps(); // must call this and spread onto Grid
 
   return <Grid {...pivotProps} />;
 }
@@ -43,8 +44,8 @@ function PivotGrid() {
 
 ```ts
 interface PivotModel<Spec extends GridSpec = GridSpec> {
-  readonly columns?: (Column<Spec> | PivotField<Spec>)[];   // generates dynamic pivot columns
-  readonly rows?: (Column<Spec> | PivotField<Spec>)[];      // groups rows before measuring
+  readonly columns?: (Column<Spec> | PivotField<Spec>)[]; // generates dynamic pivot columns
+  readonly rows?: (Column<Spec> | PivotField<Spec>)[]; // groups rows before measuring
   readonly measures?: { dim: Column<Spec>; fn: Aggregator | string }[];
 
   readonly sort?: SortFn;
@@ -56,16 +57,17 @@ interface PivotModel<Spec extends GridSpec = GridSpec> {
 
 **Behavior matrix:**
 
-| columns | rows | measures | Result |
-|---|---|---|---|
-| ✓ | — | ✓ | Measure aggregated per unique column value |
-| — | ✓ | ✓ | Measure aggregated per row group |
-| ✓ | ✓ | ✓ | Full pivot: measures split across rows AND columns |
-| — | — | ✓ | Single totals row per measure |
+| columns | rows | measures | Result                                             |
+| ------- | ---- | -------- | -------------------------------------------------- |
+| ✓       | —    | ✓        | Measure aggregated per unique column value         |
+| —       | ✓    | ✓        | Measure aggregated per row group                   |
+| ✓       | ✓    | ✓        | Full pivot: measures split across rows AND columns |
+| —       | —    | ✓        | Single totals row per measure                      |
 
 ## Measures
 
 A measure is a `{ dim, fn }` pair:
+
 - `dim` — column definition used as a **template** for generated pivot columns
 - `fn` — aggregator name (string) or inline `Aggregator` function
 
@@ -94,7 +96,7 @@ const ds = useClientDataSource({
 measures: [
   { dim: { ...profitCol, id: "profit_sum", name: "Profit (Sum)" }, fn: "sum" },
   { dim: { ...profitCol, id: "profit_avg", name: "Profit (Avg)" }, fn: "avg" },
-]
+];
 ```
 
 When using the same source column for multiple measures, give each a **unique `id`**.

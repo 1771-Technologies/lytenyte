@@ -211,36 +211,69 @@ const rects = api.cellSelections(); // DataRect[] | null
 
 ```ts
 interface DataRect {
-  readonly rowStart: number;   // inclusive
-  readonly rowEnd: number;     // exclusive
-  readonly columnStart: number;
-  readonly columnEnd: number;
+  readonly rowStart: number;    // inclusive
+  readonly rowEnd: number;      // exclusive
+  readonly columnStart: number; // inclusive
+  readonly columnEnd: number;   // exclusive
 }
 ```
 
-Use this for copy-to-clipboard:
+### Copy to Clipboard (Ctrl+C / Cmd+C)
+
+Listen for the keyboard shortcut in the `viewport.keyDown` event, read the selection rect, export the data, and write to the clipboard. The `viewport` parameter is the grid's DOM element — add/remove a CSS class on it for copy-flash visual feedback.
 
 ```tsx
 <Grid
   cellSelectionMode="range"
-  events={useMemo<Grid.Events<GridSpec>>(() => ({
-    viewport: {
-      keyDown: async (ev, vp, api) => {
-        if (ev.key === "c" && (ev.metaKey || ev.ctrlKey)) {
-          const rect = api.cellSelections()?.[0];
-          if (!rect) return;
+  events={useMemo<Grid.Events<GridSpec>>(
+    () => ({
+      viewport: {
+        keyDown: async ({ event: ev, viewport: vp, api }) => {
+          if (ev.key === "c" && (ev.metaKey || ev.ctrlKey)) {
+            const rect = api.cellSelections()?.[0];
+            if (!rect) return;
 
-          const exported = await api.exportData({ rect });
-          const text = exported.data.map((row) => row.join("\t")).join("\n");
+            const exported = await api.exportData({ rect });
 
-          vp.classList.add("copy-flash");
-          await navigator.clipboard.writeText(text);
-          setTimeout(() => vp.classList.remove("copy-flash"), 1000);
-        }
+            // Tab-separated rows for spreadsheet paste (Excel, Google Sheets)
+            const text = exported.data
+              .map((row) => row.map((cell) => `${cell ?? ""}`).join("\t"))
+              .join("\n");
+
+            await navigator.clipboard.writeText(text);
+
+            // Optional: flash the selection overlay for visual feedback
+            vp.classList.add("copy-flash");
+            setTimeout(() => vp.classList.remove("copy-flash"), 500);
+          }
+        },
       },
-    },
-  }), [])}
+    }),
+    [],
+  )}
 />
+```
+
+Add the CSS animation targeting the selection overlay element:
+
+```css
+@keyframes copy-flash {
+  0%   { background-color: var(--ln-primary-10); }
+  50%  { background-color: var(--ln-primary-30); }
+  100% { background-color: var(--ln-primary-10); }
+}
+
+.copy-flash [data-ln-cell-selection-rect] {
+  animation: copy-flash 0.5s ease-out forwards;
+}
+```
+
+**Key points:**
+- `api.exportData({ rect })` is `async` — always `await` it before writing to clipboard
+- `exported.data` is a 2D array (row-major): `data[rowIndex][colIndex]`
+- Use `\t` between cells and `\n` between rows for Excel/Google Sheets paste compatibility
+- For `"multi-range"` mode, `api.cellSelections()` returns multiple rects — use `[0]` for the primary selection or implement merge logic
+- `navigator.clipboard.writeText` requires HTTPS or localhost
 ```
 
 ### Controlled Cell Selection
@@ -250,11 +283,7 @@ Manage selection state in React when you need to react to changes (e.g., show a 
 ```tsx
 const [cellSelections, setCellSelections] = useState<Grid.T.DataRect[]>([]);
 
-<Grid
-  cellSelectionMode="range"
-  cellSelections={cellSelections}
-  onCellSelectionChange={setCellSelections}
-/>
+<Grid cellSelectionMode="range" cellSelections={cellSelections} onCellSelectionChange={setCellSelections} />;
 ```
 
 > **Warning:** `cellSelections` is both a grid **prop** (controlled state) and an **API method** (`api.cellSelections()`). In controlled mode, the API method returns the same value you passed in. In uncontrolled mode, the API method reads internal state.
@@ -276,10 +305,12 @@ Column and row selection work by setting a `cellSelections` rectangle that spans
 // Column selection — click on header to select entire column
 function HeaderCell({ column, colIndex, api }: Grid.T.HeaderParams<GridSpec>) {
   return (
-    <div onClick={() => {
-      const { rowStart, rowEnd } = api.rowBounds(); // get full row range
-      setCellSelections([{ rowStart, rowEnd, columnStart: colIndex, columnEnd: colIndex + 1 }]);
-    }}>
+    <div
+      onClick={() => {
+        const { rowStart, rowEnd } = api.rowBounds(); // get full row range
+        setCellSelections([{ rowStart, rowEnd, columnStart: colIndex, columnEnd: colIndex + 1 }]);
+      }}
+    >
       {column.name ?? column.id}
     </div>
   );
@@ -340,11 +371,11 @@ Even with this enabled, the marker column still occupies column index 0 — so t
 
 ### Cell Selection Keyboard Shortcuts
 
-| Key | Action |
-|---|---|
-| `Shift ↑↓←→` | Expand/shrink selection |
-| `Ctrl Shift ↑↓←→` | Expand to bounds |
-| `Ctrl A` | Select all cells |
+| Key               | Action                  |
+| ----------------- | ----------------------- |
+| `Shift ↑↓←→`      | Expand/shrink selection |
+| `Ctrl Shift ↑↓←→` | Expand to bounds        |
+| `Ctrl A`          | Select all cells        |
 
 ### Gotchas for Cell Selection
 

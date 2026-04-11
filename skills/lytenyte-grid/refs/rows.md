@@ -5,17 +5,17 @@
 Every row in LyteNyte Grid is a `RowNode`, a union of three kinds:
 
 ```ts
-row.kind === "leaf"       // RowLeaf — no children, has data
-row.kind === "branch"     // RowGroup — container with child rows
-row.kind === "aggregated" // RowAggregated — aggregate data, not expandable
+row.kind === "leaf"; // RowLeaf — no children, has data
+row.kind === "branch"; // RowGroup — container with child rows
+row.kind === "aggregated"; // RowAggregated — aggregate data, not expandable
 ```
 
 Type-narrowing helpers (TypeScript-aware):
 
 ```ts
-api.rowIsLeaf(row)
-api.rowIsGroup(row)
-api.rowIsAggregated(row)
+api.rowIsLeaf(row);
+api.rowIsGroup(row);
+api.rowIsAggregated(row);
 ```
 
 Row index is not stored on `RowNode` — it is passed to renderers/callbacks as `rowIndex`. Row indices are 0-based.
@@ -36,6 +36,7 @@ Row index is not stored on `RowNode` — it is passed to renderers/callbacks as 
 ## Row Pinning
 
 Row pinning is configured on the **data source**, not the grid directly. See the data source guides:
+
 - Client: [client-data-source.md](./client-data-source.md) — `topRows` / `bottomRows`
 - Server: [server-data-source.md](./server-data-source.md)
 - Tree: [tree-data-source.md](./tree-data-source.md)
@@ -45,6 +46,7 @@ Row pinning is configured on the **data source**, not the grid directly. See the
 ## Row Detail (Master-Detail)
 
 **Step-by-step to add master-detail:**
+
 1. Define a `rowDetailRenderer` component on the grid
 2. Add a toggle button in a cell renderer (typically the marker column) that calls `api.rowDetailToggle(row.id)`
 3. Optionally set `rowDetailHeight` — use `"auto"` for content-sized height (causes two-phase render) or a fixed pixel value for smoother scrolling
@@ -64,11 +66,7 @@ Toggle detail open/closed from a cell renderer:
 
 ```tsx
 function MarkerCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
-  return (
-    <button onClick={() => api.rowDetailToggle(row.id)}>
-      Toggle
-    </button>
-  );
+  return <button onClick={() => api.rowDetailToggle(row.id)}>Toggle</button>;
 }
 ```
 
@@ -93,7 +91,7 @@ const [rowDetailExpansions, setRowDetailExpansions] = useState(new Set<string>()
     setRowDetailExpansions((prev) => newSet.difference(prev));
   }}
   rowDetailRenderer={RowDetailRenderer}
-/>
+/>;
 ```
 
 ### Nested Grids
@@ -116,15 +114,11 @@ A full width row spans the entire viewport and replaces normal cells in that row
 <Grid
   rowFullWidthPredicate={(row) => row.kind === "leaf" && row.data?.isHeader}
   rowFullWidthRenderer={FullWidthCell}
-/>
+/>;
 
 function FullWidthCell({ row, api }: Grid.T.RowFullWidthRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
-  return (
-    <div className="section-header">
-      {row.data.sectionName}
-    </div>
-  );
+  return <div className="section-header">{row.data.sectionName}</div>;
 }
 ```
 
@@ -174,11 +168,15 @@ Handle drag events on the grid:
 
 ```tsx
 <Grid
-  onRowDragEnter={(p) => { /* highlight target row */ }}
-  onRowDragLeave={(p) => { /* remove highlight */ }}
+  onRowDragEnter={(p) => {
+    /* highlight target row */
+  }}
+  onRowDragLeave={(p) => {
+    /* remove highlight */
+  }}
   onRowDrop={(p) => {
     if (p.over.kind === "viewport") return;
-    setData(prev => reorder(prev, p.source.rowIndex, p.over.rowIndex));
+    setData((prev) => reorder(prev, p.source.rowIndex, p.over.rowIndex));
   }}
 />
 ```
@@ -221,7 +219,7 @@ api.useRowDrag({
       data: JSON.stringify(row.data),
     },
   },
-})
+});
 ```
 
 ### Custom Drag Placeholder

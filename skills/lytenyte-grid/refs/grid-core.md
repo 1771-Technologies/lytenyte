@@ -59,10 +59,13 @@ LyteNyte Grid is declarative. Updating props updates the view. Memoize non-primi
 
 ```tsx
 function MyGrid() {
-  const columns = useMemo(() => [
-    { id: "name", widthFlex: 2 },
-    { id: "price", type: "number" },
-  ], []);
+  const columns = useMemo(
+    () => [
+      { id: "name", widthFlex: 2 },
+      { id: "price", type: "number" },
+    ],
+    [],
+  );
 
   return <Grid columns={columns} />;
 }
@@ -79,10 +82,7 @@ Certain grid properties are controllable — provide a value to control them, an
 ```tsx
 const [rowDetailExpansions, setRowDetailExpansions] = useState({});
 
-<Grid
-  rowDetailExpansions={rowDetailExpansions}
-  onRowDetailExpansionsChange={setRowDetailExpansions}
-/>
+<Grid rowDetailExpansions={rowDetailExpansions} onRowDetailExpansionsChange={setRowDetailExpansions} />;
 ```
 
 Controllable properties include: `rowDetailExpansions`, `columnGroupExpansions`, `rowGroupColumn`.
@@ -167,12 +167,12 @@ function MyCell({ api }: Grid.T.CellParams<GridSpec>) {
 
 ```tsx
 interface GridSpec {
-  readonly data: MyRowType;           // row data type
+  readonly data: MyRowType; // row data type
   readonly column?: { myProp?: string }; // per-column custom props
   readonly api?: { myMethod: () => void }; // API extension type
 }
 
-<Grid<GridSpec> columns={columns} rowSource={ds} />
+<Grid<GridSpec> columns={columns} rowSource={ds} />;
 ```
 
 ## Row Source
@@ -211,9 +211,11 @@ Full headless mode (render every cell yourself):
       {(cells) => (
         <Grid.HeaderRow>
           {cells.map((c) =>
-            c.kind === "group"
-              ? <Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />
-              : <Grid.HeaderCell cell={c} key={c.id} />
+            c.kind === "group" ? (
+              <Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />
+            ) : (
+              <Grid.HeaderCell cell={c} key={c.id} />
+            ),
           )}
         </Grid.HeaderRow>
       )}
@@ -224,7 +226,9 @@ Full headless mode (render every cell yourself):
           if (row.kind === "full-width") return <Grid.RowFullWidth row={row} />;
           return (
             <Grid.Row key={row.id} row={row}>
-              {row.cells.map((cell) => <Grid.Cell cell={cell} key={cell.id} />)}
+              {row.cells.map((cell) => (
+                <Grid.Cell cell={cell} key={cell.id} />
+              ))}
             </Grid.Row>
           );
         }}
@@ -242,37 +246,67 @@ LyteNyte Grid fires events for user interactions. Pass a memoized `events` objec
 
 ```tsx
 <Grid
-  events={useMemo<Grid.Events<GridSpec>>(() => ({
-    cell: {
-      click: ({ row, column, event, api }) => { /* ... */ },
-      dblClick: ({ row, column, event, api }) => { /* ... */ },
-      contextMenu: ({ row, column, event, api }) => {
-        event.preventDefault();   // suppress browser menu
-        event.stopPropagation();  // prevent bubbling
+  events={useMemo<Grid.Events<GridSpec>>(
+    () => ({
+      cell: {
+        click: ({ row, column, event, api }) => {
+          /* ... */
+        },
+        dblClick: ({ row, column, event, api }) => {
+          /* ... */
+        },
+        contextMenu: ({ row, column, event, api }) => {
+          event.preventDefault(); // suppress browser menu
+          event.stopPropagation(); // prevent bubbling
+        },
+        focus: ({ row, column, event, api }) => {
+          /* ... */
+        },
+        blur: ({ row, column, api }) => {
+          /* ... */
+        },
+        mouseEnter: ({ row, column, layout, api }) => {
+          /* ... */
+        },
+        mouseLeave: ({ row, column, api }) => {
+          /* ... */
+        },
       },
-      focus: ({ row, column, event, api }) => { /* ... */ },
-      blur: ({ row, column, api }) => { /* ... */ },
-      mouseEnter: ({ row, column, layout, api }) => { /* ... */ },
-      mouseLeave: ({ row, column, api }) => { /* ... */ },
-    },
-    headerCell: {
-      click: ({ column, event, api }) => { /* ... */ },
-      contextMenu: ({ column, event, api }) => { /* ... */ },
-    },
-    row: {
-      click: ({ row, event, api }) => { /* ... */ },
-      keyDown: ({ event, row, api }) => { /* ... */ },
-    },
-    viewport: {
-      keyDown: ({ event }) => { /* catch-all keyboard handler */ },
-      scroll: ({ viewport }) => { /* viewport scroll position */ },
-      scrollEnd: ({ viewport }) => { /* fires when scrolling stops */ },
-    },
-  }), [])}
+      headerCell: {
+        click: ({ column, event, api }) => {
+          /* ... */
+        },
+        contextMenu: ({ column, event, api }) => {
+          /* ... */
+        },
+      },
+      row: {
+        click: ({ row, event, api }) => {
+          /* ... */
+        },
+        keyDown: ({ event, row, api }) => {
+          /* ... */
+        },
+      },
+      viewport: {
+        keyDown: ({ event }) => {
+          /* catch-all keyboard handler */
+        },
+        scroll: ({ viewport }) => {
+          /* viewport scroll position */
+        },
+        scrollEnd: ({ viewport }) => {
+          /* fires when scrolling stops */
+        },
+      },
+    }),
+    [],
+  )}
 />
 ```
 
 **Key rules:**
+
 - **Always memoize `events`** — a new object reference on every render triggers re-subscriptions inside the grid. Wrap in `useMemo` (or use the React Compiler).
 - `cell.contextMenu`: always call both `event.preventDefault()` AND `event.stopPropagation()` — one prevents the browser menu, the other stops parent handlers.
 - `viewport.scrollEnd` is the correct place to implement infinite-scroll triggers (check distance from bottom, push more data).
@@ -296,12 +330,7 @@ cell: {
 Virtualization is enabled by default — only visible rows/columns are in the DOM. Configure overscan:
 
 ```tsx
-<Grid
-  rowOverscanTop={3}
-  rowOverscanBottom={3}
-  colOverscanStart={2}
-  colOverscanEnd={2}
-/>
+<Grid rowOverscanTop={3} rowOverscanBottom={3} colOverscanStart={2} colOverscanEnd={2} />
 ```
 
 Disable for small datasets or print scenarios:

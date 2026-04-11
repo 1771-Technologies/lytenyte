@@ -3,6 +3,7 @@
 LyteNyte Grid is **headless by default** — no colors, fonts, or borders are applied. The CSS import is optional: skip it and provide your own styles, or import a prebuilt theme for instant results. Functional inline styles (sizing, positioning) are applied automatically and must not be overridden.
 
 **Quick theming decision guide:**
+
 - **No CSS import** — bring your own styles entirely via headless mode, Tailwind, CSS Modules, or Emotion
 - **Prebuilt theme** — import `grid-full.css` (or selective imports) and add `ln-grid` + a theme class to a parent element
 - **Data attributes + CSS** — import the CSS, use prebuilt structure, but write custom color/spacing rules targeting `data-ln-*` attributes
@@ -12,15 +13,17 @@ LyteNyte Grid is **headless by default** — no colors, fonts, or borders are ap
 
 ```ts
 // Import all themes + grid styles
-import "@1771technologies/lytenyte-core/grid-full.css";  // Core
-import "@1771technologies/lytenyte-pro/grid-full.css";   // PRO
+import "@1771technologies/lytenyte-core/grid-full.css"; // Core
+import "@1771technologies/lytenyte-pro/grid-full.css"; // PRO
 ```
 
 Apply by adding `ln-grid` + a theme class to a parent element (e.g. `<html>` or `<body>`):
 
 ```html
 <html class="ln-teal">
-  <body class="ln-grid">...</body>
+  <body class="ln-grid">
+    ...
+  </body>
 </html>
 ```
 
@@ -29,15 +32,15 @@ Available themes: `ln-teal`, `ln-term`, `ln-dark`, `ln-light`, `ln-shadcn`, `ln-
 ### Selective CSS Imports
 
 ```css
-@import "@1771technologies/lytenyte-pro/design.css";      /* spacing/font tokens (no colors) */
-@import "@1771technologies/lytenyte-pro/grid.css";        /* base grid styles */
-@import "@1771technologies/lytenyte-pro/dark.css";        /* single color theme */
+@import "@1771technologies/lytenyte-pro/design.css"; /* spacing/font tokens (no colors) */
+@import "@1771technologies/lytenyte-pro/grid.css"; /* base grid styles */
+@import "@1771technologies/lytenyte-pro/dark.css"; /* single color theme */
 @import "@1771technologies/lytenyte-pro/light.css";
 @import "@1771technologies/lytenyte-pro/shadcn.css";
 @import "@1771technologies/lytenyte-pro/teal.css";
-@import "@1771technologies/lytenyte-pro/light-dark.css";  /* light + .dark class variant */
-@import "@1771technologies/lytenyte-pro/all-colors.css";  /* all color themes */
-@import "@1771technologies/lytenyte-pro/grid-full.css";   /* everything */
+@import "@1771technologies/lytenyte-pro/light-dark.css"; /* light + .dark class variant */
+@import "@1771technologies/lytenyte-pro/all-colors.css"; /* all color themes */
+@import "@1771technologies/lytenyte-pro/grid-full.css"; /* everything */
 ```
 
 ---
@@ -48,17 +51,39 @@ Grid elements expose `data-ln-*` attributes. Use CSS attribute selectors to targ
 
 ```css
 /* Common attributes */
-[data-ln-cell="true"]         { /* grid cell */ }
-[data-ln-header-cell="true"]  { /* header cell */ }
-[data-ln-header-group="true"] { /* column group header */ }
-[data-ln-row="true"]          { /* row */ }
-[data-ln-alternate="true"]    { /* alternating row */ }
-[data-ln-type="number"]       { justify-content: flex-end; }
-[data-ln-colpin="start"]      { /* pinned start column */ }
-[data-ln-last-start-pin]      { /* last column in start pin area */ }
-[data-ln-first-end-pin]       { /* first column in end pin area */ }
-[data-ln-row-detail="true"]   { /* row detail/master-detail container */ }
-[data-ln-cell-selection-rect] { /* cell selection rectangle (PRO) */ }
+[data-ln-cell="true"] {
+  /* grid cell */
+}
+[data-ln-header-cell="true"] {
+  /* header cell */
+}
+[data-ln-header-group="true"] {
+  /* column group header */
+}
+[data-ln-row="true"] {
+  /* row */
+}
+[data-ln-alternate="true"] {
+  /* alternating row */
+}
+[data-ln-type="number"] {
+  justify-content: flex-end;
+}
+[data-ln-colpin="start"] {
+  /* pinned start column */
+}
+[data-ln-last-start-pin] {
+  /* last column in start pin area */
+}
+[data-ln-first-end-pin] {
+  /* first column in end pin area */
+}
+[data-ln-row-detail="true"] {
+  /* row detail/master-detail container */
+}
+[data-ln-cell-selection-rect] {
+  /* cell selection rectangle (PRO) */
+}
 ```
 
 Cell selection rectangle attributes: `data-ln-cell-selection-rect`, `data-ln-cell-selection-border-top/bottom/start/end`, `data-ln-cell-selection-is-deselect` (for multi-range deselect regions). Headers and rows containing selected cells also get `data-ln-cell-selected="true"`.
@@ -153,7 +178,7 @@ No memoization needed — the grid diffs styles and re-notifies cells on change.
 ```css
 /* In your CSS entry file: */
 @import "tailwindcss";
-@import "@1771technologies/lytenyte-pro/tw.css";  /* LyteNyte Tailwind variants */
+@import "@1771technologies/lytenyte-pro/tw.css"; /* LyteNyte Tailwind variants */
 
 /* Layer order when mixing with prebuilt themes: */
 @layer base, ln-grid, components, utilities;
@@ -191,7 +216,10 @@ const cellStyles = cva("flex items-center px-2", {
 Style row detail with Tailwind arbitrary selectors:
 
 ```tsx
-<Grid.Row row={row} className='**:data-[ln-row-detail="true"]:p-7 [&_[data-ln-row-detail="true"]>div]:rounded-lg' />
+<Grid.Row
+  row={row}
+  className='**:data-[ln-row-detail="true"]:p-7 [&_[data-ln-row-detail="true"]>div]:rounded-lg'
+/>
 ```
 
 ---
@@ -204,13 +232,22 @@ Style row detail with Tailwind arbitrary selectors:
   display: flex;
   align-items: center;
   padding-inline: 8px;
-  &[data-ln-type="number"] { justify-content: flex-end; }
+  &[data-ln-type="number"] {
+    justify-content: flex-end;
+  }
 }
-[data-ln-alternate="true"] .cell { background-color: hsl(0, 27%, 98%); }
+[data-ln-alternate="true"] .cell {
+  background-color: hsl(0, 27%, 98%);
+}
 
 .rowDetail {
-  & [data-ln-row-detail="true"] { padding: 24px; }
-  & [data-ln-row-detail="true"] > div { border: 1px solid gray; border-radius: 8px; }
+  & [data-ln-row-detail="true"] {
+    padding: 24px;
+  }
+  & [data-ln-row-detail="true"] > div {
+    border: 1px solid gray;
+    border-radius: 8px;
+  }
 }
 ```
 
@@ -235,8 +272,12 @@ const Cell = styled(Grid.Cell)`
 `;
 
 const RowsContainer = styled(Grid.RowsContainer)`
-  & [data-ln-row-detail="true"] { padding: 24px; }
-  & [data-ln-cell-selection-rect] { background-color: var(--ln-primary-30); }
+  & [data-ln-row-detail="true"] {
+    padding: 24px;
+  }
+  & [data-ln-cell-selection-rect] {
+    background-color: var(--ln-primary-30);
+  }
 `;
 ```
 
