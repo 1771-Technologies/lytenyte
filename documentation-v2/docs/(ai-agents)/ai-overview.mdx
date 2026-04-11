@@ -1,0 +1,128 @@
+---
+title: Overview
+step: Understand how LyteNyte Grid integrates with AI coding agents to generate production-ready grid implementations from natural language.
+description: >
+  LyteNyte Grid ships with a set of agent skills that give AI coding agents deep knowledge of the
+  grid's APIs, patterns, and best practices — enabling them to generate complete, production-ready
+  grid implementations from a natural language prompt.
+---
+
+LyteNyte Grid is built to work natively with AI coding agents. Instead of writing boilerplate
+column definitions, wiring data sources, and configuring features by hand, you describe what you
+want and your agent builds it — correctly, on the first try.
+
+## What AI Integration Means for the Grid
+
+Traditional grid development requires you to know the right APIs, the right import paths, the
+correct TypeScript generics, and the exact sequence of configuration steps. That knowledge takes
+time to acquire and is easy to get wrong.
+
+LyteNyte Grid's AI integration packages that knowledge into **agent skills** — reusable instruction
+sets that give your agent everything it needs to generate correct, idiomatic grid code without
+hallucinating APIs or missing required imports.
+
+## The Agent-Based Approach
+
+Rather than a single monolithic prompt, LyteNyte Grid uses a **skill-based agent architecture**.
+Each skill is a focused instruction set that covers one area of the grid. When you give your agent
+a task, it selects and chains the relevant skills to produce a complete implementation.
+
+This approach has three key advantages:
+
+- **Accuracy** — each skill encodes the exact APIs, types, and patterns for its domain
+- **Composability** — skills combine naturally for complex grids without conflicting instructions
+- **Maintainability** — skills are versioned alongside the grid and stay up to date
+
+## Key Capabilities Enabled by AI
+
+| Capability | What the agent can do |
+|---|---|
+| Grid scaffolding | Generate a complete typed grid from a dataset or description |
+| Column design | Infer column types, field paths, and `GridSpec` generics |
+| Feature wiring | Configure sorting, filtering, grouping, aggregation, and row selection |
+| Data source selection | Pick and wire the right data source hook for the use case |
+| Cell renderers | Generate custom renderers for badges, dates, currency, and more |
+| Theming | Apply CSS imports, select themes, configure custom properties |
+| PRO features | Server-side loading, pivoting, tree data, expression filters |
+| Export | Wire CSV, Excel, Parquet, and Arrow export via the grid API |
+| Validation | Type-check the config and fix common mistakes before output |
+
+## How AI Changes Grid Development
+
+Without AI skills, building a grid typically looks like this:
+
+1. Read the docs to find the right API
+2. Write column definitions manually
+3. Wire the data source hook
+4. Configure each feature separately
+5. Debug TypeScript errors
+6. Repeat for every new grid
+
+With AI skills installed, the workflow becomes:
+
+1. Describe what you want in plain language
+2. Review and adjust the generated component
+
+The agent handles the lookup, the boilerplate, and the type wiring. You focus on the product.
+
+## Supported Use Cases
+
+The skills cover the full range of LyteNyte Grid use cases:
+
+- **Client-side grids** — flat data, sorting, filtering, grouping, aggregation
+- **Server-side grids** — paginated or infinite loading, server filtering and sorting
+- **Tree data** — hierarchical rows with expand/collapse
+- **Editable grids** — inline editing, validation, bulk edits, linked edits
+- **Real-time grids** — WebSocket/SSE updates, diff patching, cell flash
+- **Pivot tables** — row and column pivots, measures, totals
+- **Export workflows** — CSV, Excel, Parquet, Arrow, clipboard
+- **Secured grids** — column visibility by role, data masking, conditional editability
+
+## System Architecture
+
+The AI integration follows a layered flow:
+
+```
+User prompt / dataset
+        ↓
+generate_grid_from_intent   ← parses intent, maps to features, delegates
+        ↓
+design_grid_structure       ← columns, GridSpec, rowId, data source
+configure_grid_features     ← sorting, filtering, grouping, selection
+apply_ui_customization      ← renderers, styling, layout
+setup_data_integration      ← correct data source hook
+        ↓
+[optional skills]
+setup_cell_editing          ← editors, validation, bulk edits
+apply_business_logic        ← aggregations, KPIs, expressions, pivots
+enhance_grid_with_extensions← export, clipboard, API extensions
+configure_theming           ← CSS, themes, Tailwind, CSS Modules
+optimize_grid_performance   ← row height, buffering, React Compiler
+enable_realtime_updates     ← WebSocket/SSE, diff patching, cell flash
+apply_security_controls     ← role-based visibility, masking
+        ↓
+validate_and_refine_config  ← type-check, fix mistakes, enforce rules
+        ↓
+generate_grid_code          ← final React component with all imports
+```
+
+For targeted requests ("add Excel export", "switch to server-side loading"), the agent invokes
+only the relevant skill directly — it does not run the full pipeline every time.
+
+## Terminology
+
+| Term | Meaning |
+|---|---|
+| **Agent skill** | A focused instruction set that gives an AI agent deep knowledge of one area of the grid |
+| **GridSpec** | The TypeScript generic interface that types row data, column extensions, and API extensions |
+| **Data source** | A hook (`useClientDataSource`, `useServerDataSource`, etc.) that provides rows to the grid |
+| **Cell renderer** | A React component that renders the content of a single cell |
+| **Column extension** | Extra typed properties added to column definitions via `GridSpec` |
+| **API extension** | Custom imperative methods added to the grid API via `apiExtension` |
+| **Skill chain** | A sequence of skills invoked in order to build a complete grid from scratch |
+| **Targeted invocation** | Calling a single skill directly for a specific, scoped change |
+
+## Next Steps
+
+::next[/docs/ai-getting-started]
+::next[/docs/ai-agent-skills]

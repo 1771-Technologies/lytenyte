@@ -1,0 +1,10 @@
+{
+  "title": "AI Agents",
+  "pages": [
+    "ai-overview",
+    "ai-getting-started",
+    "ai-agent-skills",
+    "ai-examples"
+  ],
+  "defaultOpen": true
+}

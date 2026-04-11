@@ -18,7 +18,8 @@
     "(tree-data)",
     "(components)",
     "(export)",
-    "(misc)"
+    "(misc)",
+    "(ai-agents)"
   ],
   "root": true
 }

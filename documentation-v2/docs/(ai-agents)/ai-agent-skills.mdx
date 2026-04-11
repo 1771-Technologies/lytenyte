@@ -1,0 +1,401 @@
+---
+title: Agent Skills
+step: Explore all 15 LyteNyte Grid agent skills — what each one covers, its inputs and outputs, and how they chain together.
+description: >
+  A reference for all 15 LyteNyte Grid agent skills — what each skill covers, its inputs and
+  outputs, how skills interact, and how to extend the system with new skills.
+---
+
+Agent skills are focused instruction sets that give AI coding agents deep, accurate knowledge of
+one specific area of LyteNyte Grid. Instead of a single large prompt that covers everything, each
+skill is scoped to a domain — column design, feature wiring, theming, export, and so on.
+
+When you prompt your agent to build a grid, it selects and chains the relevant skills automatically.
+For targeted changes, it invokes a single skill directly.
+
+## Why Skills Instead of Direct Generation
+
+A single monolithic prompt for a complex library like LyteNyte Grid has two problems: it's too
+large to fit in context reliably, and it mixes concerns in ways that cause the agent to make
+mistakes at the boundaries.
+
+Skills solve this by:
+
+- **Scoping knowledge** — each skill only knows what it needs to know for its domain
+- **Encoding constraints** — rules, required fields, and common mistakes are baked in per skill
+- **Enabling composition** — skills produce structured outputs that downstream skills consume
+- **Staying current** — skills are versioned alongside the grid source
+
+## Skill Categories
+
+Skills are grouped into four categories based on when they run in the generation pipeline:
+
+| Category | Skills |
+|---|---|
+| Orchestration | `generate_grid_from_intent` |
+| Structure & Data | `design_grid_structure`, `setup_data_integration`, `configure_server_data_source` |
+| Features & Logic | `configure_grid_features`, `setup_cell_editing`, `apply_business_logic`, `enhance_grid_with_extensions`, `enable_realtime_updates`, `apply_security_controls` |
+| Presentation | `apply_ui_customization`, `configure_theming`, `optimize_grid_performance` |
+| Output & Quality | `validate_and_refine_config`, `generate_grid_code` |
+
+## Available Skills
+
+### `generate_grid_from_intent`
+
+The orchestration entry point. Parses a natural language description or dataset sample and
+coordinates all other skills to produce a complete grid.
+
+**Input:** Natural language prompt, dataset sample (JSON or TypeScript type), or partial config  
+**Output:** A structured config object passed to downstream skills — columns, features list, data source type, customizations
+
+**What it does:**
+- Extracts entities, data types, and desired features from the prompt
+- Infers column names and types from dataset samples
+- Maps intent keywords to grid features (e.g. "group by" → `groupDimensions`, "export" → export API)
+- Decides which skills to invoke and in what order
+- Defaults to client-side data source when intent is ambiguous
+
+---
+
+### `design_grid_structure`
+
+Scaffolds the foundational grid setup — typed column definitions, `GridSpec` generics, field
+configuration, and data source initialization.
+
+**Input:** Column list with inferred types, dataset shape  
+**Output:** `GridSpec` interface, `columns` array, `useClientDataSource` call, minimal `<Grid>` JSX
+
+**What it does:**
+- Constructs the `GridSpec` generic interface (`<T, C, S, E>`) for type-safe columns and API
+- Builds the `columns` array with correct TypeScript types
+- Configures `field` as a string path, dot-path, index, or function
+- Infers column `type`: `"text"`, `"number"`, `"date"`, `"boolean"`
+- Initializes `useClientDataSource` with `rows` and `rowId`
+- Adds `columnGroups`, `columnMarker`, and `columnBase` when appropriate
+
+---
+
+### `configure_grid_features`
+
+Wires functional features onto an existing grid config using declarative props.
+
+**Input:** Feature list from `generate_grid_from_intent`, existing grid config  
+**Output:** Updated `<Grid>` JSX with feature props, controlled state handlers
+
+**What it covers:**
+- Sorting — `sortDimensions`, `onSortDimensionsChange`, multi-column sort
+- Filtering — `filterModel`, `quickSearch`, per-column `filterType`
+- Grouping — `groupDimensions`, `rowGroupColumn`
+- Aggregation — `aggregations` with built-ins (`"sum"`, `"avg"`, `"min"`, `"max"`, `"count"`) or custom functions
+- Row selection — `rowSelection` with `"single"`, `"multi"`, isolated, or linked modes
+- Column visibility — `columnVisibility`, `onColumnVisibilityChange`
+
+---
+
+### `apply_ui_customization`
+
+Handles all visual and rendering customization — cell renderers, header renderers, conditional
+styling, value formatting, column sizing, and pinning.
+
+**Input:** Column list, feature config, styling requirements  
+**Output:** Updated columns with `cellRenderer`, `headerRenderer`, `cellStyle`, `rowStyle`, layout props
+
+**What it covers:**
+- Cell renderers — `(params: CellRendererParams<Spec>) => ReactNode`
+- Header renderers — custom sort indicators, filter icons, tooltips
+- Conditional styling — `cellStyle` and `rowStyle` returning CSS class strings or inline style objects
+- Column layout — `width`, `minWidth`, `maxWidth`, `pin: "start" | "end"`, `flex`, `hidden`
+- Row height — fixed number or `(params) => number` for variable height
+
+---
+
+### `setup_data_integration`
+
+Selects and configures the correct data source hook for the loading strategy.
+
+**Input:** Data source type from `generate_grid_from_intent`, dataset or API description  
+**Output:** Correct data source hook call with all required parameters
+
+**Data sources it can wire:**
+
+| Hook | Edition | Best for |
+|---|---|---|
+| `useClientDataSource` | Core & PRO | All data in memory, up to ~500k rows |
+| `useServerDataSource` | PRO | Large datasets, server handles sort/filter/group |
+| `useTreeDataSource` | PRO | Hierarchical/nested data |
+| Paginated (via server source) | PRO | Traditional page navigation |
+| Infinite scroll (via server source) | PRO | Unbounded scroll through server data |
+
+---
+
+### `configure_server_data_source`
+
+Implements the full `useServerDataSource` contract — load callback, server-side sort/filter/group,
+pagination, tree loading, optimistic updates, and refresh.
+
+**Input:** API description, server capabilities, data shape  
+**Output:** Complete `useServerDataSource` call with typed `load` callback
+
+**What it covers:**
+- `load` callback with `sortModel`, `filterModel`, `groupModel`, `groupKeys`, `skip`, `take`, `signal`
+- `AbortSignal` handling to cancel stale requests
+- Server-side sorting, filtering, and grouping patterns
+- Lazy group loading via `groupKeys`
+- Server-side tree data with parent/child loading
+- Optimistic update pattern (apply → sync → revert on failure)
+- `source.refresh()` for manual reload triggers
+
+---
+
+### `setup_cell_editing`
+
+Configures all forms of cell editing — basic edits, custom editors, validation, bulk editing,
+full-row editing, and linked cell edits.
+
+**Input:** Editable column list, validation rules, edit mode  
+**Output:** Updated columns with `editable`, `cellEditor`, `editValidate`, `editSetter`; grid with `onCellEditCommit`
+
+**What it covers:**
+- Per-column `editable: true` or conditional `editable: (params) => boolean`
+- Custom `cellEditor` components with `commitEdit` / `cancelEdit` callbacks
+- `editValidate` — return an error string to block commit, `null` to allow
+- `editSetter` — transform the value before it's committed
+- Bulk editing across cell range selections (PRO)
+- `editMode: "row"` for full-row editing with `onRowEditCommit`
+- Linked edits — updating related cells when one cell changes
+- Programmatic editing via `api.editStart()`, `api.editStop()`, `api.editCommit()`
+
+---
+
+### `apply_business_logic`
+
+Layers domain-specific logic onto the grid — custom aggregations, KPI calculations, expression
+filters, having filters, pivot measures, and custom sort/group functions.
+
+**Input:** Business requirements, domain data types  
+**Output:** Custom aggregation functions, expression filter config, pivot measures, group/sort functions
+
+**What it covers:**
+- Custom `AggregationFn<T>` — weighted averages, margin %, YoY delta, any KPI
+- Expression filters (PRO) — per-row filter expressions with arithmetic, comparisons, string/date functions
+- Having filters (PRO) — filter applied after grouping, like SQL `HAVING`
+- Label filters (PRO) — filter applied to group label rows
+- Pivot measures (PRO) — custom measure functions with `grandTotals` config
+- `groupFn` — custom group key derivation (e.g. fiscal quarter from date)
+- `sortFn` — custom sort comparator (e.g. status priority order)
+- Pinned summary rows via `rowsPinned`
+
+---
+
+### `enhance_grid_with_extensions`
+
+Adds advanced capabilities — data export, clipboard, row actions, and custom API extensions.
+
+**Input:** Extension requirements (export formats, row actions, custom API methods)  
+**Output:** Export button wiring, API extension type and implementation, row action column
+
+**What it covers:**
+- Export — `api.exportCsv()`, `api.exportExcel()`, `api.exportParquet()`, `api.exportArrow()`
+- Clipboard — `api.clipboardCopy()`, `api.clipboardPaste()` (PRO, requires cell range selection)
+- Row action columns — cell renderer with edit/delete/custom action buttons
+- Custom API extensions — typed imperative methods added via `apiExtension` prop
+
+---
+
+### `configure_theming`
+
+Sets up the visual theme — CSS imports, custom property overrides, Tailwind, CSS Modules, and
+Emotion/CSS-in-JS integration.
+
+**Input:** Theme preference, styling framework in use  
+**Output:** Correct CSS import statements, custom property overrides, wrapper styles
+
+**What it covers:**
+- Required `grid.css` import (always)
+- Prebuilt themes: `light`, `dark`, `light-dark`, `cotton-candy`, `shadcn`, `teal`, `term`
+- CSS custom property overrides for colors, row height, header height, font size
+- Tailwind integration — classes on wrappers and cell renderer content
+- CSS Modules — module class on the grid wrapper
+- Emotion/CSS-in-JS — `css` prop on the wrapper element
+- Dark mode toggle patterns
+
+---
+
+### `optimize_grid_performance`
+
+Configures the grid for production-scale performance — row height strategy, buffering, stable
+references, React Compiler compatibility, and efficient update patterns.
+
+**Input:** Dataset size, update frequency, performance requirements  
+**Output:** Performance-optimized grid config with correct row height, buffer settings, and memoization
+
+**What it covers:**
+- Fixed `rowHeight` for O(1) virtual bounds (recommended for > 10k rows)
+- `rowBuffer` tuning — rows rendered outside the viewport (default: 3, range: 3–10)
+- Stable `columns`, renderer, and `rowId` references
+- React Compiler compatibility notes
+- `api.rowsUpdate()` for diff-patching instead of full array replacement
+- Batching high-frequency updates before applying
+- Column virtualization behavior
+
+---
+
+### `enable_realtime_updates`
+
+Integrates live data streams — WebSocket, SSE, auto-refresh, diff-patching, and cell flash.
+
+**Input:** Data stream type (WebSocket/SSE/polling), update frequency, row data type  
+**Output:** Effect hook with stream connection, buffered update loop, cell flash config
+
+**What it covers:**
+- `api.rowsUpdate()`, `api.rowsAdd()`, `api.rowsDelete()` — the three mutation methods
+- WebSocket integration with `requestAnimationFrame` batching
+- SSE (Server-Sent Events) integration
+- Debounced auto-refresh polling pattern
+- `flashOnChange` and `flashDuration` per column for visual diff highlighting
+- High-frequency update strategy — `Map<rowId, Row>` buffer, deduplicate by rowId, flush per frame
+
+---
+
+### `apply_security_controls`
+
+Implements application-level security patterns — column visibility by role, data masking,
+conditional editability, and row-level access control.
+
+**Input:** User role/permissions model, sensitive column list  
+**Output:** Role-filtered columns, masking cell renderers, conditional `editable` functions, audit log wiring
+
+**What it covers:**
+- Role-based column visibility via `hidden` or `columnVisibility` prop
+- Data masking via cell renderer (show `••••••••` for unauthorized users)
+- Conditional `editable` — prevent editing based on role or row state
+- Row-level filtering enforced server-side (never client-only for sensitive data)
+- `isRowSelectable` — disable row selection by role
+- Audit trail on `onCellEditCommit`
+
+:::caution
+
+`hidden: true` and client-side masking are UI-only. For truly sensitive data, always enforce
+access control at the API/server level. The row data is still present in the JavaScript runtime
+even when a column is hidden.
+
+:::
+
+---
+
+### `validate_and_refine_config`
+
+Reviews a generated config for correctness, type safety, and best practices before code generation.
+
+**Input:** Complete grid config from upstream skills  
+**Output:** Corrected config with a list of changes, or a validation report for non-auto-fixable issues
+
+**What it checks:**
+- `rowId` is defined on the data source
+- Every column has a unique `columnId`
+- `rowSource` prop is present on `<Grid>`
+- CSS imports are present (`grid.css` + a theme)
+- PRO features use `@1771technologies/lytenyte-pro` imports
+- `activateLicense()` is called before `<Grid>` renders when using PRO
+- `GridSpec` generic is defined when custom extensions are used
+- Renderer params are typed correctly (not `any`)
+- Anonymous renderer functions in JSX props are extracted to stable references
+- `groupDimensions` is set when `aggregations` is defined
+- `pin: "start"` not `pin: true`
+
+---
+
+### `generate_grid_code`
+
+Produces the final, ready-to-run React component with all imports, TypeScript types, hooks, and JSX.
+
+**Input:** Validated config from `validate_and_refine_config`  
+**Output:** Complete `.tsx` file — imports, `GridSpec`, `columns`, data source hook, `<Grid>` JSX
+
+**What it produces:**
+- Full React functional component with TypeScript
+- Correct import statements (package + CSS)
+- `GridSpec` type definition
+- Data source hook call
+- `<Grid>` JSX with all configured props
+- Headless component composition when custom layout is needed
+
+## Skill Execution Flow
+
+For a new grid from scratch, the agent follows this sequence:
+
+```
+generate_grid_from_intent
+  → design_grid_structure
+  → configure_grid_features
+  → apply_ui_customization
+  → setup_data_integration
+  → [optional: setup_cell_editing]
+  → [optional: apply_business_logic]
+  → [optional: enhance_grid_with_extensions]
+  → [optional: configure_theming]
+  → [optional: optimize_grid_performance]
+  → [optional: enable_realtime_updates]
+  → [optional: apply_security_controls]
+  → validate_and_refine_config
+  → generate_grid_code
+```
+
+For targeted requests, the agent invokes only the relevant skill:
+
+- "Add Excel export" → `enhance_grid_with_extensions`
+- "Switch to server-side loading" → `configure_server_data_source`
+- "Add inline editing with validation" → `setup_cell_editing`
+- "Apply the shadcn theme" → `configure_theming`
+
+## How Skills Interact
+
+Skills communicate through a shared config object. Each skill reads from and writes to this
+object as it runs:
+
+```
+generate_grid_from_intent → { dataset, columns, features, dataSourceType, customizations }
+design_grid_structure     → adds GridSpec, typed columns, rowId
+configure_grid_features   → adds sortDimensions, filterModel, groupDimensions, rowSelection
+apply_ui_customization    → adds cellRenderer, headerRenderer, cellStyle, layout props
+setup_data_integration    → adds data source hook call
+validate_and_refine_config→ corrects errors, enforces rules
+generate_grid_code        → consumes full config, emits final component
+```
+
+## Extensibility
+
+You can add new skills to `.agents/skills/` in your project. A skill is a Markdown file with a
+YAML frontmatter block and a body that describes the skill's responsibility, inputs, outputs, and
+rules. The agent picks up any skill in `.agents/skills/` automatically.
+
+A minimal custom skill looks like this:
+
+```md
+---
+name: my_custom_skill
+description: Does something specific to my project.
+tools: ["read", "write"]
+---
+
+## Responsibility
+Describe what this skill does.
+
+## Rules
+- Rule 1
+- Rule 2
+```
+
+## Constraints and Limitations
+
+- Skills encode knowledge of the grid API at the time they were written — update them when you
+  upgrade LyteNyte Grid to a new major version
+- Skills do not have access to your runtime data — they work from types and samples you provide
+- PRO skills (`configure_server_data_source`, tree data, pivoting, expressions) require a valid
+  PRO license to use the generated code in production
+- The agent may invoke skills in a different order than the default pipeline for targeted requests
+  — this is expected behavior
+
+## Next Steps
+
+::next[/docs/ai-examples]

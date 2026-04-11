@@ -1,0 +1,175 @@
+---
+title: Getting Started
+step: Install LyteNyte Grid's agent skills and generate your first production-ready grid component from a natural language prompt.
+description: >
+  Install LyteNyte Grid's agent skills and generate your first production-ready grid component
+  from a natural language prompt in minutes.
+---
+
+This guide walks you through installing the agent skills and generating your first grid with an
+AI coding agent. The whole process takes under five minutes.
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Node.js 18+** — required to run the `skills` CLI via `npx`
+- **A supported AI agent** — Cursor, Kiro, Claude Code, Codex, GitHub Copilot, or any agent
+  that reads from `.agents/skills/`
+- **LyteNyte Grid installed** — Core or PRO in your React project
+
+If you do not have LyteNyte Grid installed yet, see the [Installation guide](/docs/intro-installation).
+
+## Installing the Skills
+
+Run the following command from your project root to install all available skills:
+
+```sh
+npx skills add https://github.com/1771-technologies/lytenyte/tree/main/.agents/skills
+```
+
+This installs the skills into `.agents/skills/` in your project. Supported agents pick them up
+automatically — no additional configuration required.
+
+### Selective Installation
+
+If you only need specific skills, pass `--skill` flags:
+
+```sh
+npx skills add https://github.com/1771-technologies/lytenyte/tree/main/.agents/skills \
+  --skill generate_grid_from_intent \
+  --skill generate_grid_code \
+  --skill design_grid_structure
+```
+
+:::info
+
+The `skills` CLI supports 40+ agents. Run `npx skills add --help` to see all options,
+or visit [skills.sh](https://skills.sh/) to browse the full agent compatibility list.
+
+:::
+
+## Verifying the Installation
+
+After installation, your project should have a `.agents/skills/` directory:
+
+```
+your-project/
+└── .agents/
+    └── skills/
+        ├── generate_grid_from_intent/
+        │   └── SKILL.md
+        ├── design_grid_structure/
+        │   └── SKILL.md
+        ├── configure_grid_features/
+        │   └── SKILL.md
+        └── ... (12 more skills)
+```
+
+Your agent will read these files automatically when you start a new conversation.
+
+## Required Inputs
+
+When prompting your agent to generate a grid, you can provide any combination of:
+
+| Input | Description | Example |
+|---|---|---|
+| Natural language | Plain description of what you want | "A sales dashboard with region, product, revenue" |
+| Dataset sample | A TypeScript type or sample JSON rows | `type Row = { id: string; revenue: number }` |
+| Partial config | An existing column array or component | Paste your current `columns` array |
+| Feature list | Specific features to include | "with grouping, CSV export, and inline editing" |
+
+The more context you provide, the more accurate the output. A dataset type or sample is especially
+helpful for correct column type inference.
+
+## Minimal Usage Flow
+
+Here is the simplest possible prompt to get a working grid:
+
+> "Create a grid for this data: `[{ id: 1, name: 'Alice', score: 95 }, { id: 2, name: 'Bob', score: 82 }]`"
+
+The agent will:
+
+1. Infer column types (`name` → text, `score` → number)
+2. Scaffold a `GridSpec` interface
+3. Build the `columns` array with correct types
+4. Wire `useClientDataSource` with `rowId: (r) => r.id`
+5. Add the required CSS imports
+6. Output a complete, runnable React component
+
+## Output Structure
+
+The agent produces a single React component file. A typical output looks like this:
+
+```tsx
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-core";
+import type { Grid as GridTypes } from "@1771technologies/lytenyte-core";
+import "@1771technologies/lytenyte-core/grid.css";
+import "@1771technologies/lytenyte-core/light-dark.css";
+
+interface RowData {
+  id: number;
+  name: string;
+  score: number;
+}
+
+type Spec = GridTypes.GridSpec<RowData>;
+
+const columns: GridTypes.Column<Spec>[] = [
+  { columnId: "name", headerName: "Name", field: "name", width: 200 },
+  { columnId: "score", headerName: "Score", field: "score", type: "number", width: 120 },
+];
+
+export function ScoreGrid({ data }: { data: RowData[] }) {
+  const source = useClientDataSource<Spec>({ rows: data, rowId: (r) => r.id });
+
+  return (
+    <div style={{ height: 400 }}>
+      <Grid rowSource={source} columns={columns} />
+    </div>
+  );
+}
+```
+
+Every generated component includes:
+
+- Correct package imports (Core or PRO based on features used)
+- Required CSS imports (`grid.css` + a theme)
+- A typed `GridSpec` interface
+- Columns defined outside the component body
+- A `rowId` function on the data source
+- `import type` for type-only imports
+
+## Integration Points
+
+The generated component is a standard React component. Drop it into your app like any other:
+
+```tsx
+import { ScoreGrid } from "./ScoreGrid";
+
+export default function Dashboard() {
+  return <ScoreGrid data={myData} />;
+}
+```
+
+For server-side data, the agent generates a component that accepts a `rowSource` prop or
+wires `useServerDataSource` with your load callback. See the [Examples](/docs/ai-examples) page
+for server-side patterns.
+
+## Quick Validation
+
+After the agent generates a component, check these things before running it:
+
+- [ ] CSS imports are present (`grid.css` + a theme file)
+- [ ] `rowId` is defined on the data source call
+- [ ] `columns` is defined outside the component body
+- [ ] If using PRO features, `activateLicense()` is called before the component renders
+- [ ] The container has an explicit height (the grid needs a bounded height to virtualize rows)
+
+The `validate_and_refine_config` skill runs these checks automatically as part of the generation
+pipeline, so most issues are caught before the code is emitted.
+
+## Next Steps
+
+::next[/docs/ai-agent-skills]
+::next[/docs/ai-examples]

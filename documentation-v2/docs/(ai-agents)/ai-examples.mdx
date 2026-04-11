@@ -1,0 +1,531 @@
+---
+title: Examples
+step: See real prompts and their generated grid outputs — from simple client-side grids to server-side loading, real-time updates, and security patterns.
+description: >
+  Real-world prompts and their generated outputs — from simple client-side grids to server-side
+  loading, real-time updates, editing, pivoting, and security patterns.
+---
+
+This page shows a range of prompts and the grid configurations they produce. Each example maps
+the input prompt to the skills invoked and the key parts of the output.
+
+## Simple Client-Side Grid
+
+**Prompt:**
+> "Create a grid for this data: employees with id, name, department, and salary."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `generate_grid_code`
+
+**Output:**
+
+```tsx
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-core";
+import type { Grid as GridTypes } from "@1771technologies/lytenyte-core";
+import "@1771technologies/lytenyte-core/grid.css";
+import "@1771technologies/lytenyte-core/light-dark.css";
+
+interface Employee {
+  id: string;
+  name: string;
+  department: string;
+  salary: number;
+}
+
+type Spec = GridTypes.GridSpec<Employee>;
+
+const columns: GridTypes.Column<Spec>[] = [
+  { columnId: "name", headerName: "Name", field: "name", width: 200 },
+  { columnId: "department", headerName: "Department", field: "department", width: 160 },
+  { columnId: "salary", headerName: "Salary", field: "salary", type: "number", width: 120 },
+];
+
+export function EmployeeGrid({ data }: { data: Employee[] }) {
+  const source = useClientDataSource<Spec>({ rows: data, rowId: (r) => r.id });
+
+  return (
+    <div style={{ height: 500 }}>
+      <Grid rowSource={source} columns={columns} />
+    </div>
+  );
+}
+```
+
+**What changed from the prompt:**
+- `id` is used as `rowId` — inferred from the field name
+- `salary` gets `type: "number"` — inferred from the field name
+- `light-dark.css` is chosen as the default theme (auto system preference)
+
+---
+
+## Sorting and Filtering
+
+**Prompt:**
+> "Employee grid with sorting on all columns and text filtering on name and department."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `configure_grid_features` → `generate_grid_code`
+
+**Key additions to the output:**
+
+```tsx
+const columns: GridTypes.Column<Spec>[] = [
+  { columnId: "name", headerName: "Name", field: "name", width: 200, filterType: "text" },
+  { columnId: "department", headerName: "Department", field: "department", width: 160, filterType: "text" },
+  { columnId: "salary", headerName: "Salary", field: "salary", type: "number", width: 120 },
+];
+
+export function EmployeeGrid({ data }: { data: Employee[] }) {
+  const [sortDimensions, setSortDimensions] = useState<GridTypes.DimensionSort<Spec>[]>([]);
+  const [filterModel, setFilterModel] = useState<GridTypes.FilterModel<Spec>>({});
+
+  const source = useClientDataSource<Spec>({ rows: data, rowId: (r) => r.id });
+
+  return (
+    <div style={{ height: 500 }}>
+      <Grid
+        rowSource={source}
+        columns={columns}
+        sortDimensions={sortDimensions}
+        onSortDimensionsChange={setSortDimensions}
+        filterModel={filterModel}
+        onFilterModelChange={setFilterModel}
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## Grouping and Aggregation
+
+**Prompt:**
+> "Sales grid grouped by region, with sum of revenue and average of units sold per group."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `configure_grid_features` → `generate_grid_code`
+
+**Key output:**
+
+```tsx
+interface SalesRow {
+  id: string;
+  region: string;
+  product: string;
+  revenue: number;
+  unitsSold: number;
+}
+
+type Spec = GridTypes.GridSpec<SalesRow>;
+
+const columns: GridTypes.Column<Spec>[] = [
+  { columnId: "region", headerName: "Region", field: "region", width: 140 },
+  { columnId: "product", headerName: "Product", field: "product", width: 180 },
+  { columnId: "revenue", headerName: "Revenue", field: "revenue", type: "number", width: 130 },
+  { columnId: "unitsSold", headerName: "Units Sold", field: "unitsSold", type: "number", width: 120 },
+];
+
+export function SalesGrid({ data }: { data: SalesRow[] }) {
+  const source = useClientDataSource<Spec>({
+    rows: data,
+    rowId: (r) => r.id,
+    groupDimensions: [{ columnId: "region" }],
+    aggregations: {
+      revenue: "sum",
+      unitsSold: "avg",
+    },
+  });
+
+  return (
+    <div style={{ height: 500 }}>
+      <Grid rowSource={source} columns={columns} />
+    </div>
+  );
+}
+```
+
+---
+
+## Custom Cell Renderers
+
+**Prompt:**
+> "Order grid with a status badge column (active/pending/cancelled) and a currency-formatted total."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `apply_ui_customization` → `generate_grid_code`
+
+**Key output:**
+
+```tsx
+import type { CellRendererParams } from "@1771technologies/lytenyte-core/types";
+
+const statusColors = {
+  active: "bg-green-100 text-green-800",
+  pending: "bg-yellow-100 text-yellow-800",
+  cancelled: "bg-red-100 text-red-800",
+};
+
+function StatusCell({ value }: CellRendererParams<Spec>) {
+  const color = statusColors[value as keyof typeof statusColors] ?? "bg-gray-100 text-gray-800";
+  return (
+    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${color}`}>
+      {value}
+    </span>
+  );
+}
+
+function TotalCell({ value }: CellRendererParams<Spec>) {
+  return (
+    <span>
+      {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(value))}
+    </span>
+  );
+}
+
+const columns: GridTypes.Column<Spec>[] = [
+  { columnId: "orderId", headerName: "Order ID", field: "orderId", width: 120 },
+  { columnId: "status", headerName: "Status", field: "status", width: 120, cellRenderer: StatusCell },
+  { columnId: "total", headerName: "Total", field: "total", type: "number", width: 130, cellRenderer: TotalCell },
+];
+```
+
+---
+
+## Inline Cell Editing with Validation
+
+**Prompt:**
+> "Inventory grid where quantity and price are editable. Quantity must be a positive integer. Price must be > 0."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `setup_cell_editing` → `generate_grid_code`
+
+**Key output:**
+
+```tsx
+const columns: GridTypes.Column<Spec>[] = [
+  { columnId: "sku", headerName: "SKU", field: "sku", width: 120 },
+  { columnId: "name", headerName: "Name", field: "name", width: 200 },
+  {
+    columnId: "quantity",
+    headerName: "Quantity",
+    field: "quantity",
+    type: "number",
+    width: 110,
+    editable: true,
+    editValidate: (params) => {
+      const val = Number(params.newValue);
+      if (!Number.isInteger(val)) return "Must be a whole number";
+      if (val < 0) return "Must be positive";
+      return null;
+    },
+  },
+  {
+    columnId: "price",
+    headerName: "Price",
+    field: "price",
+    type: "number",
+    width: 110,
+    editable: true,
+    editValidate: (params) => {
+      if (Number(params.newValue) <= 0) return "Must be greater than 0";
+      return null;
+    },
+  },
+];
+
+export function InventoryGrid({ data, onUpdate }: { data: InventoryRow[]; onUpdate: (row: InventoryRow) => void }) {
+  const source = useClientDataSource<Spec>({ rows: data, rowId: (r) => r.sku });
+
+  return (
+    <div style={{ height: 500 }}>
+      <Grid
+        rowSource={source}
+        columns={columns}
+        onCellEditCommit={({ rowId, columnId, newValue }) => {
+          const row = data.find((r) => r.sku === rowId);
+          if (row) onUpdate({ ...row, [columnId]: newValue });
+        }}
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## Server-Side Loading
+
+**Prompt:**
+> "User grid that loads from /api/users with server-side sorting and filtering. Large dataset."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `configure_server_data_source` → `generate_grid_code`
+
+**Key output:**
+
+```tsx
+import { Grid, useServerDataSource, activateLicense } from "@1771technologies/lytenyte-pro";
+import type { Grid as GridTypes } from "@1771technologies/lytenyte-pro";
+import "@1771technologies/lytenyte-pro/grid.css";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+
+activateLicense("YOUR_LICENSE_KEY");
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  createdAt: string;
+}
+
+type Spec = GridTypes.GridSpec<User>;
+
+const columns: GridTypes.Column<Spec>[] = [
+  { columnId: "name", headerName: "Name", field: "name", width: 200, filterType: "text" },
+  { columnId: "email", headerName: "Email", field: "email", width: 240, filterType: "text" },
+  { columnId: "role", headerName: "Role", field: "role", width: 120, filterType: "set" },
+  { columnId: "createdAt", headerName: "Created", field: "createdAt", type: "date", width: 140 },
+];
+
+export function UserGrid() {
+  const source = useServerDataSource<Spec>({
+    rowId: (r) => r.id,
+    load: useCallback(async ({ sortModel, filterModel, skip, take, signal }) => {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sortModel, filterModel, skip, take }),
+        signal,
+      });
+      const { rows, total } = await res.json();
+      return { rows, rowCount: total };
+    }, []),
+  });
+
+  return (
+    <div style={{ height: 600 }}>
+      <Grid rowSource={source} columns={columns} rowHeight={40} />
+    </div>
+  );
+}
+```
+
+---
+
+## Real-Time Updates via WebSocket
+
+**Prompt:**
+> "Stock ticker grid that receives live price updates over WebSocket. Flash cells when price changes."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `enable_realtime_updates` → `optimize_grid_performance` → `generate_grid_code`
+
+**Key output:**
+
+```tsx
+interface StockRow {
+  symbol: string;
+  price: number;
+  change: number;
+  volume: number;
+}
+
+type Spec = GridTypes.GridSpec<StockRow>;
+
+const columns: GridTypes.Column<Spec>[] = [
+  { columnId: "symbol", headerName: "Symbol", field: "symbol", width: 100 },
+  {
+    columnId: "price",
+    headerName: "Price",
+    field: "price",
+    type: "number",
+    width: 120,
+    flashOnChange: true,
+    flashDuration: 400,
+  },
+  { columnId: "change", headerName: "Change", field: "change", type: "number", width: 110 },
+  { columnId: "volume", headerName: "Volume", field: "volume", type: "number", width: 120 },
+];
+
+export function StockGrid({ initialData }: { initialData: StockRow[] }) {
+  const source = useClientDataSource<Spec>({ rows: initialData, rowId: (r) => r.symbol });
+  const apiRef = useRef<GridTypes.API<Spec> | null>(null);
+
+  useEffect(() => {
+    const ws = new WebSocket("wss://api.example.com/stocks");
+    const buffer = new Map<string, StockRow>();
+
+    ws.onmessage = (event) => {
+      const row: StockRow = JSON.parse(event.data);
+      buffer.set(row.symbol, row); // deduplicate — latest wins
+    };
+
+    const flush = () => {
+      if (buffer.size > 0 && apiRef.current) {
+        apiRef.current.rowsUpdate([...buffer.values()]);
+        buffer.clear();
+      }
+      requestAnimationFrame(flush);
+    };
+    requestAnimationFrame(flush);
+
+    return () => ws.close();
+  }, []);
+
+  return (
+    <div style={{ height: 500 }}>
+      <Grid
+        rowSource={source}
+        columns={columns}
+        rowHeight={36}
+        apiExtension={(api) => {
+          apiRef.current = api;
+          return {};
+        }}
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## Export with Custom Button
+
+**Prompt:**
+> "Report grid with a toolbar button that exports to Excel with a timestamped filename."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `enhance_grid_with_extensions` → `generate_grid_code`
+
+**Key output:**
+
+```tsx
+type Spec = GridTypes.GridSpec<ReportRow, object, RowSource, { exportTimestamped: () => void }>;
+
+export function ReportGrid({ data }: { data: ReportRow[] }) {
+  const source = useClientDataSource<Spec>({ rows: data, rowId: (r) => r.id });
+  const apiRef = useRef<GridTypes.API<Spec> | null>(null);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: 600 }}>
+      <div style={{ padding: "8px 0" }}>
+        <button onClick={() => apiRef.current?.exportTimestamped()}>Export to Excel</button>
+      </div>
+      <div style={{ flex: 1 }}>
+        <Grid
+          rowSource={source}
+          columns={columns}
+          apiExtension={(api) => {
+            apiRef.current = api;
+            return {
+              exportTimestamped: () =>
+                api.exportExcel({ fileName: `report-${new Date().toISOString().slice(0, 10)}.xlsx` }),
+            };
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+## Role-Based Column Visibility
+
+**Prompt:**
+> "HR grid where salary and SSN columns are only visible to admin users."
+
+**Skills invoked:** `generate_grid_from_intent` → `design_grid_structure` → `apply_security_controls` → `generate_grid_code`
+
+**Key output:**
+
+```tsx
+export function HRGrid({ data, userRole }: { data: Employee[]; userRole: "admin" | "manager" | "viewer" }) {
+  const source = useClientDataSource<Spec>({ rows: data, rowId: (r) => r.id });
+
+  const columnVisibility = useMemo(
+    () => ({
+      salary: userRole === "admin",
+      ssn: userRole === "admin",
+    }),
+    [userRole],
+  );
+
+  return (
+    <div style={{ height: 500 }}>
+      <Grid rowSource={source} columns={columns} columnVisibility={columnVisibility} />
+    </div>
+  );
+}
+```
+
+:::caution
+
+`columnVisibility` is UI-only. The row data is still present in the JavaScript runtime. For
+truly sensitive fields, exclude them server-side before sending to the client.
+
+:::
+
+---
+
+## Feature Combinations
+
+The table below shows how the output changes as you add features to the same base prompt:
+
+| Prompt addition | Skills added | Key output change |
+|---|---|---|
+| "with sorting" | `configure_grid_features` | `sortDimensions` state + `onSortDimensionsChange` |
+| "with text search" | `configure_grid_features` | `quickSearch` state + `onQuickSearchChange` |
+| "grouped by category" | `configure_grid_features` | `groupDimensions` on data source |
+| "with sum totals" | `configure_grid_features` | `aggregations` on data source |
+| "editable cells" | `setup_cell_editing` | `editable: true` + `onCellEditCommit` |
+| "export to CSV" | `enhance_grid_with_extensions` | `api.exportCsv()` wired to a button |
+| "server-side" | `configure_server_data_source` | `useServerDataSource` with `load` callback |
+| "real-time via WebSocket" | `enable_realtime_updates` | `useEffect` with WS + `api.rowsUpdate()` |
+| "shadcn theme" | `configure_theming` | `import ".../shadcn.css"` |
+| "admin-only columns" | `apply_security_controls` | `columnVisibility` derived from role |
+
+---
+
+## Edge Cases
+
+### No `id` field in dataset
+
+When the dataset has no obvious ID field, the agent picks the most unique-looking column and
+notes the assumption:
+
+```tsx
+// No 'id' field found — using 'email' as rowId (assumed unique)
+const source = useClientDataSource<Spec>({ rows: data, rowId: (r) => r.email });
+```
+
+### Ambiguous data source intent
+
+When the prompt says "large dataset" without specifying server-side, the agent defaults to
+client-side and adds a comment:
+
+```tsx
+// Using client-side source. For datasets > 500k rows, switch to useServerDataSource (PRO).
+const source = useClientDataSource<Spec>({ rows: data, rowId: (r) => r.id });
+```
+
+### PRO feature without license call
+
+If the prompt implies a PRO feature (server-side, pivoting, tree data), the agent always
+includes `activateLicense()` and a comment:
+
+```tsx
+// PRO license required — replace with your license key
+activateLicense("YOUR_LICENSE_KEY");
+```
+
+### Missing CSS import
+
+The `validate_and_refine_config` skill catches missing CSS imports before code generation.
+If somehow omitted, the grid renders blank — the fix is always:
+
+```tsx
+import "@1771technologies/lytenyte-core/grid.css";
+import "@1771technologies/lytenyte-core/light-dark.css";
+```
+
+## Next Steps
+
+::next[/docs/intro-getting-started]
+::next[/docs/ai-agent-skills]
