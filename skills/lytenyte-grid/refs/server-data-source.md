@@ -2,6 +2,13 @@
 
 Use `useServerDataSource` when your dataset is too large to load into the browser at once. Supports viewport-based loading of millions of rows.
 
+**Step-by-step to set up a server data source:**
+1. Implement a `queryFn` that accepts `params.requests` and `params.queryKey`, sends them to your backend, and returns `DataResponse[]`
+2. Pass `queryKey` with any values that should trigger a full reset on change (sort model, filter model)
+3. Your server reads `request.start`/`request.end` to determine which rows to return, and `request.path` to know which group is being expanded
+4. Return `size` as the **total** row count at that path (not just the current page), so the grid can size the scrollbar correctly
+5. Use `asOfTime: Date.now()` on every response so out-of-order responses are discarded correctly
+
 ## Basic Setup
 
 ```tsx

@@ -2,6 +2,13 @@
 
 Pivoting creates dynamic columns from the unique values of a column, then aggregates measures for each pivot intersection. Managed entirely through the **client data source**.
 
+**Step-by-step to enable pivoting:**
+1. Set `pivotMode: true` on `useClientDataSource`
+2. Define a `pivotModel` with `columns` (what generates the dynamic column headers), `rows` (grouping axis), and `measures` (what to aggregate)
+3. Register named aggregator functions with `aggregateFns` on the data source
+4. Call `ds.usePivotProps()` inside the component and spread the result onto `<Grid />`
+5. Do NOT also pass `columns` or `rowSource` directly — `usePivotProps()` provides those
+
 ## Minimum Setup
 
 ```tsx

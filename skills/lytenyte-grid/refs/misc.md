@@ -21,7 +21,7 @@ LyteNyte Grid follows the [ARIA Grid Pattern](https://www.w3.org/WAI/ARIA/apg/pa
 
 On macOS: use `Cmd` instead of `Ctrl`.
 
-### Cell Selection (PRO — `cellSelectionMode="range"`)
+### Cell Selection (`cellSelectionMode="range"`)
 
 | Key               | Action                  |
 | ----------------- | ----------------------- |

@@ -44,6 +44,12 @@ Row pinning is configured on the **data source**, not the grid directly. See the
 
 ## Row Detail (Master-Detail)
 
+**Step-by-step to add master-detail:**
+1. Define a `rowDetailRenderer` component on the grid
+2. Add a toggle button in a cell renderer (typically the marker column) that calls `api.rowDetailToggle(row.id)`
+3. Optionally set `rowDetailHeight` — use `"auto"` for content-sized height (causes two-phase render) or a fixed pixel value for smoother scrolling
+4. For controlled expansion state, provide `rowDetailExpansions` + `onRowDetailExpansionsChange`
+
 Define a `rowDetailRenderer` on the grid to enable expandable detail sections:
 
 ```tsx

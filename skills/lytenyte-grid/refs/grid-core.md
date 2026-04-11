@@ -236,6 +236,61 @@ Full headless mode (render every cell yourself):
 
 Note: for `HeaderGroupCell`, use `c.idOccurrence` as the key (group headers can repeat across splits).
 
+## Events System
+
+LyteNyte Grid fires events for user interactions. Pass a memoized `events` object to the `events` prop:
+
+```tsx
+<Grid
+  events={useMemo<Grid.Events<GridSpec>>(() => ({
+    cell: {
+      click: ({ row, column, event, api }) => { /* ... */ },
+      dblClick: ({ row, column, event, api }) => { /* ... */ },
+      contextMenu: ({ row, column, event, api }) => {
+        event.preventDefault();   // suppress browser menu
+        event.stopPropagation();  // prevent bubbling
+      },
+      focus: ({ row, column, event, api }) => { /* ... */ },
+      blur: ({ row, column, api }) => { /* ... */ },
+      mouseEnter: ({ row, column, layout, api }) => { /* ... */ },
+      mouseLeave: ({ row, column, api }) => { /* ... */ },
+    },
+    headerCell: {
+      click: ({ column, event, api }) => { /* ... */ },
+      contextMenu: ({ column, event, api }) => { /* ... */ },
+    },
+    row: {
+      click: ({ row, event, api }) => { /* ... */ },
+      keyDown: ({ event, row, api }) => { /* ... */ },
+    },
+    viewport: {
+      keyDown: ({ event }) => { /* catch-all keyboard handler */ },
+      scroll: ({ viewport }) => { /* viewport scroll position */ },
+      scrollEnd: ({ viewport }) => { /* fires when scrolling stops */ },
+    },
+  }), [])}
+/>
+```
+
+**Key rules:**
+- **Always memoize `events`** — a new object reference on every render triggers re-subscriptions inside the grid. Wrap in `useMemo` (or use the React Compiler).
+- `cell.contextMenu`: always call both `event.preventDefault()` AND `event.stopPropagation()` — one prevents the browser menu, the other stops parent handlers.
+- `viewport.scrollEnd` is the correct place to implement infinite-scroll triggers (check distance from bottom, push more data).
+- `row.keyDown` is preferable to `viewport.keyDown` for row-specific keyboard behavior (e.g., spacebar to select, Enter to open detail).
+
+### Using Event Data
+
+Cell events provide the full context: `row` (RowNode), `column`, `api`, `event` (native DOM event), and `layout` (position info). Use type guards before accessing `row.data`:
+
+```tsx
+cell: {
+  click: ({ row, column, api }) => {
+    if (!api.rowIsLeaf(row)) return; // guard — group rows have no row.data
+    console.log(row.data.price);
+  },
+}
+```
+
 ## Virtualization
 
 Virtualization is enabled by default — only visible rows/columns are in the DOM. Configure overscan:
