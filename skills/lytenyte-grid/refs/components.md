@@ -5,26 +5,42 @@ All components are in `@1771technologies/lytenyte-pro/components`. Most are PRO-
 **Step-by-step to add the most common components:**
 
 **Checkbox + SelectAll (row selection):**
+
 1. Import `Checkbox` and `SelectAll` from `@1771technologies/lytenyte-pro/components`
 2. Use `Checkbox` in the marker column cell renderer, call `api.rowHandleSelect` on click/keydown
 3. Use `SelectAll` in the marker column header renderer, pass `api` + a `slot` render prop
 
 **Context Menu:**
+
 1. Listen to `cell.contextMenu` in the grid `events` prop
 2. Call `event.preventDefault()` + `event.stopPropagation()` to suppress the browser menu
 3. Call `virtualFromXY(event.clientX, event.clientY)` to create a virtual anchor
 4. Pass that anchor to a `<Menu anchor={anchor} open={!!menuData} ...>` component
 
 **Loading overlay:**
+
 1. Track `isLoading` state from `ds.isLoading.useValue()` (server source) or your own state
 2. Render a `slotViewportOverlay` element on `<Grid />` when loading — must use `z-index ≥ 12`
 
 **No-rows overlay:**
+
 1. Track row count with `ds.rowCount?.useValue()` or a derived value
 2. Render a `slotRowsOverlay` element when count is 0
 
 ```ts
-import { PillManager, SmartSelect, ColumnManager, Menu, Popover, Dialog, SelectAll, Checkbox, TreeView, RowGroupCell, ViewportShadows } from "@1771technologies/lytenyte-pro/components";
+import {
+  PillManager,
+  SmartSelect,
+  ColumnManager,
+  Menu,
+  Popover,
+  Dialog,
+  SelectAll,
+  Checkbox,
+  TreeView,
+  RowGroupCell,
+  ViewportShadows,
+} from "@1771technologies/lytenyte-pro/components";
 ```
 
 Prebuilt styles (optional — or style yourself):
@@ -58,11 +74,16 @@ import { SelectAll, Checkbox } from "@1771technologies/lytenyte-pro/components";
     <Checkbox
       checked={selected}
       indeterminate={indeterminate}
-      onClick={(ev) => { ev.preventDefault(); toggle(); }}
-      onKeyDown={(ev) => { if (ev.key === "Enter" || ev.key === " ") toggle(); }}
+      onClick={(ev) => {
+        ev.preventDefault();
+        toggle();
+      }}
+      onKeyDown={(ev) => {
+        if (ev.key === "Enter" || ev.key === " ") toggle();
+      }}
     />
   )}
-/>
+/>;
 ```
 
 Props: `api` (required), `slot` (SlotComponent — receives `{ indeterminate, selected, toggle }`).
@@ -73,12 +94,12 @@ Props: `api` (required), `slot` (SlotComponent — receives `{ indeterminate, se
 
 Headless combobox/select. Four modes — must match `kind` with the correct `trigger`:
 
-| `kind` | `trigger` | `value` type |
-|---|---|---|
-| `"basic"` | `SmartSelect.BasicTrigger` | `T \| null` |
-| `"combo"` | `SmartSelect.ComboTrigger` | `T \| null` |
-| `"multi"` | `SmartSelect.MultiTrigger` | `T[]` |
-| `"multi-combo"` | `SmartSelect.MultiComboTrigger` | `T[]` |
+| `kind`          | `trigger`                       | `value` type |
+| --------------- | ------------------------------- | ------------ |
+| `"basic"`       | `SmartSelect.BasicTrigger`      | `T \| null`  |
+| `"combo"`       | `SmartSelect.ComboTrigger`      | `T \| null`  |
+| `"multi"`       | `SmartSelect.MultiTrigger`      | `T[]`        |
+| `"multi-combo"` | `SmartSelect.MultiComboTrigger` | `T[]`        |
 
 Each option must have a unique `id`.
 
@@ -109,10 +130,16 @@ Each option must have a unique `id`.
 For multi select, render chips inside the trigger:
 
 ```tsx
-<SmartSelect kind="multi" value={selected} options={options} onOptionChange={setSelected}
+<SmartSelect
+  kind="multi"
+  value={selected}
+  options={options}
+  onOptionChange={setSelected}
   trigger={
     <SmartSelect.MultiTrigger>
-      {selected.map(o => <SmartSelect.Chip key={o.id} option={o} />)}
+      {selected.map((o) => (
+        <SmartSelect.Chip key={o.id} option={o} />
+      ))}
     </SmartSelect.MultiTrigger>
   }
 >
@@ -142,18 +169,22 @@ Headless dropdown menu with nested submenus, radio groups, and checkboxes.
 
 ```tsx
 <Menu anchor={anchor} open={isOpen} onOpenChange={setOpen}>
-  <Menu.Trigger />       {/* or use anchor prop for virtual anchors */}
+  <Menu.Trigger /> {/* or use anchor prop for virtual anchors */}
   <Menu.Popover>
     <Menu.Container>
       <Menu.Title className="sr-only">Actions</Menu.Title>
       <Menu.Item onAction={() => doCopy()}>Copy</Menu.Item>
-      <Menu.Item onAction={() => doDelete()} disabled={!canDelete}>Delete</Menu.Item>
+      <Menu.Item onAction={() => doDelete()} disabled={!canDelete}>
+        Delete
+      </Menu.Item>
       <Menu.Divider />
       <Menu.RadioGroup value={sort} onChange={setSort}>
         <Menu.RadioItem value="asc">Ascending</Menu.RadioItem>
         <Menu.RadioItem value="desc">Descending</Menu.RadioItem>
       </Menu.RadioGroup>
-      <Menu.CheckboxItem checked={pinned} onCheckChange={setPinned}>Pin Column</Menu.CheckboxItem>
+      <Menu.CheckboxItem checked={pinned} onCheckChange={setPinned}>
+        Pin Column
+      </Menu.CheckboxItem>
       <Menu.Submenu>
         <Menu.SubmenuTrigger>More options</Menu.SubmenuTrigger>
         <Menu.SubmenuContainer>
@@ -269,7 +300,7 @@ import { PillManager } from "@1771technologies/lytenyte-pro/components";
   onPillRowChange={({ changed, full }) => {
     // pills reordered or moved between rows
   }}
-/>
+/>;
 ```
 
 Default rendering (no children prop) uses built-in layout. Headless rendering:
@@ -297,8 +328,8 @@ interface PillItemSpec {
   id: string;
   active: boolean;
   name?: string;
-  movable?: boolean;      // enable drag
-  tags?: string[];        // tags this pill can be moved to other rows with
+  movable?: boolean; // enable drag
+  tags?: string[]; // tags this pill can be moved to other rows with
   removable?: boolean;
 }
 ```
@@ -309,7 +340,7 @@ interface PillItemSpec {
 interface PillRowSpec {
   id: string;
   pills: PillItemSpec[];
-  accepts?: string[];     // tags from other rows that this row accepts
+  accepts?: string[]; // tags from other rows that this row accepts
   label?: string;
   type?: "columns" | "row-groups" | "row-pivots" | "column-pivots" | "measures" | string;
 }
@@ -342,11 +373,11 @@ Specialized single-column grid for hierarchical lists (set filters, file trees, 
 ```tsx
 interface TreeViewItem {
   id: string;
-  path: string[];   // determines tree structure
+  path: string[]; // determines tree structure
   name?: string;
 }
 
-<TreeView items={flatItems} defaultExpansion={1} />
+<TreeView items={flatItems} defaultExpansion={1} />;
 ```
 
 `defaultExpansion`: `true` (all), `false` (none), or `number` (expand depth ≤ N).
@@ -357,11 +388,7 @@ Controlled selection:
 const ref = useRef<TreeViewAPI | null>(null);
 // ref.current.rowsSelected() — get selected items
 
-<TreeView
-  items={items}
-  rowSelection={rowsSelected}
-  onRowSelectionChange={setSelection}
-/>
+<TreeView items={items} rowSelection={rowsSelected} onRowSelectionChange={setSelection} />;
 ```
 
 Selection is `RowSelectionLinked` — traverse the tree to find selected leaf items.
@@ -460,14 +487,14 @@ Use `--ln-vp-width` / `--ln-vp-height` CSS variables to match viewport size.
 Shows scroll-position-aware shadows for pinned columns/rows:
 
 ```tsx
-<Grid slotShadows={ViewportShadows} />
+<Grid slotShadows={ViewportShadows} />;
 
 // slotShadows requires a component function (not an element)
 // To configure, wrap it:
 function MyShadows() {
   return <ViewportShadows start={false} end top bottom />;
 }
-<Grid slotShadows={MyShadows} />
+<Grid slotShadows={MyShadows} />;
 ```
 
 Props: `start`, `end`, `top`, `bottom` (all boolean, default true). Requires CSS styles — prebuilt themes include them, or style via `data-ln-y-status` / `data-ln-x-status` attributes (`"none"` | `"partial"` | `"full"`).

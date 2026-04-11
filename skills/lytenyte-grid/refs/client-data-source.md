@@ -105,6 +105,7 @@ Sort the auto-created group column using the special id `"__ln_group__"`:
 ## Row Grouping
 
 **Step-by-step to add row grouping:**
+
 1. Define a `group` function or dimension array on `useClientDataSource`
 2. Add a group column to the grid — either a dedicated column or use `RowGroupCell` from components
 3. Provide `onColumnsChange` so the grid can update sort state on group columns

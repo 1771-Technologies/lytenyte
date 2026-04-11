@@ -44,9 +44,9 @@ function ProductCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 
 ```ts
 interface GridSpec {
-  readonly data: MyRowType;               // shape of each row's data
-  readonly column?: { sort?: "asc" | "desc" | null };  // column extensions
-  readonly source?: RowSourceClient<GridSpec>;          // row source type
+  readonly data: MyRowType; // shape of each row's data
+  readonly column?: { sort?: "asc" | "desc" | null }; // column extensions
+  readonly source?: RowSourceClient<GridSpec>; // row source type
   readonly api?: { notifyUser: (msg: string) => void }; // API extensions
 }
 ```
@@ -54,9 +54,9 @@ interface GridSpec {
 All four fields are optional. The `Grid` namespace reads them:
 
 ```ts
-type Props  = Grid.Props<GridSpec>;
-type Col    = Grid.Column<GridSpec>;
-type API    = Grid.API<GridSpec>;
+type Props = Grid.Props<GridSpec>;
+type Col = Grid.Column<GridSpec>;
+type API = Grid.API<GridSpec>;
 ```
 
 ### `data`
@@ -64,7 +64,9 @@ type API    = Grid.API<GridSpec>;
 Drives `row.data` typing throughout the grid. Cell renderers, filter functions, and sort functions all infer from it:
 
 ```ts
-interface GridSpec { readonly data: { name: string; price: number } }
+interface GridSpec {
+  readonly data: { name: string; price: number };
+}
 
 // ✓ Type-safe
 const filter: Grid.T.FilterFn<GridSpec["data"]> = (row) => row.data.price > 50;
@@ -161,17 +163,17 @@ function MyCell(props: Grid.T.CellRendererParams<GridSpec>) { ... }
 Other renderer param types:
 
 ```ts
-Grid.T.HeaderParams<GridSpec>      // header renderer
-Grid.T.EditParams<GridSpec>        // edit renderer
-Grid.T.CellRendererParams<GridSpec> // cell renderer
+Grid.T.HeaderParams<GridSpec>; // header renderer
+Grid.T.EditParams<GridSpec>; // edit renderer
+Grid.T.CellRendererParams<GridSpec>; // cell renderer
 ```
 
 Derive renderer types from the column:
 
 ```ts
-type CellRenderer   = Required<Grid.Column<GridSpec>>["cellRenderer"];
+type CellRenderer = Required<Grid.Column<GridSpec>>["cellRenderer"];
 type HeaderRenderer = Required<Grid.Column<GridSpec>>["headerRenderer"];
-type EditRenderer   = Required<Grid.Column<GridSpec>>["editRenderer"];
+type EditRenderer = Required<Grid.Column<GridSpec>>["editRenderer"];
 ```
 
 ---
@@ -190,6 +192,7 @@ function MyCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 ```
 
 Row types:
+
 - `RowLeaf<T>` — leaf row with `row.data: T`
 - `RowGroup` — group/branch row with `row.id`, `row.depth`, `row.parentId`
 - `RowAggregated` — aggregated row
@@ -202,8 +205,7 @@ Row types:
 ```ts
 type FilterFn<T> = (row: RowLeaf<T>) => boolean;
 
-const priceFilter: Grid.T.FilterFn<GridSpec["data"]> = (row) =>
-  row.data.price > 100;
+const priceFilter: Grid.T.FilterFn<GridSpec["data"]> = (row) => row.data.price > 100;
 ```
 
 ---

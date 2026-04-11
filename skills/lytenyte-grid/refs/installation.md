@@ -41,15 +41,16 @@ Validation is **offline** — no network request is made. The key is encoded wit
 
 ### Watermark / Validation Errors
 
-| Message | Cause | Fix |
-|---|---|---|
-| "used for evaluation" | No key set | Call `activateLicense` |
-| "Invalid license key" | Typo / wrong key | Check key in client portal |
-| "License key expired" | Key covers an older version | Renew license |
+| Message               | Cause                       | Fix                        |
+| --------------------- | --------------------------- | -------------------------- |
+| "used for evaluation" | No key set                  | Call `activateLicense`     |
+| "Invalid license key" | Typo / wrong key            | Check key in client portal |
+| "License key expired" | Key covers an older version | Renew license              |
 
 ## CDN Usage
 
 All dist files are available via:
+
 - unpkg: `https://unpkg.com/@1771technologies/lytenyte-pro/dist/`
 - jsDelivr: `https://cdn.jsdelivr.net/npm/@1771technologies/lytenyte-pro/dist/`
 
@@ -62,10 +63,10 @@ The grid requires its own stylesheet. Import it before the grid renders — a mi
 import "@1771technologies/lytenyte-pro/grid-full.css";
 
 // Or selectively (smaller bundle):
-import "@1771technologies/lytenyte-pro/design.css";   // spacing/font tokens
-import "@1771technologies/lytenyte-pro/grid.css";      // base grid styles
-import "@1771technologies/lytenyte-pro/light.css";     // light color theme (pick one)
-import "@1771technologies/lytenyte-pro/dark.css";      // dark color theme
+import "@1771technologies/lytenyte-pro/design.css"; // spacing/font tokens
+import "@1771technologies/lytenyte-pro/grid.css"; // base grid styles
+import "@1771technologies/lytenyte-pro/light.css"; // light color theme (pick one)
+import "@1771technologies/lytenyte-pro/dark.css"; // dark color theme
 
 // For UI components (SmartSelect, Menu, PillManager, etc.):
 import "@1771technologies/lytenyte-pro/components.css";
@@ -74,7 +75,9 @@ import "@1771technologies/lytenyte-pro/components.css";
 Apply a theme by adding `ln-grid` + a theme class to a parent element:
 
 ```html
-<html class="ln-light ln-grid">...</html>
+<html class="ln-light ln-grid">
+  ...
+</html>
 ```
 
 ## Recommended Minimal Setup
@@ -90,7 +93,9 @@ activateLicense("<your-license-key>");
 // 3. Build the grid
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
 
-interface GridSpec { readonly data: { name: string; price: number } }
+interface GridSpec {
+  readonly data: { name: string; price: number };
+}
 
 function MyGrid() {
   const ds = useClientDataSource<GridSpec>({ data: myData });
@@ -110,8 +115,9 @@ function MyGrid() {
 ```
 
 Apply a theme by adding `ln-grid` + a theme class to a parent:
+
 - `ln-light` — light mode
-- `ln-dark` — dark mode  
+- `ln-dark` — dark mode
 - `ln-teal`, `ln-shadcn`, `ln-cotton-candy` — colored themes
 - `ln-grid` alone — no color, just structure (headless)
 

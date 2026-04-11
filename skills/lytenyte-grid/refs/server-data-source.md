@@ -3,6 +3,7 @@
 Use `useServerDataSource` when your dataset is too large to load into the browser at once. Supports viewport-based loading of millions of rows.
 
 **Step-by-step to set up a server data source:**
+
 1. Implement a `queryFn` that accepts `params.requests` and `params.queryKey`, sends them to your backend, and returns `DataResponse[]`
 2. Pass `queryKey` with any values that should trigger a full reset on change (sort model, filter model)
 3. Your server reads `request.start`/`request.end` to determine which rows to return, and `request.path` to know which group is being expanded
@@ -18,11 +19,11 @@ const ds = useServerDataSource<MyRowType>({
   queryFn: async (params) => {
     return await fetchFromServer(params.requests, params.queryKey);
   },
-  queryKey: [],       // dependency array — changes trigger full reset + refetch
-  blockSize: 100,     // rows per request block (optional)
+  queryKey: [], // dependency array — changes trigger full reset + refetch
+  blockSize: 100, // rows per request block (optional)
 });
 
-<Grid rowSource={ds} columns={columns} />
+<Grid rowSource={ds} columns={columns} />;
 ```
 
 `queryKey` works like React's `useMemo` dependencies — include sort/filter models here so the grid refetches when they change.
@@ -43,7 +44,7 @@ interface QueryFnParams<K extends unknown[]> {
 
 interface DataRequest {
   readonly id: string;
-  readonly path: (string | null)[];  // [] = root; ["Alpha"] = group expansion
+  readonly path: (string | null)[]; // [] = root; ["Alpha"] = group expansion
   readonly start: number;
   readonly end: number;
   readonly rowStartIndex: number;
@@ -62,8 +63,8 @@ interface DataRequest {
 interface DataResponse {
   readonly kind: "center";
   readonly data: (DataResponseLeafItem | DataResponseBranchItem)[];
-  readonly size: number;         // total row count at this path
-  readonly asOfTime: number;     // Unix timestamp — resolves out-of-order conflicts
+  readonly size: number; // total row count at this path
+  readonly asOfTime: number; // Unix timestamp — resolves out-of-order conflicts
   readonly path: (string | null)[];
   readonly start: number;
   readonly end: number;
@@ -80,7 +81,7 @@ interface DataResponseLeafItem {
 interface DataResponseBranchItem {
   readonly kind: "branch";
   readonly id: string;
-  readonly data: any;         // aggregated values
+  readonly data: any; // aggregated values
   readonly key: string | null;
   readonly childCount: number;
 }
@@ -101,7 +102,7 @@ Include sort model in `queryKey` — the source resets and refetches automatical
 const [columns, setColumns] = useState(initialColumns);
 
 const sort = useMemo(() => {
-  const col = columns.find(c => c.sort);
+  const col = columns.find((c) => c.sort);
   if (!col) return null;
   return { columnId: col.id, isDescending: col.sort === "desc" };
 }, [columns]);
@@ -131,18 +132,20 @@ The grid sends grouped requests using `path`. The server must return branch rows
 
 ```ts
 // Server response for a grouped view
-[{
-  kind: "center",
-  path: [],
-  start: 0,
-  end: 50,
-  size: 3,    // 3 group rows at root
-  asOfTime: Date.now(),
-  data: [
-    { kind: "branch", id: "g-usa", key: "USA", childCount: 1200, data: { avgRevenue: 50000 } },
-    { kind: "branch", id: "g-gbr", key: "GBR", childCount: 800,  data: { avgRevenue: 45000 } },
-  ],
-}]
+[
+  {
+    kind: "center",
+    path: [],
+    start: 0,
+    end: 50,
+    size: 3, // 3 group rows at root
+    asOfTime: Date.now(),
+    data: [
+      { kind: "branch", id: "g-usa", key: "USA", childCount: 1200, data: { avgRevenue: 50000 } },
+      { kind: "branch", id: "g-gbr", key: "GBR", childCount: 800, data: { avgRevenue: 45000 } },
+    ],
+  },
+];
 ```
 
 The grid sends `path: ["USA"]` when a user expands the USA group.
