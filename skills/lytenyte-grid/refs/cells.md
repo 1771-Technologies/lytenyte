@@ -26,18 +26,19 @@ const base: Grid.ColumnBase<GridSpec> = { cellRenderer: DefaultCell };
 
 ### Key Props on `CellRendererParams`
 
-| Prop | Description |
-|---|---|
-| `row` | `RowNode` — the row data (`row.data` on leaf rows) |
-| `column` | Column definition |
-| `api` | Grid API + row source methods |
-| `rowIndex` | Current rendered row index (0-based) |
-| `selected` | `boolean` — whether the row is selected |
-| `colIndex` | Column index in the current view |
+| Prop       | Description                                        |
+| ---------- | -------------------------------------------------- |
+| `row`      | `RowNode` — the row data (`row.data` on leaf rows) |
+| `column`   | Column definition                                  |
+| `api`      | Grid API + row source methods                      |
+| `rowIndex` | Current rendered row index (0-based)               |
+| `selected` | `boolean` — whether the row is selected            |
+| `colIndex` | Column index in the current view                   |
 
 ### Reading Cell Values
 
-Use `api.columnField(column, row)` to read the cell value for any row type (handles leaf, group, aggregated uniformly):
+Use `api.columnField(column, row)` to read the cell value for any row type (handles leaf, group, aggregated uniformly).
+If the use case requires it, the data for a cell can be directly read off the `row`, e.g. `row.data.x`.
 
 ```tsx
 function PriceCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
@@ -88,9 +89,7 @@ function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
         <div>{row.data.symbol}</div>
       </Tooltip.Trigger>
       <Tooltip.Portal>
-        <Tooltip.Content>
-          Network: {row.data.network}
-        </Tooltip.Content>
+        <Tooltip.Content>Network: {row.data.network}</Tooltip.Content>
       </Tooltip.Portal>
     </Tooltip.Root>
   );
@@ -144,11 +143,7 @@ function NumberCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
     });
   }, [diff]);
 
-  return (
-    <div ref={ref}>
-      {typeof field === "number" ? formatter.format(field) : "—"}
-    </div>
-  );
+  return <div ref={ref}>{typeof field === "number" ? formatter.format(field) : "—"}</div>;
 }
 ```
 
@@ -156,8 +151,12 @@ CSS for the flash animation:
 
 ```css
 @keyframes flash {
-  0%   { background-color: rgba(255, 255, 0, 0.5); }
-  100% { background-color: transparent; }
+  0% {
+    background-color: rgba(255, 255, 0, 0.5);
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 ```
 
@@ -166,15 +165,17 @@ CSS for the flash animation:
 Display the direction and magnitude of the change alongside the value:
 
 ```tsx
-{diff !== 0 && (
-  <div
-    ref={deltaRef}
-    className={diff < 0 ? "text-red-500" : "text-green-500"}
-    style={{ animation: "fadeOut 3s ease-out forwards" }}
-  >
-    {diff < 0 ? "▼" : "▲"} {Math.abs(diff).toFixed(2)}
-  </div>
-)}
+{
+  diff !== 0 && (
+    <div
+      ref={deltaRef}
+      className={diff < 0 ? "text-red-500" : "text-green-500"}
+      style={{ animation: "fadeOut 3s ease-out forwards" }}
+    >
+      {diff < 0 ? "▼" : "▲"} {Math.abs(diff).toFixed(2)}
+    </div>
+  );
+}
 ```
 
 ## Gotchas
@@ -184,8 +185,177 @@ Display the direction and magnitude of the change alongside the value:
 - **Cell renderers receive new props on every render** — do not use deep equality checks or memoize based on props inside renderers. The grid controls when renderers re-render; hook into that rather than trying to suppress it.
 - **`useRef` for diff tracking, not `useState`** — for diff flashing, tracking the previous value with `useRef` works across virtualization remounts. `useState` would reset on unmount and produce false "new value" flashes for rows that just scrolled back into view.
 
+## Cell Range Selection
+
+### Enabling Cell Selection
+
+Set `cellSelectionMode` on the grid:
+
+```tsx
+<Grid cellSelectionMode="range"       ... />  // single contiguous range
+<Grid cellSelectionMode="multi-range" ... />  // multiple ranges (Ctrl/Cmd + drag to add)
+<Grid cellSelectionMode="none"        ... />  // disabled (default)
+```
+
+Users click and drag to select. In `"multi-range"` mode, hold **Ctrl** or **Cmd** to add or deselect ranges.
+
+### Reading the Selection (Uncontrolled)
+
+When uncontrolled, call `api.cellSelections()` to get the current selection rectangles at any time:
+
+```ts
+const rects = api.cellSelections(); // DataRect[] | null
+```
+
+`DataRect` uses **exclusive** `rowEnd` and `columnEnd` (like `Array.slice`):
+
+```ts
+interface DataRect {
+  readonly rowStart: number;   // inclusive
+  readonly rowEnd: number;     // exclusive
+  readonly columnStart: number;
+  readonly columnEnd: number;
+}
+```
+
+Use this for copy-to-clipboard:
+
+```tsx
+<Grid
+  cellSelectionMode="range"
+  events={useMemo<Grid.Events<GridSpec>>(() => ({
+    viewport: {
+      keyDown: async (ev, vp, api) => {
+        if (ev.key === "c" && (ev.metaKey || ev.ctrlKey)) {
+          const rect = api.cellSelections()?.[0];
+          if (!rect) return;
+
+          const exported = await api.exportData({ rect });
+          const text = exported.data.map((row) => row.join("\t")).join("\n");
+
+          vp.classList.add("copy-flash");
+          await navigator.clipboard.writeText(text);
+          setTimeout(() => vp.classList.remove("copy-flash"), 1000);
+        }
+      },
+    },
+  }), [])}
+/>
+```
+
+### Controlled Cell Selection
+
+Manage selection state in React when you need to react to changes (e.g., show a status bar with aggregate values):
+
+```tsx
+const [cellSelections, setCellSelections] = useState<Grid.T.DataRect[]>([]);
+
+<Grid
+  cellSelectionMode="range"
+  cellSelections={cellSelections}
+  onCellSelectionChange={setCellSelections}
+/>
+```
+
+> **Warning:** `cellSelections` is both a grid **prop** (controlled state) and an **API method** (`api.cellSelections()`). In controlled mode, the API method returns the same value you passed in. In uncontrolled mode, the API method reads internal state.
+
+### Programmatic Selection
+
+Set any rectangle directly by passing it as the `cellSelections` prop or calling the API setter:
+
+```tsx
+// Select column 0–2, rows 0–9 (rows 0 through 8 inclusive)
+setCellSelections([{ rowStart: 0, rowEnd: 10, columnStart: 0, columnEnd: 3 }]);
+```
+
+### Selecting an Entire Column or Row
+
+Column and row selection work by setting a `cellSelections` rectangle that spans the full extent:
+
+```tsx
+// Column selection — click on header to select entire column
+function HeaderCell({ column, colIndex, api }: Grid.T.HeaderParams<GridSpec>) {
+  return (
+    <div onClick={() => {
+      const { rowStart, rowEnd } = api.rowBounds(); // get full row range
+      setCellSelections([{ rowStart, rowEnd, columnStart: colIndex, columnEnd: colIndex + 1 }]);
+    }}>
+      {column.name ?? column.id}
+    </div>
+  );
+}
+```
+
+Set `cellSelectionMaintainOnNonCellPosition` to prevent the selection clearing when headers receive focus.
+
+### Styling Selection Rectangles
+
+LyteNyte Grid renders inert `div` overlays to visualize selections. They are unstyled by default. Target their data attributes:
+
+```css
+[data-ln-cell-selection-rect] {
+  background-color: var(--ln-primary-10);
+  box-sizing: border-box;
+}
+[data-ln-cell-selection-rect][data-ln-cell-selection-border-top="true"] {
+  border-top: 1px solid var(--ln-primary-50);
+}
+[data-ln-cell-selection-rect][data-ln-cell-selection-border-bottom="true"] {
+  border-bottom: 1px solid var(--ln-primary-50);
+}
+[data-ln-cell-selection-rect][data-ln-cell-selection-border-start="true"] {
+  border-inline-start: 1px solid var(--ln-primary-50);
+}
+[data-ln-cell-selection-rect][data-ln-cell-selection-border-end="true"] {
+  border-inline-end: 1px solid var(--ln-primary-50);
+}
+/* Deselect range in multi-range mode */
+[data-ln-cell-selection-rect][data-ln-cell-selection-is-deselect="true"] {
+  background-color: var(--ln-red-30);
+}
+```
+
+Header cells of columns containing selected cells get `data-ln-cell-selected="true"`. Rows containing selected cells also get this attribute:
+
+```css
+[data-ln-header-cell="true"][data-ln-cell-selected="true"] {
+  background-color: var(--ln-primary-05);
+}
+```
+
+### Excluding the Marker Column
+
+By default, selection can include the marker column. Prevent this:
+
+```tsx
+<Grid cellSelectionExcludeMarker ... />
+```
+
+Even with this enabled, the marker column still occupies column index 0 — so the first visible data column is index 1.
+
+### Spanning Cells and Pinned Areas
+
+- **Spanning cells:** When a selection includes a spanning cell, LyteNyte Grid expands the selection rectangle to cover the full span automatically.
+- **Pinned areas:** Dragging from a scrollable area into pinned rows/columns requires the viewport to be scrolled to the pinned edge first. Once at the edge, selection expands into the pinned region. The `cellSelections` state always contains a single continuous rectangle even when visually split.
+
+### Cell Selection Keyboard Shortcuts
+
+| Key | Action |
+|---|---|
+| `Shift ↑↓←→` | Expand/shrink selection |
+| `Ctrl Shift ↑↓←→` | Expand to bounds |
+| `Ctrl A` | Select all cells |
+
+### Gotchas for Cell Selection
+
+- **`cellSelections` name collision** — `api.cellSelections()` is a method, `cellSelections` is a prop. Controlled mode returns your prop value from the method. Don't confuse the two.
+- **`rowEnd`/`columnEnd` are exclusive** — `{ rowStart: 0, rowEnd: 5 }` selects rows 0–4. Passing `rowEnd: 4` would select rows 0–3. This matches `Array.slice` semantics.
+- **Multi-range and clipboard complexity** — with `"multi-range"` mode, `api.cellSelections()` returns multiple rectangles. Copy operations must decide which rectangle to use (typically the last one, or merge them).
+- **Marker column index offset** — with `cellSelectionExcludeMarker` active, the marker column still uses index 0, so your first data column is index 1. Account for this when constructing `DataRect` values programmatically.
+
 ## Full Docs
 
 - [Cell Renderers](/docs/cell-renderers)
 - [Cell Tooltips & Popovers](/docs/cell-tooltips)
 - [Cell Diff Flashing](/docs/cell-diff-flashing)
+- [Cell Range Selection](/docs/cell-selection)

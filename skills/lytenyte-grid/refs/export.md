@@ -2,6 +2,14 @@
 
 LyteNyte Grid exports data via `api.exportData()`. This returns a structured snapshot of grid data that you transform into any format. No built-in file format is included — you supply the serialization.
 
+**Step-by-step export pattern:**
+1. Get a ref to the grid API: `const ref = useRef<Grid.API | null>(null)` + `<Grid ref={ref} />`
+2. In a button handler: `const rect = await ref.current!.exportData()`
+3. Transform `rect.data` (2D array, row-major) into your target format
+4. Use the `downloadBlob` utility below to trigger a file download
+
+`exportData()` reflects the **current filtered/sorted view** — hidden columns are excluded, grouped rows are included at their visual positions.
+
 ## The `exportData` API
 
 ```ts
@@ -138,7 +146,7 @@ async function downloadArrow(api: Grid.API) {
 }
 ```
 
-## Clipboard Copy/Paste (PRO — requires cell selection)
+## Clipboard Copy/Paste (requires cell selection)
 
 ```ts
 // Copy selected cells to clipboard

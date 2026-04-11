@@ -1,6 +1,6 @@
 # Client Data Source
 
-Use `useClientDataSource` when all row data is available in the browser. Practical upper bound: ~10,000 rows.
+Use `useClientDataSource` when all row data is available in the browser.
 
 ## Basic Setup
 
@@ -13,7 +13,7 @@ interface GridSpec {
 
 const ds = useClientDataSource<GridSpec>({ data: myData });
 
-<Grid rowSource={ds} columns={columns} />
+<Grid rowSource={ds} columns={columns} />;
 ```
 
 ## Updating Data
@@ -25,12 +25,11 @@ const [data, setData] = useState(initialData);
 const ds = useClientDataSource({ data });
 
 // Efficient: reuse unchanged row objects
-setData(prev => prev.map(row =>
-  row.id === updatedId ? { ...row, price: newPrice } : row
-));
+setData((prev) => prev.map((row) => (row.id === updatedId ? { ...row, price: newPrice } : row)));
 ```
 
 **Tips:**
+
 - Batch updates to 200ms–few second intervals to reduce render churn
 - The source handles >10,000 updates/second even with filtering and grouping
 
@@ -39,8 +38,8 @@ setData(prev => prev.map(row =>
 ```ts
 const ds = useClientDataSource({
   data,
-  topData: [summaryRow1, summaryRow2],  // pinned at top
-  botData: [totalRow],                  // pinned at bottom
+  topData: [summaryRow1, summaryRow2], // pinned at top
+  botData: [totalRow], // pinned at bottom
 });
 ```
 
@@ -80,7 +79,7 @@ const ds = useClientDataSource({
 
 // Dimension sort (declarative, preferred)
 const sort = useMemo<DimensionSort<GridSpec["data"]>[]>(() => {
-  const col = columns.find(c => c.sort);
+  const col = columns.find((c) => c.sort);
   if (!col) return null;
   return [{ dim: col, descending: col.sort === "desc" }];
 }, [columns]);
@@ -105,6 +104,12 @@ Sort the auto-created group column using the special id `"__ln_group__"`:
 
 ## Row Grouping
 
+**Step-by-step to add row grouping:**
+1. Define a `group` function or dimension array on `useClientDataSource`
+2. Add a group column to the grid — either a dedicated column or use `RowGroupCell` from components
+3. Provide `onColumnsChange` so the grid can update sort state on group columns
+4. Optionally add `aggregate` to compute values for group rows
+
 Pass a **group function** or an **array of dimensions**:
 
 ```ts
@@ -117,7 +122,7 @@ const ds = useClientDataSource({
 // Non-uniform: return null to leave some rows ungrouped
 const ds = useClientDataSource({
   data,
-  group: (row) => row.data.education === "Secondary" ? null : [row.data.job, row.data.education],
+  group: (row) => (row.data.education === "Secondary" ? null : [row.data.job, row.data.education]),
 });
 
 // Dimension array (uniform, uses column field/id)
@@ -149,7 +154,7 @@ const ds = useClientDataSource({
   data,
   group,
   rowGroupExpansions: expansions,
-  onRowGroupExpansionChange: (delta) => setExpansions(prev => ({ ...prev, ...delta })),
+  onRowGroupExpansionChange: (delta) => setExpansions((prev) => ({ ...prev, ...delta })),
 });
 ```
 
@@ -166,8 +171,8 @@ const ds = useClientDataSource({
   data,
   group,
   rowGroupCollapseBehavior: "no-collapse", // default
-  rowGroupCollapseBehavior: "full-tree",   // collapse single-child groups at every depth
-  rowGroupCollapseBehavior: "last-only",   // collapse single-child groups at final depth only
+  rowGroupCollapseBehavior: "full-tree", // collapse single-child groups at every depth
+  rowGroupCollapseBehavior: "last-only", // collapse single-child groups at final depth only
 });
 ```
 
@@ -219,8 +224,8 @@ const ds = useClientDataSource({
   group,
   aggregate,
   having: [
-    null,                                          // skip depth 0
-    (row) => (row.data.avgBalance as number) > 0,  // filter depth 1 groups
+    null, // skip depth 0
+    (row) => (row.data.avgBalance as number) > 0, // filter depth 1 groups
   ],
 });
 ```
@@ -231,8 +236,8 @@ Filter group rows by their group key (label). Array index = group depth:
 
 ```ts
 const labelFilter: (Grid.T.LabelFilter | null)[] = [
-  (label) => label !== "Unknown",  // depth 0: exclude "Unknown" groups
-  null,                             // depth 1: no filtering
+  (label) => label !== "Unknown", // depth 0: exclude "Unknown" groups
+  null, // depth 1: no filtering
 ];
 
 const ds = useClientDataSource({ data, group, labelFilter });
@@ -244,7 +249,7 @@ const ds = useClientDataSource({ data, group, labelFilter });
 const ds = useClientDataSource({
   data,
   onRowsAdded: (params) => {
-    setData(prev => {
+    setData((prev) => {
       if (params.placement === "start") return [...params.newData, ...prev];
       if (params.placement === "end") return [...prev, ...params.newData];
       const next = [...prev];
@@ -264,7 +269,7 @@ api.rowAdd({ data: newRow, placement: "end" });
 const ds = useClientDataSource({
   data,
   onRowsDeleted: (params) => {
-    setData(prev => prev.filter((_, i) => !params.sourceIndices.includes(i)));
+    setData((prev) => prev.filter((_, i) => !params.sourceIndices.includes(i)));
   },
 });
 

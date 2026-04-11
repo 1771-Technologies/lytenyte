@@ -2,6 +2,13 @@
 
 LyteNyte Grid provides a lightweight DSL (domain-specific language) for building evaluatable expressions. Common uses: complex filter UIs, computed column fields, custom query builders.
 
+**Step-by-step to add an expression filter:**
+1. Create a memoized `Evaluator` instance with `standardPlugins` (+ optional `createResolvedIdentifierPlugin` for column-name shortcuts)
+2. Track the expression string in state: `const [expr, setExpr] = useState("")`
+3. Build a `filterFn` with `useMemo` — wrap `evaluator.run()` in try/catch; return `true` on parse errors to keep all rows visible
+4. Pass `filterFn` to `useClientDataSource({ filter: filterFn })`
+5. Render an `ExpressionEditor` component wired to `expr`/`setExpr` for syntax highlighting + autocomplete
+
 ## Import
 
 ```ts

@@ -1,5 +1,11 @@
 # Row Selection
 
+**Step-by-step to add checkbox row selection:**
+1. Set `rowSelectionMode="multiple"` and `rowSelectionActivator="none"` on the grid (activator `"none"` means clicking a row doesn't auto-select — only your checkbox does)
+2. Add a marker column with a `cellRenderer` that uses `api.rowHandleSelect` in `onClick`/`onKeyDown`
+3. Add a `headerRenderer` to the marker column that uses the `SelectAll` component for select-all behavior
+4. Optionally make it controlled: set `rowSelection` + `onRowSelectionChange` on the data source
+
 ## Enabling Row Selection
 
 Two grid props control row selection:

@@ -1,5 +1,43 @@
 # TypeScript
 
+## Step-by-Step: Fully Typed Grid
+
+```ts
+// 1. Define the row data shape
+interface OrderData {
+  id: number;
+  product: string;
+  price: number;
+  customer: string;
+}
+
+// 2. Define GridSpec — combine all extensions
+interface GridSpec {
+  readonly data: OrderData;
+  readonly column?: { sort?: "asc" | "desc" | null }; // custom column props
+  readonly source?: RowSourceClient<GridSpec>;         // unlock rowAdd/rowDelete on API
+  readonly api?: {                                     // custom API extensions
+    filterModel: PieceWritable<Record<string, unknown>>;
+  };
+}
+
+// 3. Type your columns
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "id", name: "ID", type: "number", width: 60 },
+  { id: "product", name: "Product", cellRenderer: ProductCell },
+  { id: "price", name: "Price", type: "number", cellRenderer: PriceCell },
+];
+
+// 4. Type your cell renderers
+function ProductCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row)) return null;
+  return <span>{row.data.product}</span>; // row.data is OrderData
+}
+
+// 5. Render — pass GridSpec to Grid
+<Grid<GridSpec> columns={columns} rowSource={ds} />
+```
+
 ## GridSpec
 
 `GridSpec` is the central type parameter. Define one interface per grid instance:

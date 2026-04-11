@@ -2,6 +2,16 @@
 
 Use `useTreeDataSource` for hierarchical object-based data (nested JSON, file trees, org charts). This is **not** for array-based hierarchies — use client source `group` with a function for those.
 
+**When to use `useTreeDataSource` vs. client source `group`:**
+- **`useTreeDataSource`** — your data is already a nested object/tree structure (e.g., file system, org chart, JSON tree). Each node can have children that are also data objects.
+- **Client source `group`** — your data is a flat array and you want to group rows by field values (e.g., group orders by country). The grouping is derived from data, not inherent in the structure.
+
+**Step-by-step to set up the tree data source:**
+1. Provide `data` as a nested object (or use `rowRootFn` + `rowChildrenFn` for custom structures)
+2. Set `rowGroupDefaultExpansion` to control initial expansion depth
+3. Add a group column to display the tree hierarchy (use `RowGroupCell` from components, or a custom renderer)
+4. To enable editing on group nodes, set `rowGroupColumn={false}` and provide a custom editable group column
+
 ## Basic Setup
 
 The default behavior traverses object properties and creates a branch whenever a value is itself an object:

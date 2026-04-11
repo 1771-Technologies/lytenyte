@@ -1,6 +1,12 @@
 # Theming
 
-LyteNyte Grid is **headless by default** — no colors, fonts, or borders applied. Functional inline styles (sizing, positioning) are applied automatically and must not be overridden.
+LyteNyte Grid is **headless by default** — no colors, fonts, or borders are applied. The CSS import is optional: skip it and provide your own styles, or import a prebuilt theme for instant results. Functional inline styles (sizing, positioning) are applied automatically and must not be overridden.
+
+**Quick theming decision guide:**
+- **No CSS import** — bring your own styles entirely via headless mode, Tailwind, CSS Modules, or Emotion
+- **Prebuilt theme** — import `grid-full.css` (or selective imports) and add `ln-grid` + a theme class to a parent element
+- **Data attributes + CSS** — import the CSS, use prebuilt structure, but write custom color/spacing rules targeting `data-ln-*` attributes
+- **`styles` prop** — targeted overrides on specific grid parts without entering headless mode
 
 ## Pre-built Themes
 
@@ -55,7 +61,7 @@ Grid elements expose `data-ln-*` attributes. Use CSS attribute selectors to targ
 [data-ln-cell-selection-rect] { /* cell selection rectangle (PRO) */ }
 ```
 
-Cell selection rectangle attributes: `data-ln-cell-selection-border-top/bottom/start/end`.
+Cell selection rectangle attributes: `data-ln-cell-selection-rect`, `data-ln-cell-selection-border-top/bottom/start/end`, `data-ln-cell-selection-is-deselect` (for multi-range deselect regions). Headers and rows containing selected cells also get `data-ln-cell-selected="true"`.
 
 Scroll shadow attributes: `data-ln-y-status`, `data-ln-x-status` — values: `"none"` | `"partial"` | `"full"`.
 
