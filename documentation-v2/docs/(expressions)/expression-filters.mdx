@@ -14,51 +14,217 @@ See the [Client Row Filtering guide](/docs/client-source-filtering) for more gui
 
 :::
 
-## Filtering With An Expression
+## How Expression Filters Work
 
-A filter expression is a standard expression that evaluates to a boolean value.
-The expression defines the predicate, and the evaluator checks
-whether each row satisfies that predicate.
+An expression filter is a standard expression that evaluates to a boolean value. The evaluator
+runs the expression against each row and includes only the rows where the expression returns `true`.
 
-The example below demonstrates filter expressions in action. You can perform any type of comparison on the
-columns. The expression is preloaded with `Gender == "Male" && Quantity > 10`, which translates to "any
-row with a gender of 'Male' and a quantity greater than 10."
+The demo below preloads the expression `Gender == "Male" && Quantity > 10`. Try editing it to
+apply different conditions across any column:
 
 ::demo[Expression Filters="./demos/expression-filter"]
 
-To handle expression filters for columns, configure the `Evaluator` with a custom plugin provided by
-LyteNyte Grid: `createResolvedIdentifierPlugin`. This function returns a plugin that treats specific
-identifiers as values. The code is shown below:
+## Setting Up the Evaluator
+
+Column names are identifiers in the expression, the user writes `Gender` instead of `Gender()`.
+The `createResolvedIdentifierPlugin` plugin handles this: it intercepts identifier nodes in the AST
+and rewrites them as function calls, so the evaluator resolves each column's value for the current row.
 
 ```ts
+import {
+  createResolvedIdentifierPlugin,
+  Evaluator,
+  standardPlugins,
+} from "@1771technologies/lytenyte-pro/expressions";
+
 const evaluator = new Evaluator(
   standardPlugins.concat([
-    //!next 4
+    createResolvedIdentifierPlugin({
+      args: ["row"], // the context key that holds the current row
+      identifiers: columns.map((x) => x.name ?? x.id), // column display names
+    }),
+  ]),
+);
+```
+
+## Building the Filter Function
+
+Build a context object that maps each column display name to a function that reads that column's
+value from a row:
+
+```ts
+import { computeField } from "@1771technologies/lytenyte-pro";
+
+const columnsContext = useMemo(() => {
+  return Object.fromEntries(
+    columns.map((x) => [x.name ?? x.id, (row: RowLeaf) => computeField(x.field ?? x.id, row)]),
+  );
+}, []);
+```
+
+Pre-parse the expression into an AST so the filter function does not re-parse on every row.
+Pass `undefinedIdentifierFallback: true` so that a partially-typed expression (with unknown
+identifiers) returns `true` rather than throwing, this keeps rows visible while the user
+is still typing:
+
+```ts
+const filter = useMemo(() => {
+  try {
+    const ast = evaluator.ast(committed); // parse once
+
+    return (row: RowLeaf<GridSpec["data"]>) =>
+      !!evaluator.run(
+        ast,
+        { row, ...columnsContext },
+        { undefinedIdentifierFallback: true }, // unknown identifiers → true (row passes)
+      );
+  } catch {
+    return null; // invalid expression — don't filter
+  }
+}, [committed, columnsContext]);
+```
+
+Pass the filter to `useClientDataSource`:
+
+```ts
+const ds = useClientDataSource<GridSpec>({ data, filter });
+```
+
+## Debouncing the Input
+
+Run the filter only on committed input, not on every keystroke. Keep two state values: `value`
+(what the editor displays) and `committed` (what the filter uses). Debounce the commit:
+
+```ts
+const [value, setValue] = useState('Gender == "Male" && Quantity > 10');
+const [committed, setCommitted] = useState(value);
+const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+const onChange = (s: string) => {
+  if (debounceRef.current) clearTimeout(debounceRef.current);
+  setValue(s);
+  debounceRef.current = setTimeout(() => setCommitted(s), 200);
+};
+```
+
+Pass `value` to `ExpressionEditor.Root` and `committed` to the `filter` memo. This means
+the editor updates immediately while the grid only re-filters after the user pauses typing.
+
+## Complete Example
+
+```tsx
+import "@1771technologies/lytenyte-pro/expression-editor.css";
+
+import { computeField, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
+import {
+  createCompletionProvider,
+  createResolvedIdentifierPlugin,
+  Evaluator,
+  ExpressionEditor,
+  standardPlugins,
+} from "@1771technologies/lytenyte-pro/expressions";
+import { useCallback, useMemo, useRef, useState } from "react";
+import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
+
+interface GridSpec {
+  readonly data: { name: string; age: number; country: string };
+}
+
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "name", name: "Name" },
+  { id: "age", name: "Age", type: "number" },
+  { id: "country", name: "Country" },
+];
+
+const evaluator = new Evaluator(
+  standardPlugins.concat([
     createResolvedIdentifierPlugin({
       args: ["row"],
       identifiers: columns.map((x) => x.name ?? x.id),
     }),
   ]),
 );
+
+export function ExpressionFilterGrid({ data }: { data: GridSpec["data"][] }) {
+  const [value, setValue] = useState("");
+  const [committed, setCommitted] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const onChange = (s: string) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    setValue(s);
+    debounceRef.current = setTimeout(() => setCommitted(s), 200);
+  };
+
+  const columnsContext = useMemo(
+    () =>
+      Object.fromEntries(
+        columns.map((x) => [x.name ?? x.id, (row: RowLeaf) => computeField(x.field ?? x.id, row)]),
+      ),
+    [],
+  );
+
+  const filter = useMemo(() => {
+    if (!committed) return null;
+    try {
+      const ast = evaluator.ast(committed);
+      return (row: RowLeaf<GridSpec["data"]>) =>
+        !!evaluator.run(ast, { row, ...columnsContext }, { undefinedIdentifierFallback: true });
+    } catch {
+      return null;
+    }
+  }, [committed, columnsContext]);
+
+  const provider = useMemo(
+    () => createCompletionProvider(Object.fromEntries(columns.map((x) => [x.name ?? x.id, x.id]))),
+    [],
+  );
+
+  const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
+  const ds = useClientDataSource<GridSpec>({ data, filter });
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: 500 }}>
+      <div data-ln-input="true" style={{ height: 40 }}>
+        <ExpressionEditor.Root
+          value={value}
+          onChange={onChange}
+          tokenize={tokenize}
+          completionProvider={provider}
+        >
+          <ExpressionEditor.CompletionPopover>
+            <ExpressionEditor.CompletionList>
+              {({ items }) =>
+                items.map((item, index) => (
+                  <ExpressionEditor.CompletionListItem key={item.id} item={item} index={index}>
+                    {item.label}
+                  </ExpressionEditor.CompletionListItem>
+                ))
+              }
+            </ExpressionEditor.CompletionList>
+          </ExpressionEditor.CompletionPopover>
+        </ExpressionEditor.Root>
+      </div>
+      <div style={{ flex: 1 }}>
+        <Grid<GridSpec> columns={columns} rowSource={ds} rowHeight={40} />
+      </div>
+    </div>
+  );
+}
 ```
 
-Each column evaluates per row, so the evaluator must resolve the column value for a given row. However,
-you do not want to treat columns as functions in the expression (for example, the user should
-be able to write `Gender` instead of `Gender()` in the expression).
+## Server-Side Expression Filters
 
-The plugin performs this substitution at the AST level, so when a user
-writes `Gender`, the evaluator resolves it to the correct cell value. See the demo code for the full usage.
+Expression evaluation on the server is straightforward because the AST is serializable. Instead
+of evaluating client-side, serialize the AST and send it to your server:
 
-## Filter Expressions Considerations
+```ts
+const ast = evaluator.ast(committed);
+const serialized = JSON.stringify(ast); // send in your DataRequest
+```
 
-Filter expressions evaluated on the client are more expensive than hard-coded filter functions. This is because
-the evaluator processes the expression from an AST, which adds an extra computation step. In return, you gain
-more flexibility in the types of filters users can create.
-
-Evaluating an expression AST on the client works well for client-side data, but it is less suitable for
-server-side data. In these cases, you can serialize the AST and send it to the server. The AST produced by the
-`Evaluator` is serializable unless you provide a custom plugin that generates nodes that cannot be converted
-to JSON.
+The AST is fully serializable unless your plugins introduce custom node types that cannot be
+converted to JSON. Standard plugins and `createResolvedIdentifierPlugin` produce only serializable nodes.
 
 ## Next Steps
 
