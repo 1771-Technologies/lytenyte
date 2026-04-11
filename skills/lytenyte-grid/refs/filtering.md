@@ -4,6 +4,13 @@ All filter types in LyteNyte Grid are custom predicate functions you write. The 
 
 Filters apply to **leaf rows before** grouping and aggregation. For post-grouping filtering, see `having` filters in [client-data-source.md](./client-data-source.md).
 
+**Step-by-step pattern for adding a filter:**
+1. Define a filter state (e.g., `useState<FilterModel>({})`)
+2. Build a `FilterFn` from that state with `useMemo` (return `null` when no filter is active)
+3. Pass the function to `useClientDataSource({ filter: filterFn })`
+4. Render a filter UI (input, button, popover) that updates your filter state
+5. The grid re-renders automatically when `filterFn` reference changes
+
 ## How Filters Work
 
 Pass a `filter` function (or array of functions) to your data source:

@@ -40,11 +40,11 @@ api.columnUpdate({ purchaseDate: { name: "Date of Purchase" } });
 
 `field` controls how the grid reads the cell value from row data. Defaults to the column `id` (string key lookup).
 
-| Field type | Usage |
-|---|---|
-| `string` | Key on a flat object row |
-| `number` | Index into an array row |
-| `function` | Computed/derived value |
+| Field type                         | Usage                               |
+| ---------------------------------- | ----------------------------------- |
+| `string`                           | Key on a flat object row            |
+| `number`                           | Index into an array row             |
+| `function`                         | Computed/derived value              |
 | `{ kind: "path", path: "a.b[0]" }` | Nested object (Lodash `get` syntax) |
 
 ```ts
@@ -128,7 +128,7 @@ Provide custom measurement functions when using custom renderers:
 Toggle visibility at runtime by updating the column in state:
 
 ```ts
-setColumns(cols => cols.map(c => c.id === "email" ? { ...c, hide: !c.hide } : c));
+setColumns((cols) => cols.map((c) => (c.id === "email" ? { ...c, hide: !c.hide } : c)));
 ```
 
 > Avoid toggling visibility too frequently — each update triggers a layout recalculation.
@@ -150,10 +150,10 @@ Columns stay in a flat array. Groups are defined by `groupPath` — an array of 
 const columns = [
   { id: "symbol", groupPath: ["Market Info"] },
   { id: "network", groupPath: ["Market Info"] },
-  { id: "price",  groupPath: ["Performance"] },
+  { id: "price", groupPath: ["Performance"] },
   { id: "volume", groupPath: ["Performance"] },
   // nested group
-  { id: "city",   groupPath: ["Location", "City"] },
+  { id: "city", groupPath: ["Location", "City"] },
 ];
 ```
 
@@ -233,9 +233,11 @@ api.columnMove({ moveColumns: ["price"], moveTarget: "name", before: true });
 Handle drop-outside:
 
 ```tsx
-<Grid onColumnMoveOutside={({ columns }) => {
-  // e.g. hide columns dropped outside
-}} />
+<Grid
+  onColumnMoveOutside={({ columns }) => {
+    // e.g. hide columns dropped outside
+  }}
+/>
 ```
 
 ## Column Spanning
@@ -271,12 +273,12 @@ Common uses: row index display, selection checkboxes.
 
 The `type` property controls sorting comparison, filter behavior, and CSS alignment:
 
-| `type` | Sort comparison | Filter behavior | Default CSS |
-|---|---|---|---|
-| _(omitted)_ | String lexicographic | Text substring match | left-aligned |
-| `"number"` | Numeric (`<`/`>`) | Numeric range comparison | `data-ln-type="number"` → right-aligned |
-| `"date"` | Date chronological | Date range comparison | left-aligned |
-| `"boolean"` | Boolean (false before true) | Exact match | left-aligned |
+| `type`      | Sort comparison             | Filter behavior          | Default CSS                             |
+| ----------- | --------------------------- | ------------------------ | --------------------------------------- |
+| _(omitted)_ | String lexicographic        | Text substring match     | left-aligned                            |
+| `"number"`  | Numeric (`<`/`>`)           | Numeric range comparison | `data-ln-type="number"` → right-aligned |
+| `"date"`    | Date chronological          | Date range comparison    | left-aligned                            |
+| `"boolean"` | Boolean (false before true) | Exact match              | left-aligned                            |
 
 ```ts
 { id: "price",  type: "number" }
@@ -287,12 +289,45 @@ The `type` property controls sorting comparison, filter behavior, and CSS alignm
 
 Setting `type: "number"` on a price column is important — without it, `"10"` sorts before `"9"` (string order) and `"9.99"` filters incorrectly.
 
+## Floating Header Row
+
+A secondary header row that appears below the main column headers. Typically used for per-column filter inputs, but can render any content.
+
+```tsx
+// 1. Enable the floating row on the grid
+const [floatingRowEnabled, setFloatingRowEnabled] = useState(true);
+<Grid floatingRowEnabled={floatingRowEnabled} ... />
+
+// 2. Add a floatingCellRenderer to each column that needs it
+const columns: Grid.Column<GridSpec>[] = [
+  {
+    id: "product",
+    name: "Product",
+    floatingCellRenderer: ({ column, api }) => (
+      <input
+        className="h-full w-full px-2"
+        placeholder={`Filter ${column.name ?? column.id}...`}
+        onChange={(e) => {
+          const v = e.target.value.toLowerCase();
+          // update your filter state here
+        }}
+      />
+    ),
+  },
+];
+```
+
+The floating row height is controlled by `columnFloatingHeaderHeight` on the grid.
+
 ## Gotchas
 
 - **`field` and `pin` cannot be set in `columnBase`** — both are silently ignored there. They must be on each column individually.
 - **`id` defaults as `field`** — if your column has `id: "customer"` but the row data property is `customerName`, the field lookup returns `undefined` silently. Either set `field: "customerName"` or match the id to the property name.
 - **Changing `id` at runtime creates a new column** — the grid tracks columns by `id`. If you change a column's id (e.g. to rename it), the grid treats it as a column removal + addition, losing all layout state for that column. Use `name` for display names, `id` for identity.
 - **`colSpan` cells must still be present in the column array** — spanned cells are not rendered, but the columns they span must still exist in the `columns` array. A missing column at the spanned position breaks the layout.
+- **`widthFlex` columns require at least one non-flex column or a container of known width** — if all columns use `widthFlex`, they split the viewport equally. Set `widthMin` on flex columns to prevent them from collapsing to zero when the viewport is narrow.
+- **`type: "number"` is important for correctness, not just cosmetics** — without it, numbers sort lexicographically (`"10"` before `"9"`) and numeric range filters don't work. Always set `type: "number"` on numeric columns.
+- **`groupPath` is the full path from root, not just the parent label** — `groupPath: ["A", "B"]` means column belongs to group "B" under group "A". `groupPath: ["B"]` would be a top-level group named "B".
 
 ## Full Docs
 

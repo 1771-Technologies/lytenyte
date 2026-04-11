@@ -2,6 +2,27 @@
 
 All components are in `@1771technologies/lytenyte-pro/components`. Most are PRO-only.
 
+**Step-by-step to add the most common components:**
+
+**Checkbox + SelectAll (row selection):**
+1. Import `Checkbox` and `SelectAll` from `@1771technologies/lytenyte-pro/components`
+2. Use `Checkbox` in the marker column cell renderer, call `api.rowHandleSelect` on click/keydown
+3. Use `SelectAll` in the marker column header renderer, pass `api` + a `slot` render prop
+
+**Context Menu:**
+1. Listen to `cell.contextMenu` in the grid `events` prop
+2. Call `event.preventDefault()` + `event.stopPropagation()` to suppress the browser menu
+3. Call `virtualFromXY(event.clientX, event.clientY)` to create a virtual anchor
+4. Pass that anchor to a `<Menu anchor={anchor} open={!!menuData} ...>` component
+
+**Loading overlay:**
+1. Track `isLoading` state from `ds.isLoading.useValue()` (server source) or your own state
+2. Render a `slotViewportOverlay` element on `<Grid />` when loading — must use `z-index ≥ 12`
+
+**No-rows overlay:**
+1. Track row count with `ds.rowCount?.useValue()` or a derived value
+2. Render a `slotRowsOverlay` element when count is 0
+
 ```ts
 import { PillManager, SmartSelect, ColumnManager, Menu, Popover, Dialog, SelectAll, Checkbox, TreeView, RowGroupCell, ViewportShadows } from "@1771technologies/lytenyte-pro/components";
 ```

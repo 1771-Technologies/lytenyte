@@ -229,26 +229,36 @@ api.editEnd({ cancel: true }); // cancel
 api.rowIsLeaf(row); // type guard before accessing row.data
 ```
 
-## Handling the `onRowDataChange` Callback
+## Handling Data Updates After Editing
 
-When a cell is committed, the grid fires `onRowDataChange` on the row source:
+When a cell is committed, the grid fires `onRowDataChange` on the row source. For the client source, implement it to write back the updated row data:
 
 ```ts
+const [data, setData] = useState(initialData);
+
 const ds = useClientDataSource({
   data,
-  onRowDataChange: (params) => {
-    // params is a Map<RowNode, NewData>
+  onRowDataChange: ({ changes }) => {
+    // `changes` is an array of { row, next } pairs.
+    // `row` is the RowLeaf node, `next` is the updated data object.
     setData((prev) =>
-      prev.map((row) => {
-        const updated = params.get(/* find row node */);
-        return updated ?? row;
-      }),
+      prev.map((item) => {
+        const change = changes.find((c) => c.row.data === item);
+        return change ? change.next : item;
+      })
     );
   },
 });
 ```
 
-For the client source, `onRowsUpdated` on the `useClientDataSource` hook handles this.
+**Step-by-step flow:**
+1. User double-clicks a cell (or presses Enter) → grid enters edit mode, calls `editRenderer`
+2. User modifies the value → `changeValue` / `changeData` update internal `editData`
+3. User presses Enter or blurs the cell → grid runs `editMutateCommit` on all columns, then `editRowValidatorFn`
+4. If valid → grid fires `onEditEnd`, then fires `onRowDataChange` on the row source with the changed rows
+5. Your `onRowDataChange` callback updates `data` state → grid re-renders with new values
+
+If validation fails (step 4) → grid fires `onEditFail` and keeps the cell in edit mode.
 
 ## Gotchas
 
