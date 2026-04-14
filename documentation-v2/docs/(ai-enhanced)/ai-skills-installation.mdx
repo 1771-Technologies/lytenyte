@@ -1,88 +1,96 @@
 ---
-title: Skills Installation
+title: AI Skills Installation
 step: Install the LyteNyte Grid AI skill for Claude Code, Codex, Cursor, and other AI coding agents.
-description: >
-  Install the LyteNyte Grid skill using the Vercel Skills CLI. The skill gives AI coding
-  agents deep, up-to-date context about LyteNyte Grid so they can help you build faster
-  and with fewer mistakes.
+description: Install LyteNyte Grid AI Skills with the Vercel Skills CLI.
 ---
 
-## What Are Skills?
+LyteNyte Grid Skills provide coding agents with detailed, up-to-date context
+about the grid, so you can build faster with fewer errors.
 
-Skills are structured context files that AI coding agents (Claude Code, Codex, Cursor, and
-others) load when working on a specific library or framework. Instead of pasting documentation
-into every chat or hoping the AI's training covers the latest API, a skill gives the agent
-accurate, curated knowledge about LyteNyte Grid on demand.
+## What Are AI Skills?
 
-The LyteNyte Grid skill covers:
+AI Skills are structured context files that coding agents such as Claude Code, Windsurf,
+and Cursor load when working with a library or framework. Rather than pasting documentation into
+every chat or hoping the agent's training data covers the latest changes, AI Skills provide
+coding agents with accurate, curated knowledge about LyteNyte Grid.
 
-- Installation, licensing, and CSS setup
-- Column and row configuration
-- Cell renderers, editors, and events
-- Filtering, sorting, grouping, and aggregation
-- Pivoting, tree data, and server-side loading
-- Exporting data (CSV, Excel, Parquet, Arrow)
-- Theming (prebuilt themes, Tailwind, CSS Modules, headless)
-- shadcn/ui integration
-- TypeScript patterns and `GridSpec`
-- All PRO components (SmartSelect, Menu, PillManager, TreeView, and more)
+## AI Skills Coverage
 
-Skills are maintained by 1771 Technologies and versioned alongside each LyteNyte Grid release.
+LyteNyte Grid AI Skills cover:
 
-## Prerequisites
+- Installation, licensing, and CSS setup.
+- Column and row configuration.
+- Cell renderers, editors, and events.
+- Filtering, sorting, grouping, and aggregation.
+- Pivoting, tree data, and server-side loading.
+- Exporting data (CSV, Excel, Parquet, Arrow).
+- Theming (prebuilt themes, Tailwind, CSS Modules, headless mode).
+- Shadcn/ui integration.
+- TypeScript patterns and `GridSpec`.
+- All PRO components (SmartSelect, Menu, PillManager, TreeView, and more).
 
-- **Node.js** 18 or later
-- The [Vercel Skills CLI](https://www.npmjs.com/package/skills) (installed on-demand via `npx`)
-- An AI coding agent that supports skills, such as Claude Code, Codex, or Cursor
+## AI Skills Maintenance
+
+1771 Technologies actively maintains LyteNyte Grid AI Skills, updating them alongside
+each release so coding agents always have access to the latest features.
+
+## Installation Prerequisites
+
+- [Node.js](https://nodejs.org/en) 18 or later.
+- [Vercel Skills CLI](https://www.npmjs.com/package/skills), installed on demand via `npx`.
+- Skills supported coding agent, such as Claude Code, Cursor, or Windsurf
 
 No global installation is required. All commands below use `npx` to run the Skills CLI directly.
 
-## Installing the Skill
+## Installing AI Skills
 
-### Latest Version
+### Latest Version of Skills
 
-Install the latest skill from the 1771 Technologies GitHub repository:
+Install the latest LyteNyte Grid AI Skills from the 1771 Technologies
+[GitHub repository](https://github.com/1771-Technologies/lytenyte):
 
 ```bash
 npx skills add 1771-Technologies/lytenyte
 ```
 
-This installs the skill into your current project's `.claude/skills/` directory and makes it
-available to Claude Code when working in that project.
+This will install the LyteNyte Skills into the skills folder for your current AI agents.
+The exact folder depends on the AI agent you are using. See the [Support Agents](https://github.com/vercel-labs/skills?tab=readme-ov-file#supported-agents)
+section of the Skills CLI for more details.
 
-### Specific Version
+### Specific Version Of Skills
 
-To pin the skill to a specific release tag, append `@<tag>` to the repository path:
+To install a specific version of LyteNyte Grid AI Skills,
+append `@<tag>` to the repository path:
 
 ```bash
 # Pin to a specific release
 npx skills add 1771-Technologies/lytenyte@v2.1.0
 ```
 
-Pinning is useful when you want the skill's documentation to match a specific version of
-the LyteNyte Grid package you have installed in your project.
+Pinning is useful when you want the Skill documentation to match
+the version of the LyteNyte Grid package installed in your project.
 
-### Listing Available Skills Before Installing
+### Listing Available Skills
 
-To browse the skills in the repository without installing anything, use the `--list` flag:
+To list the Skills in the repository without installing them, use the `--list` flag:
 
 ```bash
 npx skills add 1771-Technologies/lytenyte --list
 ```
 
-## Install Modes
+## AI Skills Installation Modes
 
-### Project-Level (Default)
+### Default Install
 
-The default mode installs the skill into the current project only. The skill directory is
-created at `.claude/skills/lytenyte-grid/` relative to the project root.
+By default, the Skill installs in the current project only.
+The CLI creates a project-local directory for the Skill in the project root.
 
 ```bash
 npx skills add 1771-Technologies/lytenyte
 ```
 
-Use this when you want the skill available only while working in this repository. Commit
-`.claude/skills/` to version control to share it with your team.
+Use a project-local installation to make the Skill available only within this repository.
+Commit the project-local Skill directory to version control so your team can access it.
 
 ### Global Install
 
@@ -98,19 +106,19 @@ npx skills add 1771-Technologies/lytenyte -g
 Use this if you work on LyteNyte Grid projects frequently and want the skill active
 everywhere without per-project setup.
 
-### Copy Mode
+### Copy Install
 
-By default, the CLI symlinks skill files from a cache into the agent directory. Use
-`--copy` to copy the files instead:
+By default, the CLI symlinks Skill files from a cache into the agent
+directory. Use `--copy` to copy the files instead:
 
 ```bash
 npx skills add 1771-Technologies/lytenyte --copy
 ```
 
-Use copy mode when symlinks are not suitable for your environment (e.g. Docker containers,
-certain CI setups, or Windows environments with symlink restrictions).
+Use copy install when symlinks are not suitable for your environment,
+such as Docker containers, certain CI setups, or Windows environments that restrict symlinks.
 
-### Install for Specific Agents
+### Specific Agent Install
 
 The `-a` / `--agent` flag restricts installation to a named agent:
 
@@ -144,25 +152,25 @@ npx skills add 1771-Technologies/lytenyte -y
 
 ### Install Everything Non-Interactively
 
-Combine `--skill '*'`, `--agent '*'`, and `-y` with the `--all` shorthand:
+Use `--all` to install all Skills for all supported agents without interactive prompts.
+This flag is shorthand for `--skill '*'`, `--agent '*'`, and `-y`:
 
 ```bash
 npx skills add 1771-Technologies/lytenyte --all
 ```
 
-## Verifying the Installation
+## Verify Skills Installation
 
-List all installed skills in the current project and globally:
+Run the command below to list all installed Skills both locally and globally.
+The output shows each Skill name, its location, and its active agents.
 
 ```bash
 npx skills list
 ```
 
-The output shows each skill name, its location on disk, and which agents it is active for.
+## Updating AI Skills
 
-## Updating the Skill
-
-To update all installed skills to their latest versions:
+To update all Skills to their latest versions, run:
 
 ```bash
 npx skills update
@@ -174,7 +182,7 @@ To check whether updates are available without applying them:
 npx skills check
 ```
 
-## Removing the Skill
+## Removing AI Skills
 
 ```bash
 # Remove from the current project
@@ -187,15 +195,16 @@ npx skills remove lytenyte-grid --global
 npx skills remove lytenyte-grid --all
 ```
 
-## Restoring from Lock File
+## Restore Locked Skills
 
-If your project includes a `skills-lock.json`, restore the exact versions it specifies:
+If your project includes `skills-lock.json`, run the following to restore the locked versions:
 
 ```bash
 npx skills experimental_install
 ```
 
-This is the equivalent of `npm ci` for skills, providing deterministic restoration from a locked state.
+This is the equivalent of `npm ci` for Skills, providing deterministic
+restoration from a locked state.
 
 ## Next Steps
 
