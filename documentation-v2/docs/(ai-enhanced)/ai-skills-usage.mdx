@@ -7,7 +7,7 @@ description: Learn how LyteNyte Grid AI Skills work, what context they
 
 ## How Skills Work
 
-Once installed, your coding agents automatically use the LyteNyte Grid Skill.
+Once installed, your coding agents automatically use the LyteNyte Grid AI Skill.
 The Skill activates based on context, without prompting, such as when you:
 
 - Mentioning the package name.
@@ -17,7 +17,7 @@ The Skill activates based on context, without prompting, such as when you:
 LyteNyte Grid AI Skills consist of a root **SKILL.md** file and a set of reference files (**refs/\*.md**).
 
 - **Root `SKILL.md`:** Contains a quick-start example, common gotchas, key patterns, and a table that maps topics to the relevant reference file.
-- **Reference Files:** The agent loads files on demand. It reads only the files relevant to the current task, keeping context usage efficient.
+- **Reference Files:** The coding agent loads files on demand. It reads only the files relevant to the current task, keeping context usage efficient.
 
 ## Activating LyteNyte Grid Skills
 
@@ -34,7 +34,7 @@ The `lytenyte-grid` Skill activates when you describe any of the following tasks
 - Theming, styling, or configuring CSS.
 - Working with TypeScript and `GridSpec`.
 - Using PRO components (SmartSelect, Menu, PillManager, TreeView, etc.).
-- Debugging problems like "my rows won't group", "the filter isn't working", or "cells appear blank."
+- Debugging problems like “my rows won't group,” “my filter isn't working,” or “my cells appear blank.”
 
 LyteNyte Grid AI Skills also covers shadcn/ui integration, infinite scroll, pagination, expressions, and more.
 
@@ -129,10 +129,12 @@ Prompt example:
 
 :::info
 
-The coding agent knows which features are part of the PRO edition of LyteNyte Grid. If you ask about
-a PRO feature without specifying your edition, the coding agent checks automatically. You do not need a
-PRO license to start building. The grid is fully functional without a key and simply displays
-a watermark until you activate a license.
+The coding agent knows which features are part of the PRO edition of LyteNyte Grid. If you
+ask about a PRO feature without specifying your edition, the coding agent automatically
+checks which edition you're using.
+
+You do not need a PRO license to start building. The grid is fully functional
+without a key and simply displays a watermark until you activate a license.
 
 :::
 

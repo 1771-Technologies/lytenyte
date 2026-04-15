@@ -4,7 +4,7 @@ step: Install the LyteNyte Grid AI skill for Claude Code, Codex, Cursor, and oth
 description: Install LyteNyte Grid AI Skills with the Vercel Skills CLI.
 ---
 
-LyteNyte Grid Skills provide coding agents with detailed, up-to-date context
+LyteNyte Grid AI Skills provide coding agents with detailed, up-to-date context
 about the grid, so you can build faster with fewer errors.
 
 ## What Are AI Skills?
@@ -38,7 +38,7 @@ each release so coding agents always have access to the latest features.
 
 - [Node.js](https://nodejs.org/en) 18 or later.
 - [Vercel Skills CLI](https://www.npmjs.com/package/skills), installed on demand via `npx`.
-- Skills supported coding agent, such as Claude Code, Cursor, or Windsurf
+- Skills supported coding agent, such as Claude Code, Cursor, or Windsurf.
 
 No global installation is required. All commands below use `npx` to run the Skills CLI directly.
 
@@ -53,11 +53,12 @@ Install the latest LyteNyte Grid AI Skills from the 1771 Technologies
 npx skills add 1771-Technologies/lytenyte
 ```
 
-This will install the LyteNyte Skills into the skills folder for your current AI agents.
-The exact folder depends on the AI agent you are using. See the [Support Agents](https://github.com/vercel-labs/skills?tab=readme-ov-file#supported-agents)
-section of the Skills CLI for more details.
+This command installs LyteNyte Grid AI Skills in the Skills folder for your AI agent.
+The exact folder depends on the coding agent you use. See the
+[supported agents section](https://github.com/vercel-labs/skills?tab=readme-ov-file#supported-agents) in the Skills
+CLI for agent-specific install paths.
 
-### Specific Version Of Skills
+### Specific Version of Skills
 
 To install a specific version of LyteNyte Grid AI Skills,
 append `@<tag>` to the repository path:
@@ -94,7 +95,7 @@ Commit the project-local Skill directory to version control so your team can acc
 
 ### Global Install
 
-The `--global` (or `-g`) flag installs the skill at the user level, making it available
+The `--global` (or `-g`) flag installs the Skill at the user level, making it available
 in every project on your machine:
 
 ```bash
@@ -132,7 +133,7 @@ npx skills add 1771-Technologies/lytenyte -a '*'
 
 ### Install Specific Skills
 
-If the repository contains multiple skills, the `-s` / `--skill` flag selects which ones to install:
+If the repository contains multiple Skills, the `-s` / `--skill` flag selects which ones to install:
 
 ```bash
 # Install only the lytenyte-grid skill
@@ -150,7 +151,7 @@ The `-y` / `--yes` flag skips interactive confirmation prompts, useful for CI or
 npx skills add 1771-Technologies/lytenyte -y
 ```
 
-### Install Everything Non-Interactively
+### Non-Interactive Install
 
 Use `--all` to install all Skills for all supported agents without interactive prompts.
 This flag is shorthand for `--skill '*'`, `--agent '*'`, and `-y`:
