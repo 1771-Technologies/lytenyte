@@ -1,0 +1,182 @@
+---
+title: Using LyteNyte Skills
+step: Learn how to get more accurate, reliable results from AI Skills.
+description: Learn how LyteNyte Grid AI Skills work, what context they
+  provide coding agents, and how to get better results while building.
+---
+
+## How Skills Work
+
+Once installed, your coding agents automatically use the LyteNyte Grid AI Skill.
+The Skill activates based on context, without prompting, such as when you:
+
+- Mentioning the package name.
+- Describing grid behavior.
+- Asking about specific features.
+
+LyteNyte Grid AI Skills consist of a root **SKILL.md** file and a set of reference files (**refs/\*.md**).
+
+- **Root `SKILL.md`:** Contains a quick-start example, common gotchas, key patterns, and a table that maps topics to the relevant reference file.
+- **Reference Files:** The coding agent loads files on demand. It reads only the files relevant to the current task, keeping context usage efficient.
+
+## Activating LyteNyte Grid Skills
+
+The `lytenyte-grid` Skill activates when you describe any of the following tasks or problems:
+
+- Installing, licensing, or setting up LyteNyte Grid.
+- Configuring or customizing columns.
+- Building cell renderers or cell editors.
+- Filtering, sorting, grouping, or aggregating rows.
+- Pivoting or working with tree data.
+- Loading data from a server.
+- Exporting to CSV, Excel, Parquet, or Arrow.
+- Row selection or cell range selection.
+- Theming, styling, or configuring CSS.
+- Working with TypeScript and `GridSpec`.
+- Using PRO components (SmartSelect, Menu, PillManager, TreeView, etc.).
+- Debugging problems like “my rows won't group,” “my filter isn't working,” or “my cells appear blank.”
+
+LyteNyte Grid AI Skills also covers shadcn/ui integration, infinite scroll, pagination, expressions, and more.
+
+## Skill Reference Files
+
+The following table lists Skill reference files for specific areas of the grid.
+The coding agent loads only the files relevant to the current task.
+
+| Reference                           | Topics Covered                                                                     |
+| ----------------------------------- | ---------------------------------------------------------------------------------- |
+| `refs/installation.md`              | Installation, licensing, CSS imports, CDN, watermark errors, trial mode.           |
+| `refs/grid-core.md`                 | Grid setup, reactivity, `apiExtension`, `usePiece`, events system.                 |
+| `refs/typescript.md`                | `GridSpec`, renderer types, `RowNode` type guards.                                 |
+| `refs/columns.md`                   | Column `id`/`name`/`field`, sizing, pinning, groups, header renderers, spanning.   |
+| `refs/rows.md`                      | Row height, master-detail, full-width rows, row spanning, row drag.                |
+| `refs/row-selection.md`             | Checkboxes, `SelectAll`, linked vs isolated selection, `RowSelectionLinked` tree.  |
+| `refs/client-data-source.md`        | `useClientDataSource`, sort, filter, group, aggregation, pivot, add/delete rows.   |
+| `refs/server-data-source.md`        | `useServerDataSource`, `DataRequest`/`DataResponse`, loading state, refresh.       |
+| `refs/tree-data-source.md`          | `useTreeDataSource`, nested objects, `rowRootFn`/`rowChildrenFn`.                  |
+| `refs/infinite-paginated-source.md` | Infinite scroll and pagination on server data.                                     |
+| `refs/cells.md`                     | Cell renderers, tooltips, diff flashing, cell range selection, clipboard copy.     |
+| `refs/cell-editing.md`              | Edit mode, validators, edit renderers, bulk edit, `onRowDataChange`.               |
+| `refs/filtering.md`                 | Text, number, date, set, and quick-search filter patterns; filter model design.    |
+| `refs/expressions.md`               | Expression DSL, `Evaluator`, `ExpressionEditor`, expression filters.               |
+| `refs/pivoting.md`                  | `pivotMode`, `PivotModel`, measures, grand totals.                                 |
+| `refs/export.md`                    | CSV, Excel, Parquet, Arrow, clipboard export.                                      |
+| `refs/components.md`                | SmartSelect, Menu, Popover, Dialog, PillManager, TreeView, RowGroupCell, Overlays. |
+| `refs/theming.md`                   | Prebuilt themes, Tailwind plugin, design tokens, CSS Modules, custom themes.       |
+| `refs/shadcn.md`                    | Shadcn/ui CLI install, `ln-shadcn` theme, using shadcn components in the grid.     |
+| `refs/misc.md`                      | Keyboard shortcuts, RTL, accessibility, React Compiler, bundling.                  |
+
+## Skills Best Practices
+
+To get accurate, reliable results from LyteNyte Grid AI Skills, follow these best practices:
+
+1. Specify your setup.
+2. Name the feature.
+3. Describe the problem.
+4. Describe your data.
+
+### Specify Your Setup
+
+Specifying your setup details gives coding agents more context to implement LyteNyte Grid correctly. Include details such as:
+
+- **Edition:** The LyteNyte Grid edition you're using, such as Core or PRO.
+- **Styling:** The styling tools you use, such as Tailwind, shadcn/ui, CSS Modules, or plain CSS.
+- **Constraints:** Any required constraints or features.
+
+Prompt example:
+
+> “I'm using LyteNyte Grid PRO with shadcn/ui and Tailwind. I need to add a filter bar beneath the column headers.”
+
+> “I'm using the Core edition with CSS Modules, how do I add a custom header renderer that displays a sort icon?”
+
+### Name the Feature
+
+LyteNyte Grid uses precise feature names. Using exact terminology gives the coding
+agent the clearest signal about which reference file to load. Consider the following examples:
+
+| Instead of...                 | Say...                                        |
+| ----------------------------- | --------------------------------------------- |
+| "expandable rows"             | "row master-detail" or "row detail"           |
+| "checkbox column"             | "marker column with row selection"            |
+| "tree view"                   | "tree data source" or `useTreeDataSource`     |
+| "formula filter"              | "expression filter" or `Evaluator`            |
+| "group rows"                  | "row grouping" with `useClientDataSource`     |
+| "select a rectangle of cells" | "cell range selection" or `cellSelectionMode` |
+| "sticky column"               | "pinned column" with `pin: "start"`           |
+
+### Describe the Problem
+
+Coding agents respond to both exact terminology and natural-language descriptions.
+While precise names provide the clearest signal, LyteNyte Grid AI Skills
+also work well when you describe problems in plain language.
+
+Prompt example:
+
+> “My grid renders with zero height, and I can't see any rows.”
+
+> “The filter works on initial load but stops working after I change the grouping.”
+
+> “How do I create a column that shows a dropdown when the user double-clicks a cell?”
+
+### Describe Your Data
+
+Describe your data shape to help the coding agent generate immediately usable code faster,
+especially for questions about data sources and filtering.
+
+Prompt example:
+
+> “My rows have type `{ id: string; name: string; revenue: number; region: string }`. I want to filter by region using a set filter.”
+
+:::info
+
+The coding agent knows which features are part of the PRO edition of LyteNyte Grid. If you
+ask about a PRO feature without specifying your edition, the coding agent automatically
+checks which edition you're using.
+
+You do not need a PRO license to start building. The grid is fully functional
+without a key and simply displays a watermark until you activate a license.
+
+:::
+
+## General Skills Prompts
+
+The prompts below illustrate the types of tasks LyteNyte Grid AI Skills handle well.
+Experiment with the prompts that best match your use case.
+
+```
+Add a floating filter row below the column headers. Each column should have a text input
+that filters that column's data. Use debounced inputs to avoid filtering on every keystroke.
+```
+
+```
+I need a server-side data source that calls /api/rows. The API accepts offset and limit
+params and returns { rows: MyRow[], total: number }. Show me how to set this up with
+useServerDataSource.
+```
+
+```
+I have a shadcn/ui project. Install LyteNyte Grid with the shadcn CLI and show me how to
+use a shadcn Select component as a cell editor for a "status" column.
+```
+
+```
+My grid uses Tailwind. I don't want to import any LyteNyte CSS, show me how to style
+all grid elements (cells, headers, alternating rows, pinned column borders) using only
+Tailwind classes.
+```
+
+```
+Add row selection with checkboxes and a select-all in the header. The selection state
+should be stored in React state so I can read it outside the grid.
+```
+
+```
+I need to export the current filtered view to Excel. Show me the full implementation
+using ExcelJS.
+```
+
+## Next Steps
+
+::next[/docs/intro-getting-started]
+::next[/docs/intro-installation]
+::next[/docs/intro-installation-shadcn]

@@ -1,0 +1,301 @@
+# Row Selection
+
+**Step-by-step to add checkbox row selection:**
+
+1. Set `rowSelectionMode="multiple"` and `rowSelectionActivator="none"` on the grid (activator `"none"` means clicking a row doesn't auto-select — only your checkbox does)
+2. Add a marker column with a `cellRenderer` that uses `api.rowHandleSelect` in `onClick`/`onKeyDown`
+3. Add a `headerRenderer` to the marker column that uses the `SelectAll` component for select-all behavior
+4. Optionally make it controlled: set `rowSelection` + `onRowSelectionChange` on the data source
+
+## Enabling Row Selection
+
+Two grid props control row selection:
+
+- `rowSelectionMode` — `"none"` (default) | `"single"` | `"multiple"`
+- `rowSelectionActivator` — `"none"` | `"single-click"` | `"double-click"`
+
+```tsx
+// Single-click to select one row at a time
+<Grid rowSelectionMode="single" rowSelectionActivator="single-click" ... />
+
+// Multi-select with click (shift+click for range)
+<Grid rowSelectionMode="multiple" rowSelectionActivator="single-click" ... />
+
+// Checkbox-only selection (no click-to-select)
+<Grid rowSelectionMode="multiple" rowSelectionActivator="none" ... />
+```
+
+## Checkbox Selection
+
+Use `api.rowHandleSelect` in a cell renderer for checkbox-based selection. It handles shift+click range selection automatically:
+
+```tsx
+import { Checkbox, SelectAll } from "@1771technologies/lytenyte-pro/components";
+
+function MarkerCell({ api, selected }: Grid.T.CellRendererParams<GridSpec>) {
+  return (
+    <Checkbox
+      checked={selected}
+      onClick={(ev) => {
+        ev.stopPropagation();
+        api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+      }}
+      onKeyDown={(ev) => {
+        if (ev.key === "Enter" || ev.key === " ")
+          api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+      }}
+    />
+  );
+}
+```
+
+Header select-all using the `SelectAll` component:
+
+```tsx
+function MarkerHeader(params: Grid.T.HeaderParams<GridSpec>) {
+  return (
+    <SelectAll
+      {...params}
+      slot={({ indeterminate, selected, toggle }) => (
+        <Checkbox
+          checked={selected}
+          indeterminate={indeterminate}
+          onClick={(ev) => {
+            ev.preventDefault();
+            toggle();
+          }}
+          onKeyDown={(ev) => {
+            if (ev.key === "Enter" || ev.key === " ") toggle();
+          }}
+        />
+      )}
+    />
+  );
+}
+
+const marker: Grid.ColumnMarker<GridSpec> = {
+  on: true,
+  cellRenderer: MarkerCell,
+  headerRenderer: MarkerHeader,
+};
+```
+
+## Select / Deselect All Programmatically
+
+```ts
+api.rowSelect({ selected: "all" }); // select all
+api.rowSelect({ selected: "all", deselect: true }); // deselect all
+```
+
+Requires `rowSelectionMode="multiple"`.
+
+## Getting Selected Rows
+
+```ts
+const { rows, state } = ds.rowsSelected();
+// or equivalently:
+const { rows, state } = api.rowsSelected();
+
+rows.forEach((row) => console.log(row.data));
+```
+
+For server-side sources, only loaded rows are returned.
+
+## Preventing Selection
+
+Use the `onRowSelect` callback and call `preventDefault()` to block a selection:
+
+```tsx
+<Grid
+  rowSelectionMode="multiple"
+  rowSelectionActivator="single-click"
+  onRowSelect={({ preventDefault, rows, deselect, api }) => {
+    if (rows === "all" || deselect) return;
+
+    const current = api.rowsSelected().rows;
+    const finalSet = new Set([...rows, ...current.map((x) => x.id)]);
+    if (finalSet.size > 3) {
+      alert("Maximum 3 rows");
+      preventDefault();
+    }
+  }}
+/>
+```
+
+## Row Selection State Types
+
+The row data source manages selection state. Two modes exist:
+
+### Isolated Selection
+
+Each row is individually selectable — selecting a group row does NOT select children:
+
+```ts
+const ds = useClientDataSource({
+  data,
+  rowsIsolatedSelection: true, // isolated mode
+});
+```
+
+State shape:
+
+```ts
+interface RowSelectionIsolated {
+  readonly kind: "isolated";
+  readonly selected: boolean; // default selection state
+  readonly exceptions: Set<string>; // rows that invert the default
+}
+```
+
+### Linked Selection (default for `"multiple"` mode)
+
+Selecting a group row selects all its children. Selecting all children of a group selects the group:
+
+```ts
+const ds = useClientDataSource({
+  data,
+  rowsIsolatedSelection: false, // default
+});
+```
+
+## Controlled Selection State
+
+```ts
+const [selection, setSelection] = useState<Grid.T.RowSelectionLinked>({
+  kind: "linked",
+  selected: false,
+  children: new Map(),
+});
+
+const ds = useClientDataSource({
+  data,
+  rowSelection: selection,
+  onRowSelectionChange: setSelection,
+});
+```
+
+> Ensure the selection `kind` matches the `rowsIsolatedSelection` setting.
+
+### Understanding the `RowSelectionLinked` Tree
+
+`RowSelectionLinked` is a sparse tree, not a flat set of IDs:
+
+```ts
+interface RowSelectionLinked {
+  kind: "linked";
+  selected: boolean; // default — applies to all rows not in children
+  children: Map<string, RowSelectNode>; // sparse overrides keyed by row id
+}
+
+interface RowSelectNode {
+  id: string;
+  selected?: boolean; // undefined = inherit from parent node
+  children?: Map<string, RowSelectNode>; // only present when row has children
+}
+```
+
+- `selected` at the root is the **default state** — `true` means "all selected unless overridden"
+- `children` only contains rows that **deviate** from their parent's state — it is sparse
+- A node with `selected: undefined` inherits from its parent
+- When grouping is active, the tree mirrors the group hierarchy; leaf rows live at the bottom
+
+### Checking if a Specific Row is Selected
+
+For a **flat list** (no grouping), each row is a direct entry in `children`:
+
+```ts
+function isRowSelected(selection: Grid.T.RowSelectionLinked, rowId: string): boolean {
+  const node = selection.children.get(rowId);
+  if (!node) return selection.selected; // not in overrides — use default
+  if (node.selected != null) return node.selected; // explicit override
+  return selection.selected; // in tree but no explicit value — inherit default
+}
+
+// Usage
+const isSelected = isRowSelected(selection, "row-42");
+```
+
+For **grouped data**, rows are nested under group nodes. Walk the path from root through each group:
+
+```ts
+function isRowSelectedByPath(selection: Grid.T.RowSelectionLinked, path: string[]): boolean {
+  let defaultSelected = selection.selected;
+  let current: Map<string, Grid.T.RowSelectNode> | undefined = selection.children;
+
+  for (const id of path) {
+    const node = current?.get(id);
+    if (!node) return defaultSelected; // not in tree — inherit current default
+    if (node.selected != null) defaultSelected = node.selected; // explicit override
+    current = node.children;
+  }
+
+  return defaultSelected;
+}
+
+// For a row at path: Group "North America" → leaf row "cust-007"
+const isSelected = isRowSelectedByPath(selection, ["North America", "cust-007"]);
+```
+
+### Getting All Selected Row IDs
+
+Walk the entire tree to collect all IDs that resolve to `selected: true`:
+
+```ts
+function getSelectedIds(selection: Grid.T.RowSelectionLinked): string[] {
+  const result: string[] = [];
+
+  function walk(nodes: Map<string, Grid.T.RowSelectNode>, parentSelected: boolean) {
+    for (const [id, node] of nodes) {
+      const nodeSelected = node.selected ?? parentSelected;
+      if (!node.children) {
+        // leaf row
+        if (nodeSelected) result.push(id);
+      } else {
+        // branch/group row — recurse into children
+        walk(node.children, nodeSelected);
+      }
+    }
+  }
+
+  walk(selection.children, selection.selected);
+
+  // Also include any leaf rows NOT in children that inherit the default
+  // (use ds.rowsSelected() for this — the grid tracks all IDs)
+  return result;
+}
+```
+
+In practice, prefer `ds.rowsSelected()` or `api.rowsSelected()` which handles all edge cases (server-loaded rows, universe additions, etc.). Walk the tree manually only when you need to check a specific row synchronously without going through the API — for example, inside a `cellRenderer` that receives only the selection state.
+
+## Row Selection Reset Key
+
+Selection resets automatically when the view changes significantly (grouping, filtering, sorting). Override with `rowSelectKey`:
+
+```ts
+const ds = useClientDataSource({
+  data,
+  rowSelectKey: [groupModel, filterFn], // shallow-compared; changes trigger reset
+});
+```
+
+## ID Universe
+
+LyteNyte Grid validates selected row IDs against the "ID universe" (all known row IDs). To preselect rows not yet loaded:
+
+```ts
+const ds = useClientDataSource({
+  rowSelectionIdUniverseAdditions: [{ id: "not-yet-loaded-row", root: true }],
+  rowSelectionIdUniverseSubtractions: new Set(["unselectable-row"]),
+});
+```
+
+## Gotchas
+
+- **Linked vs isolated mode must match the `kind` in controlled state** — if you use `rowsIsolatedSelection: true` but initialize state with `kind: "linked"`, selection behavior is undefined. Always match the kind.
+- **`rowsSelected()` on server source returns only loaded rows** — rows not yet fetched by the viewport are absent from the result even if selected. For exhaustive selection, use isolated mode with `selected: true` (all selected) and check `exceptions`.
+- **`rowHandleSelect` needs `target: ev.target`** — omitting `target` breaks shift+click range selection because the grid uses the target element to compute the anchor row.
+- **`SelectAll` handles linked/isolated mode differences internally** — do not replicate its logic manually. Linked mode "select all" operates differently from isolated mode. Always use the `SelectAll` component rather than calling `api.rowSelect({ selected: "all" })` directly in a header renderer.
+
+## Full Docs
+
+- [Row Selection](/docs/row-selection)
