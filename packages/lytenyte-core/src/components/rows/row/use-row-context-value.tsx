@@ -53,6 +53,7 @@ export function useRowContextValue(row: LayoutRowWithCells) {
     isEditing,
     detailExpanded,
     detailExpansions,
+    detailHeight,
     r?.error,
     r?.loading,
     r,

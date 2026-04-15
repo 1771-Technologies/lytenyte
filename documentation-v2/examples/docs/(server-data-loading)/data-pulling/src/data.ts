@@ -27,20 +27,7 @@ function generateRandomFloat(x: number, y: number): number {
   return Math.random() * (y - x) + x; // Scale and shift Math.random() to the range [x, y]
 }
 
-const symbols = [
-  "AAPL",
-  "MSFT",
-  "GOOG",
-  "AMZN",
-  "META",
-  "NVDA",
-  "TSLA",
-  "JPM",
-  "BAC",
-  "WMT",
-  "PG",
-  "JNJ",
-];
+const symbols = ["AAPL", "MSFT", "GOOG", "AMZN", "META", "NVDA", "TSLA", "JPM", "BAC", "WMT", "PG", "JNJ"];
 const seedData = symbols.map<DataEntry>((c, i) => {
   const ask = generateRandomInt(20, 1000);
   const bid = generateRandomInt(ask - 2, ask + 2);
