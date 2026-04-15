@@ -52,10 +52,10 @@ export async function Server(
         start: c.start,
         end: c.end,
         path: c.path,
-        data: filteredForGrouping.slice(c.start, c.end).map((x) => {
+        data: filteredForGrouping.slice(c.start, c.end).map((x, i) => {
           return {
             kind: "leaf",
-            id: x.id,
+            id: `${x.id}-${i}`,
             data: x,
           };
         }),
