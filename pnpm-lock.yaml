@@ -866,6 +866,18 @@ importers:
 
   packages/lytenyte-shared: {}
 
+  packages/lytenyte-ui-react:
+    dependencies:
+      '@1771technologies/lytenyte-design':
+        specifier: workspace:*
+        version: link:../lytenyte-design
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+
   packages/sample-data:
     devDependencies:
       csv-parser:
