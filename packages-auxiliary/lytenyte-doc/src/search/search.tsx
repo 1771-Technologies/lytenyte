@@ -15,7 +15,8 @@ export function Search() {
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
-      if (e.key === "/") {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
         setOpen(true);
       }
     });
@@ -116,9 +117,8 @@ export function Search() {
         <div className="md:center hidden gap-1">
           <ModKey
             className="border-xd-border center text-xd-muted-foreground size-5 rounded border"
-            isSlash
           />
-          {/* <kbd className="relative text-xs">K</kbd> */}
+          <kbd className="border-xd-border center text-xd-muted-foreground size-5 rounded border text-xs">K</kbd>
         </div>
       </D.Trigger>
       <D.Portal>
