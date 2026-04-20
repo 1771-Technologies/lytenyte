@@ -1,11 +1,8 @@
 ---
-title: Using LyteNyte Skills
+title: Using AI Skills
 step: Learn how to get more accurate, reliable results from AI Skills.
-description: Learn how LyteNyte Grid AI Skills work, what context they
-  provide coding agents, and how to get better results while building.
+description: Learn how LyteNyte Grid AI Skills work and how to get better results while building.
 ---
-
-## How Skills Work
 
 Once installed, your coding agents automatically use the LyteNyte Grid AI Skill.
 The Skill activates based on context, without prompting, such as when you:
@@ -14,12 +11,7 @@ The Skill activates based on context, without prompting, such as when you:
 - Describing grid behavior.
 - Asking about specific features.
 
-LyteNyte Grid AI Skills consist of a root **SKILL.md** file and a set of reference files (**refs/\*.md**).
-
-- **Root `SKILL.md`:** Contains a quick-start example, common gotchas, key patterns, and a table that maps topics to the relevant reference file.
-- **Reference Files:** The coding agent loads files on demand. It reads only the files relevant to the current task, keeping context usage efficient.
-
-## Activating LyteNyte Grid Skills
+## Activating Skills
 
 The `lytenyte-grid` Skill activates when you describe any of the following tasks or problems:
 
@@ -37,34 +29,6 @@ The `lytenyte-grid` Skill activates when you describe any of the following tasks
 - Debugging problems like “my rows won't group,” “my filter isn't working,” or “my cells appear blank.”
 
 LyteNyte Grid AI Skills also covers shadcn/ui integration, infinite scroll, pagination, expressions, and more.
-
-## Skill Reference Files
-
-The following table lists Skill reference files for specific areas of the grid.
-The coding agent loads only the files relevant to the current task.
-
-| Reference                           | Topics Covered                                                                     |
-| ----------------------------------- | ---------------------------------------------------------------------------------- |
-| `refs/installation.md`              | Installation, licensing, CSS imports, CDN, watermark errors, trial mode.           |
-| `refs/grid-core.md`                 | Grid setup, reactivity, `apiExtension`, `usePiece`, events system.                 |
-| `refs/typescript.md`                | `GridSpec`, renderer types, `RowNode` type guards.                                 |
-| `refs/columns.md`                   | Column `id`/`name`/`field`, sizing, pinning, groups, header renderers, spanning.   |
-| `refs/rows.md`                      | Row height, master-detail, full-width rows, row spanning, row drag.                |
-| `refs/row-selection.md`             | Checkboxes, `SelectAll`, linked vs isolated selection, `RowSelectionLinked` tree.  |
-| `refs/client-data-source.md`        | `useClientDataSource`, sort, filter, group, aggregation, pivot, add/delete rows.   |
-| `refs/server-data-source.md`        | `useServerDataSource`, `DataRequest`/`DataResponse`, loading state, refresh.       |
-| `refs/tree-data-source.md`          | `useTreeDataSource`, nested objects, `rowRootFn`/`rowChildrenFn`.                  |
-| `refs/infinite-paginated-source.md` | Infinite scroll and pagination on server data.                                     |
-| `refs/cells.md`                     | Cell renderers, tooltips, diff flashing, cell range selection, clipboard copy.     |
-| `refs/cell-editing.md`              | Edit mode, validators, edit renderers, bulk edit, `onRowDataChange`.               |
-| `refs/filtering.md`                 | Text, number, date, set, and quick-search filter patterns; filter model design.    |
-| `refs/expressions.md`               | Expression DSL, `Evaluator`, `ExpressionEditor`, expression filters.               |
-| `refs/pivoting.md`                  | `pivotMode`, `PivotModel`, measures, grand totals.                                 |
-| `refs/export.md`                    | CSV, Excel, Parquet, Arrow, clipboard export.                                      |
-| `refs/components.md`                | SmartSelect, Menu, Popover, Dialog, PillManager, TreeView, RowGroupCell, Overlays. |
-| `refs/theming.md`                   | Prebuilt themes, Tailwind plugin, design tokens, CSS Modules, custom themes.       |
-| `refs/shadcn.md`                    | Shadcn/ui CLI install, `ln-shadcn` theme, using shadcn components in the grid.     |
-| `refs/misc.md`                      | Keyboard shortcuts, RTL, accessibility, React Compiler, bundling.                  |
 
 ## Skills Best Practices
 
