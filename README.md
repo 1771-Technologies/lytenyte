@@ -55,35 +55,34 @@ to **LyteNyte Grid PRO** for advanced enterprise features and support.
 
 LyteNyte Grid is available in two editions:
 
-1. **LyteNyte Grid Core: Free, open-source edition** for building high-performance data tables.
-   Includes sorting, filtering, editing, row selection, detail views, and more. Also includes advanced
-   features such as aggregation, row grouping, and data export, often locked behind paywalls in other grids.
+1. **LyteNyte Grid Core:** Free, **open-source edition** for building high-performance data tables. Includes sorting,
+   filtering, editing, row selection, detail views, and more. Also includes advanced features such
+   as aggregation, row grouping, and cell range selection, often locked behind paywalls in other grids.
 
-2. **LyteNyte Grid PRO: Commercial edition** that extends Core with powerful enterprise
-   features such as server-side data loading, pivoting, tree data, component managers,
-   and advanced filtering. Build custom menus, popovers and dialogs,
-   and workflow-driven UIs with ease.
+2. **LyteNyte Grid PRO: Commercial edition** that extends Core with powerful enterprise features,
+   including server-side data loading, pivoting, tree data, component managers, and advanced
+   filtering. Build custom menus, popovers, expressions, and workflow-driven UIs with ease.
 
 ## AI-Enhanced Workflows
 
-LyteNyte Grid ships a first-class **AI skill** for Claude Code, Codex, Cursor, and other AI
-coding agents. The skill gives your agent deep, up-to-date knowledge of the grid API so it can
-generate accurate code without hallucinating outdated patterns.
+**LyteNyte Grid AI Skills** are structured context files for Claude Code, Windsurf, Cursor, and other AI coding agents.
+Skills provide agents with accurate, curated context for LyteNyte Grid, allowing them to generate complex
+grid implementations with greater speed and reliability.
 
-**Install the skill into your project:**
+Instead of building the grid manually, developers can describe the
+desired result and let the agent generate the implementation.
+
+**Install LyteNyte Grid AI Skills**
 
 ```bash
 npx skills add 1771-Technologies/lytenyte
 ```
 
-Once installed, the skill activates automatically whenever you work on a LyteNyte Grid task,
-no special prompting needed. It covers installation, column and row configuration, cell renderers
-and editors, filtering, sorting, grouping, pivoting, server-side data, exporting, theming,
-shadcn/ui integration, TypeScript patterns, and all PRO components.
+Once installed, the Skill activates automatically whenever you work on a LyteNyte Grid task. No
+special prompting is needed. Skills are actively maintained by the 1771 Technologies
+team and versioned alongside each LyteNyte Grid release.
 
-> The skill is maintained by 1771 Technologies and versioned alongside each LyteNyte Grid release.
-> See the [Skills Installation guide](https://1771technologies.com/docs/ai-skills-installation) for
-> global install, version pinning, and other options.
+See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-overview) to learn more.
 
 ## Features
 
@@ -97,6 +96,16 @@ shadcn/ui integration, TypeScript patterns, and all PRO components.
 | [Controlled or Uncontrolled State](https://www.1771technologies.com/docs/grid-reactivity#controlled-state) |  ✅  | ✅  |
 | [React Compiler Support](https://www.1771technologies.com/docs/grid-react-compiler)                        |  ✅  | ✅  |
 | [Headless Components](https://www.1771technologies.com/docs/grid-headless-parts)                           |  ✅  | ✅  |
+
+</details>
+
+<details>
+<summary><b>🤖&nbsp; AI Enhanced Workflows</b></summary>
+<br>
+
+| Feature                                                               | Core | PRO |
+| --------------------------------------------------------------------- | :--: | :-: |
+| [AI Skills](https://www.1771technologies.com/docs/ai-skills-overview) |  ✅  | ✅  |
 
 </details>
 
@@ -261,6 +270,18 @@ shadcn/ui integration, TypeScript patterns, and all PRO components.
 </details>
 
 <details>
+<summary><b>🧮&nbsp; Expressions</b> &nbsp;</summary>
+<br>
+
+| Feature                                                                          | Core | PRO |
+| -------------------------------------------------------------------------------- | :--: | :-: |
+| [Expressions Engine](https://www.1771technologies.com/docs/expressions-overview) |  —   | ✅  |
+| [Filter Expressions](https://www.1771technologies.com/docs/expression-filters)   |  —   | ✅  |
+| [Expression Plugins](https://www.1771technologies.com/docs/expression-plugins)   |  —   | ✅  |
+
+</details>
+
+<details>
 <summary><b>📦&nbsp; Grouping & Aggregations</b></summary>
 <br>
 
@@ -398,7 +419,7 @@ npm install --save @1771technologies/lytenyte-pro
 
 > [!NOTE]
 > You can install and use LyteNyte Grid PRO
-> without license but a watermark will be displayed.
+> without a license, but a watermark will be displayed.
 
 **Core:**
 
