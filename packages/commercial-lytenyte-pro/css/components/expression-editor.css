@@ -13,7 +13,7 @@
   [data-ln-expression-editor] {
     font-family:
       ui-monospace, "Cascadia Code", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
-    font-size: 16px;
+    font-size: var(--ln-font-sm);
     white-space: nowrap;
     word-break: normal;
     overflow-wrap: normal;
