@@ -26,7 +26,7 @@ const EXAMPLE_PILLS = [
 ];
 
 export default function EvaluatorBasics() {
-  const [value, setValue] = useState("1 + 1");
+  const [value, setValue] = useState("age * 2");
 
   const result = useMemo(() => {
     try {
@@ -52,8 +52,8 @@ export default function EvaluatorBasics() {
           </div>
         </div>
 
-        <div data-ln-input="true" className="h-10 text-base">
-          <ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} />
+        <div data-ln-input="true" className="h-10 text-sm">
+          <ExpressionEditor.Root className="text-sm" value={value} onChange={setValue} tokenize={tokenize} />
         </div>
       </label>
 

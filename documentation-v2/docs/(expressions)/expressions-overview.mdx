@@ -5,6 +5,222 @@ pro: true
 step: Create advanced domain-specific expressions.
 ---
 
+## What Are Expressions
+
+Expressions refer to a simplified programmatic language for representing calculations. An expression
+will produce a value when computed.
+
+In it's simplest form, an expression can be a simple math equation, such as `1 + 1`, which when computed
+results in the value `2`. Expressions can be more powerful than this, by concisely representing complex
+calculations in a simplified form, for example, you could have an the expression `sum(Sales Revenue) / sum(Sales Quantity)`
+to compute the average sale revenue per unit.
+
+LyteNyte Grid's expression capabilities allows developers to define their own expression language,
+which users can then use to describe the sort of computation they want to perform. Two common
+use cases include:
+
+- Expressions to filter grid rows.
+- Expression computed cell values within the grid.
+
+## LyteNyte Grid's Expression Engine
+
+Expressions are just a text input. The term `sum(Sales Revenue) / sum(Sales Quantity)` has no meaning
+by itself. LyteNyte Grid provides a powerful expression engine that allows developers to evaluate these
+expressions to get a concrete value.
+
+The expression engine will take the text expression, and perform three steps:
+
+1. **Tokenization:** Breaks the expression term into it's component parts. This can be considered the alphabet
+   of the expression language.
+2. **Parse:** The tokens generated from the previous step are used to create a structure representation of the
+   expression. A **structured represent** is a data structure the creates relationships among the different parts of the
+   expression so that the overall expression can be readily evaluated. Programmers usually refer to this as the AST of the
+   expression.
+3. **Evaluate:** The final step is to compute the expression by filling in any values necessary. This is the step that
+   takes an expressions and produces a value from it. The grid can the use the value produced for filtering, a cell's value,
+   or any other use case your application requires.
+
+### The Evaluator
+
+LyteNyte Grid's expression engine is represented by an exported class called the `Evaluator`. At it's base the `Evaluator`
+is a simple calculator, capable of performing basic math equations.
+
+The code below demonstrates the simplest use case:
+
+```ts
+import { Evaluator } from "@1771technologies/lytenyte-pro/expressions";
+
+const result = new Evaluator().run("1 + 1"); // 2
+```
+
+LyteNyte Grid's evaluator supports a plugin system to extend the evaluator's capabilities
+with more advanced expression capabilities. LyteNyte Grid exports a standard set of plugins
+to provide an advanced JavaScript like expression language that developers can readily use.
+
+The demo below demonstrates this more advanced expression language. Notice the standard expression
+language supports identifiers (names like `age`), functions like `fullName` and even interpolated
+strings.
+
+::demo[Standard Expression Language="./demos/evaluate-standard-plugins"]
+
+### Expression Plugins
+
+Expression plugins are used to provide the `Evaluator` class with additional expression capabilities.
+Provide an array of plugins when creating the `Evaluator` to provide support for additional expression
+capabilities. For example:
+
+```ts
+import { Evaluator, standardPlugins, stringsPlugin } from "@1771technologies/lytenyte-pro/expressions";
+
+// Evaluator with standard expression language support
+const standardEvaluator = new Evaluator(standardPlugins);
+
+// Evaluator with string support (+ basic math operations)
+const stringEvaluator = new Evaluator([stringsPlugin]);
+```
+
+### Expression Context
+
+With an expression such as `age + 21`, the `Evaluator` needs a way to determine what the value of the
+identifier `age` is. To do this, the `Evaluator.run` method accepts a context object as a second argument.
+The context object supplies the runtime values for any identifiers used in the expression.
+
+```ts
+const context = {
+  age: 23,
+  user: { firstName: "John", lastName: "Smith" },
+  fullName: () => context.user.firstName + " " + context.user.lastName,
+};
+
+evaluator.run("age * 2", context); // 46
+evaluator.run("user.firstName", context); // "John"
+evaluator.run("fullName()", context); // "John Smith"
+```
+
+The context can hold any type of value including primitives, objects, arrays, and functions. Functions in the
+context are callable directly from the expression. This is the primary mechanism for exposing
+domain-specific data and operations to expression authors.
+
+### Standard Expression Language
+
+`standardPlugins` turns the bare-bones evaluator into a JavaScript-like expression language.
+The table below lists every plugin in the set, the syntax it adds, and a short example.
+
+| Plugin              | What it adds                                  | Example                                  |
+| ------------------- | --------------------------------------------- | ---------------------------------------- |
+| `stringsPlugin`     | String literals and template literals         | `"hello"`, `'world'`, `` `Hi ${name}` `` |
+| `booleansPlugin`    | `true`, `false`, `null`, `undefined` literals | `status == true`                         |
+| `comparisonPlugin`  | `==` `!=` `<` `>` `<=` `>=`                   | `age >= 18`                              |
+| `logicalPlugin`     | `&&` `\|\|` `??` and unary `!`                | `a && b \|\| c`                          |
+| `membershipPlugin`  | `in` and `not in`                             | `"key" in obj`                           |
+| `ternaryPlugin`     | `condition ? then : else`                     | `x > 0 ? "pos" : "neg"`                  |
+| `collectionsPlugin` | Array and object literals, spread (`...`)     | `[1, 2, ...rest]`                        |
+| `arrowsPlugin`      | Arrow functions — single and multi-param      | `x => x * 2`, `(a, b) => a + b`          |
+| `pipePlugin`        | Pipe operator `\|>`                           | `items \|> filter(x => x > 0)`           |
+| `accessPlugin`      | `.prop`, `[computed]`, `?.`, function calls   | `user.name`, `obj?.city`                 |
+
+The base `Evaluator` (no plugins) supports arithmetic on its own: `+`, `-`, `*`, `/`, `%`,
+and `**` (exponentiation).
+
+#### Literals
+
+Numbers support decimal, hexadecimal (`0xFF`), octal (`0o77`), binary (`0b1010`), scientific
+notation (`1e10`), and underscore separators (`1_000_000`).
+
+Strings accept single quotes, double quotes, and standard escape sequences (`\n`, `\t`, `\uXXXX`,
+`\xHH`). Template literals use backticks and support embedded expressions:
+
+```
+`${user.firstName} scored ${points * multiplier} points`
+```
+
+#### Operators
+
+Operators follow standard precedence. From lowest to highest binding:
+
+| Operators                       | Description                             |
+| ------------------------------- | --------------------------------------- |
+| `?:`                            | Ternary conditional                     |
+| `\|>`                           | Pipe                                    |
+| `\|\|`                          | Logical OR                              |
+| `&&`                            | Logical AND                             |
+| `??`                            | Nullish coalescing                      |
+| `==` `!=`                       | Equality                                |
+| `<` `>` `<=` `>=` `in` `not in` | Relational and membership               |
+| `+` `-`                         | Addition and subtraction                |
+| `*` `/` `%`                     | Multiplication, division, modulo        |
+| `**`                            | Exponentiation (right-associative)      |
+| `!` `-` `+`                     | Unary NOT, negation, identity           |
+| `.` `[…]` `?.` `()`             | Member access, computed, optional, call |
+
+#### Property Access and Function Calls
+
+Access nested values with `.` (dot notation) or `[computed]` (bracket notation). The `?.`
+operator short-circuits to `undefined` when the left side is `null` or `undefined` instead of
+throwing:
+
+```
+user.address.city         // throws if address is null
+user.address?.city        // returns undefined if address is null
+data["dynamic-key"]       // computed bracket access
+```
+
+Call any function in the context or a method on a value:
+
+```
+fullName()                // calls fullName from the context
+"hello".toUpperCase()     // method call, this binding preserved
+items.filter(x => x > 0) // method with arrow function argument
+```
+
+#### Arrow Functions
+
+Arrow functions are first-class values. Use them as callbacks for array methods or any
+function in the context that accepts a function argument:
+
+```
+items.map(x => x * 2)
+items.filter((x, i) => x > 0 && i < 10)
+```
+
+Single-parameter arrows do not need parentheses. Multi-parameter arrows require them.
+
+#### Pipe Operator
+
+The `|>` operator passes the left-hand value as the **last argument** to the right-hand
+function or call expression. Chains of pipes read left-to-right without deep nesting:
+
+```
+// Without pipe
+round(multiply(price, 1.1), 2)
+
+// With pipe
+price |> multiply(1.1) |> round(2)
+```
+
+If the right side is a bare identifier rather than a call expression, the input is passed
+as the sole argument: `value |> format`.
+
+#### Logical Short-Circuit and Nullish Coalescing
+
+`&&` and `||` short-circuit: the right side is only evaluated when needed. `??` returns
+the right side only when the left side is `null` or `undefined` (unlike `||`, which also
+triggers on `0` or `""`):
+
+```
+user && user.name         // safe: user.name only read if user is truthy
+count || "none"           // returns "none" if count is 0 (falsy)
+label ?? "default"        // returns "default" only if label is null/undefined
+```
+
+## Using Expressions For Filters
+
+## Using Expressions For Cell Values
+
+## Expressions As A Standalone Language
+
+## Next Steps
+
 Expressions are a lightweight domain-specific language (DSL) that produces a value when evaluated.
 For example, `1 + 1` evaluates to `2`. Common use cases include:
 
