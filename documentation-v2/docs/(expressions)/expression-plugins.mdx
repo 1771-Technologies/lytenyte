@@ -9,7 +9,7 @@ description: Expression plugins allow you to extend the syntax and evaluation ca
 :::note
 
 This guide assumes you understand how expressions work in LyteNyte Grid. Read the
-[Expressions Overview guide](/docs/expressions-overview) for more guidance.
+[Expressions Overview guide](/docs/expressions-overview) for more details.
 
 A basic understanding of lexers, parsers, and abstract syntax trees is recommended to
 get the most out of creating expression plugins.
@@ -32,8 +32,8 @@ ASTNode (simplified)
 value
 ```
 
-A plugin can participate in any subset of these stages by implementing the corresponding hooks.
-Hooks are optional; implement only the ones your plugin needs.
+A plugin can participate in any of these stages by implementing the corresponding hooks.
+Hooks are optional—implement only the ones your plugin needs.
 
 ## Plugin Interface
 
@@ -63,30 +63,30 @@ interface Plugin {
 }
 ```
 
-**Return `null` from any hook** to signal "not handled by this plugin." The evaluator then tries
+Return `null` from any hook to signal “not handled by this plugin.” The evaluator then tries
 the next plugin in the array. Return a non-null value to claim the node and stop the chain.
 
 | Hook              | Stage        | Use when…                                                                           |
 | ----------------- | ------------ | ----------------------------------------------------------------------------------- |
 | `scan`            | Tokenization | You need a new token type (e.g. `#date` literals or `@variable` prefixes)           |
 | `parsePrefix`     | Parsing      | You need a new expression form that starts a term (literals, prefix operators)      |
-| `parseInfix`      | Parsing      | You need a binary operator that sits between two terms                              |
-| `infixPrecedence` | Parsing      | You defined an infix operator and need to declare its binding strength              |
-| `parsePostfix`    | Parsing      | You need a postfix form that trails a completed term (member access, calls)         |
+| `parseInfix`      | Parsing      | You need a binary operator that appears between two terms                           |
+| `infixPrecedence` | Parsing      | You define an infix operator and need to declare its precedence                     |
+| `parsePostfix`    | Parsing      | You need a postfix form that follows a completed term (member access, calls)        |
 | `parseUnary`      | Parsing      | You need a unary wrapper around the next term (rarely needed outside `parsePrefix`) |
-| `optimize`        | Optimization | You want to constant-fold or simplify your custom AST nodes before evaluation       |
+| `optimize`        | Optimization | You want to simplify or constant-fold custom AST nodes before evaluation            |
 | `evaluate`        | Evaluation   | You need to compute a value from a custom (or existing) AST node type               |
 
 ## The `scan` Hook
 
-`scan(source, pos)` is called by the tokenizer at each character position it does not recognise.
+`scan(source, pos)` runs at each character position the tokenizer does not recognize.
 Return a token descriptor or `null`:
 
 ```ts
 scan: (source: string, pos: number) => {
-  type: string;  // token type name, used by parsePrefix/Infix to identify the token
-  value: string; // the raw matched text
-  end: number;   // index of the first character AFTER the token (not the length)
+  type: string;  // token type name, used by parse hooks
+  value: string; // raw matched text
+  end: number;   // index of the first character AFTER the token
 } | null
 ```
 
@@ -96,112 +96,101 @@ The `end` field is a source position, not a length. For a token starting at `pos
 ## The Parse Hooks and `ParserContext`
 
 All parse hooks receive a `ParserContext` that represents the current position in the token
-stream. Three utility functions operate on it:
+stream. Use these helpers to interact with it:
 
 ```ts
 import { current, advance, expect } from "@1771technologies/lytenyte-pro/expressions";
 
-current(ctx)              // returns the token at the current position (does not advance)
-advance(ctx)              // moves the cursor forward by one token, returns the consumed token
-expect(ctx, type, value?) // asserts the current token has the given type (and optional value),
-                          // advances past it, and returns it; throws if the assertion fails
+current(ctx)              // returns the current token
+advance(ctx)              // consumes the current token and advances
+expect(ctx, type, value?) // asserts and consumes the current token
 ```
 
-A typical `parsePrefix` hook checks the current token, consumes it with `advance`, and returns
-an AST node:
+A typical `parsePrefix` hook checks the current token, consumes it, and returns an AST node:
 
 ```ts
 parsePrefix: (ctx) => {
   const tok = current(ctx);
-  if (tok.type !== "MyTokenType") return null; // not our token, pass to next plugin
-  advance(ctx);                                // consume the token
+  if (tok.type !== "MyTokenType") return null;
+  advance(ctx);
   return { type: "MyNode", value: tok.value, start: tok.start, end: tok.end };
 },
 ```
 
 ### Infix Precedence
 
-`parseInfix` is called for binary operators. The parser uses **precedence climbing**: it only
-calls `parseInfix` when the current operator's precedence is at least `minPrec`. Always declare
-the precedence in `infixPrecedence` and check it before consuming any tokens:
+`parseInfix` handles binary operators. The parser uses precedence climbing and only calls
+`parseInfix` when the operator’s precedence is at least `minPrec`. Always declare precedence
+in `infixPrecedence` and check it before consuming tokens:
 
 ```ts
 infixPrecedence: (ctx) => {
-  return current(ctx).value === "~>" ? 8 : undefined; // 8 = between + (6) and * (13)
+  return current(ctx).value === "~>" ? 8 : undefined;
 },
 
 parseInfix: (ctx, left, minPrec) => {
   if (current(ctx).value !== "~>") return null;
   const prec = 8;
-  if (prec < minPrec) return null; // yield to a tighter-binding operator
-  advance(ctx); // consume the operator
-  const right = parseExpression(ctx, prec + 1); // left-associative: prec + 1
+  if (prec < minPrec) return null;
+  advance(ctx);
+  const right = parseExpression(ctx, prec + 1); // left-associative
   return { type: "MyInfixNode", left, right, start: left.start, end: right.end };
 },
 ```
 
-Use `prec - 1` instead of `prec + 1` when parsing the right side for **right-associative**
-operators (like `**` exponentiation).
+Use `prec - 1` instead of `prec + 1` for right-associative operators (such as `**`).
 
 ## The `optimize` Hook
 
 `optimize(node, optimize)` receives a node and a recursive optimizer function. Call the recursive
-argument on child nodes to propagate optimization through the tree:
+function on child nodes before simplifying the parent:
 
 ```ts
 optimize: (node, opt) => {
   if (node.type !== "MyNode") return null;
-  // optimize children first, then simplify the parent
   const child = opt((node as any).child);
   if (child.type === "NumberLiteral") {
-    // constant fold: replace with a simpler node
     return { type: "NumberLiteral", value: (child as any).value * 2, start: node.start, end: node.end };
   }
   return { ...node, child };
 },
 ```
 
-Returning `null` from `optimize` means "not handled"; the evaluator will optimize the node's
-children using the next plugin or its default rules. Always return a node (even the unchanged
-original) if you want to control the optimization of a particular node type.
+Return `null` to defer handling to the next plugin. Return a node (even unchanged) to take control
+of optimization for that node type.
 
 ## The `evaluate` Hook
 
 `evaluate(node, context, evaluate)` receives the current AST node, the evaluation context, and
-a recursive evaluator function. Call the recursive argument to evaluate child nodes:
+a recursive evaluator function. Call the recursive function to evaluate child nodes:
 
 ```ts
 evaluate: (node, context, evalFn) => {
   if (node.type !== "MyNode") return null;
-  const childValue = evalFn((node as any).child, context); // recurse into children
+  const childValue = evalFn((node as any).child, context);
   return { value: doSomethingWith(childValue) };
 },
 ```
 
-The return value must be wrapped in an object: `{ value: ... }`. This distinguishes a result of
-`undefined` from a `null` "not handled" signal.
+Return `{ value: ... }` to distinguish a valid result (including `undefined`) from a `null`
+“not handled” signal.
 
-The `context` argument is the same object passed to `evaluator.run`. Pass it unchanged when
-recursing unless your plugin intentionally introduces new bindings (as `arrowsPlugin` does for
-arrow function parameters).
+The `context` argument is the same object passed to `evaluator.run`. Pass it unchanged unless
+your plugin intentionally introduces new bindings.
 
 ## Examples
 
 ### Evaluation Hook: Resolving Column Identifiers
 
 `createResolvedIdentifierPlugin` uses only the `evaluate` hook. It intercepts `Identifier` nodes
-whose names match a registered list and calls them as functions, so the user writes `Gender`
-in the expression and the evaluator reads the column value from the current row automatically.
+that match a registered list and calls them as functions. This allows users to write `Gender`
+while the evaluator resolves the value from the current row.
 
-The standard context lookup for an identifier just does `context[name]`. This plugin instead
-treats the context value as a function and calls it with the row argument, enabling column getter
-functions to be stored in the context:
+The default identifier lookup reads `context[name]`. This plugin treats the value as a function
+and calls it with the row argument:
 
 ```ts
-function createResolvedIdentifierPlugin(options: {
-  identifiers: string[];
-  args: string[];
-}): Plugin {
+function createResolvedIdentifierPlugin(options: { identifiers: string[]; args: string[] }): Plugin {
   const identifierSet = new Set(options.identifiers);
   const argKeys = options.args;
 
@@ -209,30 +198,29 @@ function createResolvedIdentifierPlugin(options: {
     name: "resolved-identifier",
     evaluate: (node, context) => {
       if (node.type !== "Identifier") return null;
-      if (!identifierSet.has((node as any).name)) return null; // not a registered column name
+      if (!identifierSet.has((node as any).name)) return null;
 
       const fn = context[(node as any).name];
       if (typeof fn !== "function") {
         throw new Error(`Resolved identifier "${(node as any).name}" is not a function in context`);
       }
 
-      const args = argKeys.map((key) => context[key]); // e.g. [context["row"]]
+      const args = argKeys.map((key) => context[key]);
       return { value: fn(...args) };
     },
   };
 }
 ```
 
-See the [Expression Filters guide](/docs/expression-filters) for a full usage example.
+See the [Expression Filters guide](/docs/expression-filters) for a full example.
 
 ### Parse + Evaluate: Adding Boolean Literals
 
-`booleansPlugin` (part of `standardPlugins`) uses `parsePrefix` to convert `Boolean`, `Null`,
-and `Undefined` tokens into typed AST nodes, then `evaluate` to produce their runtime values.
+`booleansPlugin` uses `parsePrefix` to convert tokens into AST nodes and `evaluate` to produce
+runtime values.
 
-The tokenizer already recognises the keywords `true`, `false`, `null`, and `undefined` and emits
-them as `Boolean`, `Null`, and `Undefined` tokens. The plugin's job is to lift them into the AST
-and give them values at runtime:
+The tokenizer already recognizes `true`, `false`, `null`, and `undefined`. This plugin converts
+them into AST nodes and evaluates them:
 
 ```ts
 const booleansPlugin: Plugin = {
@@ -255,26 +243,22 @@ const booleansPlugin: Plugin = {
   },
   evaluate: (node) => {
     if (node.type === "BooleanLiteral") return { value: (node as any).value };
-    if (node.type === "NullLiteral")    return { value: null };
+    if (node.type === "NullLiteral") return { value: null };
     if (node.type === "UndefinedLiteral") return { value: undefined };
     return null;
   },
 };
 ```
 
-Use this pattern for any new literal form: a recognised token maps to a typed AST node, and the
-evaluate hook returns its value.
-
 ### Scan + Parse + Evaluate: A Custom Token Type
 
-When the expression needs a syntax form the tokenizer does not yet know about, add a `scan` hook
-to introduce a new token type. This plugin adds a `#YYYY-MM-DD` date literal:
+When you need syntax the tokenizer does not recognize, add a `scan` hook. This plugin introduces
+a `#YYYY-MM-DD` date literal:
 
 ```ts
 const dateLiteralPlugin: Plugin = {
   name: "date-literal",
 
-  // 1. Recognise #YYYY-MM-DD and emit a DateLiteral token
   scan: (source, pos) => {
     if (source[pos] !== "#") return null;
     const match = /^#(\d{4}-\d{2}-\d{2})/.exec(source.slice(pos));
@@ -282,7 +266,6 @@ const dateLiteralPlugin: Plugin = {
     return { type: "DateLiteral", value: match[1], end: pos + match[0].length };
   },
 
-  // 2. Consume the DateLiteral token and produce an AST node
   parsePrefix: (ctx) => {
     const tok = current(ctx);
     if (tok.type !== "DateLiteral") return null;
@@ -290,32 +273,23 @@ const dateLiteralPlugin: Plugin = {
     return { type: "DateLiteralNode", isoValue: tok.value, start: tok.start, end: tok.end };
   },
 
-  // 3. Evaluate the node to a JavaScript Date
   evaluate: (node) => {
     if (node.type !== "DateLiteralNode") return null;
     return { value: new Date((node as any).isoValue) };
   },
 };
-
-// evaluator.run("#2024-01-15") → new Date("2024-01-15")
 ```
 
 ### Infix Operator: A Custom Binary Operator
 
-`parseInfix` and `infixPrecedence` work together to introduce a new binary operator. This plugin
-adds `**` exponentiation. The standard evaluator's built-in arithmetic already handles `**`, but
-this shows the full pattern for any custom binary operator.
-
-Operator precedence numbers are relative; the standard plugins use roughly: logical OR 10,
-logical AND 20, comparison 30–40, addition 50, multiplication 60. Choose a number that places
-your operator at the right binding strength:
+`parseInfix` and `infixPrecedence` define binary operators. This example adds `**` exponentiation:
 
 ```ts
 const exponentiationPlugin: Plugin = {
   name: "exponentiation",
 
   infixPrecedence: (ctx) => {
-    return current(ctx).value === "**" ? 70 : undefined; // tighter than multiply (60)
+    return current(ctx).value === "**" ? 70 : undefined;
   },
 
   parseInfix: (ctx, left, minPrec) => {
@@ -323,16 +297,14 @@ const exponentiationPlugin: Plugin = {
     const prec = 70;
     if (prec < minPrec) return null;
     advance(ctx);
-    // Right-associative: parse the right side at prec - 1 so that a ** b ** c
-    // groups as a ** (b ** c) rather than (a ** b) ** c
-    const right = parseExpression(ctx, prec - 1);
+    const right = parseExpression(ctx, prec - 1); // right-associative
     return { type: "ExponentiationExpr", left, right, start: left.start, end: right.end };
   },
 
   evaluate: (node, context, evalFn) => {
     if (node.type !== "ExponentiationExpr") return null;
     const base = evalFn((node as any).left, context) as number;
-    const exp  = evalFn((node as any).right, context) as number;
+    const exp = evalFn((node as any).right, context) as number;
     return { value: Math.pow(base, exp) };
   },
 };
@@ -340,14 +312,11 @@ const exponentiationPlugin: Plugin = {
 
 ## Composing Plugins
 
-Pass plugins as an array to `Evaluator`. The evaluator tries each plugin in the order they appear
-and uses the first non-null result for each node.
+Pass plugins as an array to `Evaluator`. The evaluator tries them in order and uses the first
+non-null result for each node.
 
-**Always place custom plugins after `standardPlugins`.** Standard plugins handle the core AST node
-types (`BinaryExpression`, `CallExpression`, `MemberExpression`, etc.). If a custom plugin appears
-first and returns `null` for those types, the evaluator moves on, which is fine. But if a custom
-plugin accidentally claims a node type that a standard plugin was supposed to handle, behaviour
-will be wrong. Appending after the standard set avoids this:
+Place custom plugins after `standardPlugins`. Standard plugins handle core node types, and placing
+custom plugins after them avoids unintended overrides:
 
 ```ts
 const evaluator = new Evaluator([
@@ -358,9 +327,8 @@ const evaluator = new Evaluator([
 ]);
 ```
 
-Plugins that shadow existing behaviour (like `createResolvedIdentifierPlugin` intercepting
-`Identifier` nodes) must also come after `standardPlugins`, since plugins are tried in order and
-the first match wins.
+Plugins that intentionally override existing behavior (such as `createResolvedIdentifierPlugin`)
+must also appear after `standardPlugins`.
 
 ## Next Steps
 
