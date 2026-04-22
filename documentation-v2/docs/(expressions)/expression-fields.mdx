@@ -12,36 +12,30 @@ work in LyteNyte Grid. Read the [Expressions Overview guide](/docs/expressions-o
 
 :::
 
-## How Expression Fields Work
+## Creating Expression Fields
 
 A column's `field` property accepts a function. When the grid renders a cell, it calls
-`field({ row })` and uses the return value as the cell's value. This is the hook for expression
-fields: run the evaluator inside the function to compute the cell value from the current row.
+`field({ row })` and uses the return value as the cell value. Run the evaluator inside
+this function to compute the cell value from an expression at render time.
 
-```ts
-const evaluator = new Evaluator(standardPlugins);
-const ast = evaluator.ast("revenue - cost"); // parse once
+To improve the authoring experience, use column display names as identifiers in the expression
+(`Revenue`, `Cost`) instead of raw data keys (`revenue`, `cost`). Two mechanisms enable this:
 
-const computedColumn: Grid.Column<GridSpec> = {
-  id: "margin",
-  name: "Margin",
-  type: "number",
-  field: ({ row }) => {
-    if (row.kind !== "leaf" || !row.data) return null;
-    return evaluator.run(ast, row.data);
-  },
-};
-```
+1. **`createResolvedIdentifierPlugin`**: Intercepts identifier nodes in the AST and rewrites
+   them as function calls, so `Revenue` resolves from the context at evaluation time.
+2. **The context object**: Maps each column display name to a function that reads the column value
+   from the current row using `computeField`.
 
-Parsing is expensive. Parse the expression into an AST once (outside the field function, or in a
-`useMemo`) and pass the pre-parsed AST to `run` on every row. This pattern is also used in
-[expression filters](/docs/expression-filters) for the same reason.
+The demo below preloads the expression `Revenue - Cost`. Edit the expression or select an example pill to
+compute a different value across the dataset:
 
-## Setting Up the Evaluator
+::demo[Expression Fields="./demos/expression-fields"]
 
-The setup is nearly identical to expression filters. Use `createResolvedIdentifierPlugin` so
-users can write column display names as identifiers (`Revenue`, `Cost`) rather than raw data
-field keys (`revenue`, `cost`):
+### Setting Up the Evaluator
+
+Build the evaluator once outside the component. Register `createResolvedIdentifierPlugin`
+after `standardPlugins`. Pass the column display names as `identifiers` and `"row"` as the
+context key that the plugin forwards to each column getter:
 
 ```ts
 import {
@@ -51,11 +45,11 @@ import {
 } from "@1771technologies/lytenyte-pro/expressions";
 
 const columns: Grid.Column<GridSpec>[] = [
-  { id: "orderQuantity", name: "Quantity",   type: "number" },
-  { id: "unitPrice",     name: "Unit Price", type: "number" },
-  { id: "cost",          name: "Cost",       type: "number" },
-  { id: "revenue",       name: "Revenue",    type: "number" },
-  { id: "profit",        name: "Profit",     type: "number" },
+  { id: "orderQuantity", name: "Quantity", type: "number" },
+  { id: "unitPrice", name: "Unit Price", type: "number" },
+  { id: "cost", name: "Cost", type: "number" },
+  { id: "revenue", name: "Revenue", type: "number" },
+  { id: "profit", name: "Profit", type: "number" },
 ];
 
 const evaluator = new Evaluator(
@@ -68,24 +62,21 @@ const evaluator = new Evaluator(
 );
 ```
 
-## Building the Column Context
+### Building the Column Context
 
-Build a context object that maps each column display name to a function reading its value from
-the current row. Create this once outside your component so the reference is stable:
+Build a context object that maps each column display name to a function that reads its value from
+the current row. Create this object once outside the component so the reference stays stable:
 
 ```ts
 import { computeField } from "@1771technologies/lytenyte-pro";
 import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
 
 const columnsContext = Object.fromEntries(
-  columns.map((col) => [
-    col.name ?? col.id,
-    (row: RowLeaf) => computeField(col.field ?? col.id, row),
-  ]),
+  columns.map((col) => [col.name ?? col.id, (row: RowLeaf) => computeField(col.field ?? col.id, row)]),
 );
 ```
 
-## Defining the Computed Column
+### Defining the Computed Column
 
 Parse the expression in a `useMemo` that re-runs when the expression changes. Build the full
 columns array, including the computed column, in a second `useMemo` that depends on the
@@ -101,35 +92,37 @@ const ast = useMemo(() => {
   }
 }, [committed]);
 
-const columns = useMemo((): Grid.Column<GridSpec>[] => [
-  ...baseColumns,
-  {
-    id: "computed",
-    name: "Computed",
-    field: ({ row }) => {
-      if (!ast || row.kind !== "leaf" || !row.data) return null;
-      try {
-        return evaluator.run(
-          ast,
-          { row, ...columnsContext },
-          { undefinedIdentifierFallback: true },
-        );
-      } catch {
-        return null;
-      }
+const columns = useMemo(
+  (): Grid.Column<GridSpec>[] => [
+    ...baseColumns,
+    {
+      id: "computed",
+      name: "Computed",
+      field: ({ row }) => {
+        if (!ast || row.kind !== "leaf" || !row.data) return null;
+        try {
+          return evaluator.run(ast, { row, ...columnsContext }, { undefinedIdentifierFallback: true });
+        } catch {
+          return null;
+        }
+      },
     },
-  },
-], [ast]);
+  ],
+  [ast],
+);
 ```
 
-`undefinedIdentifierFallback: true` makes the evaluator return `undefined` instead of throwing
-when an identifier is not found in the context. This keeps cells rendering as empty rather than
+`undefinedIdentifierFallback: true` makes the evaluator return `undefined` instead of
+throwing when it cannot find an identifier in the context. This keeps cells empty instead of
 crashing while the user is still typing.
 
-## Debouncing the Expression Input
+Parsing is expensive—always parse the expression into an AST once (outside the field
+function or in a `useMemo`) and pass the pre-parsed result to `run` for each row.
 
-Use the same debounce pattern as expression filters. Keep separate `value` (editor state) and
-`committed` (what the AST memo depends on) so the grid column only recomputes after the user
+### Debouncing the Expression Input
+
+Keep two state values: `value` (what the editor displays) and `committed` (what the AST memo
+depends on). Debounce updates to `committed` so the grid column recomputes only after the user
 pauses typing:
 
 ```ts
@@ -144,17 +137,26 @@ const onChange = (s: string) => {
 };
 ```
 
-## Live Demo
+Pass `value` to `ExpressionEditor.Root` and `committed` to the AST memo. The editor updates
+immediately, while the grid waits for the user to pause typing.
 
-The demo below shows a grid whose last column is driven by a user-typed expression. The column
-updates after you pause typing. Try the example pills for some starting expressions:
+### Wiring Up the Completion Provider
 
-::demo[Expression Fields="./demos/expression-fields"]
+Pass a `createCompletionProvider` to `ExpressionEditor.Root` so users get autocomplete for
+column names. Supply a `Record<displayName, id>` map so the provider does not require access to
+the full context object:
+
+```ts
+const provider = useMemo(
+  () => createCompletionProvider(Object.fromEntries(columns.map((col) => [col.name ?? col.id, col.id]))),
+  [],
+);
+```
 
 ## Static Expression Fields
 
-If the expression is fixed at build time and not authored by a user, skip the editor and just
-parse once at module scope:
+If the expression is fixed at build time and not authored by a user, skip the editor and parse
+the expression once at module scope:
 
 ```ts
 const evaluator = new Evaluator(standardPlugins);
@@ -172,9 +174,9 @@ const discountedRevenueColumn: Grid.Column<GridSpec> = {
 };
 ```
 
-This is effectively the same as writing a plain function field, but it lets you store and
-version the computation as an expression string rather than compiled code, which is useful if you load
-column definitions from an API or configuration file.
+This approach is effectively the same as writing a plain function field, but it lets you store and
+version the computation as an expression string instead of compiled code. This is useful when column
+definitions are loaded from an API or configuration file.
 
 ## Next Steps
 
