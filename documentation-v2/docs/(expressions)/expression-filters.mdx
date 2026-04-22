@@ -10,25 +10,26 @@ step: Filter grid rows based on the predicate value of an expression.
 This guide assumes you are already familiar with how filters work in LyteNyte Grid. In particular,
 the demos in this guide use the client source to demonstrate expression filters.
 
-See the [Client Row Filtering guide](/docs/client-source-filtering) for more guidance.
+See the [Client Row Filtering guide](/docs/client-source-filtering) for more details.
 
-Furthermore, you should already be familiar with expressions in LyteNyte Grid. See the
-[Expressions Overview](/docs/expressions-overview) for more details.
+You should also be familiar with expressions in LyteNyte Grid. See the
+[Expressions Overview](/docs/expressions-overview).
 
 :::
 
-## How Expression Filters Work
+## Creating Expression Filters
 
-An expression filter is an expression that evaluates to a boolean. The evaluator runs it against
-each row and includes only the rows where the result is truthy.
+An expression filter evaluates to a boolean value. The evaluator evaluates the expression for
+each row and includes only rows where the result is truthy.
 
-Column names become identifiers in the expression. A user writes `Gender == "Male"` rather than
-`row.customerGender == "Male"`. Two things make this work:
+To improve the user experience for filter expressions, use column names instead of column IDs.
+For example, a user writes `Gender == "Male"` instead of `row.customerGender == "Male"`.
+Two mechanisms enable this:
 
-1. **`createResolvedIdentifierPlugin`**: intercepts identifier nodes in the AST and rewrites
-   them as function calls, so `Gender` is resolved from the context at evaluation time rather than
-   looked up as a plain key.
-2. **The context object**: maps each column display name to a function that reads the column's
+1. **`createResolvedIdentifierPlugin`**: Intercepts identifier nodes in the AST and rewrites
+   them as function calls. This ensures `Gender` resolves from the context at evaluation time
+   instead of being treated as a plain key.
+2. **The context object**: Maps each column display name to a function that reads the column's
    value from the current row using `computeField`.
 
 The demo below preloads the expression `Gender == "Male" && Quantity > 10`. Edit it to filter
@@ -36,11 +37,14 @@ across any column:
 
 ::demo[Expression Filters="./demos/expression-filter"]
 
-## Setting Up the Evaluator
+The demo includes the complete expression filter implementation. With expression filters, a few
+lines of code enable users to create complex filtering logic in a concise and flexible way.
+
+### Setting Up the Evaluator
 
 Build the evaluator once outside your component. Register `createResolvedIdentifierPlugin` after
-`standardPlugins`, passing the column display names as `identifiers` and `"row"` as the context
-key the plugin should forward to each column getter:
+`standardPlugins`. Pass the column display names as `identifiers` and `"row"` as the context
+key that the plugin forwards to each column getter:
 
 ```ts
 import {
@@ -59,10 +63,10 @@ const evaluator = new Evaluator(
 );
 ```
 
-## Building the Filter Function
+### Building the Filter Function
 
-Construct the context inside `useMemo` so it is stable across re-renders. Each entry maps a
-column's display name to a function that reads its value from a row via `computeField`:
+Construct the context inside `useMemo` so it remains stable across re-renders. Each entry maps a
+column's display name to a function that reads its value from a row using `computeField`:
 
 ```ts
 import { computeField } from "@1771technologies/lytenyte-pro";
@@ -78,9 +82,9 @@ const columnsContext = useMemo(
 ```
 
 Pre-parse the expression into an AST so the filter does not re-parse on every row. Pass
-`undefinedIdentifierFallback: true` so that a partially-typed expression (with identifiers the
-evaluator does not yet recognise) returns `true` instead of throwing, keeping rows visible while
-the user is still typing:
+`undefinedIdentifierFallback: true` so a partially typed expression (with identifiers the
+evaluator does not yet recognize) returns `true` instead of throwing. This keeps rows visible
+while the user is still typing:
 
 ```ts
 const filter = useMemo(() => {
@@ -102,11 +106,11 @@ Pass the filter to `useClientDataSource`:
 const ds = useClientDataSource<GridSpec>({ data, filter });
 ```
 
-## Debouncing the Input
+### Debouncing the Input
 
 Run the filter only on committed input, not on every keystroke. Keep two state values: `value`
-(what the editor displays) and `committed` (what the filter memo depends on). Debounce the commit
-so the grid re-filters after the user pauses typing, not on every character:
+(what the editor displays) and `committed` (what the filter depends on). Debounce updates so the
+grid re-filters after the user pauses typing:
 
 ```ts
 const [value, setValue] = useState('Gender == "Male" && Quantity > 10');
@@ -121,13 +125,13 @@ const onChange = (s: string) => {
 ```
 
 Pass `value` to `ExpressionEditor.Root` and `committed` to the filter memo. The editor updates
-immediately while the grid waits for the user to pause.
+immediately while the grid waits for the user to pause typing.
 
-## Wiring Up the Completion Provider
+### Wiring Up the Completion Provider
 
-Pass a `createCompletionProvider` to `ExpressionEditor.Root` so the user gets autocomplete for
-column names. Supply a `Record<displayName, id>` map so the provider knows the display names
-without needing access to the full context object:
+Pass a `createCompletionProvider` to `ExpressionEditor.Root` so users get autocomplete for
+column names. Supply a `Record<displayName, id>` map so the provider does not need access to
+the full context object:
 
 ```ts
 const provider = useMemo(
@@ -139,7 +143,7 @@ const provider = useMemo(
 ## Server-Side Expression Filters
 
 Expression evaluation on the server is straightforward because the AST is serializable. Instead
-of evaluating client-side, serialize the AST and send it to your server:
+of evaluating on the client, serialize the AST and send it to your server:
 
 ```ts
 const ast = evaluator.ast(committed);

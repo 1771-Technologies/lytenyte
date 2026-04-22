@@ -63,15 +63,45 @@ function isClosingBracket(token: Token): boolean {
   return token.type === "Punctuation" && token.value === "]";
 }
 
+function isCompleteValue(token: Token): boolean {
+  return (
+    token.type === "Identifier" ||
+    token.type === "Number" ||
+    token.type === "String" ||
+    token.type === "TemplateLiteral" ||
+    (token.type === "Punctuation" && (token.value === ")" || token.value === "]"))
+  );
+}
+
 function isStringLiteral(token: Token): boolean {
   return token.type === "String" || token.type === "TemplateLiteral";
 }
+
+const BINARY_OPERATORS: BuiltinMethod[] = [
+  { label: "+", kind: "operator" },
+  { label: "-", kind: "operator" },
+  { label: "*", kind: "operator" },
+  { label: "/", kind: "operator" },
+  { label: "%", kind: "operator" },
+  { label: "**", kind: "operator" },
+  { label: "==", kind: "operator" },
+  { label: "!=", kind: "operator" },
+  { label: "<", kind: "operator" },
+  { label: "<=", kind: "operator" },
+  { label: ">", kind: "operator" },
+  { label: ">=", kind: "operator" },
+  { label: "&&", kind: "operator" },
+  { label: "||", kind: "operator" },
+  { label: "??", kind: "operator" },
+  { label: "|>", kind: "operator" },
+];
 
 type Analysis =
   | { kind: "top-level" }
   | { kind: "context-path"; path: string[] }
   | { kind: "string-literal" }
   | { kind: "array-literal" }
+  | { kind: "after-value" }
   | { kind: "none" };
 
 function analyzeTokens(tokens: Token[], cursorPosition: number): Analysis {
@@ -88,8 +118,11 @@ function analyzeTokens(tokens: Token[], cursorPosition: number): Analysis {
 
   if (i < 0) return { kind: "top-level" };
 
-  // If the token before the word isn't a dot, we're at the top level
-  if (!isDot(relevant[i])) return { kind: "top-level" };
+  // If the token before the word isn't a dot, check if it's a complete value
+  if (!isDot(relevant[i])) {
+    if (isCompleteValue(relevant[i])) return { kind: "after-value" };
+    return { kind: "top-level" };
+  }
 
   // Step over the dot
   i--;
@@ -154,6 +187,10 @@ function builtinCompletions(methods: BuiltinMethod[]): CompletionItem[] {
   return methods.map((m) => ({ label: m.label, kind: m.kind, id: m.label }));
 }
 
+function binaryOperatorCompletions(): CompletionItem[] {
+  return builtinCompletions(BINARY_OPERATORS);
+}
+
 export function createCompletionProvider(context: Record<string, unknown>) {
   return function completionProvider(tokens: Token[], cursorPosition: number): CompletionItem[] {
     const analysis = analyzeTokens(tokens, cursorPosition);
@@ -176,6 +213,9 @@ export function createCompletionProvider(context: Record<string, unknown>) {
         if (typeof value === "object") return objectCompletions(value);
         return [];
       }
+
+      case "after-value":
+        return binaryOperatorCompletions();
 
       case "none":
         return [];

@@ -54,6 +54,14 @@ const evaluator = new Evaluator(
   ]),
 );
 
+const FILTER_EXAMPLES = [
+  'Gender == "Male" && Quantity > 10',
+  'Country == "United States"',
+  "Revenue > 1000",
+  "Age >= 25 && Age <= 34",
+  'Category == "Bikes"',
+];
+
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 //#end
 export default function GridDemo() {
@@ -113,7 +121,7 @@ export default function GridDemo() {
   const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
   return (
     <div className="ln-grid" style={{ display: "flex", flexDirection: "column" }}>
-      <div className="border-b-ln-border flex w-full border-b px-2 py-2">
+      <div className="border-b-ln-border flex w-full flex-col gap-2 border-b px-2 py-2">
         <div data-ln-input="true" className="h-10 w-full gap-2 py-0 text-base">
           <ExpressionEditor.Root
             value={value}
@@ -142,6 +150,21 @@ export default function GridDemo() {
               </ExpressionEditor.CompletionList>
             </ExpressionEditor.CompletionPopover>
           </ExpressionEditor.Root>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {FILTER_EXAMPLES.map((expr) => (
+            <button
+              key={expr}
+              type="button"
+              onClick={() => {
+                setValue(expr);
+                setCommitted(expr);
+              }}
+              className="border-ln-border bg-ln-bg text-ln-text-dark hover:border-ln-primary-50 hover:bg-ln-primary-10 hover:text-ln-primary-50 cursor-pointer rounded-full border px-2.5 py-0.5 font-mono text-[11px] transition-colors"
+            >
+              {expr}
+            </button>
+          ))}
         </div>
       </div>
       <div style={{ height: 500 }}>

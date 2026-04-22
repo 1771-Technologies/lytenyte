@@ -20,7 +20,7 @@ const sharedFontStyle: CSSProperties = {
   padding: "0",
 };
 
-const triggerCharacters = ["."];
+const triggerCharacters = [".", " "];
 
 export function ExpressionEditor({
   value,

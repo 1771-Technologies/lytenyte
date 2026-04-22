@@ -196,6 +196,7 @@ const KIND_CONFIG: Record<string, { icon: string; bg: string; text: string }> = 
   boolean: { icon: "ph--toggle-left", bg: "bg-ln-yellow-10", text: "text-ln-yellow-50" },
   object: { icon: "ph--cube", bg: "bg-ln-bg-strong", text: "text-ln-text" },
   array: { icon: "ph--brackets-square", bg: "bg-ln-yellow-10", text: "text-ln-yellow-50" },
+  operator: { icon: "ph--plus-minus", bg: "bg-ln-red-10", text: "text-ln-red-50" },
 };
 
 export function KindBadge({ kind }: { kind: string }) {
