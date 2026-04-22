@@ -1,0 +1,192 @@
+---
+title: Expressions
+description: API reference for the Evaluator class and its associated types.
+pro: true
+---
+
+## Evaluator
+
+`Evaluator` is the entry point for the expression engine. Instantiate it once with an optional
+plugin array and reuse it for all evaluations.
+
+```ts
+import { Evaluator, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
+
+const evaluator = new Evaluator(standardPlugins);
+```
+
+### Constructor
+
+<TypeTable
+  type={[
+    {
+      name: "plugins",
+      description: `An ordered array of plugins that extend the evaluator's tokenization, parsing,
+      optimization, and evaluation capabilities. Plugins are tried in the order they appear;
+      the first plugin that returns a non-null result for a given node or token wins.
+      Omit this argument for a bare-bones evaluator that supports arithmetic only.`,
+      type: "Plugin[]",
+    },
+  ]}
+/>
+
+### Methods
+
+<TypeTable
+  type={[
+    {
+      name: "run",
+      description: `Evaluates an expression and returns its result. Accepts either a raw expression
+      string or a pre-parsed \`ASTNode\`. Pass a pre-parsed AST to skip re-parsing when the same
+      expression is evaluated many times (e.g. once per row in a filter or computed field).
+
+      Throws \`ExpressionError\` if the expression is syntactically invalid or references an
+      identifier that is not present in the context. Set \`options.undefinedIdentifierFallback\`
+      to suppress identifier errors and return a fallback value instead.`,
+      type: "(input: string | ASTNode, context?: Record<string, unknown>, options?: RunOptions) => unknown",
+      required: true,
+      see: ["/docs/expressions-overview"],
+    },
+    {
+      name: "ast",
+      description: `Parses and optimizes an expression string and returns the resulting \`ASTNode\`.
+      Use this to separate the parse step from evaluation when the expression is evaluated
+      repeatedly. The returned node can be passed directly to \`run\`.
+
+      Throws \`ExpressionError\` if the expression is syntactically invalid.`,
+      type: "(input: string) => ASTNode",
+      required: true,
+      see: ["/docs/expressions-overview"],
+    },
+    {
+      name: "tokens",
+      description: `Tokenizes an expression string and returns the token array.
+      Throws \`ExpressionError\` on the first invalid character or token sequence.
+      Prefer \`tokensSafe\` when using the result for syntax highlighting, where partial
+      or invalid input is expected.`,
+      type: "(input: string, tokenizeWhitespace?: boolean) => Token[]",
+      required: true,
+    },
+    {
+      name: "tokensSafe",
+      description: `Tokenizes an expression string without throwing on invalid input. When the
+      tokenizer encounters an unrecognised character, it emits an \`ExpressionError\` token
+      and continues tokenizing the remainder of the string. The returned array always covers
+      the full input.
+
+      Pass \`tokenizeWhitespace: true\` to include whitespace tokens in the output, which is required
+      when passing the token array to \`ExpressionEditor\` for syntax highlighting.`,
+      type: "(input: string, tokenizeWhitespace?: boolean) => Token[]",
+      required: true,
+      see: ["/docs/expression-editor"],
+    },
+  ]}
+/>
+
+## RunOptions
+
+Options accepted by `Evaluator.run` as its third argument.
+
+<TypeTable
+  type={[
+    {
+      name: "undefinedIdentifierFallback",
+      description: `The value to return when the evaluator encounters an identifier that is not
+      present in the context, instead of throwing. Set to \`true\` in filter functions so that
+      a partially-typed expression (where the user has not yet finished typing an identifier)
+      passes all rows rather than crashing. Set to \`undefined\` in computed field functions to
+      render cells as empty for unknown identifiers.`,
+      type: "unknown",
+    },
+  ]}
+/>
+
+## Plugin
+
+An object that extends one or more stages of the evaluator pipeline. Every field is optional;
+implement only the hooks your plugin needs. Return `null` from any hook to signal "not handled"
+and let the evaluator try the next plugin.
+
+<TypeTable
+  type={[
+    {
+      name: "name",
+      description: "A unique identifier for the plugin. Used for debugging and error messages.",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "scan",
+      description: `Tokenization hook. Called at each source position the built-in tokenizer does
+      not recognise. Return a token descriptor to claim the characters starting at \`pos\`, or
+      \`null\` to pass. The \`end\` field in the return value is a source position (not a length);
+      it must point to the first character after the consumed token.`,
+      type: "(source: string, pos: number) => { type: string; value: string; end: number } | null",
+    },
+    {
+      name: "parsePrefix",
+      description: `Parsing hook for expression forms that begin a new term: literals, prefix
+      operators, parenthesised groups, and any other syntax that starts with a known token.
+      Called when the parser needs a primary expression. Inspect \`current(ctx)\` to decide
+      whether to handle the token; advance past consumed tokens with \`advance(ctx)\`.
+      Return an \`ASTNode\` to claim the term, or \`null\` to pass.`,
+      type: "(ctx: ParserContext) => ASTNode | null",
+      see: ["/docs/expression-plugins"],
+    },
+    {
+      name: "parseInfix",
+      description: `Parsing hook for binary operators that sit between two terms. Called with the
+      left operand already parsed. Use alongside \`infixPrecedence\` to declare the operator's
+      binding strength. Check \`prec < minPrec\` before consuming anything and return \`null\` if
+      the operator should not bind at the current precedence level.`,
+      type: "(ctx: ParserContext, left: ASTNode, minPrec: number) => ASTNode | null",
+      see: ["/docs/expression-plugins"],
+    },
+    {
+      name: "infixPrecedence",
+      description: `Returns the binding precedence of the infix operator at the current token
+      position, or \`undefined\` if the current token is not handled by this plugin. Required
+      whenever \`parseInfix\` is implemented; the parser will not call \`parseInfix\` unless
+      \`infixPrecedence\` returns a number first.`,
+      type: "(ctx: ParserContext) => number | undefined",
+      see: ["/docs/expression-plugins"],
+    },
+    {
+      name: "parsePostfix",
+      description: `Parsing hook for forms that trail a completed term: member access (\`.\`),
+      computed access (\`[]\`), optional chaining (\`?.\`), and function calls (\`()\`) are all
+      implemented as postfix hooks. Called repeatedly after a primary expression is parsed,
+      as long as at least one plugin returns a non-null value.`,
+      type: "(ctx: ParserContext, node: ASTNode) => ASTNode | null",
+      see: ["/docs/expression-plugins"],
+    },
+    {
+      name: "parseUnary",
+      description: `Parsing hook for unary wrappers that consume the next term. Receives a
+      \`parseNext\` function to parse the operand. Most unary operators fit \`parsePrefix\`
+      instead; use this hook only when you need to wrap the entire subsequent parse step
+      rather than just the next primary expression.`,
+      type: "(ctx: ParserContext, parseNext: (ctx: ParserContext) => ASTNode) => ASTNode | null",
+      see: ["/docs/expression-plugins"],
+    },
+    {
+      name: "optimize",
+      description: `Optimization hook. Called on each AST node after parsing. Use it to
+      constant-fold or simplify your custom node types before evaluation. The second argument
+      is a recursive optimizer; call it on child nodes to propagate optimization through the
+      tree. Return the (possibly modified) node, or \`null\` to leave the node unhandled.`,
+      type: "(node: ASTNode, optimize: (n: ASTNode) => ASTNode) => ASTNode | null",
+      see: ["/docs/expression-plugins"],
+    },
+    {
+      name: "evaluate",
+      description: `Evaluation hook. Called for each AST node at runtime. The third argument is
+      a recursive evaluator; call it on child nodes to compute their values. Return
+      \`{ value: result }\` to claim the node, or \`null\` to pass to the next plugin.
+      The \`{ value }\` wrapper is required to distinguish a result of \`undefined\` from a
+      \`null\` "not handled" signal.`,
+      type: "(node: ASTNode, context: Record<string, unknown>, evaluate: EvalFn) => { value: unknown } | null",
+      see: ["/docs/expression-plugins"],
+    },
+  ]}
+/>

@@ -12,23 +12,35 @@ the demos in this guide use the client source to demonstrate expression filters.
 
 See the [Client Row Filtering guide](/docs/client-source-filtering) for more guidance.
 
+Furthermore, you should already be familiar with expressions in LyteNyte Grid. See the
+[Expressions Overview](/docs/expressions-overview) for more details.
+
 :::
 
 ## How Expression Filters Work
 
-An expression filter is a standard expression that evaluates to a boolean value. The evaluator
-runs the expression against each row and includes only the rows where the expression returns `true`.
+An expression filter is an expression that evaluates to a boolean. The evaluator runs it against
+each row and includes only the rows where the result is truthy.
 
-The demo below preloads the expression `Gender == "Male" && Quantity > 10`. Try editing it to
-apply different conditions across any column:
+Column names become identifiers in the expression. A user writes `Gender == "Male"` rather than
+`row.customerGender == "Male"`. Two things make this work:
+
+1. **`createResolvedIdentifierPlugin`**: intercepts identifier nodes in the AST and rewrites
+   them as function calls, so `Gender` is resolved from the context at evaluation time rather than
+   looked up as a plain key.
+2. **The context object**: maps each column display name to a function that reads the column's
+   value from the current row using `computeField`.
+
+The demo below preloads the expression `Gender == "Male" && Quantity > 10`. Edit it to filter
+across any column:
 
 ::demo[Expression Filters="./demos/expression-filter"]
 
 ## Setting Up the Evaluator
 
-Column names are identifiers in the expression, the user writes `Gender` instead of `Gender()`.
-The `createResolvedIdentifierPlugin` plugin handles this: it intercepts identifier nodes in the AST
-and rewrites them as function calls, so the evaluator resolves each column's value for the current row.
+Build the evaluator once outside your component. Register `createResolvedIdentifierPlugin` after
+`standardPlugins`, passing the column display names as `identifiers` and `"row"` as the context
+key the plugin should forward to each column getter:
 
 ```ts
 import {
@@ -40,8 +52,8 @@ import {
 const evaluator = new Evaluator(
   standardPlugins.concat([
     createResolvedIdentifierPlugin({
-      args: ["row"], // the context key that holds the current row
-      identifiers: columns.map((x) => x.name ?? x.id), // column display names
+      identifiers: columns.map((x) => x.name ?? x.id),
+      args: ["row"],
     }),
   ]),
 );
@@ -49,37 +61,37 @@ const evaluator = new Evaluator(
 
 ## Building the Filter Function
 
-Build a context object that maps each column display name to a function that reads that column's
-value from a row:
+Construct the context inside `useMemo` so it is stable across re-renders. Each entry maps a
+column's display name to a function that reads its value from a row via `computeField`:
 
 ```ts
 import { computeField } from "@1771technologies/lytenyte-pro";
+import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
 
-const columnsContext = useMemo(() => {
-  return Object.fromEntries(
-    columns.map((x) => [x.name ?? x.id, (row: RowLeaf) => computeField(x.field ?? x.id, row)]),
-  );
-}, []);
+const columnsContext = useMemo(
+  () =>
+    Object.fromEntries(
+      columns.map((col) => [col.name ?? col.id, (row: RowLeaf) => computeField(col.field ?? col.id, row)]),
+    ),
+  [],
+);
 ```
 
-Pre-parse the expression into an AST so the filter function does not re-parse on every row.
-Pass `undefinedIdentifierFallback: true` so that a partially-typed expression (with unknown
-identifiers) returns `true` rather than throwing, this keeps rows visible while the user
-is still typing:
+Pre-parse the expression into an AST so the filter does not re-parse on every row. Pass
+`undefinedIdentifierFallback: true` so that a partially-typed expression (with identifiers the
+evaluator does not yet recognise) returns `true` instead of throwing, keeping rows visible while
+the user is still typing:
 
 ```ts
 const filter = useMemo(() => {
+  if (!committed) return null;
   try {
     const ast = evaluator.ast(committed); // parse once
 
     return (row: RowLeaf<GridSpec["data"]>) =>
-      !!evaluator.run(
-        ast,
-        { row, ...columnsContext },
-        { undefinedIdentifierFallback: true }, // unknown identifiers → true (row passes)
-      );
+      !!evaluator.run(ast, { row, ...columnsContext }, { undefinedIdentifierFallback: true });
   } catch {
-    return null; // invalid expression — don't filter
+    return null; // invalid expression, show all rows
   }
 }, [committed, columnsContext]);
 ```
@@ -93,7 +105,8 @@ const ds = useClientDataSource<GridSpec>({ data, filter });
 ## Debouncing the Input
 
 Run the filter only on committed input, not on every keystroke. Keep two state values: `value`
-(what the editor displays) and `committed` (what the filter uses). Debounce the commit:
+(what the editor displays) and `committed` (what the filter memo depends on). Debounce the commit
+so the grid re-filters after the user pauses typing, not on every character:
 
 ```ts
 const [value, setValue] = useState('Gender == "Male" && Quantity > 10');
@@ -107,110 +120,20 @@ const onChange = (s: string) => {
 };
 ```
 
-Pass `value` to `ExpressionEditor.Root` and `committed` to the `filter` memo. This means
-the editor updates immediately while the grid only re-filters after the user pauses typing.
+Pass `value` to `ExpressionEditor.Root` and `committed` to the filter memo. The editor updates
+immediately while the grid waits for the user to pause.
 
-## Complete Example
+## Wiring Up the Completion Provider
 
-```tsx
-import "@1771technologies/lytenyte-pro/expression-editor.css";
+Pass a `createCompletionProvider` to `ExpressionEditor.Root` so the user gets autocomplete for
+column names. Supply a `Record<displayName, id>` map so the provider knows the display names
+without needing access to the full context object:
 
-import { computeField, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro";
-import {
-  createCompletionProvider,
-  createResolvedIdentifierPlugin,
-  Evaluator,
-  ExpressionEditor,
-  standardPlugins,
-} from "@1771technologies/lytenyte-pro/expressions";
-import { useCallback, useMemo, useRef, useState } from "react";
-import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
-
-interface GridSpec {
-  readonly data: { name: string; age: number; country: string };
-}
-
-const columns: Grid.Column<GridSpec>[] = [
-  { id: "name", name: "Name" },
-  { id: "age", name: "Age", type: "number" },
-  { id: "country", name: "Country" },
-];
-
-const evaluator = new Evaluator(
-  standardPlugins.concat([
-    createResolvedIdentifierPlugin({
-      args: ["row"],
-      identifiers: columns.map((x) => x.name ?? x.id),
-    }),
-  ]),
+```ts
+const provider = useMemo(
+  () => createCompletionProvider(Object.fromEntries(columns.map((col) => [col.name ?? col.id, col.id]))),
+  [],
 );
-
-export function ExpressionFilterGrid({ data }: { data: GridSpec["data"][] }) {
-  const [value, setValue] = useState("");
-  const [committed, setCommitted] = useState("");
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const onChange = (s: string) => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    setValue(s);
-    debounceRef.current = setTimeout(() => setCommitted(s), 200);
-  };
-
-  const columnsContext = useMemo(
-    () =>
-      Object.fromEntries(
-        columns.map((x) => [x.name ?? x.id, (row: RowLeaf) => computeField(x.field ?? x.id, row)]),
-      ),
-    [],
-  );
-
-  const filter = useMemo(() => {
-    if (!committed) return null;
-    try {
-      const ast = evaluator.ast(committed);
-      return (row: RowLeaf<GridSpec["data"]>) =>
-        !!evaluator.run(ast, { row, ...columnsContext }, { undefinedIdentifierFallback: true });
-    } catch {
-      return null;
-    }
-  }, [committed, columnsContext]);
-
-  const provider = useMemo(
-    () => createCompletionProvider(Object.fromEntries(columns.map((x) => [x.name ?? x.id, x.id]))),
-    [],
-  );
-
-  const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
-  const ds = useClientDataSource<GridSpec>({ data, filter });
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", height: 500 }}>
-      <div data-ln-input="true" style={{ height: 40 }}>
-        <ExpressionEditor.Root
-          value={value}
-          onChange={onChange}
-          tokenize={tokenize}
-          completionProvider={provider}
-        >
-          <ExpressionEditor.CompletionPopover>
-            <ExpressionEditor.CompletionList>
-              {({ items }) =>
-                items.map((item, index) => (
-                  <ExpressionEditor.CompletionListItem key={item.id} item={item} index={index}>
-                    {item.label}
-                  </ExpressionEditor.CompletionListItem>
-                ))
-              }
-            </ExpressionEditor.CompletionList>
-          </ExpressionEditor.CompletionPopover>
-        </ExpressionEditor.Root>
-      </div>
-      <div style={{ flex: 1 }}>
-        <Grid<GridSpec> columns={columns} rowSource={ds} rowHeight={40} />
-      </div>
-    </div>
-  );
-}
 ```
 
 ## Server-Side Expression Filters
@@ -223,11 +146,13 @@ const ast = evaluator.ast(committed);
 const serialized = JSON.stringify(ast); // send in your DataRequest
 ```
 
-The AST is fully serializable unless your plugins introduce custom node types that cannot be
-converted to JSON. Standard plugins and `createResolvedIdentifierPlugin` produce only serializable nodes.
+The AST is fully serializable as long as your plugins do not introduce custom node types that
+cannot be converted to JSON. Standard plugins and `createResolvedIdentifierPlugin` produce only
+serializable nodes.
 
 ## Next Steps
 
+::next[/docs/expression-fields]
 ::next[/docs/expressions-overview]
 ::next[/docs/expression-plugins]
 ::next[/docs/client-source-filtering]

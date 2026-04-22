@@ -17,9 +17,9 @@ Read the [Expressions Overview guide](/docs/expressions-overview) first.
 `ExpressionEditor` is a React compound component that wraps a `<textarea>` with two features
 layered on top:
 
-1. **Syntax highlighting** — the input is tokenized on every keystroke and each token is rendered
+1. **Syntax highlighting**: the input is tokenized on every keystroke and each token is rendered
    with a type-specific colour via CSS variables.
-2. **Completions** — an optional floating popover shows context-aware suggestions as the user types,
+2. **Completions**: an optional floating popover shows context-aware suggestions as the user types,
    with full keyboard navigation.
 
 Both features are opt-in. You can use the editor as a pure syntax-highlighted input without any
@@ -118,7 +118,7 @@ Each item has three fields:
 ```ts
 type CompletionItem = {
   label: string; // text shown in the list
-  kind: string;  // semantic kind — drives icons/colours in your UI ("function", "string", "number", …)
+  kind: string;  // semantic kind, drives icons/colours in your UI ("function", "string", "number", …)
   id: string;    // unique key for React
 };
 ```
@@ -159,8 +159,8 @@ The demo below shows `createCompletionProvider` with a live context:
 
 Completions open in two ways:
 
-- **Automatic** — typing `.` immediately triggers a completion fetch for the property access context.
-- **Manual** — pressing `Ctrl+Space` (or `⌘+Space` on macOS) opens completions from wherever the cursor is.
+- **Automatic**: typing `.` immediately triggers a completion fetch for the property access context.
+- **Manual**: pressing `Ctrl+Space` (or `⌘+Space` on macOS) opens completions from wherever the cursor is.
 
 Once the popover is open, the list is filtered in real time as the user continues typing. The filter
 is a simple prefix match on `item.label`, so typing `to` narrows a string method list to
@@ -266,7 +266,7 @@ colour scheme without replacing the highlighter:
 
 Accepts all `<div>` HTML attributes. Positioned automatically at the cursor using the native
 [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API). The popover opens
-and closes based on completion state — you do not need to manage this yourself.
+and closes based on completion state; you do not need to manage this yourself.
 
 ### `ExpressionEditor.CompletionList`
 

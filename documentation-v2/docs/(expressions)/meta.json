@@ -1,5 +1,11 @@
 {
   "title": "Expressions",
-  "pages": ["expressions-overview", "expression-editor", "expression-fields", "expression-plugins"],
+  "pages": [
+    "expressions-overview",
+    "expression-filters",
+    "expression-fields",
+    "expression-editor",
+    "expression-plugins"
+  ],
   "defaultOpen": true
 }

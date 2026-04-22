@@ -1,0 +1,183 @@
+---
+title: Expression Fields
+description: Use expressions to compute column cell values at runtime in LyteNyte Grid.
+pro: true
+step: Drive column cell values from user-authored expressions.
+---
+
+:::note
+
+This guide assumes you are already familiar with how expressions and the expression evaluator
+work in LyteNyte Grid. Read the [Expressions Overview guide](/docs/expressions-overview) first.
+
+:::
+
+## How Expression Fields Work
+
+A column's `field` property accepts a function. When the grid renders a cell, it calls
+`field({ row })` and uses the return value as the cell's value. This is the hook for expression
+fields: run the evaluator inside the function to compute the cell value from the current row.
+
+```ts
+const evaluator = new Evaluator(standardPlugins);
+const ast = evaluator.ast("revenue - cost"); // parse once
+
+const computedColumn: Grid.Column<GridSpec> = {
+  id: "margin",
+  name: "Margin",
+  type: "number",
+  field: ({ row }) => {
+    if (row.kind !== "leaf" || !row.data) return null;
+    return evaluator.run(ast, row.data);
+  },
+};
+```
+
+Parsing is expensive. Parse the expression into an AST once (outside the field function, or in a
+`useMemo`) and pass the pre-parsed AST to `run` on every row. This pattern is also used in
+[expression filters](/docs/expression-filters) for the same reason.
+
+## Setting Up the Evaluator
+
+The setup is nearly identical to expression filters. Use `createResolvedIdentifierPlugin` so
+users can write column display names as identifiers (`Revenue`, `Cost`) rather than raw data
+field keys (`revenue`, `cost`):
+
+```ts
+import {
+  createResolvedIdentifierPlugin,
+  Evaluator,
+  standardPlugins,
+} from "@1771technologies/lytenyte-pro/expressions";
+
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "orderQuantity", name: "Quantity",   type: "number" },
+  { id: "unitPrice",     name: "Unit Price", type: "number" },
+  { id: "cost",          name: "Cost",       type: "number" },
+  { id: "revenue",       name: "Revenue",    type: "number" },
+  { id: "profit",        name: "Profit",     type: "number" },
+];
+
+const evaluator = new Evaluator(
+  standardPlugins.concat([
+    createResolvedIdentifierPlugin({
+      identifiers: columns.map((c) => c.name ?? c.id),
+      args: ["row"],
+    }),
+  ]),
+);
+```
+
+## Building the Column Context
+
+Build a context object that maps each column display name to a function reading its value from
+the current row. Create this once outside your component so the reference is stable:
+
+```ts
+import { computeField } from "@1771technologies/lytenyte-pro";
+import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
+
+const columnsContext = Object.fromEntries(
+  columns.map((col) => [
+    col.name ?? col.id,
+    (row: RowLeaf) => computeField(col.field ?? col.id, row),
+  ]),
+);
+```
+
+## Defining the Computed Column
+
+Parse the expression in a `useMemo` that re-runs when the expression changes. Build the full
+columns array, including the computed column, in a second `useMemo` that depends on the
+parsed AST:
+
+```ts
+const ast = useMemo(() => {
+  if (!committed) return null;
+  try {
+    return evaluator.ast(committed);
+  } catch {
+    return null; // invalid expression, field returns null
+  }
+}, [committed]);
+
+const columns = useMemo((): Grid.Column<GridSpec>[] => [
+  ...baseColumns,
+  {
+    id: "computed",
+    name: "Computed",
+    field: ({ row }) => {
+      if (!ast || row.kind !== "leaf" || !row.data) return null;
+      try {
+        return evaluator.run(
+          ast,
+          { row, ...columnsContext },
+          { undefinedIdentifierFallback: true },
+        );
+      } catch {
+        return null;
+      }
+    },
+  },
+], [ast]);
+```
+
+`undefinedIdentifierFallback: true` makes the evaluator return `undefined` instead of throwing
+when an identifier is not found in the context. This keeps cells rendering as empty rather than
+crashing while the user is still typing.
+
+## Debouncing the Expression Input
+
+Use the same debounce pattern as expression filters. Keep separate `value` (editor state) and
+`committed` (what the AST memo depends on) so the grid column only recomputes after the user
+pauses typing:
+
+```ts
+const [value, setValue] = useState("Revenue - Cost");
+const [committed, setCommitted] = useState(value);
+const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+const onChange = (s: string) => {
+  if (debounceRef.current) clearTimeout(debounceRef.current);
+  setValue(s);
+  debounceRef.current = setTimeout(() => setCommitted(s), 200);
+};
+```
+
+## Live Demo
+
+The demo below shows a grid whose last column is driven by a user-typed expression. The column
+updates after you pause typing. Try the example pills for some starting expressions:
+
+::demo[Expression Fields="./demos/expression-fields"]
+
+## Static Expression Fields
+
+If the expression is fixed at build time and not authored by a user, skip the editor and just
+parse once at module scope:
+
+```ts
+const evaluator = new Evaluator(standardPlugins);
+
+const ast = evaluator.ast("unitPrice * orderQuantity * 0.9"); // 10% discount
+
+const discountedRevenueColumn: Grid.Column<GridSpec> = {
+  id: "discounted-revenue",
+  name: "Discounted Revenue",
+  type: "number",
+  field: ({ row }) => {
+    if (row.kind !== "leaf" || !row.data) return null;
+    return evaluator.run(ast, row.data);
+  },
+};
+```
+
+This is effectively the same as writing a plain function field, but it lets you store and
+version the computation as an expression string rather than compiled code, which is useful if you load
+column definitions from an API or configuration file.
+
+## Next Steps
+
+::next[/docs/expression-filters]
+::next[/docs/expressions-overview]
+::next[/docs/expression-plugins]
