@@ -9,6 +9,7 @@ import { membershipPlugin } from "./membership.js";
 import { accessPlugin } from "./access.js";
 import { arrowsPlugin } from "./arrows.js";
 import { collectionsPlugin } from "./collections.js";
+import { quotedIdentifierPlugin } from "./quoted-identifier.js";
 
 export const standardPlugins: Plugin[] = [
   arrowsPlugin,
@@ -21,6 +22,7 @@ export const standardPlugins: Plugin[] = [
   ternaryPlugin,
   pipePlugin,
   accessPlugin,
+  quotedIdentifierPlugin,
 ];
 
 export {
@@ -34,4 +36,5 @@ export {
   accessPlugin,
   arrowsPlugin,
   collectionsPlugin,
+  quotedIdentifierPlugin,
 };

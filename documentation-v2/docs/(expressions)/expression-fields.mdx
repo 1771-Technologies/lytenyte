@@ -14,15 +14,17 @@ work in LyteNyte Grid. Read the [Expressions Overview guide](/docs/expressions-o
 
 ## Creating Expression Fields
 
-A column's `field` property accepts a function. When the grid renders a cell, it calls
-`field({ row })` and uses the return value as the cell value. Run the evaluator inside
-this function to compute the cell value from an expression at render time.
+The `field` property of a column may be provided a function to compute the value for a cell
+for the given column. Using this function field, you can use an expression evaluator to
+derive a cell's value from an expression.
 
-To improve the authoring experience, use column display names as identifiers in the expression
-(`Revenue`, `Cost`) instead of raw data keys (`revenue`, `cost`). Two mechanisms enable this:
+To improve the user experience for field expressions, use column names instead of column IDs.
+For example, a user writes `Revenue - Cost` instead of `row.revenue - row.cost`.
+Two mechanisms enable this:
 
 1. **`createResolvedIdentifierPlugin`**: Intercepts identifier nodes in the AST and rewrites
-   them as function calls, so `Revenue` resolves from the context at evaluation time.
+   them as function calls. This ensures `Revenue` resolves from the context at evaluation time
+   instead of being treated as a plain key.
 2. **The context object**: Maps each column display name to a function that reads the column value
    from the current row using `computeField`.
 
@@ -31,11 +33,14 @@ compute a different value across the dataset:
 
 ::demo[Expression Fields="./demos/expression-fields"]
 
+The demo includes the complete expression fields implementation.
+The following sections cover the important implementation details.
+
 ### Setting Up the Evaluator
 
-Build the evaluator once outside the component. Register `createResolvedIdentifierPlugin`
-after `standardPlugins`. Pass the column display names as `identifiers` and `"row"` as the
-context key that the plugin forwards to each column getter:
+Start by creating an `Evaluator` instance. Create the evaluator outside your component so it
+remains a stable reference. Use `standardPlugins` and `createResolvedIdentifierPlugin` to support
+column name resolution in expressions:
 
 ```ts
 import {
@@ -64,8 +69,8 @@ const evaluator = new Evaluator(
 
 ### Building the Column Context
 
-Build a context object that maps each column display name to a function that reads its value from
-the current row. Create this object once outside the component so the reference stays stable:
+Create a context object that maps each column display name to a function that reads its value from
+the current row. Create this object outside your component so the reference stays stable:
 
 ```ts
 import { computeField } from "@1771technologies/lytenyte-pro";
@@ -78,9 +83,11 @@ const columnsContext = Object.fromEntries(
 
 ### Defining the Computed Column
 
-Parse the expression in a `useMemo` that re-runs when the expression changes. Build the full
-columns array, including the computed column, in a second `useMemo` that depends on the
-parsed AST:
+Pre-parse the expression into an AST in a `useMemo` so the grid does not re-parse on every row
+evaluation. This avoids tokenizing the expression on every cell render. Set
+`undefinedIdentifierFallback` to `true` so partially typed expressions return `undefined` instead
+of throwing an error. Build the full columns array, including the computed column, in a second
+`useMemo` that depends on the parsed AST:
 
 ```ts
 const ast = useMemo(() => {
@@ -112,18 +119,17 @@ const columns = useMemo(
 );
 ```
 
-`undefinedIdentifierFallback: true` makes the evaluator return `undefined` instead of
-throwing when it cannot find an identifier in the context. This keeps cells empty instead of
-crashing while the user is still typing.
-
-Parsing is expensive—always parse the expression into an AST once (outside the field
-function or in a `useMemo`) and pass the pre-parsed result to `run` for each row.
-
 ### Debouncing the Expression Input
 
-Keep two state values: `value` (what the editor displays) and `committed` (what the AST memo
-depends on). Debounce updates to `committed` so the grid column recomputes only after the user
-pauses typing:
+Recomputing the column on every keystroke is possible, but it is unnecessarily expensive. Debounce
+the expression input so the column updates only after the user pauses typing.
+
+Keep two state values:
+
+- `value`: the value shown in the editor.
+- `committed`: the value used to compute the AST.
+
+The `committed` state trails `value` while the user types and updates after the user pauses.
 
 ```ts
 const [value, setValue] = useState("Revenue - Cost");

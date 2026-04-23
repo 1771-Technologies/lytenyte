@@ -23,6 +23,7 @@ import {
 } from "@1771technologies/lytenyte-pro/expressions";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
+import { format } from "date-fns";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -60,6 +61,7 @@ const FILTER_EXAMPLES = [
   "Revenue > 1000",
   "Age >= 25 && Age <= 34",
   'Category == "Bikes"',
+  '@"Age Group" == "Youth (<25)"',
 ];
 
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
@@ -74,7 +76,15 @@ export default function GridDemo() {
         return [
           x.name ?? x.id,
           (row: RowLeaf) => {
-            return computeField(x.field ?? x.id, row);
+            const value = computeField(x.field ?? x.id, row);
+
+            if (x.id === "date") {
+              if (typeof value !== "string") return "-";
+
+              const niceDate = format(value, "yyyy MMM dd");
+              return niceDate;
+            }
+            return value;
           },
         ];
       }),
@@ -127,7 +137,7 @@ export default function GridDemo() {
             value={value}
             onChange={onChange}
             tokenize={tokenize}
-            className="flex-1 text-sm"
+            className="flex-1"
             completionProvider={provider}
           >
             {/*!next 18 */}

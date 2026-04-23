@@ -33,7 +33,7 @@ value
 ```
 
 A plugin can participate in any of these stages by implementing the corresponding hooks.
-Hooks are optional—implement only the ones your plugin needs.
+Hooks are optional. Implement only the ones your plugin needs.
 
 ## Plugin Interface
 
@@ -77,10 +77,10 @@ the next plugin in the array. Return a non-null value to claim the node and stop
 | `optimize`        | Optimization | You want to simplify or constant-fold custom AST nodes before evaluation            |
 | `evaluate`        | Evaluation   | You need to compute a value from a custom (or existing) AST node type               |
 
-## The `scan` Hook
+## Scan Hook
 
 `scan(source, pos)` runs at each character position the tokenizer does not recognize.
-Return a token descriptor or `null`:
+The scan hook must return a token descriptor or `null`:
 
 ```ts
 scan: (source: string, pos: number) => {
@@ -93,7 +93,7 @@ scan: (source: string, pos: number) => {
 The `end` field is a source position, not a length. For a token starting at `pos` with text
 `"#2024-01-15"` (11 characters), `end` is `pos + 11`.
 
-## The Parse Hooks and `ParserContext`
+## Parse Hooks and ParserContext
 
 All parse hooks receive a `ParserContext` that represents the current position in the token
 stream. Use these helpers to interact with it:
@@ -120,7 +120,7 @@ parsePrefix: (ctx) => {
 ### Infix Precedence
 
 `parseInfix` handles binary operators. The parser uses precedence climbing and only calls
-`parseInfix` when the operator’s precedence is at least `minPrec`. Always declare precedence
+`parseInfix` when the operator's precedence is at least `minPrec`. Always declare precedence
 in `infixPrecedence` and check it before consuming tokens:
 
 ```ts
@@ -140,7 +140,7 @@ parseInfix: (ctx, left, minPrec) => {
 
 Use `prec - 1` instead of `prec + 1` for right-associative operators (such as `**`).
 
-## The `optimize` Hook
+## Optimize Hook
 
 `optimize(node, optimize)` receives a node and a recursive optimizer function. Call the recursive
 function on child nodes before simplifying the parent:
@@ -159,7 +159,7 @@ optimize: (node, opt) => {
 Return `null` to defer handling to the next plugin. Return a node (even unchanged) to take control
 of optimization for that node type.
 
-## The `evaluate` Hook
+## Evaluate Hook
 
 `evaluate(node, context, evaluate)` receives the current AST node, the evaluation context, and
 a recursive evaluator function. Call the recursive function to evaluate child nodes:
@@ -172,8 +172,8 @@ evaluate: (node, context, evalFn) => {
 },
 ```
 
-Return `{ value: ... }` to distinguish a valid result (including `undefined`) from a `null`
-“not handled” signal.
+The evaluate hook returns an object (`{ value: ... }`) to distinguish a valid
+result (including `undefined`) from a `null` “not handled” signal.
 
 The `context` argument is the same object passed to `evaluator.run`. Pass it unchanged unless
 your plugin intentionally introduces new bindings.

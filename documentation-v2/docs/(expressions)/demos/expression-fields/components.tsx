@@ -1,34 +1,22 @@
 import type { Grid } from "@1771technologies/lytenyte-pro";
 import type { GridSpec } from "./demo";
+import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from "clsx";
 
 const formatter = new Intl.NumberFormat("en-US", {
-  minimumFractionDigits: 2,
   maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
 });
 
-export function MoneyCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
-  const value = api.columnField(column, row);
-  if (typeof value !== "number") return <div className="flex h-full items-center px-2">—</div>;
-  return (
-    <div
-      className={`flex h-full items-center justify-end px-2 tabular-nums ${
-        value < 0 ? "text-red-500 dark:text-red-400" : ""
-      }`}
-    >
-      ${formatter.format(value)}
-    </div>
-  );
+function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
 }
 
 export function ComputedCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
   const value = api.columnField(column, row);
 
   if (value === null || value === undefined) {
-    return (
-      <div className="text-ln-text-xlight flex h-full items-center justify-end px-2 font-mono text-xs">
-        —
-      </div>
-    );
+    return <div className="text-ln-text-xlight flex h-full items-center justify-end">—</div>;
   }
 
   const isNum = typeof value === "number";
@@ -36,13 +24,62 @@ export function ComputedCell({ api, row, column }: Grid.T.CellRendererParams<Gri
 
   return (
     <div
-      className={`flex h-full items-center justify-end px-2 font-mono text-xs font-medium tabular-nums ${
+      className={tw(
+        "flex h-full w-full items-center justify-end",
         isNum && (value as number) < 0
           ? "text-red-500 dark:text-red-400"
-          : "text-ln-primary-60 dark:text-ln-primary-40"
-      }`}
+          : "text-ln-primary-60 dark:text-ln-primary-40",
+      )}
     >
       {display}
+    </div>
+  );
+}
+
+export function ProfitCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
+
+  return (
+    <div
+      className={tw(
+        "flex h-full w-full items-center justify-end tabular-nums",
+        field < 0 && "text-red-600 dark:text-red-300",
+        field > 0 && "text-green-600 dark:text-green-300",
+      )}
+    >
+      {formatted}
+    </div>
+  );
+}
+
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
+
+  return <div className={"flex h-full w-full items-center justify-end tabular-nums"}>{formatted}</div>;
+}
+
+export function CostCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const formatted = field < 0 ? `-$${formatter.format(Math.abs(field))}` : "$" + formatter.format(field);
+
+  return (
+    <div
+      className={tw(
+        "flex h-full w-full items-center justify-end tabular-nums text-red-600 dark:text-red-300",
+      )}
+    >
+      {formatted}
     </div>
   );
 }

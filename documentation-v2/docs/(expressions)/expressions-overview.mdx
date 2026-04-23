@@ -8,41 +8,40 @@ step: Create advanced domain-specific expressions.
 ## What Are Expressions
 
 An expression is a string of text that produces a value. In its simplest form, an expression can
-be a math equation such as `1 + 1`, which evaluates to the value `2`.
-
-Expressions can represent more complex calculations in a concise form. For example, the expression
-`sum(Sales Revenue) / sum(Sales Quantity)` computes the average sale revenue per unit.
+be a math equation such as `1 + 1`, which evaluates to `2`. An expression can also represent
+a more complex calculation in a concise form, such as
+`sum(Sales Revenue) / sum(Sales Quantity)`, which computes the average sales revenue per unit.
 
 LyteNyte Grid's expression capabilities allow developers to define a custom expression language.
 Users can then use this language to describe the computation they want to perform. Two common
-use cases include:
+use cases are:
 
-- **[Expression Filters](/docs/expression-filters):** Complex filtering rules written concisely as expressions.
+- **[Expression Filters](/docs/expression-filters):** Complex filtering rules written as concise expressions.
 - **[Expression Fields](/docs/expression-fields):** Dynamically computed cell values based on expressions.
 
 ## Expression In Action
 
 The demo below shows how expressions filter rows in LyteNyte Grid. Enter different logical
-expressions to change the filter. For a more detailed explanation, see the
+expressions to update the filter. For a more detailed explanation, see the
 [Expression Filters guide](/docs/expression-filters).
 
 ::demo[Expression Filters="./demos/expression-filter"]
 
 ## LyteNyte Grid's Expression Engine
 
-Expressions are just text input. The term `sum(Sales Revenue) / sum(Sales Quantity)` has no meaning
-on its own. LyteNyte Grid provides an expression engine that evaluates these expressions to produce
+Expressions are text input. The expression `sum(Sales Revenue) / sum(Sales Quantity)` has no meaning
+by itself. LyteNyte Grid provides an expression engine that evaluates expressions and produces
 a concrete value.
 
-The expression engine takes the text representation and performs three steps:
+The expression engine takes the text input and performs three steps:
 
 1. **Tokenization:** Breaks the expression into its component parts. This step defines the building
    blocks (tokens) of the expression language.
-2. **Parse:** Uses the tokens from the previous step to create a structured representation of the
-   expression. This representation is a data structure that defines the relationships between parts
-   of the expression so the engine can evaluate it correctly. Programmers refer to this as the
+2. **Parsing:** Uses the tokens from the previous step to create a structured representation of the
+   expression. This representation defines the relationships between parts of the expression so the
+   engine can evaluate it correctly. Programmers refer to this representation as the
    Abstract Syntax Tree (AST).
-3. **Evaluate:** Computes the expression by resolving any required values. This step takes an
+3. **Evaluation:** Computes the expression by resolving any required values. This step takes an
    expression and produces a final value. The grid can then use this value to filter rows, compute
    cell values, or support other use cases in your application.
 
@@ -110,21 +109,22 @@ domain-specific data and operations to expression authors.
 The base `Evaluator` (without plugins) supports arithmetic operators: `+`, `-`, `*`, `/`, `%`,
 and `**` (exponentiation).
 
-The `standardPlugins` set turns the base evaluator into a JavaScript-like expression language.
-The table below lists each plugin, the syntax it adds, and an example.
+The `standardPlugins` export from LyteNyte Grid turns the base evaluator into a
+JavaScript-like expression language. The table below lists each plugin, the syntax it adds, and an example.
 
-| Plugin              | What it adds                                  | Example                                  |
-| ------------------- | --------------------------------------------- | ---------------------------------------- |
-| `stringsPlugin`     | String literals and template literals         | `"hello"`, `'world'`, `` `Hi ${name}` `` |
-| `booleansPlugin`    | `true`, `false`, `null`, `undefined` literals | `status == true`                         |
-| `comparisonPlugin`  | `==` `!=` `<` `>` `<=` `>=`                   | `age >= 18`                              |
-| `logicalPlugin`     | `&&` `\|\|` `??` and unary `!`                | `a && b \|\| c`                          |
-| `membershipPlugin`  | `in` and `not in`                             | `"key" in obj`                           |
-| `ternaryPlugin`     | `condition ? then : else`                     | `x > 0 ? "pos" : "neg"`                  |
-| `collectionsPlugin` | Array and object literals, spread (`...`)     | `[1, 2, ...rest]`                        |
-| `arrowsPlugin`      | Arrow functions (single and multi-parameter)  | `x => x * 2`, `(a, b) => a + b`          |
-| `pipePlugin`        | Pipe operator `\|>`                           | `items \|> filter(x => x > 0)`           |
-| `accessPlugin`      | `.prop`, `[computed]`, `?.`, function calls   | `user.name`, `obj?.city`                 |
+| Plugin                   | What it adds                                       | Example                                  |
+| ------------------------ | -------------------------------------------------- | ---------------------------------------- |
+| `stringsPlugin`          | String literals and template literals              | `"hello"`, `'world'`, `` `Hi ${name}` `` |
+| `booleansPlugin`         | `true`, `false`, `null`, `undefined` literals      | `status == true`                         |
+| `comparisonPlugin`       | `==` `!=` `<` `>` `<=` `>=`                        | `age >= 18`                              |
+| `logicalPlugin`          | `&&` `\|\|` `??` and unary `!`                     | `a && b \|\| c`                          |
+| `membershipPlugin`       | `in` and `not in`                                  | `"key" in obj`                           |
+| `ternaryPlugin`          | `condition ? then : else`                          | `x > 0 ? "pos" : "neg"`                  |
+| `collectionsPlugin`      | Array and object literals, spread (`...`)          | `[1, 2, ...rest]`                        |
+| `arrowsPlugin`           | Arrow functions (single and multi-parameter)       | `x => x * 2`, `(a, b) => a + b`          |
+| `pipePlugin`             | Pipe operator `\|>`                                | `items \|> filter(x => x > 0)`           |
+| `accessPlugin`           | `.prop`, `[computed]`, `?.`, function calls        | `user.name`, `obj?.city`                 |
+| `quotedIdentifierPlugin` | `@"name"` quoted identifiers for names with spaces | `@"Age Group"`, `@"Sub-Category"`        |
 
 #### Literals
 
@@ -137,6 +137,18 @@ Strings support single quotes, double quotes, and standard escape sequences (`\n
 ```
 `${user.firstName} scored ${points * multiplier} points`
 ```
+
+Identifiers that contain spaces or special characters can be written using the `@"..."` quoted
+identifier syntax. Quoted identifiers resolve the same way as plain identifiers, they look up
+the name in the expression context:
+
+```ts
+@"Age Group"              // resolves context["Age Group"]
+@"Sub-Category" == "Road Bikes"
+@"Age Group".toUpperCase() // member access works as normal
+```
+
+Both single and double quotes are accepted: `@'Age Group'`.
 
 #### Operators
 

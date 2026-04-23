@@ -5,6 +5,7 @@ export type CompletionItem = {
   label: string;
   kind: string;
   id: string;
+  insertText?: string;
 };
 
 export type KeybindingConfig = {

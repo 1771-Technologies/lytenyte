@@ -13,19 +13,19 @@ Read the [Expressions Overview guide](/docs/expressions-overview) first.
 :::
 
 LyteNyte Grid exports `ExpressionEditor`, a compound component that wraps a `<textarea>` with
-syntax highlighting and optional context-aware completions. Use `ExpressionEditor` anywhere users need to write
-expressions:
+syntax highlighting and optional context-aware completions. Use the `ExpressionEditor` component
+anywhere users need to write expressions.
 
-- Add it above a grid to build a [live filter](/docs/expression-filters) that users can type into.
-- Embed it in a column configuration panel to let users define [computed fields](/docs/expression-fields).
-- Use it in any form that accepts expressions.
+The demo below demonstrates the `ExpressionEditor` component fully configured using the standard
+expression language provided by LyteNyte Grid.
 
 ::demo[Expression Editor with Completions="./demos/expression-completions"]
 
 ## Expression Editor Anatomy
 
-`ExpressionEditor` is a compound component assembled from four parts. Omit the completion
-sub-components entirely to use `ExpressionEditor` as a pure syntax-highlighted input.
+`ExpressionEditor` is a compound component assembled from four parts. You can omit
+the completion sub-components entirely to use `ExpressionEditor` as a pure
+syntax-highlighted input.
 
 <Tabs>
 
@@ -154,7 +154,7 @@ Target the selected state with `[aria-selected="true"]` or `aria-selected` in Ta
 
 ### Built-in Provider
 
-`createCompletionProvider` builds a completion provider from a context object—the same
+The `createCompletionProvider` utility builds a completion provider from a context object, the same
 object you pass to `evaluator.run`. Pass the result to the `completionProvider` prop:
 
 ```tsx
@@ -186,9 +186,10 @@ The provider inspects the token stream before the cursor to determine which sugg
 
 Completions open automatically in two situations or can be opened manually:
 
-- **Dot** — typing `.` immediately triggers a property access completion.
-- **Space** — typing a space after a complete value immediately triggers completions (useful for viewing available binary operators).
-- **Manual** — pressing `Ctrl+Space` (or `⌘+Space` on macOS) opens completions at the current cursor position.
+- **Dot:** Typing `.` immediately triggers a property access completion.
+- **Space:** Typing a space after a complete value immediately triggers completions
+  (useful for viewing available binary operators).
+- **Manual:** Pressing `Ctrl+Space` (or `⌘+Space` on macOS) opens completions at the current cursor position.
 
 Once the list opens, it filters results in real time using a prefix match on `item.label`. Completions
 close when a user accepts a suggestion, presses `Escape`, or moves focus away from the editor.
@@ -274,10 +275,10 @@ import "@1771technologies/lytenyte-pro/expression-editor.css";
 
 | Key                      | Completion open            | Completion closed         |
 | ------------------------ | -------------------------- | ------------------------- |
-| `↑` / `↓`                | Navigate the list          | —                         |
-| `Enter` or `Tab`         | Accept selected suggestion | —                         |
-| `Escape`                 | Dismiss completions        | —                         |
-| `Ctrl+Space` / `⌘+Space` | —                          | Open completions manually |
+| `↑` / `↓`                | Navigate the list          | -                         |
+| `Enter` or `Tab`         | Accept selected suggestion | -                         |
+| `Escape`                 | Dismiss completions        | -                         |
+| `Ctrl+Space` / `⌘+Space` | -                          | Open completions manually |
 
 ## Expression Editor Properties
 

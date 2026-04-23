@@ -66,6 +66,7 @@ function isClosingBracket(token: Token): boolean {
 function isCompleteValue(token: Token): boolean {
   return (
     token.type === "Identifier" ||
+    token.type === "QuotedIdentifier" ||
     token.type === "Number" ||
     token.type === "String" ||
     token.type === "TemplateLiteral" ||
@@ -137,16 +138,17 @@ function analyzeTokens(tokens: Token[], cursorPosition: number): Analysis {
   // [1,2,3]. → array methods
   if (isClosingBracket(beforeDot)) return { kind: "array-literal" };
 
-  // identifier chain: walk back through alternating Identifier / dot tokens
-  if (beforeDot.type === "Identifier") {
-    const path: string[] = [beforeDot.value];
+  // identifier chain: walk back through alternating Identifier / QuotedIdentifier / dot tokens
+  if (beforeDot.type === "Identifier" || beforeDot.type === "QuotedIdentifier") {
+    const tokenName = (t: Token) => (t.type === "QuotedIdentifier" ? t.value.slice(2, -1) : t.value);
+    const path: string[] = [tokenName(beforeDot)];
     i--;
 
     while (i >= 1) {
       if (!isDot(relevant[i])) break;
       i--;
-      if (relevant[i].type !== "Identifier") break;
-      path.unshift(relevant[i].value);
+      if (relevant[i].type !== "Identifier" && relevant[i].type !== "QuotedIdentifier") break;
+      path.unshift(tokenName(relevant[i]));
       i--;
     }
 
@@ -175,11 +177,14 @@ function kindOf(value: unknown): string {
   return "unknown";
 }
 
+const VALID_IDENTIFIER = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
+
 function objectCompletions(obj: object): CompletionItem[] {
   return Object.entries(obj).map(([key, val]) => ({
     label: key,
     kind: kindOf(val),
     id: key,
+    insertText: VALID_IDENTIFIER.test(key) ? undefined : `@"${key}"`,
   }));
 }
 

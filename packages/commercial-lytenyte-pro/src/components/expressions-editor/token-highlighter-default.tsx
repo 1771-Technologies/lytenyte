@@ -10,6 +10,7 @@ const tokenToSyntaxColor: Record<string, string> = {
   Operator: "operator",
   Arrow: "operator",
   Identifier: "identifier",
+  QuotedIdentifier: "identifier",
   ExpressionError: "error",
   Unparsed: "punctuation",
 };

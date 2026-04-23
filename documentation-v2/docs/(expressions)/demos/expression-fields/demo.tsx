@@ -13,20 +13,20 @@ import {
 } from "@1771technologies/lytenyte-pro/expressions";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
-import { ComputedCell, KindBadge, MoneyCell } from "./components.js";
+import { ComputedCell, CostCell, KindBadge, NumberCell, ProfitCell } from "./components.js";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
 }
 
 const baseColumns: Grid.Column<GridSpec>[] = [
-  { id: "product", name: "Product", width: 180 },
+  { id: "product", name: "Product", width: 160 },
   { id: "productCategory", name: "Category", width: 120 },
-  { id: "orderQuantity", name: "Quantity", type: "number", width: 90 },
-  { id: "unitPrice", name: "Unit Price", type: "number", width: 100, cellRenderer: MoneyCell },
-  { id: "cost", name: "Cost", type: "number", width: 100, cellRenderer: MoneyCell },
-  { id: "revenue", name: "Revenue", type: "number", width: 100, cellRenderer: MoneyCell },
-  { id: "profit", name: "Profit", type: "number", width: 100, cellRenderer: MoneyCell },
+  { id: "orderQuantity", name: "Quantity", type: "number", width: 60 },
+  { id: "unitPrice", name: "Price", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell },
+  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell },
+  { id: "profit", name: "Profit", width: 80, type: "number", cellRenderer: ProfitCell },
 ];
 
 const evaluator = new Evaluator(
@@ -39,10 +39,7 @@ const evaluator = new Evaluator(
 );
 
 const columnsContext = Object.fromEntries(
-  baseColumns.map((col) => [
-    col.name ?? col.id,
-    (row: RowLeaf) => computeField(col.field ?? col.id, row),
-  ]),
+  baseColumns.map((col) => [col.name ?? col.id, (row: RowLeaf) => computeField(col.field ?? col.id, row)]),
 );
 
 const provider = createCompletionProvider(
@@ -77,27 +74,25 @@ export default function ExpressionFieldsDemo() {
   }, [committed]);
 
   const columns = useMemo((): Grid.Column<GridSpec>[] => {
-    return [
-      ...baseColumns,
-      {
-        id: "computed",
-        name: "Computed",
-        width: 140,
-        cellRenderer: ComputedCell,
-        field: ({ row }) => {
-          if (!ast || row.kind !== "leaf" || !row.data) return null;
-          try {
-            return evaluator.run(
-              ast,
-              { row, ...columnsContext },
-              { undefinedIdentifierFallback: true },
-            );
-          } catch {
-            return null;
-          }
-        },
+    const nextColumns = [...baseColumns];
+    nextColumns.splice(2, 0, {
+      id: "computed",
+      name: "Computed",
+      type: "number",
+      width: 140,
+      widthFlex: 1,
+      cellRenderer: ComputedCell,
+      field: ({ row }) => {
+        if (!ast || row.kind !== "leaf" || !row.data) return null;
+        try {
+          return evaluator.run(ast, { row, ...columnsContext }, { undefinedIdentifierFallback: true });
+        } catch {
+          return null;
+        }
       },
-    ];
+    });
+
+    return nextColumns;
   }, [ast]);
 
   const ds = useClientDataSource<GridSpec>({ data: salesData });
@@ -108,9 +103,7 @@ export default function ExpressionFieldsDemo() {
       <div className="border-b-ln-border flex w-full flex-col gap-2 border-b px-3 py-3">
         <div className="flex items-center gap-2">
           <span className="text-ln-text-light text-xs font-medium">Computed column expression</span>
-          <span className="text-ln-text-xlight font-sans text-[10px]">
-            Use column names as identifiers
-          </span>
+          <span className="text-ln-text-xlight font-sans text-[10px]">Use column names as identifiers</span>
         </div>
 
         <div data-ln-input="true" className="h-10 w-full text-base">
@@ -133,9 +126,7 @@ export default function ExpressionFieldsDemo() {
                     >
                       <KindBadge kind={item.kind} />
                       <span className="min-w-0 flex-1 truncate font-mono text-sm">{item.label}</span>
-                      <span className="text-ln-text-xlight shrink-0 font-sans text-[10px]">
-                        {item.kind}
-                      </span>
+                      <span className="text-ln-text-xlight shrink-0 font-sans text-[10px]">{item.kind}</span>
                     </ExpressionEditor.CompletionListItem>
                   ))
                 }
