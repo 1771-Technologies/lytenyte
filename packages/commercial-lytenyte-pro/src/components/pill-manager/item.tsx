@@ -86,9 +86,21 @@ function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillI
     ev.stopPropagation();
 
     const ds = getDragData() as { pill?: { data: { id: string; item: PillItemSpec } } } | null;
+
     if (!ds?.pill?.data) return;
 
-    const { item: dragged, id: dragRowId } = ds.pill.data;
+    let { item: dragged, id: dragRowId } = ds.pill.data;
+    const original = dragRowId;
+
+    // We resolve the external item to a dragged item here.
+    if (dragRowId === "__external__") {
+      const d = dragged as unknown as Record<string, string>;
+      if (!d[row.id]) return;
+
+      dragRowId = row.id;
+      dragged = row.pills.find((x) => x.id === d[row.id])!;
+      if (!dragged) return;
+    }
 
     const accepts = new Set([...(row.accepts ?? []), row.id]);
     if (!accepts.has(dragRowId) && !item.tags?.some((x) => accepts.has(x))) return;
@@ -130,6 +142,10 @@ function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillI
       prevRowId.current = currentRowId;
 
       setCloned((prev) => {
+        if (original === "__external__" && !prev) {
+          prev = structuredClone(rows);
+        }
+
         if (!prev) throw new Error("Can't call drag function without cloning nodes.");
 
         const thisRow = prev.findIndex((x) => x.id === row.id);

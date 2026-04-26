@@ -12,7 +12,7 @@ import type {
 } from "@1771technologies/lytenyte-shared";
 import type { Column } from "./column.js";
 import type { GridSpec } from "./grid.js";
-import type { UseDraggableProps } from "../dnd/types.js";
+import type { DragItem, UseDraggableProps } from "../dnd/types.js";
 import type { useDraggable } from "../dnd/use-draggable.js";
 import type { Props } from "./props.js";
 import type { Piece } from "../hooks/use-piece.js";
@@ -101,7 +101,10 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly rowHandleSelect: (params: { readonly target: EventTarget; readonly shiftKey: boolean }) => void;
 
   readonly useRowDrag: (
-    params: Partial<Pick<UseDraggableProps, "data" | "placeholder">> & { rowIndex: number },
+    params: Partial<Pick<UseDraggableProps, "data" | "placeholder">> & {
+      readonly rowIndex: number;
+      readonly tags?: Record<string, DragItem>;
+    },
   ) => ReturnType<typeof useDraggable>;
 
   readonly props: () => Props<Spec>;

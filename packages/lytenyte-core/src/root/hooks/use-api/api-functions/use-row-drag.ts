@@ -3,7 +3,7 @@ import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
 
 export function useUseRowDrag(api: Root.API, gridId: string): Root.API["useRowDrag"] {
-  return useEvent(({ rowIndex, data, placeholder }) => {
+  return useEvent(({ rowIndex, data, placeholder, tags }) => {
     const row = api.rowByIndex(rowIndex).get();
     if (!row) throw new Error("The row index provided for row drag must be a valid row");
 
@@ -12,6 +12,7 @@ export function useUseRowDrag(api: Root.API, gridId: string): Root.API["useRowDr
     return useDraggable({
       data: {
         ...data,
+        ...(tags ?? {}),
         [`grid:${gridId}`]: {
           kind: "site",
           data: {
