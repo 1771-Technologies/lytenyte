@@ -12,7 +12,7 @@ export function useColumnField(view: ColumnView): Root.API["columnField"] {
       return null;
     }
 
-    const field = (column as Column).field ?? column.id;
+    const field = row.kind === "leaf" ? ((column as Column).field ?? column.id) : column.id;
     return computeField(field, row);
   });
 }
