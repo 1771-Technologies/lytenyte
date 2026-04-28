@@ -59,11 +59,6 @@ export function ExpressionEditor({
 
   const completions = useCompletions(completionProvider);
   const cursorPosition = useCursorPosition(textareaRef);
-  const navigation = useKeyboardNavigation({
-    onValueChange,
-    onDismiss: completions.dismiss,
-    textareaRef,
-  });
 
   const trigger = useCompletionTrigger({
     triggerCharacters,
@@ -72,6 +67,18 @@ export function ExpressionEditor({
       completions.fetchCompletions(toks, pos, word);
     },
     tokenize,
+  });
+
+  const navigation = useKeyboardNavigation({
+    onValueChange,
+    onAccepted: (value, cursorPosition) => {
+      if (completionProvider) {
+        trigger.triggerManually(value, cursorPosition + 1);
+      } else {
+        completions.dismiss();
+      }
+    },
+    textareaRef,
   });
 
   depsRef.current = {
@@ -119,7 +126,13 @@ export function ExpressionEditor({
 
     const word = getWordAtCursor(newValue, selectionStart);
     if (deps.isOpen) {
-      deps.updateFilter(word.word);
+      if (word.word.length > 0) {
+        deps.updateFilter(word.word);
+      } else if (!triggerCharacters.includes(newValue[selectionStart - 1] || "")) {
+        // Non-word, non-trigger char (e.g. an operator) - re-fetch so the list
+        // reflects the new syntactic context rather than keeping stale results.
+        deps.triggerManually(newValue, selectionStart);
+      }
     }
 
     deps.handleInputChange(newValue, selectionStart);

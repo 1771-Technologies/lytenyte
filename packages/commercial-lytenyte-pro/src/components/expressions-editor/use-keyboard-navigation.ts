@@ -4,11 +4,11 @@ import { replaceWordAtCursor } from "./replace-word-at-cursor.js";
 
 interface NavigationDeps {
   readonly onValueChange: (value: string) => void;
-  readonly onDismiss: () => void;
+  readonly onAccepted: (value: string, cursorPosition: number) => void;
   readonly textareaRef: React.RefObject<HTMLTextAreaElement | null>;
 }
 
-export function useKeyboardNavigation({ onValueChange, onDismiss, textareaRef }: NavigationDeps) {
+export function useKeyboardNavigation({ onValueChange, onAccepted, textareaRef }: NavigationDeps) {
   const acceptCompletion = useCallback(
     (item: CompletionItem, word: WordAtCursor) => {
       const textarea = textareaRef.current;
@@ -26,7 +26,16 @@ export function useKeyboardNavigation({ onValueChange, onDismiss, textareaRef }:
         adjustedWord = { ...word, start: scan - 1 };
       }
 
-      const insertText = item.value ?? item.label;
+      const charBeforeWord = adjustedWord.start > 0 ? text[adjustedWord.start - 1] : "";
+      const noSpaceBefore =
+        charBeforeWord === "" ||
+        charBeforeWord === " " ||
+        charBeforeWord === "." ||
+        charBeforeWord === "(" ||
+        charBeforeWord === "[" ||
+        charBeforeWord === "{";
+      const rawInsertText = item.value ?? item.label;
+      const insertText = noSpaceBefore ? rawInsertText : " " + rawInsertText;
       const { value, cursorPosition } = replaceWordAtCursor(text, adjustedWord, insertText);
 
       textarea.value = value;
@@ -34,9 +43,9 @@ export function useKeyboardNavigation({ onValueChange, onDismiss, textareaRef }:
       textarea.selectionEnd = cursorPosition;
 
       onValueChange(value);
-      onDismiss();
+      onAccepted(value, cursorPosition);
     },
-    [onValueChange, onDismiss, textareaRef],
+    [onValueChange, onAccepted, textareaRef],
   );
 
   return { acceptCompletion };
