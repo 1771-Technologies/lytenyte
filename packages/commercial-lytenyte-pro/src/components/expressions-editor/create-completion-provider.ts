@@ -79,22 +79,22 @@ function isStringLiteral(token: Token): boolean {
 }
 
 const BINARY_OPERATORS: BuiltinMethod[] = [
-  { label: "+", kind: "operator" },
-  { label: "-", kind: "operator" },
-  { label: "*", kind: "operator" },
-  { label: "/", kind: "operator" },
-  { label: "%", kind: "operator" },
-  { label: "**", kind: "operator" },
-  { label: "==", kind: "operator" },
-  { label: "!=", kind: "operator" },
-  { label: "<", kind: "operator" },
-  { label: "<=", kind: "operator" },
-  { label: ">", kind: "operator" },
-  { label: ">=", kind: "operator" },
-  { label: "&&", kind: "operator" },
-  { label: "||", kind: "operator" },
-  { label: "??", kind: "operator" },
-  { label: "|>", kind: "operator" },
+  { label: "+  Plus", kind: "operator" },
+  { label: "-  Minus", kind: "operator" },
+  { label: "*  Multiply", kind: "operator" },
+  { label: "/  Divide", kind: "operator" },
+  { label: "%  Modulus", kind: "operator" },
+  { label: "** Exponentiation", kind: "operator" },
+  { label: "== Equal To", kind: "operator" },
+  { label: "!= Not Equal To", kind: "operator" },
+  { label: "<  Less Than", kind: "operator" },
+  { label: "<= Less Than Or Equal To", kind: "operator" },
+  { label: ">  Greater Than", kind: "operator" },
+  { label: ">= Greater Than Or Equal To", kind: "operator" },
+  { label: "&& AND", kind: "operator" },
+  { label: "|| OR", kind: "operator" },
+  { label: "?? OR if Null", kind: "operator" },
+  { label: "|> Pipe", kind: "operator" },
 ];
 
 type Analysis =
