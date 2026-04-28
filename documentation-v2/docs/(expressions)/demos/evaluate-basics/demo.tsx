@@ -31,9 +31,6 @@ export default function EvaluatorBasics() {
       <label className="flex w-full flex-col gap-2">
         <div>
           <div className="text-ln-text-dark text-sm font-semibold">Expression</div>
-          <div className="text-ln-text-light text-xs">
-            Type an expression below and see its result evaluated in real time.
-          </div>
         </div>
 
         <div data-ln-input="true" className="h-10 text-base">

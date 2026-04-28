@@ -1,6 +1,6 @@
 ---
 title: Expressions
-description: API reference for the Evaluator class and its associated types.
+description: Configure, parse, evaluate, and extend expressions with the LyteNyte Grid expressions API.
 pro: true
 ---
 
@@ -21,10 +21,9 @@ const evaluator = new Evaluator(standardPlugins);
   type={[
     {
       name: "plugins",
-      description: `An ordered array of plugins that extend the evaluator's tokenization, parsing,
-      optimization, and evaluation capabilities. Plugins are tried in the order they appear;
-      the first plugin that returns a non-null result for a given node or token wins.
-      Omit this argument for a bare-bones evaluator that supports arithmetic only.`,
+      description: `An ordered array of plugins that extend the evaluator's tokenization, parsing, optimization, and evaluation capabilities.
+      LyteNyte Grid tries plugins in the order they appear. The first plugin that returns a non-\`null\` result for a given node or token
+      takes precedence. Omit this argument to create a minimal evaluator that supports arithmetic only.`,
       type: "Plugin[]",
     },
   ]}
@@ -69,18 +68,19 @@ const evaluator = new Evaluator(standardPlugins);
     },
     {
       name: "tokensSafe",
-      description: `Tokenizes an expression string without throwing on invalid input. When the
-      tokenizer encounters an unrecognised character, it emits an \`ExpressionError\` token
-      and continues tokenizing the remainder of the string. The returned array always covers
-      the full input.
+      description: `Tokenizes an expression string without throwing when it encounters invalid input.
+      When the tokenizer finds an unrecognized character, it emits an \`ExpressionError\` token and
+      continues tokenizing the rest of the string. The returned array includes tokens that
+      span the full input string.
 
-      Pass \`tokenizeWhitespace: true\` to include whitespace tokens in the output, which is required
-      when passing the token array to \`ExpressionEditor\` for syntax highlighting.`,
+      Pass \`tokenizeWhitespace: true\` to include whitespace tokens in the output. \`ExpressionEditor\` requires whitespace
+      tokens when using the token array for syntax highlighting.`,
       type: "(input: string, tokenizeWhitespace?: boolean) => Token[]",
       required: true,
       see: ["/docs/expression-editor"],
     },
-  ]}
+
+]}
 />
 
 ## RunOptions
@@ -91,11 +91,11 @@ Options accepted by `Evaluator.run` as its third argument.
   type={[
     {
       name: "undefinedIdentifierFallback",
-      description: `The value to return when the evaluator encounters an identifier that is not
-      present in the context, instead of throwing. Set to \`true\` in filter functions so that
-      a partially-typed expression (where the user has not yet finished typing an identifier)
-      passes all rows rather than crashing. Set to \`undefined\` in computed field functions to
-      render cells as empty for unknown identifiers.`,
+      description: `The fallback value the evaluator returns when an identifier is missing from the \`context\`. Without
+      this fallback, the evaluator throws an error.
+      
+      Set \`undefinedIdentifierFallback\` to \`true\` in filter functions so partially typed expressions pass all rows instead
+      of crashing. Set it to \`undefined\` in computed field functions so cells render empty values for unknown identifiers.`,
       type: "unknown",
     },
   ]}

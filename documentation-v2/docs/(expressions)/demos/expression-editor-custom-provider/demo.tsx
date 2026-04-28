@@ -1,13 +1,8 @@
 import "@1771technologies/lytenyte-pro/light-dark.css";
 import "@1771technologies/lytenyte-pro/components.css";
 import "@1771technologies/lytenyte-pro/expression-editor.css";
-import {
-  Evaluator,
-  ExpressionEditor,
-  standardPlugins,
-} from "@1771technologies/lytenyte-pro/expressions";
-import type { CompletionItem } from "@1771technologies/lytenyte-pro/expressions";
-import type { Token } from "@1771technologies/lytenyte-pro/types";
+import { Evaluator, ExpressionEditor, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
+import type { CompletionItem, Token } from "@1771technologies/lytenyte-pro/expressions";
 import { useCallback, useMemo, useState } from "react";
 import { KindBadge } from "./components.js";
 
@@ -132,9 +127,7 @@ export default function CustomProvider() {
                     >
                       <KindBadge kind={item.kind} />
                       <span className="min-w-0 flex-1 truncate font-mono text-sm">{item.label}</span>
-                      <span className="text-ln-text-xlight shrink-0 font-sans text-[10px]">
-                        {item.kind}
-                      </span>
+                      <span className="text-ln-text-xlight shrink-0 font-sans text-[10px]">{item.kind}</span>
                     </ExpressionEditor.CompletionListItem>
                   ))
                 }

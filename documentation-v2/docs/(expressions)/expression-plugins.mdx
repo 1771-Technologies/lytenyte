@@ -1,22 +1,21 @@
 ---
 title: Expression Plugins
 pro: true
-step: Extend the capabilities of the expression evaluator with custom plugins.
-description: Expression plugins allow you to extend the syntax and evaluation capabilities of
-  expressions provided by LyteNyte.
+step: Extend expression capabilities with custom plugins.
+description: Enhance the syntax and evaluation capabilities of expressions using custom plugins.
 ---
 
 :::note
 
-This guide assumes you understand how expressions work in LyteNyte Grid. Read the
-[Expressions Overview guide](/docs/expressions-overview) for more details.
+This guide assumes familiarity with LyteNyte Grid's expressions.
+For more details, refer to the Expressions Overview guide.
 
-A basic understanding of lexers, parsers, and abstract syntax trees is recommended to
-get the most out of creating expression plugins.
+A basic understanding of lexers, parsers, and abstract syntax trees
+is recommended to get the most out of creating expression plugins.
 
 :::
 
-## How Plugins Fit Into the Pipeline
+## Plugin Pipeline
 
 Every expression passes through four sequential stages:
 
@@ -32,8 +31,13 @@ ASTNode (simplified)
 value
 ```
 
-A plugin can participate in any of these stages by implementing the corresponding hooks.
-Hooks are optional. Implement only the ones your plugin needs.
+A plugin can hook into any stage of the expression lifecycle.
+All hooks are optional. Implement only the ones your plugin requires:
+
+- **`scan` Hook:** For tokenizing the raw string.
+- **`parse` Hook:** For building the Abstract Syntax Tree (AST).
+- **`optimize` Hook:** For transforming or simplifying the AST.
+- **`evaluate` Hook:** For computing the final result.
 
 ## Plugin Interface
 
@@ -66,16 +70,16 @@ interface Plugin {
 Return `null` from any hook to signal “not handled by this plugin.” The evaluator then tries
 the next plugin in the array. Return a non-null value to claim the node and stop the chain.
 
-| Hook              | Stage        | Use when…                                                                           |
-| ----------------- | ------------ | ----------------------------------------------------------------------------------- |
-| `scan`            | Tokenization | You need a new token type (e.g. `#date` literals or `@variable` prefixes)           |
-| `parsePrefix`     | Parsing      | You need a new expression form that starts a term (literals, prefix operators)      |
-| `parseInfix`      | Parsing      | You need a binary operator that appears between two terms                           |
-| `infixPrecedence` | Parsing      | You define an infix operator and need to declare its precedence                     |
-| `parsePostfix`    | Parsing      | You need a postfix form that follows a completed term (member access, calls)        |
-| `parseUnary`      | Parsing      | You need a unary wrapper around the next term (rarely needed outside `parsePrefix`) |
-| `optimize`        | Optimization | You want to simplify or constant-fold custom AST nodes before evaluation            |
-| `evaluate`        | Evaluation   | You need to compute a value from a custom (or existing) AST node type               |
+| Hook              | Stage        | Use When...                                                                          |
+| ----------------- | ------------ | ------------------------------------------------------------------------------------ |
+| `scan`            | Tokenization | You need a new token type (e.g. `#date` literals or `@variable` prefixes).           |
+| `parsePrefix`     | Parsing      | You need a new expression form that starts a term (literals, prefix operators).      |
+| `parseInfix`      | Parsing      | You need a binary operator that appears between two terms.                           |
+| `infixPrecedence` | Parsing      | You define an infix operator and need to declare its precedence.                     |
+| `parsePostfix`    | Parsing      | You need a postfix form that follows a completed term (member access, calls).        |
+| `parseUnary`      | Parsing      | You need a unary wrapper around the next term (rarely needed outside `parsePrefix`). |
+| `optimize`        | Optimization | You want to simplify or constant-fold custom AST nodes before evaluation.            |
+| `evaluate`        | Evaluation   | You need to compute a value from a custom (or existing) AST node type.               |
 
 ## Scan Hook
 
@@ -93,7 +97,7 @@ scan: (source: string, pos: number) => {
 The `end` field is a source position, not a length. For a token starting at `pos` with text
 `"#2024-01-15"` (11 characters), `end` is `pos + 11`.
 
-## Parse Hooks and ParserContext
+## Parse Hooks
 
 All parse hooks receive a `ParserContext` that represents the current position in the token
 stream. Use these helpers to interact with it:
@@ -178,7 +182,7 @@ result (including `undefined`) from a `null` “not handled” signal.
 The `context` argument is the same object passed to `evaluator.run`. Pass it unchanged unless
 your plugin intentionally introduces new bindings.
 
-## Examples
+## Plugin Examples
 
 ### Evaluation Hook: Resolving Column Identifiers
 

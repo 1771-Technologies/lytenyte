@@ -1,46 +1,45 @@
 ---
 title: Expression Fields
-description: Use expressions to compute column cell values at runtime in LyteNyte Grid.
+description: Build expression fields that compute cell values dynamically from user-defined expressions.
 pro: true
-step: Drive column cell values from user-authored expressions.
+step: Compute cell values from user-defined expressions.
 ---
 
 :::note
 
-This guide assumes you are already familiar with how expressions and the expression evaluator
-work in LyteNyte Grid. Read the [Expressions Overview guide](/docs/expressions-overview) first.
+This guide assumes familiarity with LyteNyte Grid expressions and the expression evaluator.
+For more details, refer to the [Expressions Overview guide](/docs/expressions-overview).
 
 :::
 
 ## Creating Expression Fields
 
-The `field` property of a column may be provided a function to compute the value for a cell
-for the given column. Using this function field, you can use an expression evaluator to
-derive a cell's value from an expression.
+You can pass a function to a column's `field` property to compute cell values dynamically.
+Using an expression evaluator inside this function allows you to compute a
+cell's value directly from a user-defined expression.
 
-To improve the user experience for field expressions, use column names instead of column IDs.
-For example, a user writes `Revenue - Cost` instead of `row.revenue - row.cost`.
-Two mechanisms enable this:
+To make field expressions easier to read and write, use column names rather than
+column IDs. For example, a user writes `Revenue - Cost` instead
+of `row.revenue - row.cost`.
 
-1. **`createResolvedIdentifierPlugin`**: Intercepts identifier nodes in the AST and rewrites
+Two mechanisms support this mapping:
+
+1. **`createResolvedIdentifierPlugin`:** Intercepts identifier nodes in the AST and rewrites
    them as function calls. This ensures `Revenue` resolves from the context at evaluation time
    instead of being treated as a plain key.
-2. **The context object**: Maps each column display name to a function that reads the column value
+2. **Context object:** Maps each column display name to a function that reads the column value
    from the current row using `computeField`.
 
-The demo below preloads the expression `Revenue - Cost`. Edit the expression or select an example pill to
-compute a different value across the dataset:
+The demo below preloads the expression `Revenue - Cost` and shows the result in the **OUTPUT** column.
+Type an expression to update the computed results, or select one of the provided examples.
 
 ::demo[Expression Fields="./demos/expression-fields"]
 
-The demo includes the complete expression fields implementation.
-The following sections cover the important implementation details.
+### Evaluator Setup
 
-### Setting Up the Evaluator
-
-Start by creating an `Evaluator` instance. Create the evaluator outside your component so it
-remains a stable reference. Use `standardPlugins` and `createResolvedIdentifierPlugin` to support
-column name resolution in expressions:
+Start by creating an `Evaluator` instance. Instantiate the `Evaluator` outside your React
+component to maintain a stable reference. Use `standardPlugins` and `createResolvedIdentifierPlugin`
+to support column name resolution in expressions:
 
 ```ts
 import {
@@ -69,8 +68,9 @@ const evaluator = new Evaluator(
 
 ### Building the Column Context
 
-Create a context object that maps each column display name to a function that reads its value from
-the current row. Create this object outside your component so the reference stays stable:
+Similar to the `Evaluator`, define a context object outside your component to maintain
+a stable reference. This object maps each column's display name to a
+function that retrieves its value from the current row:
 
 ```ts
 import { computeField } from "@1771technologies/lytenyte-pro";
@@ -83,11 +83,13 @@ const columnsContext = Object.fromEntries(
 
 ### Defining the Computed Column
 
-Pre-parse the expression into an AST in a `useMemo` so the grid does not re-parse on every row
-evaluation. This avoids tokenizing the expression on every cell render. Set
-`undefinedIdentifierFallback` to `true` so partially typed expressions return `undefined` instead
-of throwing an error. Build the full columns array, including the computed column, in a second
-`useMemo` that depends on the parsed AST:
+Pre-parse the expression into an AST within `useMemo`, so LyteNyte Grid does not tokenize the
+expression on every cell render. Set `undefinedIdentifierFallback` to `true` so the
+computed field returns `undefined` for partially typed expressions rather
+than throwing an error.
+
+Build the full `columns` array, including the computed column,
+in a second `useMemo` that depends on the parsed AST:
 
 ```ts
 const ast = useMemo(() => {
@@ -119,17 +121,19 @@ const columns = useMemo(
 );
 ```
 
-### Debouncing the Expression Input
+### Input Debouncing
 
-Recomputing the column on every keystroke is possible, but it is unnecessarily expensive. Debounce
-the expression input so the column updates only after the user pauses typing.
+Recomputing the column on every keystroke can be computationally expensive.
+Debounce the expression input so the column
+updates only after the user pauses typing.
 
-Keep two state values:
+Maintain two state values:
 
-- `value`: the value shown in the editor.
-- `committed`: the value used to compute the AST.
+- `value`: The value shown in the editor.
+- `committed`: The value used to compute the filter.
 
-The `committed` state trails `value` while the user types and updates after the user pauses.
+The `committed` state lags behind `value` while the user types,
+updating to match it after the debounce delay.
 
 ```ts
 const [value, setValue] = useState("Revenue - Cost");
@@ -143,10 +147,10 @@ const onChange = (s: string) => {
 };
 ```
 
-Pass `value` to `ExpressionEditor.Root` and `committed` to the AST memo. The editor updates
-immediately, while the grid waits for the user to pause typing.
+Pass `value` to `ExpressionEditor.Root` and `committed` to the AST Memo. The editor
+updates immediately, while the grid updates only after the user pauses typing.
 
-### Wiring Up the Completion Provider
+### Completion Provider Wiring
 
 Pass a `createCompletionProvider` to `ExpressionEditor.Root` so users get autocomplete for
 column names. Supply a `Record<displayName, id>` map so the provider does not require access to

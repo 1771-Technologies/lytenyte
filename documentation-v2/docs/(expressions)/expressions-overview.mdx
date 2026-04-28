@@ -1,54 +1,50 @@
 ---
 title: Expressions Overview
-description: Build advanced calculations using a language designed specifically for your needs.
+description: Use a custom expression language for advanced calculations and application-specific logic.
 pro: true
-step: Create advanced domain-specific expressions.
+step: Learn how to build domain-specific expressions.
 ---
 
 ## What Are Expressions
 
-An expression is a string of text that produces a value. In its simplest form, an expression can
-be a math equation such as `1 + 1`, which evaluates to `2`. An expression can also represent
-a more complex calculation in a concise form, such as
-`sum(Sales Revenue) / sum(Sales Quantity)`, which computes the average sales revenue per unit.
+An expression is a text string that evaluates to a value. Expressions range from simple arithmetic,
+such as `1 + 1`, which evaluates to `2`, to complex calculations, such as
+`sum(Sales Revenue) / sum(Sales Quantity)`, which computes the average revenue per unit.
 
-LyteNyte Grid's expression capabilities allow developers to define a custom expression language.
-Users can then use this language to describe the computation they want to perform. Two common
-use cases are:
+LyteNyte Grid lets developers define a custom expression language that application
+users can use to describe computations. Two common use cases are:
 
-- **[Expression Filters](/docs/expression-filters):** Complex filtering rules written as concise expressions.
-- **[Expression Fields](/docs/expression-fields):** Dynamically computed cell values based on expressions.
+- **[Expression Filters:](/docs/expression-filters)** Define complex filtering rules.
+- **[Expression Fields:](/docs/expression-fields)** Compute cell values dynamically.
 
-## Expression In Action
+## Expressions In Action
 
-The demo below shows how expressions filter rows in LyteNyte Grid. Enter different logical
-expressions to update the filter. For a more detailed explanation, see the
-[Expression Filters guide](/docs/expression-filters).
+The demo below uses expressions to filter rows in LyteNyte Grid.
+Type an expression to update the filter, or select one of the provided examples.
+
+:::note
+For a detailed explanation of expression filters, see the [Expression Filters guide](/docs/expression-filters).
+:::
 
 ::demo[Expression Filters="./demos/expression-filter"]
 
-## LyteNyte Grid's Expression Engine
+## Expression Engine
 
-Expressions are text input. The expression `sum(Sales Revenue) / sum(Sales Quantity)` has no meaning
-by itself. LyteNyte Grid provides an expression engine that evaluates expressions and produces
-a concrete value.
+As raw text, `sum(Sales Revenue) / sum(Sales Quantity)` has no inherent meaning. LyteNyte Grid provides
+an expression engine that evaluates these strings to return actual values. The expression
+engine processes the input in three steps:
 
-The expression engine takes the text input and performs three steps:
+1. **Tokenization:** Breaks the expression into its fundamental building blocks, or tokens.
+2. **Parsing:** Converts the generated tokens into an Abstract Syntax Tree (AST), which maps
+   relationships between expression components for accurate evaluation.
+3. **Evaluation:** Resolves the AST to compute a final value. The grid then uses this result
+   to filter rows, dynamically compute cell values, or drive other application logic.
 
-1. **Tokenization:** Breaks the expression into its component parts. This step defines the building
-   blocks (tokens) of the expression language.
-2. **Parsing:** Uses the tokens from the previous step to create a structured representation of the
-   expression. This representation defines the relationships between parts of the expression so the
-   engine can evaluate it correctly. Programmers refer to this representation as the
-   Abstract Syntax Tree (AST).
-3. **Evaluation:** Computes the expression by resolving any required values. This step takes an
-   expression and produces a final value. The grid can then use this value to filter rows, compute
-   cell values, or support other use cases in your application.
+### Evaluator
 
-### The Evaluator
-
-LyteNyte Grid's expression engine is exposed as an exported class called `Evaluator`. At its core, the `Evaluator`
-acts as a calculator that can evaluate basic math expressions.
+LyteNyte Grid's expression engine is exposed as an exported class
+called `Evaluator`. Fundamentally, this class serves as a calculator
+that evaluates mathematical expressions.
 
 The code below shows the simplest use case:
 
@@ -58,12 +54,12 @@ import { Evaluator } from "@1771technologies/lytenyte-pro/expressions";
 const result = new Evaluator().run("1 + 1"); // 2
 ```
 
-LyteNyte Grid's `Evaluator` supports a plugin system that extends its capabilities with more advanced
-expression features. The library provides a standard set of plugins that enable a JavaScript-like
-expression language that developers can use out of the box.
+`Evaluator` supports a plugin system for adding more advanced expression features.
+LyteNyte Grid includes a standard set of plugins that provide a ready-to-use,
+JavaScript-like expression language.
 
-The demo below shows this more advanced expression language. The standard expression language
-supports identifiers (`age`), functions (`fullName()`), and interpolated strings.
+The demo below shows this advanced expression language, including identifiers
+such as `age`, functions such as `fullName()`, and interpolated strings.
 
 ::demo[Standard Expression Language="./demos/evaluate-standard-plugins"]
 
@@ -84,9 +80,10 @@ const stringEvaluator = new Evaluator([stringsPlugin]);
 
 ### Expression Context
 
-For an expression such as `age + 21`, the `Evaluator` needs a way to resolve the value of the
-identifier `age`. The `Evaluator.run` method accepts a context object as a second argument.
-This object provides the runtime values for identifiers used in the expression.
+For an expression such as `age + 21`, the `Evaluator` must resolve the identifier
+`age` to a value. The `Evaluator.run` method accepts a context object as
+its second argument. The context object provides values at runtime for
+identifiers used in the expression.
 
 ```ts
 const context = {
@@ -106,13 +103,14 @@ domain-specific data and operations to expression authors.
 
 ### Standard Expression Language
 
-The base `Evaluator` (without plugins) supports arithmetic operators: `+`, `-`, `*`, `/`, `%`,
-and `**` (exponentiation).
+The base `Evaluator`, without plugins installed, supports the arithmetic
+operators `+`, `-`, `*`, `/`, `%`, and `**`, where `**` performs exponentiation.
 
-The `standardPlugins` export from LyteNyte Grid turns the base evaluator into a
-JavaScript-like expression language. The table below lists each plugin, the syntax it adds, and an example.
+The `standardPlugins` export from LyteNyte Grid turns the base `Evaluator` into a
+JavaScript-like expression language. The table below lists each plugin,
+its syntax, and an example.
 
-| Plugin                   | What it adds                                       | Example                                  |
+| Plugin                   | Syntax                                             | Example                                  |
 | ------------------------ | -------------------------------------------------- | ---------------------------------------- |
 | `stringsPlugin`          | String literals and template literals              | `"hello"`, `'world'`, `` `Hi ${name}` `` |
 | `booleansPlugin`         | `true`, `false`, `null`, `undefined` literals      | `status == true`                         |
@@ -131,8 +129,9 @@ JavaScript-like expression language. The table below lists each plugin, the synt
 Numbers support decimal, hexadecimal (`0xFF`), octal (`0o77`), binary (`0b1010`), scientific
 notation (`1e10`), and underscore separators (`1_000_000`).
 
-Strings support single quotes, double quotes, and standard escape sequences (`\n`, `\t`, `\uXXXX`,
-`\xHH`). Template literals use backticks and support embedded expressions:
+Strings support single quotes, double quotes, and standard escape sequences (`\n`, `\t`, `\uXXXX`, `\xHH`).
+
+Template literals use backticks and support embedded expressions:
 
 ```
 `${user.firstName} scored ${points * multiplier} points`
@@ -169,10 +168,11 @@ Operators follow standard precedence, from lowest to highest:
 | `!` `-` `+`                     | Unary NOT, negation, identity           |
 | `.` `[…]` `?.` `()`             | Member access, computed, optional, call |
 
-#### Property Access and Function Calls
+#### Member Access
 
-Access nested values using `.` (dot notation) or `[computed]` (bracket notation). The `?.`
-operator returns `undefined` when the left side is `null` or `undefined` instead of throwing:
+Use `.` dot notation or `[computed]` bracket notation to access nested values.
+The `?.` operator returns `undefined` when the value on the
+left is `null` or `undefined`, instead of throwing an error.
 
 ```ts
 user.address.city; // throws if address is null
@@ -180,7 +180,7 @@ user.address?.city; // returns undefined if address is null
 data["dynamic-key"]; // computed bracket access
 ```
 
-Call any function in the context or a method on a value:
+Call a function from the context or a method on a value:
 
 ```ts
 fullName(); // calls fullName from the context
@@ -224,11 +224,12 @@ price |> multiply(1.1) |> round(2)
 If the right side is a bare identifier, the input is passed as the sole argument:
 `value |> format`.
 
-#### Logical Short-Circuit and Nullish Coalescing
+#### Logical Fallbacks
 
-The `&&` and `||` operators short-circuit, so the right side evaluates only when needed. The `??` operator
-returns the right side only when the left side is `null` or `undefined` (unlike `||`, which also
-triggers on `0` or `""`):
+The `&&` and `||` operators short-circuit, so the right-hand expression evaluates only
+when needed. The `??` operator returns the right-hand expression only when the left-hand
+value is `null` or `undefined`, unlike `||`, which also returns the right-hand expression
+for falsy values such as `0` or `""`.
 
 ```ts
 user && user.name; // safe: user.name only evaluated if user is truthy
@@ -236,20 +237,27 @@ count || "none"; // returns "none" if count is 0 (falsy)
 label ?? "default"; // returns "default" only if label is null/undefined
 ```
 
-## Expressions As A Standalone Language
+## Standalone Expression Language
 
-The expression engine has no dependency on LyteNyte Grid. The `Evaluator`, `standardPlugins`, and
-the plugin system are general-purpose. You can import and use them in any JavaScript or
-TypeScript project. The grid integration (filters, computed fields, the `ExpressionEditor`
-component) builds on the same public API.
+The expression engine is independent of LyteNyte Grid. The `Evaluator`, `standardPlugins`, and plugin
+system are general-purpose APIs that you can import and use in any JavaScript or
+TypeScript project. LyteNyte Grid features, including filters, computed fields,
+and the `ExpressionEditor` component, build on the same public API.
 
-Some examples of what you can build with expressions outside of a grid context:
+Expressions supports use cases outside LyteNyte Grid, including:
 
-- **Rule engines:** Evaluate user-defined conditions against application state, such as access control rules, notification triggers, or business logic that non-developers configure.
-- **Formula inputs:** Let users enter calculations in a form field, for example a pricing configurator where a sales rep enters `basePrice * quantity * (1 - discount)`.
-- **Template rendering:** Use template literals and the pipe operator to build lightweight text templates, generating messages or documents from a context object without a full templating library.
-- **Configuration DSLs:** Store expressions as strings in a database or config file and evaluate them at runtime, keeping computed logic out of code and making it changeable without deployment.
-- **Workflow automation:** Evaluate step conditions in a visual workflow builder, where each node's transition condition is an expression authored by the user.
+- **Rule Engines:** Evaluate user-defined conditions against application state,
+  such as access control rules, notification triggers, or business logic configured by non-developers.
+- **Formula Inputs:** Let users enter calculations in a form field, such
+  as in a pricing configurator where a sales rep enters `basePrice * quantity * (1 - discount)`.
+- **Template Rendering:** Use template literals and the pipe operator
+  to build lightweight text templates that generate messages or documents from
+  a context object, without requiring a full templating library.
+- **Configuration DSLs:** Store expressions as strings in a database or
+  config file and evaluate them at runtime. This keeps computed logic out
+  of the codebase and allows updates without redeployment.
+- **Workflow automation:** Evaluate step conditions in a visual workflow builder,
+  where each node's transition condition is an expression authored by the user.
 
 ## Next Steps
 

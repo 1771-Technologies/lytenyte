@@ -84,7 +84,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
 
 const toc = blog
   ? headings.filter((x: any) => x.depth === 2)
-  : headings.filter((x: any) => x.depth === 2 || x.depth === 3 || x.depth === 4);
+  : headings.filter((x: any) => x.depth === 2 || x.depth === 3);
 ---
 
 <DocsLayout

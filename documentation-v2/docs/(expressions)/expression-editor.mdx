@@ -1,14 +1,14 @@
 ---
 title: Expression Editor
-description: A syntax-highlighting input with context-aware completions for expression-based workflows.
+description: Add syntax highlighting and context-aware completions to expression inputs.
 pro: true
-step: Add a polished expression input with IntelliSense to your UI.
+step: Bring syntax highlighting and completions to expression inputs.
 ---
 
 :::note
 
-This guide assumes you are already familiar with how the expression evaluator works in LyteNyte.
-Read the [Expressions Overview guide](/docs/expressions-overview) first.
+This guide assumes familiarity with LyteNyte Grid's expression evaluator.
+For more details, refer to the [Expressions Overview guide](/docs/expressions-overview).
 
 :::
 
@@ -59,10 +59,11 @@ syntax-highlighted input.
 
 </Tabs>
 
-## Minimal Setup
+## Minimal Editor Setup
 
-The only required props are `value`, `onChange`, and `tokenize`. Rendering `ExpressionEditor.Root`
-with no children returns a fully functional syntax-highlighted input with no completion UI:
+Pass `tokenize` to `ExpressionEditor.Root` to enable syntax highlighting without completion UI.
+Use `tokensSafe` instead of `tokens` so the editor continues to render partial
+syntax highlighting when the expression has incomplete syntax.
 
 ```tsx
 import { Evaluator, ExpressionEditor, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
@@ -87,9 +88,9 @@ when the expression is syntactically incomplete.
 
 ::demo[Basic Editor="./demos/expression-editor-basic"]
 
-## Parts
+## Expression Editor Parts
 
-### Root
+### Editor Root
 
 `ExpressionEditor.Root` is the editor. It manages the textarea, token rendering, and
 completion state. Wrap `ExpressionEditor.Root` in a `data-ln-input` container to apply the correct sizing styles.
@@ -102,13 +103,13 @@ completion state. Wrap `ExpressionEditor.Root` in a `data-ln-input` container to
 
 ### Completion Popover
 
-`ExpressionEditor.CompletionPopover` is a floating panel positioned at the cursor using the
-native [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API). The component opens
-and closes automatically based on completion state—you do not manage this behavior.
+`ExpressionEditor.CompletionPopover` renders a floating panel at the cursor using the native
+[Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API). The component opens
+and closes automatically based on the editor's completion state, so you do not need to manage its visibility.
 
 ```tsx
-<ExpressionEditor.Root ...>
-  <ExpressionEditor.CompletionPopover className="border rounded-lg py-1">
+<ExpressionEditor.Root>
+  <ExpressionEditor.CompletionPopover className="rounded-lg border py-1">
     ...
   </ExpressionEditor.CompletionPopover>
 </ExpressionEditor.Root>
@@ -173,7 +174,7 @@ const provider = createCompletionProvider(context);
 
 The provider inspects the token stream before the cursor to determine which suggestions to return:
 
-| Position                                | Completions shown                                            |
+| Position                                | Completions Shown                                            |
 | --------------------------------------- | ------------------------------------------------------------ |
 | Top level (empty, or after an operator) | All keys of the context object                               |
 | After a complete value                  | Binary operators (`+`, `-`, `==`, `!=`, `&&`, `\|\|`, …)     |
@@ -184,12 +185,12 @@ The provider inspects the token stream before the cursor to determine which sugg
 
 ### Completion Triggers
 
-Completions open automatically in two situations or can be opened manually:
+Completions open automatically from specific triggers, or users can open them manually:
 
-- **Dot:** Typing `.` immediately triggers a property access completion.
-- **Space:** Typing a space after a complete value immediately triggers completions
-  (useful for viewing available binary operators).
-- **Manual:** Pressing `Ctrl+Space` (or `⌘+Space` on macOS) opens completions at the current cursor position.
+- **Dot:** Typing `.` triggers property access completions.
+- **Space:** Typing a space after a complete value triggers completions, which
+  is useful for discovering available binary operators.
+- **Manual:** Pressing `Ctrl+Space` opens completions at the current cursor position
 
 Once the list opens, it filters results in real time using a prefix match on `item.label`. Completions
 close when a user accepts a suggestion, presses `Escape`, or moves focus away from the editor.
@@ -226,8 +227,11 @@ function myProvider(tokens: Token[], cursorPosition: number): CompletionItem[] {
 }
 ```
 
-The provider can also return a `Promise<CompletionItem[]>` for async lookups such as
-server-side field searches.
+The provider can also return a `Promise<CompletionItem[]>` for async lookups
+such as server-side field searches.
+
+In the demo below, the custom provider surfaces domain fields
+and formula functions. Press `Ctrl + Space` to open completions.
 
 ::demo[Custom Provider="./demos/expression-editor-custom-provider"]
 
@@ -254,7 +258,7 @@ function MyHighlighter({ token }: { token: Token }) {
 
 To restyle without replacing the highlighter, override the CSS custom properties in your theme:
 
-| Variable                | Token types                                          |
+| Variable                | Token Types                                          |
 | ----------------------- | ---------------------------------------------------- |
 | `--ln-expr-number`      | `Number`                                             |
 | `--ln-expr-string`      | `String`, `TemplateLiteral`                          |
