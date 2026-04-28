@@ -2,7 +2,9 @@ import { get, type RowNode } from "@1771technologies/lytenyte-shared";
 import type { Field } from "../../../../types";
 
 export function computeField<K = unknown>(field: Field<any> | "__ln_group__", row: RowNode<any>): K {
-  if (field === "__ln_group__" && row.kind === "branch") return row.key as K;
+  if (field === "__ln_group__" && row.kind === "branch") {
+    return row.key as K;
+  }
 
   if (row.kind === "branch" || row.kind === "aggregated") {
     if (typeof field === "function") return field({ row }) as K;

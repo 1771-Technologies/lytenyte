@@ -1,5 +1,17 @@
 # @1771technologies/lytenyte-core
 
+## 2.0.4-dev.4
+
+### Major Changes
+
+- Change
+
+### Patch Changes
+
+- Updated dependencies
+  - @1771technologies/lytenyte-design@2.0.4-dev.4
+  - @1771technologies/lytenyte-shared@2.0.4-dev.4
+
 ## 2.0.4-dev.3
 
 ### Patch Changes
