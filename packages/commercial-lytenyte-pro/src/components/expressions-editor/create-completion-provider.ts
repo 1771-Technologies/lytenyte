@@ -55,6 +55,11 @@ const ARRAY_METHODS: BuiltinMethod[] = [
   { label: "values", kind: "function" },
 ];
 
+const DATE_METHODS: BuiltinMethod[] = [
+  { label: "getTime", kind: "function" },
+  { label: "toISOString", kind: "function" },
+];
+
 const NUMBER_METHODS: BuiltinMethod[] = [
   { label: "toExponential", kind: "function" },
   { label: "toFixed", kind: "function" },
@@ -108,13 +113,13 @@ const BINARY_OPERATORS: BuiltinMethod[] = [
 
 export type ContextEntry = {
   value: unknown;
-  type: "string" | "number" | "array" | "object" | "function" | "boolean";
-  return?: "string" | "number" | "array" | "object";
+  type: "string" | "number" | "array" | "object" | "function" | "boolean" | "date";
+  return?: "string" | "number" | "array" | "object" | "date";
 };
 
 type CompletionContext = Record<string, ContextEntry>;
 
-type ResolvedType = "string" | "number" | "array" | "object" | "unknown";
+type ResolvedType = "string" | "number" | "array" | "object" | "date" | "unknown";
 
 const STRING_METHOD_RETURNS: Record<string, ResolvedType> = {
   at: "string",
@@ -164,6 +169,11 @@ const ARRAY_METHOD_RETURNS: Record<string, ResolvedType> = {
   some: "unknown",
   sort: "array",
   values: "unknown",
+};
+
+const DATE_METHOD_RETURNS: Record<string, ResolvedType> = {
+  getTime: "number",
+  toISOString: "string",
 };
 
 function kindOf(value: unknown): string {
@@ -231,6 +241,7 @@ function resolveTypeOf(relevant: Token[], i: number, context: CompletionContext)
   const token = relevant[i];
   if (!token) return "unknown";
 
+  if (token.type === "DateLiteral") return "date";
   if (isStringLiteral(token)) return "string";
   if (isClosingBracket(token)) return "array";
 
@@ -265,6 +276,7 @@ function resolveTypeOf(relevant: Token[], i: number, context: CompletionContext)
     const receiverType = resolveTypeOf(relevant, openIdx - 3, context);
     if (receiverType === "string") return STRING_METHOD_RETURNS[methodToken.value] ?? "unknown";
     if (receiverType === "array") return ARRAY_METHOD_RETURNS[methodToken.value] ?? "unknown";
+    if (receiverType === "date") return DATE_METHOD_RETURNS[methodToken.value] ?? "unknown";
     return "unknown";
   }
 
@@ -285,6 +297,7 @@ type Analysis =
   | { kind: "context-path"; path: string[] }
   | { kind: "string-literal" }
   | { kind: "number-value" }
+  | { kind: "date-value" }
   | { kind: "array-literal" }
   | { kind: "after-value" }
   | { kind: "none" };
@@ -322,12 +335,16 @@ function analyzeTokens(tokens: Token[], cursorPosition: number, context: Complet
   // [1,2,3]. → array methods
   if (isClosingBracket(beforeDot)) return { kind: "array-literal" };
 
+  // d"2023-02-11". → date methods
+  if (beforeDot.type === "DateLiteral") return { kind: "date-value" };
+
   // fn(). → resolve call return type recursively
   if (beforeDot.type === "Punctuation" && beforeDot.value === ")") {
     const resultType = resolveTypeOf(relevant, i, context);
     if (resultType === "string") return { kind: "string-literal" };
     if (resultType === "number") return { kind: "number-value" };
     if (resultType === "array") return { kind: "array-literal" };
+    if (resultType === "date") return { kind: "date-value" };
     return { kind: "none" };
   }
 
@@ -384,6 +401,9 @@ export function createCompletionProvider(context: CompletionContext) {
       case "number-value":
         return builtinCompletions(NUMBER_METHODS);
 
+      case "date-value":
+        return builtinCompletions(DATE_METHODS);
+
       case "array-literal":
         return builtinCompletions(ARRAY_METHODS);
 
@@ -393,6 +413,7 @@ export function createCompletionProvider(context: CompletionContext) {
         if (entry.type === "string") return builtinCompletions(STRING_METHODS);
         if (entry.type === "number") return builtinCompletions(NUMBER_METHODS);
         if (entry.type === "array") return builtinCompletions(ARRAY_METHODS);
+        if (entry.type === "date") return builtinCompletions(DATE_METHODS);
         if (entry.type === "object" && entry.value != null && typeof entry.value === "object")
           return objectCompletions(entry.value as object);
         return [];

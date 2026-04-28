@@ -6,7 +6,7 @@ describe("standardPlugins", () => {
     expect(Array.isArray(standardPlugins)).toBe(true);
   });
 
-  test("Should contain all 11 standard plugins", () => {
+  test("Should contain all 12 standard plugins", () => {
     expect(standardPlugins).toHaveLength(11);
   });
 
