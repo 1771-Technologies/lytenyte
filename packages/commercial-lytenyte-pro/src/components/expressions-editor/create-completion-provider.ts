@@ -1,7 +1,7 @@
 import type { Token } from "../../expressions/lexer/types.js";
 import type { CompletionItem } from "./types.js";
 
-type BuiltinMethod = { label: string; kind: string };
+type BuiltinMethod = { label: string; kind: string; value?: string };
 
 const STRING_METHODS: BuiltinMethod[] = [
   { label: "at", kind: "function" },
@@ -79,22 +79,22 @@ function isStringLiteral(token: Token): boolean {
 }
 
 const BINARY_OPERATORS: BuiltinMethod[] = [
-  { label: "+  Plus", kind: "operator" },
-  { label: "-  Minus", kind: "operator" },
-  { label: "*  Multiply", kind: "operator" },
-  { label: "/  Divide", kind: "operator" },
-  { label: "%  Modulus", kind: "operator" },
-  { label: "** Exponentiation", kind: "operator" },
-  { label: "== Equal To", kind: "operator" },
-  { label: "!= Not Equal To", kind: "operator" },
-  { label: "<  Less Than", kind: "operator" },
-  { label: "<= Less Than Or Equal To", kind: "operator" },
-  { label: ">  Greater Than", kind: "operator" },
-  { label: ">= Greater Than Or Equal To", kind: "operator" },
-  { label: "&& AND", kind: "operator" },
-  { label: "|| OR", kind: "operator" },
-  { label: "?? OR if Null", kind: "operator" },
-  { label: "|> Pipe", kind: "operator" },
+  { label: "+  Plus", kind: "operator", value: "+" },
+  { label: "-  Minus", kind: "operator", value: "-" },
+  { label: "*  Multiply", kind: "operator", value: "*" },
+  { label: "/  Divide", kind: "operator", value: "/" },
+  { label: "%  Modulus", kind: "operator", value: "%" },
+  { label: "** Exponentiation", kind: "operator", value: "**" },
+  { label: "== Equal To", kind: "operator", value: "==" },
+  { label: "!= Not Equal To", kind: "operator", value: "!=" },
+  { label: "<  Less Than", kind: "operator", value: "<" },
+  { label: "<= Less Than Or Equal To", kind: "operator", value: "<=" },
+  { label: ">  Greater Than", kind: "operator", value: ">" },
+  { label: ">= Greater Than Or Equal To", kind: "operator", value: ">=" },
+  { label: "&& AND", kind: "operator", value: "&&" },
+  { label: "|| OR", kind: "operator", value: "||" },
+  { label: "?? OR if Null", kind: "operator", value: "??" },
+  { label: "|> Pipe", kind: "operator", value: "|>" },
 ];
 
 type Analysis =
@@ -114,8 +114,8 @@ function analyzeTokens(tokens: Token[], cursorPosition: number): Analysis {
 
   let i = relevant.length - 1;
 
-  // Skip the partial word the user is currently typing
-  if (relevant[i].type === "Identifier") i--;
+  // Skip the partial word the user is currently typing (only if cursor is at its end)
+  if (relevant[i].type === "Identifier" && relevant[i].end === cursorPosition) i--;
 
   if (i < 0) return { kind: "top-level" };
 
@@ -184,12 +184,12 @@ function objectCompletions(obj: object): CompletionItem[] {
     label: key,
     kind: kindOf(val),
     id: key,
-    insertText: VALID_IDENTIFIER.test(key) ? undefined : `@"${key}"`,
+    value: VALID_IDENTIFIER.test(key) ? undefined : `@"${key}"`,
   }));
 }
 
 function builtinCompletions(methods: BuiltinMethod[]): CompletionItem[] {
-  return methods.map((m) => ({ label: m.label, kind: m.kind, id: m.label }));
+  return methods.map((m) => ({ label: m.label, kind: m.kind, id: m.label, value: m.value }));
 }
 
 function binaryOperatorCompletions(): CompletionItem[] {

@@ -26,7 +26,7 @@ export function useKeyboardNavigation({ onValueChange, onDismiss, textareaRef }:
         adjustedWord = { ...word, start: scan - 1 };
       }
 
-      const insertText = item.insertText ?? item.label;
+      const insertText = item.value ?? item.label;
       const { value, cursorPosition } = replaceWordAtCursor(text, adjustedWord, insertText);
 
       textarea.value = value;
