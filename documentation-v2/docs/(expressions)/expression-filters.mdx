@@ -36,7 +36,7 @@ Two mechanisms support this mapping:
 The demo below preloads the expression `Gender == "Male" && Quantity > 10`.
 Type an expression to update the filter, or select one of the provided examples.
 
-::demo[Expression Filters="./demos/expression-filter"]
+::demo[Filter Expressions="./demos/expression-filter"]
 
 The demo includes the complete expression filter implementation. With only a few lines
 of code, expression filters let users create advanced filtering logic concisely.
@@ -108,34 +108,6 @@ an expression as a [filter function](/docs/client-source-filtering), follow thes
    ```ts
    const ds = useClientDataSource<GridSpec>({ data, filter });
    ```
-
-### Input Debouncing
-
-Filtering the grid on every keystroke can be computationally expensive. Debounce the
-filter expression input so the grid updates only after the user pauses typing.
-
-Maintain two state values:
-
-- `value`: The value shown in the editor.
-- `committed`: The value used to compute the filter.
-
-The `committed` state lags behind `value` while the user types,
-updating to match it after the debounce delay.
-
-```ts
-const [value, setValue] = useState('Gender == "Male" && Quantity > 10');
-const [committed, setCommitted] = useState(value);
-const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-const onChange = (s: string) => {
-  if (debounceRef.current) clearTimeout(debounceRef.current);
-  setValue(s);
-  debounceRef.current = setTimeout(() => setCommitted(s), 200);
-};
-```
-
-Pass `value` to `ExpressionEditor.Root` and `committed` to the memoized filter.
-The editor updates immediately, while the grid updates only after the user pauses typing.
 
 ### Completion Provider Wiring
 

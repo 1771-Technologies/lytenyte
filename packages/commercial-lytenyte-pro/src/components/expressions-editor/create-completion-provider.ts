@@ -55,6 +55,15 @@ const ARRAY_METHODS: BuiltinMethod[] = [
   { label: "values", kind: "function" },
 ];
 
+const NUMBER_METHODS: BuiltinMethod[] = [
+  { label: "toExponential", kind: "function" },
+  { label: "toFixed", kind: "function" },
+  { label: "toLocaleString", kind: "function" },
+  { label: "toPrecision", kind: "function" },
+  { label: "toString", kind: "function" },
+  { label: "valueOf", kind: "function" },
+];
+
 function isDot(token: Token): boolean {
   return (token.type === "Punctuation" && token.value === ".") || token.type === "OptionalChain";
 }
@@ -97,15 +106,190 @@ const BINARY_OPERATORS: BuiltinMethod[] = [
   { label: "|> Pipe", kind: "operator", value: "|>" },
 ];
 
+export type ContextEntry = {
+  value: unknown;
+  type: "string" | "number" | "array" | "object" | "function" | "boolean";
+  return?: "string" | "number" | "array" | "object";
+};
+
+type CompletionContext = Record<string, ContextEntry>;
+
+type ResolvedType = "string" | "number" | "array" | "object" | "unknown";
+
+const STRING_METHOD_RETURNS: Record<string, ResolvedType> = {
+  at: "string",
+  charAt: "string",
+  charCodeAt: "number",
+  endsWith: "unknown",
+  includes: "unknown",
+  indexOf: "number",
+  lastIndexOf: "number",
+  match: "array",
+  padEnd: "string",
+  padStart: "string",
+  repeat: "string",
+  replace: "string",
+  replaceAll: "string",
+  slice: "string",
+  split: "array",
+  startsWith: "unknown",
+  substring: "string",
+  toLowerCase: "string",
+  toUpperCase: "string",
+  trim: "string",
+  trimEnd: "string",
+  trimStart: "string",
+};
+
+const ARRAY_METHOD_RETURNS: Record<string, ResolvedType> = {
+  at: "unknown",
+  concat: "array",
+  entries: "unknown",
+  every: "unknown",
+  filter: "array",
+  find: "unknown",
+  findIndex: "number",
+  flat: "array",
+  flatMap: "array",
+  forEach: "unknown",
+  includes: "unknown",
+  indexOf: "number",
+  join: "string",
+  keys: "unknown",
+  map: "array",
+  reduce: "unknown",
+  reduceRight: "unknown",
+  reverse: "array",
+  slice: "array",
+  some: "unknown",
+  sort: "array",
+  values: "unknown",
+};
+
+function kindOf(value: unknown): string {
+  if (typeof value === "function") return "function";
+  if (Array.isArray(value)) return "array";
+  if (typeof value === "string") return "string";
+  if (typeof value === "number") return "number";
+  if (typeof value === "boolean") return "boolean";
+  if (typeof value === "object" && value !== null) return "object";
+  return "unknown";
+}
+
+function isContextEntry(v: unknown): v is ContextEntry {
+  return v != null && typeof v === "object" && "type" in v && "value" in v;
+}
+
+function resolveEntry(context: CompletionContext, path: string[]): ContextEntry | undefined {
+  if (path.length === 0) return undefined;
+  let entry: ContextEntry | undefined = context[path[0]];
+  for (let i = 1; i < path.length; i++) {
+    if (!entry || entry.value == null || typeof entry.value !== "object") return undefined;
+    const nested: unknown = (entry.value as Record<string, unknown>)[path[i]];
+    if (isContextEntry(nested)) {
+      entry = nested;
+    } else if (nested !== undefined) {
+      entry = { value: nested, type: kindOf(nested) as ContextEntry["type"] };
+    } else {
+      return undefined;
+    }
+  }
+  return entry;
+}
+
+function findMatchingOpenParen(relevant: Token[], closeIndex: number): number {
+  let depth = 1;
+  let i = closeIndex - 1;
+  while (i >= 0) {
+    if (relevant[i].type === "Punctuation") {
+      if (relevant[i].value === ")") depth++;
+      else if (relevant[i].value === "(") {
+        if (--depth === 0) return i;
+      }
+    }
+    i--;
+  }
+  return -1;
+}
+
+function buildPathFromTokens(relevant: Token[], i: number): string[] | null {
+  const tokenName = (t: Token) => (t.type === "QuotedIdentifier" ? t.value.slice(2, -1) : t.value);
+  const token = relevant[i];
+  if (!token || (token.type !== "Identifier" && token.type !== "QuotedIdentifier")) return null;
+  const path: string[] = [tokenName(token)];
+  let j = i - 1;
+  while (j >= 1 && isDot(relevant[j])) {
+    j--;
+    if (relevant[j].type !== "Identifier" && relevant[j].type !== "QuotedIdentifier") break;
+    path.unshift(tokenName(relevant[j]));
+    j--;
+  }
+  return path;
+}
+
+function resolveTypeOf(relevant: Token[], i: number, context: CompletionContext): ResolvedType {
+  const token = relevant[i];
+  if (!token) return "unknown";
+
+  if (isStringLiteral(token)) return "string";
+  if (isClosingBracket(token)) return "array";
+
+  if (token.type === "Punctuation" && token.value === ")") {
+    const openIdx = findMatchingOpenParen(relevant, i);
+    if (openIdx < 1) return "unknown";
+    const methodToken = relevant[openIdx - 1];
+    if (methodToken?.type !== "Identifier") return "unknown";
+
+    const hasDot = openIdx >= 2 && isDot(relevant[openIdx - 2]);
+
+    if (!hasDot) {
+      // Top-level function call: fn(...)
+      const funcEntry = context[methodToken.value];
+      if (funcEntry?.type === "function" && funcEntry.return) return funcEntry.return as ResolvedType;
+      return "unknown";
+    }
+
+    // Method call: receiver.method(...)
+    // First try resolving the receiver as a context object to find a typed method entry
+    const receiverPath = buildPathFromTokens(relevant, openIdx - 3);
+    if (receiverPath) {
+      const receiverEntry = resolveEntry(context, receiverPath);
+      if (receiverEntry?.type === "object" && receiverEntry.value != null) {
+        const methodVal = (receiverEntry.value as Record<string, unknown>)[methodToken.value];
+        const methodEntry = isContextEntry(methodVal) ? methodVal : undefined;
+        if (methodEntry?.type === "function" && methodEntry.return) return methodEntry.return as ResolvedType;
+      }
+    }
+
+    // Fall back to builtin method return-type maps (string/array prototype methods)
+    const receiverType = resolveTypeOf(relevant, openIdx - 3, context);
+    if (receiverType === "string") return STRING_METHOD_RETURNS[methodToken.value] ?? "unknown";
+    if (receiverType === "array") return ARRAY_METHOD_RETURNS[methodToken.value] ?? "unknown";
+    return "unknown";
+  }
+
+  if (token.type === "Identifier" || token.type === "QuotedIdentifier") {
+    const path = buildPathFromTokens(relevant, i);
+    if (!path) return "unknown";
+    const entry = resolveEntry(context, path);
+    const kind = entry?.type ?? "unknown";
+    if (kind === "string" || kind === "number" || kind === "array" || kind === "object") return kind;
+    return "unknown";
+  }
+
+  return "unknown";
+}
+
 type Analysis =
   | { kind: "top-level" }
   | { kind: "context-path"; path: string[] }
   | { kind: "string-literal" }
+  | { kind: "number-value" }
   | { kind: "array-literal" }
   | { kind: "after-value" }
   | { kind: "none" };
 
-function analyzeTokens(tokens: Token[], cursorPosition: number): Analysis {
+function analyzeTokens(tokens: Token[], cursorPosition: number, context: CompletionContext): Analysis {
   const relevant = tokens.filter(
     (t) => t.end <= cursorPosition && t.type !== "EOF" && t.type !== "Whitespace",
   );
@@ -138,6 +322,15 @@ function analyzeTokens(tokens: Token[], cursorPosition: number): Analysis {
   // [1,2,3]. → array methods
   if (isClosingBracket(beforeDot)) return { kind: "array-literal" };
 
+  // fn(). → resolve call return type recursively
+  if (beforeDot.type === "Punctuation" && beforeDot.value === ")") {
+    const resultType = resolveTypeOf(relevant, i, context);
+    if (resultType === "string") return { kind: "string-literal" };
+    if (resultType === "number") return { kind: "number-value" };
+    if (resultType === "array") return { kind: "array-literal" };
+    return { kind: "none" };
+  }
+
   // identifier chain: walk back through alternating Identifier / QuotedIdentifier / dot tokens
   if (beforeDot.type === "Identifier" || beforeDot.type === "QuotedIdentifier") {
     const tokenName = (t: Token) => (t.type === "QuotedIdentifier" ? t.value.slice(2, -1) : t.value);
@@ -158,31 +351,12 @@ function analyzeTokens(tokens: Token[], cursorPosition: number): Analysis {
   return { kind: "none" };
 }
 
-function resolveValue(context: Record<string, unknown>, path: string[]): unknown {
-  let current: unknown = context;
-  for (const key of path) {
-    if (current == null || typeof current !== "object") return undefined;
-    current = (current as Record<string, unknown>)[key];
-  }
-  return current;
-}
-
-function kindOf(value: unknown): string {
-  if (typeof value === "function") return "function";
-  if (Array.isArray(value)) return "array";
-  if (typeof value === "string") return "string";
-  if (typeof value === "number") return "number";
-  if (typeof value === "boolean") return "boolean";
-  if (typeof value === "object" && value !== null) return "object";
-  return "unknown";
-}
-
 const VALID_IDENTIFIER = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
 
 function objectCompletions(obj: object): CompletionItem[] {
   return Object.entries(obj).map(([key, val]) => ({
     label: key,
-    kind: kindOf(val),
+    kind: isContextEntry(val) ? val.type : kindOf(val),
     id: key,
     value: VALID_IDENTIFIER.test(key) ? undefined : `@"${key}"`,
   }));
@@ -196,9 +370,9 @@ function binaryOperatorCompletions(): CompletionItem[] {
   return builtinCompletions(BINARY_OPERATORS);
 }
 
-export function createCompletionProvider(context: Record<string, unknown>) {
+export function createCompletionProvider(context: CompletionContext) {
   return function completionProvider(tokens: Token[], cursorPosition: number): CompletionItem[] {
-    const analysis = analyzeTokens(tokens, cursorPosition);
+    const analysis = analyzeTokens(tokens, cursorPosition, context);
 
     switch (analysis.kind) {
       case "top-level":
@@ -207,15 +381,20 @@ export function createCompletionProvider(context: Record<string, unknown>) {
       case "string-literal":
         return builtinCompletions(STRING_METHODS);
 
+      case "number-value":
+        return builtinCompletions(NUMBER_METHODS);
+
       case "array-literal":
         return builtinCompletions(ARRAY_METHODS);
 
       case "context-path": {
-        const value = resolveValue(context, analysis.path);
-        if (value == null) return [];
-        if (typeof value === "string") return builtinCompletions(STRING_METHODS);
-        if (Array.isArray(value)) return builtinCompletions(ARRAY_METHODS);
-        if (typeof value === "object") return objectCompletions(value);
+        const entry = resolveEntry(context, analysis.path);
+        if (!entry) return [];
+        if (entry.type === "string") return builtinCompletions(STRING_METHODS);
+        if (entry.type === "number") return builtinCompletions(NUMBER_METHODS);
+        if (entry.type === "array") return builtinCompletions(ARRAY_METHODS);
+        if (entry.type === "object" && entry.value != null && typeof entry.value === "object")
+          return objectCompletions(entry.value as object);
         return [];
       }
 

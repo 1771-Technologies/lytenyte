@@ -8,7 +8,12 @@ const formatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 0,
 });
 
-function tw(...c: ClassValue[]) {
+const computedFormatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
+});
+
+export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
 
@@ -16,16 +21,20 @@ export function ComputedCell({ api, row, column }: Grid.T.CellRendererParams<Gri
   const value = api.columnField(column, row);
 
   if (value === null || value === undefined) {
-    return <div className="text-ln-text-xlight flex h-full items-center justify-end">—</div>;
+    return (
+      <div className="text-ln-text-xlight bg-ln-primary-50/20 flex h-full w-full items-center justify-end px-2">
+        —
+      </div>
+    );
   }
 
   const isNum = typeof value === "number";
-  const display = isNum ? formatter.format(value) : String(value);
+  const display = isNum ? computedFormatter.format(value) : String(value);
 
   return (
     <div
       className={tw(
-        "flex h-full w-full items-center justify-end",
+        "bg-ln-primary-50/10 flex h-full w-full items-center justify-end px-2",
         isNum && (value as number) < 0
           ? "text-red-500 dark:text-red-400"
           : "text-ln-primary-60 dark:text-ln-primary-40",

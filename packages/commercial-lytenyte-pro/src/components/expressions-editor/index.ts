@@ -12,3 +12,4 @@ export const ExpressionEditor = {
 
 export { createCompletionProvider } from "./create-completion-provider.js";
 export type { CompletionItem } from "./types.js";
+export type { ContextEntry } from "./create-completion-provider.js";

@@ -4,7 +4,8 @@ import "@1771technologies/lytenyte-pro/expression-editor.css";
 import { Evaluator, ExpressionEditor, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
 import type { CompletionItem, Token } from "@1771technologies/lytenyte-pro/expressions";
 import { useCallback, useMemo, useState } from "react";
-import { KindBadge } from "./components.js";
+import { ContextRows, KindBadge, tw } from "./components.js";
+import { TYPE_COLORS } from "../evaluate-standard-plugins/components.jsx";
 
 const evaluator = new Evaluator(standardPlugins);
 
@@ -81,42 +82,34 @@ export default function CustomProvider() {
 
   const result = useMemo(() => {
     try {
-      if (!value) return null;
-      return { ok: true, value: evaluator.run(value, formulaContext) };
+      if (!value) return "";
+
+      return evaluator.run(value, formulaContext);
     } catch (e) {
-      return { ok: false, value: e instanceof Error ? e.message : String(e) };
+      return e instanceof Error ? e : new Error(String(e));
     }
   }, [value]);
 
   const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
+  const isError = result instanceof Error;
 
   return (
     <div className="flex flex-col gap-5 p-5">
       <label className="flex flex-col gap-2">
         <div>
-          <div className="text-ln-text-dark text-sm font-semibold">Formula Editor</div>
-          <div className="text-ln-text-light text-xs">
-            Custom provider surfaces domain fields and formula functions. Press{" "}
-            <kbd className="border-ln-border bg-ln-bg rounded border px-1 py-0.5 font-mono text-[10px]">
-              Ctrl
-            </kbd>{" "}
-            +{" "}
-            <kbd className="border-ln-border bg-ln-bg rounded border px-1 py-0.5 font-mono text-[10px]">
-              Space
-            </kbd>{" "}
-            to open completions.
-          </div>
+          <div className="text-ln-text-dark text-sm font-semibold">Expression</div>
         </div>
 
-        <div data-ln-input="true" className="h-10 text-base">
+        <div data-ln-input="true" className="h-8 rounded-xl text-base">
           <ExpressionEditor.Root
             value={value}
             onChange={setValue}
             tokenize={tokenize}
             completionProvider={customProvider}
           >
+            {/*!next 18 */}
             <ExpressionEditor.CompletionPopover className="border-ln-border bg-ln-bg-popover shadow-ln-shadow-400 overflow-hidden rounded-lg border py-1">
-              <ExpressionEditor.CompletionList className="flex min-w-52 flex-col">
+              <ExpressionEditor.CompletionList className="flex min-w-48 flex-col">
                 {({ items }) =>
                   items.map((item, index) => (
                     <ExpressionEditor.CompletionListItem
@@ -138,7 +131,29 @@ export default function CustomProvider() {
       </label>
 
       <div className="flex flex-col gap-2">
-        <div className="text-ln-text-light text-xs font-medium">Try an example</div>
+        <div className="text-ln-text-light text-xs font-medium">Result</div>
+        <div
+          className={`flex h-10 items-center gap-3 rounded-xl border px-4 py-3 font-mono text-sm ${
+            isError
+              ? "border-ln-red-30 bg-ln-red-10 text-ln-red-70"
+              : "border-ln-border bg-ln-bg-light text-ln-text-dark"
+          }`}
+        >
+          <span className="min-w-0 flex-1 truncate">{isError ? result.message : String(result)}</span>
+          <span
+            className={tw(
+              "shrink-0 rounded-full px-2 py-0.5 font-sans text-[10px] font-medium",
+              !isError && TYPE_COLORS[typeof result],
+              isError && "bg-ln-red-30 text-ln-red-90",
+            )}
+          >
+            {isError ? "error" : typeof result}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <div className="text-ln-text-light text-xs font-medium">Illustrative Examples</div>
         <div className="flex flex-wrap gap-2">
           {EXAMPLES.map((expr) => (
             <button
@@ -153,39 +168,13 @@ export default function CustomProvider() {
         </div>
       </div>
 
+      {/* Context */}
       <div className="flex flex-col gap-2">
-        <div className="text-ln-text-light text-xs font-medium">Row context</div>
+        <div className="text-ln-text-light text-xs font-medium">Context</div>
         <div className="border-ln-border bg-ln-bg-light divide-ln-border divide-y overflow-hidden rounded-lg border">
-          {Object.entries(context).map(([key, val]) => (
-            <div key={key} className="grid grid-cols-[1fr_auto] items-center gap-3 px-3 py-2">
-              <span className="text-ln-text-dark font-mono text-xs font-semibold">{key}</span>
-              <span className="text-ln-text-light font-mono text-xs">
-                {typeof val === "string" ? `"${val}"` : String(val)}
-              </span>
-            </div>
-          ))}
+          <ContextRows obj={context as Record<string, unknown>} />
         </div>
       </div>
-
-      {result && (
-        <div className="flex flex-col gap-2">
-          <div className="text-ln-text-light text-xs font-medium">Result</div>
-          <div
-            className={`flex items-center gap-3 rounded-lg border px-4 py-3 font-mono text-sm ${
-              result.ok
-                ? "border-ln-border bg-ln-bg-light text-ln-text-dark"
-                : "border-ln-red-30 bg-ln-red-10 text-ln-red-70"
-            }`}
-          >
-            <span className="min-w-0 flex-1 truncate">{String(result.value)}</span>
-            {result.ok && (
-              <span className="bg-ln-primary-10 text-ln-primary-70 shrink-0 rounded-full px-2 py-0.5 font-sans text-[10px] font-medium">
-                {typeof result.value}
-              </span>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -60,7 +60,7 @@ export function GenderCell({ api, row, column }: Grid.T.CellRendererParams<GridS
   return "-";
 }
 
-function tw(...c: ClassValue[]) {
+export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
 

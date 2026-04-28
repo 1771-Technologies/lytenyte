@@ -1,4 +1,6 @@
+import { clsx, type ClassValue } from "clsx";
 import { Fragment } from "react";
+import { twMerge } from "tailwind-merge";
 
 const TYPE_COLORS: Record<string, string> = {
   string: "bg-ln-green-10 text-ln-green-70",
@@ -79,4 +81,8 @@ export function KindBadge({ kind }: { kind: string }) {
       <span className={`iconify ${cfg.icon} size-3.5`} />
     </span>
   );
+}
+
+export function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
 }
