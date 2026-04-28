@@ -17,11 +17,16 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
   const { row } = usePillRow();
 
   const [over, setOver] = useState(false);
+  const [external, setExternal] = useState(false);
 
   const x = useSelector(dragX);
   const y = useSelector(dragY);
 
   const [container, setContainer] = useState<HTMLElement | null>(null);
+  const ds = getDragData();
+  useEffect(() => {
+    if (!ds) setExternal(false);
+  }, [ds]);
 
   const wasOver = useRef(false);
   useEffect(() => {
@@ -36,6 +41,7 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
     let { item: dragged, id } = ds.pill.data;
 
     // We resolve the external item to a dragged item here.
+    const originalId = id;
     if (id === "__external__") {
       const d = dragged as unknown as Record<string, string>;
       if (!d[row.id]) return;
@@ -54,6 +60,7 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
     // The current drag is from the current row.
     if (id === row.id) {
       movedRef.current = !isOver ? { id: row.id, pillId: dragged.id } : null;
+      setExternal(isOver && originalId === "__external__");
       return;
     }
 
@@ -123,6 +130,7 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       {...props}
       ref={combined}
       data-ln-over={over}
+      data-ln-external-over={external}
       data-ln-orientation={orientation}
       data-ln-pill-container
       data-ln-pill-type={row.type}
