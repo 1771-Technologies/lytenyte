@@ -114,6 +114,11 @@ export interface ArrowFunctionExpression extends BaseNode {
   body: ASTNode;
 }
 
+export interface DateLiteralNode extends BaseNode {
+  type: "DateLiteralNode";
+  value: string;
+}
+
 export type ASTNode =
   | NumberLiteral
   | StringLiteral
@@ -132,4 +137,5 @@ export type ASTNode =
   | PipeExpression
   | TemplateLiteral
   | SpreadElement
-  | ArrowFunctionExpression;
+  | ArrowFunctionExpression
+  | DateLiteralNode;

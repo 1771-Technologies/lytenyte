@@ -126,9 +126,14 @@ export function ExpressionEditor({
 
     const word = getWordAtCursor(newValue, selectionStart);
     if (deps.isOpen) {
+      const charBefore = newValue[selectionStart - 1] || "";
       if (word.word.length > 0) {
         deps.updateFilter(word.word);
-      } else if (!triggerCharacters.includes(newValue[selectionStart - 1] || "")) {
+      } else if (charBefore === '"' || charBefore === "'") {
+        // String delimiter typed — close the popover rather than re-triggering.
+        deps.dismiss();
+        deps.cancel();
+      } else if (!triggerCharacters.includes(charBefore)) {
         // Non-word, non-trigger char (e.g. an operator) - re-fetch so the list
         // reflects the new syntactic context rather than keeping stale results.
         deps.triggerManually(newValue, selectionStart);

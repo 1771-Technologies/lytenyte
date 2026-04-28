@@ -4,6 +4,7 @@ const tokenToSyntaxColor: Record<string, string> = {
   Number: "number",
   String: "string",
   TemplateLiteral: "string",
+  DateLiteral: "date",
   Spread: "operator",
   Punctuation: "operator",
   Pipe: "operator",

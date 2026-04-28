@@ -24,7 +24,6 @@ import {
 } from "@1771technologies/lytenyte-pro/expressions";
 import { useCallback, useMemo, useState } from "react";
 import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
-import { format } from "date-fns";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -47,19 +46,19 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const evaluator = new Evaluator(
-  standardPlugins.concat([
-    createResolvedIdentifierPlugin({
-      args: ["row"],
-      identifiers: columns.map((x) => x.name ?? x.id),
-    }),
-  ]),
-);
+const evaluator = new Evaluator([
+  ...standardPlugins,
+  createResolvedIdentifierPlugin({
+    args: ["row"],
+    identifiers: columns.map((x) => x.name ?? x.id),
+  }),
+]);
 
 const FILTER_EXAMPLES = [
   'Gender == "Male" && Quantity > 10',
   'Country == "United States"',
   "Revenue > 1000",
+  'Date > d"2023/01/01"',
   "Age >= 25 && Age <= 34",
   'Category.toLowerCase() == "bikes"',
   '@"Age Group" == "Youth (<25)"',
@@ -82,8 +81,7 @@ export default function GridDemo() {
             if (x.id === "date") {
               if (typeof value !== "string") return "-";
 
-              const niceDate = format(value, "yyyy MMM dd");
-              return niceDate;
+              return new Date(value);
             }
             return value;
           },
@@ -117,7 +115,8 @@ export default function GridDemo() {
             },
             { undefinedIdentifierFallback: true },
           );
-        } catch {
+        } catch (e) {
+          console.log(e);
           // If the expression throws keep the row. Smarter logic would check
           // for the type of error.
           return true;

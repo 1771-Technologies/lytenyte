@@ -10,8 +10,10 @@ import { accessPlugin } from "./access.js";
 import { arrowsPlugin } from "./arrows.js";
 import { collectionsPlugin } from "./collections.js";
 import { quotedIdentifierPlugin } from "./quoted-identifier.js";
+import { dateLiteralPlugin } from "./date-literal.js";
 
 export const standardPlugins: Plugin[] = [
+  dateLiteralPlugin,
   arrowsPlugin,
   collectionsPlugin,
   stringsPlugin,
@@ -26,6 +28,7 @@ export const standardPlugins: Plugin[] = [
 ];
 
 export {
+  dateLiteralPlugin,
   stringsPlugin,
   booleansPlugin,
   comparisonPlugin,
