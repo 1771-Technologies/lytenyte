@@ -169,8 +169,8 @@ export function ExpressionEditor({
   };
 
   const popoverValue = useMemo(() => {
-    return { isOpen: completions.isOpen, coordinates: cursorPosition.coordinates };
-  }, [completions.isOpen, cursorPosition.coordinates]);
+    return { isOpen: completions.isOpen, referenceElement: cursorPosition.virtualElement };
+  }, [completions.isOpen, cursorPosition.virtualElement]);
   const listValue = useMemo(() => {
     return {
       items: completions.filteredItems,

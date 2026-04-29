@@ -7,7 +7,7 @@ describe("standardPlugins", () => {
   });
 
   test("Should contain all 12 standard plugins", () => {
-    expect(standardPlugins).toHaveLength(11);
+    expect(standardPlugins).toHaveLength(12);
   });
 
   test("Should contain named plugins", () => {
