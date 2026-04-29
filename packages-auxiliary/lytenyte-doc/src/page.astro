@@ -78,13 +78,15 @@ const next = current !== -1 ? (flat[current + 1] ?? null) : null;
 const prev = current !== -1 ? (flat[current - 1] ?? null) : null;
 
 const blog = entry.data?.blog;
+const changelog = entry.data?.changelog;
 
 const nextEntry = next ? await getEntry(entry.collection, next) : null;
 const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
 
-const toc = blog
-  ? headings.filter((x: any) => x.depth === 2)
-  : headings.filter((x: any) => x.depth === 2 || x.depth === 3);
+const toc =
+  blog || changelog
+    ? headings.filter((x: any) => x.depth === 2)
+    : headings.filter((x: any) => x.depth === 2 || x.depth === 3);
 ---
 
 <DocsLayout
