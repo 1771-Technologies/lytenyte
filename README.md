@@ -35,7 +35,7 @@ to **LyteNyte Grid PRO** for advanced enterprise features and support.
 [![NPM Version](https://img.shields.io/npm/v/%401771technologies%2Flytenyte-core?label=Core&style=flat&logo=npm&logoColor=white)](https://www.npmjs.com/package/@1771technologies/lytenyte-core)
 [![GitHub branch status](https://img.shields.io/github/checks-status/1771-Technologies/lytenyte/main?style=flat&logo=github)](https://github.com/1771-Technologies/lytenyte/tree/main)
 [![GitHub Repo stars](https://img.shields.io/github/stars/1771-Technologies/lytenyte?style=flat&logo=github)](https://github.com/1771-Technologies/lytenyte)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa?style=flat)](code_of_conduct.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa?style=flat)](https://github.com/1771-Technologies/lytenyte/blob/main/CODE_OF_CONDUCT.md)
 [![CI Status](https://img.shields.io/github/actions/workflow/status/1771-Technologies/lytenyte/release.yml?branch=main&style=flat&label=CI&logo=github)](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml?query=branch%3Amain)
 [![Follow on X](https://img.shields.io/twitter/follow/1771tech?label=follow+1771tech&style=social&logo=x&logoColor=black)](https://x.com/1771tech)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Follow-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/1771technologies)
@@ -277,6 +277,7 @@ See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-o
 | -------------------------------------------------------------------------------- | :--: | :-: |
 | [Expressions Engine](https://www.1771technologies.com/docs/expressions-overview) |  —   | ✅  |
 | [Filter Expressions](https://www.1771technologies.com/docs/expression-filters)   |  —   | ✅  |
+| [Expression Editor](https://www.1771technologies.com/docs/expression-editor)     |  -   | ✅  |
 | [Expression Plugins](https://www.1771technologies.com/docs/expression-plugins)   |  —   | ✅  |
 
 </details>

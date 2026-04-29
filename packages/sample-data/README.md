@@ -35,7 +35,7 @@ to **LyteNyte Grid PRO** for advanced enterprise features and support.
 [![NPM Version](https://img.shields.io/npm/v/%401771technologies%2Flytenyte-core?label=Core&style=flat&logo=npm&logoColor=white)](https://www.npmjs.com/package/@1771technologies/lytenyte-core)
 [![GitHub branch status](https://img.shields.io/github/checks-status/1771-Technologies/lytenyte/main?style=flat&logo=github)](https://github.com/1771-Technologies/lytenyte/tree/main)
 [![GitHub Repo stars](https://img.shields.io/github/stars/1771-Technologies/lytenyte?style=flat&logo=github)](https://github.com/1771-Technologies/lytenyte)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa?style=flat)](code_of_conduct.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa?style=flat)](https://github.com/1771-Technologies/lytenyte/blob/main/CODE_OF_CONDUCT.md)
 [![CI Status](https://img.shields.io/github/actions/workflow/status/1771-Technologies/lytenyte/release.yml?branch=main&style=flat&label=CI&logo=github)](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml?query=branch%3Amain)
 [![Follow on X](https://img.shields.io/twitter/follow/1771tech?label=follow+1771tech&style=social&logo=x&logoColor=black)](https://x.com/1771tech)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Follow-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/1771technologies)
@@ -55,14 +55,34 @@ to **LyteNyte Grid PRO** for advanced enterprise features and support.
 
 LyteNyte Grid is available in two editions:
 
-1. **LyteNyte Grid Core: Free, open-source edition** for building high-performance data tables.
-   Includes sorting, filtering, editing, row selection, detail views, and more. Also includes advanced
-   features such as aggregation, row grouping, and data export, often locked behind paywalls in other grids.
+1. **LyteNyte Grid Core:** Free, **open-source edition** for building high-performance data tables. Includes sorting,
+   filtering, editing, row selection, detail views, and more. Also includes advanced features such
+   as aggregation, row grouping, and cell range selection, often locked behind paywalls in other grids.
 
-2. **LyteNyte Grid PRO: Commercial edition** that extends Core with powerful enterprise
-   features such as server-side data loading, pivoting, tree data, component managers,
-   and advanced filtering. Build custom menus, popovers and dialogs,
-   and workflow-driven UIs with ease.
+2. **LyteNyte Grid PRO: Commercial edition** that extends Core with powerful enterprise features,
+   including server-side data loading, pivoting, tree data, component managers, and advanced
+   filtering. Build custom menus, popovers, expressions, and workflow-driven UIs with ease.
+
+## AI-Enhanced Workflows
+
+**LyteNyte Grid AI Skills** are structured context files for Claude Code, Windsurf, Cursor, and other AI coding agents.
+Skills provide agents with accurate, curated context for LyteNyte Grid, allowing them to generate complex
+grid implementations with greater speed and reliability.
+
+Instead of building the grid manually, developers can describe the
+desired result and let the agent generate the implementation.
+
+**Install LyteNyte Grid AI Skills**
+
+```bash
+npx skills add 1771-Technologies/lytenyte
+```
+
+Once installed, the Skill activates automatically whenever you work on a LyteNyte Grid task. No
+special prompting is needed. Skills are actively maintained by the 1771 Technologies
+team and versioned alongside each LyteNyte Grid release.
+
+See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-overview) to learn more.
 
 ## Features
 
@@ -76,6 +96,16 @@ LyteNyte Grid is available in two editions:
 | [Controlled or Uncontrolled State](https://www.1771technologies.com/docs/grid-reactivity#controlled-state) |  ✅  | ✅  |
 | [React Compiler Support](https://www.1771technologies.com/docs/grid-react-compiler)                        |  ✅  | ✅  |
 | [Headless Components](https://www.1771technologies.com/docs/grid-headless-parts)                           |  ✅  | ✅  |
+
+</details>
+
+<details>
+<summary><b>🤖&nbsp; AI Enhanced Workflows</b></summary>
+<br>
+
+| Feature                                                               | Core | PRO |
+| --------------------------------------------------------------------- | :--: | :-: |
+| [AI Skills](https://www.1771technologies.com/docs/ai-skills-overview) |  ✅  | ✅  |
 
 </details>
 
@@ -198,8 +228,8 @@ LyteNyte Grid is available in two editions:
 | &nbsp;&nbsp;&nbsp;↳ [Checkbox Row Selection](https://www.1771technologies.com/docs/row-selection#checkbox-selection)     |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Isolated Row Selection](https://www.1771technologies.com/docs/row-selection#isolated-row-selection) |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Linked Row Selection](https://www.1771technologies.com/docs/row-selection#linked-row-selection)     |  ✅  | ✅  |
-| [Cell Selection](https://www.1771technologies.com/docs/cell-selection#single-range-selection)                            |  —   | ✅  |
-| [Cell Range Selection](https://www.1771technologies.com/docs/cell-selection#multi-range-selection)                       |  —   | ✅  |
+| [Cell Selection](https://www.1771technologies.com/docs/cell-selection#single-range-selection)                            |  ✅  | ✅  |
+| [Cell Range Selection](https://www.1771technologies.com/docs/cell-selection#multi-range-selection)                       |  ✅  | ✅  |
 
 </details>
 
@@ -236,6 +266,19 @@ LyteNyte Grid is available in two editions:
 | &nbsp;&nbsp;&nbsp;↳ [Set Filters](https://www.1771technologies.com/docs/filtering-set-filters#basic-set-filtering)   |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Tree Set Filters](https://www.1771technologies.com/docs/filtering-set-filters#tree-set-filters) |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Having Filters](https://www.1771technologies.com/docs/client-source-having-filters)             |  —   | ✅  |
+
+</details>
+
+<details>
+<summary><b>🧮&nbsp; Expressions</b> &nbsp;</summary>
+<br>
+
+| Feature                                                                          | Core | PRO |
+| -------------------------------------------------------------------------------- | :--: | :-: |
+| [Expressions Engine](https://www.1771technologies.com/docs/expressions-overview) |  —   | ✅  |
+| [Filter Expressions](https://www.1771technologies.com/docs/expression-filters)   |  —   | ✅  |
+| [Expression Editor](https://www.1771technologies.com/docs/expression-editor)     |  -   | ✅  |
+| [Expression Plugins](https://www.1771technologies.com/docs/expression-plugins)   |  —   | ✅  |
 
 </details>
 
@@ -377,7 +420,7 @@ npm install --save @1771technologies/lytenyte-pro
 
 > [!NOTE]
 > You can install and use LyteNyte Grid PRO
-> without license but a watermark will be displayed.
+> without a license, but a watermark will be displayed.
 
 **Core:**
 
