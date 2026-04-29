@@ -1,5 +1,5 @@
 import { useMemo, type CSSProperties, type ReactNode } from "react";
-import type { Column, GridSpec, RowNode } from "../../types";
+import type { Column, DragItem, GridSpec, RowLeaf, RowNode } from "../../types";
 import { TreeView } from "../tree-view/index.js";
 import { Checkbox } from "../checkbox/checkbox.js";
 import type { Grid } from "../..";
@@ -10,6 +10,11 @@ export interface ColumnManagerProps<Spec extends GridSpec = GridSpec> {
   readonly onColumnsChange: (change: Column<Spec>[]) => void;
   readonly base?: Grid.ColumnBase<Spec>;
   readonly endElement?: (params: { columns: Column<Spec>[]; row: RowNode<Spec["data"]> }) => ReactNode;
+  /**
+   * @alpha
+   * Use with caution.
+   */
+  readonly getPillManagerTag?: (column: Column<Spec>) => Record<string, string>;
 }
 
 export function ColumnManager<Spec extends GridSpec = GridSpec>({
@@ -17,6 +22,7 @@ export function ColumnManager<Spec extends GridSpec = GridSpec>({
   base,
   onColumnsChange,
   endElement,
+  getPillManagerTag,
 }: ColumnManagerProps<Spec>) {
   const nonAdjacentSplit = useMemo(() => {
     const paths = computePathMatrix(provided);
@@ -43,6 +49,28 @@ export function ColumnManager<Spec extends GridSpec = GridSpec>({
     return nonAdjacentSplit.map((x) => ({ id: x.id, path: x.groupPath ?? [], name: x.name, column: x }));
   }, [nonAdjacentSplit]);
 
+  const getDragItems = useMemo(() => {
+    if (!getPillManagerTag) return undefined;
+
+    return (row: RowNode<any>, leafs: RowLeaf[]) => {
+      if (leafs.length || row.kind !== "leaf") return {};
+
+      const column = row.data.column;
+      const mapTags = Object.entries(getPillManagerTag(column));
+      if (!mapTags.length) return {};
+
+      return {
+        pill: {
+          kind: "site",
+          data: {
+            id: "__external__",
+            item: Object.fromEntries(mapTags),
+          },
+        } satisfies DragItem,
+      };
+    };
+  }, [getPillManagerTag]);
+
   return (
     <TreeView
       items={items}
@@ -50,6 +78,7 @@ export function ColumnManager<Spec extends GridSpec = GridSpec>({
       draggable
       rowHeight={30}
       rowSelectAllShow={false}
+      getDragTags={getDragItems as any}
       defaultExpansion
       onItemsReordered={(x) => {
         const columns = x.map((x) => provided.find((p) => p.id === x.column.id)!);

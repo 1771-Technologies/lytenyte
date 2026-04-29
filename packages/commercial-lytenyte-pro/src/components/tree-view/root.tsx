@@ -22,7 +22,7 @@ import { useClientDataSource } from "../../data-source-client/use-client-data-so
 import { usePiece } from "@1771technologies/lytenyte-core/internal";
 import { Root } from "../../root/root.js";
 import { Grid } from "@1771technologies/lytenyte-core";
-import type { API, Column, GridEvents } from "../../types.js";
+import type { API, Column, DragItem, GridEvents, RowNode } from "../../types.js";
 
 export interface TreeViewProps<T extends TreeViewItem> {
   readonly items: T[];
@@ -40,7 +40,6 @@ export interface TreeViewProps<T extends TreeViewItem> {
 
   readonly rowGroupExpansions?: Record<string, boolean | undefined>;
   readonly onRowGroupExpansionChange?: (change: Record<string, boolean | undefined>) => void;
-
   /**
    * @alpha
    * @internal
@@ -49,6 +48,14 @@ export interface TreeViewProps<T extends TreeViewItem> {
    * and drag is still being prototyped.
    */
   readonly draggable?: boolean;
+  /**
+   * @alpha
+   * @internal
+   *
+   * Do not use this property unless you know what you are doing. Support for tree view drag
+   * and drag is still being prototyped.
+   */
+  readonly getDragTags?: (row: RowNode<T>, leafs: RowLeaf<T>[]) => Record<string, DragItem>;
   /**
    * @alpha
    * @internal
@@ -81,6 +88,7 @@ function TreeViewBase<T extends TreeViewItem>(
     selectAllSlot,
 
     draggable,
+    getDragTags,
     onItemsReordered,
   }: TreeViewProps<T>,
   forwarded: Ref<TreeViewApi<T>>,
@@ -135,8 +143,14 @@ function TreeViewBase<T extends TreeViewItem>(
       widthMin: 20,
 
       cellRenderer: ({ row, rowIndex, api, indeterminate, selected }) => {
+        const tags = getDragTags?.(
+          row,
+          api.rowLeafs(row.id).map((x) => api.rowById(x)! as RowLeaf<T>),
+        );
+
         const { props, isDragActive } = api.useRowDrag({
           rowIndex,
+          tags,
         });
         const over = over$.useValue();
         const isBefore = isBefore$.useValue();
@@ -168,7 +182,7 @@ function TreeViewBase<T extends TreeViewItem>(
         });
       },
     };
-  }, [children, draggable, isBefore$, itemLookup, over$, rowSelectionEnabled, selectAllSlot]);
+  }, [children, draggable, getDragTags, isBefore$, itemLookup, over$, rowSelectionEnabled, selectAllSlot]);
 
   useImperativeHandle(forwarded, () => {
     return {

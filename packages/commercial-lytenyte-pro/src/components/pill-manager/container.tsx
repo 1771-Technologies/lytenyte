@@ -8,19 +8,25 @@ import {
   useCombinedRefs,
   useSelector,
 } from "@1771technologies/lytenyte-core/internal";
-import type { PillItemSpec } from "./types.js";
-import { getFocusables } from "@1771technologies/lytenyte-shared";
+import type { PillItemSpec, PillRowSpec } from "./types.js";
+import { equal, getFocusables } from "@1771technologies/lytenyte-shared";
 
 function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Props["ref"]) {
-  const { setCloned, orientation, rows, movedRef } = usePillRoot();
+  const { setCloned, cloned, orientation, rows, movedRef, onPillRowChange, onPillItemActiveChange } =
+    usePillRoot();
   const { row } = usePillRow();
 
   const [over, setOver] = useState(false);
+  const [external, setExternal] = useState(false);
 
   const x = useSelector(dragX);
   const y = useSelector(dragY);
 
   const [container, setContainer] = useState<HTMLElement | null>(null);
+  const ds = getDragData();
+  useEffect(() => {
+    if (!ds) setExternal(false);
+  }, [ds]);
 
   const wasOver = useRef(false);
   useEffect(() => {
@@ -32,7 +38,21 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       return;
     }
 
-    const { item: dragged, id } = ds.pill.data;
+    let { item: dragged, id } = ds.pill.data;
+
+    // We resolve the external item to a dragged item here.
+    const originalId = id;
+    if (id === "__external__") {
+      const d = dragged as unknown as Record<string, string>;
+      if (!d[row.id]) return;
+
+      id = row.id;
+      dragged = row.pills.find((x) => x.id === d[row.id])!;
+      if (!dragged) {
+        console.error("Specified an external item, but that item is not in the pill group.");
+        return;
+      }
+    }
 
     const bb = container.getBoundingClientRect();
     const isOver = bb.left < x && bb.right > x && bb.top < y && bb.bottom > y;
@@ -40,6 +60,7 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
     // The current drag is from the current row.
     if (id === row.id) {
       movedRef.current = !isOver ? { id: row.id, pillId: dragged.id } : null;
+      setExternal(isOver && originalId === "__external__");
       return;
     }
 
@@ -60,13 +81,13 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       setCloned((prev) => {
         if (!prev) throw new Error("Can't call drag function without cloning nodes.");
 
-        const newPill = { ...prev[thisRow] };
-        newPill.pills = newPills;
+        const newPillSpec = { ...prev[thisRow] };
+        newPillSpec.pills = newPills;
 
-        const newDef = [...prev];
-        newDef[thisRow] = newPill;
+        const newPillRows = [...prev];
+        newPillRows[thisRow] = newPillSpec;
 
-        return newDef;
+        return newPillRows;
       });
     } else {
       if (wasOver.current) {
@@ -109,6 +130,7 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       {...props}
       ref={combined}
       data-ln-over={over}
+      data-ln-external-over={external}
       data-ln-orientation={orientation}
       data-ln-pill-container
       data-ln-pill-type={row.type}
@@ -152,6 +174,40 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       onDrop={(e) => {
         e.preventDefault();
         e.stopPropagation();
+
+        const ds = getDragData() as { pill?: { data: { id: string; item: PillItemSpec } } } | null;
+        if (!ds?.pill?.data || ds.pill.data.id != "__external__") return;
+        let { item: dragged } = ds.pill.data;
+
+        // We resolve the external item to a dragged item here.
+        const d = dragged as unknown as Record<string, string>;
+        if (!d[row.id]) return;
+
+        dragged = row.pills.find((x) => x.id === d[row.id])!;
+
+        const changed = cloned?.filter((x, i) => {
+          return !equal(x, rows[i]);
+        });
+
+        if (!dragged.active) {
+          const next = true;
+          const nextPill: PillItemSpec = { ...dragged, active: next };
+          const nextPills = [...row.pills];
+          nextPills.splice(nextPills.indexOf(dragged), 1, nextPill);
+
+          const nextRow: PillRowSpec = { ...row, pills: nextPills };
+
+          const index = rows.indexOf(row);
+          onPillItemActiveChange({ index, item: nextPill, row: nextRow });
+        }
+
+        (dragged as any).active = true;
+
+        if (changed?.length) {
+          onPillRowChange({ changed, full: cloned! });
+        }
+
+        setCloned(null);
       }}
       onDragOver={(e) => {
         e.dataTransfer.dropEffect = "move";

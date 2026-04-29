@@ -100,7 +100,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
   readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
   readonly onColumnsChange?: (columns: Column<Spec>[]) => void;
-  readonly onRowGroupColumnChange?: (column: Omit<Partial<Column<Spec>>, "field" | "id">) => void;
+  readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 
   readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
   readonly slotViewportOverlay?: ((props: { api: API<Spec> }) => ReactNode) | ReactNode;

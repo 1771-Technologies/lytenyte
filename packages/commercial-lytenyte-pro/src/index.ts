@@ -131,12 +131,12 @@ export namespace Grid {
     export type PositionHeaderGroupCell = LnTypes.PositionHeaderGroupCell;
     export type PositionUnion = LnTypes.PositionUnion;
 
-    // PRO Specific types
     export type HavingFilterFn = LnTypes.HavingFilterFn;
     export type LabelFilter = LnTypes.LabelFilter;
     export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
     export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
     export type PivotState = LnTypes.PivotState;
+    export type VirtualTarget = LnTypes.VirtualTarget;
   }
 }
 

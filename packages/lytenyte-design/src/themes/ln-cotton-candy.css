@@ -45,10 +45,10 @@
   --ln-info-70: hsla(0, 0%, 15%, 1);
   --ln-info-90: hsla(0, 0%, 9%, 1);
 
-  --ln-border: hsla(232, 85%, 68%, 1);
-  --ln-border-row: hsla(232, 85%, 78%, 1);
-  --ln-border-strong: hsla(232, 85%, 68%, 1);
-  --ln-border-xstrong: hsla(232, 85%, 73%, 1);
+  --ln-border: hsla(232, 85%, 68%, 0.5);
+  --ln-border-row: hsla(232, 85%, 78%, 0.5);
+  --ln-border-strong: hsla(232, 85%, 68%, 0.5);
+  --ln-border-xstrong: hsla(232, 85%, 73%, 0.5);
   --ln-border-icon: hsla(245, 48%, 28%, 1);
   --ln-border-ui-panel: hsla(232, 85%, 68%, 1);
   --ln-border-button-light: hsla(0, 0%, 89%, 1);
@@ -65,7 +65,7 @@
   --ln-bg-row-hover: hsla(303, 87%, 57%, 0.1);
   --ln-bg-row-alternate: hsla(187, 72%, 82%, 1);
   --ln-bg-ui-panel: white;
-  --ln-bg-form-field: hsla(269, 88%, 53%, 0.21);
+  --ln-bg-form-field: hsla(269, 77%, 82%, 0.21);
   --ln-bg-floating-panel: hsla(295, 100%, 96%, 1);
   --ln-bg-popover: white;
 

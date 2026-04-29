@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-design
 
+## 2.0.4-dev.4
+
+### Major Changes
+
+- Change
+
 ## 2.0.4-dev.3
 
 ### Patch Changes

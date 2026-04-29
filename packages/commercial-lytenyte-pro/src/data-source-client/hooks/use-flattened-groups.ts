@@ -101,7 +101,7 @@ const nodeChildrenToRows = <T>(
   leafs: RowLeaf<T>[],
   workingSet: number[],
   sort: SortFn<T> | null | undefined,
-  isLast: boolean,
+  _: boolean,
 ) => {
   const values = root.values();
 
@@ -122,6 +122,6 @@ const nodeChildrenToRows = <T>(
     }
   }
 
-  if (!isLast && sort) return rows.sort(sort);
+  if (sort) return rows.sort(sort);
   return rows;
 };
