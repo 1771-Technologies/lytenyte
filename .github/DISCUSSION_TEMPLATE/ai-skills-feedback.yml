@@ -1,6 +1,6 @@
 name: AI Skills Feedback
 description: "Help improve LyteNyte Grid AI Skills by sharing feedback or proposing new ideas."
-title: "[AI Feedback Feedback] "
+title: "[AI Skills Feedback] "
 labels: ["ai-skills", "feedback"]
 body:
   - type: markdown
@@ -14,3 +14,40 @@ body:
       options:
         - label: I have done a search for similar discussions
           required: true
+
+  - type: dropdown
+    id: feedback-type
+    attributes:
+      label: Feedback Type
+      description: What kind of feedback are you sharing?
+      options:
+        - Suggestion / Feature Request
+        - Bug / Unexpected Behavior
+        - General Feedback
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe your feedback in as much detail as possible.
+      placeholder: Share your experience, suggestions, or issues with the AI Skills feature.
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: How are you using AI Skills? What were you trying to accomplish?
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or examples relevant to your feedback.
+    validations:
+      required: false
