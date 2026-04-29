@@ -61,9 +61,8 @@ syntax-highlighted input.
 
 ## Minimal Editor Setup
 
-Pass `tokenize` to `ExpressionEditor.Root` to enable syntax highlighting without completion UI.
-Use `tokensSafe` instead of `tokens` so the editor continues to render partial
-syntax highlighting when the expression has incomplete syntax.
+The only required props are `value`, `onChange`, and `tokenize`. Rendering `ExpressionEditor.Root`
+with no children gives you a fully functional syntax-highlighted input with no completion UI:
 
 ```tsx
 import { Evaluator, ExpressionEditor, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
@@ -83,8 +82,9 @@ function MyEditor() {
 }
 ```
 
-Use `tokensSafe` instead of `tokens` so the editor continues to render partial highlights
-when the expression is syntactically incomplete.
+Pass `tokenize` to `ExpressionEditor.Root` to enable syntax highlighting without completion UI.
+Use `tokensSafe` instead of `tokens` so the editor continues to render partial
+syntax highlighting when the expression has incomplete syntax.
 
 ::demo[Basic Expression Editor="./demos/expression-editor-basic"]
 
@@ -233,7 +233,7 @@ such as server-side field searches.
 In the demo below, the custom provider surfaces domain fields
 and formula functions. Press `Ctrl + Space` to open completions.
 
-::demo[Custom Provider="./demos/expression-editor-custom-provider"]
+::demo[Formula Editor="./demos/expression-editor-custom-provider"]
 
 ## Syntax Highlighting
 

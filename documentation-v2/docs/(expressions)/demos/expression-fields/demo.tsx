@@ -81,9 +81,7 @@ export default function ExpressionFieldsDemo() {
       widthFlex: 1,
       cellRenderer: ComputedCell,
       headerRenderer: () => {
-        return (
-          <div className="bg-ln-primary-50/20 flex h-full w-full items-center justify-center">OUTPUT</div>
-        );
+        return <div className="text-ln-primary-50 flex h-full w-full items-center justify-end">OUTPUT</div>;
       },
       pin: "end",
       field: ({ row }) => {
@@ -113,10 +111,7 @@ export default function ExpressionFieldsDemo() {
   }, [value]);
 
   return (
-    <div
-      className="ln-grid ln-header:data-[ln-colid=computed]:px-0 ln-cell:data-[ln-colid=computed]:px-0 ln-cell:data-[ln-colid=computed]:bg-ln-bg"
-      style={{ display: "flex", flexDirection: "column" }}
-    >
+    <div className="ln-grid" style={{ display: "flex", flexDirection: "column" }}>
       <div className="border-b-ln-border flex w-full flex-col gap-2 border-b px-3 py-3">
         <div className="flex items-center gap-4 pe-2">
           <div

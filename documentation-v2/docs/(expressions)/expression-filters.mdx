@@ -30,7 +30,7 @@ Two mechanisms support this mapping:
 1. **`createResolvedIdentifierPlugin`:** Intercepts identifier nodes in the AST and rewrites
    them as function calls. This ensures `Gender` resolves from the context at evaluation time
    instead of being treated as a plain key.
-2. **Context object:** Maps each column display name to a function that reads the column value
+2. **Context Object:** Maps each column display name to a function that reads the column value
    from the current row using `computeField`.
 
 The demo below preloads the expression `Gender == "Male" && Quantity > 10`.

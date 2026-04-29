@@ -27,7 +27,7 @@ Two mechanisms support this mapping:
 1. **`createResolvedIdentifierPlugin`:** Intercepts identifier nodes in the AST and rewrites
    them as function calls. This ensures `Revenue` resolves from the context at evaluation time
    instead of being treated as a plain key.
-2. **Context object:** Maps each column display name to a function that reads the column value
+2. **Context Object:** Maps each column display name to a function that reads the column value
    from the current row using `computeField`.
 
 The demo below preloads the expression `Revenue - Cost` and shows the result in the **OUTPUT** column.
@@ -121,35 +121,6 @@ const columns = useMemo(
 );
 ```
 
-### Input Debouncing
-
-Recomputing the column on every keystroke can be computationally expensive.
-Debounce the expression input so the column
-updates only after the user pauses typing.
-
-Maintain two state values:
-
-- `value`: The value shown in the editor.
-- `committed`: The value used to compute the filter.
-
-The `committed` state lags behind `value` while the user types,
-updating to match it after the debounce delay.
-
-```ts
-const [value, setValue] = useState("Revenue - Cost");
-const [committed, setCommitted] = useState(value);
-const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-const onChange = (s: string) => {
-  if (debounceRef.current) clearTimeout(debounceRef.current);
-  setValue(s);
-  debounceRef.current = setTimeout(() => setCommitted(s), 200);
-};
-```
-
-Pass `value` to `ExpressionEditor.Root` and `committed` to the AST Memo. The editor
-updates immediately, while the grid updates only after the user pauses typing.
-
 ### Completion Provider Wiring
 
 Pass a `createCompletionProvider` to `ExpressionEditor.Root` so users get autocomplete for
@@ -193,3 +164,4 @@ definitions are loaded from an API or configuration file.
 ::next[/docs/expression-filters]
 ::next[/docs/expressions-overview]
 ::next[/docs/expression-plugins]
+::next[/docs/expression-editor]

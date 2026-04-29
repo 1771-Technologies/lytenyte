@@ -21,27 +21,14 @@ export function ComputedCell({ api, row, column }: Grid.T.CellRendererParams<Gri
   const value = api.columnField(column, row);
 
   if (value === null || value === undefined) {
-    return (
-      <div className="text-ln-text-xlight bg-ln-primary-50/20 flex h-full w-full items-center justify-end px-2">
-        —
-      </div>
-    );
+    return <div className="text-ln-primary-50 flex h-full w-full items-center justify-end">—</div>;
   }
 
   const isNum = typeof value === "number";
   const display = isNum ? computedFormatter.format(value) : String(value);
 
   return (
-    <div
-      className={tw(
-        "bg-ln-primary-50/10 flex h-full w-full items-center justify-end px-2",
-        isNum && (value as number) < 0
-          ? "text-red-500 dark:text-red-400"
-          : "text-ln-primary-60 dark:text-ln-primary-40",
-      )}
-    >
-      {display}
-    </div>
+    <div className={tw("text-ln-primary-50 flex h-full w-full items-center justify-end")}>{display}</div>
   );
 }
 
@@ -100,6 +87,7 @@ const KIND_CONFIG: Record<string, { icon: string; bg: string; text: string }> = 
   boolean: { icon: "ph--toggle-left", bg: "bg-ln-yellow-10", text: "text-ln-yellow-50" },
   object: { icon: "ph--cube", bg: "bg-ln-bg-strong", text: "text-ln-text" },
   array: { icon: "ph--brackets-square", bg: "bg-ln-yellow-10", text: "text-ln-yellow-50" },
+  operator: { icon: "ph--plus-minus", bg: "bg-ln-red-10", text: "text-ln-red-50" },
 };
 
 export function KindBadge({ kind }: { kind: string }) {
