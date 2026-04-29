@@ -1,0 +1,16 @@
+name: AI Skills
+description: "Help improve LyteNyte Grid AI Skills by sharing feedback or proposing new ideas."
+title: "[AI Feedback Feedback] "
+labels: ["ai-skills", "feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help improve LyteNyte Grid AI Skills by sharing feedback or proposing new ideas.
+
+  - type: checkboxes
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have done a search for similar discussions
+          required: true
