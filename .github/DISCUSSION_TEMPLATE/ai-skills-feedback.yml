@@ -1,22 +1,14 @@
-title: ""
-labels: ["ai-skills", "feedback"]
 body:
-  - type: markdown
+  - type: textarea
+    id: body
     attributes:
-      value: |
-        Help improve LyteNyte Grid AI Skills by sharing feedback or proposing new ideas.
-
-  # - type: textarea
-  #   id: description
-  #   attributes:
-  #     label: Add a body
-  #     description: Describe your feedback in as much detail as possible.
-  #     placeholder: Share your experience, suggestions, or issues with the AI Skills feature.
-  #   validations:
-  #     required: true
+      label: Add a body
+      placeholder: Ask a question, start a conversation, or make an announcement
+    validations:
+      required: false
 
   - type: checkboxes
     attributes:
       options:
-        - label: I have done a [search for similar discussions](https://github.com/1771-Technologies/lytenyte/discussions)
+        - label: I have done a search for [similar discussions](https://github.com/1771-Technologies/lytenyte/discussions)
           required: true
