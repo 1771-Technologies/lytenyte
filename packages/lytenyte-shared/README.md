@@ -277,7 +277,7 @@ See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-o
 | -------------------------------------------------------------------------------- | :--: | :-: |
 | [Expressions Engine](https://www.1771technologies.com/docs/expressions-overview) |  —   | ✅  |
 | [Filter Expressions](https://www.1771technologies.com/docs/expression-filters)   |  —   | ✅  |
-| [Expression Editor](https://www.1771technologies.com/docs/expression-editor)     |  -   | ✅  |
+| [Expression Editor](https://www.1771technologies.com/docs/expression-editor)     |  —   | ✅  |
 | [Expression Plugins](https://www.1771technologies.com/docs/expression-plugins)   |  —   | ✅  |
 
 </details>

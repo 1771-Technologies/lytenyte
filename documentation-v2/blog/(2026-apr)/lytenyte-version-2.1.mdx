@@ -1,215 +1,194 @@
 ---
-title: LyteNyte 2.1
-description: AI Skills, Advanced expressions, and cell range selection now available for free.
+title: Official Release of LyteNyte Grid v2.1
+description: Ship Powerful Data Grids In Minutes With One Prompt
 blog:
   author: RoarLyte
-  date: 17 April 2026
+  date: 30 April 2026
   time: 6
 ---
 
-LyteNyte Grid 2.1 is here, and it's a release that reflects how we think about building developer
-tools: give you more power, remove paywalls where they don't belong, and make the AI-assisted
-workflow a first-class experience. Three things ship today.
+![Skills image showing claude code in action](/blog-assets/lytenyte-v2.1.png)
 
-- **AI Skills:** For Claude Code, Codex, Cursor, and other AI coding agents
-- **Expressions:** A new general-purpose DSL engine for PRO users
-- **Cell Range Selection**: Moved to Core, free for everyone
+Building powerful, feature-rich data grids can take an agonizingly long time. LyteNyte Grid 2.1 changes that.
 
-## AI Skills
+We didn't want to add AI capabilities to LyteNyte Grid to chase the hype. Shipping a marginally useful AI gimmick that
+looks cool in a demo but gathers dust in production isn't how we operate. We needed AI to do the heavy lifting and
+genuinely accelerate your workflow.
 
-![Skills image showing claude code in action](/blog-assets/lytenyte-v2.1-skills.png)
+The answer was simple: Have AI build advanced data grids simply by describing what you want.
+
+LyteNyte Grid 2.1 ships AI Skills, the grid's first set of AI-enhanced workflows. With Skills, you can go from idea to
+production-ready data grid in a single prompt, turning hours of development into minutes.
+
+## What's New In LyteNyte Grid 2.1
+
+LyteNyte Grid 2.1 introduces AI-enhanced workflows, advanced expressions, and removes paywalls where they don't
+belong:
+
+- **LyteNyte Grid AI Skills (Core + PRO)**
+  - Create advanced data grids in a single prompt.
+  - Works with Claude Code, Cursor, Windsurf, and other AI coding agents.
+  - 20+ reference files for deeper context, accuracy, and token efficiency.
+  - Fully handles accessibility requirements out of the box.
+- **Expression Capabilities (PRO)**
+  - Evaluate custom, application-specific expressions with a flexible expression engine.
+  - Filter grid data with dynamic expressions that make complex rules simple to define.
+  - Customize how expressions work using plugins to match your application's needs.
+- **Cell Selection & Clipboard Now Free (Core)**
+  - Single and multi-range selection, controlled state, and clipboard support, all open source.
+  - LyteNyte Grid Core officially offers more features than other open-source data grid libraries.
+
+Whether you need a free, open-source data grid (Core) or are shipping enterprise-scale applications that require
+advanced features and support (PRO), LyteNyte Grid 2.1 has you covered.
+
+## Build Faster with LyteNyte Grid AI Skills
+
+You can think of **AI Skills** as the ultimate cheat code for your AI assistant.
+
+Technically speaking, they are structured context files that your coding agent loads when interacting with LyteNyte
+Grid. Practically speaking, they are what stop your AI from hallucinating outdated APIs and writing broken code.
+
+LyteNyte Grid AI Skills provide your coding agent with up-to-date, curated knowledge of the grid, so it actually knows
+what it's doing. The result is advanced grid implementations generated with greater accuracy, reliability, and speed.
+
+Instead of manually wiring together a complex grid, developers can describe what they want and let their coding
+agent do the heavy lifting.
+
+Learn more: [Using AI Skills](/docs/ai-skills-overview)
 
 AI coding agents have become a serious part of how developers build software. The catch is that
 most grids have APIs that agents routinely get wrong: outdated prop names, incorrect hook usage,
 invented options that don't exist. You end up spending more time correcting the AI than writing
 code.
 
-LyteNyte 2.1 ships a dedicated **AI skill** that solves this. A skill is a structured context file
-the agent loads on demand when you are working on a LyteNyte Grid task. Instead of relying on
-training data that may be months out of date, the agent reads accurate, curated knowledge about
-the exact version of the grid you have installed.
+### Install LyteNyte Grid AI Skills
 
-The skill works with Claude Code, Codex, Cursor, and any other agent that supports the
+Skills works with Claude Code, Cursor, Windsurf, and any other coding agent that supports the
 [Vercel Skills CLI](https://www.npmjs.com/package/skills). Install it in one command:
 
 ```bash
 npx skills add 1771-Technologies/lytenyte
 ```
 
-The skill installs into your project and activates automatically. You don't need to
-paste documentation into the chat or tell the agent to use it. When you describe a grid task,
-the agent picks up the skill and starts using it.
+Skills are installed in your project and activate automatically. You don't need to paste documentation into the chat or
+tell the agent to use it. When you describe a grid task, the agent detects the Skill and starts using it.
 
-### What the Skill Covers
-
-The skill is organized as a root `SKILL.md` file and a set of focused reference files. The root
-file contains a quick-start example, common gotchas, and key patterns. Reference files are loaded
-only when relevant, so the agent doesn't burn context on parts of the API it doesn't need.
-
-Topics covered include installation and licensing, column and row configuration, cell renderers
-and editors, filtering, sorting, grouping and aggregation, pivoting, tree data, server-side
-loading, exporting, theming (Tailwind, shadcn, CSS Modules, headless), TypeScript `GridSpec`
-patterns, and all PRO components.
+Learn more: [AI Skills Installation](/docs/ai-skills-installation)
 
 ### Fewer Mistakes, Better Code
 
-The skill includes the kinds of knowledge that prevent the most common AI mistakes with LyteNyte:
+LyteNyte Grid AI Skills cover virtually every aspect of building the grid, including implementation details that help
+prevent the most common AI mistakes. For example:
 
-- The grid container must have a defined height, or it renders blank
-- All non-primitive props (`columns`, `events`, `apiExtension`) must be stable references
-- `columns` always needs an `onColumnsChange` handler, or user interactions are silently discarded
-- Pivoting requires spreading `ds.usePivotProps()` onto `<Grid />` in addition to `pivotMode: true`
+- The grid container must have a defined height, or it renders blank.
+- All non-primitive props, such as `columns`, `events`, and `apiExtension`, must use stable references.
+- `columns` always require an `onColumnsChange` handler, or user interactions are silently discarded.
+- Pivoting requires spreading `ds.usePivotProps()` onto `<Grid />` in addition to setting `pivotMode: true`
 
-These gotchas are explicitly surfaced to the agent before it writes any code, which means the
-code it generates is far more likely to work correctly the first time.
+These gotchas are explicitly surfaced to the agent before it writes any code, which means the code it generates is far
+more likely to work correctly the first time.
 
-See the [Skills Installation guide](/docs/ai-skills-installation) for global install, version
-pinning, and multi-agent setup options.
+### Why LyteNyte Grid & AI Skills?
 
-## Expressions
+The reasons Skills works reliably and accurately with LyteNyte Grid are a direct result of our unique architecture and
+design:
 
-Version 2.1 introduces a new **expressions engine** for PRO users. Expressions are a
-general-purpose domain-specific language (DSL) you can embed in your application to let users
-write dynamic logic, such as filter predicates or computed values.
+- **No Wrapper Layers:** Built in React, for React. Your coding agent already understands React, so it already
+  understands LyteNyte Grid.
+- **Stateless & Declarative:** Interfaces are unopinionated and declarative, with everything driven by props. Your AI
+  doesn't have to write chaotic mapping or translation code to force things to work. It directly shapes the grid based
+  on your app's state.
+- **Zero Guesswork:** Coding agents use well-documented React patterns that they are familiar with, leading to
+  faster, more accurate results from simple prompts.
+- **Accessibility:** Accessibility is built directly into the grid, so your AI can skip the misery of manually hallucinating
+  custom screen-reader properties.
+
+Turns out, when you design an API that developers enjoy using, it translates perfectly to an AI that knows exactly
+what to do with it.
+
+## Powerful Expressions Capabilities
 
 ::demo[Expression Filters="../../docs/(expressions)/demos/expression-filter"]
 
-The expressions engine is completely grid-agnostic. It is a standalone evaluator you can wire
-up to anything. The grid integration is one use case, not the only one.
+LyteNyte Grid 2.1 introduces powerful expression capabilities that bring cell-level computations, user-defined logic,
+and advanced filtering directly into the grid. Instead of hard-coding every rule, calculation, or filter condition,
+developers can give users a consistent, intuitive way to define logic alongside their data.
 
-### Evaluator
+This functionality is delivered through four complementary features:
 
-At the core is the `Evaluator` class. Import it from the expressions subpath and run it against
-any string expression:
+- [Expression Input Component:](/docs/expression-editor) An intuitive UI that reduces friction when creating expressions.
+- [Expression Engine:](/docs/expressions-overview) Powers custom, application-specific expression languages.
+- [Advanced Expression Filter:](/docs/expression-filters) Dynamic, logic-based filtering for complex conditions.
+- [Expression Plugins:](/docs/expression-plugins) Provides an easy way to extend expressions and custom functions even further.
 
-```ts
-import { Evaluator, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
+Together, these features allow developers to easily expose spreadsheet-like data manipulation directly to their end-
+users.
 
-const evaluator = new Evaluator(standardPlugins);
+### The Expression Engine & UI
 
-evaluator.run("1 + 2"); // 3
-evaluator.run("age > 18", { age: 25 }); // true
-evaluator.run('"Hello, " + name', { name: "Lee" }); // "Hello, Lee"
-```
+LyteNyte Grid's Expression Engine lets you inject custom calculations and application-specific logic directly into the
+grid, turning user-defined formulas, such as `sum(Sale Revenue) / sum(Quantity Sold)`, into actionable data.
 
-The `standardPlugins` gives the evaluator a JavaScript-like expression language: arithmetic,
-comparisons, boolean logic, string operations, object access, template literals, and more.
-The `context` argument supplies values for any identifiers used in the expression.
+Under the hood, the engine parses inputs into an Abstract Syntax Tree (AST). While the grid evaluates expressions
+client-side for instant feedback, developers can also export the AST for server-side processing, eliminating boilerplate
+and accelerating workflows.
 
-### Expression Filters
+To make authoring seamless, the engine comes with an intuitive [Expression Input Component](/docs/expression-editor).
+Your end users get a familiar, spreadsheet-like typing experience, and developers don't have to write any custom UI code.
 
-The most powerful use case in the grid is expression-based row filtering. Users can write
-arbitrary predicates against their data columns:
+### Expression Filtering Done Right
 
-```
-Age > 30 && Country == "UK"
-Gender == "Female" || Quantity > 50
-Name.startsWith("A") && Revenue > 10000
-```
+Building traditional UIs for multi-condition filters is challenging for developers to maintain and can be tedious for end
+users to use.
 
-### Expression Editor
+Instead of forcing users to click through endless, convoluted "AND/OR" dropdowns, LyteNyte Grid's Advanced
+Expression Filter solves this by letting users type complex, logic-based queries directly.
 
-For user-facing expression inputs, `ExpressionEditor` provides syntax highlighting and
-IntelliSense out of the box. It's a compound component so you control exactly how the
-completion UI looks:
+These expression-based filters scale naturally with complexity, eliminating the need for developers to build
+convoluted custom filter components. Since LyteNyte Grid's expression engine is so flexible, developers can create
+virtually any expression language, including ones that users may already be familiar with.
 
-```tsx
-import "@1771technologies/lytenyte-pro/expression-editor.css";
-import { ExpressionEditor, createCompletionProvider } from "@1771technologies/lytenyte-pro/expressions";
+### Extensions For The Win
 
-const provider = createCompletionProvider(context);
+LyteNyte Grid's expression engine is built on a plugin-based architecture. At its core, it supports simple mathematical
+calculations. However, its capabilities can be extended through plugins to include custom identifiers, functions, and
+operators.
 
-<ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} completionProvider={provider}>
-  <ExpressionEditor.CompletionPopover>
-    <ExpressionEditor.CompletionList>
-      {({ items }) =>
-        items.map((item, index) => (
-          <ExpressionEditor.CompletionListItem key={item.id} item={item} index={index}>
-            {item.label}
-          </ExpressionEditor.CompletionListItem>
-        ))
-      }
-    </ExpressionEditor.CompletionList>
-  </ExpressionEditor.CompletionPopover>
-</ExpressionEditor.Root>;
-```
+To accelerate development, LyteNyte Grid also provides a standard set of plugins that enable a JavaScript-like
+expression language out of the box, helping developers get started quickly while still allowing full customization.
 
-The `createCompletionProvider` builds completions from your context object automatically, inferring
-type information from the values. Pass a `Record<displayName, id>` map instead if your display
-names differ from your field IDs.
+## Cell Range Selection & Clipboard Available for Free
 
-### Extensible by Design
+We're tearing down the paywall and officially moving [Cell Range Selection](/docs/cell-selection) and [Clipboard](/docs/export-clipboard)
+from LyteNyte Grid PRO to LyteNyte Grid Core. That means these highly requested features
+are now fully open-source and completely free.
 
-The evaluator is built on a plugin architecture. Every capability, including the standard ones,
-is implemented as a plugin. You can add new token types, new operators, new literal forms, and
-new evaluation rules without touching the core:
+We have zero interest in offering a "lite" or “hobbled” version of our open-source grid. With this shift, LyteNyte Grid
+Core takes the undisputed title of the most feature-rich open-source data grid on the market.
 
-```ts
-// Add a #YYYY-MM-DD date literal to your expression language
-const dateLiteralPlugin: Plugin = {
-  name: "date-literal",
-  scan: (source, pos) => {
-    const match = /^#(\d{4}-\d{2}-\d{2})/.exec(source.slice(pos));
-    if (!match) return null;
-    return { type: "DateLiteral", value: match[1], end: pos + match[0].length };
-  },
-  parsePrefix: (ctx) => {
-    const tok = current(ctx);
-    if (tok.type !== "DateLiteral") return null;
-    advance(ctx);
-    return { type: "DateLiteralNode", isoValue: tok.value, start: tok.start, end: tok.end };
-  },
-  evaluate: (node) => {
-    if (node.type !== "DateLiteralNode") return null;
-    return { value: new Date((node as any).isoValue) };
-  },
-};
+While the other grids lock essential tools like [Row Grouping](/docs/client-source-row-grouping),
+[Row Master Detail](/docs/row-detail), and [Cell Range Selection](/docs/cell-selection) behind paywalls,
+we're handing you the keys.
 
-const evaluator = new Evaluator([...standardPlugins, dateLiteralPlugin]);
-evaluator.run("#2024-01-15"); // new Date("2024-01-15")
-```
+The 1771 Technologies team is committed to building the best open-source data grid on the web. Period.
 
-The AST is also fully serializable, which means expression filters work equally well
-server-side. Serialize the AST, send it in your `DataRequest`, and evaluate it on your server
-using the same plugin stack.
+## Next Steps: All Roads Lead To 3.0
 
-Read the [Expressions Overview](/docs/expressions-overview), [Expression Filters](/docs/expression-filters),
-and [Expression Plugins](/docs/expression-plugins) guides to get started.
+We've barely scratched the surface of what AI can do for your grids, and our pipeline is already packed with updates.
+Behind the scenes, the engineering team is already deep into building LyteNyte Grid 3.0.
 
-## Cell Range Selection is Now Free
+We won't use a tired corporate cliché like "game-changing," but let's just say the gap
+between us and the competition is about to become a canyon.
 
-Cell range selection lets users click and drag to select a rectangular block of cells, copy
-selections to the clipboard, and build spreadsheet-like interactions. As of 2.1, it is a
-**Core feature**, available for free.
+If there is a feature you have in mind? Let us know on [GitHub](https://github.com/1771-Technologies/lytenyte), or check out
+our [live demo](https://www.1771technologies.com/demo) for more. Give LyteNyte Grid a go, it's one NPM install away
 
-Enable it with a single prop:
+<PackageInstall package="@1771technologies/lytenyte-pro" />
 
-```tsx
-// Single range selection
-<Grid cellSelectionMode="range" ... />
+## Get Started Now
 
-// Multiple independent ranges
-<Grid cellSelectionMode="multi-range" ... />
-```
+- [Try the interactive demo](https://www.1771technologies.com/demo). See LyteNyte Grid PRO in action.
+- [Compare license plans](https://www.1771technologies.com/pricing). Choose the right fit for your team.
 
-Control the selection state from outside the grid with the `cellSelections` prop and
-`onCellSelectionChange` event:
-
-```tsx
-const [selections, setSelections] = useState<DataRect[]>([]);
-
-<Grid
-  cellSelectionMode="multi-range"
-  cellSelections={selections}
-  onCellSelectionChange={setSelections}
-  ...
-/>
-```
-
-::demo[Cell Range Selection="../../docs/(cells)/demos/cell-selection-multi-range"]
-
-## Summary
-
-- **AI Skills** for Claude Code, Codex, Cursor, and other agents. Install with `npx skills add 1771-Technologies/lytenyte` and get accurate, on-demand grid knowledge without pasting docs into every chat.
-- **Expressions** (PRO). A general-purpose DSL engine with a live editor, IntelliSense, plugin system, and grid filter integration out of the box.
-- **Cell Range Selection** is now free in Core. Single and multi-range selection, controlled state, clipboard copy — no license required.
+Or start building with the free **LyteNyte Grid Core** edition. It's open-source,
+memory-efficient, and ready to drop into your next React project.
