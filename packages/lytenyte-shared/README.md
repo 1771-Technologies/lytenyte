@@ -379,7 +379,7 @@ See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-o
 | &nbsp;&nbsp;&nbsp;↳ [CSV Export](https://www.1771technologies.com/docs/export-csv)         |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Parquet Export](https://www.1771technologies.com/docs/export-parquet) |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Arrow Export](https://www.1771technologies.com/docs/export-arrow)     |  ✅  | ✅  |
-| [Clipboard Operations](https://www.1771technologies.com/docs/export-clipboard)             |  —   | ✅  |
+| [Clipboard Operations](https://www.1771technologies.com/docs/export-clipboard)             |  ✅  | ✅  |
 
 </details>
 
