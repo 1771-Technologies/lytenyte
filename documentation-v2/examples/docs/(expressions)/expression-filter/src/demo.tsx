@@ -13,6 +13,7 @@ import {
   KindBadge,
   NumberCell,
   ProfitCell,
+  tw,
 } from "./components.jsx";
 import {
   createCompletionProvider,
@@ -21,7 +22,7 @@ import {
   ExpressionEditor,
   standardPlugins,
 } from "@1771technologies/lytenyte-pro/expressions";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
 
 export interface GridSpec {
@@ -45,14 +46,23 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const evaluator = new Evaluator(
-  standardPlugins.concat([
-    createResolvedIdentifierPlugin({
-      args: ["row"],
-      identifiers: columns.map((x) => x.name ?? x.id),
-    }),
-  ]),
-);
+const evaluator = new Evaluator([
+  ...standardPlugins,
+  createResolvedIdentifierPlugin({
+    args: ["row"],
+    identifiers: columns.map((x) => x.name ?? x.id),
+  }),
+]);
+
+const FILTER_EXAMPLES = [
+  'Gender == "Male" && Quantity > 10',
+  'Country == "United States"',
+  "Revenue > 1000",
+  'Date > d"2023/01/01"',
+  "Age >= 25 && Age <= 34",
+  'Category.toLowerCase() == "bikes"',
+  '@"Age Group" == "Youth (<25)"',
+];
 
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 //#end
@@ -66,7 +76,14 @@ export default function GridDemo() {
         return [
           x.name ?? x.id,
           (row: RowLeaf) => {
-            return computeField(x.field ?? x.id, row);
+            const value = computeField(x.field ?? x.id, row);
+
+            if (x.id === "date") {
+              if (typeof value !== "string") return "-";
+
+              return new Date(value);
+            }
+            return value;
           },
         ];
       }),
@@ -74,7 +91,14 @@ export default function GridDemo() {
   }, []);
 
   const provider = useMemo(() => {
-    return createCompletionProvider(Object.fromEntries(columns.map((x) => [x.name ?? x.id, x.id])));
+    return createCompletionProvider(
+      Object.fromEntries(
+        columns.map((x) => [
+          x.name ?? x.id,
+          { value: x.id, type: x.type === "number" ? ("number" as const) : ("string" as const) },
+        ]),
+      ),
+    );
   }, []);
 
   const filter = useMemo(() => {
@@ -82,14 +106,21 @@ export default function GridDemo() {
       const ast = evaluator.ast(committed);
 
       const filter: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
-        return !!evaluator.run(
-          ast,
-          {
-            row,
-            ...columnsContext,
-          },
-          { undefinedIdentifierFallback: true },
-        );
+        try {
+          return !!evaluator.run(
+            ast,
+            {
+              row,
+              ...columnsContext,
+            },
+            { undefinedIdentifierFallback: true },
+          );
+        } catch (e) {
+          console.log(e);
+          // If the expression throws keep the row. Smarter logic would check
+          // for the type of error.
+          return true;
+        }
       };
 
       return filter;
@@ -98,60 +129,89 @@ export default function GridDemo() {
     }
   }, [columnsContext, committed]);
 
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const onChange = (s: string) => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-
-    setValue(s);
-    debounceRef.current = setTimeout(() => {
-      setCommitted(s);
-    }, 200);
-  };
+  const isValid = useMemo(() => {
+    try {
+      // Create a dummy row for us to valid the run.
+      evaluator.run(value, { ...columnsContext, row: { data: salesData[0] } });
+      return true;
+    } catch {
+      return false;
+    }
+  }, [columnsContext, value]);
 
   const ds = useClientDataSource<GridSpec>({ data: salesData, filter });
-
   const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
+
   return (
     <div className="ln-grid" style={{ display: "flex", flexDirection: "column" }}>
-      <div className="border-b-ln-border flex w-full border-b px-2 py-2">
-        <div data-ln-input="true" className="h-10 w-full gap-2 py-0 text-base">
-          <div>
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M9.96424 2.68571C10.0668 2.42931 9.94209 2.13833 9.6857 2.03577C9.4293 1.93322 9.13832 2.05792 9.03576 2.31432L5.03576 12.3143C4.9332 12.5707 5.05791 12.8617 5.3143 12.9642C5.5707 13.0668 5.86168 12.9421 5.96424 12.6857L9.96424 2.68571ZM3.85355 5.14646C4.04882 5.34172 4.04882 5.6583 3.85355 5.85356L2.20711 7.50001L3.85355 9.14646C4.04882 9.34172 4.04882 9.6583 3.85355 9.85356C3.65829 10.0488 3.34171 10.0488 3.14645 9.85356L1.14645 7.85356C0.951184 7.6583 0.951184 7.34172 1.14645 7.14646L3.14645 5.14646C3.34171 4.9512 3.65829 4.9512 3.85355 5.14646ZM11.1464 5.14646C11.3417 4.9512 11.6583 4.9512 11.8536 5.14646L13.8536 7.14646C14.0488 7.34172 14.0488 7.6583 13.8536 7.85356L11.8536 9.85356C11.6583 10.0488 11.3417 10.0488 11.1464 9.85356C10.9512 9.6583 10.9512 9.34172 11.1464 9.14646L12.7929 7.50001L11.1464 5.85356C10.9512 5.6583 10.9512 5.34172 11.1464 5.14646Z"
-                fill="currentColor"
-                fillRule="evenodd"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </div>
-          <ExpressionEditor.Root
-            value={value}
-            onChange={onChange}
-            tokenize={tokenize}
-            className="flex-1"
-            completionProvider={provider}
+      <div className="flex w-full flex-col gap-2 px-2 py-2">
+        <div className="flex items-center gap-4 pe-2">
+          <div
+            data-ln-input="true"
+            className={tw(
+              "flex h-8 w-full gap-2 rounded-xl py-0 text-base",
+              !isValid && "border-ln-red-50 shadow-none",
+            )}
           >
-            {/*!next 18 */}
-            <ExpressionEditor.CompletionPopover className="border-ln-border bg-ln-bg-popover shadow-ln-shadow-400 overflow-hidden rounded-lg border py-1">
-              <ExpressionEditor.CompletionList className="flex min-w-48 flex-col">
-                {({ items }) =>
-                  items.map((item, index) => (
-                    <ExpressionEditor.CompletionListItem
-                      key={item.id}
-                      item={item}
-                      index={index}
-                      className="text-ln-text-dark hover:bg-ln-bg-strong aria-selected:bg-ln-primary-10 aria-selected:text-ln-primary-70 flex cursor-pointer select-none items-center gap-2.5 px-3 py-1.5 outline-none"
-                    >
-                      <KindBadge kind={item.kind} />
-                      <span className="min-w-0 flex-1 truncate font-mono text-sm">{item.label}</span>
-                      <span className="text-ln-text-xlight shrink-0 font-sans text-[10px]">{item.kind}</span>
-                    </ExpressionEditor.CompletionListItem>
-                  ))
-                }
-              </ExpressionEditor.CompletionList>
-            </ExpressionEditor.CompletionPopover>
-          </ExpressionEditor.Root>
+            <ExpressionEditor.Root
+              value={value}
+              onChange={(e) => setValue(e)}
+              tokenize={tokenize}
+              className="flex-1"
+              completionProvider={provider}
+            >
+              {/*!next 18 */}
+              <ExpressionEditor.CompletionPopover className="border-ln-border bg-ln-bg-popover shadow-ln-shadow-400 overflow-hidden rounded-lg border py-1">
+                <ExpressionEditor.CompletionList className="flex min-w-48 flex-col">
+                  {({ items }) =>
+                    items.map((item, index) => (
+                      <ExpressionEditor.CompletionListItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        className="text-ln-text-dark hover:bg-ln-bg-strong aria-selected:bg-ln-primary-10 aria-selected:text-ln-primary-70 flex cursor-pointer select-none items-center gap-2.5 px-3 py-1.5 outline-none"
+                      >
+                        <KindBadge kind={item.kind} />
+                        <span className="min-w-0 flex-1 truncate font-mono text-sm">{item.label}</span>
+                        <span className="text-ln-text-xlight shrink-0 font-sans text-[10px]">
+                          {item.kind}
+                        </span>
+                      </ExpressionEditor.CompletionListItem>
+                    ))
+                  }
+                </ExpressionEditor.CompletionList>
+              </ExpressionEditor.CompletionPopover>
+            </ExpressionEditor.Root>
+          </div>
+
+          <button
+            disabled={!isValid || committed === value}
+            data-ln-button="website"
+            data-ln-size="mx"
+            className="h-8.5 px-4"
+            onClick={() => {
+              if (isValid) {
+                setCommitted(value);
+              }
+            }}
+          >
+            Apply
+          </button>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {FILTER_EXAMPLES.map((expr) => (
+            <button
+              key={expr}
+              type="button"
+              onClick={() => {
+                setValue(expr);
+                setCommitted(expr);
+              }}
+              className="border-ln-border bg-ln-bg text-ln-text-dark hover:border-ln-primary-50 hover:bg-ln-primary-10 hover:text-ln-primary-50 cursor-pointer rounded-full border px-2.5 py-0.5 font-mono text-[11px] transition-colors"
+            >
+              {expr}
+            </button>
+          ))}
         </div>
       </div>
       <div style={{ height: 500 }}>

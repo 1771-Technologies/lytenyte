@@ -8,7 +8,8 @@ import {
   standardPlugins,
 } from "@1771technologies/lytenyte-pro/expressions";
 import { useCallback, useMemo, useState } from "react";
-import { ContextRows, KindBadge } from "./components.js";
+import { ContextRows, KindBadge, tw } from "./components.js";
+import { TYPE_COLORS } from "../evaluate-standard-plugins/components.jsx";
 
 const evaluator = new Evaluator(standardPlugins);
 
@@ -21,6 +22,19 @@ const context = {
   location: "London",
 
   fullName: () => context.user.firstName + "  " + context.user.lastName,
+};
+
+const completionContext = {
+  user: {
+    value: {
+      firstName: { value: "John", type: "string" as const },
+      lastName: { value: "Smith", type: "string" as const },
+    },
+    type: "object" as const,
+  },
+  age: { value: 23, type: "number" as const },
+  location: { value: "London", type: "string" as const },
+  fullName: { value: null, type: "function" as const, return: "string" as const },
 };
 
 const EXAMPLE_PILLS = [
@@ -46,7 +60,7 @@ export default function EvaluatorBasics() {
   const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
   //!next 4
   const provider = useMemo(() => {
-    return createCompletionProvider(context);
+    return createCompletionProvider(completionContext);
   }, []);
 
   const isError = result instanceof Error;
@@ -56,12 +70,9 @@ export default function EvaluatorBasics() {
       <label className="flex w-full flex-col gap-2">
         <div>
           <div className="text-ln-text-dark text-sm font-semibold">Expression</div>
-          <div className="text-ln-text-light text-xs">
-            Type an expression below and see its result evaluated in real time.
-          </div>
         </div>
 
-        <div data-ln-input="true" className="h-10 text-base">
+        <div data-ln-input="true" className="h-8 rounded-xl text-base">
           <ExpressionEditor.Root
             value={value}
             onChange={setValue}
@@ -90,9 +101,30 @@ export default function EvaluatorBasics() {
           </ExpressionEditor.Root>
         </div>
       </label>
+      <div className="flex flex-col gap-2">
+        <div className="text-ln-text-light text-xs font-medium">Result</div>
+        <div
+          className={`flex h-10 items-center gap-3 rounded-xl border px-4 py-3 font-mono text-sm ${
+            isError
+              ? "border-ln-red-30 bg-ln-red-10 text-ln-red-70"
+              : "border-ln-border bg-ln-bg-light text-ln-text-dark"
+          }`}
+        >
+          <span className="min-w-0 flex-1 truncate">{isError ? result.message : String(result)}</span>
+          <span
+            className={tw(
+              "shrink-0 rounded-full px-2 py-0.5 font-sans text-[10px] font-medium",
+              !isError && TYPE_COLORS[typeof result],
+              isError && "bg-ln-red-30 text-ln-red-90",
+            )}
+          >
+            {isError ? "error" : typeof result}
+          </span>
+        </div>
+      </div>
 
       <div className="flex flex-col gap-2">
-        <div className="text-ln-text-light text-xs font-medium">Try an example</div>
+        <div className="text-ln-text-light text-xs font-medium">Illustrative Examples</div>
         <div className="flex flex-wrap gap-2">
           {EXAMPLE_PILLS.map((expr) => (
             <button
@@ -112,26 +144,6 @@ export default function EvaluatorBasics() {
         <div className="text-ln-text-light text-xs font-medium">Context</div>
         <div className="border-ln-border bg-ln-bg-light divide-ln-border divide-y overflow-hidden rounded-lg border">
           <ContextRows obj={context as Record<string, unknown>} />
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <div className="text-ln-text-light text-xs font-medium">Result</div>
-        <div
-          className={`flex items-center gap-3 rounded-lg border px-4 py-3 font-mono text-sm ${
-            isError
-              ? "border-ln-red-30 bg-ln-red-10 text-ln-red-70"
-              : "border-ln-border bg-ln-bg-light text-ln-text-dark"
-          }`}
-        >
-          <span className="min-w-0 flex-1 truncate">{isError ? result.message : String(result)}</span>
-          <span
-            className={`shrink-0 rounded-full px-2 py-0.5 font-sans text-[10px] font-medium ${
-              isError ? "bg-ln-red-30 text-ln-red-90" : "bg-ln-primary-10 text-ln-primary-70"
-            }`}
-          >
-            {isError ? "error" : typeof result}
-          </span>
         </div>
       </div>
     </div>
