@@ -1,6 +1,8 @@
+import { clsx, type ClassValue } from "clsx";
 import { Fragment } from "react";
+import { twMerge } from "tailwind-merge";
 
-const TYPE_COLORS: Record<string, string> = {
+export const TYPE_COLORS: Record<string, string> = {
   string: "bg-ln-green-10 text-ln-green-70",
   number: "bg-ln-info-10 text-ln-info-70",
   boolean: "bg-ln-yellow-10 text-ln-yellow-70",
@@ -57,4 +59,8 @@ export function ContextRows({ obj, depth = 0 }: { obj: Record<string, unknown>; 
       })}
     </>
   );
+}
+
+export function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
 }
