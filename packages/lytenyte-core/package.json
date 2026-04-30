@@ -25,11 +25,12 @@
     "filtering",
     "virtualized"
   ],
-  "version": "2.0.4-dev.4",
+  "version": "2.1.0",
   "type": "module",
   "files": [
     "dist",
     "css",
+    "skills",
     "LICENSE",
     "README.md",
     "SECURITY.md"

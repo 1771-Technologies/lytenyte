@@ -2,6 +2,7 @@
   [data-ln-expression-editor] {
     --ln-expr-number: light-dark(#b45309, #fab387);
     --ln-expr-string: light-dark(#15803d, #a6e3a1);
+    --ln-expr-date: light-dark(#0e7490, #89dceb);
     --ln-expr-keyword: light-dark(#7c3aed, #cba6f7);
     --ln-expr-identifier: light-dark(#0369a1, #89b4fa);
     --ln-expr-operator: light-dark(#be185d, #f38ba8);
@@ -13,7 +14,7 @@
   [data-ln-expression-editor] {
     font-family:
       ui-monospace, "Cascadia Code", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
-    font-size: 16px;
+    font-size: var(--ln-font-sm);
     white-space: nowrap;
     word-break: normal;
     overflow-wrap: normal;

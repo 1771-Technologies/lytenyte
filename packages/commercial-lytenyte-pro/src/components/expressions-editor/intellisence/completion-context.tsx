@@ -1,9 +1,10 @@
 import { createContext, useContext } from "react";
-import type { CompletionItem, CursorCoordinates } from "../types";
+import type { VirtualElement } from "../../external/floating-ui.js";
+import type { CompletionItem } from "../types";
 
 interface ContextPopover {
   readonly isOpen: boolean;
-  readonly coordinates: CursorCoordinates;
+  readonly referenceElement: VirtualElement | null;
 }
 
 const context = createContext({} as ContextPopover);

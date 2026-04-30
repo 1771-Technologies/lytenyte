@@ -1,0 +1,187 @@
+---
+title: AI Skills Installation
+step: Learn how to install and update LyteNyte Grid AI Skills.
+description: Install LyteNyte Grid AI Skills with the Vercel Skills CLI.
+---
+
+:::info
+If you're unfamiliar with AI Skills, see the [AI Skills Overview guide](/docs/ai-skills-overview).
+::::
+
+Before you can install and use LyteNyte Grid AI Skills, make sure you have the following:
+
+- [Node.js](https://nodejs.org/en) 18 or later.
+- [Vercel Skills CLI](https://www.npmjs.com/package/skills), installed on demand via `npx`.
+- Skills supported coding agent, such as Claude Code, Cursor, or Windsurf.
+
+No global installation is required. All commands below use `npx` to run the Skills CLI directly.
+
+## Installing AI Skills
+
+### Latest Version of Skills
+
+Install the latest LyteNyte Grid AI Skills from the 1771 Technologies
+[GitHub repository](https://github.com/1771-Technologies/lytenyte):
+
+```bash
+npx skills add 1771-Technologies/lytenyte
+```
+
+This command installs LyteNyte Grid AI Skills in the Skills folder for your AI agent.
+The exact folder depends on the coding agent you use. See the
+[supported agents section](https://github.com/vercel-labs/skills?tab=readme-ov-file#supported-agents) in the Skills
+CLI for agent-specific install paths.
+
+### Specific Version of Skills
+
+To install a specific version of LyteNyte Grid AI Skills,
+append `@<tag>` to the repository path:
+
+```bash
+# Pin to a specific release
+npx skills add 1771-Technologies/lytenyte@v2.1.0
+```
+
+Pinning is useful when you want the Skill documentation to match
+the version of the LyteNyte Grid package installed in your project.
+
+### Listing Available Skills
+
+To list the Skills in the repository without installing them, use the `--list` flag:
+
+```bash
+npx skills add 1771-Technologies/lytenyte --list
+```
+
+## AI Skills Installation Modes
+
+### Default Install
+
+By default, the Skill installs in the current project only.
+The CLI creates a project-local directory for the Skill in the project root.
+
+```bash
+npx skills add 1771-Technologies/lytenyte
+```
+
+Use a project-local installation to make the Skill available only within this repository.
+Commit the project-local Skill directory to version control so your team can access it.
+
+### Global Install
+
+The `--global` (or `-g`) flag installs the Skill at the user level, making it available
+in every project on your machine:
+
+```bash
+npx skills add 1771-Technologies/lytenyte --global
+# or
+npx skills add 1771-Technologies/lytenyte -g
+```
+
+Use this if you work on LyteNyte Grid projects frequently and want the skill active
+everywhere without per-project setup.
+
+### Copy Install
+
+By default, the CLI symlinks Skill files from a cache into the agent
+directory. Use `--copy` to copy the files instead:
+
+```bash
+npx skills add 1771-Technologies/lytenyte --copy
+```
+
+Use copy install when symlinks are not suitable for your environment,
+such as Docker containers, certain CI setups, or Windows environments that restrict symlinks.
+
+### Specific Agent Install
+
+The `-a` / `--agent` flag restricts installation to a named agent:
+
+```bash
+# Install only for Claude Code
+npx skills add 1771-Technologies/lytenyte -a claude-code
+
+# Install for all detected agents
+npx skills add 1771-Technologies/lytenyte -a '*'
+```
+
+### Install Specific Skills
+
+If the repository contains multiple Skills, the `-s` / `--skill` flag selects which ones to install:
+
+```bash
+# Install only the lytenyte-grid skill
+npx skills add 1771-Technologies/lytenyte -s lytenyte-grid
+
+# Install all skills in the repository
+npx skills add 1771-Technologies/lytenyte -s '*'
+```
+
+### Skip Confirmation Prompts
+
+The `-y` / `--yes` flag skips interactive confirmation prompts, useful for CI or scripted setups:
+
+```bash
+npx skills add 1771-Technologies/lytenyte -y
+```
+
+### Non-Interactive Install
+
+Use `--all` to install all Skills for all supported agents without interactive prompts.
+This flag is shorthand for `--skill '*'`, `--agent '*'`, and `-y`:
+
+```bash
+npx skills add 1771-Technologies/lytenyte --all
+```
+
+## Verify Skills Installation
+
+Run the command below to list all installed Skills both locally and globally.
+The output shows each Skill name, its location, and its active agents.
+
+```bash
+npx skills list
+```
+
+## Updating AI Skills
+
+To update all Skills to their latest versions, run:
+
+```bash
+npx skills update
+```
+
+To check whether updates are available without applying them:
+
+```bash
+npx skills check
+```
+
+## Removing AI Skills
+
+```bash
+# Remove from the current project
+npx skills remove lytenyte-grid
+
+# Remove globally
+npx skills remove lytenyte-grid --global
+
+# Remove from all agents in the current project
+npx skills remove lytenyte-grid --all
+```
+
+## Restore Locked Skills
+
+If your project includes `skills-lock.json`, run the following to restore the locked versions:
+
+```bash
+npx skills experimental_install
+```
+
+This is the equivalent of `npm ci` for Skills, providing deterministic
+restoration from a locked state.
+
+## Next Steps
+
+::next[/docs/ai-skills-usage]
+::next[/docs/intro-getting-started]

@@ -1,12 +1,13 @@
 import { useRef, useEffect, type JSX, forwardRef } from "react";
 import { useCompletionPopover } from "./completion-context.js";
 import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
+import { autoUpdate, computePosition, offset, shift } from "../../external/floating-ui.js";
 
 function CompletionPopoverImpl(
   { children, ...props }: JSX.IntrinsicElements["div"],
   ref: JSX.IntrinsicElements["div"]["ref"],
 ) {
-  const { isOpen, coordinates } = useCompletionPopover();
+  const { isOpen, referenceElement } = useCompletionPopover();
 
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -21,6 +22,24 @@ function CompletionPopoverImpl(
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    const el = popoverRef.current;
+    if (!isOpen || !el || !referenceElement) return;
+
+    function update() {
+      computePosition(referenceElement!, el!, {
+        strategy: "fixed",
+        placement: "bottom-start",
+        middleware: [offset(4), shift({ padding: 8 })],
+      }).then(({ x, y }) => {
+        el!.style.left = `${x}px`;
+        el!.style.top = `${y}px`;
+      });
+    }
+
+    return autoUpdate(referenceElement, el, update);
+  }, [isOpen, referenceElement]);
+
   const combined = useCombinedRefs(ref, popoverRef);
 
   return (
@@ -31,8 +50,8 @@ function CompletionPopoverImpl(
       data-ln-expression-popover
       style={{
         position: "fixed",
-        top: coordinates.top + coordinates.lineHeight,
-        left: coordinates.left,
+        top: 0,
+        left: 0,
         margin: 0,
         inset: "unset",
       }}

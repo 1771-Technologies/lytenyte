@@ -1,0 +1,385 @@
+---
+title: Expression Editor
+description: Add syntax highlighting and context-aware completions to expression inputs.
+pro: true
+step: Bring syntax highlighting and completions to expression inputs.
+---
+
+:::note
+
+This guide assumes familiarity with LyteNyte Grid's expression evaluator.
+For more details, refer to the [Expressions Overview guide](/docs/expressions-overview).
+
+:::
+
+LyteNyte Grid exports `ExpressionEditor`, a compound component that wraps a `<textarea>` with
+syntax highlighting and optional context-aware completions. Use the `ExpressionEditor` component
+anywhere users need to write expressions.
+
+The demo below demonstrates the `ExpressionEditor` component fully configured using the standard
+expression language provided by LyteNyte Grid.
+
+::demo[Complete Expression Editor="./demos/expression-completions"]
+
+## Expression Editor Anatomy
+
+`ExpressionEditor` is a compound component assembled from four parts. You can omit
+the completion sub-components entirely to use `ExpressionEditor` as a pure
+syntax-highlighted input.
+
+<Tabs>
+
+<Tab label="With Completions">
+
+```tsx
+<ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} completionProvider={provider}>
+  <ExpressionEditor.CompletionPopover>
+    <ExpressionEditor.CompletionList>
+      {({ items }) =>
+        items.map((item, index) => (
+          <ExpressionEditor.CompletionListItem key={item.id} item={item} index={index}>
+            {item.label}
+          </ExpressionEditor.CompletionListItem>
+        ))
+      }
+    </ExpressionEditor.CompletionList>
+  </ExpressionEditor.CompletionPopover>
+</ExpressionEditor.Root>
+```
+
+</Tab>
+
+<Tab label="Without Completions">
+
+```tsx
+<ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} />
+```
+
+</Tab>
+
+</Tabs>
+
+## Minimal Editor Setup
+
+The only required props are `value`, `onChange`, and `tokenize`. Rendering `ExpressionEditor.Root`
+with no children gives you a fully functional syntax-highlighted input with no completion UI:
+
+```tsx
+import { Evaluator, ExpressionEditor, standardPlugins } from "@1771technologies/lytenyte-pro/expressions";
+import { useCallback, useState } from "react";
+
+const evaluator = new Evaluator(standardPlugins);
+
+function MyEditor() {
+  const [value, setValue] = useState("");
+  const tokenize = useCallback((s: string) => evaluator.tokensSafe(s, true), []);
+
+  return (
+    <div data-ln-input="true" style={{ height: 40 }}>
+      <ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} />
+    </div>
+  );
+}
+```
+
+Pass `tokenize` to `ExpressionEditor.Root` to enable syntax highlighting without completion UI.
+Use `tokensSafe` instead of `tokens` so the editor continues to render partial
+syntax highlighting when the expression has incomplete syntax.
+
+::demo[Basic Expression Editor="./demos/expression-editor-basic"]
+
+## Expression Editor Parts
+
+### Editor Root
+
+`ExpressionEditor.Root` is the editor. It manages the textarea, token rendering, and
+completion state. Wrap `ExpressionEditor.Root` in a `data-ln-input` container to apply the correct sizing styles.
+
+```tsx
+<div data-ln-input="true" style={{ height: 40 }}>
+  <ExpressionEditor.Root value={value} onChange={setValue} tokenize={tokenize} />
+</div>
+```
+
+### Completion Popover
+
+`ExpressionEditor.CompletionPopover` renders a floating panel at the cursor using the native
+[Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API). The component opens
+and closes automatically based on the editor's completion state, so you do not need to manage its visibility.
+
+```tsx
+<ExpressionEditor.Root>
+  <ExpressionEditor.CompletionPopover className="rounded-lg border py-1">
+    ...
+  </ExpressionEditor.CompletionPopover>
+</ExpressionEditor.Root>
+```
+
+### Completion List
+
+`ExpressionEditor.CompletionList` renders the suggestion list through a render prop that receives
+the current `items` and a `loading` flag. Use the `loading` flag to show a spinner while an async
+provider resolves.
+
+```tsx
+<ExpressionEditor.CompletionPopover>
+  <ExpressionEditor.CompletionList>
+    {({ items, loading }) =>
+      loading ? (
+        <Spinner />
+      ) : (
+        items.map((item, index) => (
+          <ExpressionEditor.CompletionListItem key={item.id} item={item} index={index}>
+            {item.label}
+          </ExpressionEditor.CompletionListItem>
+        ))
+      )
+    }
+  </ExpressionEditor.CompletionList>
+</ExpressionEditor.CompletionPopover>
+```
+
+### Completion List Item
+
+`ExpressionEditor.CompletionListItem` renders a single suggestion. It handles `mousedown`
+selection and manages the `aria-selected` attribute for the currently highlighted item.
+Target the selected state with `[aria-selected="true"]` or `aria-selected` in Tailwind.
+
+```tsx
+<ExpressionEditor.CompletionListItem key={item.id} item={item} index={index} className="px-3 py-1.5">
+  {item.label}
+</ExpressionEditor.CompletionListItem>
+```
+
+## Completion System
+
+### Built-in Provider
+
+The `createCompletionProvider` utility builds a completion provider from a context object, the same
+object you pass to `evaluator.run`. Pass the result to the `completionProvider` prop:
+
+```tsx
+import { createCompletionProvider } from "@1771technologies/lytenyte-pro/expressions";
+
+const context = {
+  user: { firstName: "John", lastName: "Smith" },
+  age: 23,
+  fullName: () => context.user.firstName + " " + context.user.lastName,
+};
+
+const provider = createCompletionProvider(context);
+
+<ExpressionEditor.Root completionProvider={provider} ... />
+```
+
+The provider inspects the token stream before the cursor to determine which suggestions to return:
+
+| Position                                | Completions Shown                                            |
+| --------------------------------------- | ------------------------------------------------------------ |
+| Top level (empty, or after an operator) | All keys of the context object                               |
+| After a complete value                  | Binary operators (`+`, `-`, `==`, `!=`, `&&`, `\|\|`, …)     |
+| `identifier.`                           | Properties of that identifier resolved through the context   |
+| `identifier.nested.`                    | Properties at the fully resolved path                        |
+| `"string".`                             | Built-in `String` methods (`length`, `includes`, `slice`, …) |
+| `[array].`                              | Built-in `Array` methods (`map`, `filter`, `reduce`, …)      |
+
+### Completion Triggers
+
+Completions open automatically from specific triggers, or users can open them manually:
+
+- **Dot:** Typing `.` triggers property access completions.
+- **Space:** Typing a space after a complete value triggers completions, which
+  is useful for discovering available binary operators.
+- **Manual:** Pressing `Ctrl+Space` opens completions at the current cursor position
+
+Once the list opens, it filters results in real time using a prefix match on `item.label`. Completions
+close when a user accepts a suggestion, presses `Escape`, or moves focus away from the editor.
+
+### Custom Provider
+
+Implement the `CompletionProvider` signature directly when you need suggestions that
+`createCompletionProvider` does not cover:
+
+```ts
+import type { CompletionItem } from "@1771technologies/lytenyte-pro/expressions";
+import type { Token } from "@1771technologies/lytenyte-pro/types";
+
+const FIELDS: CompletionItem[] = [
+  { label: "Revenue", kind: "number", id: "Revenue" },
+  { label: "Region", kind: "string", id: "Region" },
+  { label: "InStock", kind: "boolean", id: "InStock" },
+];
+
+function myProvider(tokens: Token[], cursorPosition: number): CompletionItem[] {
+  const relevant = tokens.filter(
+    (t) => t.end <= cursorPosition && t.type !== "EOF" && t.type !== "Whitespace",
+  );
+
+  let i = relevant.length - 1;
+  if (relevant[i]?.type === "Identifier") i--;
+
+  const prev = relevant[i];
+
+  // After a dot, return nothing (our fields have no sub-properties)
+  if (prev?.type === "Punctuation" && prev.value === ".") return [];
+
+  return FIELDS;
+}
+```
+
+The provider can also return a `Promise<CompletionItem[]>` for async lookups
+such as server-side field searches.
+
+In the demo below, the custom provider surfaces domain fields
+and formula functions. Press `Ctrl + Space` to open completions.
+
+::demo[Formula Editor="./demos/expression-editor-custom-provider"]
+
+## Syntax Highlighting
+
+The default highlighter maps each token type to a CSS variable. Override the `highlight` prop
+to replace the highlighter entirely:
+
+```tsx
+import type { Token } from "@1771technologies/lytenyte-pro/types";
+
+function MyHighlighter({ token }: { token: Token }) {
+  if (token.type === "Number")
+    return <span style={{ color: "cornflowerblue" }}>{token.value}</span>;
+  if (token.type === "String")
+    return <span style={{ color: "mediumseagreen" }}>{token.value}</span>;
+  if (token.type === "ExpressionError")
+    return <span style={{ textDecoration: "wavy underline red" }}>{token.value}</span>;
+  return <span>{token.value}</span>;
+}
+
+<ExpressionEditor.Root tokenize={tokenize} highlight={MyHighlighter} ... />
+```
+
+To restyle without replacing the highlighter, override the CSS custom properties in your theme:
+
+| Variable                | Token Types                                          |
+| ----------------------- | ---------------------------------------------------- |
+| `--ln-expr-number`      | `Number`                                             |
+| `--ln-expr-string`      | `String`, `TemplateLiteral`                          |
+| `--ln-expr-operator`    | `Operator`, `Punctuation`, `Spread`, `Pipe`, `Arrow` |
+| `--ln-expr-identifier`  | `Identifier`                                         |
+| `--ln-expr-error`       | `ExpressionError`                                    |
+| `--ln-expr-punctuation` | `Unparsed`                                           |
+
+## Styling
+
+Import the stylesheet once before rendering `ExpressionEditor`:
+
+```ts
+import "@1771technologies/lytenyte-pro/expression-editor.css";
+```
+
+## Keyboard Reference
+
+| Key                      | Completion open            | Completion closed         |
+| ------------------------ | -------------------------- | ------------------------- |
+| `↑` / `↓`                | Navigate the list          | -                         |
+| `Enter` or `Tab`         | Accept selected suggestion | -                         |
+| `Escape`                 | Dismiss completions        | -                         |
+| `Ctrl+Space` / `⌘+Space` | -                          | Open completions manually |
+
+## Expression Editor Properties
+
+### ExpressionEditor.Root
+
+<TypeTable
+  type={[
+    {
+      name: "value",
+      description: "The current expression string (controlled).",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "onChange",
+      description: "Called whenever the user edits the expression.",
+      type: "(value: string) => void",
+      required: true,
+    },
+    {
+      name: "tokenize",
+      description:
+        "Converts the expression string into tokens for highlighting. Use `tokensSafe` to avoid throwing on incomplete input.",
+      type: "(value: string) => Token[]",
+      required: true,
+    },
+    {
+      name: "completionProvider",
+      description: "Completion function. Omit this prop to disable the completion system entirely.",
+      type: "(tokens: Token[], cursorPosition: number) => CompletionItem[] | Promise<CompletionItem[]>",
+    },
+    {
+      name: "highlight",
+      description: "Custom token renderer. Defaults to the built-in CSS-variable highlighter.",
+      type: "(props: { token: Token }) => ReactNode",
+    },
+    {
+      name: "placeholder",
+      description: "Placeholder text shown when `value` is empty.",
+      type: "string",
+    },
+    {
+      name: "disabled",
+      description: "Disables the underlying `<textarea>`.",
+      type: "boolean",
+    },
+    {
+      name: "readOnly",
+      description: "Makes the editor read-only.",
+      type: "boolean",
+    },
+    {
+      name: "className",
+      description: "CSS class applied to the outer `<div>`.",
+      type: "string",
+    },
+    {
+      name: "style",
+      description: "Inline styles applied to the outer `<div>`.",
+      type: "CSSProperties",
+    },
+  ]}
+/>
+
+### ExpressionEditor.CompletionList
+
+<TypeTable
+  type={[
+    {
+      name: "children",
+      description: "Render prop that receives the current items and loading state.",
+      type: "(props: { items: CompletionItem[]; loading: boolean }) => ReactNode",
+    },
+  ]}
+/>
+
+### ExpressionEditor.CompletionListItem
+
+<TypeTable
+  type={[
+    {
+      name: "item",
+      description: "The completion item to render.",
+      type: "CompletionItem",
+      required: true,
+    },
+    {
+      name: "index",
+      description: "The item's position in the list. Used to compute `aria-selected` state.",
+      type: "number",
+      required: true,
+    },
+  ]}
+/>
+
+## Next Steps
+
+::next[/docs/expressions-overview]
+::next[/docs/expression-filters]
+::next[/docs/expression-plugins]

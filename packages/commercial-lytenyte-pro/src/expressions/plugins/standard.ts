@@ -9,8 +9,11 @@ import { membershipPlugin } from "./membership.js";
 import { accessPlugin } from "./access.js";
 import { arrowsPlugin } from "./arrows.js";
 import { collectionsPlugin } from "./collections.js";
+import { quotedIdentifierPlugin } from "./quoted-identifier.js";
+import { dateLiteralPlugin } from "./date-literal.js";
 
 export const standardPlugins: Plugin[] = [
+  dateLiteralPlugin,
   arrowsPlugin,
   collectionsPlugin,
   stringsPlugin,
@@ -21,9 +24,11 @@ export const standardPlugins: Plugin[] = [
   ternaryPlugin,
   pipePlugin,
   accessPlugin,
+  quotedIdentifierPlugin,
 ];
 
 export {
+  dateLiteralPlugin,
   stringsPlugin,
   booleansPlugin,
   comparisonPlugin,
@@ -34,4 +39,5 @@ export {
   accessPlugin,
   arrowsPlugin,
   collectionsPlugin,
+  quotedIdentifierPlugin,
 };

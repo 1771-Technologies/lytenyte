@@ -104,6 +104,10 @@ body {
   box-shadow: none;
 }
 
+table {
+  width: 100%;
+}
+
 .type-table .expressive-code {
   @apply my-0;
 

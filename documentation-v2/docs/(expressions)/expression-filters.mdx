@@ -1,67 +1,145 @@
 ---
 title: Expression Filters
-description: Create complex grid filters using a custom filter language with LyteNyte's expression capabilities.
+description: Learn how to create complex filter logic using LyteNyte Grid's expression capabilities.
 pro: true
-step: Filter grid rows based on the predicate value of an expression.
+step: Define complex logical conditions to filter grid rows.
 ---
 
 :::note
 
-This guide assumes you are already familiar with how filters work in LyteNyte Grid. In particular,
-the demos in this guide use the client source to demonstrate expression filters.
+This guide assumes familiarity with LyteNyte Grid expressions and filtering concepts.
+The demos in this guide use the client row source to
+demonstrate expression filters.
 
-See the [Client Row Filtering guide](/docs/client-source-filtering) for more guidance.
+For background, review the [Client Row Filtering](/docs/client-source-filtering)
+and [Expressions Overview guide](/docs/expressions-overview).
 
 :::
 
-## Filtering With An Expression
+## Creating Expression Filters
 
-A filter expression is a standard expression that evaluates to a boolean value.
-The expression defines the predicate, and the evaluator checks
-whether each row satisfies that predicate.
+An expression filter returns a boolean value. LyteNyte Grid evaluates this expression
+against each row and keeps the row only if the result is `true`.
 
-The example below demonstrates filter expressions in action. You can perform any type of comparison on the
-columns. The expression is preloaded with `Gender == "Male" && Quantity > 10`, which translates to "any
-row with a gender of 'Male' and a quantity greater than 10."
+To make filter expressions easier to read and write, use column names rather
+than column IDs. For example, a user writes `Gender == "Male"` instead
+of `row.customerGender == "Male"`.
 
-::demo[Expression Filters="./demos/expression-filter"]
+Two mechanisms support this mapping:
 
-To handle expression filters for columns, configure the `Evaluator` with a custom plugin provided by
-LyteNyte Grid: `createResolvedIdentifierPlugin`. This function returns a plugin that treats specific
-identifiers as values. The code is shown below:
+1. **`createResolvedIdentifierPlugin`:** Intercepts identifier nodes in the AST and rewrites
+   them as function calls. This ensures `Gender` resolves from the context at evaluation time
+   instead of being treated as a plain key.
+2. **Context Object:** Maps each column display name to a function that reads the column value
+   from the current row using `computeField`.
+
+The demo below preloads the expression `Gender == "Male" && Quantity > 10`.
+Type an expression to update the filter, or select one of the provided examples.
+
+::demo[Filter Expressions="./demos/expression-filter"]
+
+The demo includes the complete expression filter implementation. With only a few lines
+of code, expression filters let users create advanced filtering logic concisely.
+
+### Evaluator Setup
+
+Start by creating an `Evaluator` instance. Instantiate the `Evaluator` either outside
+your React component or inside a `useMemo` hook to maintain a stable reference.
+Use `standardPlugins` and `createResolvedIdentifierPlugin` to enable advanced
+expression capabilities:
 
 ```ts
+import {
+  createResolvedIdentifierPlugin,
+  Evaluator,
+  standardPlugins,
+} from "@1771technologies/lytenyte-pro/expressions";
+
 const evaluator = new Evaluator(
   standardPlugins.concat([
-    //!next 4
     createResolvedIdentifierPlugin({
-      args: ["row"],
       identifiers: columns.map((x) => x.name ?? x.id),
+      args: ["row"],
     }),
   ]),
 );
 ```
 
-Each column evaluates per row, so the evaluator must resolve the column value for a given row. However,
-you do not want to treat columns as functions in the expression (for example, the user should
-be able to write `Gender` instead of `Gender()` in the expression).
+### Building the Filter Function
 
-The plugin performs this substitution at the AST level, so when a user
-writes `Gender`, the evaluator resolves it to the correct cell value. See the demo code for the full usage.
+You can filter rows in LyteNyte Grid by passing a filter function. To implement
+an expression as a [filter function](/docs/client-source-filtering), follow these steps:
 
-## Filter Expressions Considerations
+1. Create a context object that maps column names to functions that return the column value for a given row:
 
-Filter expressions evaluated on the client are more expensive than hard-coded filter functions. This is because
-the evaluator processes the expression from an AST, which adds an extra computation step. In return, you gain
-more flexibility in the types of filters users can create.
+   ```ts
+   import { computeField } from "@1771technologies/lytenyte-pro";
+   import type { RowLeaf } from "@1771technologies/lytenyte-pro/types";
 
-Evaluating an expression AST on the client works well for client-side data, but it is less suitable for
-server-side data. In these cases, you can serialize the AST and send it to the server. The AST produced by the
-`Evaluator` is serializable unless you provide a custom plugin that generates nodes that cannot be converted
-to JSON.
+   const columnsContext = useMemo(
+     () =>
+       Object.fromEntries(
+         columns.map((col) => [col.name ?? col.id, (row: RowLeaf) => computeField(col.field ?? col.id, row)]),
+       ),
+     [],
+   );
+   ```
+
+2. Pre-parse the expression into an AST to avoid tokenizing it on every predicate evaluation.
+   Set `undefinedIdentifierFallback` to `true` to ensure partially typed expressions
+   return `true` rather than throwing an error:
+
+   ```ts
+   const filter = useMemo(() => {
+     if (!committed) return null;
+     try {
+       const ast = evaluator.ast(committed);
+
+       return (row: RowLeaf<GridSpec["data"]>) =>
+         !!evaluator.run(ast, { row, ...columnsContext }, { undefinedIdentifierFallback: true });
+     } catch {
+       return null; // invalid expression, show all rows
+     }
+   }, [committed, columnsContext]);
+   ```
+
+3. Pass the filter function to `useClientDataSource`:
+
+   ```ts
+   const ds = useClientDataSource<GridSpec>({ data, filter });
+   ```
+
+### Completion Provider Wiring
+
+Pass a completion provider to `ExpressionEditor.Root` to enable autocomplete for column names.
+Use `createCompletionProvider` to create the default provider. Provide a `Record<displayName, id>` map
+so the provider does not require access to the full context object:
+
+```ts
+const provider = useMemo(
+  () => createCompletionProvider(Object.fromEntries(columns.map((col) => [col.name ?? col.id, col.id]))),
+  [],
+);
+```
+
+## Server-Side Expression Filters
+
+The `Evaluator` can compute expression values on the client when all data referenced by
+the expression is available locally. If your data is stored on the server,
+serialize the expression AST and evaluate it server-side instead:
+
+```ts
+const ast = evaluator.ast(committed);
+const serialized = JSON.stringify(ast); // send in your DataRequest
+```
+
+The AST is fully serializable as long as your plugins do not introduce custom node types that
+cannot be converted to JSON. `standardPlugins` and `createResolvedIdentifierPlugin` produce only
+serializable nodes.
 
 ## Next Steps
 
+::next[/docs/expression-fields]
 ::next[/docs/expressions-overview]
 ::next[/docs/expression-plugins]
 ::next[/docs/client-source-filtering]

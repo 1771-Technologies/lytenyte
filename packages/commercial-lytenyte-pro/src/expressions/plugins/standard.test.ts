@@ -6,8 +6,8 @@ describe("standardPlugins", () => {
     expect(Array.isArray(standardPlugins)).toBe(true);
   });
 
-  test("Should contain all 10 standard plugins", () => {
-    expect(standardPlugins).toHaveLength(10);
+  test("Should contain all 12 standard plugins", () => {
+    expect(standardPlugins).toHaveLength(12);
   });
 
   test("Should contain named plugins", () => {
@@ -22,6 +22,7 @@ describe("standardPlugins", () => {
     expect(names).toContain("ternary");
     expect(names).toContain("pipe");
     expect(names).toContain("access");
+    expect(names).toContain("quoted-identifier");
   });
 
   test("Each plugin should have a name property", () => {

@@ -14,6 +14,9 @@ export {
   standardPlugins,
   stringsPlugin,
   ternaryPlugin,
+  quotedIdentifierPlugin,
 } from "./plugins/standard.js";
 
 export { createResolvedIdentifierPlugin } from "./plugins/resolved-identifier.js";
+export { dateLiteralPlugin } from "./plugins/date-literal.js";
+export { createDateIdentifierPlugin } from "./plugins/date-identifier.js";

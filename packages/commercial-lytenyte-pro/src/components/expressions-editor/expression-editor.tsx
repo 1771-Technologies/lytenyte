@@ -20,7 +20,7 @@ const sharedFontStyle: CSSProperties = {
   padding: "0",
 };
 
-const triggerCharacters = ["."];
+const triggerCharacters = [".", " "];
 
 export function ExpressionEditor({
   value,
@@ -59,11 +59,6 @@ export function ExpressionEditor({
 
   const completions = useCompletions(completionProvider);
   const cursorPosition = useCursorPosition(textareaRef);
-  const navigation = useKeyboardNavigation({
-    onValueChange,
-    onDismiss: completions.dismiss,
-    textareaRef,
-  });
 
   const trigger = useCompletionTrigger({
     triggerCharacters,
@@ -72,6 +67,18 @@ export function ExpressionEditor({
       completions.fetchCompletions(toks, pos, word);
     },
     tokenize,
+  });
+
+  const navigation = useKeyboardNavigation({
+    onValueChange,
+    onAccepted: (value, cursorPosition) => {
+      if (completionProvider) {
+        trigger.triggerManually(value, cursorPosition + 1);
+      } else {
+        completions.dismiss();
+      }
+    },
+    textareaRef,
   });
 
   depsRef.current = {
@@ -119,7 +126,18 @@ export function ExpressionEditor({
 
     const word = getWordAtCursor(newValue, selectionStart);
     if (deps.isOpen) {
-      deps.updateFilter(word.word);
+      const charBefore = newValue[selectionStart - 1] || "";
+      if (word.word.length > 0) {
+        deps.updateFilter(word.word);
+      } else if (charBefore === '"' || charBefore === "'") {
+        // String delimiter typed — close the popover rather than re-triggering.
+        deps.dismiss();
+        deps.cancel();
+      } else if (!triggerCharacters.includes(charBefore)) {
+        // Non-word, non-trigger char (e.g. an operator) - re-fetch so the list
+        // reflects the new syntactic context rather than keeping stale results.
+        deps.triggerManually(newValue, selectionStart);
+      }
     }
 
     deps.handleInputChange(newValue, selectionStart);
@@ -151,8 +169,8 @@ export function ExpressionEditor({
   };
 
   const popoverValue = useMemo(() => {
-    return { isOpen: completions.isOpen, coordinates: cursorPosition.coordinates };
-  }, [completions.isOpen, cursorPosition.coordinates]);
+    return { isOpen: completions.isOpen, referenceElement: cursorPosition.virtualElement };
+  }, [completions.isOpen, cursorPosition.virtualElement]);
   const listValue = useMemo(() => {
     return {
       items: completions.filteredItems,

@@ -124,6 +124,7 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
                             pro: z.boolean().optional(),
                             step: z.string().optional(),
                             description: z.string().optional(),
+                            changelog: z.boolean().optional(),
                             blog: z.object({
                               author: z.string(),
                               date: z.string(),

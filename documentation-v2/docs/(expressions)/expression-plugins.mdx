@@ -1,54 +1,200 @@
 ---
 title: Expression Plugins
 pro: true
-step: Extend the capabilities of the expression evaluator with custom plugins.
-description: Expression plugins allow you to extend the syntax and evaluation capabilities of
-  expressions provided by LyteNyte.
+step: Extend expression capabilities with custom plugins.
+description: Enhance the syntax and evaluation capabilities of expressions using custom plugins.
 ---
 
 :::note
 
-This guide assumes you understand how expressions work in LyteNyte Grid. Read the
-[Expressions Overview guide](/docs/expressions-overview) for more guidance.
+This guide assumes familiarity with LyteNyte Grid's expressions.
+For more details, refer to the [Expressions Overview guide](/docs/expressions-overview).
 
-A basic understanding of lexers, parsers, and abstract syntax trees is recommended to
-get the most out of creating expression plugins.
+A basic understanding of lexers, parsers, and abstract syntax trees
+is recommended to get the most out of creating expression plugins.
 
 :::
 
-## Extending Expression Syntax
+## Plugin Pipeline
 
-LyteNyte Grid provides the `Evaluator` class, which accepts an array of plugins when you instantiate it.
-These plugins extend the evaluator's capabilities and allow it to handle a wider range of expressions.
+Every expression passes through four sequential stages:
 
-A `Plugin` is any object that conforms to the interface shown below. You only need to implement the parts
-of the interface that your plugin requires.
+```
+Source string
+    ↓ scan (tokenization)
+Token[]
+    ↓ parse
+ASTNode
+    ↓ optimize
+ASTNode (simplified)
+    ↓ evaluate
+value
+```
+
+A plugin can hook into any stage of the expression lifecycle.
+All hooks are optional. Implement only the ones your plugin requires:
+
+- **`scan` Hook:** For tokenizing the raw string.
+- **`parse` Hook:** For building the Abstract Syntax Tree (AST).
+- **`optimize` Hook:** For transforming or simplifying the AST.
+- **`evaluate` Hook:** For computing the final result.
+
+## Plugin Interface
 
 ```ts
-export interface Plugin {
+interface Plugin {
   name: string;
+
+  // Stage 1: Tokenization
   scan?: (source: string, pos: number) => { type: string; value: string; end: number } | null;
+
+  // Stage 2: Parsing
   parsePrefix?: (ctx: ParserContext) => ASTNode | null;
   parseInfix?: (ctx: ParserContext, left: ASTNode, minPrec: number) => ASTNode | null;
   parsePostfix?: (ctx: ParserContext, node: ASTNode) => ASTNode | null;
   parseUnary?: (ctx: ParserContext, parseNext: (ctx: ParserContext) => ASTNode) => ASTNode | null;
   infixPrecedence?: (ctx: ParserContext) => number | undefined;
+
+  // Stage 3: Optimization
   optimize?: (node: ASTNode, optimize: (n: ASTNode) => ASTNode) => ASTNode | null;
-  evaluate?: (node: ASTNode, context: Record<string, unknown>, evaluate: EvalFn) => { value: unknown } | null;
+
+  // Stage 4: Evaluation
+  evaluate?: (
+    node: ASTNode,
+    context: Record<string, unknown>,
+    evaluate: (node: ASTNode, context: Record<string, unknown>) => unknown,
+  ) => { value: unknown } | null;
 }
 ```
 
-Each method corresponds to a stage in the evaluator's flow (tokenizing, parsing, and evaluating).
-Plugins are best understood through examples. The following sections provide examples you can use
-as a reference when building your own plugins.
+Return `null` from any hook to signal “not handled by this plugin.” The evaluator then tries
+the next plugin in the array. Return a non-null value to claim the node and stop the chain.
 
-### AST Enhancement Example
+| Hook              | Stage        | Use When...                                                                          |
+| ----------------- | ------------ | ------------------------------------------------------------------------------------ |
+| `scan`            | Tokenization | You need a new token type (e.g. `#date` literals or `@variable` prefixes).           |
+| `parsePrefix`     | Parsing      | You need a new expression form that starts a term (literals, prefix operators).      |
+| `parseInfix`      | Parsing      | You need a binary operator that appears between two terms.                           |
+| `infixPrecedence` | Parsing      | You define an infix operator and need to declare its precedence.                     |
+| `parsePostfix`    | Parsing      | You need a postfix form that follows a completed term (member access, calls).        |
+| `parseUnary`      | Parsing      | You need a unary wrapper around the next term (rarely needed outside `parsePrefix`). |
+| `optimize`        | Optimization | You want to simplify or constant-fold custom AST nodes before evaluation.            |
+| `evaluate`        | Evaluation   | You need to compute a value from a custom (or existing) AST node type.               |
 
-The code below shows `createResolvedIdentifierPlugin`. This plugin treats specific identifiers as implicit
-function calls during evaluation. See the [Expression Filter guide](/docs/expression-filters) for a demonstration.
+## Scan Hook
+
+`scan(source, pos)` runs at each character position the tokenizer does not recognize.
+The scan hook must return a token descriptor or `null`:
 
 ```ts
-export function createResolvedIdentifierPlugin(options: { identifiers: string[]; args: string[] }): Plugin {
+scan: (source: string, pos: number) => {
+  type: string;  // token type name, used by parse hooks
+  value: string; // raw matched text
+  end: number;   // index of the first character AFTER the token
+} | null
+```
+
+The `end` field is a source position, not a length. For a token starting at `pos` with text
+`"#2024-01-15"` (11 characters), `end` is `pos + 11`.
+
+## Parse Hooks
+
+All parse hooks receive a `ParserContext` that represents the current position in the token
+stream. Use these helpers to interact with it:
+
+```ts
+import { current, advance, expect } from "@1771technologies/lytenyte-pro/expressions";
+
+current(ctx)              // returns the current token
+advance(ctx)              // consumes the current token and advances
+expect(ctx, type, value?) // asserts and consumes the current token
+```
+
+A typical `parsePrefix` hook checks the current token, consumes it, and returns an AST node:
+
+```ts
+parsePrefix: (ctx) => {
+  const tok = current(ctx);
+  if (tok.type !== "MyTokenType") return null;
+  advance(ctx);
+  return { type: "MyNode", value: tok.value, start: tok.start, end: tok.end };
+},
+```
+
+### Infix Precedence
+
+`parseInfix` handles binary operators. The parser uses precedence climbing and only calls
+`parseInfix` when the operator's precedence is at least `minPrec`. Always declare precedence
+in `infixPrecedence` and check it before consuming tokens:
+
+```ts
+infixPrecedence: (ctx) => {
+  return current(ctx).value === "~>" ? 8 : undefined;
+},
+
+parseInfix: (ctx, left, minPrec) => {
+  if (current(ctx).value !== "~>") return null;
+  const prec = 8;
+  if (prec < minPrec) return null;
+  advance(ctx);
+  const right = parseExpression(ctx, prec + 1); // left-associative
+  return { type: "MyInfixNode", left, right, start: left.start, end: right.end };
+},
+```
+
+Use `prec - 1` instead of `prec + 1` for right-associative operators (such as `**`).
+
+## Optimize Hook
+
+`optimize(node, optimize)` receives a node and a recursive optimizer function. Call the recursive
+function on child nodes before simplifying the parent:
+
+```ts
+optimize: (node, opt) => {
+  if (node.type !== "MyNode") return null;
+  const child = opt((node as any).child);
+  if (child.type === "NumberLiteral") {
+    return { type: "NumberLiteral", value: (child as any).value * 2, start: node.start, end: node.end };
+  }
+  return { ...node, child };
+},
+```
+
+Return `null` to defer handling to the next plugin. Return a node (even unchanged) to take control
+of optimization for that node type.
+
+## Evaluate Hook
+
+`evaluate(node, context, evaluate)` receives the current AST node, the evaluation context, and
+a recursive evaluator function. Call the recursive function to evaluate child nodes:
+
+```ts
+evaluate: (node, context, evalFn) => {
+  if (node.type !== "MyNode") return null;
+  const childValue = evalFn((node as any).child, context);
+  return { value: doSomethingWith(childValue) };
+},
+```
+
+The evaluate hook returns an object (`{ value: ... }`) to distinguish a valid
+result (including `undefined`) from a `null` “not handled” signal.
+
+The `context` argument is the same object passed to `evaluator.run`. Pass it unchanged unless
+your plugin intentionally introduces new bindings.
+
+## Plugin Examples
+
+### Evaluation Hook: Resolving Column Identifiers
+
+`createResolvedIdentifierPlugin` uses only the `evaluate` hook. It intercepts `Identifier` nodes
+that match a registered list and calls them as functions. This allows users to write `Gender`
+while the evaluator resolves the value from the current row.
+
+The default identifier lookup reads `context[name]`. This plugin treats the value as a function
+and calls it with the row argument:
+
+```ts
+function createResolvedIdentifierPlugin(options: { identifiers: string[]; args: string[] }): Plugin {
   const identifierSet = new Set(options.identifiers);
   const argKeys = options.args;
 
@@ -56,11 +202,11 @@ export function createResolvedIdentifierPlugin(options: { identifiers: string[];
     name: "resolved-identifier",
     evaluate: (node, context) => {
       if (node.type !== "Identifier") return null;
-      if (!identifierSet.has(node.name)) return null;
+      if (!identifierSet.has((node as any).name)) return null;
 
-      const fn = context[node.name];
+      const fn = context[(node as any).name];
       if (typeof fn !== "function") {
-        throw new Error(`Resolved identifier "${node.name}" is not a function in context`);
+        throw new Error(`Resolved identifier "${(node as any).name}" is not a function in context`);
       }
 
       const args = argKeys.map((key) => context[key]);
@@ -70,23 +216,24 @@ export function createResolvedIdentifierPlugin(options: { identifiers: string[];
 }
 ```
 
-### Boolean Support Example
+See the [Expression Filters guide](/docs/expression-filters) for a full example.
 
-The plugin below adds boolean support to the expression syntax. It is used by the standard plugins.
+### Parse + Evaluate: Adding Boolean Literals
+
+`booleansPlugin` uses `parsePrefix` to convert tokens into AST nodes and `evaluate` to produce
+runtime values.
+
+The tokenizer already recognizes `true`, `false`, `null`, and `undefined`. This plugin converts
+them into AST nodes and evaluates them:
 
 ```ts
-export const booleansPlugin: Plugin = {
+const booleansPlugin: Plugin = {
   name: "booleans",
-  parsePrefix: (ctx: ParserContext) => {
+  parsePrefix: (ctx) => {
     const tok = current(ctx);
     if (tok.type === "Boolean") {
       advance(ctx);
-      return {
-        type: "BooleanLiteral",
-        value: tok.value === "true",
-        start: tok.start,
-        end: tok.end,
-      };
+      return { type: "BooleanLiteral", value: tok.value === "true", start: tok.start, end: tok.end };
     }
     if (tok.type === "Null") {
       advance(ctx);
@@ -107,7 +254,88 @@ export const booleansPlugin: Plugin = {
 };
 ```
 
+### Scan + Parse + Evaluate: A Custom Token Type
+
+When you need syntax the tokenizer does not recognize, add a `scan` hook. This plugin introduces
+a `#YYYY-MM-DD` date literal:
+
+```ts
+const dateLiteralPlugin: Plugin = {
+  name: "date-literal",
+
+  scan: (source, pos) => {
+    if (source[pos] !== "#") return null;
+    const match = /^#(\d{4}-\d{2}-\d{2})/.exec(source.slice(pos));
+    if (!match) return null;
+    return { type: "DateLiteral", value: match[1], end: pos + match[0].length };
+  },
+
+  parsePrefix: (ctx) => {
+    const tok = current(ctx);
+    if (tok.type !== "DateLiteral") return null;
+    advance(ctx);
+    return { type: "DateLiteralNode", isoValue: tok.value, start: tok.start, end: tok.end };
+  },
+
+  evaluate: (node) => {
+    if (node.type !== "DateLiteralNode") return null;
+    return { value: new Date((node as any).isoValue) };
+  },
+};
+```
+
+### Infix Operator: A Custom Binary Operator
+
+`parseInfix` and `infixPrecedence` define binary operators. This example adds `**` exponentiation:
+
+```ts
+const exponentiationPlugin: Plugin = {
+  name: "exponentiation",
+
+  infixPrecedence: (ctx) => {
+    return current(ctx).value === "**" ? 70 : undefined;
+  },
+
+  parseInfix: (ctx, left, minPrec) => {
+    if (current(ctx).value !== "**") return null;
+    const prec = 70;
+    if (prec < minPrec) return null;
+    advance(ctx);
+    const right = parseExpression(ctx, prec - 1); // right-associative
+    return { type: "ExponentiationExpr", left, right, start: left.start, end: right.end };
+  },
+
+  evaluate: (node, context, evalFn) => {
+    if (node.type !== "ExponentiationExpr") return null;
+    const base = evalFn((node as any).left, context) as number;
+    const exp = evalFn((node as any).right, context) as number;
+    return { value: Math.pow(base, exp) };
+  },
+};
+```
+
+## Composing Plugins
+
+Pass plugins as an array to `Evaluator`. The evaluator tries them in order and uses the first
+non-null result for each node.
+
+Place custom plugins after `standardPlugins`. Standard plugins handle core node types, and placing
+custom plugins after them avoids unintended overrides:
+
+```ts
+const evaluator = new Evaluator([
+  ...standardPlugins,
+  dateLiteralPlugin,
+  exponentiationPlugin,
+  createResolvedIdentifierPlugin({ args: ["row"], identifiers: columnNames }),
+]);
+```
+
+Plugins that intentionally override existing behavior (such as `createResolvedIdentifierPlugin`)
+must also appear after `standardPlugins`.
+
 ## Next Steps
 
 ::next[/docs/expressions-overview]
 ::next[/docs/expression-filters]
+::next[/docs/expression-fields]

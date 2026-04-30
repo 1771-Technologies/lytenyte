@@ -10,14 +10,14 @@ const { toc } = Astro.props;
 
 {
   toc.length && (
-    <h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-xd-muted-foreground">
+    <h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-xd-muted-foreground tabular-nums">
       <span class="iconify ph--text-align-left-light size-4" />
       On this page
     </h3>
   )
 }
 
-<div class="relative">
+<div class="relative tabular-nums">
   <div role="none" class="absolute transition-all bg-xd-foreground w-px" id="toc-border"></div>
 
   <div class="flex flex-col text-sm gap-1.5 border-l border-xd-border" id="toc">
