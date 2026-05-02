@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { makePositionArray } from "../../coordinates/make-position-array/make-position-array.js";
-import { sizeFromCoord } from "../size-from-coord.js";
+import { sizeFromCoord } from "./size-from-coord.js";
+import { makePositionArray } from "../coordinates/index.js";
 
 describe("sizeFromCoord", () => {
   test("Should return the correct value", () => {

@@ -2,7 +2,7 @@ import { afterAll, beforeAll, beforeEach, vi } from "vitest";
 
 beforeEach(() => {
   vi.resetAllMocks();
-  document.body.innerHTML = "";
+  if (typeof document !== "undefined") document.body.innerHTML = "";
 });
 
 // Suppress stupid act warnings. https://github.com/vitest-community/vitest-browser-react/issues/37
