@@ -9,6 +9,7 @@ export interface ColumnManagerProps<Spec extends GridSpec = GridSpec> {
   readonly columns: Column<Spec>[];
   readonly onColumnsChange: (change: Column<Spec>[]) => void;
   readonly base?: Grid.ColumnBase<Spec>;
+  readonly rowHeight?: number;
   readonly endElement?: (params: { columns: Column<Spec>[]; row: RowNode<Spec["data"]> }) => ReactNode;
   /**
    * @alpha
@@ -20,6 +21,7 @@ export interface ColumnManagerProps<Spec extends GridSpec = GridSpec> {
 export function ColumnManager<Spec extends GridSpec = GridSpec>({
   columns: provided,
   base,
+  rowHeight = 30,
   onColumnsChange,
   endElement,
   getPillManagerTag,
@@ -76,7 +78,7 @@ export function ColumnManager<Spec extends GridSpec = GridSpec>({
       items={items}
       rowSelectionEnabled={false}
       draggable
-      rowHeight={30}
+      rowHeight={rowHeight}
       rowSelectAllShow={false}
       getDragTags={getDragItems as any}
       defaultExpansion
