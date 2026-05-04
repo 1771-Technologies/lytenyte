@@ -25,15 +25,14 @@
     "filtering",
     "virtualized"
   ],
-  "version": "2.1.1-dev.1",
+  "version": "2.1.1",
   "type": "module",
   "files": [
     "dist",
     "css",
     "skills",
     "LICENSE",
-    "README.md",
-    "SECURITY.md"
+    "README.md"
   ],
   "homepage": "https://1771technologies.com",
   "repository": {

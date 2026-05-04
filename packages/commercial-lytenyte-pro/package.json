@@ -1,7 +1,7 @@
 {
   "name": "@1771technologies/lytenyte-pro",
   "description": "Blazingly fast headless React data grid with 100s of features.",
-  "version": "2.1.1-dev.1",
+  "version": "2.1.1",
   "type": "module",
   "license": "COMMERCIAL",
   "files": [
@@ -9,7 +9,6 @@
     "css",
     "skills",
     "LICENSE",
-    "SECURITY.md",
     "README.md"
   ],
   "keywords": [
