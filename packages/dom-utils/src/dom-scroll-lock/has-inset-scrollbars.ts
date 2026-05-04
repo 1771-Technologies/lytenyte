@@ -1,5 +1,5 @@
-import { getDocument } from "../dom-utils/getters/get-document.js";
-import { getWindow } from "../dom-utils/getters/get-window.js";
+import { getDocument } from "../getters/get-document.js";
+import { getWindow } from "../getters/get-window.js";
 
 /**
  * Returns true if the document has inset (overlay) scrollbars, detected by

@@ -1,9 +1,8 @@
-import { getDocument } from "../dom-utils/getters/get-document.js";
-import { isIOS } from "../dom-utils/detection/index.js";
+import { isIOS } from "../detection/is-ios.js";
+import { getDocument } from "../getters/get-document.js";
 import { basicPreventScroll } from "./basic-prevent-scroll.js";
 import { hasInsetScrollbars } from "./has-inset-scrollbars.js";
 import { standardPreventScroll } from "./standard-prevent-scroll.js";
-import { getComputedStyle } from "../dom-utils/getters/get-computed-style.js";
 
 /**
  * Manages a reference-counted scroll lock. Multiple callers can independently

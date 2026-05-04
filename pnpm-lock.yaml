@@ -836,6 +836,12 @@ importers:
         specifier: workspace:*
         version: link:../sample-data
 
+  packages/dom-utils:
+    dependencies:
+      '@1771technologies/js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
+
   packages/js-utils: {}
 
   packages/lytenyte-core:

@@ -1,4 +1,4 @@
-import { getDocument } from "../dom-utils/getters/get-document.js";
+import { getDocument } from "../getters/get-document.js";
 
 /**
  * Prevents scrolling on the document by setting `overflow: hidden` on the

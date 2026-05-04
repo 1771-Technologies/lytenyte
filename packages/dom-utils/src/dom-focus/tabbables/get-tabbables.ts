@@ -1,4 +1,4 @@
-import { isFrame } from "../../dom-utils/predicates/index.js";
+import { isFrame } from "../../predicates/is-frame.js";
 import { focusableSelector } from "../constants.js";
 import type { IncludeContainerType } from "../types.js";
 import { getTabIndex } from "./get-tab-index.js";

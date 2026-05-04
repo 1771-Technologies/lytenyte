@@ -1,5 +1,5 @@
+import { isEditableElement } from "../../predicates/is-editable-element.js";
 import { hasTabIndex } from "./has-tab-index.js";
-import { isEditableElement } from "../../dom-utils/predicates/index.js";
 
 /**
  * Returns the effective tab index of an element. For `audio`, `video`, `details`,

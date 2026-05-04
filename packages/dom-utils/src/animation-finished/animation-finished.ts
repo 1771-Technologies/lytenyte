@@ -1,4 +1,4 @@
-import { frame } from "../../dom-frame/frame.js";
+import { frame } from "../dom-frame/frame.js";
 
 export interface OnAnimationFinishedParams {
   readonly element: HTMLElement;

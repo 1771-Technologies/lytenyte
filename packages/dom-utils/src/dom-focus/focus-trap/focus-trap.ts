@@ -2,10 +2,6 @@
 // MIT License
 
 import { addDomEvent } from "./add-dom-event.js";
-import { getActiveElement } from "../../dom-utils/getters/get-active-element.js";
-import { getDocument } from "../../dom-utils/getters/get-document.js";
-import { getEventTarget } from "../../dom-utils/getters/get-event-target.js";
-import { isDocument } from "../../dom-utils/predicates/index.js";
 import type {
   ActivateOptions,
   DeactivateOptions,
@@ -20,6 +16,10 @@ import { getTabIndex } from "../tabbables/get-tab-index.js";
 import { getTabbables } from "../tabbables/get-tabbables.js";
 import { isFocusable } from "../focusables/is-focusable.js";
 import { isTabbable } from "../tabbables/is-tabbable.js";
+import { getDocument } from "../../getters/get-document.js";
+import { getEventTarget } from "../../getters/get-event-target.js";
+import { isDocument } from "../../predicates/is-document.js";
+import { getActiveElement } from "../../getters/get-active-element.js";
 
 function activateTrap(trapStack: FocusTrap[], trap: FocusTrap) {
   if (trapStack.length > 0) {

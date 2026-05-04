@@ -1,7 +1,7 @@
-import { isWebKit } from "../dom-utils/detection/index.js";
-import { getDocument } from "../dom-utils/getters/get-document.js";
-import { getWindow } from "../dom-utils/getters/get-window.js";
+import { isWebKit } from "../detection/is-webkit.js";
 import { frame } from "../dom-frame/frame.js";
+import { getDocument } from "../getters/get-document.js";
+import { getWindow } from "../getters/get-window.js";
 
 let savedStyles: Partial<CSSStyleDeclaration> = {};
 let savedBodyStyles: Partial<CSSStyleDeclaration> = {};
