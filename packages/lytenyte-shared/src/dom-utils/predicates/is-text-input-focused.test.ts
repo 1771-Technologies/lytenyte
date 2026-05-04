@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { isTextInputFocused } from "./is-text-input-focused.js";
-import { wait } from "../../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("isTextInputFocused", () => {
   test("Should return the correct value when a text input is focused", async () => {

@@ -1,4 +1,4 @@
-import { clamp } from "../../js-utils/clamp.js";
+import { clamp } from "@1771technologies/js-utils";
 import type { ColumnAbstract } from "../../types.js";
 
 const DEFAULT_COLUMN_WIDTH = 200;

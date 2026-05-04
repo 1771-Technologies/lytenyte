@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { frame } from "./frame.js";
-import { wait } from "../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("frame", () => {
   test("Should continue running a function until it returns false", async () => {

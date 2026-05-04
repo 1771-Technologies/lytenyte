@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { onAnimationFinished } from "./animation-finished.js";
-import { wait } from "../../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("onAnimationFinished", () => {
   test("Should invoke the callback only after all animations on the element have finished", async () => {

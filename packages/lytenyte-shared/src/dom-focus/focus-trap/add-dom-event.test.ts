@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { addDomEvent } from "../../dom-focus/focus-trap/add-dom-event.js";
 import { userEvent } from "vitest/browser";
-import { wait } from "../../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("addDomEvent", () => {
   test("Should call the handler when the event fires and stop calling it after the cleanup function is invoked", async () => {

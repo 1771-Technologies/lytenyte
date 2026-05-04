@@ -5,7 +5,7 @@ import type {
   PositionGridCell,
   PositionUnion,
 } from "../../+types";
-import { runWithBackoff } from "../../js-utils/index.js";
+import { runWithBackoff } from "@1771technologies/js-utils";
 import { getColIndex, getColSpan } from "../attributes.js";
 import { BACKOFF_RUNS } from "../constants.js";
 import { queryCell, queryFloatingCell, queryHeaderCell, queryHeaderCellsAtRow } from "../query.js";

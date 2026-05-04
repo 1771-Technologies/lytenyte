@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { basicPreventScroll } from "./basic-prevent-scroll.js";
-import { wait } from "../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("basicPreventScroll", () => {
   test("Should set the body overflow to hidden", async () => {

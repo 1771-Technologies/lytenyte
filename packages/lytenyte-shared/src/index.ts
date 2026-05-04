@@ -147,26 +147,6 @@ export { positionFromElement as getPositionFromFocusable } from "./navigation-x/
 export { getRowIndexFromEl } from "./navigation-x/get-row-index-from-el.js";
 export { getNearestRow } from "./navigation-x/get-nearest-row.js";
 
-// JS UTILS
-export {
-  arrayShallow,
-  clamp,
-  distance,
-  equal,
-  fastShallowCompare,
-  get,
-  getClientX,
-  getClientY,
-  isFunction,
-  itemsWithIdToMap,
-  rangedBinarySearch,
-  rangesOverlap,
-  runWithBackoff,
-  sleep,
-  wait,
-  moveRelative,
-} from "./js-utils/index.js";
-
 // DOM Utils
 export type { Autoscroller } from "./dom-autoscroller/index.js";
 export { computeScrollDirection, createAutoscroller } from "./dom-autoscroller/index.js";

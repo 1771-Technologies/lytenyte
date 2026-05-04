@@ -833,6 +833,8 @@ importers:
         specifier: workspace:*
         version: link:../sample-data
 
+  packages/js-utils: {}
+
   packages/lytenyte-core:
     dependencies:
       '@1771technologies/lytenyte-design':
@@ -864,7 +866,11 @@ importers:
 
   packages/lytenyte-design: {}
 
-  packages/lytenyte-shared: {}
+  packages/lytenyte-shared:
+    dependencies:
+      '@1771technologies/js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
 
   packages/sample-data:
     devDependencies:

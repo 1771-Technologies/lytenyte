@@ -1,6 +1,6 @@
 import type { PositionState, RootCellFn, ScrollIntoViewFn } from "../+types";
 import type { PositionUnion } from "../../+types";
-import { clamp } from "../../js-utils/index.js";
+import { clamp } from "@1771technologies/js-utils";
 import { handleFocusCellFromRoot } from "./handle-focus-cell-from-root.js";
 
 export interface HandlePageKeyParams {
