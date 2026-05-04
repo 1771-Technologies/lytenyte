@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { createAutoscroller, type Autoscroller } from "./create-autoscroller.js";
-import { wait } from "../js-utils/sleep.js";
+import { wait } from "@1771technologies/js-utils";
 
 const ACCELERATION = 5;
 const MAX_SPEED = 50;

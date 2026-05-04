@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { getScrollStatus } from "./get-scroll-status.js";
-import { wait } from "../../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("getScrollStatus", () => {
   test("Should return the correct scroll status values when the scroll is at different positions", async () => {

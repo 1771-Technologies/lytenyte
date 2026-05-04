@@ -2,7 +2,7 @@ import { expect, test, describe } from "vitest";
 import type { PositionUnion } from "../../+types";
 import { trackFocus } from "../track-focus.js";
 import { userEvent } from "vitest/browser";
-import { wait } from "../../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("trackFocus", () => {
   test("Should maintain tracking position", async () => {

@@ -1,4 +1,4 @@
-import { clamp } from "../js-utils/index.js";
+import { clamp } from "@1771technologies/js-utils";
 import { rangedBinarySearch } from "./ranged-binary-search.js";
 
 /**

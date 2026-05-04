@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { getRelativeXPosition } from "./get-relative-x-position.js";
-import { wait } from "../../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("getRelativeXPosition", () => {
   test("Should return the relative x position both left and right", () => {

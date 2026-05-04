@@ -1,7 +1,7 @@
 import { page } from "vitest/browser";
 import { describe, expect, test } from "vitest";
 import { getActiveElement } from "./get-active-element.js";
-import { wait } from "../../js-utils/index.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("getActiveElement", () => {
   test("Should return the focused element from the document", async () => {

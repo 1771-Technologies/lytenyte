@@ -2,7 +2,7 @@ import { useEvent } from "@1771technologies/lytenyte-core/internal";
 import type { ServerData } from "../server-data";
 import type { RowSourceServer } from "../use-server-data-source";
 import type { DataRequest } from "../types";
-import { equal } from "@1771technologies/lytenyte-shared";
+import { equal } from "@1771technologies/js-utils";
 
 export function useOnViewChange<T>(
   source: ServerData,

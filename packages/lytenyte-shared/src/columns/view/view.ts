@@ -1,4 +1,4 @@
-import { itemsWithIdToMap } from "../../js-utils/index.js";
+import { itemsWithIdToMap } from "@1771technologies/js-utils";
 import type { ColumnAbstract } from "../../types.js";
 import { columnGroupMeta } from "../group-meta/column-group-meta.js";
 import { maxColumnDepth } from "../max-depth/max-column-depth.js";

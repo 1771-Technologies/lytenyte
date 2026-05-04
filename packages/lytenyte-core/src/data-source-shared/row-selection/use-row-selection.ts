@@ -1,5 +1,4 @@
 import {
-  equal,
   rowSelectLinkWithoutParents,
   rowSelectLinkWithParents,
   type RowSelectionIsolated,
@@ -12,6 +11,7 @@ import { cleanTree } from "./clean-tree.js";
 import { useControlled } from "../../hooks/use-controlled.js";
 import { useEvent } from "../../hooks/use-event.js";
 import type { Signal } from "../../internal.js";
+import { equal } from "@1771technologies/js-utils";
 
 export type SourceRowSelection = {
   readonly rowSelectionsRaw: RowSelectionState;

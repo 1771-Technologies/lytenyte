@@ -1,5 +1,5 @@
 import type { PositionFullWidthRow } from "../+types";
-import { runWithBackoff } from "../js-utils/index.js";
+import { runWithBackoff } from "@1771technologies/js-utils";
 import type { PositionState, RootCellFn, ScrollIntoViewFn } from "./+types";
 import { queryCell, queryFullWidthRow } from "./query.js";
 

@@ -15,8 +15,7 @@
   "files": [
     "dist",
     "LICENSE",
-    "README.md",
-    "SECURITY.md"
+    "README.md"
   ],
   "exports": {
     ".": {
@@ -24,6 +23,9 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     }
+  },
+  "dependencies": {
+    "@1771technologies/js-utils": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

@@ -1,7 +1,6 @@
 import {
   computeScrollDirection,
   createAutoscroller,
-  equal,
   getDocument,
   getNearestFocusable,
   getPositionFromFocusable,
@@ -14,6 +13,7 @@ import { getAccessForcing } from "./get-access-forcing.js";
 import { getOriginOffsets } from "./get-origin-offsets.js";
 import { isDeselect } from "./is-deselect.js";
 import { isSelectSelfClick } from "./is-select-self-click.js";
+import { equal } from "@1771technologies/js-utils";
 
 export interface HandleRangeSelectionArgs {
   readonly gridId: string;

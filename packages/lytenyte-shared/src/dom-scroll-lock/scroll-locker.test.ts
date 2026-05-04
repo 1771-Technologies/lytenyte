@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { ScrollLocker } from "./scroll-locker.js";
-import { wait } from "../js-utils/sleep.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("ScrollLocker", () => {
   let locker: ScrollLocker;

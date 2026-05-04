@@ -1,5 +1,5 @@
 import type { PositionGridCell } from "../+types";
-import { equal } from "../js-utils/index.js";
+import { equal } from "@1771technologies/js-utils";
 
 export function cellEqual(left: PositionGridCell, right: PositionGridCell) {
   return Boolean(

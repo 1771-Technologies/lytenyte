@@ -1,6 +1,6 @@
 import type { PositionState, ScrollIntoViewFn } from "../+types.js";
 import type { PositionFullWidthRow, PositionGridCell, PositionUnion } from "../../+types.js";
-import { runWithBackoff } from "../../js-utils/index.js";
+import { runWithBackoff } from "@1771technologies/js-utils";
 import { BACKOFF_RUNS } from "../constants.js";
 import { queryCell, queryFullWidthRow } from "../query.js";
 import { handleFocus } from "./handle-focus.js";

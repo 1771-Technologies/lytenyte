@@ -1,6 +1,6 @@
 import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
-import { rangesOverlap, type LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
+import { type LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
 import { useDragMove } from "./use-drag-move.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { ResizeHandler } from "./resize-handler.js";
@@ -13,6 +13,7 @@ import { useHeaderLayoutContext } from "../../../root/contexts/header-layout.js"
 import { useGridRenderer } from "../../../root/contexts/grid-renderer-context.js";
 import { useStyleContext } from "../../../root/contexts/styles-context.js";
 import { useGridEvents } from "../../../root/contexts/events-context.js";
+import { rangesOverlap } from "@1771technologies/js-utils";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },

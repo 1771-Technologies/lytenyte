@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { handleViewportFocused } from "../handle-viewport-focused.js";
-import { wait } from "../../../js-utils/sleep.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("handleViewportFocused", () => {
   test("Should correctly focus the right cells", async () => {

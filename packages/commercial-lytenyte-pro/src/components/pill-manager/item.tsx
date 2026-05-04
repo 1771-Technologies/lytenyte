@@ -10,7 +10,8 @@ import {
 } from "@1771technologies/lytenyte-core/internal";
 import { DragDots } from "./icons.js";
 import { usePillRoot } from "./root.context.js";
-import { equal, moveRelative, type Writable } from "@1771technologies/lytenyte-shared";
+import { type Writable } from "@1771technologies/lytenyte-shared";
+import { equal, moveRelative } from "@1771technologies/js-utils";
 
 function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillItem.Props["ref"]) {
   const { expandToggle, expanded, row } = usePillRow();

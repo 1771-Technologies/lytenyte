@@ -1,5 +1,5 @@
 import type { PositionUnion } from "../+types";
-import { equal } from "../js-utils/index.js";
+import { equal } from "@1771technologies/js-utils";
 import { cellEqual } from "./cell-equal.js";
 
 export function positionsEqual(p: PositionUnion | null, c: PositionUnion | null) {

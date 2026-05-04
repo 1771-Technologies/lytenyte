@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { standardPreventScroll } from "./standard-prevent-scroll.js";
-import { wait } from "../js-utils/sleep.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("standardPreventScroll", () => {
   test("Should handle webkit with viewport scroll", async () => {

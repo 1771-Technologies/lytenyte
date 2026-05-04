@@ -1,4 +1,4 @@
-import { computeBounds, equal, type RowSource, type SpanLayout } from "@1771technologies/lytenyte-shared";
+import { computeBounds, type RowSource, type SpanLayout } from "@1771technologies/lytenyte-shared";
 import { createContext, memo, useContext, useMemo, useRef, useState, type PropsWithChildren } from "react";
 import { useRowCountsContext } from "./grid-areas/row-counts-context.js";
 import { useXCoordinates, useYCoordinates } from "./coordinates.js";
@@ -6,6 +6,7 @@ import { useColumnsContext } from "./columns/column-context.js";
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
 import { useViewportContext } from "./viewport/viewport-context.js";
 import { useDimensionContext } from "./viewport/dimensions-context.js";
+import { equal } from "@1771technologies/js-utils";
 
 const boundsContext = createContext<SpanLayout>({} as any);
 const startBoundsContext = createContext<[start: number, end: number]>(null as any);

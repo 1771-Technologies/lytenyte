@@ -1,10 +1,4 @@
-import {
-  equal,
-  type RowGroup,
-  type RowLeaf,
-  type RowNode,
-  type Writable,
-} from "@1771technologies/lytenyte-shared";
+import { type RowGroup, type RowLeaf, type RowNode, type Writable } from "@1771technologies/lytenyte-shared";
 import type {
   LeafOrParent,
   SetDataAction,
@@ -19,6 +13,7 @@ import { getRequestId } from "./utils/get-request-id.js";
 import { getNodePath } from "./utils/get-node-path.js";
 import { getNodeDepth } from "./utils/get-node-depth.js";
 import type { DataRequest, DataResponse, DataResponsePinned } from "./types.js";
+import { equal } from "@1771technologies/js-utils";
 
 const noopFetcher = async () => [];
 

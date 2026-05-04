@@ -1,6 +1,6 @@
 import { createContext, memo, useContext, useMemo, useRef, type PropsWithChildren } from "react";
 import type { Root } from "../root.js";
-import { equal } from "@1771technologies/lytenyte-shared";
+import { equal } from "@1771technologies/js-utils";
 
 interface StyleSettings {
   readonly rowAlternateAttr: boolean;
