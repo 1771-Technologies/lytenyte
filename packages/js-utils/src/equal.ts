@@ -1,3 +1,19 @@
+/*
+Copyright 2026 1771 Technologies
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 // Fork of https://github.com/epoberezkin/fast-deep-equal
 
 /**
@@ -26,53 +42,42 @@
 
 /**
  * Performs a deep equality comparison between two values of any type.
- * This is a performance-optimized implementation that handles various JavaScript types
- * including objects, arrays, Maps, Sets, RegExp, TypedArrays, and React elements.
+ * This is a performance-optimized implementation that handles a wide range of JavaScript
+ * types including primitives, objects, arrays, Maps, Sets, RegExp, TypedArrays, and React elements.
  *
- * Special handling is included for:
- * - NaN values (considered equal to each other)
- * - Functions (can be compared by their string representation)
- * - Maps and Sets (deep equality of entries)
- * - TypedArrays (byte-by-byte comparison)
- * - RegExp objects (source and flags comparison)
- * - Objects with custom valueOf() or toString() methods
- * - React elements (ignores _owner property to avoid circular references)
+ * Special handling:
+ * - Primitives: uses strict equality (`===`)
+ * - NaN: two NaN values are considered equal
+ * - Arrays: element-by-element deep equality
+ * - Maps: deep equality of all key-value pairs
+ * - Sets: membership equality (same elements present)
+ * - TypedArrays: element-by-element strict equality
+ * - RegExp: compared by `source` and `flags`
+ * - Objects with custom `valueOf()` or `toString()`: compared by their return value
+ * - React elements: `_owner` is skipped to avoid traversing circular references
+ * - Objects with different constructors: considered not equal
+ * - Own-property keys only: prototype-inherited properties are ignored
  *
  * @param a - First value to compare
  * @param b - Second value to compare
- * @para - When true, functions are compared by their string
- *                                   representation rather than reference equality.
- *                                   Defaults to false.
- *
- * @returns boolean - True if the values are deeply equal, false otherwise.
+ * @returns `true` if the two values are deeply equal, `false` otherwise
  *
  * @example
  * ```typescript
- * // Simple values
- * equal(1, 1) // true
- * equal(NaN, NaN) // true
- * equal([1, 2], [1, 2]) // true
- * equal({a: 1}, {a: 1}) // true
+ * equal(1, 1)               // true
+ * equal(NaN, NaN)           // true
+ * equal([1, [2, 3]], [1, [2, 3]]) // true
+ * equal({ a: 1 }, { a: 1 }) // true
  *
- * // Maps and Sets
- * const map1 = new Map([['a', 1]])
- * const map2 = new Map([['a', 1]])
- * equal(map1, map2) // true
+ * const m1 = new Map([['a', 1]]);
+ * const m2 = new Map([['a', 1]]);
+ * equal(m1, m2)             // true
  *
- * // Functions
- * const fn1 = () => {}
- * const fn2 = () => {}
- * equal(fn1, fn2) // false
- * equal(fn1, fn2, true) // true (comparing string representation)
- *
- * // React elements
- * const el1 = { type: 'div', props: {}, $$typeof: Symbol.for('react.element') }
- * const el2 = { type: 'div', props: {}, $$typeof: Symbol.for('react.element') }
- * equal(el1, el2) // true
+ * equal(/foo/i, /foo/i)     // true
+ * equal(/foo/i, /foo/)      // false — flags differ
  * ```
  *
- * @note This is a fork of the fast-deep-equal library optimized for additional
- * JavaScript types and special cases.
+ * @remarks Fork of the fast-deep-equal library, extended for additional JS types and React.
  */
 export function equal(a: any, b: any) {
   if (a === b) return true;
