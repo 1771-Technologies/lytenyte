@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { rangesOverlap } from "./ranges-overlap.js";
 
-describe("rangeOverlaps", () => {
-  test("should return the correct result", () => {
+describe("rangesOverlap", () => {
+  test("Should return the correct result", () => {
     expect(rangesOverlap(2, 4, 3, 6)).toEqual(true);
     expect(rangesOverlap(3, 8, 3, 6)).toEqual(true);
     expect(rangesOverlap(4, 8, 3, 6)).toEqual(true);

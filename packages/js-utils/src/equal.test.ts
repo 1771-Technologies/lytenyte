@@ -3,7 +3,7 @@ import { equal } from "./equal.js";
 
 describe("equal", () => {
   // Basic equality tests
-  test("should handle primitive types", () => {
+  test("Should handle primitive types", () => {
     expect(equal(1, 1)).toBe(true);
     expect(equal("test", "test")).toBe(true);
     expect(equal(true, true)).toBe(true);
@@ -14,13 +14,13 @@ describe("equal", () => {
   });
 
   // NaN handling
-  test("should handle NaN values", () => {
+  test("Should handle NaN values", () => {
     expect(equal(NaN, NaN)).toBe(true);
     expect(equal(NaN, 1)).toBe(false);
   });
 
   // Array tests
-  test("should handle arrays", () => {
+  test("Should handle arrays", () => {
     expect(equal([], [])).toBe(true);
     expect(equal([1, 2, 3], [1, 2, 3])).toBe(true);
     expect(equal([1, 2, 3], [1, 2, 4])).toBe(false);
@@ -29,7 +29,7 @@ describe("equal", () => {
   });
 
   // Object tests
-  test("should handle objects", () => {
+  test("Should handle objects", () => {
     expect(equal({}, {})).toBe(true);
     expect(equal({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true);
     expect(equal({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
@@ -53,7 +53,7 @@ describe("equal", () => {
   });
 
   // Specific test for hasOwnProperty check
-  test("should handle objects with properties only in prototype", () => {
+  test("Should handle objects with properties only in prototype", () => {
     const proto = { b: 2 };
     const obj1 = { a: 1 };
     const obj2 = Object.create(proto);
@@ -70,7 +70,7 @@ describe("equal", () => {
   });
 
   // Map tests
-  test("should handle Maps", () => {
+  test("Should handle Maps", () => {
     const map1 = new Map([
       ["a", 1],
       ["b", 2],
@@ -97,7 +97,7 @@ describe("equal", () => {
   });
 
   // Set tests
-  test("should handle Sets", () => {
+  test("Should handle Sets", () => {
     const set1 = new Set([1, 2, 3]);
     const set2 = new Set([1, 2, 3]);
     const set3 = new Set([1, 2, 4]);
@@ -109,7 +109,7 @@ describe("equal", () => {
   });
 
   // TypedArray tests
-  test("should handle TypedArrays", () => {
+  test("Should handle TypedArrays", () => {
     const arr1 = new Uint8Array([1, 2, 3]);
     const arr2 = new Uint8Array([1, 2, 3]);
     const arr3 = new Uint8Array([1, 2, 4]);
@@ -121,7 +121,7 @@ describe("equal", () => {
   });
 
   // RegExp tests
-  test("should handle RegExp", () => {
+  test("Should handle RegExp", () => {
     expect(equal(/foo/, /foo/)).toBe(true);
     expect(equal(/foo/i, /foo/i)).toBe(true);
     expect(equal(/foo/, /bar/)).toBe(false);
@@ -129,7 +129,7 @@ describe("equal", () => {
   });
 
   // Custom valueOf/toString tests
-  test("should handle custom valueOf and toString", () => {
+  test("Should handle custom valueOf and toString", () => {
     const obj1 = { valueOf: () => 1 };
     const obj2 = { valueOf: () => 1 };
     const obj3 = { valueOf: () => 2 };
@@ -144,7 +144,7 @@ describe("equal", () => {
   });
 
   // Constructor check tests
-  test("should handle objects with different constructors", () => {
+  test("Should handle objects with different constructors", () => {
     class Class1 {}
     class Class2 {}
     expect(equal(new Class1(), new Class1())).toBe(true);
@@ -152,7 +152,7 @@ describe("equal", () => {
   });
 
   // React element specific tests
-  test("should handle React-like elements", () => {
+  test("Should handle React-like elements", () => {
     const reactElement1 = {
       $$typeof: Symbol.for("react.element"),
       _owner: {
