@@ -1,4 +1,4 @@
-import { getNearestMatching } from "../dom-utils/getters/index.js";
+import { getNearestMatching } from "@1771technologies/dom-utils";
 import { isCell, isDetail, isFloatingCell, isFullWidth, isHeaderCell, isHeaderGroup } from "./predicates.js";
 
 export function nearestFocusable(gridId: string, el: HTMLElement): HTMLElement | null {

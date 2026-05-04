@@ -1,6 +1,6 @@
 import type { PositionState, RootCellFn, ScrollIntoViewFn } from "../+types.js";
 import type { PositionHeaderCell, PositionUnion } from "../../+types.js";
-import { getTabbables } from "../../dom-focus/index.js";
+import { getTabbables } from "@1771technologies/dom-utils";
 import { runWithBackoff } from "@1771technologies/js-utils";
 import { getRowIndex } from "../attributes.js";
 import { BACKOFF_RUNS } from "../constants.js";

@@ -25,7 +25,8 @@
     }
   },
   "dependencies": {
-    "@1771technologies/js-utils": "workspace:*"
+    "@1771technologies/js-utils": "workspace:*",
+    "@1771technologies/dom-utils": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

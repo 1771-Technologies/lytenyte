@@ -1,11 +1,4 @@
-import {
-  computeScrollDirection,
-  createAutoscroller,
-  getDocument,
-  getNearestFocusable,
-  getPositionFromFocusable,
-  type DataRect,
-} from "../../index.js";
+import { getNearestFocusable, getPositionFromFocusable, type DataRect } from "../../index.js";
 import type { GridSections, PositionGridCell, PositionUnion } from "../../types.js";
 import { deselectRect } from "./deselect-rect.js";
 import { computeActiveRect } from "./compute-active-rect.js";
@@ -14,6 +7,7 @@ import { getOriginOffsets } from "./get-origin-offsets.js";
 import { isDeselect } from "./is-deselect.js";
 import { isSelectSelfClick } from "./is-select-self-click.js";
 import { equal } from "@1771technologies/js-utils";
+import { computeScrollDirection, createAutoscroller, getDocument } from "@1771technologies/dom-utils";
 
 export interface HandleRangeSelectionArgs {
   readonly gridId: string;

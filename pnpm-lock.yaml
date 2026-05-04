@@ -870,6 +870,9 @@ importers:
 
   packages/lytenyte-shared:
     dependencies:
+      '@1771technologies/dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
       '@1771technologies/js-utils':
         specifier: workspace:*
         version: link:../js-utils
