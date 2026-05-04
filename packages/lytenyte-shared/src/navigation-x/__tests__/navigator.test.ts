@@ -49,127 +49,183 @@ describe("navigator", () => {
       endKey: "End",
     });
 
-    nav({
-      key: "Tab",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "Tab",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
     await wait();
-    nav({
-      key: "ArrowDown",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowDown",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
     pos = { kind: "cell", rowIndex: 0, colIndex: 0, root: null };
-    nav({
-      key: "ArrowRight",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowRight",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
     pos = { kind: "cell", rowIndex: 0, colIndex: 0, root: null };
-    nav({
-      key: "ArrowLeft",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowLeft",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
     pos = { kind: "cell", rowIndex: 0, colIndex: 0, root: null };
-    nav({
-      key: "ArrowDown",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowDown",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
     pos = { kind: "cell", rowIndex: 0, colIndex: 0, root: null };
-    nav({
-      key: "ArrowUp",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowUp",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
     pos = { kind: "cell", rowIndex: 0, colIndex: 0, root: null };
-    nav({
-      key: "End",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "End",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
     pos = { kind: "cell", rowIndex: 0, colIndex: 0, root: null };
-    nav({
-      key: "Home",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "Home",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
     pos = { kind: "header-cell", colIndex: 0 };
-    nav({
-      key: "PageDown",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "PageDown",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
     pos = { kind: "cell", rowIndex: 0, colIndex: 0, root: null };
-    nav({
-      key: "PageDown",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "PageDown",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
     pos = { kind: "cell", rowIndex: 0, colIndex: 0, root: null };
-    nav({
-      key: "PageUp",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "PageUp",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
     viewport.focus();
     await expect.element(viewport).toHaveFocus();
-    nav({
-      key: "ArrowRight",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowRight",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
     viewport.focus();
     await expect.element(viewport).toHaveFocus();
-    nav({
-      key: "ArrowDown",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowDown",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
     viewport.focus();
     await expect.element(viewport).toHaveFocus();
-    nav({
-      key: "ArrowUp",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowUp",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
     viewport.remove();
     const nestedViewport = document.createElement("div");
@@ -180,20 +236,28 @@ describe("navigator", () => {
     viewport.focus();
     await expect.element(viewport).toHaveFocus();
 
-    nav({
-      key: "ArrowDown",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "ArrowDown",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
 
-    nav({
-      key: "X",
-      ctrlKey: false,
-      metaKey: false,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    });
+    nav(
+      {
+        key: "X",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
   });
 });
