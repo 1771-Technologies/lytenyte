@@ -17,8 +17,8 @@ export function useSortFn<T>(sort: SortFn<T> | DimensionSort<T>[] | null | undef
         const field = dim.field ?? (dim as any).id;
         if (!field) continue;
 
-        const x = computeField(field, left) as any;
-        const y = computeField(field, right) as any;
+        const x = computeField(left.kind === "leaf" ? field : ((dim as any)?.id ?? field), left) as any;
+        const y = computeField(right.kind === "leaf" ? field : ((dim as any)?.id ?? field), right) as any;
 
         if (x < y) return descending ? 1 : -1;
         if (x > y) return descending ? -1 : 1;

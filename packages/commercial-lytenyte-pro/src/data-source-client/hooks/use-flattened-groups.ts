@@ -122,6 +122,8 @@ const nodeChildrenToRows = <T>(
     }
   }
 
-  if (sort) return rows.sort(sort);
+  if (sort) {
+    return rows.sort(sort);
+  }
   return rows;
 };

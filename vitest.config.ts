@@ -55,7 +55,22 @@ export default defineConfig({
   plugins: [react()],
   test: {
     passWithNoTests: true,
-    projects: [chromeConfig, firefoxConfig, safariConfig],
+    projects: [
+      chromeConfig,
+      firefoxConfig,
+      safariConfig,
+      {
+        test: {
+          name: "node",
+          environment: "node",
+
+          // 👇 only run node-specific tests
+          include: ["./packages/**/*.test.node.?(c|m)[jt]s?(x)", "src/**/*.test.node.?(c|m)[jt]s?(x)"],
+
+          setupFiles: `${import.meta.dirname}/test-setup.ts`,
+        },
+      },
+    ],
     coverage: {
       provider: "v8",
       reporter: ["html", "json-summary", "text"],
