@@ -8,8 +8,6 @@ import {
   type Ref,
 } from "react";
 import {
-  itemsWithIdToMap,
-  moveRelative,
   type GroupFn,
   type RowGroup,
   type RowLeaf,
@@ -23,6 +21,7 @@ import { usePiece } from "@1771technologies/lytenyte-core/internal";
 import { Root } from "../../root/root.js";
 import { Grid } from "@1771technologies/lytenyte-core";
 import type { API, Column, DragItem, GridEvents, RowNode } from "../../types.js";
+import { itemsWithIdToMap, moveRelative } from "@1771technologies/js-utils";
 
 export interface TreeViewProps<T extends TreeViewItem> {
   readonly items: T[];

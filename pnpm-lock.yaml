@@ -813,6 +813,9 @@ importers:
 
   packages/commercial-lytenyte-pro:
     dependencies:
+      '@1771technologies/js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
       '@1771technologies/lytenyte-core':
         specifier: workspace:*
         version: link:../lytenyte-core

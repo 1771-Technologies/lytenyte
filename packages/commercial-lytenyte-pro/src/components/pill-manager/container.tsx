@@ -9,7 +9,8 @@ import {
   useSelector,
 } from "@1771technologies/lytenyte-core/internal";
 import type { PillItemSpec, PillRowSpec } from "./types.js";
-import { equal, getFocusables } from "@1771technologies/lytenyte-shared";
+import { getFocusables } from "@1771technologies/lytenyte-shared";
+import { equal } from "@1771technologies/js-utils";
 
 function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Props["ref"]) {
   const { setCloned, cloned, orientation, rows, movedRef, onPillRowChange, onPillItemActiveChange } =
