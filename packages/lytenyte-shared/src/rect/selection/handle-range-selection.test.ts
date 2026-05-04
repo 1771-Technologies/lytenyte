@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { handleRangeSelect } from "./handle-range-selection.js";
 import type { GridSections, PositionGridCell, PositionUnion } from "../../types.js";
 import type { DataRect } from "../types.js";
-import { wait } from "../../js-utils/sleep.js";
+import { wait } from "@1771technologies/js-utils";
 
 const GRID_ID = "test-grid";
 
@@ -23,6 +23,7 @@ const noSections: GridSections = {
   startCutoff: 0,
   endCutoff: 20,
   topOffset: 0,
+  topRowOffset: 0,
   bottomOffset: 0,
   startOffset: 0,
   endOffset: 0,

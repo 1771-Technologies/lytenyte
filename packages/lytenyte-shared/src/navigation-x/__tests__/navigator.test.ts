@@ -1,7 +1,7 @@
 import { expect, test, describe, vi } from "vitest";
 import { navigator } from "../navigator.js";
 import type { PositionUnion } from "../../+types.js";
-import { wait } from "../../js-utils/sleep.js";
+import { wait } from "@1771technologies/js-utils";
 
 describe("navigator", () => {
   test("Should handle all navigation key events correctly", async () => {
