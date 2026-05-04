@@ -1,7 +1,7 @@
-import { supportsScrollEnd } from "@1771technologies/lytenyte-shared";
 import { useEffect, useRef } from "react";
 import { useBoundsContext } from "../../root/contexts/bounds.js";
 import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
+import { supportsScrollEnd } from "@1771technologies/dom-utils";
 
 export function ViewMonitor({ viewport }: { viewport: HTMLElement }) {
   const source = useRowSourceContext();

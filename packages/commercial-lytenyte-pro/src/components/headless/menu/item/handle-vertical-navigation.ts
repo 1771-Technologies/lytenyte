@@ -1,4 +1,4 @@
-import { getNearestMatching, getTabbables } from "@1771technologies/lytenyte-shared";
+import { getNearestMatching, getTabbables } from "@1771technologies/dom-utils";
 import type { KeyboardEvent } from "react";
 
 export function handleVerticalNavigation(ev: KeyboardEvent<HTMLElement>) {

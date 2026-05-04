@@ -23,8 +23,8 @@ import type {
   SmartSelectKinds,
 } from "./type.js";
 import { useAsyncOptions, type ComboOptionState } from "./use-async-options.js";
-import { getNearestMatching } from "@1771technologies/lytenyte-shared";
 import { createPortal } from "react-dom";
+import { getNearestMatching } from "@1771technologies/dom-utils";
 
 export type SmartSelectRootProps<T extends BaseOption> = {
   readonly open?: boolean;

@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { getScrollStatus } from "@1771technologies/lytenyte-shared";
 import { useOffsetContext } from "../../root/contexts/grid-areas/offset-context.js";
 import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinates.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
@@ -8,6 +7,7 @@ import { useViewportContext } from "../../root/contexts/viewport/viewport-contex
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
 import { useRtlContext } from "../../root/contexts/rtl-provider.js";
+import { getScrollStatus } from "@1771technologies/dom-utils";
 
 export interface ViewportShadowsProps {
   readonly start?: boolean;

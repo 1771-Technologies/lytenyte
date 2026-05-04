@@ -1,5 +1,5 @@
+import { onAnimationFinished } from "@1771technologies/dom-utils";
 import { useEffect, useMemo, useState } from "react";
-import { onAnimationFinished } from "@1771technologies/lytenyte-shared";
 
 export type Transitioned = "idle" | "closing" | "opening";
 

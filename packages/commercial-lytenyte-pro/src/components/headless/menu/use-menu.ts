@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useSubmenuContext } from "./submenu/submenu-context.js";
-import { getNearestMatching } from "@1771technologies/lytenyte-shared";
 import { dispatchActivate, dispatchClose, dispatchDeactivate, getSubmenuRoots } from "./dom.js";
+import { getNearestMatching } from "@1771technologies/dom-utils";
 
 export function useMenu(el: HTMLElement | null) {
   const sub = useSubmenuContext();

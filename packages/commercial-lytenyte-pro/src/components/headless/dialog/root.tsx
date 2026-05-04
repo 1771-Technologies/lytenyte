@@ -1,8 +1,8 @@
 import { useId, useMemo, useState, type PropsWithChildren } from "react";
 import { context } from "./context.js";
 import type { Placement, ReferenceElement } from "../../external/floating-ui.js";
-import type { FocusTrapOptions } from "@1771technologies/lytenyte-shared";
 import { useControlled } from "@1771technologies/lytenyte-core/internal";
+import type { FocusTrapOptions } from "@1771technologies/dom-utils";
 
 export const DialogRoot = ({
   open: openProp,

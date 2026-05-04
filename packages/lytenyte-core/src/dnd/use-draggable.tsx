@@ -1,7 +1,6 @@
 import type { DragEventHandler } from "react";
 import { useMemo, useRef, useState } from "react";
 import type { UseDraggableProps } from "./types.js";
-import { getFrameElement, isFirefox } from "@1771technologies/lytenyte-shared";
 import {
   clearDragGlobals,
   dragActiveDrop,
@@ -14,6 +13,7 @@ import {
   verticalDirection,
 } from "./global.js";
 import { ReactPlaceholder } from "./react-placeholder.js";
+import { getFrameElement, isFirefox } from "@1771technologies/dom-utils";
 
 export function useDraggable({
   data: d,

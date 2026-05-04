@@ -1,8 +1,9 @@
-import { getTabbables, queryCell, type ColumnView } from "@1771technologies/lytenyte-shared";
+import { queryCell, type ColumnView } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
 import type { EditContext } from "../../../contexts/edit-context.js";
 import { runWithBackoff } from "@1771technologies/js-utils";
+import { getTabbables } from "@1771technologies/dom-utils";
 
 export function useEditBegin(
   props: Root.Props,
