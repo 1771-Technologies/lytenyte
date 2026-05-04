@@ -1,4 +1,4 @@
-import { wait as w } from "@1771technologies/lytenyte-shared";
+import { wait as w } from "@1771technologies/js-utils";
 
 export function scrollGrid(grid: any, { x, y }: { x?: number; y?: number }) {
   grid.element().scrollBy({ top: y, left: x });

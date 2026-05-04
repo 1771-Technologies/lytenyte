@@ -1,8 +1,9 @@
-import { equal, rectFromGridCellPosition, type PositionUnion } from "@1771technologies/lytenyte-shared";
+import { rectFromGridCellPosition, type PositionUnion } from "@1771technologies/lytenyte-shared";
 import { useEffect, useRef } from "react";
 import { useFocusReactive } from "../../root/contexts/focus-position.js";
 import { useCellRangeSelectionSettings } from "../../root/contexts/cell-range-selection/cell-range-selection-state.js";
 import { useCellRangeSelectionActive } from "../../root/contexts/cell-range-selection/cell-range-selection-active.js";
+import { equal } from "@1771technologies/js-utils";
 
 export function useCellFocusChange() {
   const [focus] = useFocusReactive();

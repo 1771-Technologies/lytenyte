@@ -1,7 +1,6 @@
 import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import {
-  rangesOverlap,
   sizeFromCoord,
   type LayoutHeaderCell,
   type LayoutHeaderFloating,
@@ -17,6 +16,7 @@ import { useColumnsContext } from "../../../root/contexts/columns/column-context
 import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
 import { useGridEvents } from "../../../root/contexts/events-context.js";
 import { useStyleContext } from "../../../root/contexts/styles-context.js";
+import { rangesOverlap } from "@1771technologies/js-utils";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },

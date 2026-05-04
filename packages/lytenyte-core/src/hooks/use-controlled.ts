@@ -1,4 +1,4 @@
-import { equal } from "@1771technologies/lytenyte-shared";
+import { equal } from "@1771technologies/js-utils";
 import { useCallback, useRef, useState, type SetStateAction } from "react";
 
 export interface UseControlledProps<T = unknown> {

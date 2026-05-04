@@ -837,6 +837,9 @@ importers:
 
   packages/lytenyte-core:
     dependencies:
+      '@1771technologies/js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
       '@1771technologies/lytenyte-design':
         specifier: workspace:*
         version: link:../lytenyte-design
@@ -853,16 +856,6 @@ importers:
       '@1771technologies/grid-sample-data':
         specifier: workspace:*
         version: link:../sample-data
-
-  packages/lytenyte-core-vue:
-    dependencies:
-      vue:
-        specifier: ^3.5.0
-        version: 3.5.29(typescript@5.9.2)
-    devDependencies:
-      '@vue/tsconfig':
-        specifier: ^0.8.1
-        version: 0.8.1(typescript@5.9.2)(vue@3.5.29(typescript@5.9.2))
 
   packages/lytenyte-design: {}
 
@@ -4415,17 +4408,6 @@ packages:
 
   '@vue/shared@3.5.29':
     resolution: {integrity: sha512-w7SR0A5zyRByL9XUkCfdLs7t9XOHUyJ67qPGQjOou3p6GvBeBW+AVjUUmlxtZ4PIYaRvE+1LmK44O4uajlZwcg==}
-
-  '@vue/tsconfig@0.8.1':
-    resolution: {integrity: sha512-aK7feIWPXFSUhsCP9PFqPyFOcz4ENkb8hZ2pneL6m2UjCkccvaOhC/5KCKluuBufvp2KzkbdA2W2pk20vLzu3g==}
-    peerDependencies:
-      typescript: 5.x
-      vue: ^3.4.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-      vue:
-        optional: true
 
   '@zag-js/accordion@1.24.1':
     resolution: {integrity: sha512-JOlmXjO+1tTlyeZ93S+chIlV8uDr8fodj3/XCjLFHc/G116O8cN18KG0Ug9pImy1vT2Kkwb9Ag9QOTyUAXM3PA==}
@@ -14829,11 +14811,13 @@ snapshots:
       entities: 7.0.1
       estree-walker: 2.0.2
       source-map-js: 1.2.1
+    optional: true
 
   '@vue/compiler-dom@3.5.29':
     dependencies:
       '@vue/compiler-core': 3.5.29
       '@vue/shared': 3.5.29
+    optional: true
 
   '@vue/compiler-sfc@3.5.29':
     dependencies:
@@ -14846,20 +14830,24 @@ snapshots:
       magic-string: 0.30.21
       postcss: 8.5.6
       source-map-js: 1.2.1
+    optional: true
 
   '@vue/compiler-ssr@3.5.29':
     dependencies:
       '@vue/compiler-dom': 3.5.29
       '@vue/shared': 3.5.29
+    optional: true
 
   '@vue/reactivity@3.5.29':
     dependencies:
       '@vue/shared': 3.5.29
+    optional: true
 
   '@vue/runtime-core@3.5.29':
     dependencies:
       '@vue/reactivity': 3.5.29
       '@vue/shared': 3.5.29
+    optional: true
 
   '@vue/runtime-dom@3.5.29':
     dependencies:
@@ -14867,19 +14855,17 @@ snapshots:
       '@vue/runtime-core': 3.5.29
       '@vue/shared': 3.5.29
       csstype: 3.2.3
+    optional: true
 
   '@vue/server-renderer@3.5.29(vue@3.5.29(typescript@5.9.2))':
     dependencies:
       '@vue/compiler-ssr': 3.5.29
       '@vue/shared': 3.5.29
       vue: 3.5.29(typescript@5.9.2)
+    optional: true
 
-  '@vue/shared@3.5.29': {}
-
-  '@vue/tsconfig@0.8.1(typescript@5.9.2)(vue@3.5.29(typescript@5.9.2))':
-    optionalDependencies:
-      typescript: 5.9.2
-      vue: 3.5.29(typescript@5.9.2)
+  '@vue/shared@3.5.29':
+    optional: true
 
   '@zag-js/accordion@1.24.1':
     dependencies:
@@ -16816,7 +16802,8 @@ snapshots:
 
   entities@6.0.1: {}
 
-  entities@7.0.1: {}
+  entities@7.0.1:
+    optional: true
 
   err-code@1.1.2: {}
 
@@ -22409,6 +22396,7 @@ snapshots:
       '@vue/shared': 3.5.29
     optionalDependencies:
       typescript: 5.9.2
+    optional: true
 
   w3c-xmlserializer@5.0.0:
     dependencies:

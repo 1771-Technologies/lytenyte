@@ -142,7 +142,7 @@ export namespace Grid {
   }
 }
 
-export { measureText, moveRelative, equal, arrayShallow } from "@1771technologies/lytenyte-shared";
+export { measureText } from "@1771technologies/lytenyte-shared";
 export { getRowDragData } from "./dnd/get-drag-data.js";
 export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";
 

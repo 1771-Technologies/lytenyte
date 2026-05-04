@@ -1,5 +1,6 @@
-import { get, type RowNode } from "@1771technologies/lytenyte-shared";
+import { type RowNode } from "@1771technologies/lytenyte-shared";
 import type { Field } from "../../../../types";
+import { get } from "@1771technologies/js-utils";
 
 export function computeField<K = unknown>(field: Field<any> | "__ln_group__", row: RowNode<any>): K {
   if (field === "__ln_group__" && row.kind === "branch") {

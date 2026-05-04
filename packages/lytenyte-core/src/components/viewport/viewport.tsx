@@ -6,7 +6,6 @@ import {
   getPositionFromFocusable,
   navigator,
   queryCell,
-  runWithBackoff,
 } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 import { RowDragMonitor } from "./row-drag-monitor.js";
@@ -29,6 +28,7 @@ import { useGridEvents } from "../../root/contexts/events-context.js";
 import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 import { useStyleContext } from "../../root/contexts/styles-context.js";
 import { useRowSelectionSettings } from "../../root/contexts/row-select-context.js";
+import { runWithBackoff } from "@1771technologies/js-utils";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {

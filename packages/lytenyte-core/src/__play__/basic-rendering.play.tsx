@@ -39,7 +39,7 @@ export default function BasicRendering() {
 }
 
 if (import.meta.vitest) {
-  const { wait } = await import("@1771technologies/lytenyte-shared");
+  const { wait } = await import("@1771technologies/js-utils");
   const { test, expect } = import.meta.vitest;
   const utils = await import("./utils.js");
   const r = await import("vitest-browser-react");
