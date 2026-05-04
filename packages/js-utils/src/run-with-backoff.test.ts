@@ -6,7 +6,7 @@ describe("runWithBackoffTest", () => {
     let count = 0;
 
     const fn = vi.fn(() => {
-      if (count === 2) return true;
+      if (count === 3) return true;
       count++;
       return false;
     });
