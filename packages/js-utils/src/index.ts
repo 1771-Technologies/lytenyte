@@ -19,7 +19,6 @@ export { clamp } from "./clamp.js";
 export { distance } from "./distance.js";
 export { equal } from "./equal.js";
 export { fastShallowCompare } from "./fast-shallow-compare.js";
-export { getClientX, getClientY } from "./get-client-xy.js";
 export { get } from "./get.js";
 export { isFunction } from "./is-function.js";
 export { itemsWithIdToMap } from "./items-with-id-to-map.js";

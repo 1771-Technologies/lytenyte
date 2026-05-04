@@ -813,6 +813,9 @@ importers:
 
   packages/commercial-lytenyte-pro:
     dependencies:
+      '@1771technologies/dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
       '@1771technologies/js-utils':
         specifier: workspace:*
         version: link:../js-utils
@@ -836,10 +839,19 @@ importers:
         specifier: workspace:*
         version: link:../sample-data
 
+  packages/dom-utils:
+    dependencies:
+      '@1771technologies/js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
+
   packages/js-utils: {}
 
   packages/lytenyte-core:
     dependencies:
+      '@1771technologies/dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
       '@1771technologies/js-utils':
         specifier: workspace:*
         version: link:../js-utils
@@ -864,6 +876,9 @@ importers:
 
   packages/lytenyte-shared:
     dependencies:
+      '@1771technologies/dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
       '@1771technologies/js-utils':
         specifier: workspace:*
         version: link:../js-utils

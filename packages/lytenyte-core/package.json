@@ -120,7 +120,8 @@
   "dependencies": {
     "@1771technologies/lytenyte-design": "workspace:*",
     "@1771technologies/lytenyte-shared": "workspace:*",
-    "@1771technologies/js-utils": "workspace:*"
+    "@1771technologies/js-utils": "workspace:*",
+    "@1771technologies/dom-utils": "workspace:*"
   },
   "devDependencies": {
     "@1771technologies/grid-sample-data": "workspace:*"

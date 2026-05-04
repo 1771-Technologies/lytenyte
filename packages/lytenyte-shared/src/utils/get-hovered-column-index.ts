@@ -1,4 +1,4 @@
-import { getRelativeXPosition } from "../dom-utils/getters/get-relative-x-position.js";
+import { getRelativeXPosition } from "@1771technologies/dom-utils";
 import { rangedBinarySearch } from "@1771technologies/js-utils";
 
 interface GetHoveredColumnIndexArgs {

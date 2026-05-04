@@ -1,6 +1,6 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
 import type { Placement, ReferenceElement } from "../../external/floating-ui";
-import type { FocusTrapOptions } from "@1771technologies/lytenyte-shared";
+import type { FocusTrapOptions } from "@1771technologies/dom-utils";
 
 export interface DialogContext {
   readonly open: boolean;

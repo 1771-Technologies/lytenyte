@@ -1,4 +1,4 @@
-import { getFocusables, getTabbables, isTabbable } from "../../dom-focus/index.js";
+import { getFocusables, getTabbables, isTabbable } from "@1771technologies/dom-utils";
 
 export function handleInnerItemFocus(el: HTMLElement, active: HTMLElement, backward: boolean, loop: boolean) {
   // The container and the active are the same, hence we should focus the first tabbable if possible.

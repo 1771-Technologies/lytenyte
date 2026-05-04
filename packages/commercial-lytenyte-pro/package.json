@@ -127,6 +127,7 @@
     "@1771technologies/lytenyte-core": "workspace:*",
     "@1771technologies/lytenyte-shared": "workspace:*",
     "@1771technologies/js-utils": "workspace:*",
+    "@1771technologies/dom-utils": "workspace:*",
     "@1771technologies/lytenyte-design": "workspace:*"
   },
   "devDependencies": {

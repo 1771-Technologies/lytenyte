@@ -1,4 +1,4 @@
-import { getTabbables } from "../../dom-focus/index.js";
+import { getTabbables } from "@1771technologies/dom-utils";
 
 export function handleFocus(
   isBack: boolean,

@@ -12,9 +12,9 @@ import {
   type Middleware,
 } from "../../external/floating-ui.js";
 import { transformOrigin } from "./transform-origin.js";
-import { FocusTrap, getActiveElement, getTabbables, SCROLL_LOCKER } from "@1771technologies/lytenyte-shared";
 import { useCombinedRefs } from "@1771technologies/lytenyte-core/internal";
 import { useTransitioned } from "../../../hooks/use-transitioned-open.js";
+import { FocusTrap, getActiveElement, getTabbables, SCROLL_LOCKER } from "@1771technologies/dom-utils";
 
 function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.Props["ref"]) {
   const {

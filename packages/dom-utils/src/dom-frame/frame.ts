@@ -1,0 +1,225 @@
+/*
+Copyright 2026 1771 Technologies
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+// reference https://github.com/pmndrs/rafz
+import type { FrameFn, FrameUpdateFn, Frame, Timeout } from "./types";
+
+const updateQueue = makeQueue<FrameUpdateFn>();
+
+/**
+ * Schedule an update for next frame.
+ * Your function can return `true` to repeat next frame.
+ */
+export const frame: Frame = (fn) => schedule(fn, updateQueue);
+
+const writeQueue = makeQueue<FrameFn>();
+/**
+ * Schedules a DOM mutation to run in the write phase of the current frame, after updates and
+ * onFrame callbacks.
+ */
+frame.write = (fn) => schedule(fn, writeQueue);
+
+const onStartQueue = makeQueue<FrameFn>();
+/** Schedules a function to run at the start of the next frame, before any updates are flushed. */
+frame.onStart = (fn) => schedule(fn, onStartQueue);
+
+const onFrameQueue = makeQueue<FrameFn>();
+/** Schedules a function to run after updates are flushed but before writes. */
+frame.onFrame = (fn) => schedule(fn, onFrameQueue);
+
+const onFinishQueue = makeQueue<FrameFn>();
+/** Schedules a function to run after all writes are flushed, at the end of the frame. */
+frame.onFinish = (fn) => schedule(fn, onFinishQueue);
+
+const timeouts: Timeout[] = [];
+/** Schedules a handler to run on the soonest frame after the given delay and returns a Timeout that can be cancelled. */
+frame.setTimeout = (handler, ms) => {
+  const time = frame.now() + ms;
+  const cancel = () => {
+    const i = timeouts.findIndex((t) => t.cancel == cancel);
+    if (~i) timeouts.splice(i, 1);
+    pendingCount -= ~i ? 1 : 0;
+  };
+
+  const timeout: Timeout = { time, handler, cancel };
+  timeouts.splice(findTimeout(time), 0, timeout);
+  pendingCount += 1;
+
+  start();
+  return timeout;
+};
+
+const findTimeout = (time: number) => ~(~timeouts.findIndex((t) => t.time > time) || ~timeouts.length);
+
+/** Removes a function from every queue it may have been added to, preventing it from running on the next frame. */
+frame.cancel = (fn) => {
+  onStartQueue.delete(fn);
+  onFrameQueue.delete(fn);
+  onFinishQueue.delete(fn);
+  updateQueue.delete(fn);
+  writeQueue.delete(fn);
+};
+
+/** Runs the given function immediately, executing any functions scheduled inside it synchronously rather than deferring them to the next frame. */
+frame.sync = (fn) => {
+  sync = true;
+  frame.batchedUpdates(fn);
+  sync = false;
+};
+
+/** Wraps a function so it executes at most once per frame, always using the arguments from the most recent call. */
+frame.throttle = (fn) => {
+  let lastArgs: any;
+  function queuedFn() {
+    try {
+      fn(...lastArgs);
+    } finally {
+      lastArgs = null;
+    }
+  }
+  function throttled(...args: any) {
+    lastArgs = args;
+    frame.onStart(queuedFn);
+  }
+  throttled.handler = fn;
+  throttled.cancel = () => {
+    onStartQueue.delete(queuedFn);
+    lastArgs = null;
+  };
+  return throttled as any;
+};
+
+frame.now = () => performance.now();
+frame.batchedUpdates = (fn) => fn();
+frame.catch = console.error;
+
+frame.frameLoop = "always";
+
+/** Manually processes one frame of pending work. Only valid when `frameLoop` is set to `"demand"`; warns and does nothing otherwise. */
+frame.advance = () => {
+  if (frame.frameLoop !== "demand") {
+    console.warn("Cannot call the manual advancement of rafz whilst frameLoop is not set as demand");
+  } else {
+    update();
+  }
+};
+
+/** The most recent timestamp. */
+let ts = -1;
+
+/** The number of pending tasks  */
+let pendingCount = 0;
+
+/** When true, scheduling is disabled. */
+let sync = false;
+
+function schedule<T extends (...args: any) => any>(fn: T, queue: Queue<T>) {
+  if (sync) {
+    queue.delete(fn);
+    fn(0);
+  } else {
+    queue.add(fn);
+    start();
+  }
+}
+
+function start() {
+  if (ts < 0) {
+    ts = 0;
+    if (frame.frameLoop !== "demand") {
+      requestAnimationFrame(loop);
+    }
+  }
+}
+
+function stop() {
+  ts = -1;
+}
+
+function loop() {
+  if (~ts) {
+    requestAnimationFrame(loop);
+    frame.batchedUpdates(update);
+  }
+}
+
+function update() {
+  const prevTs = ts;
+  ts = frame.now();
+
+  // Flush timeouts whose time is up.
+  const count = findTimeout(ts);
+  if (count) {
+    eachSafely(timeouts.splice(0, count), (t) => t.handler());
+    pendingCount -= count;
+  }
+
+  if (!pendingCount) {
+    stop();
+
+    return;
+  }
+
+  onStartQueue.flush();
+  updateQueue.flush(prevTs ? Math.min(64, ts - prevTs) : 16.667);
+  onFrameQueue.flush();
+  writeQueue.flush();
+  onFinishQueue.flush();
+}
+
+interface Queue<T extends (...args: any) => any = any> {
+  add: (fn: T) => void;
+  delete: (fn: T) => boolean;
+  flush: (arg?: any) => void;
+}
+
+function makeQueue<T extends (...args: any) => any>(): Queue<T> {
+  let next = new Set<T>();
+  let current = next;
+  return {
+    add(fn) {
+      pendingCount += current == next && !next.has(fn) ? 1 : 0;
+      next.add(fn);
+    },
+    delete(fn) {
+      pendingCount -= current == next && next.has(fn) ? 1 : 0;
+      return next.delete(fn);
+    },
+    flush(arg) {
+      if (current.size) {
+        next = new Set();
+        pendingCount -= current.size;
+        eachSafely(current, (fn) => fn(arg) && next.add(fn));
+        pendingCount += next.size;
+        current = next;
+      }
+    },
+  };
+}
+
+interface Eachable<T> {
+  forEach(cb: (value: T) => void): void;
+}
+
+function eachSafely<T>(values: Eachable<T>, each: (value: T) => void) {
+  values.forEach((value) => {
+    try {
+      each(value);
+    } catch (e) {
+      frame.catch(e as Error);
+    }
+  });
+}
