@@ -27,6 +27,8 @@ export {
   getRelativeYPosition,
   getScrollStatus,
   getWindow,
+  getClientX,
+  getClientY,
 } from "./getters/index.js";
 
 export {

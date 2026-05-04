@@ -11,7 +11,7 @@ import { useViewportContext } from "../../../root/contexts/viewport/viewport-con
 import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
 import { useColumnMoveContext } from "../../../root/contexts/column-move-context.js";
 import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
-import { getClientX } from "@1771technologies/js-utils";
+import { getClientX } from "@1771technologies/dom-utils";
 
 interface ResizeHandlerProps {
   readonly cell: LayoutHeaderCell | LayoutHeaderGroup;
