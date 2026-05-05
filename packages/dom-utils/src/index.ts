@@ -45,6 +45,8 @@ export {
   getWindow,
   getClientX,
   getClientY,
+  getHoveredColumnIndex,
+  getTranslate,
 } from "./getters/index.js";
 
 export {
@@ -62,3 +64,5 @@ export {
   isWindow,
   supportsScrollEnd,
 } from "./predicates/index.js";
+
+export { measureText } from "./measure-text/measure-text.js";

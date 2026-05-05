@@ -2,11 +2,12 @@ import { useMemo, useRef } from "react";
 import type { PivotModel } from "../../use-client-data-source";
 import type { Column, GridSpec } from "../../../types.js";
 import { computeField } from "@1771technologies/lytenyte-core/internal";
-import { type ColumnPin, type RowLeaf, measureText } from "@1771technologies/lytenyte-shared";
+import { type ColumnPin, type RowLeaf } from "@1771technologies/lytenyte-shared";
 import { pivotPaths } from "./auxiliary-functions/pivot-paths.js";
 import { applyReferenceColumn } from "./auxiliary-functions/apply-reference-column.js";
 import type { ControlledPivotState } from "./use-pivot-state";
 import { equal, itemsWithIdToMap } from "@1771technologies/js-utils";
+import { measureText } from "@1771technologies/dom-utils";
 
 export interface PivotState {
   readonly columnState: {

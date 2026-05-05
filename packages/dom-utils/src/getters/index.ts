@@ -28,3 +28,5 @@ export { getWindow } from "./get-window.js";
 export { getRelativeXPosition } from "./get-relative-x-position.js";
 export { getRelativeYPosition } from "./get-relative-y-position.js";
 export { getClientX, getClientY } from "./get-client-xy.js";
+export { getTranslate } from "./get-translate.js";
+export { getHoveredColumnIndex } from "./get-hovered-column-index.js";

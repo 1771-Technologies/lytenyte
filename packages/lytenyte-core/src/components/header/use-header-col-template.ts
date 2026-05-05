@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { sizeFromCoord, type ColumnView } from "@1771technologies/lytenyte-shared";
+import { type ColumnView } from "@1771technologies/lytenyte-shared";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 export function useHeaderColTemplate(meta: ColumnView, xPositions: Uint32Array) {
   const countBeforeEnd = meta.centerCount + meta.startCount;
