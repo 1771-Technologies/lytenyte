@@ -1,4 +1,4 @@
-import { sizeFromCoord } from "../utils/size-from-coord.js";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 interface ScrollRowIntoViewArgs {
   readonly topCount: number;

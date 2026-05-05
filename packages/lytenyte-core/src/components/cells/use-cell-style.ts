@@ -1,5 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
-import { sizeFromCoord, type LayoutCell } from "@1771technologies/lytenyte-shared";
+import { type LayoutCell } from "@1771technologies/lytenyte-shared";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 export function useCellStyle(
   xPositions: Uint32Array,

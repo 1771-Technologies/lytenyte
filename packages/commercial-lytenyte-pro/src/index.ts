@@ -156,7 +156,7 @@ export type * from "./data-source-server/types.js";
 export type { RowSourceTree, UseTreeDataSourceParams } from "./data-source-tree/use-tree-data-source.js";
 export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";
 
-export { measureText } from "@1771technologies/lytenyte-shared";
+export { measureText } from "@1771technologies/dom-utils";
 export { moveRelative, equal, arrayShallow } from "@1771technologies/js-utils";
 export { getRowDragData, computeField } from "@1771technologies/lytenyte-core/internal";
 export { virtualFromXY } from "./components/virtual-from-coordinates.js";

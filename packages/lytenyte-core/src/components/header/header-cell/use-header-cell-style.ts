@@ -1,10 +1,10 @@
 import { useMemo, type CSSProperties } from "react";
 import {
-  sizeFromCoord,
   type LayoutHeaderCell,
   type LayoutHeaderFloating,
   type LayoutHeaderGroup,
 } from "@1771technologies/lytenyte-shared";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 export function useHeaderCellStyle(
   cell: LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup,

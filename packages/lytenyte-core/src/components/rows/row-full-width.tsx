@@ -1,9 +1,5 @@
 import { forwardRef, memo, type JSX } from "react";
-import {
-  sizeFromCoord,
-  VIEWPORT_WIDTH_VARIABLE_USE,
-  type LayoutFullWidthRow,
-} from "@1771technologies/lytenyte-shared";
+import { VIEWPORT_WIDTH_VARIABLE_USE, type LayoutFullWidthRow } from "@1771technologies/lytenyte-shared";
 import { RowDetailRow } from "./row-detail-row.js";
 import { useRowStyle } from "./use-row-style.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
@@ -17,6 +13,7 @@ import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
 import { useStyleContext, useStyleSettings } from "../../root/contexts/styles-context.js";
 import { useGridEvents } from "../../root/contexts/events-context.js";
 import { useRtlContext } from "../../root/contexts/rtl-provider.js";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },

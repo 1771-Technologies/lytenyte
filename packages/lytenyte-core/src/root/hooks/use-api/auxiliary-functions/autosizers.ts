@@ -1,4 +1,4 @@
-import { measureText } from "@1771technologies/lytenyte-shared";
+import { measureText } from "@1771technologies/dom-utils";
 import type { CellParams, HeaderParams } from "../../../../types/column.js";
 
 export function defaultAutosize(c: CellParams<any>) {
