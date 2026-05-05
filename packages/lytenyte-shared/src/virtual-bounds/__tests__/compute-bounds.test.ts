@@ -1,7 +1,7 @@
 import { Table } from "@1771technologies/cli-table";
-import { makePositionArray } from "../../coordinates/make-position-array/make-position-array.js";
 import { computeBounds, type ComputeBoundsArgs } from "../compute-bounds.js";
 import { describe, expect, test } from "vitest";
+import { makePositionArray } from "@1771technologies/js-utils";
 
 const yPositions = makePositionArray(() => 50, 200);
 const xPositions = makePositionArray(() => 50, 100);

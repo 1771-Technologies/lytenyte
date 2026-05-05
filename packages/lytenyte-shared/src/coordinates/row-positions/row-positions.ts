@@ -1,5 +1,5 @@
+import { makePositionArray } from "@1771technologies/js-utils";
 import type { RowHeight } from "../../types.js";
-import { makePositionArray } from "../make-position-array/make-position-array.js";
 
 /**
  * Calculates vertical (y) coordinates for rows in a virtualized grid view.

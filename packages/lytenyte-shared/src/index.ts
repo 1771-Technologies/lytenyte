@@ -94,11 +94,6 @@ export {
   SCROLL_WIDTH_VARIABLE_USE,
 } from "./+constants.js";
 
-export { getTranslate } from "./utils/get-translate.js";
-export { sizeFromCoord } from "./utils/size-from-coord.js";
-export { getHoveredColumnIndex } from "./utils/get-hovered-column-index.js";
-export { measureText } from "./utils/measure-text.js";
-
 export { computePathTree } from "./path/compute-path-tree.js";
 export { computePathTable } from "./path/compute-path-table.js";
 export { computePathMatrix } from "./path/compute-path-matrix.js";

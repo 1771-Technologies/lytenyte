@@ -1,4 +1,4 @@
-import { makePositionArray } from "../make-position-array/make-position-array.js";
+import { makePositionArray } from "@1771technologies/js-utils";
 import type { ColumnAbstract } from "../../types.js";
 import { columnWidthMeta } from "../column-width-meta/column-width-meta.js";
 

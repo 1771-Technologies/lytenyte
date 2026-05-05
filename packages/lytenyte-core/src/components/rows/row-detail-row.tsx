@@ -1,6 +1,5 @@
 import {
   SCROLL_WIDTH_VARIABLE_USE,
-  sizeFromCoord,
   type LayoutFullWidthRow,
   type LayoutRowWithCells,
   type RowNode,
@@ -14,6 +13,7 @@ import { useGridRenderer } from "../../root/contexts/grid-renderer-context.js";
 import { useRowSourceContext } from "../../root/contexts/row-source-provider.js";
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 import { useStyleContext } from "../../root/contexts/styles-context.js";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
   const source = useRowSourceContext();

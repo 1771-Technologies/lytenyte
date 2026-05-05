@@ -1,9 +1,5 @@
 import { useMemo, type CSSProperties } from "react";
-import {
-  sizeFromCoord,
-  type LayoutHeaderCell,
-  type LayoutHeaderGroup,
-} from "@1771technologies/lytenyte-shared";
+import { type LayoutHeaderCell, type LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
 import { useXCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useColumnsContext } from "../../../root/contexts/columns/column-context.js";
@@ -12,6 +8,7 @@ import { useColumnSettingsContext } from "../../../root/contexts/columns/column-
 import { useColumnMoveContext } from "../../../root/contexts/column-move-context.js";
 import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
 import { getClientX } from "@1771technologies/dom-utils";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 interface ResizeHandlerProps {
   readonly cell: LayoutHeaderCell | LayoutHeaderGroup;

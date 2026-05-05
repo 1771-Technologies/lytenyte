@@ -27,3 +27,5 @@ export { rangesOverlap } from "./ranges-overlap.js";
 export { moveRelative } from "./move-relative.js";
 export { runWithBackoff } from "./run-with-backoff.js";
 export { sleep, wait } from "./sleep.js";
+export { makePositionArray } from "./make-position-array.js";
+export { sizeFromCoord } from "./size-from-coord.js";

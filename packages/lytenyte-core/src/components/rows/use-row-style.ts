@@ -1,10 +1,7 @@
 import { useMemo, type CSSProperties } from "react";
 import { type RowPin } from "@1771technologies/lytenyte-shared";
-import {
-  SCROLL_WIDTH_VARIABLE_USE,
-  sizeFromCoord,
-  VIEWPORT_WIDTH_VARIABLE_USE,
-} from "@1771technologies/lytenyte-shared";
+import { SCROLL_WIDTH_VARIABLE_USE, VIEWPORT_WIDTH_VARIABLE_USE } from "@1771technologies/lytenyte-shared";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 export function useRowStyle(
   yPositions: Uint32Array,

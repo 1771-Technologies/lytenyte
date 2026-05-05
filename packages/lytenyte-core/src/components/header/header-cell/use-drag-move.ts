@@ -1,6 +1,5 @@
 import {
   COLUMN_MARKER_ID,
-  getHoveredColumnIndex,
   getNearestFocusable,
   GROUP_COLUMN_PREFIX,
   type ColumnAbstract,
@@ -20,6 +19,7 @@ import { useViewportContext } from "../../../root/contexts/viewport/viewport-con
 import { useColumnSettingsContext } from "../../../root/contexts/columns/column-settings-context.js";
 import { useColumnMoveContext } from "../../../root/contexts/column-move-context.js";
 import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
+import { getHoveredColumnIndex } from "@1771technologies/dom-utils";
 
 export function useDragMove(
   cell: LayoutHeaderGroup | LayoutHeaderCell | LayoutHeaderFloating,

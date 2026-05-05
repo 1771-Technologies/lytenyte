@@ -1,8 +1,6 @@
 import {
   bottomSection,
   endSection,
-  getTranslate,
-  sizeFromCoord,
   startSection,
   topSection,
   type SectionedRect,
@@ -12,6 +10,8 @@ import { useXCoordinates, useYCoordinates } from "../../root/contexts/coordinate
 import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 import { useRtlContext } from "../../root/contexts/rtl-provider.js";
+import { sizeFromCoord } from "@1771technologies/js-utils";
+import { getTranslate } from "@1771technologies/dom-utils";
 
 export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; isDeselect?: boolean }) {
   const rtl = useRtlContext();
