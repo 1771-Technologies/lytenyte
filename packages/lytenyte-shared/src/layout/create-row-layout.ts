@@ -55,8 +55,8 @@ export function createRowLayout({
     return endCutoff;
   }
   function getRowSectionStart(row: number): number {
+    if (row >= rowCenterCutoff) return bottomCutoff;
     if (row >= topCutoff) return topCutoff;
-    if (row >= rowCenterCutoff) return rowCenterCutoff;
     return 0;
   }
   function getRowSectionEnd(row: number): number {
@@ -64,6 +64,7 @@ export function createRowLayout({
     if (row < rowCenterCutoff) return rowCenterCutoff;
     return bottomCutoff;
   }
+
   function clampColSpan(column: number, span: number): number {
     return Math.max(Math.min(span, getColumnSectionEnd(column) - column), 1);
   }
@@ -73,12 +74,12 @@ export function createRowLayout({
 
   const getRowPin = (index: number): RowPin => {
     if (index < topCutoff) return "top";
-    if (index >= bottomCutoff) return "bottom";
+    if (index >= rowCenterCutoff) return "bottom";
     return null;
   };
   const getColPin = (index: number): ColumnPin => {
     if (index < startCutoff) return "start";
-    if (index >= endCutoff) return "end";
+    if (index >= centerCutoff) return "end";
     return null;
   };
 

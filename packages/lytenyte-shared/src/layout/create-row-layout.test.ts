@@ -151,7 +151,7 @@ describe("createRowLayout", () => {
     const layout = createRowLayout({
       startCutoff: 0,
       centerCutoff: 2,
-      endCutoff: 0,
+      endCutoff: 2,
       topCutoff: 2,
       rowCenterCutoff: 5,
       bottomCutoff: 5,
@@ -169,10 +169,10 @@ describe("createRowLayout", () => {
       {
         "cells": [
           {
-            "colFirstEndPin": true,
+            "colFirstEndPin": false,
             "colIndex": 0,
             "colLastStartPin": false,
-            "colPin": "end",
+            "colPin": null,
             "colSpan": 1,
             "id": "0",
             "isDeadCol": false,
@@ -191,7 +191,7 @@ describe("createRowLayout", () => {
             "colFirstEndPin": false,
             "colIndex": 1,
             "colLastStartPin": false,
-            "colPin": "end",
+            "colPin": null,
             "colSpan": 1,
             "id": "1",
             "isDeadCol": false,
@@ -222,7 +222,7 @@ describe("createRowLayout", () => {
     const layout = createRowLayout({
       startCutoff: 0,
       centerCutoff: 2,
-      endCutoff: 0,
+      endCutoff: 2,
       topCutoff: 2,
       rowCenterCutoff: 4,
       bottomCutoff: 8,
@@ -240,10 +240,10 @@ describe("createRowLayout", () => {
       {
         "cells": [
           {
-            "colFirstEndPin": true,
+            "colFirstEndPin": false,
             "colIndex": 0,
             "colLastStartPin": false,
-            "colPin": "end",
+            "colPin": null,
             "colSpan": 1,
             "id": "0",
             "isDeadCol": false,
@@ -254,7 +254,7 @@ describe("createRowLayout", () => {
             "rowIndex": 6,
             "rowIsFocusRow": false,
             "rowLastPinTop": false,
-            "rowPin": null,
+            "rowPin": "bottom",
             "rowSpan": 2,
             "type": "string",
           },
@@ -262,7 +262,7 @@ describe("createRowLayout", () => {
             "colFirstEndPin": false,
             "colIndex": 1,
             "colLastStartPin": false,
-            "colPin": "end",
+            "colPin": null,
             "colSpan": 1,
             "id": "1",
             "isDeadCol": false,
@@ -273,7 +273,7 @@ describe("createRowLayout", () => {
             "rowIndex": 6,
             "rowIsFocusRow": false,
             "rowLastPinTop": false,
-            "rowPin": null,
+            "rowPin": "bottom",
             "rowSpan": 2,
             "type": "string",
           },
@@ -284,7 +284,7 @@ describe("createRowLayout", () => {
         "rowIndex": 6,
         "rowIsFocusRow": false,
         "rowLastPinTop": false,
-        "rowPin": null,
+        "rowPin": "bottom",
       }
     `);
   });
@@ -293,7 +293,7 @@ describe("createRowLayout", () => {
     const layout = createRowLayout({
       startCutoff: 0,
       centerCutoff: 2,
-      endCutoff: 0,
+      endCutoff: 2,
       topCutoff: 2,
       rowCenterCutoff: 6,
       bottomCutoff: 8,
@@ -311,10 +311,10 @@ describe("createRowLayout", () => {
       {
         "cells": [
           {
-            "colFirstEndPin": true,
+            "colFirstEndPin": false,
             "colIndex": 0,
             "colLastStartPin": false,
-            "colPin": "end",
+            "colPin": null,
             "colSpan": 1,
             "id": "0",
             "isDeadCol": false,
@@ -333,7 +333,7 @@ describe("createRowLayout", () => {
             "colFirstEndPin": false,
             "colIndex": 1,
             "colLastStartPin": false,
-            "colPin": "end",
+            "colPin": null,
             "colSpan": 1,
             "id": "1",
             "isDeadCol": false,
@@ -364,7 +364,7 @@ describe("createRowLayout", () => {
     const layout = createRowLayout({
       startCutoff: 0,
       centerCutoff: 2,
-      endCutoff: 0,
+      endCutoff: 2,
       topCutoff: 2,
       rowCenterCutoff: 6,
       bottomCutoff: 8,
@@ -382,10 +382,10 @@ describe("createRowLayout", () => {
       {
         "cells": [
           {
-            "colFirstEndPin": true,
+            "colFirstEndPin": false,
             "colIndex": 0,
             "colLastStartPin": false,
-            "colPin": "end",
+            "colPin": null,
             "colSpan": 1,
             "id": "0",
             "isDeadCol": false,
@@ -404,7 +404,7 @@ describe("createRowLayout", () => {
             "colFirstEndPin": false,
             "colIndex": 1,
             "colLastStartPin": false,
-            "colPin": "end",
+            "colPin": null,
             "colSpan": 1,
             "id": "1",
             "isDeadCol": false,
@@ -559,7 +559,7 @@ describe("createRowLayout", () => {
         "colFirstEndPin": false,
         "colIndex": 6,
         "colLastStartPin": false,
-        "colPin": null,
+        "colPin": "end",
         "colSpan": 2,
         "id": "6",
         "isDeadCol": false,
@@ -580,7 +580,7 @@ describe("createRowLayout", () => {
         "colFirstEndPin": false,
         "colIndex": 7,
         "colLastStartPin": false,
-        "colPin": null,
+        "colPin": "end",
         "colSpan": 1,
         "id": "7",
         "isDeadCol": true,
@@ -590,7 +590,7 @@ describe("createRowLayout", () => {
           "colFirstEndPin": false,
           "colIndex": 6,
           "colLastStartPin": false,
-          "colPin": null,
+          "colPin": "end",
           "colSpan": 2,
           "id": "6",
           "isDeadCol": false,
@@ -714,10 +714,11 @@ describe("createRowLayout", () => {
       hasSpans: true,
       isCutoff: () => false,
       isFullWidth: (r) => r === 5,
-      rowByIndex,
+      rowByIndex: (r) => (r < 20 ? rowByIndex(r) : null),
       rowLookback: 10,
     });
 
+    expect(layout.rootCell(22, 0)).toMatchInlineSnapshot(`null`);
     expect(layout.rootCell(0, 22)).toMatchInlineSnapshot(`null`);
     expect(layout.rootCell(0, 4)).toMatchInlineSnapshot(`
       {
@@ -763,8 +764,8 @@ describe("createRowLayout", () => {
     });
 
     layout.layoutByIndex(3);
-    layout.layoutByIndex(3);
-    layout.layoutByIndex(3);
+    layout.layoutByIndex(8);
+    layout.layoutByIndex(4);
   });
 
   test("Should correctly clear the cache", () => {
@@ -790,6 +791,8 @@ describe("createRowLayout", () => {
     layout.layoutByIndex(2);
     layout.clearCache();
     layout.layoutByIndex(2);
+
+    expect(layout.layoutById("2")?.kind).toMatchInlineSnapshot(`"row"`);
   });
 
   test("Should handle row lookback correctly", () => {
@@ -857,6 +860,261 @@ describe("createRowLayout", () => {
         "kind": "row",
         "rowFirstPinBottom": false,
         "rowIndex": 11,
+        "rowIsFocusRow": false,
+        "rowLastPinTop": false,
+        "rowPin": null,
+      }
+    `);
+  });
+
+  test("Should correctly handle lookback rows with pre-occupied cells from a prior row span", () => {
+    const layout = createRowLayout({
+      startCutoff: 0,
+      centerCutoff: 2,
+      endCutoff: 2,
+      topCutoff: 0,
+      rowCenterCutoff: 20,
+      bottomCutoff: 20,
+      columns: Array.from({ length: 2 }, (_, i) => ({ id: `${i}` })),
+      computeColSpan: null,
+      computeRowSpan: (r) => (r === 0 ? 3 : 1),
+      hasSpans: true,
+      isCutoff: () => false,
+      isFullWidth: () => false,
+      rowByIndex,
+      rowLookback: 10,
+    });
+
+    // Row 0 has rowSpan=3, so computing it marks rows 1 and 2 as occupied.
+    // Requesting row 5 triggers a lookback that encounters those pre-occupied rows,
+    // hitting the riFlags branch for rows 1 and 2.
+    layout.layoutByIndex(0);
+    layout.layoutByIndex(5);
+
+    expect(layout.layoutByIndex(1)).toMatchInlineSnapshot(`
+      {
+        "cells": [
+          {
+            "colFirstEndPin": false,
+            "colIndex": 0,
+            "colLastStartPin": false,
+            "colPin": null,
+            "colSpan": 1,
+            "id": "0",
+            "isDeadCol": false,
+            "isDeadRow": true,
+            "kind": "cell",
+            "root": {
+              "colFirstEndPin": false,
+              "colIndex": 0,
+              "colLastStartPin": false,
+              "colPin": null,
+              "colSpan": 1,
+              "id": "0",
+              "isDeadCol": false,
+              "isDeadRow": false,
+              "kind": "cell",
+              "root": null,
+              "rowFirstPinBottom": false,
+              "rowIndex": 0,
+              "rowIsFocusRow": false,
+              "rowLastPinTop": false,
+              "rowPin": null,
+              "rowSpan": 3,
+              "type": "string",
+            },
+            "rowFirstPinBottom": false,
+            "rowIndex": 0,
+            "rowIsFocusRow": false,
+            "rowLastPinTop": false,
+            "rowPin": null,
+            "rowSpan": 1,
+            "type": "string",
+          },
+          {
+            "colFirstEndPin": false,
+            "colIndex": 1,
+            "colLastStartPin": false,
+            "colPin": null,
+            "colSpan": 1,
+            "id": "1",
+            "isDeadCol": false,
+            "isDeadRow": true,
+            "kind": "cell",
+            "root": {
+              "colFirstEndPin": false,
+              "colIndex": 1,
+              "colLastStartPin": false,
+              "colPin": null,
+              "colSpan": 1,
+              "id": "1",
+              "isDeadCol": false,
+              "isDeadRow": false,
+              "kind": "cell",
+              "root": null,
+              "rowFirstPinBottom": false,
+              "rowIndex": 0,
+              "rowIsFocusRow": false,
+              "rowLastPinTop": false,
+              "rowPin": null,
+              "rowSpan": 3,
+              "type": "string",
+            },
+            "rowFirstPinBottom": false,
+            "rowIndex": 0,
+            "rowIsFocusRow": false,
+            "rowLastPinTop": false,
+            "rowPin": null,
+            "rowSpan": 1,
+            "type": "string",
+          },
+        ],
+        "id": "1",
+        "kind": "row",
+        "rowFirstPinBottom": false,
+        "rowIndex": 1,
+        "rowIsFocusRow": false,
+        "rowLastPinTop": false,
+        "rowPin": null,
+      }
+    `);
+  });
+
+  test("Should correctly truncate lookback row span when it encounters a full width row", () => {
+    const layout = createRowLayout({
+      startCutoff: 0,
+      centerCutoff: 2,
+      endCutoff: 2,
+      topCutoff: 0,
+      rowCenterCutoff: 20,
+      bottomCutoff: 20,
+      columns: Array.from({ length: 2 }, (_, i) => ({ id: `${i}` })),
+      computeColSpan: null,
+      computeRowSpan: (r) => (r === 3 ? 5 : 1),
+      hasSpans: true,
+      isCutoff: () => false,
+      isFullWidth: (r) => r === 6,
+      rowByIndex,
+      rowLookback: 10,
+    });
+
+    // Requesting row 4 triggers a lookback that computes row 3 (rowSpan=5).
+    // During span propagation row 6 is full-width, truncating the span to 3.
+    layout.layoutByIndex(4);
+
+    expect(layout.layoutByIndex(3)).toMatchInlineSnapshot(`
+      {
+        "cells": [
+          {
+            "colFirstEndPin": false,
+            "colIndex": 0,
+            "colLastStartPin": false,
+            "colPin": null,
+            "colSpan": 1,
+            "id": "0",
+            "isDeadCol": false,
+            "isDeadRow": false,
+            "kind": "cell",
+            "root": null,
+            "rowFirstPinBottom": false,
+            "rowIndex": 3,
+            "rowIsFocusRow": false,
+            "rowLastPinTop": false,
+            "rowPin": null,
+            "rowSpan": 3,
+            "type": "string",
+          },
+          {
+            "colFirstEndPin": false,
+            "colIndex": 1,
+            "colLastStartPin": false,
+            "colPin": null,
+            "colSpan": 1,
+            "id": "1",
+            "isDeadCol": false,
+            "isDeadRow": false,
+            "kind": "cell",
+            "root": null,
+            "rowFirstPinBottom": false,
+            "rowIndex": 3,
+            "rowIsFocusRow": false,
+            "rowLastPinTop": false,
+            "rowPin": null,
+            "rowSpan": 3,
+            "type": "string",
+          },
+        ],
+        "id": "3",
+        "kind": "row",
+        "rowFirstPinBottom": false,
+        "rowIndex": 3,
+        "rowIsFocusRow": false,
+        "rowLastPinTop": false,
+        "rowPin": null,
+      }
+    `);
+  });
+
+  test("Should handle null rows", () => {
+    const layout = createRowLayout({
+      startCutoff: 0,
+      centerCutoff: 28,
+      endCutoff: 30,
+
+      topCutoff: 0,
+      rowCenterCutoff: 28,
+      bottomCutoff: 28,
+
+      columns: Array.from({ length: 1 }, (_, i) => ({ id: `${i}` })),
+      computeColSpan: null,
+      computeRowSpan: null,
+      hasSpans: true,
+      isCutoff: () => false,
+      isFullWidth: () => false,
+      rowByIndex: () => null,
+      rowLookback: 10,
+    });
+
+    expect(layout.layoutByIndex(1)).toEqual(null);
+  });
+
+  test("Should handle full width rows", () => {
+    const layout = createRowLayout({
+      startCutoff: 0,
+      centerCutoff: 28,
+      endCutoff: 30,
+
+      topCutoff: 0,
+      rowCenterCutoff: 28,
+      bottomCutoff: 28,
+
+      columns: Array.from({ length: 1 }, (_, i) => ({ id: `${i}` })),
+      computeColSpan: null,
+      computeRowSpan: null,
+      hasSpans: true,
+      isCutoff: () => false,
+      isFullWidth: (r) => r === 2,
+      rowByIndex,
+      rowLookback: 10,
+    });
+
+    expect(layout.rootCell(2, 2)).toMatchInlineSnapshot(`
+      {
+        "id": "2",
+        "kind": "full-width",
+        "rowFirstPinBottom": false,
+        "rowIndex": 2,
+        "rowIsFocusRow": false,
+        "rowLastPinTop": false,
+        "rowPin": null,
+      }
+    `);
+    expect(layout.layoutByIndex(2)).toMatchInlineSnapshot(`
+      {
+        "id": "2",
+        "kind": "full-width",
+        "rowFirstPinBottom": false,
+        "rowIndex": 2,
         "rowIsFocusRow": false,
         "rowLastPinTop": false,
         "rowPin": null,
