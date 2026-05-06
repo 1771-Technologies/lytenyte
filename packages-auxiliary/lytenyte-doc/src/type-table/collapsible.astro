@@ -4,6 +4,7 @@ import { cn } from "../ui/cn";
 
 <div class:list={cn("overflow-hidden border-b border-xd-border transition-all")}>
   <button
+    onclick="handleClick(event)"
     class="collapse-trigger not-prose hover:bg-xd-accent group relative flex w-full flex-row items-center gap-2 px-3 py-2 text-start"
   >
     <slot name="trigger" />
@@ -19,29 +20,42 @@ import { cn } from "../ui/cn";
   </div>
 </div>
 
-<script>
-  const init = () => {
-    const triggers = Array.from(document.querySelectorAll(".collapse-trigger")) as HTMLElement[];
+<script is:inline>
+  var handleClick = (ev) => {
+    const parent = ev.currentTarget.parentElement;
+    const sibling = ev.currentTarget.nextElementSibling;
 
-    triggers.forEach((t) => {
-      t.addEventListener("click", (ev) => {
-        const parent = (ev.currentTarget as HTMLElement).parentElement!;
-        const sibling = (ev.currentTarget as HTMLElement).nextElementSibling!;
+    const parentOpen = parent.hasAttribute("data-open");
+    if (parentOpen) parent.removeAttribute("data-open");
+    else parent.setAttribute("data-open", "true");
 
-        const parentOpen = parent.hasAttribute("data-open");
-        if (parentOpen) parent.removeAttribute("data-open");
-        else parent.setAttribute("data-open", "true");
-
-        const open = sibling.hasAttribute("data-open");
-        if (open) sibling.removeAttribute("data-open");
-        else sibling.setAttribute("data-open", "true");
-      });
-    });
+    const open = sibling.hasAttribute("data-open");
+    if (open) sibling.removeAttribute("data-open");
+    else sibling.setAttribute("data-open", "true");
   };
 
-  window.addEventListener("load", () => init());
+  // const init = () => {
+  //   const triggers = Array.from(document.querySelectorAll(".collapse-trigger")) as HTMLElement[];
 
-  document.addEventListener("astro:after-swap", () => {
-    init();
-  });
+  //   triggers.forEach((t) => {
+  //     t.addEventListener("click", (ev) => {
+  //       const parent = (ev.currentTarget as HTMLElement).parentElement!;
+  //       const sibling = (ev.currentTarget as HTMLElement).nextElementSibling!;
+
+  //       const parentOpen = parent.hasAttribute("data-open");
+  //       if (parentOpen) parent.removeAttribute("data-open");
+  //       else parent.setAttribute("data-open", "true");
+
+  //       const open = sibling.hasAttribute("data-open");
+  //       if (open) sibling.removeAttribute("data-open");
+  //       else sibling.setAttribute("data-open", "true");
+  //     });
+  //   });
+  // };
+
+  // window.addEventListener("load", () => init());
+
+  // document.addEventListener("astro:after-swap", () => {
+  //   init();
+  // });
 </script>

@@ -17,8 +17,11 @@ export interface CreateRowLayoutOptions {
 
   readonly columns: ColumnAbstract[];
   readonly startCutoff: number;
+  readonly centerCutoff: number;
   readonly endCutoff: number;
+
   readonly topCutoff: number;
+  readonly rowCenterCutoff: number;
   readonly bottomCutoff: number;
   readonly rowLookback: number;
 
@@ -27,10 +30,14 @@ export interface CreateRowLayoutOptions {
 
 export function createRowLayout({
   startCutoff,
+  centerCutoff,
   endCutoff,
+
   columns,
-  bottomCutoff,
   topCutoff,
+  rowCenterCutoff,
+  bottomCutoff,
+
   rowLookback,
   rowByIndex,
   computeColSpan,
@@ -43,33 +50,36 @@ export function createRowLayout({
 
   function getColumnSectionEnd(column: number): number {
     if (column < startCutoff) return startCutoff;
-    if (column < endCutoff) return endCutoff;
-    return columnCount;
+    if (column < centerCutoff) return centerCutoff;
+
+    return endCutoff;
   }
   function getRowSectionStart(row: number): number {
-    if (row >= bottomCutoff) return bottomCutoff;
+    if (row >= rowCenterCutoff) return bottomCutoff;
     if (row >= topCutoff) return topCutoff;
     return 0;
   }
   function getRowSectionEnd(row: number): number {
     if (row < topCutoff) return topCutoff;
-    if (row < bottomCutoff) return bottomCutoff;
-    return Infinity;
+    if (row < rowCenterCutoff) return rowCenterCutoff;
+    return bottomCutoff;
   }
+
   function clampColSpan(column: number, span: number): number {
-    return Math.min(span, getColumnSectionEnd(column) - column);
+    return Math.max(Math.min(span, getColumnSectionEnd(column) - column), 1);
   }
   function clampRowSpan(row: number, span: number): number {
-    return Math.min(span, getRowSectionEnd(row) - row);
+    return Math.max(Math.min(span, getRowSectionEnd(row) - row), 1);
   }
+
   const getRowPin = (index: number): RowPin => {
     if (index < topCutoff) return "top";
-    if (index >= bottomCutoff) return "bottom";
+    if (index >= rowCenterCutoff) return "bottom";
     return null;
   };
   const getColPin = (index: number): ColumnPin => {
     if (index < startCutoff) return "start";
-    if (index >= endCutoff) return "end";
+    if (index >= centerCutoff) return "end";
     return null;
   };
 
@@ -171,7 +181,7 @@ export function createRowLayout({
 
           if (rowSpan > 1) {
             for (let x = ri + 1; x < ri + rowSpan; x++) {
-              if (isCutoff(x)) {
+              if (isCutoff(x) || isFullWidth?.(x)) {
                 (root.rowSpan as any) = x - ri;
                 break;
               }
@@ -239,7 +249,7 @@ export function createRowLayout({
 
       if (rowSpan > 1) {
         for (let x = index + 1; x < index + rowSpan; x++) {
-          if (isCutoff(x)) {
+          if (isCutoff(x) || isFullWidth?.(x)) {
             (root.rowSpan as any) = x - index;
             break;
           }

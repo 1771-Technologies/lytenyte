@@ -7,12 +7,13 @@ interface Cutoff {
   readonly endCutoff: number;
   readonly topCutoff: number;
   readonly bottomCutoff: number;
+  readonly rowCount: number;
 }
 
 const context = createContext(null as unknown as Cutoff);
 
 export const CutoffProvider = memo((props: PropsWithChildren) => {
-  const { topCount, centerCount } = useRowCountsContext();
+  const { topCount, centerCount, rowCount } = useRowCountsContext();
   const { view } = useColumnsContext();
 
   const value = useMemo<Cutoff>(() => {
@@ -26,8 +27,9 @@ export const CutoffProvider = memo((props: PropsWithChildren) => {
       bottomCutoff,
       startCutoff,
       endCutoff,
+      rowCount,
     };
-  }, [centerCount, topCount, view.centerCount, view.startCount]);
+  }, [centerCount, rowCount, topCount, view.centerCount, view.startCount]);
 
   return <context.Provider value={value}>{props.children}</context.Provider>;
 });
