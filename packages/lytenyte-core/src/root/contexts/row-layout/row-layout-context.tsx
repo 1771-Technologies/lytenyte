@@ -73,9 +73,11 @@ export const RowLayoutProvider = memo(
     const rowLayout = useMemo(() => {
       const l = createRowLayout({
         topCutoff: cutoffs.topCutoff,
-        bottomCutoff: cutoffs.bottomCutoff,
+        rowCenterCutoff: cutoffs.bottomCutoff,
+        bottomCutoff: cutoffs.rowCount,
         startCutoff: cutoffs.startCutoff,
-        endCutoff: cutoffs.endCutoff,
+        centerCutoff: cutoffs.endCutoff,
+        endCutoff: view.visibleColumns.length,
         columns: view.visibleColumns,
         computeColSpan,
         computeRowSpan,
@@ -88,16 +90,17 @@ export const RowLayoutProvider = memo(
 
       return l;
     }, [
+      cutoffs.topCutoff,
+      cutoffs.bottomCutoff,
+      cutoffs.rowCount,
+      cutoffs.startCutoff,
+      cutoffs.endCutoff,
+      view.visibleColumns,
       computeColSpan,
       computeRowSpan,
-      isFullWidth,
       isRowCutoff,
+      isFullWidth,
       rowByIndex,
-      cutoffs.bottomCutoff,
-      cutoffs.endCutoff,
-      cutoffs.startCutoff,
-      cutoffs.topCutoff,
-      view.visibleColumns,
     ]);
 
     const rowView = useMemo<RowView>(() => {
