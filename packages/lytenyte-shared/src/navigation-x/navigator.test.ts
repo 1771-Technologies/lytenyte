@@ -260,4 +260,89 @@ describe("navigator", () => {
       false,
     );
   });
+
+  test("Should handle navigation correctly when an input is focused", async () => {
+    const viewport = document.createElement("div");
+    viewport.tabIndex = 0;
+    viewport.setAttribute("data-ln-gridid", "x");
+
+    const input = document.createElement("input");
+    input.value = "hello";
+
+    const cell = document.createElement("div");
+    cell.setAttribute("data-ln-cell", "true");
+    cell.setAttribute("data-ln-rowindex", "0");
+    cell.setAttribute("data-ln-colindex", "0");
+    cell.setAttribute("data-ln-gridid", "x");
+    cell.appendChild(input);
+    cell.tabIndex = 0;
+
+    viewport.appendChild(cell);
+    document.body.appendChild(viewport);
+
+    input.focus();
+    await expect.element(input).toHaveFocus();
+
+    let pos: PositionUnion | null = null;
+    const get = () => pos;
+    const set = (p: PositionUnion | null | ((p: PositionUnion | null) => PositionUnion | null)) => {
+      if (typeof p === "function") pos = p(pos);
+      else pos = p;
+    };
+
+    const nav = navigator({
+      viewport,
+      scrollIntoView: vi.fn(),
+      rowCount: 2,
+      columnCount: 3,
+      isRowDetailExpanded: () => false,
+      position: { get, set },
+      gridId: "x",
+      getRootCell: () => null,
+
+      downKey: "ArrowDown",
+      nextKey: "ArrowRight",
+      prevKey: "ArrowLeft",
+      upKey: "ArrowUp",
+      pageDownKey: "PageDown",
+      pageUpKey: "PageUp",
+      homeKey: "Home",
+      endKey: "End",
+    });
+
+    pos = { kind: "cell", colIndex: 0, rowIndex: 0, root: null };
+    nav(
+      {
+        key: "ArrowRight",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
+    nav(
+      {
+        key: "ArrowLeft",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
+    nav(
+      {
+        key: "ArrowDown",
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+        shiftKey: false,
+      },
+      false,
+    );
+  });
 });
