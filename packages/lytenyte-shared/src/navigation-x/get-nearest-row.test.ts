@@ -1,5 +1,5 @@
 import { expect, test, describe, vi } from "vitest";
-import { getNearestRow } from "../get-nearest-row.js";
+import { getNearestRow } from "./get-nearest-row.js";
 
 describe("getNearestRow", () => {
   test("Should return the correct nearest row", async () => {

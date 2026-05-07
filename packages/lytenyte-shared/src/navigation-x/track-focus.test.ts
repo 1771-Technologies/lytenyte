@@ -1,6 +1,6 @@
 import { expect, test, describe } from "vitest";
-import type { PositionUnion } from "../../+types";
-import { trackFocus } from "../track-focus.js";
+import type { PositionUnion } from "../+types";
+import { trackFocus } from "./track-focus.js";
 import { userEvent } from "vitest/browser";
 import { wait } from "@1771technologies/js-utils";
 

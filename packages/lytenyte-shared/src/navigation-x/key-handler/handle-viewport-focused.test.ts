@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { handleViewportFocused } from "../handle-viewport-focused.js";
+import { handleViewportFocused } from "./handle-viewport-focused.js";
 import { wait } from "@1771technologies/js-utils";
 
 describe("handleViewportFocused", () => {

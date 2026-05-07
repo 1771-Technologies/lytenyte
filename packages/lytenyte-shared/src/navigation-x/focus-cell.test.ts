@@ -1,5 +1,5 @@
 import { expect, test, describe, vi } from "vitest";
-import { focusCell } from "../focus-cell.js";
+import { focusCell } from "./focus-cell.js";
 
 describe("focusCell", () => {
   test("Should handle focusing cells correctly", async () => {

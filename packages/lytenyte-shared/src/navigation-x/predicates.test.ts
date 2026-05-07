@@ -8,7 +8,7 @@ import {
   isHeaderGroup,
   isRow,
   isViewport,
-} from "../predicates.js";
+} from "./predicates.js";
 
 describe("predicates", () => {
   test("Should return correct result for isHeaderGroup", () => {

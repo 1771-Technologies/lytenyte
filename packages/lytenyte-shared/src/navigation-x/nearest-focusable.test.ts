@@ -1,5 +1,5 @@
 import { expect, test, describe } from "vitest";
-import { nearestFocusable } from "../nearest-focusable.js";
+import { nearestFocusable } from "./nearest-focusable.js";
 
 describe("nearestFocusable", () => {
   test("Should return the correct focusable cell", () => {

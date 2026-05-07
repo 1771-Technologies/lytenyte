@@ -1,6 +1,6 @@
 import { expect, test, describe, vi } from "vitest";
-import { navigator } from "../navigator.js";
-import type { PositionUnion } from "../../+types.js";
+import { navigator } from "./navigator.js";
+import type { PositionUnion } from "../+types.js";
 import { wait } from "@1771technologies/js-utils";
 
 describe("navigator", () => {

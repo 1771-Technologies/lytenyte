@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { handleHorizontal } from "../handle-horizontal.js";
+import { handleHorizontal } from "./handle-horizontal.js";
 import { wait } from "@1771technologies/js-utils";
 
 describe("handleHorizontal", () => {

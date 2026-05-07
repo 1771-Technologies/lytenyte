@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { handleInnerItemFocus } from "../handle-inner-item-focus.js";
+import { handleInnerItemFocus } from "./handle-inner-item-focus.js";
 import { wait } from "@1771technologies/js-utils";
 
 describe("handleInnerItemFocus", () => {
