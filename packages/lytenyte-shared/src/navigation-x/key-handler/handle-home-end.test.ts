@@ -3,7 +3,7 @@ import { handleHomeEnd } from "./handle-home-end.js";
 import { wait } from "@1771technologies/js-utils";
 
 describe("handleHomeEnd", () => {
-  test.only("Should move horizontal if the modified key is not present", async () => {
+  test("Should move horizontal if the modified key is not present", async () => {
     const scrollIntoView = () => {};
     const done = () => {};
 
