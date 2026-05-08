@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { handleHorizontal } from "../handle-horizontal.js";
+import { handleHorizontal } from "./handle-horizontal.js";
 
 describe("handleHorizontal", () => {
   test("Should handle header or floating cells", async () => {

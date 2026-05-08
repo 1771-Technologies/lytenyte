@@ -16,6 +16,8 @@ permissions:
 
 env:
   NODE_VERSION: "24"
+  PNPM_VERSION: "10.30.3"
+  PNPM_HOME: "/home/runner/.local/share/pnpm"
 
 jobs:
   setup:
@@ -23,6 +25,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       pnpm-store-path: ${{ steps.pnpm-store.outputs.path }}
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v5
@@ -35,10 +38,15 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: ${{ env.PNPM_VERSION }}
           run_install: false
+
+      - name: Setup PNPM_HOME
+        run: |
+          mkdir -p "$PNPM_HOME"
+          echo "$PNPM_HOME" >> $GITHUB_PATH
 
       - name: Get pnpm store path
         id: pnpm-store
@@ -62,6 +70,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-24.04
     needs: setup
+
     steps:
       - uses: actions/checkout@v5
         with:
@@ -71,10 +80,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: pnpm/action-setup@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: ${{ env.PNPM_VERSION }}
           run_install: false
+
+      - name: Setup PNPM_HOME
+        run: |
+          mkdir -p "$PNPM_HOME"
+          echo "$PNPM_HOME" >> $GITHUB_PATH
 
       - uses: actions/cache@v4
         with:
@@ -93,6 +108,7 @@ jobs:
     name: Format
     runs-on: ubuntu-24.04
     needs: setup
+
     steps:
       - uses: actions/checkout@v5
         with:
@@ -102,10 +118,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: pnpm/action-setup@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: ${{ env.PNPM_VERSION }}
           run_install: false
+
+      - name: Setup PNPM_HOME
+        run: |
+          mkdir -p "$PNPM_HOME"
+          echo "$PNPM_HOME" >> $GITHUB_PATH
 
       - uses: actions/cache@v4
         with:
@@ -124,6 +146,7 @@ jobs:
     name: Typecheck
     runs-on: ubuntu-24.04
     needs: setup
+
     steps:
       - uses: actions/checkout@v5
         with:
@@ -133,10 +156,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: pnpm/action-setup@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: ${{ env.PNPM_VERSION }}
           run_install: false
+
+      - name: Setup PNPM_HOME
+        run: |
+          mkdir -p "$PNPM_HOME"
+          echo "$PNPM_HOME" >> $GITHUB_PATH
 
       - uses: actions/cache@v4
         with:
@@ -154,13 +183,15 @@ jobs:
   packages-matrix:
     name: Compute package matrix
     runs-on: ubuntu-24.04
+
     outputs:
       packages: ${{ steps.gen.outputs.packages }}
+
     steps:
       - uses: actions/checkout@v5
         with:
           lfs: true
-          fetch-depth: 0 # IMPORTANT for diffs across PRs / merges
+          fetch-depth: 0
 
       - name: Generate packages JSON (changed-only for PRs)
         id: gen
@@ -168,38 +199,31 @@ jobs:
         run: |
           set -euo pipefail
 
-          # --- Determine diff range ---
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             base="${{ github.event.pull_request.base.sha }}"
             head="${{ github.event.pull_request.head.sha }}"
           else
-            # push event
             base="${{ github.event.before }}"
             head="${{ github.sha }}"
           fi
 
           echo "Diffing changes from $base to $head"
 
-          # --- All packages (full list) ---
           all_pkgs=$(
             find packages -mindepth 1 -maxdepth 1 -type d \
               ! -name "sample-data" \
               -print | sort
           )
 
-          # If this is a push to main, always run all packages
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Push to main detected → running ALL packages."
             pkgs="$all_pkgs"
           else
-            # --- PR / non-main push behavior ---
             changed_files=$(git diff --name-only "$base" "$head" || true)
 
             echo "Changed files:"
             echo "$changed_files"
 
-            # Root file detection (NEW DEFINITION):
-            # Any file path with NO slash (e.g. "eslint.js") counts as a root file change.
             root_file_changed=$(
               printf '%s\n' "$changed_files" \
                 | awk '
@@ -214,7 +238,6 @@ jobs:
             else
               echo "No root files changed → running ONLY changed packages."
 
-              # Extract changed packages (packages/<pkg>)
               changed_pkgs=$(
                 printf '%s\n' "$changed_files" \
                   | awk -F/ '$1=="packages" && $2!="" { print "packages/"$2 }' \
@@ -226,7 +249,6 @@ jobs:
                     done
               )
 
-              # If nothing changed under packages/, output an empty list (means no test jobs)
               if [[ -z "${changed_pkgs// }" ]]; then
                 echo "No package changes found under packages/ → outputting empty package matrix."
                 pkgs=""
@@ -236,9 +258,6 @@ jobs:
             fi
           fi
 
-          # --- Build JSON array of objects ---
-          # If pkgs is empty, output an empty string.
-          # The test job will be skipped via a job-level condition.
           if [[ -z "${pkgs// }" ]]; then
             json=""
           else
@@ -247,14 +266,10 @@ jobs:
                 [[ -z "$p" ]] && continue
                 name="${p#packages/}"
 
-                # Remove all occurrences of "commercial-"
                 pretty="${name//commercial-/}"
-
-                # Normalize separators to spaces for display only
                 pretty="${pretty//-/ }"
                 pretty="${pretty//_/ }"
 
-                # Title Case each word
                 pretty="$(echo "$pretty" | awk '{ for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) } print }')"
 
                 jq -n --arg path "$p" --arg name "$name" --arg display "$pretty" \
@@ -262,7 +277,6 @@ jobs:
               done <<< "$pkgs" | jq -cs .
             )
           fi
-
 
           echo "Final package matrix: $json"
 
@@ -274,6 +288,7 @@ jobs:
 
   test:
     if: ${{ needs.packages-matrix.outputs.packages != '' }}
+
     name: >-
       ${{
         (matrix.browser == 'chrome' && 'Chrome') ||
@@ -283,17 +298,21 @@ jobs:
       }} | ${{ matrix.package.display }}
 
     runs-on: ubuntu-24.04
+
     needs:
       - setup
       - packages-matrix
+
     strategy:
       fail-fast: false
       max-parallel: 24
+
       matrix:
         browser:
           - chrome
           - firefox
           - safari
+
         package: ${{ fromJson(needs.packages-matrix.outputs.packages) }}
 
     steps:
@@ -305,10 +324,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: pnpm/action-setup@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: ${{ env.PNPM_VERSION }}
           run_install: false
+
+      - name: Setup PNPM_HOME
+        run: |
+          mkdir -p "$PNPM_HOME"
+          echo "$PNPM_HOME" >> $GITHUB_PATH
 
       - uses: actions/cache@v4
         with:
@@ -320,8 +345,6 @@ jobs:
       - run: pnpm install -g @1771technologies/oneplay@0.0.5 --ignore-workspace
       - run: op np i
 
-      # Install only the browser needed for this matrix entry.
-      # "chrome" project corresponds to Chromium; "safari" corresponds to WebKit on Linux.
       - name: Install Playwright Binaries (${{ matrix.browser }})
         shell: bash
         run: |
@@ -340,7 +363,6 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          # Uses the short name (no `packages/`), avoids slashes in artifact names.
           name: failed-screenshots-${{ matrix.package.name }}-${{ matrix.browser }}-${{ github.run_number }}
           path: |
             **/__screenshots__/**
@@ -351,6 +373,7 @@ jobs:
     name: Build
     runs-on: ubuntu-24.04
     needs: setup
+
     steps:
       - uses: actions/checkout@v5
         with:
@@ -360,10 +383,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: pnpm/action-setup@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: ${{ env.PNPM_VERSION }}
           run_install: false
+
+      - name: Setup PNPM_HOME
+        run: |
+          mkdir -p "$PNPM_HOME"
+          echo "$PNPM_HOME" >> $GITHUB_PATH
 
       - uses: actions/cache@v4
         with:

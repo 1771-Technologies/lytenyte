@@ -1,5 +1,5 @@
 import { expect, test, describe } from "vitest";
-import { positionFromElement } from "../position-from-element.js";
+import { positionFromElement } from "./position-from-element.js";
 
 describe("positionFromElement", () => {
   test("Should return position for cell", () => {

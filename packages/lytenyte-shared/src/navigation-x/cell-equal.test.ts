@@ -1,5 +1,5 @@
 import { expect, test, describe } from "vitest";
-import { cellEqual } from "../cell-equal.js";
+import { cellEqual } from "./cell-equal.js";
 
 describe("cellEqual", () => {
   test("Should return the correct value", () => {

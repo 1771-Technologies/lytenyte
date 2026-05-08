@@ -8,7 +8,7 @@ import {
   queryHeader,
   queryHeaderCell,
   queryHeaderCellsAtRow,
-} from "../query.js";
+} from "./query.js";
 
 describe("query", () => {
   test("Should return the correct elements for queryHeader", () => {

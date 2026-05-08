@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { handleHorizontal } from "../handle-horizontal.js";
+import { handleHorizontal } from "./handle-horizontal.js";
 
 describe("handleHorizontal", () => {
   test("Should handle full-width rows", async () => {
@@ -121,6 +121,23 @@ describe("handleHorizontal", () => {
       pos: { kind: "detail", colIndex: 1, rowIndex: 0 },
       active: detail,
       posElement: detail,
+      cp: { get: () => null as any, set: setter },
+      done: () => {},
+      modified: false,
+    });
+
+    // Handle case where the posElement doesn't contain active. This should not happen in
+    // practice.
+    handleHorizontal({
+      viewport,
+      isBack: false,
+      scrollIntoView: () => {},
+      getRootCell: () => null,
+      columnCount: 3,
+      gridId: "x",
+      pos: { kind: "detail", colIndex: 1, rowIndex: 0 },
+      active: detail,
+      posElement: document.createElement("div"),
       cp: { get: () => null as any, set: setter },
       done: () => {},
       modified: false,

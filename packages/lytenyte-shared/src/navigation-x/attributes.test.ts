@@ -18,7 +18,7 @@ import {
   getRowType,
   getHeaderGroup,
   getViewport,
-} from "../attributes.js";
+} from "./attributes.js";
 
 describe("attributes", () => {
   test("Should return the correct gridId", () => {

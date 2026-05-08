@@ -1,5 +1,5 @@
 import { expect, test, describe } from "vitest";
-import { positionsEqual } from "../positions-equal.js";
+import { positionsEqual } from "./positions-equal.js";
 
 describe("positionsEqual", () => {
   test("Should handle cells", () => {
