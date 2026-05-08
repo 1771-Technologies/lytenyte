@@ -126,6 +126,23 @@ describe("handleHorizontal", () => {
       modified: false,
     });
 
+    // Handle case where the posElement doesn't contain active. This should not happen in
+    // practice.
+    handleHorizontal({
+      viewport,
+      isBack: false,
+      scrollIntoView: () => {},
+      getRootCell: () => null,
+      columnCount: 3,
+      gridId: "x",
+      pos: { kind: "detail", colIndex: 1, rowIndex: 0 },
+      active: detail,
+      posElement: document.createElement("div"),
+      cp: { get: () => null as any, set: setter },
+      done: () => {},
+      modified: false,
+    });
+
     await expect.element(a).toHaveFocus();
 
     handleHorizontal({
