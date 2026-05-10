@@ -16,6 +16,15 @@ limitations under the License.
 
 import { unwrapHost } from "./unwrap-host.js";
 
+/**
+ * Validates and corrects a list of target elements relative to a parent element.
+ *
+ * For each target: if it is directly contained by the parent it is kept as-is;
+ * if it lives inside a shadow tree, `unwrapHost` walks up to find the shadow host
+ * and substitutes that if the host is contained by the parent. Targets that cannot
+ * be resolved to any element inside the parent are dropped and a console error is
+ * emitted.
+ */
 export const correctTargets = (parent: HTMLElement, targets: Element[]): Element[] =>
   targets
     .map((target) => {

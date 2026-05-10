@@ -14,12 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/**
- * Walks up the DOM tree from `node` to find the nearest shadow host ancestor.
- *
- * If `node` is itself a `ShadowRoot`, its host element is returned immediately.
- * Otherwise the function recurses through `parentNode` until it finds a shadow
- * root (and returns its host) or reaches the top of the tree (and returns null).
- */
-export const unwrapHost = (node: Element | ShadowRoot): Element | null =>
-  node && ((node as ShadowRoot).host || unwrapHost(node.parentNode as Element));
+import { describe, expect, test } from "vitest";
+import { getAriaControls } from "./get-aria-controls.js";
+
+describe("getAriaControls", () => {
+  test("Should return the correct aria control", () => {
+    const element = document.createElement("div");
+    element.setAttribute("aria-controls", "expanded id");
+    expect(getAriaControls(element)).toEqual(["expanded", "id"]);
+
+    element.removeAttribute("aria-controls");
+    expect(getAriaControls(element)).toEqual([]);
+  });
+});

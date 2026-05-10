@@ -38,7 +38,9 @@ export function findControlledElements(
   const visitedIds = new Set<string>();
 
   const findRecursive = (root: HTMLElement) => {
-    const controllingElements = root.querySelectorAll<HTMLElement>("[aria-controls]");
+    const controllingElements = root.querySelectorAll<HTMLElement>(
+      "[aria-controls]",
+    ) as unknown as HTMLElement[];
 
     for (const controller of controllingElements) {
       // Only follow aria-controls if the controller is expanded
