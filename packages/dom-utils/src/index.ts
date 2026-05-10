@@ -17,6 +17,8 @@ limitations under the License.
 export type { OnAnimationFinishedParams } from "./animation-finished/index.js";
 export { onAnimationFinished } from "./animation-finished/index.js";
 
+export { hideOthers, inertOthers, suppressOthers } from "./aria-hidden/index.js";
+
 export { isChrome, isFirefox, isIOS, isIPad, isIPhone, isMac, isWebKit } from "./detection/index.js";
 
 export type { Autoscroller } from "./dom-autoscroller/index.js";
@@ -24,7 +26,6 @@ export { computeScrollDirection, createAutoscroller } from "./dom-autoscroller/i
 
 export type { FocusTrapOptions } from "./dom-focus/index.js";
 export { getTabbables, getFocusables, isTabbable, FocusTrap } from "./dom-focus/index.js";
-
 export { frame } from "./dom-frame/frame.js";
 
 export { SCROLL_LOCKER } from "./dom-scroll-lock/scroll-locker.js";
