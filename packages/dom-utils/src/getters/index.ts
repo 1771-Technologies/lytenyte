@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 export { getActiveElement } from "./get-active-element.js";
+export { getAriaControls } from "./get-aria-controls.js";
 export { getComputedStyle } from "./get-computed-style.js";
 export { getDocumentElement } from "./get-document-element.js";
 export { getDocument } from "./get-document.js";
@@ -27,6 +28,7 @@ export { getParentNode } from "./get-parent-node.js";
 export { getWindow } from "./get-window.js";
 export { getRelativeXPosition } from "./get-relative-x-position.js";
 export { getRelativeYPosition } from "./get-relative-y-position.js";
+export { getRootNode } from "./get-root-node.js";
 export { getClientX, getClientY } from "./get-client-xy.js";
 export { getTranslate } from "./get-translate.js";
 export { getHoveredColumnIndex } from "./get-hovered-column-index.js";
