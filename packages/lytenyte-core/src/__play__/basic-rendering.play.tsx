@@ -33,7 +33,12 @@ export default function BasicRendering() {
 
   return (
     <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
-      <Grid columns={columns} rowSource={ds} />
+      <Grid
+        columns={columns}
+        rowSource={ds}
+        z_internal_viewportInitialHeight={500}
+        z_internal_viewportInitialWidth={500}
+      />
     </div>
   );
 }

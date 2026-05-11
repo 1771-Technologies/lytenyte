@@ -217,11 +217,11 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
   const lightDismiss = useCallback(
     (el: HTMLElement) => {
       const closest = getNearestMatching(el, (el) => el === triggerEl);
-      if (!closest) return true;
+      if (!closest || p.kind === "basic" || p.kind === "multi") return true;
 
       return false;
     },
-    [triggerEl],
+    [p.kind, triggerEl],
   );
 
   return (

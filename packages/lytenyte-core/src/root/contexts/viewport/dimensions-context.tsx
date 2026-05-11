@@ -1,4 +1,4 @@
-import { createContext, memo, useContext, useState, type PropsWithChildren } from "react";
+import { createContext, memo, useContext, useMemo, useState, type PropsWithChildren } from "react";
 import { useViewportContext } from "./viewport-context.js";
 import { useIsoEffect } from "../../../hooks/use-iso-effect.js";
 
@@ -18,34 +18,49 @@ const defaultDimensions: Dimension = {
 
 const context = createContext<Dimension>(defaultDimensions);
 
-export const DimensionsContext = memo((props: PropsWithChildren) => {
-  const { viewport: vp } = useViewportContext();
+export const DimensionsContext = memo(
+  (props: PropsWithChildren<{ initialWidth: number | undefined; initialHeight: number | undefined }>) => {
+    const { viewport: vp } = useViewportContext();
 
-  const [viewportDimensions, setViewportDimensions] = useState(defaultDimensions);
+    const initialDimensions = useMemo<Dimension>(() => {
+      if (props.initialHeight || props.initialWidth) {
+        return {
+          innerHeight: props.initialHeight ?? 0,
+          innerWidth: props.initialWidth ?? 0,
+          outerHeight: props.initialHeight ?? 0,
+          outerWidth: props.initialHeight ?? 0,
+        };
+      }
 
-  useIsoEffect(() => {
-    if (!vp) return;
+      return defaultDimensions;
+    }, [props.initialHeight, props.initialWidth]);
 
-    let frame: number | null = null;
-    const obs = new ResizeObserver(() => {
-      if (frame) return;
+    const [viewportDimensions, setViewportDimensions] = useState(initialDimensions);
 
-      frame = requestAnimationFrame(() => {
-        setViewportDimensions({
-          outerHeight: vp.offsetHeight,
-          innerHeight: vp.clientHeight,
-          outerWidth: vp.offsetWidth,
-          innerWidth: vp.clientWidth,
+    useIsoEffect(() => {
+      if (!vp) return;
+
+      let frame: number | null = null;
+      const obs = new ResizeObserver(() => {
+        if (frame) return;
+
+        frame = requestAnimationFrame(() => {
+          setViewportDimensions({
+            outerHeight: vp.offsetHeight,
+            innerHeight: vp.clientHeight,
+            outerWidth: vp.offsetWidth,
+            innerWidth: vp.clientWidth,
+          });
+          frame = null;
         });
-        frame = null;
       });
-    });
-    obs.observe(vp);
+      obs.observe(vp);
 
-    return () => obs.disconnect();
-  }, [vp]);
+      return () => obs.disconnect();
+    }, [vp]);
 
-  return <context.Provider value={viewportDimensions}>{props.children}</context.Provider>;
-});
+    return <context.Provider value={viewportDimensions}>{props.children}</context.Provider>;
+  },
+);
 
 export const useDimensionContext = () => useContext(context);

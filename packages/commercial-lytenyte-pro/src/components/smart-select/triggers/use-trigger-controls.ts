@@ -22,7 +22,7 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
 
   return useMemo(() => {
     return {
-      onClick: () => {
+      onClickCapture: () => {
         if (!open && openOnClick) onOpenChange(true);
       },
       onBlur: (e) => {

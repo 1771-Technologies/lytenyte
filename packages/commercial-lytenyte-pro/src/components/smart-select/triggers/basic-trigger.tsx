@@ -23,7 +23,11 @@ function BasicSelectTriggerBase(
 
   const combined = useCombinedRefs(setTrigger, ref, inputRef);
 
-  return <button {...p} ref={combined} data-ln-smart-select-trigger data-ln-open={open} />;
+  return (
+    <button {...p} ref={combined} data-ln-smart-select-trigger data-ln-open={open}>
+      <>{props.children}</>
+    </button>
+  );
 }
 
 export const BasicSelectTrigger = forwardRef(BasicSelectTriggerBase);
