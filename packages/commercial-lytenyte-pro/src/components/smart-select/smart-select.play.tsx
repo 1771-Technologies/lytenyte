@@ -4,8 +4,7 @@ import { useState } from "react";
 import { SmartSelectRoot } from "./root.js";
 import { Option } from "./option.js";
 import { SmartSelectContainer } from "./container.js";
-import { Chip } from "./chip.js";
-import { MultiTrigger } from "./triggers/multi-trigger.js";
+import { BasicSelectTrigger } from "./triggers/basic-trigger.js";
 
 const options = [
   { id: "js", label: "JavaScript" },
@@ -22,7 +21,7 @@ const options = [
 ];
 
 export default function SmartSelect() {
-  const [value, setValue] = useState([options[0]]);
+  const [value, setValue] = useState(options[0]);
   void setValue;
 
   return (
@@ -35,7 +34,7 @@ export default function SmartSelect() {
           setValue(v);
         }}
         closeOnSelect={false}
-        kind="multi"
+        kind="basic"
         container={(p) => {
           return (
             <SmartSelectContainer>
@@ -44,32 +43,7 @@ export default function SmartSelect() {
             </SmartSelectContainer>
           );
         }}
-        trigger={
-          <MultiTrigger
-            render={
-              <button data-ln-button="website" data-ln-size="md">
-                <div>Select Items</div>
-                <div></div>
-              </button>
-            }
-            className="flex items-center"
-          >
-            {value.map((x) => {
-              return (
-                <Chip
-                  key={x.id}
-                  option={x}
-                  render={(p) => (
-                    <div>
-                      {x.label}
-                      {p.active && "A"}
-                    </div>
-                  )}
-                />
-              );
-            })}
-          </MultiTrigger>
-        }
+        trigger={<BasicSelectTrigger>{value.label}</BasicSelectTrigger>}
       >
         {(p) => {
           return (
