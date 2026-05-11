@@ -102,7 +102,10 @@ const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
                           headerHeight={p.headerHeight}
                         >
                           <ViewportContext>
-                            <DimensionsContext>
+                            <DimensionsContext
+                              initialHeight={props.z_internal_viewportInitialHeight}
+                              initialWidth={props.z_internal_viewportInitialWidth}
+                            >
                               <CoordinatesProvider
                                 columnBase={props.columnBase}
                                 columnSizeToFit={props.columnSizeToFit}
