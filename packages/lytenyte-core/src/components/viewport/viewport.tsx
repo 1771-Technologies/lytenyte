@@ -315,7 +315,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             @Lee - I wonder if this is the best approach. Perhaps there is some raf method we can use 
             to prevent shifts.
         */}
-        {vp && dimensions.innerWidth > 0 && children}
+        {dimensions.innerWidth > 0 && children}
         {/* Prevents layouts shifts when the viewport size has not been retrieved. */}
         {dimensions.innerWidth === 0 && (
           <div

@@ -9,7 +9,6 @@ import { createContext, memo, useCallback, useContext, useMemo, type PropsWithCh
 import type { Root } from "../../root";
 import { useCutoffContext } from "../grid-areas/cutoff-context.js";
 import { useColumnsContext } from "../columns/column-context.js";
-import { useViewportContext } from "../viewport/viewport-context.js";
 import type { API } from "../../../types";
 import { useBoundsContext } from "../bounds.js";
 import { useRowDetailContext } from "../row-detail.js";
@@ -35,7 +34,6 @@ export const RowLayoutProvider = memo(
   }: PropsWithChildren<Props>) => {
     const cutoffs = useCutoffContext();
     const { view } = useColumnsContext();
-    const { viewport: vp } = useViewportContext();
     const bounds = useBoundsContext();
     const { detailExpansions } = useRowDetailContext();
 
@@ -104,8 +102,6 @@ export const RowLayoutProvider = memo(
     ]);
 
     const rowView = useMemo<RowView>(() => {
-      if (!vp) return { top: [], bottom: [], center: [], rowFirstCenter: 0, rowFocusedIndex: null };
-
       let n = bounds;
       if (virtualizeRows === false) n = { ...n, rowCenterStart: n.rowTopEnd, rowCenterEnd: n.rowCenterLast };
       if (virtualizeCols === false)
@@ -128,7 +124,7 @@ export const RowLayoutProvider = memo(
         center,
         bottom,
       };
-    }, [bounds, virtualizeCols, virtualizeRows, rowLayout, vp]);
+    }, [bounds, virtualizeCols, virtualizeRows, rowLayout]);
 
     return (
       <rowViewContext.Provider value={rowView}>

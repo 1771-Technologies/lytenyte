@@ -1,7 +1,7 @@
 {
   "name": "@1771technologies/grid-sample-data",
   "description": "A package with sample data sets for testing grids",
-  "version": "2.1.2",
+  "version": "2.1.3-dev.0",
   "license": "Apache-2.0",
   "type": "module",
   "homepage": "https://1771technologies.com",
