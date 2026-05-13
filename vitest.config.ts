@@ -39,8 +39,8 @@ function makeProjectConfiguration(
         headless: true,
         instances: [{ browser: browser }],
         viewport: {
-          height: 1280,
           width: 1960,
+          height: 1280,
         },
       },
     },
