@@ -628,9 +628,9 @@ importers:
 
   packages-auxiliary/measure-right:
     dependencies:
-      '@1771technologies/lytenyte-shared':
+      '@1771technologies/js-utils':
         specifier: workspace:*
-        version: link:../../packages/lytenyte-shared
+        version: link:../../packages/js-utils
       playwright:
         specifier: 1.56.1
         version: 1.56.1

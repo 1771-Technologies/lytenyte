@@ -1,5 +1,5 @@
 import type { Benchmark, BenchmarkResult, BrowserOptions } from "./types.js";
-import { wait } from "@1771technologies/lytenyte-shared";
+import { wait } from "@1771technologies/js-utils";
 import { applyForceGC } from "./browser/force-gc.js";
 import { startBrowser } from "./browser/get-browser.js";
 import { readTraceStats } from "./browser/read-trace-stats.js";
@@ -24,6 +24,9 @@ export async function run({ benchmarks, roundRobin = true, iterations = 5, brows
         const memory = await runMemBenchmark(benchmarks[i], browserOptions);
         const trace = await runCpuBenchmark(benchmarks[i], browserOptions);
 
+        console.log(`Waiting 1 second before running next round`);
+        await wait(1000);
+
         results[benchmarks[i].name] ??= [];
         results[benchmarks[i].name].push({
           name: benchmarks[i].name,
@@ -39,6 +42,9 @@ export async function run({ benchmarks, roundRobin = true, iterations = 5, brows
 
         const memory = await runMemBenchmark(benchmarks[i], browserOptions);
         const trace = await runCpuBenchmark(benchmarks[i], browserOptions);
+
+        console.log(`Waiting 1 second before running next round`);
+        await wait(1000);
 
         results[benchmarks[i].name] ??= [];
         results[benchmarks[i].name].push({
