@@ -2,7 +2,20 @@
 
 ## Basic Setup
 
-LyteNyte Grid is a React component. Import `Grid` and a row source, then wire them together:
+Import the `Grid` component:
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+// Or if using Core
+import { Grid } from "@1771technologies/lytenyte-core";
+```
+
+Then decide on the row data source to use:
+
+- `useClientDataSource` when the row data is available in its entirety on the client.
+  See `client-data-source.md` reference.
+- `useServerDataSource` when the row data exists on the server and will be loaded in slices,
+  or for paginated and infinite data sources. See `server-data-source.md` reference.
 
 ```tsx
 import "@1771technologies/lytenyte-pro/light-dark.css";
@@ -30,7 +43,9 @@ export default function MyGrid() {
 
 ## Container Sizing
 
-The grid fills its parent — **the parent must have a defined size**. The grid is the sole child of its container.
+The grid fills its parent - **the parent must have a defined size**. The grid is the sole child of its container.
+
+Recommend using `flex` sizing, or prefer it, if the user has not specified an approach.
 
 ```tsx
 // Fixed height (simplest)
@@ -53,9 +68,9 @@ The grid fills its parent — **the parent must have a defined size**. The grid 
 </div>
 ```
 
-## Reactivity — Props as State
+## Prop Driven
 
-LyteNyte Grid is declarative. Updating props updates the view. Memoize non-primitive props to avoid unnecessary re-renders:
+LyteNyte Grid is fully prop driven. Memoize any non-primitive value, example functions, objects and arrays.
 
 ```tsx
 function MyGrid() {
@@ -71,28 +86,15 @@ function MyGrid() {
 }
 ```
 
-**Avoid** passing inline objects/arrays without memoization — they create new references on every render and trigger expensive re-layouts.
-
-The [React Compiler](https://react.dev/learn/react-compiler/introduction) eliminates this concern entirely and is recommended for LyteNyte Grid projects.
-
 ## Controlled State
 
-Certain grid properties are controllable — provide a value to control them, and an `onChange` handler to receive updates:
+Grid properties can be controlled or uncontrolled. Leverage `useState` if the property needs to be
+shared among components. For example, sharing row selection state.
 
 ```tsx
 const [rowDetailExpansions, setRowDetailExpansions] = useState({});
 
 <Grid rowDetailExpansions={rowDetailExpansions} onRowDetailExpansionsChange={setRowDetailExpansions} />;
-```
-
-Controllable properties include: `rowDetailExpansions`, `columnGroupExpansions`, `rowGroupColumn`.
-
-`columns` is **always controlled** — you must provide `onColumnsChange` if you want the grid to update column state:
-
-```tsx
-const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([...]);
-
-<Grid columns={columns} onColumnsChange={setColumns} />
 ```
 
 ## Getting the API via Ref
@@ -120,9 +122,17 @@ const extension = useMemo(() => ({
 <Grid apiExtension={extension} ... />
 ```
 
-When the extension needs to call grid API methods, use the function form:
+Remember to type the API extension in the `GridSpec`
 
 ```tsx
+interface GridSpec {
+  readonly data: MyDataType;
+  readonly api: {
+    updateHeaderName: (newName: string, id: string) => void;
+  };
+}
+
+// Then where we define our extension.
 const apiExtension = useMemo<(api: Grid.API<GridSpec>) => GridSpec["api"]>(() => {
   return (api) => ({
     updateHeaderName: (newName: string, id: string) => {
@@ -134,9 +144,10 @@ const apiExtension = useMemo<(api: Grid.API<GridSpec>) => GridSpec["api"]>(() =>
 
 > **Do not** call `api` methods inside the factory function itself — only capture the reference and use it in the returned methods.
 
-### Reactive State in Extensions — `usePiece`
+### Reactive State in Extensions `usePiece`
 
-The API reference is stable (non-reactive). To share reactive state across renderers, use `usePiece`:
+To expose state that is external to the grid, but should be reactive (i.e. cause re-renders),
+LyteNyte Grid exports the `usePiece` hook.
 
 ```tsx
 import { usePiece, type PieceWritable } from "@1771technologies/lytenyte-pro";
@@ -308,8 +319,7 @@ LyteNyte Grid fires events for user interactions. Pass a memoized `events` objec
 **Key rules:**
 
 - **Always memoize `events`** — a new object reference on every render triggers re-subscriptions inside the grid. Wrap in `useMemo` (or use the React Compiler).
-- `cell.contextMenu`: always call both `event.preventDefault()` AND `event.stopPropagation()` — one prevents the browser menu, the other stops parent handlers.
-- `viewport.scrollEnd` is the correct place to implement infinite-scroll triggers (check distance from bottom, push more data).
+- viewport.scrollEnd` is the correct place to implement infinite-scroll triggers (check distance from bottom, push more data).
 - `row.keyDown` is preferable to `viewport.keyDown` for row-specific keyboard behavior (e.g., spacebar to select, Enter to open detail).
 
 ### Using Event Data
@@ -339,20 +349,18 @@ Disable for small datasets or print scenarios:
 <Grid virtualizeRows={false} virtualizeCols={false} />
 ```
 
-**Key implication:** Don't store state inside cell components — it will be lost when the row unmounts. Keep state higher in the tree or in the API extension.
-
 ## Gotchas
 
-- **The API ref is stable, not reactive** — `ref.current` always points to the same object. Do not call API methods during render (e.g., `const x = api.columnView()` inside a component body) — call them in event handlers or effects.
+- **The API ref is stable, not reactive** — `ref.current` always points to the same object.
+- **Do not call API methods during render** (e.g., `const x = api.columnView()` inside a component body) — call them in event handlers or effects.
 - **Do not call grid API methods inside the `apiExtension` factory** — the factory runs during render. Only capture the `api` reference; use it inside the returned methods.
-- **`columns` is always controlled** — omitting `onColumnsChange` means column reorders, resizes, and visibility changes are silently discarded.
 - **Memoize the `apiExtension` object** — a new object reference on every render triggers re-computation inside the grid. Wrap in `useMemo`.
 
 ## Full Docs
 
-- [Grid Reactivity](/docs/grid-reactivity)
-- [Grid Container](/docs/grid-container)
-- [Headless Parts](/docs/grid-headless-parts)
-- [API Extensions](/docs/grid-api-extensions)
-- [Virtualization](/docs/grid-virtualization)
-- [React Compiler](/docs/grid-react-compiler)
+- [Grid Reactivity](https://www.1771technologies.com/docs/grid-reactivity)
+- [Grid Container](https://www.1771technologies.com/docs/grid-container)
+- [Headless Parts](https://www.1771technologies.com/docs/grid-headless-parts)
+- [API Extensions](https://www.1771technologies.com/docs/grid-api-extensions)
+- [Virtualization](https://www.1771technologies.com/docs/grid-virtualization)
+- [React Compiler](https://www.1771technologies.com/docs/grid-react-compiler)
