@@ -16,7 +16,7 @@ import type { RowSource } from "@1771technologies/lytenyte-shared";
 import type * as LnTypes from "./types/index.js";
 
 export interface GridComponent {
-  <Spec extends Root.GridSpec = Root.GridSpec>(
+  <Spec extends Grid.GridSpec = Grid.GridSpec>(
     props: PropsWithChildren<
       Root.Props<Spec> &
         (undefined extends Spec["api"]
@@ -55,12 +55,17 @@ Grid.Cell = Cell;
 Grid.Viewport = Viewport;
 
 export namespace Grid {
-  export type GridSpec<
-    T = unknown,
-    C extends Record<string, any> = object,
-    S extends RowSource<T> = RowSource,
-    E extends Record<string, any> = object,
-  > = Root.GridSpec<T, C, S, E>;
+  export interface GridSpec<
+    Data = unknown,
+    ColExt extends Record<string, any> = object,
+    S extends RowSource<Data> = RowSource,
+    Ext extends Record<string, any> = object,
+  > {
+    readonly data?: Data;
+    readonly column?: ColExt;
+    readonly source?: S;
+    readonly api?: Ext;
+  }
 
   export type Props<Spec extends GridSpec = GridSpec> = Root.Props<Spec>;
   export type API<Spec extends GridSpec = GridSpec> = Root.API<Spec>;

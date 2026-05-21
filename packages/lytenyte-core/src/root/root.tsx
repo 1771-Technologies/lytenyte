@@ -1,8 +1,6 @@
 import { forwardRef, memo, useImperativeHandle, type PropsWithChildren, type ReactNode } from "react";
 import { DEFAULT_ROW_SOURCE } from "./constants.js";
-import { type RowSource } from "@1771technologies/lytenyte-shared";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
-import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
 import type { API as LnAPI } from "../types/api.js";
 import type { Props as LnProps } from "../types/props.js";
@@ -41,8 +39,9 @@ import { ColumnMoveAndSizeProvider } from "./contexts/column-move-context.js";
 import { StylesProvider } from "./contexts/styles-context.js";
 import { GridEventsProvider } from "./contexts/events-context.js";
 import { RTLProvider } from "./contexts/rtl-provider.js";
+import type { Grid } from "../index.js";
 
-const RootMain = <Spec extends Root.GridSpec = Root.GridSpec>(
+const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
   {
     children,
     ...p
@@ -223,19 +222,12 @@ export const Fallback = memo(() => {
   );
 });
 
-export const Root = forwardRef(RootMain) as <Spec extends Root.GridSpec = Root.GridSpec>(
+export const Root = forwardRef(RootMain) as <Spec extends Grid.GridSpec = Grid.GridSpec>(
   props: PropsWithChildren<Root.Props<Spec>>,
 ) => ReactNode;
 
 export namespace Root {
-  export type GridSpec<
-    T = unknown,
-    C extends Record<string, any> = object,
-    S extends RowSource<T> = RowSource,
-    E extends Record<string, any> = object,
-  > = LnSpec<T, C, S, E>;
-
-  export type Props<Spec extends GridSpec = GridSpec> = LnProps<Spec>;
-  export type API<Spec extends GridSpec = GridSpec> = LnAPI<Spec>;
-  export type Column<Spec extends GridSpec = GridSpec> = LnColumn<Spec>;
+  export type Props<Spec extends Grid.GridSpec = Grid.GridSpec> = LnProps<Spec>;
+  export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = LnAPI<Spec>;
+  export type Column<Spec extends Grid.GridSpec = Grid.GridSpec> = LnColumn<Spec>;
 }

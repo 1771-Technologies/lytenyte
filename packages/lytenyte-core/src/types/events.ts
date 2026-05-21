@@ -8,9 +8,9 @@ import type {
   RowNode,
 } from "@1771technologies/lytenyte-shared";
 import type { Column } from "./column.js";
-import type { GridSpec } from "./grid.js";
 import type { JSX } from "react";
 import type { API } from "./api.js";
+import type { Grid } from "../index.js";
 
 export type Events = {
   [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${string}`
@@ -18,7 +18,7 @@ export type Events = {
     : never]: JSX.IntrinsicElements["div"][key];
 };
 
-type CellEvents<Spec extends GridSpec = GridSpec> = {
+type CellEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
   [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
     ? Uncapitalize<X>
     : never]: (params: {
@@ -30,7 +30,7 @@ type CellEvents<Spec extends GridSpec = GridSpec> = {
   }) => void;
 };
 
-type RowEvents<Spec extends GridSpec = GridSpec> = {
+type RowEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
   [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
     ? Uncapitalize<X>
     : never]: (params: {
@@ -41,7 +41,7 @@ type RowEvents<Spec extends GridSpec = GridSpec> = {
   }) => void;
 };
 
-type HeaderEvents<Spec extends GridSpec = GridSpec> = {
+type HeaderEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
   [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
     ? Uncapitalize<X>
     : never]: (params: {
@@ -52,7 +52,7 @@ type HeaderEvents<Spec extends GridSpec = GridSpec> = {
   }) => void;
 };
 
-type HeaderGroupEvents<Spec extends GridSpec = GridSpec> = {
+type HeaderGroupEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
   [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
     ? Uncapitalize<X>
     : never]: (params: {
@@ -63,7 +63,7 @@ type HeaderGroupEvents<Spec extends GridSpec = GridSpec> = {
   }) => void;
 };
 
-type ViewportEvents<Spec extends GridSpec = GridSpec> = {
+type ViewportEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
   [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
     ? Uncapitalize<X>
     : never]: (params: {
@@ -73,7 +73,7 @@ type ViewportEvents<Spec extends GridSpec = GridSpec> = {
   }) => void;
 };
 
-export type GridEvents<Spec extends GridSpec = GridSpec> = {
+export type GridEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
   readonly cell?: Partial<CellEvents<Spec>>;
   readonly row?: Partial<RowEvents<Spec>>;
   readonly headerCell?: Partial<HeaderEvents<Spec>>;

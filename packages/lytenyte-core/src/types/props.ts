@@ -8,12 +8,13 @@ import type {
   RowFullWidthRendererParams,
   RowParams,
 } from "./column.js";
-import type { GridSpec, GridStyle } from "./grid.js";
+import type { GridStyle } from "./grid.js";
 import type { API } from "./api.js";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows.js";
 import type { GridEvents } from "./events.js";
+import type { Grid } from "../index.js";
 
-export type Props<Spec extends GridSpec = GridSpec> = {
+export type Props<Spec extends Grid.GridSpec = Grid.GridSpec> = {
   readonly cellSelectionMode?: "range" | "multi-range" | "none";
   readonly cellSelections?: DataRect[];
   readonly cellSelectionExcludeMarker?: boolean;
@@ -154,13 +155,13 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   }) => void;
 
   readonly onRowDrop?: (params: {
-    readonly source: { id: string; api: API<GridSpec>; row: RowNode<any>; rowIndex: number; data?: any };
+    readonly source: { id: string; api: API<Grid.GridSpec>; row: RowNode<any>; rowIndex: number; data?: any };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<GridSpec>;
+          api: API<Grid.GridSpec>;
           row: RowNode<any>;
           rowIndex: number;
           element: HTMLElement;
@@ -168,13 +169,13 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   }) => void;
 
   readonly onRowDragEnter?: (params: {
-    readonly source: { id: string; api: API<GridSpec>; row: RowNode<any>; rowIndex: number; data?: any };
+    readonly source: { id: string; api: API<Grid.GridSpec>; row: RowNode<any>; rowIndex: number; data?: any };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<GridSpec>;
+          api: API<Grid.GridSpec>;
           row: RowNode<any>;
           rowIndex: number;
           element: HTMLElement;
@@ -183,17 +184,17 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly onRowDragLeave?: (params: {
     readonly source: {
       id: string;
-      api: API<GridSpec>;
+      api: API<Grid.GridSpec>;
       row: RowNode<any>;
       rowIndex: number | null;
       data?: any;
     };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<GridSpec>;
+          api: API<Grid.GridSpec>;
           row: RowNode<any>;
           rowIndex: number | null;
           element: HTMLElement;

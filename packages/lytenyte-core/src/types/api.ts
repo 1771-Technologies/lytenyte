@@ -11,23 +11,23 @@ import type {
   RowSource,
 } from "@1771technologies/lytenyte-shared";
 import type { Column } from "./column.js";
-import type { GridSpec } from "./grid.js";
 import type { DragItem, UseDraggableProps } from "../dnd/types.js";
 import type { useDraggable } from "../dnd/use-draggable.js";
 import type { Props } from "./props.js";
 import type { Piece } from "../hooks/use-piece.js";
+import type { Grid } from "../index.js";
 
 type WithId = { readonly id: string };
 type RowSourceOmits = "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected";
 
-export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
+export interface ExportDataRectResult<Spec extends Grid.GridSpec = Grid.GridSpec> {
   readonly headers: string[];
   readonly groupHeaders: (string | null)[][];
   readonly data: unknown[][];
   readonly columns: Column<Spec>[];
 }
 
-export type API<Spec extends GridSpec = GridSpec> = {
+export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = {
   readonly cellSelections: () => DataRect[];
   readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
 
