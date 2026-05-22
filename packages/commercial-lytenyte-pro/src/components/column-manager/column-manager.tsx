@@ -1,11 +1,11 @@
 import { useMemo, type CSSProperties, type ReactNode } from "react";
-import type { Column, DragItem, GridSpec, RowLeaf, RowNode } from "../../types";
+import type { Column, DragItem, RowLeaf, RowNode } from "../../types";
 import { TreeView } from "../tree-view/index.js";
 import { Checkbox } from "../checkbox/checkbox.js";
-import type { Grid } from "../..";
 import { computePathMatrix } from "@1771technologies/lytenyte-shared";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
-export interface ColumnManagerProps<Spec extends GridSpec = GridSpec> {
+export interface ColumnManagerProps<Spec extends Grid.GridSpec = Grid.GridSpec> {
   readonly columns: Column<Spec>[];
   readonly onColumnsChange: (change: Column<Spec>[]) => void;
   readonly base?: Grid.ColumnBase<Spec>;
@@ -18,7 +18,7 @@ export interface ColumnManagerProps<Spec extends GridSpec = GridSpec> {
   readonly getPillManagerTag?: (column: Column<Spec>) => Record<string, string>;
 }
 
-export function ColumnManager<Spec extends GridSpec = GridSpec>({
+export function ColumnManager<Spec extends Grid.GridSpec = Grid.GridSpec>({
   columns: provided,
   base,
   rowHeight = 30,

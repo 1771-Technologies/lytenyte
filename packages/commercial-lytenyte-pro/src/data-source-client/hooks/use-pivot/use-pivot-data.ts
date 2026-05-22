@@ -1,5 +1,4 @@
 import { useMemo, useRef } from "react";
-import type { GridSpec } from "../../../types";
 import type { UseClientDataSourceParams } from "../../use-client-data-source";
 import type { SourceState } from "../use-controlled-ds-state";
 import { useFilteredData } from "./use-filtered-data.js";
@@ -17,10 +16,11 @@ import {
   type LeafNodeTuple,
 } from "@1771technologies/lytenyte-core/internal";
 import { type ControlledPivotState } from "./use-pivot-state.js";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
 const empty: RowLeaf<any>[] = [];
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
-export function usePivotData<Spec extends GridSpec>(
+export function usePivotData<Spec extends Grid.GridSpec>(
   props: UseClientDataSourceParams<Spec>,
   [, leafs, , pinMap]: LeafNodeTuple<Spec["data"]>,
   c: SourceState,

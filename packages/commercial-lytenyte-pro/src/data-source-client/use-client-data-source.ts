@@ -45,17 +45,18 @@ import { useFlattenedData } from "./hooks/use-flattened-data.js";
 import { usePivotData } from "./hooks/use-pivot/use-pivot-data.js";
 import type { PivotState } from "./hooks/use-pivot/use-pivot-columns.js";
 import { usePivotState } from "./hooks/use-pivot/use-pivot-state.js";
-import type { Column, Field, GridSpec, Props } from "../types.js";
+import type { Column, Field } from "../types.js";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
-export type PivotField<Spec extends GridSpec = GridSpec> = { field?: Field<Spec["data"]> };
+export type PivotField<Spec extends Grid.GridSpec = Grid.GridSpec> = { field?: Field<Spec["data"]> };
 export type HavingFilterFn = (node: RowGroup) => boolean;
 
-export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSource<Spec["data"]> {
+export interface RowSourceClient<Spec extends Grid.GridSpec = Grid.GridSpec> extends RowSource<Spec["data"]> {
   readonly usePivotProps: () => {
     readonly columns?: Column<Spec>[];
-    readonly onColumnsChange: Props<Spec>["onColumnsChange"];
-    readonly columnGroupExpansions: Props<Spec>["columnGroupExpansions"];
-    readonly onColumnGroupExpansionChange: Props<Spec>["onColumnGroupExpansionChange"];
+    readonly onColumnsChange: Grid.Props<Spec>["onColumnsChange"];
+    readonly columnGroupExpansions: Grid.Props<Spec>["columnGroupExpansions"];
+    readonly onColumnGroupExpansionChange: Grid.Props<Spec>["onColumnGroupExpansionChange"];
   };
 
   readonly rowUpdate: (rows: Map<RowNode<Spec["data"]>, Spec["data"]>) => void;
@@ -65,7 +66,7 @@ export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSo
 
 export type LabelFilter = (s: string | null) => boolean;
 
-export interface PivotModel<Spec extends GridSpec = GridSpec> {
+export interface PivotModel<Spec extends Grid.GridSpec = Grid.GridSpec> {
   readonly columns?: (Column<Spec> | PivotField<Spec>)[];
   readonly rows?: (Column<Spec> | PivotField<Spec>)[];
   readonly measures?: { dim: Column<Spec>; fn: Aggregator<Spec["data"]> | string }[];
@@ -76,7 +77,7 @@ export interface PivotModel<Spec extends GridSpec = GridSpec> {
   readonly colLabelFilter?: (LabelFilter | null)[];
 }
 
-export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T = Spec["data"]> {
+export interface UseClientDataSourceParams<Spec extends Grid.GridSpec = Grid.GridSpec, T = Spec["data"]> {
   readonly data: T[];
   readonly topData?: T[];
   readonly botData?: T[];
@@ -137,7 +138,7 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
 }
 
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
-export function useClientDataSource<Spec extends GridSpec = GridSpec>(
+export function useClientDataSource<Spec extends Grid.GridSpec = Grid.GridSpec>(
   props: UseClientDataSourceParams<Spec>,
 ): RowSourceClient<Spec> {
   type T = Spec["data"];
@@ -295,7 +296,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
           if (pivotColumns) object.columns = pivotColumns;
           if (pivotColumns) object.columnGroupExpansions = pivotGroups.value;
 
-          const onColChange: Required<Props<Spec>>["onColumnsChange"] = (columns) => {
+          const onColChange: Required<Grid.Props<Spec>>["onColumnsChange"] = (columns) => {
             const ordering = columns.map((x) => x.id);
             const resizingEntries = columns
               .map((x) => (x.width == null ? null : [x.id, x.width]))
@@ -310,7 +311,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
               pinning: Object.fromEntries(pinnedEntries),
             });
           };
-          const onColumnGroup: Required<Props<Spec>>["onColumnGroupExpansionChange"] = (change) => {
+          const onColumnGroup: Required<Grid.Props<Spec>>["onColumnGroupExpansionChange"] = (change) => {
             setPivotGroupState(change);
           };
 

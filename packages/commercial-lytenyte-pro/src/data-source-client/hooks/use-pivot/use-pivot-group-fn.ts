@@ -1,10 +1,10 @@
-import type { GridSpec } from "../../../types.js";
 import type { GroupFn } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 import type { PivotModel } from "../../use-client-data-source.js";
 import { computeField } from "@1771technologies/lytenyte-core/internal";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
-export function usePivotGroupFn<Spec extends GridSpec>(
+export function usePivotGroupFn<Spec extends Grid.GridSpec>(
   pivotMode: boolean,
   model: PivotModel<Spec> | undefined,
 ) {

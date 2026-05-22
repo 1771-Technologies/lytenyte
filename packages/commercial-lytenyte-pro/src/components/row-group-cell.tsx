@@ -1,9 +1,10 @@
 import type { RowAggregated, RowGroup, RowLeaf, RowNode } from "@1771technologies/lytenyte-shared";
-import type { API, CellParamsWithIndex, GridSpec } from "../types";
+import type { API, CellParamsWithIndex } from "../types";
 import type { CSSProperties, ReactNode, SVGProps } from "react";
 import { useSlot, type SlotComponent } from "../hooks/use-slot/index.js";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
-export const RowGroupCell = <Spec extends GridSpec = GridSpec>({
+export const RowGroupCell = <Spec extends Grid.GridSpec = Grid.GridSpec>({
   api,
   row,
   leafLabel,
