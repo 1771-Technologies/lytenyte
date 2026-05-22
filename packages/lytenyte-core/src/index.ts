@@ -11,14 +11,42 @@ import { RowFullWidth } from "./components/rows/row-full-width.js";
 import { Cell } from "./components/cells/cell.js";
 import { Viewport } from "./components/viewport/viewport.js";
 import { Root } from "./root/root.js";
-import type { PropsWithChildren, ReactNode } from "react";
-import type { RowSource } from "@1771technologies/lytenyte-shared";
+import type { PropsWithChildren, ReactNode, Ref } from "react";
+import type { RowHeight, RowSource } from "@1771technologies/lytenyte-shared";
 import type * as LnTypes from "./types/index.js";
+import type { ViewportShadowsProps } from "./components.js";
+
+export const Grid = Root as GridComponent;
+Grid.Header = Header;
+Grid.HeaderRow = HeaderRow;
+Grid.HeaderCell = HeaderCell;
+Grid.HeaderGroupCell = HeaderGroupCell;
+Grid.RowsContainer = RowsContainer;
+Grid.RowsTop = RowsTop;
+Grid.RowsCenter = RowsCenter;
+Grid.RowsBottom = RowsBottom;
+Grid.Row = Row;
+Grid.RowFullWidth = RowFullWidth;
+Grid.Cell = Cell;
+Grid.Viewport = Viewport;
+
+export { measureText } from "@1771technologies/dom-utils";
+export { moveRelative, equal, arrayShallow } from "@1771technologies/js-utils";
+export { getRowDragData } from "./dnd/get-drag-data.js";
+export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";
+
+export { useClientDataSource } from "./data-source/use-client-data-source.js";
+export type { RowSourceClient, UseClientDataSourceParams } from "./data-source/use-client-data-source.js";
+
+export type { Piece, PieceWritable } from "./hooks/use-piece.js";
+export { usePiece } from "./hooks/use-piece.js";
+
+// FROM HERE DOWN ONLY PUT TYPES RELATED TO THE GRID.
 
 export interface GridComponent {
   <Spec extends Grid.GridSpec = Grid.GridSpec>(
     props: PropsWithChildren<
-      Root.Props<Spec> &
+      Grid.Props<Spec> &
         (undefined extends Spec["api"]
           ? unknown
           : { apiExtension: ((incomplete: Root.API<Spec>) => Spec["api"] | null) | Spec["api"] })
@@ -40,20 +68,6 @@ export interface GridComponent {
   Viewport: typeof Viewport;
 }
 
-export const Grid = Root as GridComponent;
-Grid.Header = Header;
-Grid.HeaderRow = HeaderRow;
-Grid.HeaderCell = HeaderCell;
-Grid.HeaderGroupCell = HeaderGroupCell;
-Grid.RowsContainer = RowsContainer;
-Grid.RowsTop = RowsTop;
-Grid.RowsCenter = RowsCenter;
-Grid.RowsBottom = RowsBottom;
-Grid.Row = Row;
-Grid.RowFullWidth = RowFullWidth;
-Grid.Cell = Cell;
-Grid.Viewport = Viewport;
-
 export namespace Grid {
   export interface GridSpec<
     Data = unknown,
@@ -67,13 +81,216 @@ export namespace Grid {
     readonly api?: Ext;
   }
 
-  export type Props<Spec extends GridSpec = GridSpec> = Root.Props<Spec>;
+  export type Props<Spec extends Grid.GridSpec = Grid.GridSpec> = {
+    readonly cellSelectionMode?: "range" | "multi-range" | "none";
+    readonly cellSelections?: T.DataRect[];
+    readonly cellSelectionExcludeMarker?: boolean;
+    readonly cellSelectionMaintainOnNonCellPosition?: boolean;
+    readonly onCellSelectionChange?: (rects: T.DataRect[]) => void;
+
+    readonly columns?: Column<Spec>[];
+    readonly columnBase?: Omit<Partial<Column<Spec>>, "id" | "pin" | "field" | "editSetter">;
+    readonly columnMarker?: Omit<Partial<Column<Spec>>, "id" | "field" | "pin"> & { on?: boolean };
+
+    readonly columnGroupDefaultExpansion?: boolean;
+    readonly columnGroupExpansions?: Record<string, boolean>;
+    readonly columnGroupJoinDelimiter?: string;
+    readonly columnSizeToFit?: boolean;
+    readonly columnDoubleClickToAutosize?: boolean;
+
+    readonly columnMoveDragPlaceholder?:
+      | { query: string; offset?: [number, number] }
+      | string
+      | ((
+          props: T.HeaderParams<Spec> & {
+            readonly x: number;
+            readonly y: number;
+            readonly outside: boolean;
+          },
+        ) => ReactNode);
+    readonly columnGroupMoveDragPlaceholder?:
+      | { query: string; offset?: [number, number] }
+      | string
+      | ((
+          props: T.HeaderGroupParams<Spec> & {
+            readonly x: number;
+            readonly y: number;
+            readonly outside: boolean;
+          },
+        ) => ReactNode);
+    readonly columnGroupRenderer?: (props: T.HeaderGroupParams<Spec>) => ReactNode;
+
+    readonly gridId?: string;
+    readonly events?: LnTypes.GridEvents<Spec>;
+    readonly styles?: LnTypes.GridStyle;
+
+    readonly rtl?: boolean;
+
+    readonly headerHeight?: number;
+    readonly headerGroupHeight?: number;
+    readonly floatingRowHeight?: number;
+    readonly floatingRowEnabled?: boolean;
+
+    /** @private */
+    readonly z_internal_viewportInitialWidth?: number;
+    /** @private */
+    readonly z_internal_viewportInitialHeight?: number;
+
+    readonly rowOverscanTop?: number;
+    readonly rowOverscanBottom?: number;
+
+    readonly colOverscanStart?: number;
+    readonly colOverscanEnd?: number;
+
+    readonly rowAlternateAttr?: boolean;
+    readonly rowScanDistance?: number;
+    readonly rowSource?: Spec["source"];
+    readonly rowHeight?: RowHeight;
+    readonly rowAutoHeightGuess?: number;
+
+    readonly rowGroupColumn?: false | Omit<Column<Spec>, "field" | "id">;
+
+    readonly rowFullWidthPredicate?: null | ((params: T.RowParams<Spec>) => boolean);
+    readonly rowFullWidthRenderer?: (props: T.RowFullWidthRendererParams<Spec>) => ReactNode | null;
+
+    readonly virtualizeCols?: boolean;
+    readonly virtualizeRows?: boolean;
+
+    readonly rowSelectionMode?: "single" | "multiple" | "none";
+    readonly rowSelectionActivator?: "single-click" | "double-click" | "none";
+
+    readonly rowDetailExpansions?: Set<string>;
+    readonly rowDetailHeight?: number | "auto";
+    readonly rowDetailAutoHeightGuess?: number;
+    readonly rowDetailRenderer?: (props: T.RowParams<Spec>) => ReactNode | null;
+    readonly rowDropAccept?: string[];
+
+    readonly ref?: Ref<API<Spec>>;
+
+    readonly editRowValidatorFn?: (
+      params: Pick<T.EditParams<Spec>, "api" | "editData" | "row">,
+    ) => boolean | Record<string, unknown>;
+    readonly editClickActivator?: "single-click" | "double-click" | "none";
+    readonly editMode?: "cell" | "row" | "readonly";
+
+    // Values that can be changed by the grid
+    readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
+    readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
+    readonly onColumnsChange?: (columns: Column<Spec>[]) => void;
+    readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
+
+    readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
+    readonly slotViewportOverlay?: ((props: { api: API<Spec> }) => ReactNode) | ReactNode;
+    readonly slotRowsOverlay?: ((props: { api: API<Spec> }) => ReactNode) | ReactNode;
+
+    // Events
+
+    readonly onColumnMoveOutside?: (params: {
+      readonly api: API<Spec>;
+      readonly columns: Column<Spec>[];
+    }) => void;
+
+    readonly onEditBegin?: (params: {
+      readonly api: API<Spec>;
+      readonly preventDefault: () => void;
+      readonly row: T.RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
+      readonly editData: unknown;
+    }) => void;
+    readonly onEditEnd?: (params: {
+      readonly api: API<Spec>;
+      readonly preventDefault: () => void;
+      readonly row: T.RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
+      readonly editData: unknown;
+    }) => void;
+    readonly onEditCancel?: (params: {
+      readonly api: API<Spec>;
+      readonly row: T.RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
+      readonly editData: unknown;
+    }) => void;
+    readonly onEditFail?: (params: {
+      readonly api: API<Spec>;
+      readonly row: T.RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
+      readonly editData: unknown;
+      readonly validation: null | Record<string, unknown> | boolean;
+    }) => void;
+
+    readonly onRowSelect?: (params: {
+      readonly preventDefault: () => void;
+      readonly api: API<Spec>;
+      readonly rows: string[] | "all";
+      readonly deselect: boolean;
+    }) => void;
+
+    readonly onRowDrop?: (params: {
+      readonly source: {
+        id: string;
+        api: API<Grid.GridSpec>;
+        row: T.RowNode<any>;
+        rowIndex: number;
+        data?: any;
+      };
+      readonly over:
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
+        | {
+            kind: "row";
+            id: string;
+            api: API<Grid.GridSpec>;
+            row: T.RowNode<any>;
+            rowIndex: number;
+            element: HTMLElement;
+          };
+    }) => void;
+
+    readonly onRowDragEnter?: (params: {
+      readonly source: {
+        id: string;
+        api: API<Grid.GridSpec>;
+        row: T.RowNode<any>;
+        rowIndex: number;
+        data?: any;
+      };
+      readonly over:
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
+        | {
+            kind: "row";
+            id: string;
+            api: API<Grid.GridSpec>;
+            row: T.RowNode<any>;
+            rowIndex: number;
+            element: HTMLElement;
+          };
+    }) => void;
+    readonly onRowDragLeave?: (params: {
+      readonly source: {
+        id: string;
+        api: API<Grid.GridSpec>;
+        row: T.RowNode<any>;
+        rowIndex: number | null;
+        data?: any;
+      };
+      readonly over:
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
+        | {
+            kind: "row";
+            id: string;
+            api: API<Grid.GridSpec>;
+            row: T.RowNode<any>;
+            rowIndex: number | null;
+            element: HTMLElement;
+          };
+    }) => void;
+  };
+
   export type API<Spec extends GridSpec = GridSpec> = Root.API<Spec>;
   export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
-  export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnBase"];
-  export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnMarker"];
-  export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["rowGroupColumn"];
-  export type Events<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["events"];
+  export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnBase"];
+  export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnMarker"];
+  export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["rowGroupColumn"];
+  export type Events<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["events"];
   export type Style = LnTypes.GridStyle;
 
   export namespace Components {
@@ -146,14 +363,3 @@ export namespace Grid {
     export type PositionUnion = LnTypes.PositionUnion;
   }
 }
-
-export { measureText } from "@1771technologies/dom-utils";
-export { moveRelative, equal, arrayShallow } from "@1771technologies/js-utils";
-export { getRowDragData } from "./dnd/get-drag-data.js";
-export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";
-
-export { useClientDataSource } from "./data-source/use-client-data-source.js";
-export type { RowSourceClient, UseClientDataSourceParams } from "./data-source/use-client-data-source.js";
-
-export type { Piece, PieceWritable } from "./hooks/use-piece.js";
-export { usePiece } from "./hooks/use-piece.js";

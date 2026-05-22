@@ -13,7 +13,6 @@ import type {
 import type { Column } from "./column.js";
 import type { DragItem, UseDraggableProps } from "../dnd/types.js";
 import type { useDraggable } from "../dnd/use-draggable.js";
-import type { Props } from "./props.js";
 import type { Piece } from "../hooks/use-piece.js";
 import type { Grid } from "../index.js";
 
@@ -107,7 +106,7 @@ export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     },
   ) => ReturnType<typeof useDraggable>;
 
-  readonly props: () => Props<Spec>;
+  readonly props: () => Grid.Props<Spec>;
 } & Omit<RowSource, RowSourceOmits> &
   (undefined extends Spec["source"] ? object : Omit<Spec["source"], RowSourceOmits>) &
   Spec["api"];
