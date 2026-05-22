@@ -5,6 +5,7 @@
 /server
 dist-mpa
 (snap-diff)
+scratch-space
 
 .claude
 certificates
