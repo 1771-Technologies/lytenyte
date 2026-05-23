@@ -117,14 +117,10 @@ class XmlWalker {
       }
 
       if (this.#xml[this.#pos] === "<") {
-        const child = this.parseElement();
-
-        if (child) {
-          children.push(child);
-          continue;
-        }
-
-        break;
+        // parseElement() cannot return null here: pos < len (while condition),
+        // the char is "<", and "</" was already ruled out at line 112.
+        children.push(this.parseElement()!);
+        continue;
       }
 
       const textEnd = this.#xml.indexOf("<", this.#pos);
