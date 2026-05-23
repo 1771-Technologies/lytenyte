@@ -9,7 +9,6 @@ import type {
 } from "@1771technologies/lytenyte-shared";
 import type { Column } from "./column.js";
 import type { JSX } from "react";
-import type { API } from "./api.js";
 import type { Grid } from "../index.js";
 
 export type Events = {
@@ -26,7 +25,7 @@ type CellEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     column: Column<Spec>;
     row: RowNode<Spec["data"]>;
     layout: LayoutCell;
-    api: API<Spec>;
+    api: Grid.API<Spec>;
   }) => void;
 };
 
@@ -37,7 +36,7 @@ type RowEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
     row: RowNode<Spec["data"]>;
     layout: LayoutRowWithCells | LayoutFullWidthRow;
-    api: API<Spec>;
+    api: Grid.API<Spec>;
   }) => void;
 };
 
@@ -48,7 +47,7 @@ type HeaderEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
     layout: LayoutHeaderCell | LayoutHeaderFloating;
     column: Column<Spec>;
-    api: API<Spec>;
+    api: Grid.API<Spec>;
   }) => void;
 };
 
@@ -59,7 +58,7 @@ type HeaderGroupEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
     layout: LayoutHeaderGroup;
     columns: Column<Spec>[];
-    api: API<Spec>;
+    api: Grid.API<Spec>;
   }) => void;
 };
 
@@ -69,7 +68,7 @@ type ViewportEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     : never]: (params: {
     event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
     viewport: HTMLElement;
-    api: API<Spec>;
+    api: Grid.API<Spec>;
   }) => void;
 };
 

@@ -2,7 +2,6 @@ import { forwardRef, memo, useImperativeHandle, type PropsWithChildren, type Rea
 import { DEFAULT_ROW_SOURCE } from "./constants.js";
 import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
 import type { Column as LnColumn } from "../types/column.js";
-import type { API as LnAPI } from "../types/api.js";
 
 import { Viewport } from "../components/viewport/viewport.js";
 import { Header } from "../components/header/header.js";
@@ -227,6 +226,6 @@ export const Root = forwardRef(RootMain) as <Spec extends Grid.GridSpec = Grid.G
 
 export namespace Root {
   export type Props<Spec extends Grid.GridSpec = Grid.GridSpec> = Grid.Props<Spec>;
-  export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = LnAPI<Spec>;
+  export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = Grid.API<Spec>;
   export type Column<Spec extends Grid.GridSpec = Grid.GridSpec> = LnColumn<Spec>;
 }

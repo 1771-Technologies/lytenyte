@@ -12,9 +12,12 @@ import { Cell } from "./components/cells/cell.js";
 import { Viewport } from "./components/viewport/viewport.js";
 import { Root } from "./root/root.js";
 import type { PropsWithChildren, ReactNode, Ref } from "react";
-import type { RowHeight, RowSource } from "@1771technologies/lytenyte-shared";
+import type { ColumnView, RowHeight, RowSource } from "@1771technologies/lytenyte-shared";
 import type * as LnTypes from "./types/index.js";
 import type { ViewportShadowsProps } from "./components.js";
+import type { useDraggable } from "./dnd/use-draggable.js";
+import type { UseDraggableProps } from "./dnd/types.js";
+import type { Piece } from "./hooks/use-piece.js";
 
 export const Grid = Root as GridComponent;
 Grid.Header = Header;
@@ -285,7 +288,94 @@ export namespace Grid {
     }) => void;
   };
 
-  export type API<Spec extends GridSpec = GridSpec> = Root.API<Spec>;
+  type WithId = { readonly id: string };
+  export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = {
+    readonly cellSelections: () => T.DataRect[];
+    readonly positionFromElement: (el: HTMLElement) => T.PositionUnion | null;
+
+    readonly xPositions$: Piece<Uint32Array>;
+    readonly yPositions$: Piece<Uint32Array>;
+    readonly viewport$: Piece<HTMLElement | null>;
+
+    readonly cellRoot: (row: number, column: number) => T.PositionGridCell | T.PositionFullWidthRow | null;
+    readonly columnById: (id: string) => Column<Spec> | null;
+    readonly columnByIndex: (index: number) => Column<Spec> | null;
+    readonly columnField: (columnOrId: string | WithId, row: T.RowNode<Spec["data"]>) => unknown;
+    readonly columnMove: (params: {
+      readonly moveColumns: (string | WithId)[];
+      readonly moveTarget: string | number | WithId;
+      readonly before?: boolean;
+      readonly updatePinState?: boolean;
+    }) => void;
+    readonly columnResize: (sizes: Record<string, number>) => void;
+    readonly columnAutosize: (params?: {
+      readonly dryRun?: boolean;
+      readonly includeHeader?: boolean;
+      readonly columns?: (string | number | WithId)[];
+    }) => Record<string, number>;
+    readonly columnUpdate: (updates: Record<string, Omit<Partial<Column<Spec>>, "id">>) => void;
+    readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
+    readonly columnView: () => ColumnView;
+    readonly rowDetailHeight: (rowId: WithId | string) => number;
+    readonly rowDetailExpanded: (rowOrId: T.RowNode<Spec["data"]> | string | number) => boolean;
+    readonly rowDetailToggle: (rowOrId: string | T.RowNode<Spec["data"]>, state?: boolean) => void;
+
+    readonly rowGroupToggle: (rowOrId: T.RowNode<Spec["data"]> | string, state?: boolean) => void;
+    readonly rowIsLeaf: (row: T.RowNode<Spec["data"]>) => row is T.RowLeaf<Spec["data"]>;
+    readonly rowIsGroup: (row: T.RowNode<Spec["data"]>) => row is T.RowGroup;
+    readonly rowIsAggregated: (row: T.RowNode<Spec["data"]>) => row is T.RowAggregated;
+    readonly rowIsExpanded: (row: T.RowNode<Spec["data"]>) => boolean;
+    readonly rowIsExpandable: (row: T.RowNode<Spec["data"]>) => boolean;
+    readonly rowView: () => { rowCount: number; topCount: number; bottomCount: number; centerCount: number };
+
+    readonly exportData: (params?: { readonly rect?: T.DataRect }) => Promise<T.ExportDataRectResult<Spec>>;
+
+    readonly scrollIntoView: (params: {
+      readonly column?: number | string | WithId;
+      readonly row?: number;
+      readonly behavior?: "smooth" | "auto" | "instant";
+    }) => void;
+
+    readonly viewport: () => HTMLElement | null;
+
+    readonly editBegin: (params: {
+      readonly init?: any;
+      readonly column: WithId | string | number;
+      readonly rowIndex: number;
+      readonly focusIfNotEditable?: boolean;
+    }) => void;
+    readonly editEnd: (cancel?: boolean) => void;
+    readonly editIsCellActive: (params: {
+      readonly column: WithId | string | number;
+      readonly rowIndex: number;
+    }) => boolean;
+    readonly editUpdateRows: (
+      rows: Map<string | number, unknown>,
+    ) => true | Map<string | number, boolean | Record<string, unknown>>;
+    readonly editUpdateCells: (
+      cells: Map<string | number, { value: any; column: Column<Spec> | string | number }[]>,
+    ) => true | Map<string | number, boolean | Record<string, unknown>>;
+
+    readonly rowSelect: (params: {
+      readonly selected: string | [start: string, end: string] | Set<string> | "all";
+      readonly deselect?: boolean;
+    }) => void;
+    readonly rowHandleSelect: (params: { readonly target: EventTarget; readonly shiftKey: boolean }) => void;
+
+    readonly useRowDrag: (
+      params: Partial<Pick<UseDraggableProps, "data" | "placeholder">> & {
+        readonly rowIndex: number;
+        readonly tags?: Record<string, T.DragItem>;
+      },
+    ) => ReturnType<typeof useDraggable>;
+
+    readonly props: () => Grid.Props<Spec>;
+  } & Omit<RowSource, "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected"> &
+    (undefined extends Spec["source"]
+      ? object
+      : Omit<Spec["source"], "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected">) &
+    Spec["api"];
+
   export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
   export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnBase"];
   export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnMarker"];
@@ -319,7 +409,6 @@ export namespace Grid {
     export type DimensionAgg<T> = LnTypes.DimensionAgg<T>;
     export type DimensionSort<T> = LnTypes.DimensionSort<T>;
     export type EditParams<Spec extends GridSpec> = LnTypes.EditParams<Spec>;
-    export type ExportDataRectResult = LnTypes.ExportDataRectResult;
     export type Field<T> = LnTypes.Field<T>;
     export type FilterFn<T> = LnTypes.FilterFn<T>;
     export type GroupFn<T> = LnTypes.GroupFn<T>;
@@ -361,5 +450,12 @@ export namespace Grid {
     export type PositionHeaderCell = LnTypes.PositionHeaderCell;
     export type PositionHeaderGroupCell = LnTypes.PositionHeaderGroupCell;
     export type PositionUnion = LnTypes.PositionUnion;
+
+    export interface ExportDataRectResult<Spec extends Grid.GridSpec = Grid.GridSpec> {
+      readonly headers: string[];
+      readonly groupHeaders: (string | null)[][];
+      readonly data: unknown[][];
+      readonly columns: Column<Spec>[];
+    }
   }
 }

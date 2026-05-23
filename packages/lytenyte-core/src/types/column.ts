@@ -5,7 +5,6 @@ import type {
   LayoutFullWidthRow,
   RowNode,
 } from "@1771technologies/lytenyte-shared";
-import type { API } from "./api.js";
 import type { Grid } from "../index.js";
 
 export type PathField = { kind: "path"; path: string };
@@ -13,7 +12,7 @@ export type PathField = { kind: "path"; path: string };
 export interface RowParams<Spec extends Grid.GridSpec = Grid.GridSpec> {
   readonly rowIndex: number;
   readonly row: RowNode<Spec["data"]>;
-  readonly api: API<Spec>;
+  readonly api: Grid.API<Spec>;
 }
 
 export interface RowFullWidthRendererParams<Spec extends Grid.GridSpec = Grid.GridSpec>
@@ -23,7 +22,7 @@ export interface RowFullWidthRendererParams<Spec extends Grid.GridSpec = Grid.Gr
 
 export interface HeaderParams<Spec extends Grid.GridSpec = Grid.GridSpec> {
   readonly column: Column<Spec>;
-  readonly api: API<Spec>;
+  readonly api: Grid.API<Spec>;
 }
 
 export interface HeaderGroupParams<Spec extends Grid.GridSpec = Grid.GridSpec> {
@@ -31,13 +30,13 @@ export interface HeaderGroupParams<Spec extends Grid.GridSpec = Grid.GridSpec> {
   readonly collapsed: boolean;
   readonly groupPath: string[];
   readonly columns: Column<Spec>[];
-  readonly api: API<Spec>;
+  readonly api: Grid.API<Spec>;
 }
 
 export interface CellParams<Spec extends Grid.GridSpec = Grid.GridSpec> {
   readonly row: RowNode<Spec["data"]>;
   readonly column: Column<Spec>;
-  readonly api: API<Spec>;
+  readonly api: Grid.API<Spec>;
 }
 
 export interface CellParamsWithIndex<Spec extends Grid.GridSpec = Grid.GridSpec> extends CellParams<Spec> {
