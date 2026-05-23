@@ -388,8 +388,10 @@ const ds = useTreeDataSource({
 - **`editMutateCommit` fires for every column when any cell is committed** — a common mistake is writing `editMutateCommit` on a column that converts strings to numbers, but forgetting it fires even when a _different_ column is edited. The hook receives the full `editData`, so each column's `editMutateCommit` should only transform its own field and leave others untouched.
 - **`editSetter` must return the full `editData` object** — returning only the changed field (e.g. `{ price: newValue }`) replaces the entire row data with a partial object. Always spread: `{ ...editData, price: newValue }`.
 - **Controlled date inputs cause "jumping" bugs** — for date inputs, use `defaultValue` (uncontrolled) rather than `value` (controlled). A controlled date input can enter invalid intermediate states as the user types (e.g. `"2024-"` mid-entry), causing the input to jump. See the date editor example above.
-- **Popover editors: set `editOnPrintable: false`** — if your editor component responds to keyboard input (e.g. opens a dropdown on keypress), the grid would otherwise open editing on every printable key typed while the cell is focused.
-- **`editUpdate` runs through the full validation pipeline** — if validation fails, the update is rejected and the map is not partially applied. Check the return value.
+- **Popover editors: set `editOnPrintable: false`** — if your editor component responds to keyboard input (e.g. opens a dropdown on keypress),
+  the grid would otherwise open editing on every printable key typed while the cell is focused.
+- **`editUpdate` runs through the full validation pipeline** — if validation fails, the update is rejected and
+  the map is not partially applied. Check the return value.
 
 ## Full Docs
 
