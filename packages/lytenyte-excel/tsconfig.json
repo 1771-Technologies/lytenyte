@@ -19,8 +19,8 @@
     "noFallthroughCasesInSwitch": true,
 
     // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": false
   },
   "exclude": ["**/__tests__/**", "**/*.stories*", "**/*.spec*", "**/*.test*"],

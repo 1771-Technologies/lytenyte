@@ -9,8 +9,8 @@
  * or number. This function is used during cell serialization to detect error
  * values and switch to the correct output path.
  */
-export function isExcelError(value: string): boolean {
-  const errors = ["#NULL!", "#DIV/0!", "#VALUE!", "#REF!", "#NAME?", "#NUM!", "#N/A", "#GETTING_DATA"];
+const EXCEL_ERRORS = new Set(["#NULL!", "#DIV/0!", "#VALUE!", "#REF!", "#NAME?", "#NUM!", "#N/A", "#GETTING_DATA"]);
 
-  return errors.includes(value);
+export function isExcelError(value: string): boolean {
+  return EXCEL_ERRORS.has(value);
 }

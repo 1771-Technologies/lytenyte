@@ -1,5 +1,5 @@
 import type { XmlElement } from "./types.js";
-import { unescapeXml } from "./unescape-xml.js";
+import { unescapeXml } from "../unescape-xml.js";
 
 /**
  * Parses a raw XML string into an `XmlElement` tree using a lightweight,
