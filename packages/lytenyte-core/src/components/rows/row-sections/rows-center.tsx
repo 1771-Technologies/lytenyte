@@ -1,5 +1,4 @@
 import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "react";
-import { NativeScroller } from "../scrollers/native-scroller.js";
 import { RowChildrenDefault } from "../row-children-default.js";
 import { RowsSection } from "./rows-section.js";
 import type { LayoutRow } from "@1771technologies/lytenyte-shared";
@@ -13,6 +12,7 @@ import {
   useRowViewContext,
 } from "../../../root/contexts/row-layout/row-layout-context.js";
 import { useYCoordinates } from "../../../root/contexts/coordinates.js";
+import { SyncScroller } from "../scrollers/sync-scroller.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -76,10 +76,10 @@ export const RowsCenter = memo(
           position: "relative",
         }}
       >
-        <NativeScroller>
+        <SyncScroller>
           <CellSelectionCenter />
           {rows}
-        </NativeScroller>
+        </SyncScroller>
       </RowsSection>
     );
   }),

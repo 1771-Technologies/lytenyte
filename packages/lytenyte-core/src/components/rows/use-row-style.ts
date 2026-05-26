@@ -21,20 +21,21 @@ export function useRowStyle(
     // position the rows, then it appears to produce the correct calculation.
     const styles: CSSProperties = {
       boxSizing: "border-box",
-      height: isTranslated ? 0 : height,
+      // height: isTranslated ? 0 : height,
+      height: height,
       width: SCROLL_WIDTH_VARIABLE_USE,
       minWidth: VIEWPORT_WIDTH_VARIABLE_USE,
       pointerEvents: "none",
       whiteSpace: "nowrap",
       display: "flex",
-      position: isTranslated ? "relative" : undefined,
-      top: isTranslated ? yPositions[rowIndex] - topOffset : undefined,
+      // position: isTranslated ? "relative" : undefined,
+      // top: isTranslated ? yPositions[rowIndex] - topOffset : undefined,
 
       "--ln-row-height": `${height - detailHeight}px`,
     } as CSSProperties;
 
     return { ...propStyles, ...styles };
-  }, [detailHeight, height, propStyles, rowIndex, rowPin, topOffset, yPositions]);
+  }, [detailHeight, height, propStyles, rowPin]);
 
   return styles;
 }
