@@ -1,8 +1,8 @@
 import type { Grid } from "../index.js";
 
 export type * from "./events.js";
-export type * from "./grid.js";
 
+export type GridStyle = Grid.Style;
 export type Props<Spec extends Grid.GridSpec = Grid.GridSpec> = Grid.Props<Spec>;
 export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = Grid.API<Spec>;
 export type ExportDataRectResult<Spec extends Grid.GridSpec = Grid.GridSpec> =

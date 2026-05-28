@@ -11,7 +11,7 @@ import { RowFullWidth } from "./components/rows/row-full-width.js";
 import { Cell } from "./components/cells/cell.js";
 import { Viewport } from "./components/viewport/viewport.js";
 import { Root } from "./root/root.js";
-import type { PropsWithChildren, ReactNode, Ref } from "react";
+import type { CSSProperties, PropsWithChildren, ReactNode, Ref } from "react";
 import type { ColumnAbstract, ColumnView, RowHeight, RowSource } from "@1771technologies/lytenyte-shared";
 import type * as LnTypes from "./types/index.js";
 import type { ViewportShadowsProps } from "./components.js";
@@ -125,7 +125,7 @@ export namespace Grid {
 
     readonly gridId?: string;
     readonly events?: LnTypes.GridEvents<Spec>;
-    readonly styles?: LnTypes.GridStyle;
+    readonly styles?: Style;
 
     readonly rtl?: boolean;
 
@@ -382,7 +382,33 @@ export namespace Grid {
   export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnMarker"];
   export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["rowGroupColumn"];
   export type Events<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["events"];
-  export type Style = LnTypes.GridStyle;
+
+  export type Style = {
+    readonly viewport?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly row?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly header?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly detail?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly headerGroup?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly cell?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+  };
 
   export namespace Components {
     export type Header = Header.Props;
