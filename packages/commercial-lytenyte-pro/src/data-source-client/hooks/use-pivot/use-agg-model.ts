@@ -1,11 +1,12 @@
-import type { Column, GridSpec } from "../../../types.js";
+import type { Column } from "../../../types.js";
 import type { PivotModel } from "../../use-client-data-source.js";
 import type { AggregationFn, Aggregator } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 import { computeField } from "@1771technologies/lytenyte-core/internal";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
 const pivotAggs = {};
-export function usePivotAggFunction<Spec extends GridSpec>(
+export function usePivotAggFunction<Spec extends Grid.GridSpec>(
   pivotColumns: Column<Spec>[] | null,
   model: PivotModel<Spec> | undefined,
   aggs: Record<string, Aggregator<Spec["data"]>> = pivotAggs,

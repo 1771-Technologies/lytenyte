@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useSlot, type SlotComponent } from "../hooks/use-slot/index.js";
-import type { API, GridSpec } from "../types.js";
+import type { API } from "../types.js";
 import { useEvent } from "@1771technologies/lytenyte-core/internal";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
 export interface SelectAllProps {
   readonly slot?: SlotComponent<{
@@ -11,7 +12,7 @@ export interface SelectAllProps {
   }>;
 }
 
-export function SelectAll<Spec extends GridSpec>({
+export function SelectAll<Spec extends Grid.GridSpec>({
   api,
   slot,
 }: SelectAllProps & { readonly api: API<Spec> }) {

@@ -1,7 +1,7 @@
 import type { ColumnView, RowSource } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
-import type { Column } from "../../../../types/index.js";
+import type { Grid } from "../../../../index.js";
 
 export function useEditUpdateCells(
   props: Root.Props,
@@ -19,7 +19,7 @@ export function useEditUpdateCells(
       let nextData = structuredClone(row.data) as any;
 
       for (const { column: c, value } of updates) {
-        let column: Column | undefined;
+        let column: Grid.Column | undefined;
         if (typeof c === "string") column = view.lookup.get(c);
         else if (typeof c === "number") column = view.visibleColumns.at(c);
         else column = view.lookup.get(c.id);

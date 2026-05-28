@@ -3,6 +3,7 @@ import { Root as RootCore } from "@1771technologies/lytenyte-core/internal";
 import { forwardRef, memo, useEffect, type PropsWithChildren, type ReactNode } from "react";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
 import { hasAValidLicense, licenseState } from "../license.js";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
 const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
   props: PropsWithChildren<
@@ -56,9 +57,9 @@ export namespace Root {
     C extends Record<string, any> = object,
     S extends RowSource<T> = RowSource,
     E extends Record<string, any> = object,
-  > = Core.GridSpec<T, C, S, E>;
+  > = Grid.GridSpec<T, C, S, E>;
 
-  export type Props<Spec extends GridSpec = GridSpec> = Core.Props<Spec>;
+  export type Props<Spec extends GridSpec = GridSpec> = Grid.Props<Spec>;
   export type API<Spec extends GridSpec = GridSpec> = Core.API<Spec>;
   export type Column<Spec extends GridSpec = GridSpec> = Core.Column<Spec>;
 }

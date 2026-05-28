@@ -1,12 +1,12 @@
 import { createContext, memo, useContext, useMemo, type PropsWithChildren, type ReactNode } from "react";
-import type { HeaderGroupParams, RowFullWidthRendererParams, RowParams } from "../../types/index.js";
 import type { Root } from "../root.js";
 import type { PartialMandatory } from "@1771technologies/lytenyte-shared";
 import type { ViewportShadowsProps } from "../../components/viewport/viewport-shadows.js";
+import type { Grid } from "../../index.js";
 
 interface GridRendererContext {
-  readonly FullWidthRenderer: (props: RowFullWidthRendererParams) => ReactNode;
-  readonly DetailRenderer: (props: RowParams) => ReactNode;
+  readonly FullWidthRenderer: (props: Grid.T.RowFullWidthRendererParams) => ReactNode;
+  readonly DetailRenderer: (props: Grid.T.RowParams) => ReactNode;
   readonly ColumnGroupRenderer: Required<Root.Props>["columnGroupRenderer"];
 
   readonly Shadows?: (props: ViewportShadowsProps) => ReactNode;
@@ -53,6 +53,6 @@ export const GridRendererContext = memo((props: PropsWithChildren<Props>) => {
 
 export const useGridRenderer = () => useContext(context);
 
-function HeaderGroupDefault({ groupPath }: HeaderGroupParams<any>) {
+function HeaderGroupDefault({ groupPath }: Grid.T.HeaderGroupParams<any>) {
   return <>{groupPath.at(-1)}</>;
 }

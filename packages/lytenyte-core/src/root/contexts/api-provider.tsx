@@ -1,5 +1,5 @@
 import { createContext, useContext, type PropsWithChildren } from "react";
-import type { API, Props } from "../../types/index.js";
+import type { API } from "../../types/index.js";
 import {
   getNearestFocusable,
   getPositionFromFocusable,
@@ -50,6 +50,7 @@ import { useUseRowDrag } from "../hooks/use-api/api-functions/use-row-drag.js";
 import { useViewport } from "../hooks/use-api/api-functions/use-viewport.js";
 import { useSelectPivotRef } from "./row-select-context.js";
 import { useRowDetailContext } from "./row-detail.js";
+import type { Grid } from "../../index.js";
 
 const context = createContext<API>(null as unknown as API);
 
@@ -58,7 +59,7 @@ export const APIProvider = ({
   source,
   children,
   ...props
-}: PropsWithChildren<Props & { api: API; source: RowSource }>) => {
+}: PropsWithChildren<Grid.Props & { api: API; source: RowSource }>) => {
   const api: Writable<Root.API> = providedApi;
   const selectPivot = useSelectPivotRef();
   const edit = useEditContext();

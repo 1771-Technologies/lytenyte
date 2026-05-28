@@ -2,12 +2,12 @@ import type { ColumnView } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
 import { resolveColumn } from "../auxiliary-functions/resolve-column.js";
-import type { Column } from "../../../../types/column.js";
+import type { Grid } from "../../../../index.js";
 
 export function useColumnMove(
   view: ColumnView,
-  columns: Column[],
-  onColumnsChange: (change: Column[]) => void,
+  columns: Grid.Column[],
+  onColumnsChange: (change: Grid.Column[]) => void,
 ): Root.API["columnMove"] {
   return useEvent((params) => {
     const errorRef = { current: false };

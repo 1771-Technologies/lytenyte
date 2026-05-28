@@ -1,6 +1,5 @@
 // import { useTheme } from "@1771technologies/play-frame";
 import "@1771technologies/lytenyte-design/shadcn-vars.css";
-
 import "@1771technologies/lytenyte-design/fonts.css";
 import "../../css/grid-full.css";
 
@@ -8,14 +7,14 @@ import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smal
 import { ViewportShadows } from "@1771technologies/lytenyte-core/components";
 import { useClientDataSource } from "../data-source-client/use-client-data-source.js";
 import { useMemo, useState } from "react";
-import type { Field, GridSpec, Props } from "../types";
+import type { Field } from "../types";
 import type { RowLeaf } from "@1771technologies/lytenyte-shared";
 import { RowGroupCell } from "../components/row-group-cell.js";
 import { Grid } from "../index.js";
 
 type BankData = (typeof bankDataSmall)[number];
 
-interface Spec extends GridSpec {
+interface Spec extends Grid.GridSpec {
   data: BankData;
 }
 
@@ -59,7 +58,7 @@ export default function Experimental() {
   });
   const pivotProps = ds.usePivotProps();
 
-  const [rowGroupColumn, setRowGroupColumn] = useState<Props<Spec>["rowGroupColumn"]>({
+  const [rowGroupColumn, setRowGroupColumn] = useState<Grid.Props<Spec>["rowGroupColumn"]>({
     cellRenderer: RowGroupCell,
   });
 

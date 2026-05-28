@@ -14,10 +14,10 @@ import {
   type LeafNodeTuple,
 } from "@1771technologies/lytenyte-core/internal";
 import { useMemo, useRef } from "react";
-import type { GridSpec } from "@1771technologies/lytenyte-core/types";
+import type { Grid } from "@1771technologies/lytenyte-core";
 
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
-export function useFlattenedData<Spec extends GridSpec>(
+export function useFlattenedData<Spec extends Grid.GridSpec>(
   props: UseClientDataSourceParams<Spec>,
   [leafsTop, leafs, leafsBot, pinMap]: LeafNodeTuple<Spec["data"]>,
   { expandedFn }: SourceState,

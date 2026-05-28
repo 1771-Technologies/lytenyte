@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import type { Events, GridEvents } from "../types/events";
+import type { Grid } from "../index.js";
 
-export function useMappedEvents(events: GridEvents[keyof GridEvents], params: any) {
+export function useMappedEvents(events: Grid.Events[keyof Grid.Events], params: any) {
   return useMemo(() => {
     return Object.fromEntries(
       Object.entries(events ?? {}).map(([key, ev]) => {
@@ -9,7 +9,7 @@ export function useMappedEvents(events: GridEvents[keyof GridEvents], params: an
 
         return [evName, (e: any) => ev({ event: e, ...params })];
       }),
-    ) as Events;
+    ) as Grid.T.Events;
     // This is technically fine
     // eslint-disable-next-line react-hooks/use-memo, react-hooks/exhaustive-deps
   }, [...Object.values(params), events]);

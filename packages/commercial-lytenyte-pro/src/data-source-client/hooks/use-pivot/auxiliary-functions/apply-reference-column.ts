@@ -1,4 +1,5 @@
-import type { Column, GridSpec } from "../../../../types.js";
+import type { Grid } from "@1771technologies/lytenyte-core";
+import type { Column } from "../../../../types.js";
 
 const omitKeys = [
   "id",
@@ -16,7 +17,7 @@ const omitKeys = [
   "editSetter",
 ];
 
-export function applyReferenceColumn<Spec extends GridSpec>(
+export function applyReferenceColumn<Spec extends Grid.GridSpec>(
   pivotColumn: Column<Spec>,
   reference: Omit<Column<Spec>, "id"> | undefined,
 ) {

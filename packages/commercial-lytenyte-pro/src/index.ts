@@ -31,6 +31,7 @@ export interface GridComponent {
 }
 
 export const Grid = Root as GridComponent;
+
 Grid.Header = GridCore.Header;
 Grid.HeaderRow = GridCore.HeaderRow;
 Grid.HeaderCell = GridCore.HeaderCell;

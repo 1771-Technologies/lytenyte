@@ -9,11 +9,11 @@ import type { Root } from "../../root";
 import { useControlled } from "../../../hooks/use-controlled.js";
 import { useEvent } from "../../../hooks/use-event.js";
 import { useColumnView } from "../../hooks/use-column-view.js";
-import type { Column } from "../../../types/index.js";
+import type { Grid } from "../../../index.js";
 
 interface ColumnContext {
   readonly view: ColumnView;
-  readonly columns: Column[];
+  readonly columns: Grid.Column[];
   readonly columnGroupExpansions: Record<string, boolean>;
   readonly columnGroupExpansionsDefault: boolean;
   readonly onColumnGroupExpansionChange: (change: Record<string, boolean>) => void;

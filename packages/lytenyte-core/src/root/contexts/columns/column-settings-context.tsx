@@ -1,20 +1,14 @@
 import { createContext, useContext, useMemo, type PropsWithChildren, type ReactNode } from "react";
-import type {
-  CellParams,
-  CellRendererParams,
-  Column,
-  EditParams,
-  HeaderParams,
-} from "../../../types/index.js";
 import { useColumnsContext } from "./column-context.js";
 import { COLUMN_MARKER_ID, GROUP_COLUMN_PREFIX } from "@1771technologies/lytenyte-shared";
+import type { Grid } from "../../../index.js";
 
 interface ColumnSetting {
-  readonly cellRenderer: (params: CellRendererParams<any>) => ReactNode;
-  readonly editRenderer: null | ((params: EditParams) => ReactNode);
-  readonly editable: Column["editable"];
-  readonly headerRenderer: (params: HeaderParams) => ReactNode;
-  readonly floatingCellRenderer: (params: HeaderParams) => ReactNode;
+  readonly cellRenderer: (params: Grid.T.CellRendererParams<any>) => ReactNode;
+  readonly editRenderer: null | ((params: Grid.T.EditParams) => ReactNode);
+  readonly editable: Grid.Column["editable"];
+  readonly headerRenderer: (params: Grid.T.HeaderParams) => ReactNode;
+  readonly floatingCellRenderer: (params: Grid.T.HeaderParams) => ReactNode;
   readonly movable: boolean;
   readonly resizable: boolean;
   readonly type: string;
@@ -26,9 +20,9 @@ export function ColumnSettingProvider({
   base,
   children,
 }: PropsWithChildren<{
-  base: Omit<Partial<Column>, "id" | "pin" | "field" | "editSetter"> | undefined;
+  base: Omit<Partial<Grid.Column>, "id" | "pin" | "field" | "editSetter"> | undefined;
 }>) {
-  const columns = useColumnsContext().view.visibleColumns as Column[];
+  const columns = useColumnsContext().view.visibleColumns as Grid.Column[];
 
   const settings = useMemo<Record<string, ColumnSetting>>(() => {
     const settings = columns.map((x) => {
@@ -58,12 +52,12 @@ export function ColumnSettingProvider({
 
 export const useColumnSettingsContext = () => useContext(context);
 
-function CellDefault({ column, row, api }: CellParams<any>) {
+function CellDefault({ column, row, api }: Grid.T.CellParams<any>) {
   if (row.data == null && row.loading) return <div>Loading...</div>;
   const field = api.columnField(column, row);
   return <div>{`${field ?? "-"}`}</div>;
 }
 
-function DefaultRenderer(p: HeaderParams<any>) {
+function DefaultRenderer(p: Grid.T.HeaderParams<any>) {
   return <>{p.column.name ?? p.column.id}</>;
 }
