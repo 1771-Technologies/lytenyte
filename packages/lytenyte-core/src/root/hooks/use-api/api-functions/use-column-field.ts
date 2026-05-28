@@ -1,8 +1,8 @@
 import { type ColumnView } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
-import type { Column } from "../../../../types/column.js";
 import { computeField } from "../auxiliary-functions/compute-field.js";
+import type { Grid } from "../../../../index.js";
 
 export function useColumnField(view: ColumnView): Root.API["columnField"] {
   return useEvent((col, row) => {
@@ -12,7 +12,7 @@ export function useColumnField(view: ColumnView): Root.API["columnField"] {
       return null;
     }
 
-    const field = row.kind === "leaf" ? ((column as Column).field ?? column.id) : column.id;
+    const field = row.kind === "leaf" ? ((column as Grid.Column).field ?? column.id) : column.id;
     return computeField(field, row);
   });
 }

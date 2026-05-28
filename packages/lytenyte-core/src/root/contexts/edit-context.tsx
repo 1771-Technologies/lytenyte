@@ -8,11 +8,11 @@ import {
   type PropsWithChildren,
   type SetStateAction,
 } from "react";
-import type { API, Column, RowNode } from "../../types";
 import type { ColumnAbstract, PartialMandatory, RowSource } from "@1771technologies/lytenyte-shared";
 import { useColumnsContext } from "./columns/column-context.js";
 import { useEvent } from "../../hooks/use-event.js";
 import type { Root } from "../root";
+import type { Grid } from "../../index.js";
 
 export interface EditContext {
   readonly activeEdit: null | { readonly rowId: string; readonly column: string };
@@ -23,8 +23,8 @@ export interface EditContext {
   readonly setEditData: Dispatch<SetStateAction<any>>;
   readonly editValidation: boolean | Record<string, unknown>;
 
-  readonly changeValue: (value: any, column: Column) => boolean | Record<string, unknown>;
-  readonly changeWithInit: (value: any, row: RowNode<any>, column: ColumnAbstract) => any;
+  readonly changeValue: (value: any, column: Grid.Column) => boolean | Record<string, unknown>;
+  readonly changeWithInit: (value: any, row: Grid.T.RowNode<any>, column: ColumnAbstract) => any;
   readonly changeData: (data: any) => boolean | Record<string, unknown>;
 
   readonly commit: () => boolean | Record<string, unknown>;
@@ -50,7 +50,7 @@ type Props = Pick<
   | "editMode"
   | "editClickActivator"
 > & {
-  readonly api: API;
+  readonly api: Grid.API;
   readonly source: RowSource;
 };
 
@@ -65,7 +65,7 @@ export function EditProvider({ api, source, ...props }: PropsWithChildren<Props>
 
   const [editData, setEditData] = useState<any>(null);
 
-  const changeWithInit = useEvent((value: any, row: RowNode<any>, column: ColumnAbstract) => {
+  const changeWithInit = useEvent((value: any, row: Grid.T.RowNode<any>, column: ColumnAbstract) => {
     let nextData: any;
     const setter = ((column as any) ?? props.columnBase)?.editSetter as Root.Column["editSetter"];
 
@@ -86,7 +86,7 @@ export function EditProvider({ api, source, ...props }: PropsWithChildren<Props>
   const editDataStateRef = useRef(editData);
   editDataStateRef.current = editData;
 
-  const changeValue = useEvent((value: any, column: Column) => {
+  const changeValue = useEvent((value: any, column: Grid.Column) => {
     if (!activeEdit) return false;
 
     const row = api.rowById(activeEdit.rowId);
@@ -186,7 +186,7 @@ export function EditProvider({ api, source, ...props }: PropsWithChildren<Props>
 
     if (stop) return true;
 
-    const updateMap = new Map<RowNode<any>, any>();
+    const updateMap = new Map<Grid.T.RowNode<any>, any>();
     updateMap.set(row, editDataState);
     source.onRowsUpdated(updateMap);
 

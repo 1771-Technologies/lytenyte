@@ -12,7 +12,7 @@ import { Cell } from "./components/cells/cell.js";
 import { Viewport } from "./components/viewport/viewport.js";
 import { Root } from "./root/root.js";
 import type { PropsWithChildren, ReactNode, Ref } from "react";
-import type { ColumnView, RowHeight, RowSource } from "@1771technologies/lytenyte-shared";
+import type { ColumnAbstract, ColumnView, RowHeight, RowSource } from "@1771technologies/lytenyte-shared";
 import type * as LnTypes from "./types/index.js";
 import type { ViewportShadowsProps } from "./components.js";
 import type { useDraggable } from "./dnd/use-draggable.js";
@@ -376,7 +376,8 @@ export namespace Grid {
       : Omit<Spec["source"], "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected">) &
     Spec["api"];
 
-  export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
+  export type Column<Spec extends GridSpec = GridSpec> = T.ColumnUnextended<Spec> & Spec["column"];
+
   export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnBase"];
   export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnMarker"];
   export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["rowGroupColumn"];
@@ -401,29 +402,102 @@ export namespace Grid {
   export namespace T {
     export type AggregationFn<T> = LnTypes.AggregationFn<T>;
     export type Aggregator<T> = LnTypes.Aggregator<T>;
-    export type CellParams<Spec extends GridSpec> = LnTypes.CellParams<Spec>;
-    export type CellParamsWithIndex<Spec extends GridSpec> = LnTypes.CellParamsWithIndex<Spec>;
-    export type CellRendererParams<Spec extends GridSpec> = LnTypes.CellRendererParams<Spec>;
+
+    export type ColumnUnextended<Spec extends Grid.GridSpec = Grid.GridSpec> = ColumnAbstract & {
+      readonly field?: Field<Spec["data"]>;
+
+      readonly colSpan?: number | ((params: CellParamsWithIndex<Spec>) => number);
+      readonly rowSpan?: number | ((params: CellParamsWithIndex<Spec>) => number);
+
+      readonly autosizeCellFn?: (params: CellParams<Spec>) => number | null | undefined;
+      readonly autosizeHeaderFn?: (params: HeaderParams<Spec>) => number | null | undefined;
+
+      readonly floatingCellRenderer?: (props: HeaderParams<Spec>) => ReactNode;
+      readonly headerRenderer?: (props: HeaderParams<Spec>) => ReactNode;
+      readonly cellRenderer?: (props: CellRendererParams<Spec>) => ReactNode;
+
+      readonly editOnPrintable?: boolean;
+      readonly editRenderer?: (props: EditParams<Spec>) => ReactNode;
+      readonly editable?: boolean | ((params: CellParamsWithIndex<Spec>) => boolean);
+      readonly editSetter?: (
+        params: Pick<EditParams<Spec>, "api" | "editValue" | "editData" | "row" | "column">,
+      ) => unknown;
+      readonly editMutateCommit?: (
+        params: Pick<EditParams<Spec>, "api" | "editData" | "row" | "column">,
+      ) => void;
+    };
+
+    export type CellParams<Spec extends GridSpec = GridSpec> = {
+      readonly row: RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
+      readonly api: Grid.API<Spec>;
+    };
+
+    export type CellParamsWithIndex<Spec extends GridSpec = GridSpec> = {
+      readonly rowIndex: number;
+      readonly colIndex: number;
+    } & CellParams<Spec>;
+
+    export type CellRendererParams<Spec extends GridSpec = GridSpec> = {
+      readonly selected: boolean;
+      readonly indeterminate: boolean;
+      readonly detailExpanded: boolean;
+      readonly editData: unknown;
+      readonly layout: LayoutCell;
+    } & CellParamsWithIndex<Spec>;
+
+    export type EditParams<Spec extends GridSpec = GridSpec> = {
+      readonly editValue: unknown;
+      readonly changeValue: (value: unknown) => boolean | Record<string, unknown>;
+      readonly editData: unknown;
+      readonly editValidation: boolean | Record<string, unknown>;
+      readonly changeData: (data: unknown) => boolean | Record<string, unknown>;
+      readonly commit: () => boolean | Record<string, unknown>;
+      readonly cancel: () => void;
+      readonly layout: LayoutCell;
+    } & CellParamsWithIndex<Spec>;
+
     export type DataRect = LnTypes.DataRect;
     export type Dimension<T> = LnTypes.Dimension<T>;
     export type DimensionAgg<T> = LnTypes.DimensionAgg<T>;
     export type DimensionSort<T> = LnTypes.DimensionSort<T>;
-    export type EditParams<Spec extends GridSpec> = LnTypes.EditParams<Spec>;
-    export type Field<T> = LnTypes.Field<T>;
+
+    export type Field<T> = string | number | PathField | ((params: { row: RowNode<T> }) => unknown);
     export type FilterFn<T> = LnTypes.FilterFn<T>;
     export type GroupFn<T> = LnTypes.GroupFn<T>;
     export type GroupIdFn = LnTypes.GroupIdFn;
-    export type HeaderGroupParams<Spec extends GridSpec> = LnTypes.HeaderGroupParams<Spec>;
-    export type HeaderParams<Spec extends GridSpec> = LnTypes.HeaderParams<Spec>;
+
+    export type HeaderGroupParams<Spec extends GridSpec = GridSpec> = {
+      readonly collapsible: boolean;
+      readonly collapsed: boolean;
+      readonly groupPath: string[];
+      readonly columns: Column<Spec>[];
+      readonly api: API<Spec>;
+    };
+    export type HeaderParams<Spec extends GridSpec = GridSpec> = {
+      readonly column: Column<Spec>;
+      readonly api: API<Spec>;
+    };
+
     export type LeafIdFn<T> = LnTypes.LeafIdFn<T>;
-    export type PathField = LnTypes.PathField;
-    export type RowParams<Spec extends GridSpec> = LnTypes.RowParams<Spec>;
+    export type PathField = { kind: "path"; path: string };
+
+    export type RowParams<Spec extends GridSpec = GridSpec> = {
+      readonly rowIndex: number;
+      readonly row: RowNode<Spec["data"]>;
+      readonly api: API<Spec>;
+    };
+
+    export type RowFullWidthRendererParams<Spec extends GridSpec = GridSpec> = RowParams<Spec> & {
+      readonly layout: LayoutFullWidthRow;
+    };
+
     export type RowSelectionState = LnTypes.RowSelectionState;
     export type RowSelectionIsolated = LnTypes.RowSelectionIsolated;
     export type RowSelectionLinked = LnTypes.RowSelectionLinked;
     export type RowSelectNode = LnTypes.RowSelectNode;
     export type SortFn<T> = LnTypes.SortFn<T>;
-    export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
+
     export type RowDragPlaceholderFn = LnTypes.ReactPlaceholderFn;
     export type DragItem = LnTypes.DragItem;
     export type DragItemSiteLocal = LnTypes.DragItemSiteLocal;

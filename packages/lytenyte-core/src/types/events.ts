@@ -7,7 +7,6 @@ import type {
   LayoutRowWithCells,
   RowNode,
 } from "@1771technologies/lytenyte-shared";
-import type { Column } from "./column.js";
 import type { JSX } from "react";
 import type { Grid } from "../index.js";
 
@@ -22,7 +21,7 @@ type CellEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     ? Uncapitalize<X>
     : never]: (params: {
     event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
-    column: Column<Spec>;
+    column: Grid.Column<Spec>;
     row: RowNode<Spec["data"]>;
     layout: LayoutCell;
     api: Grid.API<Spec>;
@@ -46,7 +45,7 @@ type HeaderEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     : never]: (params: {
     event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
     layout: LayoutHeaderCell | LayoutHeaderFloating;
-    column: Column<Spec>;
+    column: Grid.Column<Spec>;
     api: Grid.API<Spec>;
   }) => void;
 };
@@ -57,7 +56,7 @@ type HeaderGroupEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = {
     : never]: (params: {
     event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
     layout: LayoutHeaderGroup;
-    columns: Column<Spec>[];
+    columns: Grid.Column<Spec>[];
     api: Grid.API<Spec>;
   }) => void;
 };
