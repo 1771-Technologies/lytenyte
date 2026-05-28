@@ -11,13 +11,15 @@ import { RowFullWidth } from "./components/rows/row-full-width.js";
 import { Cell } from "./components/cells/cell.js";
 import { Viewport } from "./components/viewport/viewport.js";
 import { Root } from "./root/root.js";
-import type { CSSProperties, PropsWithChildren, ReactNode, Ref } from "react";
+import type { CSSProperties, JSX, PropsWithChildren, ReactNode, Ref } from "react";
 import type { ColumnAbstract, ColumnView, RowHeight, RowSource } from "@1771technologies/lytenyte-shared";
-import type * as LnTypes from "./types/index.js";
 import type { ViewportShadowsProps } from "./components.js";
 import type { useDraggable } from "./dnd/use-draggable.js";
 import type { UseDraggableProps } from "./dnd/types.js";
 import type { Piece } from "./hooks/use-piece.js";
+
+import type * as LnTypes from "@1771technologies/lytenyte-shared";
+import type * as DndTypes from "./dnd/types.js";
 
 export const Grid = Root as GridComponent;
 Grid.Header = Header;
@@ -84,7 +86,7 @@ export namespace Grid {
     readonly api?: Ext;
   }
 
-  export type Props<Spec extends Grid.GridSpec = Grid.GridSpec> = {
+  export type Props<Spec extends GridSpec = GridSpec> = {
     readonly cellSelectionMode?: "range" | "multi-range" | "none";
     readonly cellSelections?: T.DataRect[];
     readonly cellSelectionExcludeMarker?: boolean;
@@ -124,7 +126,7 @@ export namespace Grid {
     readonly columnGroupRenderer?: (props: T.HeaderGroupParams<Spec>) => ReactNode;
 
     readonly gridId?: string;
-    readonly events?: LnTypes.GridEvents<Spec>;
+    readonly events?: Events<Spec>;
     readonly styles?: Style;
 
     readonly rtl?: boolean;
@@ -231,17 +233,17 @@ export namespace Grid {
     readonly onRowDrop?: (params: {
       readonly source: {
         id: string;
-        api: API<Grid.GridSpec>;
+        api: API<GridSpec>;
         row: T.RowNode<any>;
         rowIndex: number;
         data?: any;
       };
       readonly over:
-        | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
         | {
             kind: "row";
             id: string;
-            api: API<Grid.GridSpec>;
+            api: API<GridSpec>;
             row: T.RowNode<any>;
             rowIndex: number;
             element: HTMLElement;
@@ -251,17 +253,17 @@ export namespace Grid {
     readonly onRowDragEnter?: (params: {
       readonly source: {
         id: string;
-        api: API<Grid.GridSpec>;
+        api: API<GridSpec>;
         row: T.RowNode<any>;
         rowIndex: number;
         data?: any;
       };
       readonly over:
-        | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
         | {
             kind: "row";
             id: string;
-            api: API<Grid.GridSpec>;
+            api: API<GridSpec>;
             row: T.RowNode<any>;
             rowIndex: number;
             element: HTMLElement;
@@ -270,17 +272,17 @@ export namespace Grid {
     readonly onRowDragLeave?: (params: {
       readonly source: {
         id: string;
-        api: API<Grid.GridSpec>;
+        api: API<GridSpec>;
         row: T.RowNode<any>;
         rowIndex: number | null;
         data?: any;
       };
       readonly over:
-        | { kind: "viewport"; id: string; element: HTMLElement; api: API<Grid.GridSpec> }
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
         | {
             kind: "row";
             id: string;
-            api: API<Grid.GridSpec>;
+            api: API<GridSpec>;
             row: T.RowNode<any>;
             rowIndex: number | null;
             element: HTMLElement;
@@ -289,7 +291,7 @@ export namespace Grid {
   };
 
   type WithId = { readonly id: string };
-  export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = {
+  export type API<Spec extends GridSpec = GridSpec> = {
     readonly cellSelections: () => T.DataRect[];
     readonly positionFromElement: (el: HTMLElement) => T.PositionUnion | null;
 
@@ -381,7 +383,14 @@ export namespace Grid {
   export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnBase"];
   export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["columnMarker"];
   export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["rowGroupColumn"];
-  export type Events<Spec extends GridSpec = GridSpec> = Required<Props<Spec>>["events"];
+
+  export type Events<Spec extends GridSpec = GridSpec> = {
+    readonly cell?: Partial<T.CellEvents<Spec>>;
+    readonly row?: Partial<T.RowEvents<Spec>>;
+    readonly headerCell?: Partial<T.HeaderEvents<Spec>>;
+    readonly headerGroup?: Partial<T.HeaderGroupEvents<Spec>>;
+    readonly viewport?: Partial<T.ViewportEvents<Spec>>;
+  };
 
   export type Style = {
     readonly viewport?: {
@@ -429,7 +438,13 @@ export namespace Grid {
     export type AggregationFn<T> = LnTypes.AggregationFn<T>;
     export type Aggregator<T> = LnTypes.Aggregator<T>;
 
-    export type ColumnUnextended<Spec extends Grid.GridSpec = Grid.GridSpec> = ColumnAbstract & {
+    export type Events = {
+      [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${string}`
+        ? key
+        : never]: JSX.IntrinsicElements["div"][key];
+    };
+
+    export type ColumnUnextended<Spec extends GridSpec = GridSpec> = ColumnAbstract & {
       readonly field?: Field<Spec["data"]>;
 
       readonly colSpan?: number | ((params: CellParamsWithIndex<Spec>) => number);
@@ -524,10 +539,10 @@ export namespace Grid {
     export type RowSelectNode = LnTypes.RowSelectNode;
     export type SortFn<T> = LnTypes.SortFn<T>;
 
-    export type RowDragPlaceholderFn = LnTypes.ReactPlaceholderFn;
-    export type DragItem = LnTypes.DragItem;
-    export type DragItemSiteLocal = LnTypes.DragItemSiteLocal;
-    export type DragItemTransfer = LnTypes.DragItemTransfer;
+    export type RowDragPlaceholderFn = DndTypes.ReactPlaceholderFn;
+    export type DragItem = DndTypes.DragItem;
+    export type DragItemSiteLocal = DndTypes.DragItemSiteLocal;
+    export type DragItemTransfer = DndTypes.DragItemTransfer;
 
     export type RowNode<T> = LnTypes.RowNode<T>;
     export type RowLeaf<T> = LnTypes.RowLeaf<T>;
@@ -551,11 +566,66 @@ export namespace Grid {
     export type PositionHeaderGroupCell = LnTypes.PositionHeaderGroupCell;
     export type PositionUnion = LnTypes.PositionUnion;
 
-    export interface ExportDataRectResult<Spec extends Grid.GridSpec = Grid.GridSpec> {
+    export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
       readonly headers: string[];
       readonly groupHeaders: (string | null)[][];
       readonly data: unknown[][];
       readonly columns: Column<Spec>[];
     }
+
+    export type CellEvents<Spec extends GridSpec = GridSpec> = {
+      [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
+        ? Uncapitalize<X>
+        : never]: (params: {
+        event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
+        column: Column<Spec>;
+        row: RowNode<Spec["data"]>;
+        layout: LayoutCell;
+        api: API<Spec>;
+      }) => void;
+    };
+
+    export type RowEvents<Spec extends GridSpec = GridSpec> = {
+      [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
+        ? Uncapitalize<X>
+        : never]: (params: {
+        event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
+        row: RowNode<Spec["data"]>;
+        layout: LayoutRowWithCells | LayoutFullWidthRow;
+        api: API<Spec>;
+      }) => void;
+    };
+
+    export type HeaderEvents<Spec extends GridSpec = GridSpec> = {
+      [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
+        ? Uncapitalize<X>
+        : never]: (params: {
+        event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
+        layout: LayoutHeaderCell | LayoutHeaderFloating;
+        column: Column<Spec>;
+        api: API<Spec>;
+      }) => void;
+    };
+
+    export type HeaderGroupEvents<Spec extends GridSpec = GridSpec> = {
+      [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
+        ? Uncapitalize<X>
+        : never]: (params: {
+        event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
+        layout: LayoutHeaderGroup;
+        columns: Column<Spec>[];
+        api: API<Spec>;
+      }) => void;
+    };
+
+    export type ViewportEvents<Spec extends GridSpec = GridSpec> = {
+      [key in keyof Required<JSX.IntrinsicElements["div"]> as key extends `on${infer X}`
+        ? Uncapitalize<X>
+        : never]: (params: {
+        event: Parameters<JSX.IntrinsicElements["div"][key]>[0];
+        viewport: HTMLElement;
+        api: API<Spec>;
+      }) => void;
+    };
   }
 }

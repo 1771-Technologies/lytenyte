@@ -1,7 +1,9 @@
+/*
+THIS FILE WILL SOON BE DEPRECATED
+ */
 import type { Grid } from "../index.js";
 
-export type * from "./events.js";
-
+export type GridEvents<Spec extends Grid.GridSpec = Grid.GridSpec> = Grid.Events<Spec>;
 export type GridStyle = Grid.Style;
 export type Props<Spec extends Grid.GridSpec = Grid.GridSpec> = Grid.Props<Spec>;
 export type API<Spec extends Grid.GridSpec = Grid.GridSpec> = Grid.API<Spec>;
