@@ -76,12 +76,12 @@
   --ln-text-hyperlink: var(--ln-primary-50);
   --ln-text-primary-button: hsla(0, 0%, 100%, 1);
 
-  --ln-measures-fill: hsla(217, 93%, 30%, 0.19);
+  --ln-measures-fill: #1a1b13;
   --ln-measures-stroke: hsla(217, 97%, 47%, 0.642);
-  --ln-row-pivot-fill: hsla(160, 100%, 43%, 0.14);
+  --ln-row-pivot-fill: #0a231e;
   --ln-row-pivot-stroke: hsla(158, 100%, 55%, 0.35);
-  --ln-column-pivot-fill: hsla(259, 100%, 61%, 0.18);
+  --ln-column-pivot-fill: #170e36;
   --ln-column-pivot-stroke: hsla(259, 100%, 66%, 0.6);
-  --ln-column-fill: hsla(217, 100%, 54%, 0.19);
+  --ln-column-fill: #081938;
   --ln-column-stroke: hsla(217, 100%, 54%, 0.58);
 }

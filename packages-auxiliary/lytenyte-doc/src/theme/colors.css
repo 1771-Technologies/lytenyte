@@ -24,7 +24,7 @@
   color-scheme: dark;
   --xd-prose-link: hsla(172, 75%, 40%, 1);
   --xd-prose-text: #9ca3af;
-  --xd-background: hsl(0, 0%, 7.04%);
+  --xd-background: #02050a;
   --xd-foreground: hsl(0, 0%, 92%);
   --xd-muted: hsl(0, 0%, 12.9%);
   --xd-muted-foreground: hsla(0, 0%, 70%, 0.8);
@@ -32,7 +32,7 @@
   --xd-popover-foreground: hsl(0, 0%, 86.9%);
   --xd-card: hsl(0, 0%, 9.8%);
   --xd-card-foreground: hsl(0, 0%, 98%);
-  --xd-border: hsla(0, 0%, 40%, 20%);
+  --xd-border: hsla(0, 0%, 50%, 20%);
   --xd-primary: hsl(0, 0%, 98%);
   --xd-primary-foreground: hsl(0, 0%, 9%);
   --xd-secondary: hsl(0, 0%, 12.9%);
