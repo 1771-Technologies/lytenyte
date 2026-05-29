@@ -7,6 +7,7 @@ import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-counts-context.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import { useRowViewContext } from "../../../root/contexts/row-layout/row-layout-context.js";
+import { useSuppressScrollFlashContext } from "../../../root/contexts/viewport/viewport-context.js";
 
 export const RowsBottom = memo(
   forwardRef<HTMLDivElement, RowsBottom.Props>(function RowsBottom(
@@ -29,6 +30,8 @@ export const RowsBottom = memo(
       return rows;
     }, [children, rowView.bottom]);
 
+    const sync = useSuppressScrollFlashContext();
+
     if (bottomOffset <= 0) return null;
 
     return (
@@ -41,14 +44,17 @@ export const RowsBottom = memo(
         data-ln-rows-bottom
         data-ln-gridid={id}
         style={{
-          ...props.style,
-
           height: bottomOffset,
           boxSizing: "border-box",
           position: "sticky",
           bottom: 0,
           zIndex: 3,
-          minWidth: "100%",
+
+          left: sync ? 0 : undefined,
+          width: sync ? 0 : undefined,
+          minWidth: sync ? undefined : "100%",
+
+          ...props.style,
         }}
       >
         <CellSelectionBottom />

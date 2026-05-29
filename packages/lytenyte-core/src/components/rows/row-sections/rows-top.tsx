@@ -8,6 +8,7 @@ import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-count
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import { useRowViewContext } from "../../../root/contexts/row-layout/row-layout-context.js";
 import { useHeaderLayoutContext } from "../../../root/contexts/header-layout.js";
+import { useSuppressScrollFlashContext } from "../../../root/contexts/viewport/viewport-context.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, RowsTop.Props>(function RowsTop(
@@ -33,6 +34,8 @@ export const RowsTop = memo(
       return rows;
     }, [children, rowView.top]);
 
+    const sync = useSuppressScrollFlashContext();
+
     if (height <= 0) return null;
 
     return (
@@ -49,7 +52,10 @@ export const RowsTop = memo(
           position: "sticky",
           top,
           zIndex: 4,
-          minWidth: "100%",
+          left: sync ? 0 : undefined,
+          width: sync ? 0 : undefined,
+          minWidth: sync ? undefined : "100%",
+
           ...props.style,
         }}
       >
