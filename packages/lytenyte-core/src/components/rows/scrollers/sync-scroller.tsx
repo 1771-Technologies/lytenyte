@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from "react";
+import { type CSSProperties, type PropsWithChildren } from "react";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import { getTranslate } from "@1771technologies/dom-utils";
@@ -21,8 +21,24 @@ export function SyncScroller(props: PropsWithChildren) {
       role="presentation"
       style={{ position: "sticky", top: offset.topOffset, left: 0, width: 0 }}
     >
-      <div style={{ position: "absolute", width: 0, top: 0, transform: getTranslate(-x, -y) }}>
-        <div style={{ height: yPositions[rowView.rowFirstCenter], background: y, width: "40px" }} />
+      <div
+        style={
+          {
+            position: "absolute",
+            width: 0,
+            top: 0,
+            transform: getTranslate(0, -y),
+            "--ln-x-transform": getTranslate(-x, 0),
+          } as CSSProperties
+        }
+      >
+        <div
+          style={{
+            height: yPositions[rowView.rowFirstCenter] - yPositions[rowView.top.length],
+            background: y,
+            width: "40px",
+          }}
+        />
         {props.children}
       </div>
     </div>

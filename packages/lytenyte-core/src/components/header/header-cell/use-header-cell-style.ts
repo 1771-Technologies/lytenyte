@@ -5,11 +5,14 @@ import {
   type LayoutHeaderGroup,
 } from "@1771technologies/lytenyte-shared";
 import { sizeFromCoord } from "@1771technologies/js-utils";
+import { useSuppressScrollFlashContext } from "../../../root/contexts/viewport/viewport-context.js";
 
 export function useHeaderCellStyle(
   cell: LayoutHeaderCell | LayoutHeaderFloating | LayoutHeaderGroup,
   xPositions: Uint32Array,
 ) {
+  const sync = useSuppressScrollFlashContext();
+
   const styles = useMemo(() => {
     const styles: CSSProperties = {
       position: "relative",
@@ -33,10 +36,11 @@ export function useHeaderCellStyle(
       styles.zIndex = 11;
     } else {
       styles.gridColumnStart = `${cell.colStart + 1}`;
+      if (sync) styles.transform = `var(--ln-x-transform)`;
     }
 
     return styles;
-  }, [cell.colPin, cell.colSpan, cell.colStart, xPositions]);
+  }, [cell.colPin, cell.colSpan, cell.colStart, sync, xPositions]);
 
   return styles;
 }

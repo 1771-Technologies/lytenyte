@@ -1,4 +1,4 @@
-import { forwardRef, memo, useMemo, useState, type JSX, type ReactNode } from "react";
+import { forwardRef, memo, useMemo, useState, type CSSProperties, type JSX, type ReactNode } from "react";
 import { useHeaderRowTemplate } from "./use-header-row-template.js";
 import { useHeaderColTemplate } from "./use-header-col-template.js";
 import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
@@ -58,22 +58,25 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
         data-ln-gridid={id}
         data-ln-rowcount={columnLayout.length - (floatingEnabled ? 1 : 0)}
         data-ln-floating={floatingEnabled ? true : undefined}
-        style={{
-          minWidth: "100%",
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
+        style={
+          {
+            minWidth: "100%",
+            boxSizing: "border-box",
+            position: "sticky",
+            top: 0,
 
-          width: sync ? 0 : xPositions.at(-1)!,
-          left: sync ? 0 : undefined,
-          transform: sync ? getTranslate(-x, 0) : undefined,
+            width: sync ? 0 : xPositions.at(-1)!,
+            left: sync ? 0 : undefined,
 
-          zIndex: 10,
-          display: "grid",
-          gridTemplateRows: gridRowTemplate,
-          gridTemplateColumns: gridColTemplate,
-          ...props.style,
-        }}
+            "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
+
+            zIndex: 10,
+            display: "grid",
+            gridTemplateRows: gridRowTemplate,
+            gridTemplateColumns: gridColTemplate,
+            ...props.style,
+          } as CSSProperties
+        }
       >
         {headerRows}
       </div>

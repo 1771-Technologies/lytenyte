@@ -7,12 +7,12 @@ interface Spec {
 }
 
 const columns: Grid.Column<Spec>[] = [
-  { id: "age" },
-  { id: "job" },
+  { id: "age", pin: "start", width: 120 },
+  { id: "job", pin: "start" },
   { id: "balance" },
   { id: "education" },
-  { id: "marital" },
-  { id: "default" },
+  { id: "marital", pin: "end" },
+  { id: "default", pin: "end", width: 110 },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
@@ -47,9 +47,14 @@ const columns: Grid.Column<Spec>[] = [
   { id: "2poutcome", name: "P Outcome" },
   { id: "2y" },
 ];
+
+const top = bankData.slice(0, 2);
+const bottom = bankData.slice(-2);
 export default function BasicRendering() {
   const ds = useClientDataSource({
     data: bankData,
+    topData: top,
+    bottomData: bottom,
     sort: [{ dim: { id: "education" } }],
   });
   const [sync, setSync] = useState(true);
