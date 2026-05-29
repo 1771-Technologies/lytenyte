@@ -98,7 +98,6 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
     rowCount,
     rowBotCount,
     vpWidth,
-    rtl,
     rowTopCount,
   ]);
 
