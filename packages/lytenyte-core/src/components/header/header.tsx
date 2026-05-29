@@ -12,6 +12,8 @@ import { useXCoordinates } from "../../root/contexts/coordinates.js";
 import { useColumnsContext } from "../../root/contexts/columns/column-context.js";
 import { useHeaderHierarchyContext } from "../../root/contexts/header-hierarchy.js";
 import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
+import { getTranslate } from "@1771technologies/dom-utils";
+import { useSyncScrollXY } from "../../root/hooks/use-sync-scroll-xy.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridIdContext();
@@ -44,6 +46,8 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
     };
   }, [active]);
 
+  const { x, sync } = useSyncScrollXY();
+
   return (
     <HeaderProvider value={value}>
       <div
@@ -55,11 +59,15 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
         data-ln-rowcount={columnLayout.length - (floatingEnabled ? 1 : 0)}
         data-ln-floating={floatingEnabled ? true : undefined}
         style={{
-          width: xPositions.at(-1)!,
           minWidth: "100%",
           boxSizing: "border-box",
           position: "sticky",
           top: 0,
+
+          width: sync ? 0 : xPositions.at(-1)!,
+          left: sync ? 0 : undefined,
+          transform: sync ? getTranslate(-x, 0) : undefined,
+
           zIndex: 10,
           display: "grid",
           gridTemplateRows: gridRowTemplate,

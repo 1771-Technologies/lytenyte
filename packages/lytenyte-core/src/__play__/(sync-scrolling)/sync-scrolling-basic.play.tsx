@@ -71,3 +71,14 @@ export default function BasicRendering() {
     </>
   );
 }
+
+if (import.meta.vitest) {
+  const { test } = import.meta.vitest;
+  // const { userEvent } = await import("vitest/browser");
+  // const { wait, getCellQuery } = await import("../utils.js");
+  // const { render } = await import("vitest-browser-react");
+
+  test("Should be able to switch between sync and multi-threaded scrolling", async () => {});
+  test("Should be able to scroll to the bottom on the grid", async () => {});
+  test("Should be able to scroll midway on the grid", async () => {});
+}
