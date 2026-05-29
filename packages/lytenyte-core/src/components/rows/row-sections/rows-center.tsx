@@ -13,6 +13,8 @@ import {
 } from "../../../root/contexts/row-layout/row-layout-context.js";
 import { useYCoordinates } from "../../../root/contexts/coordinates.js";
 import { SyncScroller } from "../scrollers/sync-scroller.js";
+import { useSuppressScrollFlashContext } from "../../../root/contexts/viewport/viewport-context.js";
+import { NativeScroller } from "../scrollers/native-scroller.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -56,6 +58,10 @@ export const RowsCenter = memo(
       return rows;
     }, [children, layoutRows]);
 
+    const suppressWhitespace = useSuppressScrollFlashContext();
+
+    const Scroller = suppressWhitespace ? SyncScroller : NativeScroller;
+
     if (centerHeight <= 0) {
       return <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 0px)` }} />;
     }
@@ -76,10 +82,10 @@ export const RowsCenter = memo(
           position: "relative",
         }}
       >
-        <SyncScroller>
+        <Scroller>
           <CellSelectionCenter />
           {rows}
-        </SyncScroller>
+        </Scroller>
       </RowsSection>
     );
   }),

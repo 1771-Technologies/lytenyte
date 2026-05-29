@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useClientDataSource, Grid } from "../../index.js";
 import { bankData } from "@1771technologies/grid-sample-data/bank-data";
 
@@ -51,10 +52,22 @@ export default function BasicRendering() {
     data: bankData,
     sort: [{ dim: { id: "education" } }],
   });
+  const [sync, setSync] = useState(false);
 
   return (
-    <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
-      <Grid columns={columns} rowSource={ds} viewportInitialHeight={500} viewportInitialWidth={500} />
-    </div>
+    <>
+      <button onClick={() => setSync((prev) => !prev)}>
+        {sync ? "Scrolling In Sync" : "Multi Threaded Scrolling"}
+      </button>
+      <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
+        <Grid
+          columns={columns}
+          rowSource={ds}
+          viewportInitialHeight={500}
+          viewportInitialWidth={500}
+          suppressScrollFlash={sync}
+        />
+      </div>
+    </>
   );
 }

@@ -136,6 +136,8 @@ export namespace Grid {
     readonly floatingRowHeight?: number;
     readonly floatingRowEnabled?: boolean;
 
+    readonly suppressScrollFlash?: boolean;
+
     readonly viewportInitialWidth?: number;
     readonly viewportInitialHeight?: number;
 

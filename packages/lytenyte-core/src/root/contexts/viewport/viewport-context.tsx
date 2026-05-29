@@ -14,14 +14,21 @@ const context = createContext<{
   setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
 }>(null as any);
 
-export const ViewportContext = memo((props: PropsWithChildren) => {
+const contextScroll = createContext(false);
+
+export const ViewportContext = memo((props: PropsWithChildren<{ suppressScrollFlash: boolean }>) => {
   const [viewport, setViewport] = useState<HTMLDivElement | null>(null);
 
   const value = useMemo(() => {
     return { viewport, setViewport };
   }, [viewport]);
 
-  return <context.Provider value={value}>{props.children}</context.Provider>;
+  return (
+    <contextScroll.Provider value={props.suppressScrollFlash}>
+      <context.Provider value={value}>{props.children}</context.Provider>
+    </contextScroll.Provider>
+  );
 });
 
 export const useViewportContext = () => useContext(context);
+export const useSuppressScrollFlashContext = () => useContext(contextScroll);
