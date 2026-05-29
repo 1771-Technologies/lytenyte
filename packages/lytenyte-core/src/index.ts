@@ -136,10 +136,8 @@ export namespace Grid {
     readonly floatingRowHeight?: number;
     readonly floatingRowEnabled?: boolean;
 
-    /** @private */
-    readonly z_internal_viewportInitialWidth?: number;
-    /** @private */
-    readonly z_internal_viewportInitialHeight?: number;
+    readonly viewportInitialWidth?: number;
+    readonly viewportInitialHeight?: number;
 
     readonly rowOverscanTop?: number;
     readonly rowOverscanBottom?: number;

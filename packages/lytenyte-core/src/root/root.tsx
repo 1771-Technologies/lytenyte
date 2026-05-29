@@ -99,8 +99,8 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                         >
                           <ViewportContext>
                             <DimensionsContext
-                              initialHeight={props.z_internal_viewportInitialHeight}
-                              initialWidth={props.z_internal_viewportInitialWidth}
+                              initialHeight={props.viewportInitialHeight}
+                              initialWidth={props.viewportInitialWidth}
                             >
                               <CoordinatesProvider
                                 columnBase={props.columnBase}
