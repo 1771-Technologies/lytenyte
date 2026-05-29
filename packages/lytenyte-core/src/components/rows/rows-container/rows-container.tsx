@@ -68,6 +68,7 @@ export const RowsContainer = memo(
             [VIEWPORT_HEIGHT_VARIABLE]: `${dimensions.innerHeight}px`,
             "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
             "--ln-y-transform": sync ? getTranslate(0, -y) : undefined,
+            "--ln-x-sync-offset": sync ? `${x}px` : undefined,
           } as CSSProperties
         }
       >

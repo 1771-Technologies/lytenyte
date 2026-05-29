@@ -41,7 +41,11 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
 
     const firstBotIndex = rowCount - rowBotCount;
 
-    const x = isEnd ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth : xPositions[columnIndex];
+    const x = isEnd
+      ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth
+      : isStart
+        ? xPositions[columnIndex]
+        : `calc(${xPositions[columnIndex]}px - var(--ln-x-sync-offset,0))`;
 
     let y: number | string;
     if (isBot) y = yPositions[rowIndex] - yPositions[firstBotIndex];
@@ -50,7 +54,7 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
       y = `calc(${yPositions[rowIndex] - yPositions[rowTopCount]}px - var(--ln-y-offset, 0px))`;
     }
 
-    const transform = getTranslate(x * (rtl ? -1 : 1), y);
+    const transform = `translate3d(${typeof x == "string" ? x : `${x}px`}, ${typeof y === "string" ? y : `${y}px`}, 0px)`;
 
     const pinnedRow = isTop || isBot;
     const pinnedCell = isStart || isEnd;
