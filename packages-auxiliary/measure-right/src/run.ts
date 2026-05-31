@@ -5,6 +5,7 @@ import { startBrowser } from "./browser/get-browser.js";
 import { readTraceStats } from "./browser/read-trace-stats.js";
 import { computeSummaryStats } from "./stats/compute-summary-stats.js";
 import { computePerformanceTable } from "./stats/compute-performance-table.js";
+import { computeStatTable } from "./stats/compute-stat-table.js";
 
 export interface RunOptions {
   benchmarks: Benchmark[];
@@ -62,7 +63,7 @@ export async function run({ benchmarks, roundRobin = true, iterations = 5, brows
 
   const performance = computePerformanceTable(resultSummary);
 
-  return performance;
+  return [performance, computeStatTable(results)] as const;
 }
 
 async function runCpuBenchmark(bench: Benchmark, opts?: BrowserOptions) {
