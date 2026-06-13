@@ -12,14 +12,18 @@ export interface BrowserOptions {
 export interface Benchmark {
   readonly name: string;
   readonly before?: (page: Page) => Promise<void>;
+  readonly warm?: (page: Page) => Promise<void>;
   readonly run: (page: Page) => Promise<void>;
   readonly after?: (page: Page) => Promise<void>;
 }
 
 export interface TraceStats {
-  jsTime: number;
-  layoutTime: number;
-  paintTime: number;
+  duration: number;
+  avgFps: number;
+  numberCommits: number;
+  layouts: number;
+  maxDeltaBetweenCommits: number;
+  rafLongDelay: number;
 }
 
 export interface BenchmarkResult {
@@ -37,10 +41,13 @@ export interface StatisticalMetrics {
 
 export interface BenchmarkStatistics {
   readonly name: string;
+  readonly duration: StatisticalMetrics;
   readonly memory: StatisticalMetrics;
-  readonly jsTime: StatisticalMetrics;
-  readonly layoutTime: StatisticalMetrics;
-  readonly paintTime: StatisticalMetrics;
+  readonly avgFps: StatisticalMetrics;
+  readonly numberCommits: StatisticalMetrics;
+  readonly layouts: StatisticalMetrics;
+  readonly maxDeltaBetweenCommits: StatisticalMetrics;
+  readonly rafLongDelay: StatisticalMetrics;
 }
 
 export interface TableRowMetric {
@@ -51,8 +58,11 @@ export interface TableRowMetric {
 
 export interface PerformanceTableRow {
   readonly name: string;
+  readonly duration: TableRowMetric;
   readonly memory: TableRowMetric;
-  readonly jsTime: TableRowMetric;
-  readonly layoutTime: TableRowMetric;
-  readonly paintTime: TableRowMetric;
+  readonly avgFps: TableRowMetric;
+  readonly numberCommits: TableRowMetric;
+  readonly layouts: TableRowMetric;
+  readonly maxDeltaBetweenCommits: TableRowMetric;
+  readonly rafLongDelay: TableRowMetric;
 }
