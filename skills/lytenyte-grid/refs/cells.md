@@ -2,7 +2,8 @@
 
 ## Cell Renderers
 
-A cell renderer is a standard React component assigned to a column's `cellRenderer` property. It receives `Grid.T.CellRendererParams<GridSpec>` as props:
+A cell renderer is a standard React component assigned to a column's `cellRenderer` property.
+It receives `Grid.T.CellRendererParams<GridSpec>` as props:
 
 ```tsx
 function ProductCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
@@ -56,7 +57,9 @@ function PriceCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
 
 ### State & Virtualization Warning
 
-LyteNyte Grid virtualizes rows — cells unmount/remount as they scroll in/out of view. **Do not use `useState` inside cell renderers for persistent state** — it resets on unmount.
+LyteNyte Grid virtualizes rows — cells unmount/remount as they scroll in/out of view.
+
+**Do not use `useState` inside cell renderers for persistent state** — it resets on unmount.
 
 Instead, lift state above the grid:
 
@@ -98,7 +101,8 @@ function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
 
 ### Popover on Cell Focus (Alternative Pattern)
 
-Instead of embedding a popover in every cell renderer, listen to cell focus events and render a single shared popover as a grid sibling:
+Instead of embedding a popover in every cell renderer, listen to cell focus
+events and render a single shared popover as a grid sibling:
 
 ```tsx
 const [anchor, setAnchor] = useState<HTMLElement | null>(null);
@@ -181,9 +185,12 @@ Display the direction and magnitude of the change alongside the value:
 ## Gotchas
 
 - **`api.columnField(column, row)` is the safe way to read values** — it handles all row types (leaf, group, aggregated) uniformly. Direct `row.data[column.id]` fails for group rows (no `data`) and ignores custom `field` definitions.
-- **Popover/tooltip libraries need portals to escape grid clipping** — the grid clips its cells. A tooltip anchored to a cell element will be clipped by the cell's overflow boundary unless it renders in a portal (e.g. `Tooltip.Portal` in Radix UI).
-- **Cell renderers receive new props on every render** — do not use deep equality checks or memoize based on props inside renderers. The grid controls when renderers re-render; hook into that rather than trying to suppress it.
-- **`useRef` for diff tracking, not `useState`** — for diff flashing, tracking the previous value with `useRef` works across virtualization remounts. `useState` would reset on unmount and produce false "new value" flashes for rows that just scrolled back into view.
+- **Popover/tooltip libraries need portals to escape grid clipping** — the grid clips its cells. A tooltip anchored to a cell element will
+  be clipped by the cell's overflow boundary unless it renders in a portal (e.g. `Tooltip.Portal` in Radix UI).
+- **Cell renderers receive new props on every render** — do not use deep equality checks or memoize based on props inside renderers.
+  The grid controls when renderers re-render; hook into that rather than trying to suppress it.
+- **`useRef` for diff tracking, not `useState`** — for diff flashing, tracking the previous value with `useRef` works across
+  virtualization remounts. `useState` would reset on unmount and produce false "new value" flashes for rows that just scrolled back into view.
 
 ## Cell Range Selection
 
@@ -197,7 +204,8 @@ Set `cellSelectionMode` on the grid:
 <Grid cellSelectionMode="none"        ... />  // disabled (default)
 ```
 
-Users click and drag to select. In `"multi-range"` mode, hold **Ctrl** or **Cmd** to add or deselect ranges.
+Users click and drag to select. In `"multi-range"` mode,
+hold **Ctrl** or **Cmd** to add or deselect ranges.
 
 ### Reading the Selection (Uncontrolled)
 
@@ -211,16 +219,18 @@ const rects = api.cellSelections(); // DataRect[] | null
 
 ```ts
 interface DataRect {
-  readonly rowStart: number;    // inclusive
-  readonly rowEnd: number;      // exclusive
+  readonly rowStart: number; // inclusive
+  readonly rowEnd: number; // exclusive
   readonly columnStart: number; // inclusive
-  readonly columnEnd: number;   // exclusive
+  readonly columnEnd: number; // exclusive
 }
 ```
 
 ### Copy to Clipboard (Ctrl+C / Cmd+C)
 
-Listen for the keyboard shortcut in the `viewport.keyDown` event, read the selection rect, export the data, and write to the clipboard. The `viewport` parameter is the grid's DOM element — add/remove a CSS class on it for copy-flash visual feedback.
+Listen for the keyboard shortcut in the `viewport.keyDown` event, read the selection rect, export the data,
+and write to the clipboard. The `viewport` parameter is the grid's DOM element,
+add/remove a CSS class on it for copy-flash visual feedback.
 
 ```tsx
 <Grid
@@ -236,9 +246,7 @@ Listen for the keyboard shortcut in the `viewport.keyDown` event, read the selec
             const exported = await api.exportData({ rect });
 
             // Tab-separated rows for spreadsheet paste (Excel, Google Sheets)
-            const text = exported.data
-              .map((row) => row.map((cell) => `${cell ?? ""}`).join("\t"))
-              .join("\n");
+            const text = exported.data.map((row) => row.map((cell) => `${cell ?? ""}`).join("\t")).join("\n");
 
             await navigator.clipboard.writeText(text);
 
@@ -258,9 +266,15 @@ Add the CSS animation targeting the selection overlay element:
 
 ```css
 @keyframes copy-flash {
-  0%   { background-color: var(--ln-primary-10); }
-  50%  { background-color: var(--ln-primary-30); }
-  100% { background-color: var(--ln-primary-10); }
+  0% {
+    background-color: var(--ln-primary-10);
+  }
+  50% {
+    background-color: var(--ln-primary-30);
+  }
+  100% {
+    background-color: var(--ln-primary-10);
+  }
 }
 
 .copy-flash [data-ln-cell-selection-rect] {
@@ -269,12 +283,14 @@ Add the CSS animation targeting the selection overlay element:
 ```
 
 **Key points:**
+
 - `api.exportData({ rect })` is `async` — always `await` it before writing to clipboard
 - `exported.data` is a 2D array (row-major): `data[rowIndex][colIndex]`
 - Use `\t` between cells and `\n` between rows for Excel/Google Sheets paste compatibility
 - For `"multi-range"` mode, `api.cellSelections()` returns multiple rects — use `[0]` for the primary selection or implement merge logic
 - `navigator.clipboard.writeText` requires HTTPS or localhost
-```
+
+````
 
 ### Controlled Cell Selection
 
@@ -284,7 +300,7 @@ Manage selection state in React when you need to react to changes (e.g., show a 
 const [cellSelections, setCellSelections] = useState<Grid.T.DataRect[]>([]);
 
 <Grid cellSelectionMode="range" cellSelections={cellSelections} onCellSelectionChange={setCellSelections} />;
-```
+````
 
 > **Warning:** `cellSelections` is both a grid **prop** (controlled state) and an **API method** (`api.cellSelections()`). In controlled mode, the API method returns the same value you passed in. In uncontrolled mode, the API method reads internal state.
 
@@ -346,7 +362,8 @@ LyteNyte Grid renders inert `div` overlays to visualize selections. They are uns
 }
 ```
 
-Header cells of columns containing selected cells get `data-ln-cell-selected="true"`. Rows containing selected cells also get this attribute:
+Header cells of columns containing selected cells get `data-ln-cell-selected="true"`.
+Rows containing selected cells also get this attribute:
 
 ```css
 [data-ln-header-cell="true"][data-ln-cell-selected="true"] {
@@ -386,7 +403,7 @@ Even with this enabled, the marker column still occupies column index 0 — so t
 
 ## Full Docs
 
-- [Cell Renderers](/docs/cell-renderers)
-- [Cell Tooltips & Popovers](/docs/cell-tooltips)
-- [Cell Diff Flashing](/docs/cell-diff-flashing)
-- [Cell Range Selection](/docs/cell-selection)
+- [Cell Renderers](https://www.1771technologies.com/docs/cell-renderers)
+- [Cell Tooltips & Popovers](https://www.1771technologies.com/docs/cell-tooltips)
+- [Cell Diff Flashing](https://www.1771technologies.com/docs/cell-diff-flashing)
+- [Cell Range Selection](https://www.1771technologies.com/docs/cell-selection)

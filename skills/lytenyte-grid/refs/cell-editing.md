@@ -23,14 +23,17 @@ Make individual columns editable with `editable` and `editRenderer`:
 
 ## Edit Renderers
 
-An edit renderer is a **standard React component** — LyteNyte Grid provides the editing state and wiring props (`editValue`, `changeValue`, `commit`, `cancel`), and you bring whatever input or UI element you need. This means you can use:
+An edit renderer is a **standard React component** — LyteNyte Grid provides the editing state and wiring props
+(`editValue`, `changeValue`, `commit`, `cancel`), and you bring whatever input or
+UI element you need. This means you can use:
 
 - Native HTML elements: `<input type="text">`, `<input type="number">`, `<input type="date">`, `<select>`, `<textarea>`
 - Existing form components already in the project (e.g. a `NumberInput` or `DatePicker` the user already has)
 - Third-party libraries: React Select, Radix UI, shadcn/ui inputs, etc.
 - Custom components built from scratch
 
-**The pattern is always the same:** read `editValue` for the initial value, call `changeValue(newVal)` when the value changes. LyteNyte Grid handles the rest.
+**The pattern is always the same:** read `editValue` for the initial value, call `changeValue(newVal)` when the value changes.
+LyteNyte Grid handles the rest.
 
 ```tsx
 // Text editor — native input
@@ -111,7 +114,8 @@ function PriceEditor({ editValue, changeValue }: Grid.T.EditParams<GridSpec>) {
 
 ### Popover Editors
 
-Use a React portal to avoid grid cell clipping. Disable `editOnPrintable` if your component uses character keys:
+- Use a React portal to avoid grid cell clipping.
+- Disable `editOnPrintable` if your component uses character keys:
 
 ```ts
 { id: "product", editable: true, editRenderer: SmartSelectEditor, editOnPrintable: false }
@@ -384,16 +388,18 @@ const ds = useTreeDataSource({
 - **`editMutateCommit` fires for every column when any cell is committed** — a common mistake is writing `editMutateCommit` on a column that converts strings to numbers, but forgetting it fires even when a _different_ column is edited. The hook receives the full `editData`, so each column's `editMutateCommit` should only transform its own field and leave others untouched.
 - **`editSetter` must return the full `editData` object** — returning only the changed field (e.g. `{ price: newValue }`) replaces the entire row data with a partial object. Always spread: `{ ...editData, price: newValue }`.
 - **Controlled date inputs cause "jumping" bugs** — for date inputs, use `defaultValue` (uncontrolled) rather than `value` (controlled). A controlled date input can enter invalid intermediate states as the user types (e.g. `"2024-"` mid-entry), causing the input to jump. See the date editor example above.
-- **Popover editors: set `editOnPrintable: false`** — if your editor component responds to keyboard input (e.g. opens a dropdown on keypress), the grid would otherwise open editing on every printable key typed while the cell is focused.
-- **`editUpdate` runs through the full validation pipeline** — if validation fails, the update is rejected and the map is not partially applied. Check the return value.
+- **Popover editors: set `editOnPrintable: false`** — if your editor component responds to keyboard input (e.g. opens a dropdown on keypress),
+  the grid would otherwise open editing on every printable key typed while the cell is focused.
+- **`editUpdate` runs through the full validation pipeline** — if validation fails, the update is rejected and
+  the map is not partially applied. Check the return value.
 
 ## Full Docs
 
-- [Cell Editing](/docs/cell-editing)
-- [Cell Edit Renderers](/docs/cell-editing-renderers)
-- [Cell Editing Validation](/docs/cell-editing-validation)
-- [Full Row Editing](/docs/cell-editing-full-row)
-- [Linked Cell Edits](/docs/cell-editing-linked-cell-edits)
-- [Bulk Cell Editing](/docs/cell-editing-bulk-editing)
-- [Server Data Editing](/docs/server-data-loading-cell-editing)
-- [Tree Data Editing](/docs/tree-source-data-editing)
+- [Cell Editing](https://www.1771technologies.com/docs/cell-editing)
+- [Cell Edit Renderers](https://www.1771technologies.com/docs/cell-editing-renderers)
+- [Cell Editing Validation](https://www.1771technologies.com/docs/cell-editing-validation)
+- [Full Row Editing](https://www.1771technologies.com/docs/cell-editing-full-row)
+- [Linked Cell Edits](https://www.1771technologies.com/docs/cell-editing-linked-cell-edits)
+- [Bulk Cell Editing](https://www.1771technologies.com/docs/cell-editing-bulk-editing)
+- [Server Data Editing](https://www.1771technologies.com/docs/server-data-loading-cell-editing)
+- [Tree Data Editing](https://www.1771technologies.com/docs/tree-source-data-editing)
