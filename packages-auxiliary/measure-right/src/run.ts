@@ -87,6 +87,8 @@ async function runCpuBenchmark(bench: Benchmark, opts?: BrowserOptions) {
     categories,
   });
 
+  await bench.warm?.(page);
+
   await page.evaluate(() => {
     performance.mark("bench_start");
   });
@@ -96,6 +98,7 @@ async function runCpuBenchmark(bench: Benchmark, opts?: BrowserOptions) {
   await page.evaluate(() => {
     performance.mark("bench_end");
   });
+
   await page.evaluate(() => {
     performance.measure("bench", "bench_start", "bench_end");
   });
@@ -126,11 +129,14 @@ async function runMemBenchmark(bench: Benchmark, opts?: BrowserOptions) {
   await client.send("Performance.enable");
 
   await bench.before?.(page);
+  await bench.warm?.(page);
+
   await applyForceGC(page);
 
   await bench.run(page);
 
-  await wait(40);
+  await wait(500);
+  await applyForceGC(page);
 
   const result =
     (await client.send("Performance.getMetrics")).metrics.filter((m) => m.name === "JSHeapUsedSize")[0]

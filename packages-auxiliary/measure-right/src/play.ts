@@ -1,6 +1,6 @@
 import { expect } from "playwright/test";
 import type { Benchmark } from "./types.js";
-import { wait } from "@1771technologies/lytenyte-shared";
+import { wait } from "@1771technologies/js-utils";
 import { run } from "./run.js";
 
 const test: Benchmark = {
@@ -24,14 +24,15 @@ const result = await run({
   },
 });
 
-const resultTable = result.map((c) => {
-  return {
-    name: c.name,
-    total: c.jsTime.value + c.layoutTime.value + c.paintTime.value,
-    memory: c.memory.value,
-    js: c.jsTime.value,
-    layout: c.layoutTime.value,
-    paint: c.paintTime.value,
-  };
-});
-console.table(resultTable);
+void result;
+// const resultTable = result.map((c) => {
+//   return {
+//     name: c.name,
+//     total: c.jsTime.value + c.layoutTime.value + c.paintTime.value,
+//     memory: c.memory.value,
+//     js: c.jsTime.value,
+//     layout: c.layoutTime.value,
+//     paint: c.paintTime.value,
+//   };
+// });
+// console.table(resultTable);

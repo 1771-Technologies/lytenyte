@@ -12,16 +12,14 @@ function calculateStatistics(values: number[]): StatisticalMetrics {
 }
 
 export function computeSummaryStats(results: BenchmarkResult[], name: string): BenchmarkStatistics {
-  const memoryValues = results.map((result) => result.memory);
-  const jsTimeValues = results.map((result) => result.timing.jsTime);
-  const layoutTimeValues = results.map((result) => result.timing.layoutTime);
-  const paintTimeValues = results.map((result) => result.timing.paintTime);
-
   return {
     name,
-    memory: calculateStatistics(memoryValues),
-    jsTime: calculateStatistics(jsTimeValues),
-    layoutTime: calculateStatistics(layoutTimeValues),
-    paintTime: calculateStatistics(paintTimeValues),
+    duration: calculateStatistics(results.map((r) => r.timing.duration)),
+    memory: calculateStatistics(results.map((r) => r.memory)),
+    avgFps: calculateStatistics(results.map((r) => r.timing.avgFps)),
+    numberCommits: calculateStatistics(results.map((r) => r.timing.numberCommits)),
+    layouts: calculateStatistics(results.map((r) => r.timing.layouts)),
+    maxDeltaBetweenCommits: calculateStatistics(results.map((r) => r.timing.maxDeltaBetweenCommits)),
+    rafLongDelay: calculateStatistics(results.map((r) => r.timing.rafLongDelay)),
   };
 }
