@@ -1,6 +1,6 @@
 ---
-title: Comparing Performance of Top React Data Grids
-description: Best React Data Grid for Performance and Scalability in 2026
+title: Best React Data Grid for Performance in 2026
+description: Comparing the Performance of Top React Data Grids
 blog:
   author: RoarLyte
   date: 14 June 2026
@@ -56,14 +56,51 @@ tests designed to measure how performance changes with scale.
 
 This benchmark compares the performance of 6 popular data grid solutions.
 
-| Grid                 | Packages                                     | Version   |
-| :------------------- | :------------------------------------------- | --------- |
-| LyteNyte Grid        | `@1771technologies/lytenyte-core`            | `^2.1.1`  |
-| AG Grid              | `ag-grid-community`, `ag-grid-react`         | `^35.3.0` |
-| MUI X Data Grid      | `@mui/x-data-grid-premium`                   | `^9.3.0`  |
-| DevExtreme           | `devextreme`, `devextreme-react`             | `^25.2.7` |
-| Handsontable         | `handsontable`, `@handsontable/react-wrapper | `^17.1.0` |
-| Material React Table | `material-react-table`                       | `^3.2.1`  |
+import { TR, TD, TH } from "./perf-table";
+
+<div className="border-xd-border my-8 overflow-hidden rounded-xl border p-px">
+  <table className="divide-xd-border relative w-full min-w-full divide-y">
+    <thead>
+      <TR>
+        <TH>Grid</TH>
+        <TH>Packages</TH>
+        <TH>Version</TH>
+      </TR>
+    </thead>
+    <tbody>
+      <TR>
+        <TD>LyteNyte Grid</TD>
+        <TD>`@1771technologies/lytenyte-core`</TD>
+        <TD>`^2.1.1`</TD>
+      </TR>
+      <TR>
+        <TD>AG Grid</TD>
+        <TD>`ag-grid-community`, `ag-grid-react`</TD>
+        <TD>`^35.3.0`</TD>
+      </TR>
+      <TR>
+        <TD>MUI X Data Grid</TD>
+        <TD>`@mui/x-data-grid-premium`</TD>
+        <TD>`^9.3.0`</TD>
+      </TR>
+      <TR>
+        <TD>DevExtreme</TD>
+        <TD>`devextreme`, `devextreme-react`</TD>
+        <TD>`^25.2.7`</TD>
+      </TR>
+      <TR>
+        <TD>Handsontable</TD>
+        <TD>`handsontable`, `@handsontable/react-wrapper`</TD>
+        <TD>`^17.1.0`</TD>
+      </TR>
+      <TR>
+        <TD>Material React Table</TD>
+        <TD>`material-react-table`</TD>
+        <TD>`^3.2.1`</TD>
+      </TR>
+    </tbody>
+  </table>
+</div>
 
 Apart from LyteNyte Grid, the remaining grids were selected based on their monthly npm downloads, with the top 5
 by download count selected.
@@ -112,16 +149,9 @@ configuration.
 
 ### System Configuration
 
-| Machine     | MacBook Air                               |
-| :---------- | :---------------------------------------- |
-| System Chip | Apple M4                                  |
-| CPU         | 10 cores (4 performance and 6 efficiency) |
-| GPU         | M4 GPU 10 Cores                           |
-| Memory      | 16 GB LPDDR5                              |
-| Storage     | 250GB APFS on internal SSD                |
-| OS          | macOS Sequoia v15.7.3                     |
-| Browser     | Chrome v149                               |
-| Display     | Dell U4021QW 39.5 Inch (5120x2160) @ 60hz |
+import { SystemConfig } from "./perf-table";
+
+<SystemConfig />
 
 ### Benchmark Testing Methodology
 
@@ -191,21 +221,98 @@ The benchmark testing scenarios are grouped into six categories:
 
 The following tests scenarios were run:
 
-| Test            | Benchmark Script     | Rows                    | Columns |
-| :-------------- | -------------------- | ----------------------- | ------- |
-| Scroll 10K      | 01-scroll-10k.ts     | 10,000                  | 300     |
-| Scroll 200K     | 02-scroll-200k.ts    | 200,00 \| (HT\:150,000) | 300     |
-| Scroll 500K     | 03-scroll-500k.ts    | 500,000                 | 300     |
-| Scroll 1M       | 04-scroll-1000k.ts   | 1,000,000               | 300     |
-| Pinned Rows     | 05-pinned.ts         | 200,000 \| (HT\:20,000) | 300     |
-| Horizontal Rows | 06-horizontal.ts     | 50,000 \| (HT\:20,000)  | 300     |
-| Cell Updates    | 07-cell-updates.ts   | 1000 x 50 datasets      | 100     |
-| Sorting 10K     | 08-sorting-10k.ts    | 10,000                  | 300     |
-| Sorting 50K     | 09-sorting-50k.ts    | 50,000                  | 300     |
-| Sorting 100K    | 10-sorting-100k.ts   | 100,000                 | 300     |
-| Filtering 10K   | 11-filtering-10k.ts  | 10,000                  | 300     |
-| Filtering 50K   | 12-filtering-50k.ts  | 50,000                  | 300     |
-| Filtering 100K  | 13-filtering-100k.ts | 100,000                 | 300     |
+<div className="border-xd-border my-8 overflow-hidden rounded-xl border p-px">
+  <table className="divide-xd-border relative w-full min-w-full divide-y">
+    <thead>
+      <TR>
+        <TH>Test</TH>
+        <TH>Benchmark Script</TH>
+        <TH>Rows</TH>
+        <TH>Columns</TH>
+      </TR>
+    </thead>
+    <tbody>
+      <TR>
+        <TD>Scroll 10K</TD>
+        <TD>01-scroll-10k.ts</TD>
+        <TD>10,000</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Scroll 200K</TD>
+        <TD>02-scroll-200k.ts</TD>
+        <TD>200,000 \| (HT\:150,000)</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Scroll 500K</TD>
+        <TD>03-scroll-500k.ts</TD>
+        <TD>500,000</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Scroll 1M</TD>
+        <TD>04-scroll-1000k.ts</TD>
+        <TD>1,000,000</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Pinned Rows</TD>
+        <TD>05-pinned.ts</TD>
+        <TD>200,000 \| (HT\:20,000)</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Horizontal Rows</TD>
+        <TD>06-horizontal.ts</TD>
+        <TD>50,000 \| (HT\:20,000)</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Cell Updates</TD>
+        <TD>07-cell-updates.ts</TD>
+        <TD>1000 x 50 datasets</TD>
+        <TD>100</TD>
+      </TR>
+      <TR>
+        <TD>Sorting 10K</TD>
+        <TD>08-sorting-10k.ts</TD>
+        <TD>10,000</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Sorting 50K</TD>
+        <TD>09-sorting-50k.ts</TD>
+        <TD>50,000</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Sorting 100K</TD>
+        <TD>10-sorting-100k.ts</TD>
+        <TD>100,000</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Filtering 10K</TD>
+        <TD>11-filtering-10k.ts</TD>
+        <TD>10,000</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Filtering 50K</TD>
+        <TD>12-filtering-50k.ts</TD>
+        <TD>50,000</TD>
+        <TD>300</TD>
+      </TR>
+      <TR>
+        <TD>Filtering 100K</TD>
+        <TD>13-filtering-100k.ts</TD>
+        <TD>100,000</TD>
+        <TD>300</TD>
+      </TR>
+    </tbody>
+  </table>
+</div>
 
 :::note
 For 3 of the tests, Handsontable's performance was measured with fewer rows because out-of-memory errors
@@ -554,3 +661,14 @@ responsiveness.
 
 Or start building with the free **LyteNyte Grid Core** edition. It's open-source, memory-efficient, and ready to drop into
 your next React project
+
+## Disclaimer
+
+_This article and benchmark project are provided for informational purposes only. The article, benchmark methodology, scripts, and configuration are not an endorsement,_
+_recommendation, or guarantee of performance for any grid library. Results may vary based on hardware, browser version, operating system, system load, grid configuration, dataset shape, and application requirements._
+
+_All third-party names, packages, trademarks, and products referenced in this project belong to their respective owners. Their inclusion is for comparative benchmarking only and does not imply sponsorship, endorsement, affiliation, or approval._
+
+_We aim to configure each grid fairly and consistently. If you maintain one of the included grids and believe a benchmark configuration is incorrect or unrepresentative, please open an issue or pull request with details._
+
+_This project is provided “as is,” without warranties of any kind. Users should review the methodology, inspect the source code, and validate results in their own environment before making technical or business decisions._
