@@ -7,9 +7,11 @@ blog:
   time: 10
 ---
 
+![Benchmark Cover](/blog-assets/benchmarks/cover.png)
+
 ## Why Grid Performance Matters
 
-If you’re comparing enterprise-level data grids for your React application, performance should be your top
+If you're comparing enterprise-level data grids for your React application, performance should be your top
 consideration.
 
 In data-intensive applications, data grids are becoming vitally important for helping users visualize, manage, and
@@ -34,8 +36,8 @@ popular data grids on common data-intensive workloads. These workloads include s
 updates, and pinned rows and columns.
 
 All tests, configurations, benchmark implementations, and reproduction instructions are publicly available in this
-[GitHub Repository]. Developers can run the benchmarks, inspect the test setup, and independently evaluate the
-results.
+[GitHub Repository](https://github.com/1771-Technologies/react-data-grid-benchmarking). Developers can run the benchmarks,
+inspect the test setup, and independently evaluate the results.
 
 This article presents the performance metrics measured in our testing environment. While the results show how each
 grid performed, we encourage readers to reproduce the benchmarks and draw their own conclusions.
@@ -100,8 +102,8 @@ objects with named keys: `Array<Record<string, number>>`. All Handsontable tests
 correct idiomatic input for the library and avoids any overhead from an incompatible data shape.
 :::
 
-For a more detailed breakdown of configurations, refer to the [Fairness and Grid Normalization] section of the GitHub
-README.
+For a more detailed breakdown of configurations, refer to the [Fairness and Grid Normalization](https://github.com/1771-Technologies/react-data-grid-benchmarking#fairness-and-grid-normalization)
+section of the GitHub README.
 
 ## Methodology, Environment, & Reliability
 
@@ -143,7 +145,7 @@ the trace to extract timing metrics.
 Before each pass, Measure Right forces a synchronous major garbage collection to create a clean heap baseline and
 prevent previous runs from contaminating the results.
 
-For a more detailed breakdown of the methodology, see the [Benchmark Methodology section] in the GitHub
+For a more detailed breakdown of the methodology, see the [Benchmark Methodology section](https://github.com/1771-Technologies/react-data-grid-benchmarking#benchmark-methodology) in the GitHub
 README.
 
 :::note
@@ -243,8 +245,8 @@ browser viewport is set to `2000x1200` for every run, giving each grid the same 
 All grids use a row height of `20px` and a header height of `20px`. Default cell padding is removed via each grid's API
 or targeted CSS overrides, keeping cell content sizing as consistent as possible across implementations.
 
-For a detailed explanation of comparability controls, see the [Fairness and Grid Normalization] section of the GitHub
-README.
+For a detailed explanation of comparability controls, see the [Fairness and Grid Normalization](https://github.com/1771-Technologies/react-data-grid-benchmarking#fairness-and-grid-normalization)
+section of the GitHub README.
 
 ### Interpreting the Results
 
@@ -278,7 +280,7 @@ iterations.
 ## Benchmark Results & Interpretation
 
 :::note
-The raw data for all results can be downloaded by [clicking here].
+The raw data for all results can be downloaded by [clicking here](https://github.com/1771-Technologies/react-data-grid-benchmarking/raw/refs/heads/main/Benchmarking%202026%20Raw%20Results.xlsx).
 :::
 
 ### Scroll Performance
@@ -289,7 +291,7 @@ grid's virtualization implementation is critical to maintaining smooth interacti
 The following benchmarks evaluate scrolling performance across four dataset sizes: 10,000, 200,000, 500,000, and
 1,000,000 rows.
 
-**TODO Image Here FIGURE 1**
+![Scrolling performance](/blog-assets/benchmarks/figure-1-scroll-perf.svg)
 
 LyteNyte Grid was the only grid that maintained a consistent 60 FPS across all tested dataset sizes, including 1
 million rows. MUI and AG Grid showed similar performance at smaller scales, but both experienced performance
@@ -312,7 +314,7 @@ For applications that handle large datasets, these differences translate directl
 FPS, scrolling remains smooth and fluid. At 27-33 FPS, frame drops become noticeable during rapid navigation,
 especially when multiple grids or other UI components are on screen simultaneously.
 
-**IMAGE HERE FIGURE 2**
+![Scrolling memory](/blog-assets/benchmarks/figure-2-scroll-mem.svg)
 
 Memory usage increased across all grids as the dataset size grew, as expected. However, the achieved memory
 efficiency should be considered alongside the FPS output.
@@ -340,7 +342,7 @@ key difference is that LyteNyte Grid maintains 60 FPS while doing so.
 The following benchmarks evaluate sorting performance across three dataset sizes: 10,000, 50,000, and 100,000
 rows.
 
-**FIGURE 3 IMAGE HERE**
+![Sort performance](/blog-assets/benchmarks/figure-3-sort-perf.svg)
 
 Sorting proved computationally expensive across every grid in the benchmark suite. No solution maintained 60 FPS
 throughout the sorting tests, but LyteNyte Grid consistently delivered the highest sorting performance across all
@@ -354,7 +356,7 @@ Handsontable showed the steepest decline, falling from 51 FPS at 10,000 rows to 
 reduction of approximately two-thirds. DevExtreme remained the slowest performer overall, averaging between 18
 and 16 FPS across the tested range.
 
-**FIGURE 4 IMAGE HERE**
+![Sort memory](/blog-assets/benchmarks/figure-4-sort-mem.svg)
 
 Memory usage during sorting was similar among the leading grids. LyteNyte consistently recorded the lowest memory
 consumption, but AG Grid and MUI stayed close enough that the practical difference between the three solutions is
@@ -381,7 +383,7 @@ Filtering benchmarks measure how efficiently grids apply and clear filters while
 The following benchmarks evaluate filtering performance across three dataset sizes: 10,000, 50,000, and 100,000
 rows.
 
-**FIGURE 5 IMAGE HERE**
+![Filter performance](/blog-assets/benchmarks/figure-5-filter-perf.svg)
 
 LyteNyte Grid delivered the strongest filtering performance across all tested dataset sizes, averaging 56 FPS at
 10,000 rows and 45 FPS at 100,000 rows. AG Grid ranked second, achieving 46 FPS at 10,000 rows and 36 FPS at
@@ -397,7 +399,7 @@ both LyteNyte and AG Grid across all dataset sizes.
 DevExtreme again showed consistent performance as row counts increased, but its overall FPS remained
 substantially lower than the leading solutions.
 
-**FIGURE 6 IMAGE**
+![Filter memory](/blog-assets/benchmarks/figure-6-filter-mem.svg)
 
 The memory results for filtering closely mirror those observed during sorting. LyteNyte recorded the lowest memory
 footprint across all dataset sizes, though the differences among LyteNyte, AG Grid, and MUI remained relatively
@@ -426,6 +428,8 @@ The following tests evaluate three common enterprise workloads:
 - Scrolling with pinned rows and columns enabled.
 - Horizontal scrolling with pinned content present.
 - Full dataset replacement and update operations.
+
+![Other performance](/blog-assets/benchmarks/figure-7-other-perf.svg)
 
 As with the previous tests, LyteNyte Grid delivered the highest FPS across all three benchmark scenarios.
 
@@ -463,7 +467,7 @@ responsiveness and update latency.
 
 #### Scenarios Memory Usage
 
-**IMAGE HERE FIGURE 8**
+![Other memory](/blog-assets/benchmarks/figure-8-other-mem.svg)
 
 LyteNyte Grid recorded the lowest memory usage for horizontal scrolling and cell updates and the second-lowest
 memory usage for pinned rows.
@@ -481,7 +485,7 @@ followed by MUI.
 
 ### Bundle Size Comparisons
 
-**IMAGE HERE FIGURE 9**
+![Bundle sizes](/blog-assets/benchmarks/figure-9-bundle.svg)
 
 LyteNyte Grid has the lowest bundle size relative to the grids tested. Bundle size is important to ensuring that your
 application loads quickly even when connection speeds are low.

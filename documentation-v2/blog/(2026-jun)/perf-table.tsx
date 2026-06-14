@@ -49,8 +49,8 @@ export function ScrollPerformance() {
             <TH>LyteNyte</TH>
             <TH>AG Grid</TH>
             <TH>MUI</TH>
-            <TH>Material</TH>
             <TH>DevExt</TH>
+            <TH>Material</TH>
             <TH>Handson</TH>
           </TR>
         </thead>
@@ -60,8 +60,8 @@ export function ScrollPerformance() {
             <TD first>140.4%</TD>
             <TD second>81.1%</TD>
             <TD>75.6%</TD>
-            <TD last>3.9%</TD>
             <TD>31.5%</TD>
+            <TD last>3.9%</TD>
             <TD>20.8%</TD>
           </TR>
 
@@ -70,8 +70,8 @@ export function ScrollPerformance() {
             <TD first>18.7%</TD>
             <TD>9.9%</TD>
             <TD second>10.1%</TD>
-            <TD last>0.8%</TD>
             <TD>5.2%</TD>
+            <TD last>0.8%</TD>
             <TD>1.4%</TD>
           </TR>
 
@@ -80,8 +80,8 @@ export function ScrollPerformance() {
             <TD first>8.2%</TD>
             <TD>3.7%</TD>
             <TD second>4.2%</TD>
-            <TD last>0.4%</TD>
             <TD>2.3%</TD>
+            <TD last>0.4%</TD>
             <TD>N/A</TD>
           </TR>
 
@@ -90,8 +90,8 @@ export function ScrollPerformance() {
             <TD first>4.1%</TD>
             <TD>1.6%</TD>
             <TD second>2.1%</TD>
-            <TD>N/A</TD>
             <TD last>1.1%</TD>
+            <TD>N/A</TD>
             <TD>N/A</TD>
           </TR>
         </tbody>
@@ -110,8 +110,8 @@ export function SortPerformance() {
             <TH>LyteNyte</TH>
             <TH>AG Grid</TH>
             <TH>MUI</TH>
-            <TH>Material</TH>
             <TH>DevExt</TH>
+            <TH>Material</TH>
             <TH>Handson</TH>
           </TR>
         </thead>
@@ -121,8 +121,8 @@ export function SortPerformance() {
             <TD first>162.9%</TD>
             <TD second>84.6%</TD>
             <TD>84.3%</TD>
-            <TD>36.5%</TD>
             <TD last>20.1%</TD>
+            <TD>36.5%</TD>
             <TD>36.6%</TD>
           </TR>
 
@@ -131,8 +131,8 @@ export function SortPerformance() {
             <TD first>42.8%</TD>
             <TD second>28.5%</TD>
             <TD>27.2%</TD>
-            <TD>9.7%</TD>
             <TD>10.6%</TD>
+            <TD>9.7%</TD>
             <TD last>4.1%</TD>
           </TR>
 
@@ -141,8 +141,8 @@ export function SortPerformance() {
             <TD first>19.5%</TD>
             <TD second>16.6%</TD>
             <TD>13.2%</TD>
-            <TD>4.7%</TD>
             <TD>7.9%</TD>
+            <TD>4.7%</TD>
             <TD last>1.3%</TD>
           </TR>
         </tbody>
@@ -161,8 +161,8 @@ export function FilterPerformance() {
             <TH>LyteNyte</TH>
             <TH>AG Grid</TH>
             <TH>MUI</TH>
-            <TH>Material</TH>
             <TH>DevExt</TH>
+            <TH>Material</TH>
             <TH>Handson</TH>
           </TR>
         </thead>
@@ -172,8 +172,8 @@ export function FilterPerformance() {
             <TD first>189.4%</TD>
             <TD second>100.2%</TD>
             <TD>58.9%</TD>
-            <TD>31.7%</TD>
             <TD last>20.0%</TD>
+            <TD>31.7%</TD>
             <TD>34.1%</TD>
           </TR>
 
@@ -182,8 +182,8 @@ export function FilterPerformance() {
             <TD first>54.3%</TD>
             <TD second>36.5%</TD>
             <TD>23.4%</TD>
-            <TD>10.5%</TD>
             <TD>12.8%</TD>
+            <TD>10.5%</TD>
             <TD last>3.4%</TD>
           </TR>
 
@@ -192,8 +192,8 @@ export function FilterPerformance() {
             <TD first>25.2%</TD>
             <TD second>18.7%</TD>
             <TD>11.3%</TD>
-            <TD>5.8%</TD>
             <TD>8.6%</TD>
+            <TD>5.8%</TD>
             <TD last>1.1%</TD>
           </TR>
         </tbody>
@@ -212,8 +212,8 @@ export function OtherPerformance() {
             <TH>LyteNyte</TH>
             <TH>AG Grid</TH>
             <TH>MUI</TH>
-            <TH>Material</TH>
             <TH>DevExt</TH>
+            <TH>Material</TH>
             <TH>Handson</TH>
           </TR>
         </thead>
@@ -223,8 +223,8 @@ export function OtherPerformance() {
             <TD first>18.7%</TD>
             <TD second>9.2%</TD>
             <TD>9.0%</TD>
-            <TD last>0.5%</TD>
             <TD>5.1%</TD>
+            <TD last>0.5%</TD>
             <TD>7.9%</TD>
           </TR>
 
@@ -233,8 +233,8 @@ export function OtherPerformance() {
             <TD first>61.1%</TD>
             <TD second>48.6%</TD>
             <TD>47.5%</TD>
-            <TD last>3.6%</TD>
             <TD>6.7%</TD>
+            <TD last>3.6%</TD>
             <TD>8.7%</TD>
           </TR>
 
@@ -243,8 +243,8 @@ export function OtherPerformance() {
             <TD first>116.9%</TD>
             <TD second>63.9%</TD>
             <TD>33.4%</TD>
-            <TD>19.3%</TD>
             <TD>31.3%</TD>
+            <TD>19.3%</TD>
             <TD last>12.5%</TD>
           </TR>
         </tbody>
