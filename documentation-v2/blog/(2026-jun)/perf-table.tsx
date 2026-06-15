@@ -10,7 +10,7 @@ export const TH = (props: JSX.IntrinsicElements["th"]) => {
   return (
     <th
       {...props}
-      className={tw("text-xd-prose py-3.5 pl-4 pr-3 text-left text-sm sm:pl-3", props.className)}
+      className={tw("text-xd-prose text-nowrap py-3.5 pl-4 pr-3 text-left text-sm sm:pl-3", props.className)}
     ></th>
   );
 };
@@ -41,7 +41,7 @@ export const TD = ({
 
 export function SystemConfig() {
   return (
-    <div className="border-xd-border my-8 overflow-hidden rounded-xl border p-px">
+    <div className="border-xd-border my-8 overflow-auto rounded-xl border p-px">
       <table className="divide-xd-border relative w-full min-w-full divide-y">
         <tbody>
           <TR>
@@ -84,7 +84,7 @@ export function SystemConfig() {
 
 export function ScrollPerformance() {
   return (
-    <div className="border-xd-border my-8 overflow-hidden rounded-xl border p-px">
+    <div className="border-xd-border my-8 overflow-auto rounded-xl border p-px">
       <table className="divide-xd-border relative w-full min-w-full divide-y">
         <thead>
           <TR>
@@ -169,7 +169,7 @@ export function ScrollPerformance() {
 
 export function SortPerformance() {
   return (
-    <div className="border-xd-border my-8 overflow-hidden rounded-xl border p-px">
+    <div className="border-xd-border my-8 overflow-auto rounded-xl border p-px">
       <table className="divide-xd-border relative w-full min-w-full divide-y">
         <thead>
           <TR>
@@ -238,7 +238,7 @@ export function SortPerformance() {
 
 export function FilterPerformance() {
   return (
-    <div className="border-xd-border my-8 overflow-hidden rounded-xl border p-px">
+    <div className="border-xd-border my-8 overflow-auto rounded-xl border p-px">
       <table className="divide-xd-border relative w-full min-w-full divide-y">
         <thead>
           <TR>
@@ -307,7 +307,7 @@ export function FilterPerformance() {
 
 export function OtherPerformance() {
   return (
-    <div className="border-xd-border my-8 overflow-hidden rounded-xl border p-px">
+    <div className="border-xd-border my-8 overflow-auto rounded-xl border p-px">
       <table className="divide-xd-border relative w-full min-w-full divide-y">
         <thead>
           <TR>
