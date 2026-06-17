@@ -1,6 +1,7 @@
 import "../(cell-selection)/areas.css";
 import { Grid, useClientDataSource } from "../../index.js";
 import { employeeData, type EmployeeSpec } from "../(cell-selection)/areas-data.js";
+import { useState } from "react";
 
 const columns: Grid.Column<EmployeeSpec>[] = [
   { id: "id", name: "ID", width: 60, pin: "start" },
@@ -47,11 +48,28 @@ export default function CellSelectionAreas() {
     bottomData: employeeData.slice(0, 2),
   });
 
+  const [suppressFlash, setFlash] = useState(true);
+  const [rtl, setRtl] = useState(false);
+
   return (
-    <div className="areas-demo">
-      <div className="areas-grid-container">
-        <Grid suppressScrollFlash columns={columns} rowSource={ds} cellSelectionMode="multi-range" />
+    <>
+      <div style={{ display: "flex", gap: "8px" }}>
+        <button onClick={() => setFlash((prev) => !prev)}>
+          Suppress Flash: {suppressFlash ? "On" : "Off"}
+        </button>
+        <button onClick={() => setRtl((prev) => !prev)}>RTL: {rtl ? "On" : "Off"}</button>
       </div>
-    </div>
+      <div className="areas-demo">
+        <div className="areas-grid-container">
+          <Grid
+            suppressScrollFlash={suppressFlash}
+            columns={columns}
+            rowSource={ds}
+            cellSelectionMode="multi-range"
+            rtl={rtl}
+          />
+        </div>
+      </div>
+    </>
   );
 }

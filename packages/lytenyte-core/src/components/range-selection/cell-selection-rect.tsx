@@ -11,16 +11,20 @@ import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-c
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 import { sizeFromCoord } from "@1771technologies/js-utils";
-import { getTranslate } from "@1771technologies/dom-utils";
+import { useSuppressScrollFlashContext } from "../../root/contexts/viewport/viewport-context.js";
 
 export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; isDeselect?: boolean }) {
   const rtl = useRtlContext();
+  void rtl;
+
   const dimensions = useDimensionContext();
 
   const xPositions = useXCoordinates();
   const yPositions = useYCoordinates();
 
   const { rowCount, topCount: rowTopCount, bottomCount: rowBotCount } = useRowCountsContext();
+
+  const isSync = useSuppressScrollFlashContext();
 
   const vpWidth = dimensions.innerWidth;
 
@@ -41,17 +45,29 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
 
     const firstBotIndex = rowCount - rowBotCount;
 
-    const x = isEnd
-      ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth
-      : isStart
-        ? xPositions[columnIndex]
-        : `calc(${xPositions[columnIndex]}px - var(--ln-x-sync-offset,0))`;
+    let x: number | string;
+
+    if (isSync) {
+      x = isEnd
+        ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth
+        : isStart
+          ? xPositions[columnIndex]
+          : `calc(${xPositions[columnIndex]}px - var(--ln-x-sync-offset,0))`;
+    } else {
+      x = isEnd ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth : xPositions[columnIndex];
+    }
 
     let y: number | string;
-    if (isBot) y = yPositions[rowIndex] - yPositions[firstBotIndex];
-    else if (isTop) y = yPositions[rowIndex];
-    else {
-      y = `calc(${yPositions[rowIndex] - yPositions[rowTopCount]}px - var(--ln-y-offset, 0px))`;
+
+    if (isSync) {
+      if (isTop) y = yPositions[rowIndex];
+      else y = yPositions[rowIndex] - yPositions[rowTopCount];
+    } else {
+      if (isBot) y = yPositions[rowIndex] - yPositions[firstBotIndex];
+      else if (isTop) y = yPositions[rowIndex];
+      else {
+        y = `calc(${yPositions[rowIndex] - yPositions[rowTopCount]}px - var(--ln-y-offset, 0px))`;
+      }
     }
 
     const transform = `translate3d(${typeof x == "string" ? x : `${x}px`}, ${typeof y === "string" ? y : `${y}px`}, 0px)`;
@@ -64,7 +80,7 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
       width,
       transform,
       position: "absolute",
-      pointerEvents: "none",
+      // pointerEvents: "none",
       top: 0,
       zIndex: 1,
 
@@ -97,6 +113,7 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
     yPositions,
     rowCount,
     rowBotCount,
+    isSync,
     vpWidth,
     rowTopCount,
   ]);
