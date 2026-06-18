@@ -1,14 +1,10 @@
 import { type CSSProperties, type PropsWithChildren } from "react";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
-import { useRowViewContext } from "../../../root/contexts/row-layout/row-layout-context.js";
-import { useYCoordinates } from "../../../root/contexts/coordinates.js";
 
 export function SyncScroller(props: PropsWithChildren) {
   const id = useGridIdContext();
 
-  const rowView = useRowViewContext();
-  const yPositions = useYCoordinates();
   const offset = useOffsetContext();
 
   return (
@@ -27,12 +23,6 @@ export function SyncScroller(props: PropsWithChildren) {
           } as CSSProperties
         }
       >
-        <div
-          style={{
-            height: yPositions[rowView.rowFirstCenter] - yPositions[rowView.top.length],
-            width: "40px",
-          }}
-        />
         {props.children}
       </div>
     </div>

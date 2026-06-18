@@ -2,7 +2,6 @@ import { useMemo, type CSSProperties } from "react";
 import { type RowPin } from "@1771technologies/lytenyte-shared";
 import { SCROLL_WIDTH_VARIABLE_USE, VIEWPORT_WIDTH_VARIABLE_USE } from "@1771technologies/lytenyte-shared";
 import { sizeFromCoord } from "@1771technologies/js-utils";
-import { useSuppressScrollFlashContext } from "../../root/contexts/viewport/viewport-context.js";
 
 export function useRowStyle(
   yPositions: Uint32Array,
@@ -14,18 +13,14 @@ export function useRowStyle(
 ): CSSProperties {
   const height = sizeFromCoord(rowIndex, yPositions);
 
-  const suppressScroll = useSuppressScrollFlashContext();
-
   const styles = useMemo(() => {
     const isTranslated = rowPin == null;
 
-    const meta = suppressScroll
-      ? { height }
-      : {
-          height: isTranslated ? 0 : height,
-          position: isTranslated ? "relative" : undefined,
-          top: isTranslated ? yPositions[rowIndex] - topOffset : undefined,
-        };
+    const meta = {
+      height: isTranslated ? 0 : height,
+      position: isTranslated ? "relative" : undefined,
+      top: isTranslated ? yPositions[rowIndex] - topOffset : undefined,
+    };
 
     // FireFox does not correctly paint translations when scrolling. This results pin columns
     // appearing and disappearing as the user horizontally scrolls. However, if we directly
@@ -43,7 +38,7 @@ export function useRowStyle(
     Object.assign(styles, meta);
 
     return { ...propStyles, ...styles };
-  }, [detailHeight, height, propStyles, rowIndex, rowPin, suppressScroll, topOffset, yPositions]);
+  }, [detailHeight, height, propStyles, rowIndex, rowPin, topOffset, yPositions]);
 
   return styles;
 }
