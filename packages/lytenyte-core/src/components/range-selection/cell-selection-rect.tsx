@@ -80,7 +80,7 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
       width,
       transform,
       position: "absolute",
-      // pointerEvents: "none",
+      pointerEvents: "none",
       top: 0,
       zIndex: 1,
 
