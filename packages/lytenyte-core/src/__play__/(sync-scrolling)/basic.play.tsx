@@ -53,16 +53,19 @@ export default function BasicRendering() {
     sort: [{ dim: { id: "education" } }],
   });
   const [sync, setSync] = useState(true);
+  const [rtl, setRtl] = useState(false);
 
   return (
     <>
       <button onClick={() => setSync((prev) => !prev)}>
         {sync ? "Scrolling In Sync" : "Multi Threaded Scrolling"}
       </button>
+      <button onClick={() => setRtl((prev) => !prev)}>{rtl ? "Rtl On" : "Rtl Off"}</button>
       <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
         <Grid
           columns={columns}
           rowSource={ds}
+          rtl={rtl}
           viewportInitialHeight={500}
           viewportInitialWidth={500}
           suppressScrollFlash={sync}

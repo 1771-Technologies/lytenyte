@@ -66,7 +66,7 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
             top: 0,
 
             width: sync ? 0 : xPositions.at(-1)!,
-            left: sync ? 0 : undefined,
+            insetInlineStart: sync ? 0 : undefined,
 
             "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
 

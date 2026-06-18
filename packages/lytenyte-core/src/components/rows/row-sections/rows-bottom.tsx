@@ -50,7 +50,7 @@ export const RowsBottom = memo(
           bottom: 0,
           zIndex: 3,
 
-          left: sync ? 0 : undefined,
+          insetInlineStart: sync ? 0 : undefined,
           width: sync ? 0 : undefined,
           minWidth: sync ? undefined : "100%",
 

@@ -15,7 +15,6 @@ import { useSuppressScrollFlashContext } from "../../root/contexts/viewport/view
 
 export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; isDeselect?: boolean }) {
   const rtl = useRtlContext();
-  void rtl;
 
   const dimensions = useDimensionContext();
 
@@ -47,12 +46,14 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
 
     let x: number | string;
 
+    const factor = rtl ? -1 : 1;
+
     if (isSync) {
       x = isEnd
-        ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth
+        ? (xPositions[columnIndex] - xPositions.at(-1)! + vpWidth) * factor
         : isStart
-          ? xPositions[columnIndex]
-          : `calc(${xPositions[columnIndex]}px - var(--ln-x-sync-offset,0))`;
+          ? xPositions[columnIndex] * factor
+          : `calc(${xPositions[columnIndex] * factor}px - var(--ln-x-sync-offset,0))`;
     } else {
       x = isEnd ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth : xPositions[columnIndex];
     }
@@ -113,6 +114,7 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
     yPositions,
     rowCount,
     rowBotCount,
+    rtl,
     isSync,
     vpWidth,
     rowTopCount,

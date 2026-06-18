@@ -52,7 +52,7 @@ export const RowsTop = memo(
           position: "sticky",
           top,
           zIndex: 4,
-          left: sync ? 0 : undefined,
+          insetInlineStart: sync ? 0 : undefined,
           width: sync ? 0 : undefined,
           minWidth: sync ? undefined : "100%",
 

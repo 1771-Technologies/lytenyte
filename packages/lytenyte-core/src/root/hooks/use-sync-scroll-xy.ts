@@ -13,7 +13,7 @@ export function useSyncScrollXY() {
     const handle = () => {
       raf = null;
       setY(viewport.scrollTop);
-      setX(Math.abs(viewport.scrollLeft));
+      setX(viewport.scrollLeft);
     };
 
     const controller = new AbortController();

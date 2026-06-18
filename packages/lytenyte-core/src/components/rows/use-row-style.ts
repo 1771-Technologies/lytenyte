@@ -16,12 +16,6 @@ export function useRowStyle(
   const styles = useMemo(() => {
     const isTranslated = rowPin == null;
 
-    const meta = {
-      height: isTranslated ? 0 : height,
-      position: isTranslated ? "relative" : undefined,
-      top: isTranslated ? yPositions[rowIndex] - topOffset : undefined,
-    };
-
     // FireFox does not correctly paint translations when scrolling. This results pin columns
     // appearing and disappearing as the user horizontally scrolls. However, if we directly
     // position the rows, then it appears to produce the correct calculation.
@@ -32,10 +26,11 @@ export function useRowStyle(
       pointerEvents: "none",
       whiteSpace: "nowrap",
       display: "flex",
+      height: isTranslated ? 0 : height,
+      position: isTranslated ? "relative" : undefined,
+      top: isTranslated ? yPositions[rowIndex] - topOffset : undefined,
       "--ln-row-height": `${height - detailHeight}px`,
     } as CSSProperties;
-
-    Object.assign(styles, meta);
 
     return { ...propStyles, ...styles };
   }, [detailHeight, height, propStyles, rowIndex, rowPin, topOffset, yPositions]);

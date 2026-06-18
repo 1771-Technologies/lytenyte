@@ -11,7 +11,7 @@ export function SyncScroller(props: PropsWithChildren) {
     <div
       data-ln-gridid={id}
       role="presentation"
-      style={{ position: "sticky", top: offset.topOffset, left: 0, width: 0 }}
+      style={{ position: "sticky", top: offset.topOffset, insetInlineStart: 0, width: 0 }}
     >
       <div
         style={
