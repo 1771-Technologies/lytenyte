@@ -1,3 +1,4 @@
+import "../test.css";
 import { useState } from "react";
 import { useClientDataSource, Grid } from "../../index.js";
 import { bankData } from "@1771technologies/grid-sample-data/bank-data";
@@ -76,12 +77,71 @@ export default function BasicRendering() {
 }
 
 if (import.meta.vitest) {
-  const { test } = import.meta.vitest;
-  // const { userEvent } = await import("vitest/browser");
-  // const { wait, getCellQuery } = await import("../utils.js");
-  // const { render } = await import("vitest-browser-react");
+  const { test, expect } = import.meta.vitest;
+  const { wait, scrollGrid } = await import("../utils.js");
+  const { render } = await import("vitest-browser-react");
 
-  test("Should be able to switch between sync and multi-threaded scrolling", async () => {});
-  test("Should be able to scroll to the bottom on the grid", async () => {});
-  test("Should be able to scroll midway on the grid", async () => {});
+  test("Should be able to switch between sync and multi-threaded scrolling", async () => {
+    const screen = await render(<BasicRendering />);
+
+    await wait(50);
+    const grid = screen.getByRole("grid");
+    await expect.element(grid).toBeVisible();
+
+    scrollGrid(grid, { y: 300 });
+
+    await expect.element(grid).toMatchScreenshot("001_suppressed");
+    await screen.getByText("Scrolling in Sync").click();
+    await wait(50);
+    await expect.element(grid).toMatchScreenshot("002_unsuppressed");
+  });
+
+  test("Should be able to scroll to the bottom on the grid", async () => {
+    const screen = await render(<BasicRendering />);
+
+    await wait(50);
+    const grid = screen.getByRole("grid");
+    await expect.element(grid).toBeVisible();
+
+    scrollGrid(grid, { y: 200_000 });
+    await wait(100);
+    await expect.element(grid).toMatchScreenshot("001_to_the_bottom");
+  });
+
+  test("Should be able to scroll midway on the grid", async () => {
+    const screen = await render(<BasicRendering />);
+
+    await wait(50);
+    const grid = screen.getByRole("grid");
+    await expect.element(grid).toBeVisible();
+
+    scrollGrid(grid, { y: 1000 });
+    await wait(50);
+    await expect.element(grid).toMatchScreenshot("001_midway");
+  });
+
+  test("Should be able to scroll left and right", async () => {
+    const screen = await render(<BasicRendering />);
+
+    await wait(50);
+    const grid = screen.getByRole("grid");
+    await expect.element(grid).toBeVisible();
+
+    scrollGrid(grid, { x: 324 });
+    await wait(50);
+    await expect.element(grid).toMatchScreenshot("001_left_a_little");
+
+    scrollGrid(grid, { x: 50_000 });
+    await wait(50);
+    await expect.element(grid).toMatchScreenshot("002_to_the_end");
+
+    scrollGrid(grid, { x: -50_000 });
+    await wait(50);
+    await expect.element(grid).toMatchScreenshot("003_to_the_start");
+
+    await screen.getByText("Rtl Off").click();
+    scrollGrid(grid, { x: -50_000 });
+    await wait(50);
+    await expect.element(grid).toMatchScreenshot("004_rtl_to_the_end");
+  });
 }
