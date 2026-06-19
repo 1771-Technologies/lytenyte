@@ -1,4 +1,14 @@
-import { forwardRef, memo, useMemo, useState, type CSSProperties, type JSX, type ReactNode } from "react";
+import {
+  forwardRef,
+  Fragment,
+  memo,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type JSX,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 import { useHeaderRowTemplate } from "./use-header-row-template.js";
 import { useHeaderColTemplate } from "./use-header-col-template.js";
 import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
@@ -48,38 +58,41 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
 
   const { x, sync } = useSyncScrollXY();
 
+  const Wrapper = sync ? HeaderSyncWrap : Fragment;
+
   return (
     <HeaderProvider value={value}>
-      <div
-        {...props}
-        ref={ref}
-        role="rowgroup"
-        data-ln-header
-        data-ln-gridid={id}
-        data-ln-rowcount={columnLayout.length - (floatingEnabled ? 1 : 0)}
-        data-ln-floating={floatingEnabled ? true : undefined}
-        style={
-          {
-            minWidth: "100%",
-            boxSizing: "border-box",
-            position: "sticky",
-            top: 0,
+      <Wrapper>
+        <div
+          {...props}
+          ref={ref}
+          role="rowgroup"
+          data-ln-header
+          data-ln-gridid={id}
+          data-ln-rowcount={columnLayout.length - (floatingEnabled ? 1 : 0)}
+          data-ln-floating={floatingEnabled ? true : undefined}
+          style={
+            {
+              minWidth: sync ? undefined : "100%",
+              boxSizing: "border-box",
+              position: "sticky",
 
-            width: sync ? 0 : xPositions.at(-1)!,
-            insetInlineStart: sync ? 0 : undefined,
+              width: sync ? 0 : xPositions.at(-1)!,
+              insetInlineStart: sync ? 0 : undefined,
 
-            "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
+              "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
 
-            zIndex: 10,
-            display: "grid",
-            gridTemplateRows: gridRowTemplate,
-            gridTemplateColumns: gridColTemplate,
-            ...props.style,
-          } as CSSProperties
-        }
-      >
-        {headerRows}
-      </div>
+              zIndex: 10,
+              display: "grid",
+              gridTemplateRows: gridRowTemplate,
+              gridTemplateColumns: gridColTemplate,
+              ...props.style,
+            } as CSSProperties
+          }
+        >
+          {headerRows}
+        </div>
+      </Wrapper>
     </HeaderProvider>
   );
 }
@@ -90,4 +103,24 @@ export namespace Header {
   export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
     readonly children?: (cells: LayoutHeader[]) => ReactNode;
   };
+}
+
+// Safari does not handle the inset right correctly, without wrapping
+// it in a div with some width.
+function HeaderSyncWrap(props: PropsWithChildren) {
+  const xPositions = useXCoordinates();
+
+  return (
+    <div
+      style={{
+        width: xPositions.at(-1),
+        minWidth: "100%",
+        position: "sticky",
+        zIndex: 10,
+        top: 0,
+      }}
+    >
+      {props.children}
+    </div>
+  );
 }

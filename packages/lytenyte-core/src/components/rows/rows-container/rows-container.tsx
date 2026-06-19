@@ -53,7 +53,6 @@ export const RowsContainer = memo(
         }}
         style={
           {
-            ...props.style,
             height,
             minHeight: height,
             width,
@@ -69,6 +68,7 @@ export const RowsContainer = memo(
             "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
             "--ln-y-transform": sync ? getTranslate(0, -y) : undefined,
             "--ln-x-sync-offset": sync ? `${x}px` : undefined,
+            ...props.style,
           } as CSSProperties
         }
       >
