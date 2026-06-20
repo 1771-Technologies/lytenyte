@@ -97,8 +97,6 @@ export default function BasicRendering() {
   const addTop = () => setData((prev) => [makeNewRow(), ...prev]);
   const addAt4 = () => setData((prev) => [...prev.slice(0, 4), makeNewRow(), ...prev.slice(4)]);
 
-  console.log(data);
-
   return (
     <>
       <button

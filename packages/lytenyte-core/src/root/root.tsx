@@ -27,7 +27,8 @@ import { GridSectionsContextProvider } from "./contexts/grid-areas/grid-sections
 import { DropAcceptProvider } from "./contexts/drop-accept.js";
 import { RowLayoutProvider } from "./contexts/row-layout/row-layout-context.js";
 import { AnimatingRowsProvider } from "./contexts/row-layout/animating-rows-context.js";
-import { RowAnimationDriver } from "../components/rows/row-animations.js";
+import { RowAnimationDriver } from "../components/rows/animations/row-animations.js";
+import { RowChangesProvider } from "../components/rows/animations/row-changes-context.js";
 import { EditProvider } from "./contexts/edit-context.js";
 import { APIProvider } from "./contexts/api-provider.js";
 import { GridRendererContext } from "./contexts/grid-renderer-context.js";
@@ -139,52 +140,54 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                             <CellRangeSelectionActive>
                                               <FocusPositionProvider>
                                                 <AnimatingRowsProvider>
-                                                <RowLayoutProvider
-                                                  api={api}
-                                                  source={source}
-                                                  rowFullWidthPredicate={props.rowFullWidthPredicate}
-                                                  virtualizeCols={props.virtualizeCols}
-                                                  virtualizeRows={props.virtualizeRows}
-                                                >
-                                                  <RowAnimationDriver />
-                                                  <SelectPivotProvider
-                                                    rowSelectionActivator={props.rowSelectionActivator}
+                                                  <RowLayoutProvider
+                                                    api={api}
+                                                    source={source}
+                                                    rowFullWidthPredicate={props.rowFullWidthPredicate}
+                                                    virtualizeCols={props.virtualizeCols}
+                                                    virtualizeRows={props.virtualizeRows}
                                                   >
-                                                    <EditProvider
-                                                      api={api}
-                                                      source={source}
-                                                      columnBase={props.columnBase}
-                                                      editRowValidatorFn={props.editRowValidatorFn}
-                                                      onEditBegin={props.onEditBegin}
-                                                      onEditCancel={props.onEditCancel}
-                                                      onEditEnd={props.onEditEnd}
-                                                      onEditFail={props.onEditFail}
-                                                      editMode={props.editMode}
-                                                      editClickActivator={props.editClickActivator}
+                                                    <RowChangesProvider>
+                                                      <RowAnimationDriver />
+                                                    </RowChangesProvider>
+                                                    <SelectPivotProvider
+                                                      rowSelectionActivator={props.rowSelectionActivator}
                                                     >
-                                                      <APIProvider api={api} source={source} {...props}>
-                                                        <HeaderHierarchyProvider
-                                                          floatingRowEnabled={props.floatingRowEnabled}
-                                                        >
-                                                          <ColumnMoveAndSizeProvider
-                                                            columnDoubleClickToAutosize={
-                                                              props.columnDoubleClickToAutosize
-                                                            }
-                                                            columnGroupMoveDragPlaceholder={
-                                                              props.columnGroupMoveDragPlaceholder
-                                                            }
-                                                            columnMoveDragPlaceholder={
-                                                              props.columnMoveDragPlaceholder
-                                                            }
-                                                            onColumnMoveOutside={props.onColumnMoveOutside}
+                                                      <EditProvider
+                                                        api={api}
+                                                        source={source}
+                                                        columnBase={props.columnBase}
+                                                        editRowValidatorFn={props.editRowValidatorFn}
+                                                        onEditBegin={props.onEditBegin}
+                                                        onEditCancel={props.onEditCancel}
+                                                        onEditEnd={props.onEditEnd}
+                                                        onEditFail={props.onEditFail}
+                                                        editMode={props.editMode}
+                                                        editClickActivator={props.editClickActivator}
+                                                      >
+                                                        <APIProvider api={api} source={source} {...props}>
+                                                          <HeaderHierarchyProvider
+                                                            floatingRowEnabled={props.floatingRowEnabled}
                                                           >
-                                                            {children ?? <Fallback />}
-                                                          </ColumnMoveAndSizeProvider>
-                                                        </HeaderHierarchyProvider>
-                                                      </APIProvider>
-                                                    </EditProvider>
-                                                  </SelectPivotProvider>
-                                                </RowLayoutProvider>
+                                                            <ColumnMoveAndSizeProvider
+                                                              columnDoubleClickToAutosize={
+                                                                props.columnDoubleClickToAutosize
+                                                              }
+                                                              columnGroupMoveDragPlaceholder={
+                                                                props.columnGroupMoveDragPlaceholder
+                                                              }
+                                                              columnMoveDragPlaceholder={
+                                                                props.columnMoveDragPlaceholder
+                                                              }
+                                                              onColumnMoveOutside={props.onColumnMoveOutside}
+                                                            >
+                                                              {children ?? <Fallback />}
+                                                            </ColumnMoveAndSizeProvider>
+                                                          </HeaderHierarchyProvider>
+                                                        </APIProvider>
+                                                      </EditProvider>
+                                                    </SelectPivotProvider>
+                                                  </RowLayoutProvider>
                                                 </AnimatingRowsProvider>
                                               </FocusPositionProvider>
                                             </CellRangeSelectionActive>
