@@ -17,6 +17,7 @@ import { useIsoEffect } from "../../../hooks/use-iso-effect.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useRowSourceContext } from "../../../root/contexts/row-source-provider.js";
 import { useRowAnimateSettings } from "../../../root/contexts/animations/row-animate-settings-context.js";
+import type { Grid } from "../../../index.js";
 
 const context = createContext<{ additionalLayouts: LayoutRow[]; animating: RefObject<Set<string>> }>({
   additionalLayouts: [],
@@ -32,11 +33,21 @@ function parseTranslateYPx(value: string): number | null {
   return match ? Number.parseFloat(match[1]) : null;
 }
 
+// Only "fade" exists today; more enter/exit styles plug in here later without touching the
+// effect that drives them.
+function enterKeyframesFor(type: Grid.RowAnimateEnterExitType): Keyframe[] {
+  switch (type) {
+    case "fade":
+    default:
+      return [{ opacity: 0 }, { opacity: 1 }];
+  }
+}
+
 export function AnimationLayoutProvider(props: PropsWithChildren) {
-  const { moved } = useRowChangesContext();
+  const { moved, added } = useRowChangesContext();
   const rowLayout = useRowLayoutContext();
   const rs = useRowSourceContext();
-  const { move } = useRowAnimateSettings();
+  const { move, enter } = useRowAnimateSettings();
 
   const view = useRowViewContext();
 
@@ -86,13 +97,31 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
   const gridId = useGridIdContext();
 
   useIsoEffect(() => {
-    if (!move || !moved.length) return;
+    const needsMove = Boolean(move) && moved.length > 0;
+    const needsEnter = Boolean(enter) && added.length > 0;
+    if (!needsMove && !needsEnter) return;
 
     const elementById = new Map<string, HTMLElement>();
     document.querySelectorAll(`[data-ln-gridid="${gridId}"][data-ln-row="true"]`).forEach((row) => {
       const id = row.getAttribute("data-ln-row-id");
       if (id) elementById.set(id, row as HTMLElement);
     });
+
+    if (needsEnter && enter) {
+      for (const a of added) {
+        const el = elementById.get(a.id);
+        if (!el) continue;
+
+        // A newly added row has no prior animation to redirect from - always a fresh, one-shot
+        // animation.
+        el.animate(enterKeyframesFor(enter.type), {
+          duration: enter.duration,
+          easing: enter.easing,
+        });
+      }
+    }
+
+    if (!needsMove || !move) return;
 
     for (const m of moved) {
       const el = elementById.get(m.id);
@@ -160,7 +189,7 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
           }
         });
     }
-  }, [moved, gridId, move]);
+  }, [moved, added, gridId, move, enter]);
 
   return <context.Provider value={value}>{props.children}</context.Provider>;
 }
