@@ -29,6 +29,7 @@ import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 import { useStyleContext } from "../../root/contexts/styles-context.js";
 import { useRowSelectionSettings } from "../../root/contexts/row-select-context.js";
 import { runWithBackoff } from "@1771technologies/js-utils";
+import { RowAnimationDriver } from "../rows/row-animations.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -323,6 +324,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             style={{ minWidth: xPositions.at(-1), minHeight: yPositions.at(-1) }}
           />
         )}
+        <RowAnimationDriver />
       </div>
 
       {shouldCapture && (
