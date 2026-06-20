@@ -6,11 +6,16 @@ import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-c
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
 import { useRowLayoutContext, useRowViewContext } from "../../root/contexts/row-layout/row-layout-context.js";
 import { useGridIdContext } from "../../root/contexts/grid-id.js";
+import { useAnimatingRowsContext } from "../../root/contexts/row-layout/animating-rows-context.js";
 
 interface PositionEntry {
   readonly y: number;
   readonly pin: RowPin;
 }
+
+// Hardcoded for now - duration/easing become user-configurable once we get to the config object.
+const DURATION_MS = 1000;
+const EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
 
 const getRow = (id: string, gridId: string) => {
   const query = `[data-ln-gridid="${gridId}"][data-ln-row="true"][data-ln-row-id="${id}"]`;
@@ -33,6 +38,12 @@ export function RowAnimationDriver() {
   const rs = useRowSourceContext();
 
   const { topCount, bottomCount, rowCount } = useRowCountsContext();
+  const { startAnimating, stopAnimating } = useAnimatingRowsContext();
+
+  // Per-id in-flight animation, so a second move arriving before the first settles redirects
+  // from wherever the row actually is right now, instead of restarting from its last classified
+  // position.
+  const animations = useRef<Map<string, Animation>>(new Map());
 
   const idToPosition = useMemo(() => {
     const x: Record<string, PositionEntry> = {};
@@ -93,7 +104,57 @@ export function RowAnimationDriver() {
         removed.push({ id, pin: previous.pin });
       }
     }
-  }, [idToPosition, view]);
+
+    for (const m of moved) {
+      animateMove(m.id, m.from, m.to);
+    }
+
+    function animateMove(id: string, fromY: number, toY: number) {
+      const el = getRow(id, gridId);
+      if (!el) return;
+
+      // If this id already has something in flight, capture where it actually is right now (not
+      // where it was headed) before cancelling it, so the new animation redirects smoothly
+      // instead of snapping back to rest first.
+      const existing = animations.current.get(id);
+      let fromTransform: string | null = null;
+      if (existing) {
+        try {
+          existing.commitStyles();
+          fromTransform = el.style.transform || null;
+        } catch {
+          // The animation may no longer be associated with this element; fall back below.
+        }
+
+        existing.cancel();
+        animations.current.delete(id);
+      }
+
+      if (fromTransform == null) {
+        const delta = fromY - toY;
+        if (delta === 0) return;
+
+        fromTransform = `translateY(${delta}px)`;
+      }
+
+      startAnimating(id);
+
+      const anim = el.animate([{ transform: fromTransform }, { transform: "none" }], {
+        duration: DURATION_MS,
+        easing: EASING,
+      });
+
+      animations.current.set(id, anim);
+      anim.finished
+        .catch(() => {})
+        .finally(() => {
+          if (animations.current.get(id) === anim) {
+            animations.current.delete(id);
+            stopAnimating(id);
+          }
+        });
+    }
+  }, [idToPosition, view, gridId, startAnimating, stopAnimating]);
 
   return <></>;
 }

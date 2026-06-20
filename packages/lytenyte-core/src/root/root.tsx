@@ -26,6 +26,8 @@ import { CutoffProvider } from "./contexts/grid-areas/cutoff-context.js";
 import { GridSectionsContextProvider } from "./contexts/grid-areas/grid-sections-context.js";
 import { DropAcceptProvider } from "./contexts/drop-accept.js";
 import { RowLayoutProvider } from "./contexts/row-layout/row-layout-context.js";
+import { AnimatingRowsProvider } from "./contexts/row-layout/animating-rows-context.js";
+import { RowAnimationDriver } from "../components/rows/row-animations.js";
 import { EditProvider } from "./contexts/edit-context.js";
 import { APIProvider } from "./contexts/api-provider.js";
 import { GridRendererContext } from "./contexts/grid-renderer-context.js";
@@ -136,6 +138,7 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                           >
                                             <CellRangeSelectionActive>
                                               <FocusPositionProvider>
+                                                <AnimatingRowsProvider>
                                                 <RowLayoutProvider
                                                   api={api}
                                                   source={source}
@@ -143,6 +146,7 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                                   virtualizeCols={props.virtualizeCols}
                                                   virtualizeRows={props.virtualizeRows}
                                                 >
+                                                  <RowAnimationDriver />
                                                   <SelectPivotProvider
                                                     rowSelectionActivator={props.rowSelectionActivator}
                                                   >
@@ -181,6 +185,7 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                                     </EditProvider>
                                                   </SelectPivotProvider>
                                                 </RowLayoutProvider>
+                                                </AnimatingRowsProvider>
                                               </FocusPositionProvider>
                                             </CellRangeSelectionActive>
                                           </CellSelectionContext>
