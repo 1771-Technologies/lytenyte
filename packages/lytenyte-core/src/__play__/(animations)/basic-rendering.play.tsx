@@ -3,8 +3,13 @@ import { useClientDataSource, Grid } from "../../index.js";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useState } from "react";
 
+// bankDataSmall rows have no natural unique key, so by default the grid assigns leaf ids based on
+// array index - meaning an insertion would shift every later row's id and make them all look like
+// delete+add instead of move. __id gives each row a stable identity independent of position.
+type Row = (typeof bankDataSmall)[number] & { __id: number };
+
 interface Spec {
-  readonly data: (typeof bankDataSmall)[number];
+  readonly data: Row;
 }
 
 const columns: Grid.Column<Spec>[] = [
@@ -37,14 +42,46 @@ function hashOrder(id: string, seed: number): number {
   return h;
 }
 
+const initialData: Row[] = bankDataSmall.map((r, i) => ({ ...r, __id: i }));
+
+// Module-level counter so every "Add" click gets a fresh id, never reused, regardless of how many
+// rows currently exist or have been removed.
+let nextRowId = initialData.length;
+
+function makeNewRow(): Row {
+  const id = nextRowId++;
+  return {
+    age: 0,
+    job: `New Row ${id}`,
+    marital: "Unknown",
+    education: "Unknown",
+    default: "No",
+    balance: 0,
+    housing: "No",
+    loan: "No",
+    contact: "Unknown",
+    day: 1,
+    month: "Jan",
+    duration: 0,
+    campaign: "0",
+    pdays: "-1",
+    previous: "0",
+    poutcome: "Unknown",
+    y: "No",
+    __id: id,
+  };
+}
+
 export default function BasicRendering() {
+  const [data, setData] = useState<Row[]>(initialData);
   const [sort, setSort] = useState<Grid.T.DimensionSort<Spec["data"]>[] | null>([
     { dim: { id: "education" } },
   ]);
 
   const ds = useClientDataSource({
-    data: bankDataSmall,
+    data,
     sort,
+    leafIdFn: (row) => String(row.__id),
   });
 
   const shuffle = () => {
@@ -57,6 +94,11 @@ export default function BasicRendering() {
     ]);
   };
 
+  const addTop = () => setData((prev) => [makeNewRow(), ...prev]);
+  const addAt4 = () => setData((prev) => [...prev.slice(0, 4), makeNewRow(), ...prev.slice(4)]);
+
+  console.log(data);
+
   return (
     <>
       <button
@@ -68,6 +110,8 @@ export default function BasicRendering() {
         Sort
       </button>
       <button onClick={shuffle}>Shuffle</button>
+      <button onClick={addTop}>Add Top</button>
+      <button onClick={addAt4}>Add at 4</button>
       <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
         <Grid
           columns={columns}
