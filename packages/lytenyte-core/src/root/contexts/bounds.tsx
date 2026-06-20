@@ -4,7 +4,7 @@ import { useRowCountsContext } from "./grid-areas/row-counts-context.js";
 import { useXCoordinates, useYCoordinates } from "./coordinates.js";
 import { useColumnsContext } from "./columns/column-context.js";
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
-import { useViewportContext } from "./viewport/viewport-context.js";
+import { useSuppressScrollFlashContext, useViewportContext } from "./viewport/viewport-context.js";
 import { useDimensionContext } from "./viewport/dimensions-context.js";
 import { equal } from "@1771technologies/js-utils";
 
@@ -25,6 +25,8 @@ export const BoundsProvider = memo(
     const { viewport } = useViewportContext();
     const { innerHeight: height, innerWidth: width } = useDimensionContext();
 
+    const sync = useSuppressScrollFlashContext();
+
     const xPositions = useXCoordinates();
     const yPositions = useYCoordinates();
     const { view } = useColumnsContext();
@@ -33,6 +35,23 @@ export const BoundsProvider = memo(
     const [scrollLeft, setScrollLeft] = useState(0);
 
     const prev = useRef<SpanLayout>(null as unknown as SpanLayout);
+
+    const overScans = useMemo(() => {
+      if (sync)
+        return {
+          colOverscanStart: 0,
+          colOverscanEnd: 0,
+          rowOverscanTop: 0,
+          rowOverscanBottom: 0,
+        };
+
+      return {
+        colOverscanStart: props.colOverscanStart ?? 3,
+        colOverscanEnd: props.colOverscanEnd ?? 3,
+        rowOverscanTop: props.rowOverscanTop ?? 10,
+        rowOverscanBottom: props.rowOverscanBottom ?? 10,
+      };
+    }, [props.colOverscanEnd, props.colOverscanStart, props.rowOverscanBottom, props.rowOverscanTop, sync]);
 
     const bounds = useMemo(() => {
       const bounds = computeBounds({
@@ -46,10 +65,7 @@ export const BoundsProvider = memo(
         endCount: view.endCount,
         topCount,
         bottomCount,
-        colOverscanStart: props.colOverscanStart ?? 3,
-        colOverscanEnd: props.colOverscanEnd ?? 3,
-        rowOverscanTop: props.rowOverscanTop ?? 10,
-        rowOverscanBottom: props.rowOverscanBottom ?? 10,
+        ...overScans,
       });
 
       if (equal(bounds, prev.current)) return prev.current;
@@ -59,10 +75,7 @@ export const BoundsProvider = memo(
     }, [
       bottomCount,
       height,
-      props.colOverscanEnd,
-      props.colOverscanStart,
-      props.rowOverscanBottom,
-      props.rowOverscanTop,
+      overScans,
       scrollLeft,
       scrollTop,
       topCount,

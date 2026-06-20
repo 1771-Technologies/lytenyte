@@ -14,6 +14,8 @@ import { useViewportContext } from "../../../root/contexts/viewport/viewport-con
 import { useDimensionContext } from "../../../root/contexts/viewport/dimensions-context.js";
 import { useGridRenderer } from "../../../root/contexts/grid-renderer-context.js";
 import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
+import { useSyncScrollXY } from "../../../root/hooks/use-sync-scroll-xy.js";
+import { getTranslate } from "@1771technologies/dom-utils";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
@@ -35,6 +37,8 @@ export const RowsContainer = memo(
     const onKeyDownRange = useKeyboardRangeSelection();
     useCellFocusChange();
 
+    const { x, y, sync } = useSyncScrollXY();
+
     return (
       <div
         {...props}
@@ -49,7 +53,6 @@ export const RowsContainer = memo(
         }}
         style={
           {
-            ...props.style,
             height,
             minHeight: height,
             width,
@@ -62,6 +65,10 @@ export const RowsContainer = memo(
             [SCROLL_WIDTH_VARIABLE]: `${width}px`,
             [VIEWPORT_WIDTH_VARIABLE]: `${dimensions.innerWidth}px`,
             [VIEWPORT_HEIGHT_VARIABLE]: `${dimensions.innerHeight}px`,
+            "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
+            "--ln-y-transform": sync ? getTranslate(0, -y) : undefined,
+            "--ln-x-sync-offset": sync ? `${x}px` : undefined,
+            ...props.style,
           } as CSSProperties
         }
       >

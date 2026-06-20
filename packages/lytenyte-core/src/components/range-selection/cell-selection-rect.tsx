@@ -11,16 +11,19 @@ import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-c
 import { useDimensionContext } from "../../root/contexts/viewport/dimensions-context.js";
 import { useRtlContext } from "../../root/contexts/rtl-provider.js";
 import { sizeFromCoord } from "@1771technologies/js-utils";
-import { getTranslate } from "@1771technologies/dom-utils";
+import { useSuppressScrollFlashContext } from "../../root/contexts/viewport/viewport-context.js";
 
 export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; isDeselect?: boolean }) {
   const rtl = useRtlContext();
+
   const dimensions = useDimensionContext();
 
   const xPositions = useXCoordinates();
   const yPositions = useYCoordinates();
 
   const { rowCount, topCount: rowTopCount, bottomCount: rowBotCount } = useRowCountsContext();
+
+  const isSync = useSuppressScrollFlashContext();
 
   const vpWidth = dimensions.innerWidth;
 
@@ -41,16 +44,34 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
 
     const firstBotIndex = rowCount - rowBotCount;
 
-    const x = isEnd ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth : xPositions[columnIndex];
+    let x: number | string;
 
-    let y: number | string;
-    if (isBot) y = yPositions[rowIndex] - yPositions[firstBotIndex];
-    else if (isTop) y = yPositions[rowIndex];
-    else {
-      y = `calc(${yPositions[rowIndex] - yPositions[rowTopCount]}px - var(--ln-y-offset, 0px))`;
+    const factor = rtl ? -1 : 1;
+
+    if (isSync) {
+      x = isEnd
+        ? (xPositions[columnIndex] - xPositions.at(-1)! + vpWidth) * factor
+        : isStart
+          ? xPositions[columnIndex] * factor
+          : `calc(${xPositions[columnIndex] * factor}px - var(--ln-x-sync-offset,0))`;
+    } else {
+      x = isEnd ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth : xPositions[columnIndex];
     }
 
-    const transform = getTranslate(x * (rtl ? -1 : 1), y);
+    let y: number | string;
+
+    if (isSync) {
+      if (isTop) y = yPositions[rowIndex];
+      else y = yPositions[rowIndex] - yPositions[rowTopCount];
+    } else {
+      if (isBot) y = yPositions[rowIndex] - yPositions[firstBotIndex];
+      else if (isTop) y = yPositions[rowIndex];
+      else {
+        y = `calc(${yPositions[rowIndex] - yPositions[rowTopCount]}px - var(--ln-y-offset, 0px))`;
+      }
+    }
+
+    const transform = `translate3d(${typeof x == "string" ? x : `${x}px`}, ${typeof y === "string" ? y : `${y}px`}, 0px)`;
 
     const pinnedRow = isTop || isBot;
     const pinnedCell = isStart || isEnd;
@@ -93,8 +114,9 @@ export function CellSelectionRect({ rect, isDeselect }: { rect: SectionedRect; i
     yPositions,
     rowCount,
     rowBotCount,
-    vpWidth,
     rtl,
+    isSync,
+    vpWidth,
     rowTopCount,
   ]);
 

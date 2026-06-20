@@ -97,10 +97,10 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                           headerGroupHeight={p.headerGroupHeight}
                           headerHeight={p.headerHeight}
                         >
-                          <ViewportContext>
+                          <ViewportContext suppressScrollFlash={props.suppressScrollFlash ?? false}>
                             <DimensionsContext
-                              initialHeight={props.z_internal_viewportInitialHeight}
-                              initialWidth={props.z_internal_viewportInitialWidth}
+                              initialHeight={props.viewportInitialHeight}
+                              initialWidth={props.viewportInitialWidth}
                             >
                               <CoordinatesProvider
                                 columnBase={props.columnBase}

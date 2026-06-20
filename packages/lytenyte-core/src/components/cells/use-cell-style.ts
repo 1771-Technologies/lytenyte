@@ -1,6 +1,7 @@
 import { useMemo, type CSSProperties } from "react";
 import { type LayoutCell } from "@1771technologies/lytenyte-shared";
 import { sizeFromCoord } from "@1771technologies/js-utils";
+import { useSuppressScrollFlashContext } from "../../root/contexts/viewport/viewport-context.js";
 
 export function useCellStyle(
   xPositions: Uint32Array,
@@ -12,6 +13,7 @@ export function useCellStyle(
   const height = sizeFromCoord(cell.rowIndex, yPositions, cell.rowSpan) - detailHeight;
   const isSticky = !!cell.colPin;
   const isRowPinned = !!cell.rowPin;
+  const sync = useSuppressScrollFlashContext();
 
   const styles = useMemo(() => {
     const styles: CSSProperties = {
@@ -38,10 +40,14 @@ export function useCellStyle(
     } else {
       styles.position = "absolute";
       styles.insetInlineStart = `${xPositions[cell.colIndex]}px`;
+
+      if (sync) {
+        styles.transform = `var(--ln-x-transform)`;
+      }
     }
 
     return styles;
-  }, [cell.colIndex, cell.colPin, cell.colSpan, height, isRowPinned, isSticky, width, xPositions]);
+  }, [cell.colIndex, cell.colPin, cell.colSpan, height, isRowPinned, isSticky, sync, width, xPositions]);
 
   return styles;
 }
