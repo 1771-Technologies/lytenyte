@@ -16,10 +16,7 @@ import type { LayoutRow } from "@1771technologies/lytenyte-shared";
 import { useIsoEffect } from "../../../hooks/use-iso-effect.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useRowSourceContext } from "../../../root/contexts/row-source-provider.js";
-
-// Hardcoded for now - duration/easing become user-configurable once we get to the config object.
-const DURATION_MS = 200;
-const EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
+import { useRowAnimateSettings } from "../../../root/contexts/animations/row-animate-settings-context.js";
 
 const context = createContext<{ additionalLayouts: LayoutRow[]; animating: RefObject<Set<string>> }>({
   additionalLayouts: [],
@@ -27,7 +24,7 @@ const context = createContext<{ additionalLayouts: LayoutRow[]; animating: RefOb
 });
 
 // Our keyframes only ever use translateY(...) or "none", so the committed value is always
-// expressible in this form - browsers preserve matching functional notation when interpolating
+// expressible in this form, browsers preserve matching functional notation when interpolating
 // between compatible single-function transform lists.
 function parseTranslateYPx(value: string): number | null {
   if (value === "none" || value === "") return 0;
@@ -39,6 +36,7 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
   const { moved } = useRowChangesContext();
   const rowLayout = useRowLayoutContext();
   const rs = useRowSourceContext();
+  const { move } = useRowAnimateSettings();
 
   const view = useRowViewContext();
 
@@ -52,11 +50,18 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
   const additionalLayouts = useMemo(() => {
     void force;
 
-    if (prevMove.current !== moved) {
+    const isNewMoveBatch = prevMove.current !== moved;
+    prevMove.current = moved;
+
+    // Disabling row move animation must mean we never animate anything - skip before ever
+    // touching the animating set, so a disabled grid never keeps a row mounted past its normal
+    // virtualized window.
+    if (!move) return [];
+
+    if (isNewMoveBatch) {
       // Add the newly moved rows to our animation set.
       moved.forEach((x) => animating.current.add(x.id));
     }
-    prevMove.current = moved;
 
     const idSet = new Set([
       ...view.center.map((x) => x.id),
@@ -72,7 +77,7 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
         return rowLayout.layoutByIndex(index);
       })
       .filter(Boolean) as LayoutRow[];
-  }, [force, moved, rowLayout, rs, view.bottom, view.center, view.top]);
+  }, [force, move, moved, rowLayout, rs, view.bottom, view.center, view.top]);
 
   const value = useMemo(() => {
     return { animating, additionalLayouts };
@@ -81,9 +86,8 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
   const gridId = useGridIdContext();
 
   useIsoEffect(() => {
-    if (!moved.length) return;
+    if (!move || !moved.length) return;
 
-    // One bulk query instead of one querySelector per moved row.
     const elementById = new Map<string, HTMLElement>();
     document.querySelectorAll(`[data-ln-gridid="${gridId}"][data-ln-row="true"]`).forEach((row) => {
       const id = row.getAttribute("data-ln-row-id");
@@ -135,8 +139,8 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
       if (delta === 0) continue;
 
       const anim = el.animate([{ transform: `translateY(${delta}px)` }, { transform: "none" }], {
-        duration: DURATION_MS,
-        easing: EASING,
+        duration: move.duration,
+        easing: move.easing,
       });
 
       animations.current.set(m.id, anim);
@@ -156,7 +160,7 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
           }
         });
     }
-  }, [moved, gridId]);
+  }, [moved, gridId, move]);
 
   return <context.Provider value={value}>{props.children}</context.Provider>;
 }

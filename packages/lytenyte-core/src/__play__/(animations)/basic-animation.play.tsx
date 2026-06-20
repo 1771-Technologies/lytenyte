@@ -120,6 +120,7 @@ export default function BasicRendering() {
           rowOverscanTop={0}
           rowOverscanBottom={0}
           rowHeight={50}
+          rowAnimate={false}
         />
       </div>
     </>
