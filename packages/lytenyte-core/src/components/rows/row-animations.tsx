@@ -150,6 +150,13 @@ export function RowAnimationDriver() {
         .finally(() => {
           if (animations.current.get(id) === anim) {
             animations.current.delete(id);
+            // commitStyles() (used above to redirect mid-flight) bakes the transform directly
+            // into the element's inline style. The animation's own "transform: none" keyframe
+            // only applies while it's active/relevant - once it finishes (fill: "none", the
+            // default), the computed style falls back to whatever's still sitting in the inline
+            // style, which is that committed value, not "none". Without clearing it here, any row
+            // that was ever redirected mid-flight is left permanently offset after settling.
+            el.style.transform = "";
             stopAnimating(id);
           }
         });
