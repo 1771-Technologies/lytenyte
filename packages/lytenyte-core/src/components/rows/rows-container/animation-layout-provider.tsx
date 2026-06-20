@@ -65,6 +65,12 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
 
   useIsoEffect(() => {
     const rows = document.querySelectorAll(`[data-ln-gridid="${gridId}"][data-ln-row="true"]`);
+
+    // Rows are html elements. We can get the id of a row by doing row.getAttribute("data-ln-rowid").
+    // We use moved to determine what to animate, for now we are focused on the moving ones.
+    // We perform the animation/update an animation if the id is in flight.
+    // Once an animation ends we remove it from animating then
+    // Call setForce(prev => prev + 1).
   }, [marker.current]);
 
   return <context.Provider value={value}>{props.children}</context.Provider>;
