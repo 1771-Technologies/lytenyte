@@ -76,6 +76,7 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
               minWidth: sync ? undefined : "100%",
               boxSizing: "border-box",
               position: "sticky",
+              top: 0,
 
               width: sync ? 0 : xPositions.at(-1)!,
               insetInlineStart: sync ? 0 : undefined,
