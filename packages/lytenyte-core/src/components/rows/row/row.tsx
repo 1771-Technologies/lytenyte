@@ -66,6 +66,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-alternate={rowAlternateAttr ? row.rowIndex % 2 === 1 : undefined}
         data-ln-selected={rowMeta.row?.__selected}
         data-ln-row
+        data-ln-row-id={row.id}
       >
         {props.children}
         <RowDetailRow layout={row} />

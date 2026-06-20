@@ -5,15 +5,26 @@ import { useRowSourceContext } from "../../root/contexts/row-source-provider.js"
 import { useRowCountsContext } from "../../root/contexts/grid-areas/row-counts-context.js";
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
 import { useRowLayoutContext, useRowViewContext } from "../../root/contexts/row-layout/row-layout-context.js";
+import { useGridIdContext } from "../../root/contexts/grid-id.js";
 
 interface PositionEntry {
   readonly y: number;
   readonly pin: RowPin;
 }
 
+const getRow = (id: string, gridId: string) => {
+  const query = `[data-ln-gridid="${gridId}"][data-ln-row="true"][data-ln-row-id="${id}"]`;
+
+  const row = document.querySelector(query) as HTMLElement | null;
+
+  return row;
+};
+
 export function RowAnimationDriver() {
   const rowLayout = useRowLayoutContext();
   const prevRowLayout = useRef(rowLayout);
+
+  const gridId = useGridIdContext();
 
   const view = useRowViewContext();
   const prevViewRef = useRef(view);
@@ -82,8 +93,6 @@ export function RowAnimationDriver() {
         removed.push({ id, pin: previous.pin });
       }
     }
-
-    console.log(moved);
   }, [idToPosition, view]);
 
   return <></>;
