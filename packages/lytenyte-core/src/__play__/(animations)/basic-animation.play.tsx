@@ -80,7 +80,7 @@ export default function BasicRendering() {
 
   const ds = useClientDataSource({
     data,
-    // sort,
+    sort,
     leafIdFn: (row) => String(row.__id),
   });
 
@@ -96,6 +96,8 @@ export default function BasicRendering() {
 
   const addTop = () => setData((prev) => [makeNewRow(), ...prev]);
   const addAt4 = () => setData((prev) => [...prev.slice(0, 4), makeNewRow(), ...prev.slice(4)]);
+  const deleteFirst = () => setData((prev) => prev.slice(1));
+  const deleteAt4 = () => setData((prev) => [...prev.slice(0, 4), ...prev.slice(5)]);
 
   return (
     <>
@@ -110,6 +112,8 @@ export default function BasicRendering() {
       <button onClick={shuffle}>Shuffle</button>
       <button onClick={addTop}>Add Top</button>
       <button onClick={addAt4}>Add at 4</button>
+      <button onClick={deleteFirst}>Delete first row</button>
+      <button onClick={deleteAt4}>Delete at 4</button>
       <div style={{ width: "80%", height: "500px", border: "1px solid black" }}>
         <Grid
           columns={columns}
