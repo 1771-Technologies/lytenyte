@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+}
+
 [data-ln-header-cell="true"] {
   display: flex;
   align-items: center;

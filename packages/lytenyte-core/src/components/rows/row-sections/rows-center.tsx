@@ -15,6 +15,7 @@ import { useYCoordinates } from "../../../root/contexts/coordinates.js";
 import { SyncScroller } from "../scrollers/sync-scroller.js";
 import { useSuppressScrollFlashContext } from "../../../root/contexts/viewport/viewport-context.js";
 import { NativeScroller } from "../scrollers/native-scroller.js";
+import { useAnimationLayouts } from "../rows-container/animation-layout-provider.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -36,17 +37,23 @@ export const RowsCenter = memo(
     const pinSectionHeights = topHeight + bottomOffset;
     const centerHeight = yPositions.at(-1)! - bottomOffset - topHeight;
 
+    const { additionalLayouts } = useAnimationLayouts();
+
     const layoutRows = useMemo(() => {
-      if (focus?.kind !== "cell" && focus?.kind !== "full-width") return rowView.center;
+      if (focus?.kind !== "cell" && focus?.kind !== "full-width")
+        return [...rowView.center, ...additionalLayouts];
 
       const layout = rowLayout.layoutByIndex(focus.rowIndex);
       if (layout?.rowPin || !layout) return rowView.center;
 
-      if (layout.rowIndex < rowView.center[0].rowIndex) return [layout, ...rowView.center];
-      else if (layout.rowIndex > rowView.center.at(-1)!.rowIndex) return [...rowView.center, layout];
+      const additional = additionalLayouts.filter((x) => x.id !== layout.id);
 
-      return rowView.center;
-    }, [focus, rowLayout, rowView.center]);
+      if (layout.rowIndex < rowView.center[0].rowIndex) return [layout, ...rowView.center, ...additional];
+      else if (layout.rowIndex > rowView.center.at(-1)!.rowIndex)
+        return [...rowView.center, layout, ...additional];
+
+      return [...rowView.center, ...additional];
+    }, [focus, rowLayout, rowView.center, additionalLayouts]);
 
     const rows = useMemo(() => {
       const rows: ReactNode[] = [];
