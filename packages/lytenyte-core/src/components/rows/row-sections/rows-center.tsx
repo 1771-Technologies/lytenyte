@@ -44,7 +44,7 @@ export const RowsCenter = memo(
         return [...rowView.center, ...additionalLayouts];
 
       const layout = rowLayout.layoutByIndex(focus.rowIndex);
-      if (layout?.rowPin || !layout) return rowView.center;
+      if (layout?.rowPin || !layout) return [...rowView.center, ...additionalLayouts];
 
       const additional = additionalLayouts.filter((x) => x.id !== layout.id);
 
