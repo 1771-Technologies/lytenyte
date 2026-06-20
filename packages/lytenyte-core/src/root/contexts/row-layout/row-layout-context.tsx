@@ -15,7 +15,6 @@ import { useBoundsContext } from "../bounds.js";
 import { useRowDetailContext } from "../row-detail.js";
 import { getFullWidthFn } from "./get-full-width-fn.js";
 import { getSpanFn } from "./get-span-fn.js";
-import { useAnimatingRowsContext } from "./animating-rows-context.js";
 
 const rowViewContext = createContext(null as unknown as RowView);
 const rowLayoutContext = createContext(null as unknown as RowLayout);
@@ -39,7 +38,6 @@ export const RowLayoutProvider = memo(
     const { viewport: vp } = useViewportContext();
     const bounds = useBoundsContext();
     const { detailExpansions } = useRowDetailContext();
-    const { animatingIds } = useAnimatingRowsContext();
 
     const rows = source.useRows();
     const rowByIndex = useCallback(
@@ -123,29 +121,6 @@ export const RowLayoutProvider = memo(
         (_, i) => rowLayout.layoutByIndex(i + n.rowBotStart)!,
       );
 
-      // Rows mid-FLIP-animation must stay mounted even if their current index now falls outside
-      // the virtualized window, otherwise there's nothing left for the animation to act on.
-      if (animatingIds.size) {
-        const included = new Set<string>();
-        for (const r of top) included.add(r.id);
-        for (const r of center) included.add(r.id);
-        for (const r of bottom) included.add(r.id);
-
-        for (const id of animatingIds) {
-          if (included.has(id)) continue;
-
-          const index = source.rowIdToRowIndex(id);
-          if (index == null) continue;
-
-          const layout = rowLayout.layoutByIndex(index);
-          if (!layout) continue;
-
-          if (layout.rowPin === "top") top.push(layout);
-          else if (layout.rowPin === "bottom") bottom.push(layout);
-          else center.push(layout);
-        }
-      }
-
       return {
         rowFirstCenter: n.rowCenterStart,
         rowFocusedIndex: null,
@@ -153,7 +128,7 @@ export const RowLayoutProvider = memo(
         center,
         bottom,
       };
-    }, [bounds, virtualizeCols, virtualizeRows, rowLayout, vp, animatingIds, source]);
+    }, [bounds, virtualizeCols, virtualizeRows, rowLayout, vp]);
 
     return (
       <rowViewContext.Provider value={rowView}>
