@@ -27,6 +27,7 @@ import { GridSectionsContextProvider } from "./contexts/grid-areas/grid-sections
 import { DropAcceptProvider } from "./contexts/drop-accept.js";
 import { RowLayoutProvider } from "./contexts/row-layout/row-layout-context.js";
 import { RowChangesProvider } from "./contexts/animations/row-changes-context.js";
+import { RowAnimateSettingsProvider } from "./contexts/animations/row-animate-settings-context.js";
 import { EditProvider } from "./contexts/edit-context.js";
 import { APIProvider } from "./contexts/api-provider.js";
 import { GridRendererContext } from "./contexts/grid-renderer-context.js";
@@ -144,6 +145,7 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                                   virtualizeCols={props.virtualizeCols}
                                                   virtualizeRows={props.virtualizeRows}
                                                 >
+                                                  <RowAnimateSettingsProvider rowAnimate={props.rowAnimate}>
                                                   <RowChangesProvider>
                                                     <SelectPivotProvider
                                                       rowSelectionActivator={props.rowSelectionActivator}
@@ -183,6 +185,7 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                                       </EditProvider>
                                                     </SelectPivotProvider>
                                                   </RowChangesProvider>
+                                                  </RowAnimateSettingsProvider>
                                                 </RowLayoutProvider>
                                               </FocusPositionProvider>
                                             </CellRangeSelectionActive>
