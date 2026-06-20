@@ -26,8 +26,6 @@ import { CutoffProvider } from "./contexts/grid-areas/cutoff-context.js";
 import { GridSectionsContextProvider } from "./contexts/grid-areas/grid-sections-context.js";
 import { DropAcceptProvider } from "./contexts/drop-accept.js";
 import { RowLayoutProvider } from "./contexts/row-layout/row-layout-context.js";
-import { AnimatingRowsProvider } from "./contexts/row-layout/animating-rows-context.js";
-import { RowAnimationDriver } from "../components/rows/animations/row-animations.js";
 import { RowChangesProvider } from "../components/rows/animations/row-changes-context.js";
 import { EditProvider } from "./contexts/edit-context.js";
 import { APIProvider } from "./contexts/api-provider.js";
@@ -139,17 +137,14 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                           >
                                             <CellRangeSelectionActive>
                                               <FocusPositionProvider>
-                                                <AnimatingRowsProvider>
-                                                  <RowLayoutProvider
-                                                    api={api}
-                                                    source={source}
-                                                    rowFullWidthPredicate={props.rowFullWidthPredicate}
-                                                    virtualizeCols={props.virtualizeCols}
-                                                    virtualizeRows={props.virtualizeRows}
-                                                  >
-                                                    <RowChangesProvider>
-                                                      <RowAnimationDriver />
-                                                    </RowChangesProvider>
+                                                <RowLayoutProvider
+                                                  api={api}
+                                                  source={source}
+                                                  rowFullWidthPredicate={props.rowFullWidthPredicate}
+                                                  virtualizeCols={props.virtualizeCols}
+                                                  virtualizeRows={props.virtualizeRows}
+                                                >
+                                                  <RowChangesProvider>
                                                     <SelectPivotProvider
                                                       rowSelectionActivator={props.rowSelectionActivator}
                                                     >
@@ -187,8 +182,8 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                                         </APIProvider>
                                                       </EditProvider>
                                                     </SelectPivotProvider>
-                                                  </RowLayoutProvider>
-                                                </AnimatingRowsProvider>
+                                                  </RowChangesProvider>
+                                                </RowLayoutProvider>
                                               </FocusPositionProvider>
                                             </CellRangeSelectionActive>
                                           </CellSelectionContext>
