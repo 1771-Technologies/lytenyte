@@ -80,7 +80,7 @@ export default function BasicRendering() {
 
   const ds = useClientDataSource({
     data,
-    sort,
+    // sort,
     leafIdFn: (row) => String(row.__id),
   });
 
@@ -120,7 +120,7 @@ export default function BasicRendering() {
           rowOverscanTop={0}
           rowOverscanBottom={0}
           rowHeight={50}
-          rowAnimate={false}
+          rowAnimate={true}
         />
       </div>
     </>
