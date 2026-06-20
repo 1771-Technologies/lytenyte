@@ -35,4 +35,4 @@ export function RowChangesProvider({ children }: PropsWithChildren) {
   return <context.Provider value={changes}>{children}</context.Provider>;
 }
 
-export const useRowChanges = () => useContext(context);
+export const useRowChangesContext = () => useContext(context);

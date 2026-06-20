@@ -16,6 +16,7 @@ import { useGridRenderer } from "../../../root/contexts/grid-renderer-context.js
 import { useRtlContext } from "../../../root/contexts/rtl-provider.js";
 import { useSyncScrollXY } from "../../../root/hooks/use-sync-scroll-xy.js";
 import { getTranslate } from "@1771technologies/dom-utils";
+import { AnimationLayoutProvider } from "./animation-layout-provider.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
@@ -40,43 +41,45 @@ export const RowsContainer = memo(
     const { x, y, sync } = useSyncScrollXY();
 
     return (
-      <div
-        {...props}
-        ref={forwarded}
-        data-ln-rows-container
-        data-ln-gridid={id}
-        role="presentation"
-        onMouseDown={onMouseDown}
-        onKeyDown={(e) => {
-          props.onKeyDown?.(e);
-          onKeyDownRange(e);
-        }}
-        style={
-          {
-            height,
-            minHeight: height,
-            width,
-            minWidth: "100%",
-            flex: "1",
-            display: "flex",
-            flexDirection: "column",
-            userSelect: "none",
-            msUserSelect: "none",
-            [SCROLL_WIDTH_VARIABLE]: `${width}px`,
-            [VIEWPORT_WIDTH_VARIABLE]: `${dimensions.innerWidth}px`,
-            [VIEWPORT_HEIGHT_VARIABLE]: `${dimensions.innerHeight}px`,
-            "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
-            "--ln-y-transform": sync ? getTranslate(0, -y) : undefined,
-            "--ln-x-sync-offset": sync ? `${x}px` : undefined,
-            ...props.style,
-          } as CSSProperties
-        }
-      >
-        {dimensions.innerHeight !== 0 && (
-          <>{typeof RowsOverlay === "function" ? <RowsOverlay api={api} /> : RowsOverlay}</>
-        )}
-        {props.children}
-      </div>
+      <AnimationLayoutProvider>
+        <div
+          {...props}
+          ref={forwarded}
+          data-ln-rows-container
+          data-ln-gridid={id}
+          role="presentation"
+          onMouseDown={onMouseDown}
+          onKeyDown={(e) => {
+            props.onKeyDown?.(e);
+            onKeyDownRange(e);
+          }}
+          style={
+            {
+              height,
+              minHeight: height,
+              width,
+              minWidth: "100%",
+              flex: "1",
+              display: "flex",
+              flexDirection: "column",
+              userSelect: "none",
+              msUserSelect: "none",
+              [SCROLL_WIDTH_VARIABLE]: `${width}px`,
+              [VIEWPORT_WIDTH_VARIABLE]: `${dimensions.innerWidth}px`,
+              [VIEWPORT_HEIGHT_VARIABLE]: `${dimensions.innerHeight}px`,
+              "--ln-x-transform": sync ? getTranslate(-x, 0) : undefined,
+              "--ln-y-transform": sync ? getTranslate(0, -y) : undefined,
+              "--ln-x-sync-offset": sync ? `${x}px` : undefined,
+              ...props.style,
+            } as CSSProperties
+          }
+        >
+          {dimensions.innerHeight !== 0 && (
+            <>{typeof RowsOverlay === "function" ? <RowsOverlay api={api} /> : RowsOverlay}</>
+          )}
+          {props.children}
+        </div>
+      </AnimationLayoutProvider>
     );
   }),
 );
