@@ -110,13 +110,16 @@ export default function BasicRendering() {
       <button onClick={shuffle}>Shuffle</button>
       <button onClick={addTop}>Add Top</button>
       <button onClick={addAt4}>Add at 4</button>
-      <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
+      <div style={{ width: "80%", height: "500px", border: "1px solid black" }}>
         <Grid
           columns={columns}
           rowSource={ds}
           viewportInitialHeight={500}
           viewportInitialWidth={500}
           rowAlternateAttr={false}
+          rowOverscanTop={0}
+          rowOverscanBottom={0}
+          rowHeight={50}
         />
       </div>
     </>
