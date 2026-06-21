@@ -7,3 +7,11 @@ export type {
   LabelFilter,
 } from "./data-source-client/use-client-data-source.js";
 export type { PivotState } from "./data-source-client/hooks/use-pivot/use-pivot-columns.js";
+
+export type {
+  Annotation,
+  AnnotationAnchor,
+  AnnotationAnchorRange,
+  AnnotationAnchorPoint,
+  AnnotationAnchorHeader,
+} from "./components/annotations/types.js";

@@ -16,6 +16,7 @@ import { SyncScroller } from "../scrollers/sync-scroller.js";
 import { useSuppressScrollFlashContext } from "../../../root/contexts/viewport/viewport-context.js";
 import { NativeScroller } from "../scrollers/native-scroller.js";
 import { useAnimationLayouts } from "../rows-container/animation-layout-provider.js";
+import { useOverlaySlots } from "../../../root/contexts/overlay-slots-context.js";
 
 export const RowsCenter = memo(
   forwardRef<HTMLDivElement, RowsCenter.Props>(function RowsCenter(
@@ -66,6 +67,7 @@ export const RowsCenter = memo(
     }, [children, layoutRows]);
 
     const suppressWhitespace = useSuppressScrollFlashContext();
+    const { rowsCenter } = useOverlaySlots();
 
     const Scroller = suppressWhitespace ? SyncScroller : NativeScroller;
 
@@ -91,6 +93,7 @@ export const RowsCenter = memo(
       >
         <Scroller>
           <CellSelectionCenter />
+          {rowsCenter}
           {rows}
         </Scroller>
       </RowsSection>
