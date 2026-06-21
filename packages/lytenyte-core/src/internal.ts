@@ -1,5 +1,19 @@
 export { Root, Fallback } from "./root/root.js";
 export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";
+export { useAPI } from "./root/contexts/api-provider.js";
+export { useXCoordinates, useYCoordinates } from "./root/contexts/coordinates.js";
+export { useCutoffContext } from "./root/contexts/grid-areas/cutoff-context.js";
+export { useRowCountsContext } from "./root/contexts/grid-areas/row-counts-context.js";
+export { useDimensionContext } from "./root/contexts/viewport/dimensions-context.js";
+export { useRtlContext } from "./root/contexts/rtl-provider.js";
+export { useSuppressScrollFlashContext } from "./root/contexts/viewport/viewport-context.js";
+export { useRowSourceContext } from "./root/contexts/row-source-provider.js";
+export { useColumnsContext } from "./root/contexts/columns/column-context.js";
+export {
+  OverlaySlotsProvider,
+  useOverlaySlots,
+  type OverlaySlots,
+} from "./root/contexts/overlay-slots-context.js";
 export { useEvent } from "./hooks/use-event.js";
 export { useControlled } from "./hooks/use-controlled.js";
 export type { Piece, PieceWritable } from "./hooks/use-piece.js";

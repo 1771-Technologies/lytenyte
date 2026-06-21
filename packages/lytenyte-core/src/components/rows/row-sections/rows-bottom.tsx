@@ -8,6 +8,7 @@ import { useRowCountsContext } from "../../../root/contexts/grid-areas/row-count
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import { useRowViewContext } from "../../../root/contexts/row-layout/row-layout-context.js";
 import { useSuppressScrollFlashContext } from "../../../root/contexts/viewport/viewport-context.js";
+import { useOverlaySlots } from "../../../root/contexts/overlay-slots-context.js";
 
 export const RowsBottom = memo(
   forwardRef<HTMLDivElement, RowsBottom.Props>(function RowsBottom(
@@ -31,6 +32,7 @@ export const RowsBottom = memo(
     }, [children, rowView.bottom]);
 
     const sync = useSuppressScrollFlashContext();
+    const { rowsBottom } = useOverlaySlots();
 
     if (bottomOffset <= 0) return null;
 
@@ -58,6 +60,7 @@ export const RowsBottom = memo(
         }}
       >
         <CellSelectionBottom />
+        {rowsBottom}
         {rows}
       </RowsSection>
     );
