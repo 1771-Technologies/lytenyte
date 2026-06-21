@@ -136,11 +136,12 @@ export default function BasicRendering() {
       <button onClick={shuffleColumns}>Shuffle columns</button>
       <button onClick={pinAgeStart}>Toggle pin age</button>
       <button onClick={() => setColumnSizeToFit((s) => !s)}>Toggle columnSizeToFit</button>
-      <div style={{ width: "80%", height: "500px", border: "1px solid black" }}>
+      <div style={{ width: "80%", height: "95vh", border: "1px solid black" }}>
         <Grid
           ref={apiRef}
           columns={columns}
           onColumnsChange={setColumns}
+          suppressScrollFlash
           columnBase={{ resizable: true }}
           columnSizeToFit={columnSizeToFit}
           rowSource={ds}
