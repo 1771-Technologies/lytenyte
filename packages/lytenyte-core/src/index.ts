@@ -162,6 +162,7 @@ export namespace Grid {
     readonly virtualizeRows?: boolean;
 
     readonly rowAnimate?: boolean | RowAnimate;
+    readonly columnAnimate?: boolean | ColumnAnimate;
 
     readonly rowSelectionMode?: "single" | "multiple" | "none";
     readonly rowSelectionActivator?: "single-click" | "double-click" | "none";
@@ -421,31 +422,35 @@ export namespace Grid {
     };
   };
 
-  /** The kind of animation to play for a row entering or leaving the grid. */
-  export type RowAnimateEnterExitType = "fade";
+  export type AnimateKeyframesFn = (element: HTMLElement) => Keyframe[];
+  export type AnimateEnterExitType = "fade" | AnimateKeyframesFn;
 
-  export type RowAnimateMove = {
+  export type AnimateMove = {
     readonly duration?: number;
     readonly easing?: string;
   };
 
-  export type RowAnimateEnterExit = {
-    readonly type?: RowAnimateEnterExitType;
+  export type AnimateEnterExit = {
+    readonly type?: AnimateEnterExitType;
     readonly duration?: number;
     readonly easing?: string;
   };
 
-  /**
-   * Controls row move/enter/exit animations. `move` only ever slides a row from its previous
-   * position to its new one, so it has no `type` to pick between - `enter`/`exit` cover a row
-   * being added/removed and support choosing the animation `type` to play. Setting an individual
-   * key to `false` disables just that phase while leaving the others on.
-   */
-  export type RowAnimate = {
-    readonly move?: RowAnimateMove | false;
-    readonly enter?: RowAnimateEnterExit | false;
-    readonly exit?: RowAnimateEnterExit | false;
+  export type Animate = {
+    readonly move?: AnimateMove | false;
+    readonly enter?: AnimateEnterExit | false;
+    readonly exit?: AnimateEnterExit | false;
   };
+
+  export type RowAnimateEnterExitType = AnimateEnterExitType;
+  export type RowAnimateMove = AnimateMove;
+  export type RowAnimateEnterExit = AnimateEnterExit;
+  export type RowAnimate = Animate;
+
+  export type ColumnAnimateEnterExitType = AnimateEnterExitType;
+  export type ColumnAnimateMove = AnimateMove;
+  export type ColumnAnimateEnterExit = AnimateEnterExit;
+  export type ColumnAnimate = Animate;
 
   export namespace Components {
     export type Header = Header.Props;

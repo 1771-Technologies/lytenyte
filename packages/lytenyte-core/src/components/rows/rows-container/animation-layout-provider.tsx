@@ -17,7 +17,10 @@ import { useIsoEffect } from "../../../hooks/use-iso-effect.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useRowSourceContext } from "../../../root/contexts/row-source-provider.js";
 import { useRowAnimateSettings } from "../../../root/contexts/animations/row-animate-settings-context.js";
-import type { Grid } from "../../../index.js";
+import {
+  enterKeyframesFor,
+  exitKeyframesFor,
+} from "../../../root/contexts/animations/resolve-enter-exit-keyframes.js";
 
 const context = createContext<{ additionalLayouts: LayoutRow[]; animating: RefObject<Set<string>> }>({
   additionalLayouts: [],
@@ -31,24 +34,6 @@ function parseTranslateYPx(value: string): number | null {
   if (value === "none" || value === "") return 0;
   const match = /translateY\(([-\d.]+)px\)/.exec(value);
   return match ? Number.parseFloat(match[1]) : null;
-}
-
-// Only "fade" exists today; more enter/exit styles plug in here later without touching the
-// effect that drives them.
-function enterKeyframesFor(type: Grid.RowAnimateEnterExitType): Keyframe[] {
-  switch (type) {
-    case "fade":
-    default:
-      return [{ opacity: 0 }, { opacity: 1 }];
-  }
-}
-
-function exitKeyframesFor(type: Grid.RowAnimateEnterExitType): Keyframe[] {
-  switch (type) {
-    case "fade":
-    default:
-      return [{ opacity: 1 }, { opacity: 0 }];
-  }
 }
 
 export function AnimationLayoutProvider(props: PropsWithChildren) {
@@ -163,7 +148,7 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
       wrapper.appendChild(ghost);
       document.body.appendChild(wrapper);
 
-      const anim = ghost.animate(exitKeyframesFor(exit.type), {
+      const anim = ghost.animate(exitKeyframesFor(exit.type, ghost), {
         duration: exit.duration,
         easing: exit.easing,
       });
@@ -189,7 +174,7 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
 
         // A newly added row has no prior animation to redirect from, always a fresh, one-shot
         // animation.
-        el.animate(enterKeyframesFor(enter.type), {
+        el.animate(enterKeyframesFor(enter.type, el), {
           duration: enter.duration,
           easing: enter.easing,
         });

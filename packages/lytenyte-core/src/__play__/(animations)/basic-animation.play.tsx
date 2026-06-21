@@ -1,7 +1,7 @@
 import "../test.css";
 import { useClientDataSource, Grid } from "../../index.js";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 // bankDataSmall rows have no natural unique key, so by default the grid assigns leaf ids based on
 // array index - meaning an insertion would shift every later row's id and make them all look like
@@ -12,13 +12,13 @@ interface Spec {
   readonly data: Row;
 }
 
-const columns: Grid.Column<Spec>[] = [
-  { id: "age" },
-  { id: "job" },
-  { id: "balance" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
+const initialColumns: Grid.Column<Spec>[] = [
+  { id: "age", groupPath: ["Personal"] },
+  { id: "job", groupPath: ["Personal"] },
+  { id: "balance", groupPath: ["Personal"] },
+  { id: "education", groupPath: ["Status"] },
+  { id: "marital", groupPath: ["Status"] },
+  { id: "default", groupPath: ["Status"] },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
@@ -74,9 +74,12 @@ function makeNewRow(): Row {
 
 export default function BasicRendering() {
   const [data, setData] = useState<Row[]>(initialData);
+  const [columns, setColumns] = useState<Grid.Column<Spec>[]>(initialColumns);
+  const [columnSizeToFit, setColumnSizeToFit] = useState(false);
   const [sort, setSort] = useState<Grid.T.DimensionSort<Spec["data"]>[] | null>([
     { dim: { id: "education" } },
   ]);
+  const apiRef = useRef<Grid.API<Spec>>(null);
 
   const ds = useClientDataSource({
     data,
@@ -99,6 +102,21 @@ export default function BasicRendering() {
   const deleteFirst = () => setData((prev) => prev.slice(1));
   const deleteAt4 = () => setData((prev) => [...prev.slice(0, 4), ...prev.slice(5)]);
 
+  const toggleHideBalance = () =>
+    setColumns((prev) => prev.map((c) => (c.id === "balance" ? { ...c, hide: !c.hide } : c)));
+  const shuffleColumns = () => {
+    setColumns((prev) => {
+      const next = [...prev];
+      for (let i = next.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [next[i], next[j]] = [next[j], next[i]];
+      }
+      return next;
+    });
+  };
+  const pinAgeStart = () =>
+    setColumns((prev) => prev.map((c) => (c.id === "age" ? { ...c, pin: c.pin ? null : "start" } : c)));
+
   return (
     <>
       <button
@@ -114,9 +132,17 @@ export default function BasicRendering() {
       <button onClick={addAt4}>Add at 4</button>
       <button onClick={deleteFirst}>Delete first row</button>
       <button onClick={deleteAt4}>Delete at 4</button>
+      <button onClick={toggleHideBalance}>Toggle hide balance</button>
+      <button onClick={shuffleColumns}>Shuffle columns</button>
+      <button onClick={pinAgeStart}>Toggle pin age</button>
+      <button onClick={() => setColumnSizeToFit((s) => !s)}>Toggle columnSizeToFit</button>
       <div style={{ width: "80%", height: "500px", border: "1px solid black" }}>
         <Grid
+          ref={apiRef}
           columns={columns}
+          onColumnsChange={setColumns}
+          columnBase={{ resizable: true }}
+          columnSizeToFit={columnSizeToFit}
           rowSource={ds}
           viewportInitialHeight={500}
           viewportInitialWidth={500}
@@ -125,6 +151,7 @@ export default function BasicRendering() {
           rowOverscanBottom={0}
           rowHeight={50}
           rowAnimate={true}
+          columnAnimate={true}
         />
       </div>
     </>

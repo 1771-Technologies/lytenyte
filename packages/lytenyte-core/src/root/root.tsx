@@ -28,6 +28,9 @@ import { DropAcceptProvider } from "./contexts/drop-accept.js";
 import { RowLayoutProvider } from "./contexts/row-layout/row-layout-context.js";
 import { RowChangesProvider } from "./contexts/animations/row-changes-context.js";
 import { RowAnimateSettingsProvider } from "./contexts/animations/row-animate-settings-context.js";
+import { ColumnChangesProvider } from "./contexts/animations/column-changes-context.js";
+import { ColumnAnimateSettingsProvider } from "./contexts/animations/column-animate-settings-context.js";
+import { ColumnAnimationLayoutProvider } from "../components/header/column-animation-layout-provider.js";
 import { EditProvider } from "./contexts/edit-context.js";
 import { APIProvider } from "./contexts/api-provider.js";
 import { GridRendererContext } from "./contexts/grid-renderer-context.js";
@@ -166,20 +169,32 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                                           <HeaderHierarchyProvider
                                                             floatingRowEnabled={props.floatingRowEnabled}
                                                           >
-                                                            <ColumnMoveAndSizeProvider
-                                                              columnDoubleClickToAutosize={
-                                                                props.columnDoubleClickToAutosize
-                                                              }
-                                                              columnGroupMoveDragPlaceholder={
-                                                                props.columnGroupMoveDragPlaceholder
-                                                              }
-                                                              columnMoveDragPlaceholder={
-                                                                props.columnMoveDragPlaceholder
-                                                              }
-                                                              onColumnMoveOutside={props.onColumnMoveOutside}
+                                                            <ColumnAnimateSettingsProvider
+                                                              columnAnimate={props.columnAnimate}
                                                             >
-                                                              {children ?? <Fallback />}
-                                                            </ColumnMoveAndSizeProvider>
+                                                              <ColumnChangesProvider
+                                                                virtualizeCols={props.virtualizeCols}
+                                                              >
+                                                                <ColumnAnimationLayoutProvider>
+                                                                  <ColumnMoveAndSizeProvider
+                                                                    columnDoubleClickToAutosize={
+                                                                      props.columnDoubleClickToAutosize
+                                                                    }
+                                                                    columnGroupMoveDragPlaceholder={
+                                                                      props.columnGroupMoveDragPlaceholder
+                                                                    }
+                                                                    columnMoveDragPlaceholder={
+                                                                      props.columnMoveDragPlaceholder
+                                                                    }
+                                                                    onColumnMoveOutside={
+                                                                      props.onColumnMoveOutside
+                                                                    }
+                                                                  >
+                                                                    {children ?? <Fallback />}
+                                                                  </ColumnMoveAndSizeProvider>
+                                                                </ColumnAnimationLayoutProvider>
+                                                              </ColumnChangesProvider>
+                                                            </ColumnAnimateSettingsProvider>
                                                           </HeaderHierarchyProvider>
                                                         </APIProvider>
                                                       </EditProvider>
