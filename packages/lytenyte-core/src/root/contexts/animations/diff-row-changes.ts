@@ -12,14 +12,6 @@ function collectViewIds(view: RowView, prevView: RowView): Set<string> {
   return ids;
 }
 
-/**
- * Diffs two id->position snapshots into moved/added/removed. Only ids that are (or were) actually
- * rendered are considered, bounding the work to viewport+overscan size rather than dataset size -
- * but position/pin lookups still go through the global maps, which is what lets "scrolled out of
- * view" be told apart from "really removed". A pin change (e.g. center -> top) is treated as a
- * remove from the old section plus an add to the new one rather than a move, since pinned and
- * center rows are positioned in fundamentally different ways.
- */
 export function diffRowChanges(
   current: Record<string, PositionEntry>,
   previous: Record<string, PositionEntry>,
@@ -39,9 +31,6 @@ export function diffRowChanges(
         removed.push({ id, pin: prev.pin });
         added.push({ id, pin: next.pin });
       } else if (next.y !== prev.y) {
-        // The previous position is always real, even if the row wasn't currently rendered there
-        // (it existed, just outside the virtualized window) - so the true distance is reported,
-        // however far, rather than clamped to "near the rendered edge".
         moved.push({ id, from: prev.y, to: next.y });
       }
     } else if (next && !prev) {
