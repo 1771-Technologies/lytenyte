@@ -26,6 +26,11 @@ function isHeaderKind(el: HTMLElement): boolean {
   return el.hasAttribute("data-ln-header-cell") || el.hasAttribute("data-ln-header-group");
 }
 
+function isPinnedHeaderCell(el: HTMLElement): boolean {
+  const pin = el.getAttribute("data-ln-colpin");
+  return pin === "start" || pin === "end";
+}
+
 function queryByColumnId(gridId: string, columnId: string): HTMLElement[] {
   return Array.from(
     document.querySelectorAll<HTMLElement>(`[data-ln-gridid="${gridId}"][data-ln-colid="${columnId}"]`),
@@ -55,7 +60,16 @@ export function ColumnAnimationLayoutProvider({ children }: PropsWithChildren) {
       if (!move) return;
 
       const headerKind = isHeaderKind(el);
-      const animatePosition = !(headerKind && sync);
+      // Center (non-pinned) header cells already use `transform: var(--ln-x-transform)` for
+      // sync-scroll, replacing that with our own bare translateX would freeze the cell at
+      // whatever scroll offset happened to be live when the move started, breaking scroll-sync
+      // for the rest of the animation (and, if we're not careful, after it settles too). Compose
+      // our FLIP offset onto the SAME var() reference instead: CSS transform function lists chain
+      // left-to-right, so `var(--ln-x-transform) translateX(Npx)` applies both simultaneously, and
+      // the cell keeps tracking live scroll the entire time. Pinned header cells never reference
+      // that variable at all (sticky + insetInlineStart/insetInlineEnd instead), so they animate
+      // unconditionally, exactly like non-sync mode.
+      const headerSyncCompose = headerKind && sync && !isPinnedHeaderCell(el);
       const existing = animations.current.get(el);
 
       if (existing) {
@@ -67,16 +81,20 @@ export function ColumnAnimationLayoutProvider({ children }: PropsWithChildren) {
         }
       }
 
-      if (!animatePosition) return;
-
       const keyframeFrom: Keyframe = {};
       const keyframeTo: Keyframe = {};
 
       if (headerKind) {
+        // commitStyles() bakes the CSS variable into its currently-resolved literal value (e.g.
+        // "translate3d(-50px,0,0) translateX(60px)"), but our own appended translateX(...) term
+        // is still trailing and regex-matchable regardless of what (if anything) precedes it -
+        // we only ever care about extracting that trailing delta, never the resolved var() prefix
+        // itself, so this baked snapshot is harmless and never gets reused verbatim below.
         const committed = existing ? parseTranslateXPx(el.style.transform) : m.fromX - m.toX;
         const rebased = existing ? committed + (m.fromX - m.toX) : committed;
-        keyframeFrom.transform = `translateX(${rebased}px)`;
-        keyframeTo.transform = "none";
+        const prefix = headerSyncCompose ? "var(--ln-x-transform) " : "";
+        keyframeFrom.transform = `${prefix}translateX(${rebased}px)`;
+        keyframeTo.transform = headerSyncCompose ? "var(--ln-x-transform)" : "none";
       } else {
         const from = existing ? parsePx(el.style.insetInlineStart) : m.fromX;
         keyframeFrom.insetInlineStart = `${from}px`;
@@ -99,15 +117,18 @@ export function ColumnAnimationLayoutProvider({ children }: PropsWithChildren) {
       // newer redirect just set. Writing synchronously avoids ever needing to trust which
       // `.finished` callback fires last.
       //
-      // `transform` is a property React never sets itself (outside sync-scroll mode), so resting
-      // it at "none" is always safe. `insetInlineStart` mirrors exactly what React already wrote
-      // for THIS render (m.toX comes from the same diff that produced it) - so writing it keeps
-      // the DOM in agreement with what React's reconciler believes is there, which matters because
+      // For non-sync-composed header cells, `transform` is a property React never sets itself, so
+      // resting it at "none" is always safe. For sync-composed center cells, the resting value
+      // must be the LIVE "var(--ln-x-transform)" reference (not "none") so the cell keeps tracking
+      // scroll after the move settles - this is also exactly what React itself sets via its own
+      // style prop for these cells, so writing it keeps the DOM in agreement with what React's
+      // reconciler believes is there. `insetInlineStart` mirrors exactly what React already wrote
+      // for THIS render (m.toX comes from the same diff that produced it) for the same reason -
       // React only re-writes a property when its own computed value differs from what it last
       // set; if we instead left a stale commitStyles()-written value in place, a future render
       // that happens to recompute the SAME target would have nothing to overwrite it with, leaving
       // the stale value stuck permanently.
-      if (headerKind) el.style.transform = "none";
+      if (headerKind) el.style.transform = headerSyncCompose ? "var(--ln-x-transform)" : "none";
       else el.style.insetInlineStart = `${m.toX}px`;
 
       if (existing) {
