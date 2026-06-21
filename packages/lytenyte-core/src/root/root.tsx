@@ -149,57 +149,57 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                                   virtualizeRows={props.virtualizeRows}
                                                 >
                                                   <RowAnimateSettingsProvider rowAnimate={props.rowAnimate}>
-                                                  <RowChangesProvider>
-                                                    <SelectPivotProvider
-                                                      rowSelectionActivator={props.rowSelectionActivator}
-                                                    >
-                                                      <EditProvider
-                                                        api={api}
-                                                        source={source}
-                                                        columnBase={props.columnBase}
-                                                        editRowValidatorFn={props.editRowValidatorFn}
-                                                        onEditBegin={props.onEditBegin}
-                                                        onEditCancel={props.onEditCancel}
-                                                        onEditEnd={props.onEditEnd}
-                                                        onEditFail={props.onEditFail}
-                                                        editMode={props.editMode}
-                                                        editClickActivator={props.editClickActivator}
+                                                    <RowChangesProvider>
+                                                      <SelectPivotProvider
+                                                        rowSelectionActivator={props.rowSelectionActivator}
                                                       >
-                                                        <APIProvider api={api} source={source} {...props}>
-                                                          <HeaderHierarchyProvider
-                                                            floatingRowEnabled={props.floatingRowEnabled}
-                                                          >
-                                                            <ColumnAnimateSettingsProvider
-                                                              columnAnimate={props.columnAnimate}
+                                                        <EditProvider
+                                                          api={api}
+                                                          source={source}
+                                                          columnBase={props.columnBase}
+                                                          editRowValidatorFn={props.editRowValidatorFn}
+                                                          onEditBegin={props.onEditBegin}
+                                                          onEditCancel={props.onEditCancel}
+                                                          onEditEnd={props.onEditEnd}
+                                                          onEditFail={props.onEditFail}
+                                                          editMode={props.editMode}
+                                                          editClickActivator={props.editClickActivator}
+                                                        >
+                                                          <APIProvider api={api} source={source} {...props}>
+                                                            <HeaderHierarchyProvider
+                                                              floatingRowEnabled={props.floatingRowEnabled}
                                                             >
-                                                              <ColumnChangesProvider
-                                                                virtualizeCols={props.virtualizeCols}
+                                                              <ColumnAnimateSettingsProvider
+                                                                columnAnimate={props.columnAnimate}
                                                               >
-                                                                <ColumnAnimationLayoutProvider>
-                                                                  <ColumnMoveAndSizeProvider
-                                                                    columnDoubleClickToAutosize={
-                                                                      props.columnDoubleClickToAutosize
-                                                                    }
-                                                                    columnGroupMoveDragPlaceholder={
-                                                                      props.columnGroupMoveDragPlaceholder
-                                                                    }
-                                                                    columnMoveDragPlaceholder={
-                                                                      props.columnMoveDragPlaceholder
-                                                                    }
-                                                                    onColumnMoveOutside={
-                                                                      props.onColumnMoveOutside
-                                                                    }
-                                                                  >
-                                                                    {children ?? <Fallback />}
-                                                                  </ColumnMoveAndSizeProvider>
-                                                                </ColumnAnimationLayoutProvider>
-                                                              </ColumnChangesProvider>
-                                                            </ColumnAnimateSettingsProvider>
-                                                          </HeaderHierarchyProvider>
-                                                        </APIProvider>
-                                                      </EditProvider>
-                                                    </SelectPivotProvider>
-                                                  </RowChangesProvider>
+                                                                <ColumnChangesProvider
+                                                                  virtualizeCols={props.virtualizeCols}
+                                                                >
+                                                                  <ColumnAnimationLayoutProvider>
+                                                                    <ColumnMoveAndSizeProvider
+                                                                      columnDoubleClickToAutosize={
+                                                                        props.columnDoubleClickToAutosize
+                                                                      }
+                                                                      columnGroupMoveDragPlaceholder={
+                                                                        props.columnGroupMoveDragPlaceholder
+                                                                      }
+                                                                      columnMoveDragPlaceholder={
+                                                                        props.columnMoveDragPlaceholder
+                                                                      }
+                                                                      onColumnMoveOutside={
+                                                                        props.onColumnMoveOutside
+                                                                      }
+                                                                    >
+                                                                      {children ?? <Fallback />}
+                                                                    </ColumnMoveAndSizeProvider>
+                                                                  </ColumnAnimationLayoutProvider>
+                                                                </ColumnChangesProvider>
+                                                              </ColumnAnimateSettingsProvider>
+                                                            </HeaderHierarchyProvider>
+                                                          </APIProvider>
+                                                        </EditProvider>
+                                                      </SelectPivotProvider>
+                                                    </RowChangesProvider>
                                                   </RowAnimateSettingsProvider>
                                                 </RowLayoutProvider>
                                               </FocusPositionProvider>
