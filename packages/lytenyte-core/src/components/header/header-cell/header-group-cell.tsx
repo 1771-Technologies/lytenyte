@@ -69,6 +69,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
       // Data attributes start
       data-ln-header-group
       data-ln-header-id={cell.id}
+      data-ln-header-occurrence={cell.idOccurrence}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-cell-selected={isCellSelected}
       data-ln-rowindex={cell.rowStart}

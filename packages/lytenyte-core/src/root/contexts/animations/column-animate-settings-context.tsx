@@ -8,12 +8,12 @@ import {
 
 const context = createContext<AnimateSettings>(DISABLED_ANIMATE_SETTINGS);
 
-export function RowAnimateSettingsProvider({
-  rowAnimate,
+export function ColumnAnimateSettingsProvider({
+  columnAnimate,
   children,
-}: PropsWithChildren<{ rowAnimate: boolean | Grid.RowAnimate | undefined }>) {
-  const settings = useMemo(() => resolveAnimateSettings(rowAnimate), [rowAnimate]);
+}: PropsWithChildren<{ columnAnimate: boolean | Grid.ColumnAnimate | undefined }>) {
+  const settings = useMemo(() => resolveAnimateSettings(columnAnimate), [columnAnimate]);
   return <context.Provider value={settings}>{children}</context.Provider>;
 }
 
-export const useRowAnimateSettings = () => useContext(context);
+export const useColumnAnimateSettings = () => useContext(context);
