@@ -5,8 +5,6 @@ export interface AnnotationCommentOptions {
   readonly color?: string;
 }
 
-/** Draws a small comment marker at the top-right corner of the annotation's anchored area, with
- * the comment text shown on hover via the native title tooltip. */
 export function annotationComment(options: AnnotationCommentOptions): Annotation<any>["render"] {
   const color = options.color ?? "#f59e0b";
 

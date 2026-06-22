@@ -5,7 +5,6 @@ export interface AnnotationBorderOptions {
   readonly width?: number;
 }
 
-/** Draws a border around the annotation's anchored area. */
 export function annotationBorder(options?: AnnotationBorderOptions): Annotation<any>["render"] {
   const color = options?.color ?? "#3b82f6";
   const width = options?.width ?? 2;
