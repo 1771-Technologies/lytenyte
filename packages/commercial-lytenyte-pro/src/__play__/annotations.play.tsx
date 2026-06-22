@@ -68,13 +68,17 @@ export default function AnnotationsPlay() {
       anchor: { kind: "header", colStart: 5, colEnd: 6 },
       render: annotationArrow({ direction: "down", color: "#f59e0b" }),
     },
-    // Anchored entirely by row/column id instead of index.
     {
       id: "range-by-id",
-      anchor: { kind: "range", rowStart: "leaf-15", rowEnd: "leaf-17", colStart: "contact", colEnd: "duration" },
+      anchor: {
+        kind: "range",
+        rowStart: "leaf-15",
+        rowEnd: "leaf-17",
+        colStart: "contact",
+        colEnd: "duration",
+      },
       render: annotationBorder({ color: "#a855f7", width: 3 }),
     },
-    // Unresolvable id - should be silently dropped, not rendered at all.
     {
       id: "range-bad-id",
       anchor: { kind: "range", rowStart: "does-not-exist", rowEnd: "leaf-17", colStart: 0, colEnd: 2 },

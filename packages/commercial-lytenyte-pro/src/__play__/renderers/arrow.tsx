@@ -13,7 +13,6 @@ const ROTATION: Record<NonNullable<AnnotationArrowOptions["direction"]>, number>
   left: 270,
 };
 
-/** Draws an arrow pointing in the given direction, centered on the annotation's anchored area. */
 export function annotationArrow(options?: AnnotationArrowOptions): Annotation<any>["render"] {
   const direction = options?.direction ?? "up";
   const color = options?.color ?? "#3b82f6";
