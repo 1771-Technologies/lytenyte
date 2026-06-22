@@ -19,15 +19,14 @@ export function PageAction({
   id: string;
 }) {
   const url = typeof window !== "undefined" ? new URL(window.location.href) : "";
-  const fullMarkdownUrl =
-    typeof window !== "undefined" ? new URL(url, window.location.origin) : "loading";
+  const fullMarkdownUrl = typeof window !== "undefined" ? new URL(url, window.location.origin) : "loading";
   const q = `Read ${fullMarkdownUrl}, I want to ask questions about it.`;
 
   const [copying, setCopying] = useState(false);
   const [success, setSuccess] = useState(false);
 
   return (
-    <div className="border-xd-border bg-xd-accent/60 flex items-center overflow-hidden rounded-lg">
+    <div className="border-xd-border bg-xd-accent/60 flex min-w-[58px] items-center overflow-hidden rounded-lg">
       <TooltipProvider>
         <TooltipRoot>
           <TooltipTrigger
@@ -55,10 +54,8 @@ export function PageAction({
           >
             {!copying && !success && <span className="iconify ph--copy size-4" />}
             {copying && <span className="iconify svg-spinners--90-ring size-4"></span>}
-            {success && (
-              <span className="iconify ph--check size-4 text-green-900 dark:text-green-500"></span>
-            )}
-            <span className="hidden md:inline">Copy Page</span>
+            {success && <span className="iconify ph--check size-4 text-green-900 dark:text-green-500"></span>}
+            <span className="hidden text-nowrap md:inline">Copy Page</span>
           </TooltipTrigger>
           <Tooltip side="bottom">Copy page as MarkDown</Tooltip>
         </TooltipRoot>
