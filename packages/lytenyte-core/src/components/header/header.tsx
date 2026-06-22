@@ -24,6 +24,7 @@ import { useHeaderHierarchyContext } from "../../root/contexts/header-hierarchy.
 import { useHeaderLayoutContext } from "../../root/contexts/header-layout.js";
 import { getTranslate } from "@1771technologies/dom-utils";
 import { useSyncScrollXY } from "../../root/hooks/use-sync-scroll-xy.js";
+import { useOverlaySlots } from "../../root/contexts/overlay-slots-context.js";
 
 function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const id = useGridIdContext();
@@ -57,6 +58,7 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
   }, [active]);
 
   const { x, sync } = useSyncScrollXY();
+  const { header: headerOverlay } = useOverlaySlots();
 
   const Wrapper = sync ? HeaderSyncWrap : Fragment;
 
@@ -92,6 +94,19 @@ function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, re
           }
         >
           {headerRows}
+          {headerOverlay && (
+            <div
+              role="presentation"
+              style={{
+                gridRow: "1 / -1",
+                gridColumn: "1 / -1",
+                position: "relative",
+                pointerEvents: "none",
+              }}
+            >
+              {headerOverlay}
+            </div>
+          )}
         </div>
       </Wrapper>
     </HeaderProvider>

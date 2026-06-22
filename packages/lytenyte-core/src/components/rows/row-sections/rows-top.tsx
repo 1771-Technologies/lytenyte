@@ -9,6 +9,7 @@ import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-conte
 import { useRowViewContext } from "../../../root/contexts/row-layout/row-layout-context.js";
 import { useHeaderLayoutContext } from "../../../root/contexts/header-layout.js";
 import { useSuppressScrollFlashContext } from "../../../root/contexts/viewport/viewport-context.js";
+import { useOverlaySlots } from "../../../root/contexts/overlay-slots-context.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, RowsTop.Props>(function RowsTop(
@@ -35,6 +36,7 @@ export const RowsTop = memo(
     }, [children, rowView.top]);
 
     const sync = useSuppressScrollFlashContext();
+    const { rowsTop } = useOverlaySlots();
 
     if (height <= 0) return null;
 
@@ -60,6 +62,7 @@ export const RowsTop = memo(
         }}
       >
         <CellSelectionTop />
+        {rowsTop}
         {rows}
       </RowsSection>
     );
