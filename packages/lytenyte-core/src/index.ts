@@ -147,7 +147,7 @@ export namespace Grid {
     readonly colOverscanStart?: number;
     readonly colOverscanEnd?: number;
 
-    readonly rowAlternateAttr?: boolean;
+    readonly rowAlternateAttr?: boolean | "root";
     readonly rowScanDistance?: number;
     readonly rowSource?: Spec["source"];
     readonly rowHeight?: RowHeight;

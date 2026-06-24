@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { rowPositions, type RowSource } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../root.js";
 
@@ -13,13 +13,34 @@ export function useYPositions(
 ) {
   const rowCount = rowSource.useRowCount();
 
+  const indices = useRef<Uint32Array | null>(null);
+  const currentIsOdd = useRef(false);
+
   const rows = rowSource.useRows();
-  const rowIndexToRowId = useCallback(
-    (i: number) => {
+
+  const rowIndexToRowId = useMemo(() => {
+    if (props.rowAlternateAttr === "root") {
+      indices.current = new Uint32Array(rowCount);
+      currentIsOdd.current = false;
+
+      return (i: number) => {
+        const row = rows.get(i);
+        if (!row) return null;
+
+        const depth = row.depth;
+        // Swap whenever we encounter a depth 0 row.
+        if (depth === 0) currentIsOdd.current = !currentIsOdd.current;
+
+        indices.current![i] = currentIsOdd.current ? 0 : 1;
+
+        return rows.get(i)?.id ?? null;
+      };
+    }
+
+    return (i: number) => {
       return rows.get(i)?.id ?? null;
-    },
-    [rows],
-  );
+    };
+  }, [props.rowAlternateAttr, rowCount, rows]);
 
   const [rowCache] = useState<Record<string, number>>({});
 
@@ -42,7 +63,7 @@ export function useYPositions(
         ? EMPTY_POSITION_ARRAY
         : rowPositions(rowCount, rowHeight, rowHeightGuess, rowCache, detailHeightCalc, height);
 
-    return positions;
+    return { positions, oddEvenIndices: indices.current };
   }, [
     detailCache,
     detailExpansions,

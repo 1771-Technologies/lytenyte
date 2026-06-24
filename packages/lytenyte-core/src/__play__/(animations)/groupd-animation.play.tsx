@@ -68,7 +68,7 @@ export default function BasicRendering() {
           rowSource={ds}
           viewportInitialHeight={500}
           viewportInitialWidth={500}
-          rowAlternateAttr={false}
+          rowAlternateAttr="root"
           rowOverscanTop={0}
           rowOverscanBottom={0}
           rowHeight={50}
