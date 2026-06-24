@@ -105,6 +105,9 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
     const viewportEl = document.querySelector<HTMLElement>(`[data-ln-gridid="${gridId}"][data-ln-viewport]`);
     const viewportRect = viewportEl?.getBoundingClientRect();
 
+    const viewportWidth = viewportEl?.clientWidth ?? viewportRect?.width;
+    const viewportHeight = viewportEl?.clientHeight ?? viewportRect?.height;
+
     for (const r of removed) {
       const el = document.querySelector<HTMLElement>(
         `[data-ln-gridid="${gridId}"][data-ln-row="true"][data-ln-row-id="${r.id}"]`,
@@ -133,8 +136,8 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
       wrapper.style.pointerEvents = "none";
       wrapper.style.top = `${viewportRect?.top ?? rect.top}px`;
       wrapper.style.left = `${viewportRect?.left ?? rect.left}px`;
-      wrapper.style.width = `${viewportRect?.width ?? rect.width}px`;
-      wrapper.style.height = `${viewportRect?.height ?? height}px`;
+      wrapper.style.width = `${viewportWidth ?? rect.width}px`;
+      wrapper.style.height = `${viewportHeight ?? height}px`;
 
       const ghost = el.cloneNode(true) as HTMLElement;
       ghost.removeAttribute("data-ln-row-id");
