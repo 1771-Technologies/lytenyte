@@ -113,6 +113,7 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                                 rowAutoHeightGuess={props.rowAutoHeightGuess}
                                 rowDetailAutoHeightGuess={props.rowDetailAutoHeightGuess}
                                 rowDetailHeight={props.rowDetailHeight}
+                                rowAlternateAttr={props.rowAlternateAttr}
                                 rowHeight={props.rowHeight}
                                 source={source}
                               >
