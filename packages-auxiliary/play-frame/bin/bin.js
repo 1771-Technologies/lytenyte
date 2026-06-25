@@ -1,16 +1,11 @@
 import express from "express";
 import react from "@vitejs/plugin-react";
 import { createServer as createViteServer } from "vite";
-import { createServer as createHttpServer } from "http";
-import { WebSocketServer } from "ws";
-import { join, resolve as resolvePath } from "path";
+import { resolve as resolvePath } from "path";
 import os from "os";
 import process from "node:process";
 import { exec } from "node:child_process";
 import { resolvePlayConfig } from "./config/index.js";
-import { resolveTestFiles, runVitest, runVitestCoverage, collectVitest, closeVitest } from "./test-runner/index.js";
-
-const cwd = process.cwd();
 
 const c = {
   reset: "\x1b[0m",
@@ -44,7 +39,7 @@ async function createServer() {
   const { _setupDir, ...playConfig } = await resolvePlayConfig();
 
   const vite = await createViteServer({
-    server: { middlewareMode: true, watch: { ignored: ["**/.play-coverage/**"] } },
+    server: { middlewareMode: true },
     appType: "custom",
     resolve: {},
     plugins: [
@@ -57,17 +52,12 @@ async function createServer() {
           }
           if (id === "playframe") return "playframe";
           if (id === "playframe-config") return "playframe-config";
-          if (id === "playframe-setup") {
-            if (playConfig.setup) {
-              return resolvePath(_setupDir, playConfig.setup);
-            }
-            return "playframe-setup";
-          }
+          if (id === "playframe-setup") return "\0playframe-setup";
         },
         load(id) {
           if (id === "playframe") {
             return `
-              const files = import.meta.glob("/src/**/*.*play.tsx", { eager: true });
+              const files = import.meta.glob("/src/**/*.*play.tsx");
 
               export default files
             `;
@@ -81,7 +71,11 @@ async function createServer() {
             return `export default ${JSON.stringify(playConfig)}`;
           }
 
-          if (id === "playframe-setup") {
+          if (id === "\0playframe-setup") {
+            if (playConfig.setup) {
+              const absPath = resolvePath(_setupDir, playConfig.setup);
+              return `import ${JSON.stringify(absPath)}`;
+            }
             return ``;
           }
         },
@@ -99,201 +93,8 @@ async function createServer() {
     res.status(200).set({ "Content-Type": "text/html" }).end(template);
   });
 
-  // ---------------------------------------------------------------------------
-  // HTTP + WebSocket server
-  // ---------------------------------------------------------------------------
-
-  const httpServer = createHttpServer(app);
-
-  const wss = new WebSocketServer({ server: httpServer, path: "/ws" });
-
-  wss.on("connection", (ws) => {
-    // Tracks the play file currently active for this connection.
-    // Set synchronously on every discover so in-flight callbacks from a
-    // superseded discover are silently dropped before they touch the client.
-    let activeFilePath = null;
-
-    ws.on("message", async (raw) => {
-      let msg;
-      try {
-        msg = JSON.parse(raw.toString());
-      } catch {
-        return;
-      }
-
-      const send = (obj) => {
-        if (ws.readyState === ws.OPEN) ws.send(JSON.stringify(obj));
-      };
-
-      if (msg.type === "discover") {
-        const { filePath } = msg;
-        activeFilePath = filePath; // update before any await
-
-        const absPath = join(cwd, filePath);
-        const testFiles = resolveTestFiles(absPath);
-        send({ type: "discovered", testFiles, filePath });
-
-        await collectVitest({
-          cwd,
-          testFiles,
-          onModule: (mod) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "module", module: mod, filePath });
-          },
-          onError: (error) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "error", error, filePath });
-          },
-        });
-
-        if (activeFilePath === filePath) {
-          send({ type: "collected", filePath });
-        }
-        return;
-      }
-
-      if (msg.type === "run" || msg.type === "run-project" || msg.type === "run-test") {
-        const { filePath } = msg;
-        const testFiles = resolveTestFiles(join(cwd, filePath));
-        const fileName = filePath.split("/").pop();
-
-        console.log();
-        console.log(`  ${c.violet}${c.bold}▶ ${fileName}${c.reset}`);
-
-        const projectResults = new Map();
-
-        await runVitest({
-          cwd,
-          testFiles,
-          testNamePattern: msg.type === "run-test" ? msg.testName : undefined,
-          projectName: msg.projectName ?? undefined,
-          onTestCaseStart: (testCase) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "test-case-start", testCase, filePath });
-          },
-          onTestCase: (testCase) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "test-case", testCase, filePath });
-            const { projectName } = testCase;
-            if (!projectResults.has(projectName)) projectResults.set(projectName, []);
-            projectResults.get(projectName).push(testCase);
-          },
-          onModule: (mod) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "module", module: mod, filePath });
-          },
-          onDone: (summary) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "done", summary, filePath });
-            for (const [projectName, tests] of projectResults) {
-              console.log();
-              console.log(`  ${c.bold}${projectName}${c.reset}`);
-              console.log();
-              for (const { state, fullName, duration, errors } of tests) {
-                if (state === "passed") {
-                  const dur = duration != null ? `${c.dim} (${Math.round(duration)}ms)${c.reset}` : "";
-                  console.log(`    ${c.green}✓${c.reset}  ${fullName}${dur}`);
-                } else if (state === "failed") {
-                  console.log(`    ${c.red}✗${c.reset}  ${c.bold}${fullName}${c.reset}`);
-                  for (const err of errors) {
-                    console.log();
-                    console.log(err.split("\n").map((l) => `      ${l}`).join("\n"));
-                    console.log();
-                  }
-                }
-              }
-            }
-            console.log();
-            const parts = [];
-            if (summary.numPassed > 0) parts.push(`${c.green}${summary.numPassed} passed${c.reset}`);
-            if (summary.numFailed > 0) parts.push(`${c.red}${summary.numFailed} failed${c.reset}`);
-            parts.push(`${c.dim}${summary.numTotal} total${c.reset}`);
-            console.log(`  ${parts.join(`  ${c.dim}|${c.reset}  `)}`);
-            console.log();
-          },
-          onError: (error) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "error", error, filePath });
-            console.log();
-            console.log(`  ${c.red}${c.bold}Error${c.reset}  ${error}`);
-            console.log();
-          },
-        });
-      }
-
-      if (msg.type === "run-coverage") {
-        const { filePath, touchedOnly = false } = msg;
-        const testFiles = resolveTestFiles(join(cwd, filePath));
-        const fileName = filePath.split("/").pop();
-
-        console.log();
-        console.log(`  ${c.violet}${c.bold}▶ ${fileName}${c.reset} ${c.dim}(coverage)${c.reset}`);
-
-        const projectResults = new Map();
-
-        await runVitestCoverage({
-          cwd,
-          testFiles,
-          touchedOnly,
-          onTestCaseStart: (testCase) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "test-case-start", testCase, filePath });
-          },
-          onTestCase: (testCase) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "test-case", testCase, filePath });
-            const { projectName } = testCase;
-            if (!projectResults.has(projectName)) projectResults.set(projectName, []);
-            projectResults.get(projectName).push(testCase);
-          },
-          onModule: (mod) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "module", module: mod, filePath });
-          },
-          onDone: (summary, coverageData) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "done", summary, filePath });
-            send({ type: "coverage", coverage: coverageData, filePath });
-            for (const [projectName, tests] of projectResults) {
-              console.log();
-              console.log(`  ${c.bold}${projectName}${c.reset}`);
-              console.log();
-              for (const { state, fullName, duration, errors } of tests) {
-                if (state === "passed") {
-                  const dur = duration != null ? `${c.dim} (${Math.round(duration)}ms)${c.reset}` : "";
-                  console.log(`    ${c.green}✓${c.reset}  ${fullName}${dur}`);
-                } else if (state === "failed") {
-                  console.log(`    ${c.red}✗${c.reset}  ${c.bold}${fullName}${c.reset}`);
-                  for (const err of errors) {
-                    console.log();
-                    console.log(err.split("\n").map((l) => `      ${l}`).join("\n"));
-                    console.log();
-                  }
-                }
-              }
-            }
-            console.log();
-            const parts = [];
-            if (summary.numPassed > 0) parts.push(`${c.green}${summary.numPassed} passed${c.reset}`);
-            if (summary.numFailed > 0) parts.push(`${c.red}${summary.numFailed} failed${c.reset}`);
-            parts.push(`${c.dim}${summary.numTotal} total${c.reset}`);
-            console.log(`  ${parts.join(`  ${c.dim}|${c.reset}  `)}`);
-            console.log();
-          },
-          onError: (error) => {
-            if (activeFilePath !== filePath) return;
-            send({ type: "error", error, filePath });
-            console.log();
-            console.log(`  ${c.red}${c.bold}Error${c.reset}  ${error}`);
-            console.log();
-          },
-        });
-      }
-    });
-  });
-
   const PORT = 4000;
-  httpServer.listen(PORT, () => {
+  app.listen(PORT, () => {
     const interfaces = os.networkInterfaces();
     const addresses = [];
 
@@ -346,7 +147,7 @@ async function createServer() {
 
     const clearHelp = () => {
       for (let i = 0; i < HELP_LINES; i++) {
-        process.stdout.write("\x1b[1A\x1b[2K"); // move up one line, erase it
+        process.stdout.write("\x1b[1A\x1b[2K");
       }
     };
 
@@ -359,7 +160,7 @@ async function createServer() {
     process.stdin.on("data", (key) => {
       if (key === "\x03") {
         process.exit();
-      } // Ctrl+C
+      }
       if (key === "h" || key === "H") {
         helpVisible = !helpVisible;
         if (helpVisible) printHelp();
@@ -370,9 +171,6 @@ async function createServer() {
       }
     });
   });
-
-  process.on("SIGTERM", closeVitest);
-  process.on("SIGINT", closeVitest);
 }
 
 createServer();
