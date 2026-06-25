@@ -7,8 +7,13 @@ export interface IframeThemeDropdownProps {
   readonly onThemeChange: (theme: string) => void;
 }
 
+const FALLBACK_THEMES = [
+  { name: "Light", value: "light", colorScheme: "light" as const },
+  { name: "Dark", value: "dark", colorScheme: "dark" as const },
+];
+
 export function IframeThemeDropdown({ theme, onThemeChange }: IframeThemeDropdownProps) {
-  const themes = config.themes.values;
+  const themes = config.themes.values.length > 0 ? config.themes.values : FALLBACK_THEMES;
   const disabled = themes.length <= 1;
   const current = themes.find((t) => t.value === theme) ?? themes[0];
 

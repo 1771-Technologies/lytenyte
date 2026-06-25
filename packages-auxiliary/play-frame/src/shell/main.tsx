@@ -3,15 +3,24 @@ import "./index.css";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { Box, Flex, IconButton, Separator, Tabs, Theme } from "@radix-ui/themes";
+import { Box, Flex, IconButton, Separator, Theme } from "@radix-ui/themes";
 import { FrameDropdown, type Frame } from "./frame-size-dropdown/frame-dropdown.js";
-import type { Demo } from "./demo-dropdown/demo-dropdown.js";
+import type { Demo } from "./demo-dropdown/demo-tree.js";
 import { IframeThemeDropdown } from "./iframe-theme-dropdown/iframe-theme-dropdown.js";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
 function SidebarCollapseIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="2.5" y1="2" x2="2.5" y2="13" />
       <polyline points="9,3 5,7.5 9,12" />
     </svg>
@@ -20,7 +29,16 @@ function SidebarCollapseIcon() {
 
 function SidebarExpandIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="2.5" y1="2" x2="2.5" y2="13" />
       <polyline points="6,3 10,7.5 6,12" />
     </svg>
@@ -32,7 +50,6 @@ import type { AxeResults } from "axe-core";
 import axe from "axe-core";
 import { AxePopover } from "./axe-popover/axe-popover.js";
 import { flatDemos } from "./demo-dropdown/demo-tree.js";
-import { TestPanel } from "./test-panel/test-panel.js";
 
 export function Main() {
   const savedIndex = localStorage.getItem("demo-key");
@@ -44,7 +61,6 @@ export function Main() {
   const [current, setCurrent] = useState<Demo>(demoA!);
 
   const setDemo = demoA ? setDemoB : setDemoA;
-  const demo = (demoA ? demoA : demoB)!;
 
   const [active, setActive] = useState<"A" | "B" | null>(null);
 
@@ -59,14 +75,18 @@ export function Main() {
     },
     { deserializer: JSON.parse, serializer: JSON.stringify },
   );
+  const resolvedThemes = config.themes.values.length > 0
+    ? config.themes.values
+    : [{ name: "Light", value: "light", colorScheme: "light" as const }, { name: "Dark", value: "dark", colorScheme: "dark" as const }];
+
   const [iframeTheme, setIframeTheme] = useLocalStorage<string>(
     "iframe-theme",
-    config.themes.values[0]?.value ?? "light",
+    resolvedThemes[0].value,
   );
 
   const activeThemeConfig =
-    config.themes.values.find((t) => t.value === iframeTheme) ?? config.themes.values[0];
-  const shellAppearance = activeThemeConfig?.colorScheme ?? "light";
+    resolvedThemes.find((t) => t.value === iframeTheme) ?? resolvedThemes[0];
+  const shellAppearance = activeThemeConfig.colorScheme;
 
   const axeRef = useRef<Promise<void>>(null);
 
@@ -111,11 +131,7 @@ export function Main() {
       <Flex direction="column" style={{ height: "100dvh" }}>
         <Flex height="48px" minHeight="48px" maxHeight="48px" align="center" px="2" gap="2" justify="between">
           <Flex align="center" gap="2">
-            <IconButton
-              variant="ghost"
-              aria-label="Toggle sidebar"
-              onClick={() => setSidebarOpen((o) => !o)}
-            >
+            <IconButton variant="ghost" aria-label="Toggle sidebar" onClick={() => setSidebarOpen((o) => !o)}>
               {sidebarOpen ? <SidebarCollapseIcon /> : <SidebarExpandIcon />}
             </IconButton>
           </Flex>
@@ -164,90 +180,74 @@ export function Main() {
             />
           </div>
 
-          {/* Main content */}
-          <Tabs.Root
-            defaultValue="stage"
-            style={{ display: "flex", flexDirection: "column", flexGrow: 1, minWidth: 0 }}
-          >
-            <Tabs.List style={{ flexShrink: 0 }}>
-              <Tabs.Trigger value="stage">Stage</Tabs.Trigger>
-              <Tabs.Trigger value="tests">Tests</Tabs.Trigger>
-            </Tabs.List>
+          {/* Stage */}
+          <Flex justify="center" pt="1" pb="2" px="1" style={{ flexGrow: 1, minHeight: 0, minWidth: 0 }}>
+            <Box
+              style={{
+                width: frame.width ?? "100%",
+                height: frame.height ?? "100%",
+                transitionProperty: "width height",
+                transitionTimingFunction: "ease-in-out",
+                transitionDuration: "200ms",
+                boxShadow: "var(--shadow-1)",
+              }}
+            >
+              {demoA && (
+                <iframe
+                  key="A"
+                  ref={aRef}
+                  title="Play Frame A"
+                  src={`/?frame=${demoA.filePath}`}
+                  onLoad={() => {
+                    setTimeout(() => {
+                      setActive("A");
+                      setDemoB(null);
+                      postTheme(aRef.current?.contentWindow);
 
-            <Tabs.Content value="stage" forceMount style={{ flexGrow: 1, minHeight: 0, overflow: "hidden" }}>
-              <Flex justify="center" pt="1" pb="2" px="1" style={{ flex: 1, minHeight: 0 }}>
-                <Box
-                  style={{
-                    width: frame.width ?? "100%",
-                    height: frame.height ?? "100%",
-                    transitionProperty: "width height",
-                    transitionTimingFunction: "ease-in-out",
-                    transitionDuration: "200ms",
-                    boxShadow: "var(--shadow-1)",
+                      setTimeout(() => {
+                        if (axeRef.current) axeRef.current.then(() => runAxe());
+                        else runAxe();
+                      }, 500);
+                    }, 200);
                   }}
-                >
-                  {demoA && (
-                    <iframe
-                      key="A"
-                      ref={aRef}
-                      title="Play Frame A"
-                      src={`/?frame=${demoA.filePath}`}
-                      onLoad={() => {
-                        setTimeout(() => {
-                          setActive("A");
-                          setDemoB(null);
-                          postTheme(aRef.current?.contentWindow);
+                  style={{
+                    opacity: demoB ? 0 : 1,
+                    display: active === "A" ? undefined : "none",
+                    border: "0px",
+                    height: "100%",
+                    width: "100%",
+                  }}
+                />
+              )}
+              {demoB && (
+                <iframe
+                  key="B"
+                  ref={bRef}
+                  title="Play Frame B"
+                  src={`/?frame=${demoB.filePath}`}
+                  onLoad={() => {
+                    setTimeout(() => {
+                      setActive("B");
+                      setDemoA(null);
+                      postTheme(bRef.current?.contentWindow);
 
-                          setTimeout(() => {
-                            if (axeRef.current) axeRef.current.then(() => runAxe());
-                            else runAxe();
-                          }, 500);
-                        }, 200);
-                      }}
-                      style={{
-                        opacity: demoB ? 0 : 1,
-                        display: active === "A" ? undefined : "none",
-                        border: "0px",
-                        height: "100%",
-                        width: "100%",
-                      }}
-                    />
-                  )}
-                  {demoB && (
-                    <iframe
-                      key="B"
-                      ref={bRef}
-                      title="Play Frame B"
-                      src={`/?frame=${demoB.filePath}`}
-                      onLoad={() => {
-                        setTimeout(() => {
-                          setActive("B");
-                          setDemoA(null);
-                          postTheme(bRef.current?.contentWindow);
-
-                          setTimeout(() => {
-                            if (axeRef.current) axeRef.current.then(() => runAxe());
-                            else runAxe();
-                          }, 500);
-                        }, 200);
-                      }}
-                      style={{
-                        display: active === "B" ? undefined : "none",
-                        border: "0px",
-                        opacity: demoA ? 0 : 1,
-                        height: "100%",
-                        width: "100%",
-                      }}
-                    />
-                  )}
-                </Box>
-              </Flex>
-            </Tabs.Content>
-
-            <Tabs.Content value="tests" forceMount style={{ flexGrow: 1, minHeight: 0, overflow: "hidden" }}>
-              <TestPanel demo={current} />
-            </Tabs.Content>
-          </Tabs.Root>
+                      setTimeout(() => {
+                        if (axeRef.current) axeRef.current.then(() => runAxe());
+                        else runAxe();
+                      }, 500);
+                    }, 200);
+                  }}
+                  style={{
+                    display: active === "B" ? undefined : "none",
+                    border: "0px",
+                    opacity: demoA ? 0 : 1,
+                    height: "100%",
+                    width: "100%",
+                  }}
+                />
+              )}
+            </Box>
+          </Flex>
         </Flex>
       </Flex>
     </Theme>

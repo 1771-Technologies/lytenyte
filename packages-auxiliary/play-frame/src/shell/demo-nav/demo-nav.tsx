@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Flex, Text } from "@radix-ui/themes";
 import { ChevronRightIcon, ChevronDownIcon, FileIcon } from "@radix-ui/react-icons";
-import type { Demo } from "../demo-dropdown/demo-dropdown.js";
 import { forest } from "../demo-dropdown/demo-tree.js";
-import type { BranchNode, LeafNode, Node } from "../demo-dropdown/demo-tree.js";
+import type { Demo, BranchNode, LeafNode, Node } from "../demo-dropdown/demo-tree.js";
 
 // ─── folder icons ─────────────────────────────────────────────────────────────
 

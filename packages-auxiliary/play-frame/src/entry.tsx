@@ -2,7 +2,6 @@ import { createRoot } from "react-dom/client";
 import { useEffect } from "react";
 import frames from "playframe";
 import config from "playframe-config";
-import "playframe-setup";
 import { Container } from "./container/container.js";
 import { ThemeProvider, useTheme } from "next-themes";
 import { NoDefault } from "./shell/no-default.js";
@@ -29,16 +28,22 @@ const isFrame = window.top !== window.self;
 const url = new URL(window.location.href);
 
 if (isFrame || url.searchParams.get("full")) {
+  if (config.setup) await import("playframe-setup");
+
   axe.configure({});
   const frame = url.searchParams.get("frame")!;
-  const component = frames[frame];
+  const loader = frames[frame];
+  const component = loader ? await loader() : null;
 
-  const Render = component?.default ?? NoDefault;
+  const Render = (component as any)?.default ?? NoDefault;
 
   const element = document.getElementById("root")!;
   element.id = "play-root";
 
-  const themeValues = config.themes.values.map((t) => t.value);
+  const configuredThemes = config.themes.values.length > 0
+    ? config.themes.values
+    : [{ value: "light" }, { value: "dark" }];
+  const themeValues = configuredThemes.map((t) => t.value);
 
   createRoot(element).render(
     // <StrictMode>

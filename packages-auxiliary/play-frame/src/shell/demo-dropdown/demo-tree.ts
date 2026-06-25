@@ -1,6 +1,12 @@
 import frames from "playframe";
 import { capitalize } from "es-toolkit";
 
+export interface Demo {
+  readonly value: any;
+  readonly label: string;
+  readonly filePath: string;
+}
+
 export type BranchNode<V> = {
   kind: "branch";
   label: string;
