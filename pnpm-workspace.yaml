@@ -4,3 +4,4 @@ packages:
   - packages-documentation/**
   - documentation
   - documentation-v2
+  - demos

@@ -113,6 +113,22 @@ importers:
         specifier: 4.8.1
         version: 4.8.1(typedoc@0.28.10(typescript@5.9.2))
 
+  demos:
+    dependencies:
+      '@1771technologies/lytenyte-pro':
+        specifier: workspace:*
+        version: link:../packages/commercial-lytenyte-pro
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@1771technologies/grid-sample-data':
+        specifier: workspace:*
+        version: link:../packages/sample-data
+
   documentation:
     dependencies:
       '@1771technologies/grid-sample-data':
