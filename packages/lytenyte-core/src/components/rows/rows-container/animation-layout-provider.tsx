@@ -98,16 +98,6 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
   useMemo(() => {
     if (!exit || !removed.length) return;
 
-    // A row's full width spans every column, most of which are typically scrolled out of the
-    // grid's own viewport - the live row only ever shows the slice the viewport clips to. Our
-    // clone is appended to <body> with no such ancestor, so without an explicit clip it would
-    // spill its full, unclipped width onto the page. Clip it to the same viewport rect instead.
-    const viewportEl = document.querySelector<HTMLElement>(`[data-ln-gridid="${gridId}"][data-ln-viewport]`);
-    const viewportRect = viewportEl?.getBoundingClientRect();
-
-    const viewportWidth = viewportEl?.clientWidth ?? viewportRect?.width;
-    const viewportHeight = viewportEl?.clientHeight ?? viewportRect?.height;
-
     for (const r of removed) {
       const el = document.querySelector<HTMLElement>(
         `[data-ln-gridid="${gridId}"][data-ln-row="true"][data-ln-row-id="${r.id}"]`,
@@ -122,40 +112,19 @@ export function AnimationLayoutProvider(props: PropsWithChildren) {
       animations.current.delete(r.id);
       animating.current.delete(r.id);
 
-      const rect = el.getBoundingClientRect();
-      // Non-pinned rows are positioned via a "zero-height parent, overflowing children" trick
-      // (see use-row-style.ts) - their own bounding rect always reports height 0. The grid already
-      // tracks the row's real visual height in --ln-row-height; fall back to the measured rect
-      // only if that's somehow unset (e.g. a pinned row, which has its own real height).
-      const rowHeightVar = Number.parseFloat(getComputedStyle(el).getPropertyValue("--ln-row-height"));
-      const height = Number.isFinite(rowHeightVar) && rowHeightVar > 0 ? rowHeightVar : rect.height;
-
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "fixed";
-      wrapper.style.overflow = "hidden";
-      wrapper.style.pointerEvents = "none";
-      wrapper.style.top = `${viewportRect?.top ?? rect.top}px`;
-      wrapper.style.left = `${viewportRect?.left ?? rect.left}px`;
-      wrapper.style.width = `${viewportWidth ?? rect.width}px`;
-      wrapper.style.height = `${viewportHeight ?? height}px`;
+      const parent = el.parentElement;
+      if (!parent) continue;
 
       const ghost = el.cloneNode(true) as HTMLElement;
       ghost.removeAttribute("data-ln-row-id");
-      ghost.style.position = "absolute";
-      ghost.style.margin = "0";
-      ghost.style.top = `${rect.top - (viewportRect?.top ?? rect.top)}px`;
-      ghost.style.left = `${rect.left - (viewportRect?.left ?? rect.left)}px`;
-      ghost.style.width = `${rect.width}px`;
-      ghost.style.height = `${height}px`;
-      ghost.style.transform = "none";
-      wrapper.appendChild(ghost);
-      document.body.appendChild(wrapper);
+      ghost.style.pointerEvents = "none";
+      parent.prepend(ghost);
 
       const anim = ghost.animate(exitKeyframesFor(exit.type, ghost), {
         duration: exit.duration,
         easing: exit.easing,
       });
-      anim.finished.catch(() => {}).finally(() => wrapper.remove());
+      anim.finished.catch(() => {}).finally(() => ghost.remove());
     }
   }, [removed, exit, gridId]);
 
