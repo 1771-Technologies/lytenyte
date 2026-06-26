@@ -104,8 +104,8 @@ const RootMain = <Spec extends Grid.GridSpec = Grid.GridSpec>(
                         >
                           <ViewportContext suppressScrollFlash={props.suppressScrollFlash ?? false}>
                             <DimensionsContext
-                              initialHeight={props.viewportInitialHeight}
-                              initialWidth={props.viewportInitialWidth}
+                              initialHeight={props.viewportInitialHeight ?? 500}
+                              initialWidth={props.viewportInitialWidth ?? 500}
                             >
                               <CoordinatesProvider
                                 columnBase={props.columnBase}
