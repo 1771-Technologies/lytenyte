@@ -1,31 +1,22 @@
-<div align="center">
-  <br><br>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images/github-lytenyte-dark.svg"/>
-    <source media="(prefers-color-scheme: light)" srcset="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images/github-lytenyte-light.svg"/>
-    <img width="360" alt="Logo of LyteNyte Grid" src="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images/github-lytenyte-light.svg"/>
-  </picture>
-  <br><br>
+![Banner](https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images/github-banner.png)
 
-  <h3>
-    The Fastest React Data Grid On The Modern Web
-  </h3>
+<!-- <div align="center">
 
-</div>
-<div align="center">
+<picture>
 
-LyteNyte Grid is a **~40 KB, zero-dependency React data grid** engineered for
-high performance and enterprise-scale datasets. It can handle **10,000 updates/sec**
-and render **millions of rows**. No wrappers. No heavy abstractions.
+<source media="(prefers-color-scheme: dark)" srcset="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images/github-banner.png"/>
+<source media="(prefers-color-scheme: light)" srcset="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images/github-banner.png"/>
+<img width="360" alt="Logo of LyteNyte Grid" src="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images/github-banner.png"/>
+</picture>
+</div> -->
 
-Choose between **headless** components or a **pre-styled** grid out of
-the box, and ship faster with a **declarative API** that
-is purpose-built for React.
+<h3>Drop The Fastest React Data Grid Into Your App In Seconds</h3>
 
-Start with **LyteNyte Grid Core** (free and open source). Upgrade
-to **LyteNyte Grid PRO** for advanced enterprise features and support.
+Building a feature-rich data grid that remains highly performant for end users takes a long time.
+Time that could be spent focusing on your application.
 
-[Compare Features](https://1771technologies.com/pricing)
+Designed with an obsessive focus on DX, LyteNyte Grid is easy to customize,
+remains highly performant, and drastically reduces the engineering effort required for data grids.
 
 </div>
 
@@ -45,23 +36,62 @@ to **LyteNyte Grid PRO** for advanced enterprise features and support.
 
 <div align="center">
 
-<a href="https://1771technologies.com">Website</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/docs/intro-getting-started">Documentation</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/demo">Demo</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/pricing">Pricing</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/eula">EULA</a>
+<a href="https://1771technologies.com">Website</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/docs/intro-getting-started">Documentation</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/demo">Demo</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/pricing">Pricing</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://www.1771technologies.com/blog">Blog</a>
+&nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://www.1771technologies.com/support">Support</a>
 
 </div>
 
 ![LyteNyte Logo](https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-readme-image.png)
 
-## LyteNyte Editions
+## Why Choose LyteNyte Grid?
 
-LyteNyte Grid is available in two editions:
+⚡Up to **7x** [faster performance](https://www.1771technologies.com/blog/performance-benchmarks)
+than competing grids. At just **40 KB gzipped**, it renders millions of rows and handles up to **10,000 updates/sec**.
 
-1. **LyteNyte Grid Core:** Free, **open-source edition** for building high-performance data tables. Includes sorting,
-   filtering, editing, row selection, detail views, and more. Also includes advanced features such
-   as aggregation, row grouping, and cell range selection, often locked behind paywalls in other grids.
+🧰 Get **150+ built-in** [grid features](https://www.1771technologies.com/pricing?showFeatures=true#lytenyte-features),
+including server-side data loading, infinite scrolling, pivoting, tree views, filtering, row grouping, and cell editing.
 
-2. **LyteNyte Grid PRO: Commercial edition** that extends Core with powerful enterprise features,
-   including server-side data loading, pivoting, tree data, component managers, and advanced
-   filtering. Build custom menus, popovers, expressions, and workflow-driven UIs with ease.
+🎯 Better DX with a [declarative API](https://www.1771technologies.com/docs/grid-api-extensions)
+that lets you extend the API and column definitions with your own custom props and methods. 100% type-safe. **No wrappers or dependencies**.
+
+🎨 No [styling tradeoffs](https://www.1771technologies.com/docs/grid-theming)
+by forcing a choice between a **headless table and a pre-built table**. You can use it headless for ultimate customization or
+with pre-built logic and themes if you need to ship in a rush.
+<br />
+
+🔄Driven by [your state](https://www.1771technologies.com/docs/grid-reactivity). It’s **fully stateless and prop-driven**. Configure it declaratively from
+URL params, server state, or external state for simpler code and zero sync headaches.
+<br />
+
+🤖 Turbocharges [AI workflows](https://www.1771technologies.com/docs/ai-skills-overview). The grid's
+declarative and type-safe nature allows **AI to statically verify code**, preventing hidden bugs
+and excess token usage caused by wrapping layers and imperative logic found in other grids.
+
+## Installation
+
+LyteNyte Grid can be installed via NPM:
+
+**PRO:**
+
+```sh
+npm install --save @1771technologies/lytenyte-pro
+```
+
+> [!NOTE]
+> You can install and use LyteNyte Grid PRO
+> without a license, but a watermark will be displayed.
+
+**Core:**
+
+```sh
+npm install --save @1771technologies/lytenyte-core
+```
+
+## Quick Start
+
+- Begin with our comprehensive [getting started guide](https://www.1771technologies.com/docs/intro-getting-started).
+- Explore our flexible [pricing options](https://www.1771technologies.com/pricing) to find the ideal fit for your project.
+- Follow our step-by-step [installation guide](https://www.1771technologies.com/docs/intro-installation) to seamlessly integrate LyteNyte Grid into your application.
 
 ## AI-Enhanced Workflows
 
@@ -408,31 +438,17 @@ See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-o
   implements one-way data binding and declarative rendering to
   maintain predictable state management.
 
-## Installation
+## LyteNyte Editions
 
-LyteNyte Grid can be installed via NPM:
+LyteNyte Grid is available in two editions:
 
-**PRO:**
+1. **LyteNyte Grid Core:** Free, **open-source edition** for building high-performance data tables. Includes sorting,
+   filtering, editing, row selection, detail views, and more. Also includes advanced features such
+   as aggregation, row grouping, and cell range selection, often locked behind paywalls in other grids.
 
-```sh
-npm install --save @1771technologies/lytenyte-pro
-```
-
-> [!NOTE]
-> You can install and use LyteNyte Grid PRO
-> without a license, but a watermark will be displayed.
-
-**Core:**
-
-```sh
-npm install --save @1771technologies/lytenyte-core
-```
-
-## Quick Start
-
-- Begin with our comprehensive [getting started guide](https://www.1771technologies.com/docs/intro-getting-started).
-- Explore our flexible [pricing options](https://www.1771technologies.com/pricing) to find the ideal fit for your project.
-- Follow our step-by-step [installation guide](https://www.1771technologies.com/docs/intro-installation) to seamlessly integrate LyteNyte Grid into your application.
+2. **LyteNyte Grid PRO: Commercial edition** that extends Core with powerful enterprise features,
+   including server-side data loading, pivoting, tree data, component managers, and advanced
+   filtering. Build custom menus, popovers, expressions, and workflow-driven UIs with ease.
 
 ## Licensing
 
