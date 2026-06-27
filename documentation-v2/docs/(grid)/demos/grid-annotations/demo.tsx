@@ -12,7 +12,6 @@ import {
   NumberCell,
   ProfitCell,
 } from "./components.jsx";
-import { useMemo, useState } from "react";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -35,10 +34,33 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
+const borderAnnotation: Grid.Annotation<GridSpec> = {
+  id: "range-highlight",
+  anchor: {
+    kind: "range",
+    rowStart: 2,
+    rowEnd: 4,
+    colStart: 1,
+    colEnd: 3,
+  },
+  render: () => (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        border: "2px dashed #3b82f6",
+        background: "rgba(59, 130, 246, 0.08)",
+        boxSizing: "border-box",
+      }}
+    />
+  ),
+};
+
+const annotations: Grid.Annotation<GridSpec>[] = [borderAnnotation];
+
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
 export default function GridDemo() {
-  const [annotations, setAnnotations] = useState<Grid.Annotation<GridSpec>[]>([]);
   const ds = useClientDataSource<GridSpec>({
     data: salesData,
   });
@@ -46,40 +68,7 @@ export default function GridDemo() {
   return (
     <div className="ln-grid" style={{ height: 500 }}>
       {/*!next */}
-      <Grid
-        columns={columns}
-        columnBase={base}
-        rowSource={ds}
-        annotations={annotations}
-        events={useMemo<Grid.Events<GridSpec>>(() => {
-          return {
-            cell: {
-              mouseEnter: ({ layout, row, column }) => {
-                setAnnotations([
-                  {
-                    anchor: {
-                      kind: "range",
-                      rowStart: layout.rowIndex,
-                      rowEnd: layout.rowIndex + 1,
-                      colStart: layout.colIndex,
-                      colEnd: layout.colIndex + 1,
-                    },
-                    id: "Add comment",
-                    render: ({}) => {
-                      return <div>X</div>;
-                    },
-                  },
-                ]);
-
-                // Show annotation
-              },
-              mouseLeave: ({}) => {
-                setAnnotations([]);
-              },
-            },
-          };
-        }, [])}
-      />
+      <Grid columns={columns} columnBase={base} rowSource={ds} annotations={annotations} />
     </div>
   );
 }
