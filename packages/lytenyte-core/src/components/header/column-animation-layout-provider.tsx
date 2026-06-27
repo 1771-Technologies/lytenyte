@@ -10,20 +10,10 @@ import {
 } from "../../root/contexts/animations/resolve-enter-exit-keyframes.js";
 import type { ColumnMoved } from "../../root/contexts/animations/column-types.js";
 
-function parsePx(value: string): number {
-  if (value === "" || value === "auto") return 0;
-  const n = Number.parseFloat(value);
-  return Number.isFinite(n) ? n : 0;
-}
-
 function parseTranslateXPx(value: string): number {
   if (value === "none" || value === "") return 0;
   const match = /translateX\(([-\d.]+)px\)/.exec(value);
   return match ? Number.parseFloat(match[1]) : 0;
-}
-
-function isHeaderKind(el: HTMLElement): boolean {
-  return el.hasAttribute("data-ln-header-cell") || el.hasAttribute("data-ln-header-group");
 }
 
 function isPinnedHeaderCell(el: HTMLElement): boolean {
