@@ -24,22 +24,24 @@ export interface AnimateSettings {
 
 export const DISABLED_ANIMATE_SETTINGS: AnimateSettings = { move: false, enter: false, exit: false };
 
-function resolveMove(value: Grid.AnimateMove | false | undefined): ResolvedAnimateMove | false {
+function resolveMove(value: Grid.AnimateMove | boolean | undefined): ResolvedAnimateMove | false {
   if (value === false) return false;
+  const spec = typeof value === "object" ? value : undefined;
   return {
-    duration: value?.duration ?? DEFAULT_MOVE_DURATION,
-    easing: value?.easing ?? DEFAULT_EASING,
+    duration: spec?.duration ?? DEFAULT_MOVE_DURATION,
+    easing: spec?.easing ?? DEFAULT_EASING,
   };
 }
 
 function resolveEnterExit(
-  value: Grid.AnimateEnterExit | false | undefined,
+  value: Grid.AnimateEnterExit | boolean | undefined,
 ): ResolvedAnimateEnterExit | false {
   if (value === false) return false;
+  const spec = typeof value === "object" ? value : undefined;
   return {
-    type: value?.type ?? DEFAULT_ENTER_EXIT_TYPE,
-    duration: value?.duration ?? DEFAULT_ENTER_EXIT_DURATION,
-    easing: value?.easing ?? DEFAULT_EASING,
+    type: spec?.type ?? DEFAULT_ENTER_EXIT_TYPE,
+    duration: spec?.duration ?? DEFAULT_ENTER_EXIT_DURATION,
+    easing: spec?.easing ?? DEFAULT_EASING,
   };
 }
 

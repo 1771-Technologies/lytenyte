@@ -437,9 +437,9 @@ export namespace Grid {
   };
 
   export type Animate = {
-    readonly move?: AnimateMove | false;
-    readonly enter?: AnimateEnterExit | false;
-    readonly exit?: AnimateEnterExit | false;
+    readonly move?: AnimateMove | boolean;
+    readonly enter?: AnimateEnterExit | boolean;
+    readonly exit?: AnimateEnterExit | boolean;
   };
 
   export type RowAnimateEnterExitType = AnimateEnterExitType;
