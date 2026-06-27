@@ -15,8 +15,8 @@
 Building a feature-rich data grid that remains highly performant for end users takes a long time.
 Time that could be spent focusing on your application.
 
-Designed with an obsessive focus on DX, LyteNyte Grid is easy to customize,
-remains highly performant, and drastically reduces the engineering effort required for data grids.
+We created LyteNyte Grid to solve that. Designed with an obsessive focus on DX, it's ultra-fast,
+easy to customize, and drastically reduces the engineering effort required for data grids.
 
 </div>
 
@@ -52,16 +52,14 @@ than competing grids. At just **40 KB gzipped**, it renders millions of rows and
 including server-side data loading, infinite scrolling, pivoting, tree views, filtering, row grouping, and cell editing.
 
 🎯 Better DX with a [declarative API](https://www.1771technologies.com/docs/grid-api-extensions)
-that lets you extend the API and column definitions with your own custom props and methods. 100% type-safe. **No wrappers or dependencies**.
+that lets you extend the API and column definitions with your own custom props and methods. **100% type-safe**. **No wrappers or dependencies**.
 
 🎨 No [styling tradeoffs](https://www.1771technologies.com/docs/grid-theming)
-by forcing a choice between a **headless table and a pre-built table**. You can use it headless for ultimate customization or
-with pre-built logic and themes if you need to ship in a rush.
-<br />
+by forcing a choice between a **headless table and a pre-built table**. You can run it headless for ultimate customization
+or with pre-built logic and themes if you need to ship in a rush.
 
 🔄Driven by [your state](https://www.1771technologies.com/docs/grid-reactivity). It’s **fully stateless and prop-driven**. Configure it declaratively from
 URL params, server state, or external state for simpler code and zero sync headaches.
-<br />
 
 🤖 Turbocharges [AI workflows](https://www.1771technologies.com/docs/ai-skills-overview). The grid's
 declarative and type-safe nature allows **AI to statically verify code**, preventing hidden bugs
