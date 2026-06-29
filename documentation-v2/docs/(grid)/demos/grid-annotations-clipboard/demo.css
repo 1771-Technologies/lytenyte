@@ -1,0 +1,9 @@
+@keyframes marchingAnts {
+  to {
+    stroke-dashoffset: -26;
+  }
+}
+
+.ln-marching-ants {
+  animation: marchingAnts 0.4s linear infinite;
+}

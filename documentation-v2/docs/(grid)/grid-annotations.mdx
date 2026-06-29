@@ -110,6 +110,31 @@ approach at implementing this.
 
 ::demo[Cell Comments="./demos/grid-annotations-comments"]
 
+## Copy Marching Ants
+
+The [marching ants](https://en.wikipedia.org/wiki/Marching_ants) effect is an animated dashed border
+that signals a copied selection, familiar from spreadsheet applications like Excel and Google Sheets.
+Annotations make it straightforward to replicate this pattern in LyteNyte Grid.
+
+The demo below supports the standard clipboard shortcuts. Select a range of cells, then:
+
+- **Ctrl/Cmd + C:** copies the selection to the clipboard and shows the marching ants border.
+- **Ctrl/Cmd + X:** same as copy, but pasting will also clear the original cells (cut semantics).
+- **Ctrl/Cmd + V:** pastes at the active cell. If the clipboard still holds the original copied
+  content and the operation was a cut, the source cells are cleared. If you copied something else
+  between copying and pasting, the ants are dismissed and source cells are left untouched.
+- **Escape:** dismisses the ants without pasting.
+
+The ants persist while focus stays within the grid, including when you click other cells. They are
+cleared when focus moves to a different part of the page, but not when you switch to another
+application, so you can copy, Alt-Tab to check something, and return to paste without losing the
+indicator.
+
+The animation itself is an SVG `<rect>` with `stroke-dasharray` driven by a CSS `@keyframes` rule
+that increments `stroke-dashoffset`, creating the illusion of movement along the border.
+
+::demo[Marching Ants="./demos/grid-annotations-clipboard"]
+
 ## Next Steps
 
 ::next[/docs/grid-container]
