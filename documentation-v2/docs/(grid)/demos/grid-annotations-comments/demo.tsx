@@ -11,7 +11,7 @@ import {
   NumberCell,
   ProfitCell,
 } from "./components.jsx";
-import { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -72,15 +72,33 @@ function CommentMarker() {
   );
 }
 
-// Small "+" button shown when hovering a cell.
-function AddCommentButton({
+// Shared styles for floating panels (tooltip + popover).
+const floatingPanel: React.CSSProperties = {
+  position: "absolute",
+  top: 0,
+  left: "100%",
+  marginLeft: 4,
+  minWidth: 220,
+  background: "var(--ln-bg-popover)",
+  border: "1px solid var(--ln-border-popover)",
+  borderRadius: 8,
+  padding: 10,
+  boxShadow: "0 4px 16px var(--ln-border-field-and-button-shadow)",
+  zIndex: 10,
+  pointerEvents: "auto",
+};
+
+// Corner button shown when hovering a cell. `variant="pencil"` for cells with an existing comment.
+function CellButton({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  variant = "plus",
 }: {
   onClick: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  variant?: "plus" | "pencil";
 }) {
   return (
     <button
@@ -98,9 +116,9 @@ function AddCommentButton({
         height: 18,
         padding: 0,
         borderRadius: 3,
-        border: "1px solid #cbd5e1",
-        background: "white",
-        color: "#64748b",
+        border: "1px solid var(--ln-border-button-light)",
+        background: "var(--ln-bg-button-light)",
+        color: "var(--ln-text-light)",
         fontSize: 14,
         lineHeight: "16px",
         cursor: "pointer",
@@ -108,11 +126,44 @@ function AddCommentButton({
         alignItems: "center",
         justifyContent: "center",
         pointerEvents: "auto",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
+        boxShadow: "0 1px 2px var(--ln-border-field-and-button-shadow)",
       }}
     >
-      +
+      {variant === "pencil" ? (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+        </svg>
+      ) : (
+        "+"
+      )}
     </button>
+  );
+}
+
+// Read-only tooltip shown when hovering a cell that already has a comment.
+function CommentTooltip({
+  text,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  text: string;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}) {
+  return (
+    <div style={floatingPanel} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <p
+        style={{
+          margin: 0,
+          fontSize: 13,
+          color: "var(--ln-text)",
+          whiteSpace: "pre-wrap",
+          wordBreak: "break-word",
+        }}
+      >
+        {text}
+      </p>
+    </div>
   );
 }
 
@@ -133,20 +184,7 @@ function CommentPopover({
     <>
       <CommentMarker />
       <div
-        style={{
-          position: "absolute",
-          top: "100%",
-          right: 0,
-          marginTop: 4,
-          minWidth: 220,
-          background: "white",
-          border: "1px solid #e2e8f0",
-          borderRadius: 8,
-          padding: 10,
-          boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
-          zIndex: 10,
-          pointerEvents: "auto",
-        }}
+        style={floatingPanel}
         // Stop propagation so the grid cell's mouseLeave does not fire when
         // the pointer moves from the cell into the popover area.
         onMouseEnter={(e) => e.stopPropagation()}
@@ -162,13 +200,15 @@ function CommentPopover({
             display: "block",
             width: "100%",
             resize: "vertical",
-            border: "1px solid #e2e8f0",
+            border: "1px solid var(--ln-border-field-and-button)",
             borderRadius: 4,
             padding: "5px 8px",
             fontSize: 13,
             outline: "none",
             boxSizing: "border-box",
             fontFamily: "inherit",
+            background: "var(--ln-bg-form-field)",
+            color: "var(--ln-text)",
           }}
           onKeyDown={(e) => {
             if ((e.metaKey || e.ctrlKey) && e.key === "Enter") onAccept(value);
@@ -181,8 +221,9 @@ function CommentPopover({
             style={{
               padding: "3px 10px",
               borderRadius: 4,
-              border: "1px solid #e2e8f0",
-              background: "white",
+              border: "1px solid var(--ln-border-button-light)",
+              background: "var(--ln-bg-button-light)",
+              color: "var(--ln-text)",
               fontSize: 12,
               cursor: "pointer",
             }}
@@ -195,7 +236,7 @@ function CommentPopover({
               padding: "3px 10px",
               borderRadius: 4,
               border: "none",
-              background: "#3b82f6",
+              background: "var(--ln-primary-50)",
               color: "white",
               fontSize: 12,
               cursor: "pointer",
@@ -252,9 +293,19 @@ export default function GridDemo() {
       });
     }
 
-    // "+" button on the hovered cell. Suppressed while a popover is open.
+    // Hover annotation — suppressed while a popover is open.
     if (hovered && !editing) {
+      const key = cellKey(hovered.rowId, hovered.colId);
+      const existingComment = comments.get(key);
       const { rowIndex, colIndex } = hovered;
+
+      const cancelClear = () => {
+        if (clearHoveredTimeout.current) {
+          clearTimeout(clearHoveredTimeout.current);
+          clearHoveredTimeout.current = null;
+        }
+      };
+
       result.push({
         id: "cell-hover",
         anchor: {
@@ -264,18 +315,29 @@ export default function GridDemo() {
           colStart: colIndex,
           colEnd: colIndex + 1,
         },
-        render: () => (
-          <AddCommentButton
-            onClick={() => setEditing(hovered)}
-            onMouseEnter={() => {
-              if (clearHoveredTimeout.current) {
-                clearTimeout(clearHoveredTimeout.current);
-                clearHoveredTimeout.current = null;
-              }
-            }}
-            onMouseLeave={() => setHovered(null)}
-          />
-        ),
+        render: () =>
+          existingComment ? (
+            <>
+              <CommentMarker />
+              <CellButton
+                variant="pencil"
+                onClick={() => setEditing(hovered)}
+                onMouseEnter={cancelClear}
+                onMouseLeave={() => setHovered(null)}
+              />
+              <CommentTooltip
+                text={existingComment.text}
+                onMouseEnter={cancelClear}
+                onMouseLeave={() => setHovered(null)}
+              />
+            </>
+          ) : (
+            <CellButton
+              onClick={() => setEditing(hovered)}
+              onMouseEnter={cancelClear}
+              onMouseLeave={() => setHovered(null)}
+            />
+          ),
       });
     }
 
