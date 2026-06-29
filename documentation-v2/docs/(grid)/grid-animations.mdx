@@ -33,3 +33,71 @@ You can click:
 - The **Toggle Country** to hide the **Country** Column.
 
 ::demo[Basic Animations="./demos/grid-animations"]
+
+## Custom Animations
+
+Passing `true` enables all three phases with the default fade and duration. To go further, pass an
+animation config object where each phase can be tuned independently or disabled entirely.
+
+```tsx
+const rowAnimate = {
+  move: {
+    duration: 500,
+    easing: "cubic-bezier(0.34, 1.56, 0.64, 1)", // spring overshoot
+  },
+  enter: {
+    duration: 300,
+    easing: "ease-out",
+    type: () => [
+      { opacity: 0, transform: "translateY(20px)" },
+      { opacity: 1, transform: "translateY(0)" },
+    ],
+  },
+  exit: {
+    duration: 200,
+    easing: "ease-in",
+    type: () => [
+      { opacity: 1, transform: "translateY(0)" },
+      { opacity: 0, transform: "translateY(-20px)" },
+    ],
+  },
+};
+
+const columnAnimate = {
+  move: {
+    duration: 500,
+    easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+  },
+  enter: {
+    duration: 250,
+    easing: "ease-out",
+    type: () => [
+      { opacity: 0, transform: "translateX(-12px)" },
+      { opacity: 1, transform: "translateX(0)" },
+    ],
+  },
+  exit: {
+    duration: 200,
+    easing: "ease-in",
+    type: () => [
+      { opacity: 1, transform: "translateX(0)" },
+      { opacity: 0, transform: "translateX(12px)" },
+    ],
+  },
+};
+
+<Grid rowAnimate={rowAnimate} columnAnimate={columnAnimate} />;
+```
+
+The `type` field on `enter` and `exit` accepts a function that receives the element being animated
+and returns a `Keyframe[]` array, the same format used by the
+[Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).
+The `move` phase always uses a translate transform and does not accept a `type`.
+
+::demo[Custom Animations="./demos/grid-animations-custom"]
+
+## Next Steps
+
+::next[/docs/grid-annotations]
+::next[/docs/grid-container]
+::next[/docs/grid-reactivity]
