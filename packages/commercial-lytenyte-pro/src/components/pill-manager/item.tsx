@@ -259,6 +259,8 @@ function PillItemBase({ item, elementEnd, ...props }: PillItem.Props, ref: PillI
     <div
       data-ln-pill-type={row.type}
       data-ln-pill-item-container
+      data-ln-pill-id={item.id}
+      data-ln-pill-row-id={row.id}
       data-ln-pill-active={item.active}
       data-ln-draggable={item.movable}
       data-ln-drag-active={isDragActive}

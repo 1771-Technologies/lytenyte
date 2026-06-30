@@ -8,7 +8,7 @@ import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 import { useGridIdContext } from "../../../root/contexts/grid-id.js";
 import { useOffsetContext } from "../../../root/contexts/grid-areas/offset-context.js";
 import { useCellRangeSelectionPieceContext } from "../../../root/contexts/cell-range-selection/cell-range-selection-state.js";
-import { useYCoordinates } from "../../../root/contexts/coordinates.js";
+import { useOddEvenIndices, useYCoordinates } from "../../../root/contexts/coordinates.js";
 import { useAPI } from "../../../root/contexts/api-provider.js";
 import { useStyleContext, useStyleSettings } from "../../../root/contexts/styles-context.js";
 import { useGridEvents } from "../../../root/contexts/events-context.js";
@@ -19,6 +19,14 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   const sx = useStyleContext();
   const events = useGridEvents();
   const { rowAlternateAttr } = useStyleSettings();
+  const indices = useOddEvenIndices();
+
+  const alternated =
+    rowAlternateAttr === "root"
+      ? indices?.[row.rowIndex]
+      : rowAlternateAttr === true
+        ? row.rowIndex % 2 === 0
+        : false;
 
   const api = useAPI();
   const cellSelections$ = useCellRangeSelectionPieceContext();
@@ -63,9 +71,10 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-rowtype="normal-row"
         data-ln-last-top-pin={row.rowLastPinTop}
         data-ln-first-bottom-pin={row.rowFirstPinBottom}
-        data-ln-alternate={rowAlternateAttr ? row.rowIndex % 2 === 1 : undefined}
+        data-ln-alternate={alternated ? true : undefined}
         data-ln-selected={rowMeta.row?.__selected}
         data-ln-row
+        data-ln-row-id={row.id}
       >
         {props.children}
         <RowDetailRow layout={row} />

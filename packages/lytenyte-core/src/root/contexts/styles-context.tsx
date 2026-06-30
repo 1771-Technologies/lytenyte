@@ -3,7 +3,7 @@ import type { Root } from "../root.js";
 import { equal } from "@1771technologies/js-utils";
 
 interface StyleSettings {
-  readonly rowAlternateAttr: boolean;
+  readonly rowAlternateAttr: boolean | "root";
 }
 
 const context = createContext<Root.Props["styles"]>(null as any);
