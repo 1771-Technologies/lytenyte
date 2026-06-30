@@ -1,10 +1,47 @@
 ---
-title: v2.1.0 (Latest)
+title: v2.2.0 (Latest)
 changelog: true
 description: LyteNyte Grid 2 Changelog. Track new features, improvements, and the latest changes.
 ---
 
 import { DateTag } from "./components/date-tag";
+
+## v2.2.0
+
+<DateTag>July 05, 2026</DateTag>
+
+### Official Release Article
+
+Read the [press release](/blog/lytenyte-version-2.2) for in-depth details on the new features.
+
+### Release Highlights
+
+#### General Enhancements
+
+Performance improvements across the board and refined AI Skills integration.
+
+#### Core Edition Updates
+
+- Row and column animations are now supported. Rows and columns animate when they change position, leave
+  the viewport, or are newly added. See the [Row & Column Animations guide](/docs/grid-animations) for details.
+- New `suppressScrollFlash` property that prevents "white flashes" during fast scrolling. This is unique to
+  LyteNyte Grid and completely eliminates content flashes regardless of scroll speed. See the
+  [Suppress Scroll Flash section](/docs/grid-virtualization#suppress-scroll-flash) for more details.
+- New `viewportInitialWidth` and `viewportInitialHeight` properties that provide the grid with a hint about
+  the dimensions of its container before they have been observed. Particularly useful for SSR setups,
+  ensuring the initial HTML delivered to the client contains meaningful content.
+
+#### PRO Edition Updates
+
+Grid Annotations are now supported. Annotations let you display custom content at arbitrary positions
+within the grid viewport and are useful for:
+
+- Cell comments
+- Highlighting points of interest
+- Copy region indicators
+- Any other markers or points of attention your application requires
+
+See the [Annotations guide](/docs/grid-annotations) for more details.
 
 ## v2.1.3
 
