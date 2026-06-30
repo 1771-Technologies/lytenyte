@@ -1,8 +1,90 @@
 ---
-title: Office Release of LyteNyte Grid v2.1
+title: Official Release of LyteNyte Grid v2.2
 description: Annotate important grid areas and beautifully animate rows and columns
 blog:
   author: RoarLyte
   date: 03 July 2026
   time: 6
 ---
+
+TODO IMAGE
+
+In data-dense grids, drawing the user's attention to the most important details produces
+the best user experience. LyteNyte Grid 2.2 makes this easy.
+
+LyteNyte Grid 2.2 brings annotation support, letting you mark particular areas of the grid
+with custom content that draws the user's attention. Add custom cell highlights, include cell
+comments, or provide copy feedback. Annotations can render whatever content your application
+requires, and LyteNyte Grid handles the positioning boilerplate.
+
+## What's New In LyteNyte Grid 2.2?
+
+LyteNyte Grid 2.2 introduces grid annotations, row and column animations,
+initial viewport width and height, and scroll flash suppression.
+
+- **Annotations (PRO)**
+  - Render arbitrary React content anywhere in the grid.
+  - Annotate headers or cells.
+  - LyteNyte Grid will handle the positioning boilerplate.
+- **Row and Column Animations**
+  - Animate rows and columns when they move, enter, or exit the grid.
+  - Provide custom animations with easing curves that match your application's aesthetic.
+  - Use fine-grained control to enable only the specific animations your application needs.
+- **Suppress Scroll Flash**
+  - Never see an empty space, regardless of how fast the user scrolls.
+- **Initial Viewport Width and Height**
+  - Better SSR support allowing some cell content to be preloaded.
+
+Whether you need a free, open-source data grid (Core) or are
+shipping enterprise-scale applications that require
+advanced features and support (PRO), LyteNyte Grid 2.2 has you covered.
+
+## Grid Annotations
+
+Annotations render arbitrary React content at a specific position in the grid. You provide
+the content; LyteNyte Grid handles the positioning. Anchor an annotation to a cell range,
+a column header, or a single point, the grid does the rest.
+
+The demo below shows cell comments built with annotations.
+
+::demo[Cell Comments="../../docs/(grid)/demos/grid-annotations-comments"]
+
+Annotations are equally useful for transient feedback like clipboard indicators. The demo
+below uses a `range` annotation to render an animated "marching ants" border over the
+copied region.
+
+::demo[Clipboard Marching Ants="../../docs/(grid)/demos/grid-annotations-clipboard"]
+
+See the [Annotations guide](/docs/grid-annotations) for more details.
+
+## Row and Column Animations
+
+Set `rowAnimate` or `columnAnimate` to `true` to animate rows and columns as they move,
+enter, or leave the grid. Pass a config object instead to customise the easing, duration,
+and keyframes for each phase independently.
+
+::demo[Row and Column Animations="../../docs/(grid)/demos/grid-animations"]
+
+## Suppress Scroll Flash
+
+At very high scroll speeds, virtualized grids can momentarily show empty white space before
+new cells paint. Setting `suppressScrollFlash` on the grid eliminates this entirely, LyteNyte
+Grid detects fast scroll events and keeps the last rendered content visible until the next
+frame is ready. The result is a seamless, flicker-free scroll experience regardless of scroll
+speed or data volume.
+
+## Initial Viewport Width and Height
+
+The `viewportInitialWidth` and `viewportInitialHeight` properties let you tell the grid the
+expected size of its container before it has measured it. On the very first render, particularly
+in server-side rendering (SSR) setups, the grid uses these values to pre-render the correct
+number of rows and columns, so the HTML delivered to the browser already contains meaningful
+cell content rather than a blank placeholder.
+
+## Get Started Now
+
+- [Try the interactive demo](https://www.1771technologies.com/demo). See LyteNyte Grid PRO in action.
+- [Compare license plans](https://www.1771technologies.com/pricing). Choose the right fit for your team.
+
+Or start building with the free **LyteNyte Grid Core** edition. It's open-source,
+memory-efficient, and ready to drop into your next React project.
