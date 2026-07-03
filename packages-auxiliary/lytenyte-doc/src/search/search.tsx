@@ -115,10 +115,10 @@ export function Search() {
         <span className="iconify ph--magnifying-glass size-5 md:size-4"></span>
         <span className="hidden pe-32 md:block">Search</span>
         <div className="md:center hidden gap-1">
-          <ModKey
-            className="border-xd-border center text-xd-muted-foreground size-5 rounded border"
-          />
-          <kbd className="border-xd-border center text-xd-muted-foreground size-5 rounded border text-xs">K</kbd>
+          <ModKey className="border-xd-border center text-xd-muted-foreground h-5 w-fit min-w-5 rounded border px-1" />
+          <kbd className="border-xd-border center text-xd-muted-foreground size-5 rounded border text-xs">
+            K
+          </kbd>
         </div>
       </D.Trigger>
       <D.Portal>
