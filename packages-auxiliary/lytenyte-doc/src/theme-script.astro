@@ -18,7 +18,7 @@
     reflectPreference();
   };
 
-  const reflectPreference = (noTransition = false) => {
+  const reflectPreference = (noTransition = true) => {
     if (noTransition) document.documentElement.classList.add("no-transition");
     document.documentElement.setAttribute("data-theme", theme.value);
     document.documentElement.classList.remove(theme.value === "dark" ? "light" : "dark");
@@ -36,7 +36,7 @@
   reflectPreference(true);
 
   window.addEventListener("load", () => {
-    reflectPreference();
+    reflectPreference(true);
     document.querySelector("#theme-toggle")?.addEventListener("click", toggleTheme);
   });
 
