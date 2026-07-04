@@ -69,7 +69,7 @@ export default function GridDemo() {
 
   return (
     <>
-      <div className="border-ln-border flex gap-4 border-b px-2 py-2">
+      <div className="border-ln-border flex flex-wrap gap-4 text-nowrap border-b px-2 py-2">
         <button data-ln-button="website" data-ln-size="mx" onClick={() => setRowData((d) => shuffle(d))}>
           Shuffle Rows
         </button>
@@ -77,10 +77,10 @@ export default function GridDemo() {
           Shuffle Columns
         </button>
         <button data-ln-button="website" data-ln-size="mx" onClick={() => setHideAdults((h) => !h)}>
-          Toggle Adults
+          {hideAdults ? "Show Adults (25-64)" : "Hide Adults (25-64)"}
         </button>
         <button data-ln-button="website" data-ln-size="mx" onClick={() => setHideCountry((h) => !h)}>
-          Toggle Country
+          {hideCountry ? "Show Country" : "Hide Country"}
         </button>
       </div>
       <div className="ln-grid" style={{ height: 500 }}>

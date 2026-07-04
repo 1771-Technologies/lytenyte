@@ -83,14 +83,15 @@ but that approach causes frame drops and reduces overall application performance
 
 :::
 
-## Suppress Scroll Flash
+## Scroll Flash Suppression
 
-Modern browsers perform scrolling on a separate CPU thread. As a result,
-the grid can briefly display white areas if the user scrolls very quickly,
-such as by dragging the scroll bar to the bottom of the grid.
+Modern browsers can process scrolling independently of the main thread.
+If a user scrolls faster than the grid can render the next viewport,
+such as by rapidly dragging the scrollbar to the bottom, the
+grid may briefly display blank areas.
 
-Enable `suppressScrollFlash` to prevent white flashes while scrolling.
-The following demo shows the behavior.
+Enable `suppressScrollFlash` to prevent blank flashes during fast scrolling.
+The demo below shows how the grid behaves with scroll flash suppression enabled.
 
 ::demo[Suppress Scroll Flash="./demos/grid-no-flash"]
 
@@ -102,7 +103,7 @@ Enabling `suppressScrollFlash` has a performance cost. On lower-powered devices,
 users may notice dropped frames while scrolling very quickly.
 :::
 
-## Initial Width and Height
+## Initial Viewport Rendering
 
 When virtualization is enabled, LyteNyte Grid must observe the viewport size
 before it can render rows and columns. As a result, the initial render is
