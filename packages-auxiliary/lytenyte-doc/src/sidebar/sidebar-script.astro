@@ -31,7 +31,8 @@
     sidebar.style.opacity = 1;
 
     const scroll = Number.parseInt(localStorage.getItem("sidebar-scroll"));
-    const href = localStorage.getItem("sidebar-href");
+    const href = localStorage.getItem("sidebar-href") ?? location.href;
+
     if (!Number.isNaN(scroll)) {
       sidebar.scrollTo({ top: scroll, behavior: "instant" });
       localStorage.removeItem("sidebar-scroll");
