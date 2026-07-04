@@ -1,85 +1,141 @@
 ---
 title: Official Release of LyteNyte Grid v2.2
-description: Annotate important grid areas and beautifully animate rows and columns
+description: Supercharge Your Data Grids with Modern UX
 blog:
   author: RoarLyte
-  date: 03 July 2026
+  date: 05 July 2026
   time: 6
 ---
 
-TODO IMAGE
+![v2.2 Cover](/blog-assets/lytenyte-v2.2.png)
 
-In data-dense grids, drawing the user's attention to the most important details produces
-the best user experience. LyteNyte Grid 2.2 makes this easy.
+Part of having awesome DX means making it easier and less time-consuming for developers to deliver awesome UX.
 
-LyteNyte Grid 2.2 brings annotation support, letting you mark particular areas of the grid
-with custom content that draws the user's attention. Add custom cell highlights, include cell
-comments, or provide copy feedback. Annotations can render whatever content your application
-requires, and LyteNyte Grid handles the positioning boilerplate.
+Details matter. For end-users, high performance and responsiveness, areas where LyteNyte
+Grid is best-in-class, are minimum expectations.
+
+A greater challenge is creating data-heavy interfaces that feel beautifully designed
+and engaging enough to keep users coming back.
+
+LyteNyte Grid 2.2 focuses on visual enhancements that help teams close that gap. With annotation
+support, customizable animations, scroll flash suppression, and updated AI Skills,
+developers can now ship more polished grids faster, helping apps improve user adoption and retention.
 
 ## What's New In LyteNyte Grid 2.2?
 
-LyteNyte Grid 2.2 introduces grid annotations, row and column animations,
-initial viewport width and height, and scroll flash suppression.
+With LyteNyte Grid 2.2, adding visual details to your grid that highlight
+interaction, add context, and guide user attention has never been easier.
 
-- **Annotations (PRO)**
-  - Render arbitrary React content anywhere in the grid.
-  - Annotate headers or cells.
-  - LyteNyte Grid will handle the positioning boilerplate.
-- **Row and Column Animations**
-  - Animate rows and columns when they move, enter, or exit the grid.
-  - Provide custom animations with easing curves that match your application's aesthetic.
-  - Use fine-grained control to enable only the specific animations your application needs.
-- **Suppress Scroll Flash**
-  - Never see an empty space, regardless of how fast the user scrolls.
-- **Initial Viewport Width and Height**
-  - Better SSR support allowing some cell content to be preloaded.
+- **Row and Column Animations (Core)**
+  - Animate rows and columns as they move, enter, or exit the grid.
+  - Provide custom animations with easing curves that align with your app's design approach.
+  - Fine-grained control to enable only the specific animations your application needs.
 
-Whether you need a free, open-source data grid (Core) or are
-shipping enterprise-scale applications that require
-advanced features and support (PRO), LyteNyte Grid 2.2 has you covered.
+- Scroll Flash Suppression (Core)
+  - Eliminate visual jarring by preventing white flashes when a user scrolls rapidly.
+  - Enhance perceived performance by providing an uninterrupted viewing experience.
 
-## Grid Annotations
+- **Initial Viewport Dimensions (Core)**
+  - Improved SSR support enables cell content pre-loading for faster initial page loads.
 
-Annotations render arbitrary React content at a specific position in the grid. You provide
-the content; LyteNyte Grid handles the positioning. Anchor an annotation to a cell range,
-a column header, or a single point, the grid does the rest.
+- **Improved AI Skills (Core + PRO)**
+  - Updated AI Skills to align with new 2.2 features.
+  - Updated knowledge base improves agent capabilities for visual enhancements.
 
-The demo below shows cell comments built with annotations.
+- **Grid Annotations (PRO)**
+  - Guide user attention by rendering custom content anywhere in the grid.
+  - Add context details, such as notes or comments, by annotating headers or cells.
+  - Improved clipboard with 'marching ants' to visually confirm cut or copied cells, preventing errors.
+  - Automates positioning boilerplate to save development time
 
-::demo[Cell Comments="../../docs/(grid)/demos/grid-annotations-comments"]
+All new features are accessible by design, while LyteNyte Grid still remains just 40 KB gzipped.
 
-Annotations are equally useful for transient feedback like clipboard indicators. The demo
-below uses a `range` annotation to render an animated "marching ants" border over the
-copied region.
+## Bringing Grid Animations To Your Applications
 
-::demo[Clipboard Marching Ants="../../docs/(grid)/demos/grid-annotations-clipboard"]
+Adding animations helps teams produce grids that appear more fluid and responsive during
+user interactions. Rows and columns can be animated as they move, enter, or exit the grid.
 
-See the [Annotations guide](/docs/grid-annotations) for more details.
+LyteNyte Grid animations are fully customizable so they can be adapted to best suit
+your application's use case. You can apply custom easing curves and independently
+enable or disable specific animation behaviors.
 
-## Row and Column Animations
+Refer to [Grid Animations](/docs/grid-animations) to learn more.
 
-Set `rowAnimate` or `columnAnimate` to `true` to animate rows and columns as they move,
-enter, or leave the grid. Pass a config object instead to customise the easing, duration,
-and keyframes for each phase independently.
+::demo[Grid Animations="../../docs/(grid)/demos/grid-animations"]
 
-::demo[Row and Column Animations="../../docs/(grid)/demos/grid-animations"]
+## Refined UX With Scroll Flash Suppression
 
-## Suppress Scroll Flash
+Enabling scroll flash suppression prevents blank or white flashes
+when users scroll rapidly through large grids.
 
-At very high scroll speeds, virtualized grids can momentarily show empty white space before
-new cells paint. Setting `suppressScrollFlash` on the grid eliminates this entirely, LyteNyte
-Grid detects fast scroll events and keeps the last rendered content visible until the next
-frame is ready. The result is a seamless, flicker-free scroll experience regardless of scroll
-speed or data volume.
+This feature enables you to provide an uninterrupted viewing experience for
+the end user. It helps data interfaces feel faster, more stable, and less visually jarring.
 
-## Initial Viewport Width and Height
+In the demo below, rapidly scroll up and down through the grid.
 
-The `viewportInitialWidth` and `viewportInitialHeight` properties let you tell the grid the
-expected size of its container before it has measured it. On the very first render, particularly
-in server-side rendering (SSR) setups, the grid uses these values to pre-render the correct
-number of rows and columns, so the HTML delivered to the browser already contains meaningful
-cell content rather than a blank placeholder.
+::demo[Suppress Scroll Flash="../../docs/(grid)/demos/grid-no-flash"]
+
+[Click here](/docs/grid-virtualization#suppress-scroll-flash) to learn more.
+
+## Pre-loaded With Initial View Port Dimensions
+
+Added support for initial viewport dimensions, improving SSR by allowing the grid to preload
+visible cell content before the page fully renders.
+
+This helps reduce empty loading states and makes the first grid view
+appear faster and more complete for users.
+
+[Click here](/docs/grid-virtualization#initial-width-and-height) to learn more.
+
+## AI-Capable Grid, More AI-Capable
+
+Updated AI Skills for Core and PRO, giving coding agents the latest product knowledge for the new release.
+The improved knowledge base helps agents better understand and implement 2.2 features, especially visual
+enhancements like animations, annotations, and scroll flash suppression.
+
+LyteNyte Grid uniquely enhances AI agents by being declarative and type-safe, allowing AI to
+verify results without executing the code. Significantly improves implementation accuracy and reduces token usage.
+
+Refer to our [AI Skills Overview guide](/docs/ai-skills-overview) to learn more.
+
+## Capture User Attention With Grid Annotations
+
+Annotations help guide the user's attention to different parts of the grid. These
+features enhance the visual experience by adding context directly within the grid.
+
+Developers can render custom content anywhere in the grid, including in headers and cells,
+to surface notes, comments, or visual cues that make data-heavy interfaces easier for users to understand.
+
+LyteNyte Grid also handles annotation positioning, reducing the amount of boilerplate required
+to get set up and ship as fast as possible. Refer to
+[Grid Annotations](/docs/grid-annotations) to learn more.
+
+Right-click any cell in the demo below to add comment notes.
+
+[Insert demo showcasing annotations – include a couple pre-made comments so it’s not just a blank grid]
+
+### Clipboard & Marching Ants
+
+A complementary feature of annotations is improved clipboard interactions. Developers can now bring
+the familiar “marching ants” border to the grid, giving users clear visual confirmation
+of which cells have been cut or copied.
+
+In the demo below, click and drag to select cells. Press **Ctrl C** to copy, **Ctrl X** to cut, and **Ctrl V** to paste.
+
+[Insert the marching ants demo]
+
+## Next Steps: One More Update Before 3.0 Drops
+
+We've barely scratched the surface of what AI can do for your grids, and our pipeline is already
+packed with updates. Behind the scenes, the engineering team is already deep into building LyteNyte Grid 3.0.
+
+We won't use a tired corporate cliché like "game-changing," but let's just say the gap
+between us and the competition is about to become a canyon.
+
+Is there is a feature you have in mind? Let us know on [GitHub](https://github.com/1771-Technologies/lytenyte), or check out
+our [live demo](https://www.1771technologies.com/demo) for more. Give LyteNyte Grid a go, it's one NPM install away
+
+<PackageInstall package="@1771technologies/lytenyte-pro" />
 
 ## Get Started Now
 
