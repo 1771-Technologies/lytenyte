@@ -1,33 +1,35 @@
 ---
-title: Annotations
-description: Mark and highlight areas of the grid to draw the users attention with grid annotations.
+title: Grid Annotations
+description: Mark and highlight specific areas of the grid to attract the user's attention using grid annotations.
 step: Use grid annotations to draw attention to specific areas of the grid.
 pro: true
 ---
 
-Annotations overlay arbitrary React content on top of the grid. Each annotation has two parts:
+Annotations overlay custom React content on top of the grid. Each annotation requires two properties:
 
-- An **anchor** that describes where to position it.
-- A renderer function that returns what content to display at the anchor position.
+- `anchor`: Defines where to position the annotation.
+- `renderer`: function that returns the content to display at the anchor position.
 
-LyteNyte Grid accepts an array of annotations via the `annotations` property on the grid.
+LyteNyte Grid accepts an array of annotations via the `annotations` property.
 
-The demo below shows a basic annotation that highlights a particular area of the grid using
-a dashed rectangular area.
+The demo below shows a basic annotation that will be displayed whenever you hover
+a cell in the **Price**, **Quantity**, **Revenue**, **Cost**, **Revenue**, or **Profit** columns.
+This is done to draw the users attention to how these columns are related.
 
-::demo[Grid Annotations="./demos/grid-annotations"]
+::demo[Basic Grid Annotations="./demos/grid-annotations"]
 
 The content rendered by an annotation can be anything your application requires. LyteNyte Grid provides
 the positioning system, your application provides the content to render.
 
-## Anchor Types
+## Annotation Anchor Types
 
-Three anchor kinds are supported. Set the `kind` field to choose one.
+LyteNyte Grid supports three anchor types: `range`, `header`, and `point`. Use the `kind`
+field to select how the annotation is positioned.
 
-### Range
+### Range Anchor
 
-A range annotation covers a rectangular region of data cells. `rowStart`/`rowEnd` and
-`colStart`/`colEnd` accept either a numeric index or a string ID.
+A `range` annotation covers a cell range. `rowStart`, `rowEnd`, `colStart`,
+and `colEnd` accept either a numeric index or a row or column ID.
 
 ```tsx
 anchor: {
@@ -39,13 +41,17 @@ anchor: {
 }
 ```
 
-LyteNyte Grid automatically splits the annotation across pinned sections (start-pinned, center, and
-end-pinned columns) and across top-pinned, center, and bottom-pinned rows. This means a single
-range annotation renders correctly even when it spans both pinned and unpinned columns or rows.
+LyteNyte Grid automatically splits a `range` annotation across pinned and unpinned grid sections, including:
 
-### Header
+- Start-pinned, center, and end-pinned columns.
+- Top-pinned, center, and bottom-pinned rows.
 
-A header annotation covers a span of columns in the column header area.
+A single `range` annotation renders correctly even when
+it spans multiple pinned sections.
+
+### Header Anchor
+
+A `header` annotation spans one or more columns in the column header area.
 
 ```tsx
 anchor: {
@@ -58,11 +64,13 @@ anchor: {
 Header annotations are split across the start-pinned, center, and end-pinned header sections, just
 like range annotations.
 
-### Point
+### Point Anchor
 
-A point annotation places content at an absolute `(x, y)` coordinate in the scrollable data area.
-The values are pixel offsets from the top-left corner of the first non-pinned row in the center
-scroll area, the same coordinate space that the virtual row layout uses.
+A `point` annotation places content at an absolute `x` and `y` coordinate in the
+scrollable data area. The `x` and `y` values are pixel offsets from
+the top-left corner of the first non-pinned row in the center scroll area.
+
+This uses the same coordinate space as the virtual row layout.
 
 ```tsx
 anchor: {
@@ -72,9 +80,12 @@ anchor: {
 }
 ```
 
-Point annotations are not split, they render in the center scroll section only.
+By default, the annotation container applies `pointer-events: none`. If the
+annotation content needs to respond to pointer events, such as a clickable
+badge or tooltip trigger, set `pointerEvents: "auto"` on the
+element that should receive events.
 
-## The Render Function
+## Annotations Render Function
 
 The `render` function receives `{ api }` and returns a React node. The annotation
 container is already positioned and sized to match the anchor. Use `position: "absolute"` with
@@ -102,36 +113,39 @@ By default, the annotation container has `pointer-events: none` applied. If your
 needs to respond to mouse events — for example, a clickable badge or tooltip trigger, set
 `pointerEvents: "auto"` on the element that should receive events.
 
-## Cell Comments
+## Cell Notes
 
-A common use case for annotations is to power cell comments. When a cell is focused/hovered you show a
-comment indicator. The user can then add the comment to the cell. The demo below demonstrates on potential
-approach at implementing this.
+Cell notes are another common use case for annotations, allowing users to add
+context to a specific cell.
+
+When a user hovers over a cell with a note, the grid displays the note content.
+Cells with notes show a small red triangle in the top-right corner.
+
+**Right-click** any cell in the demo below to add or edit a note.
+Alternatively, select a cell and press `Shift + F2` to open the note box.
 
 ::demo[Cell Comments="./demos/grid-annotations-comments"]
 
-## Copy Marching Ants
+## Marching Ants
 
 The [marching ants](https://en.wikipedia.org/wiki/Marching_ants) effect is an animated dashed border
-that signals a copied selection, familiar from spreadsheet applications like Excel and Google Sheets.
-Annotations make it straightforward to replicate this pattern in LyteNyte Grid.
+indicating an active copied or cut selection, a familiar pattern from spreadsheet applications like
+Excel and Google Sheets. Annotations make this straightforward to implement in LyteNyte Grid.
 
-The demo below supports the standard clipboard shortcuts. Select a range of cells, then:
+The demo below supports standard clipboard shortcuts. Select a range of cells, then press:
 
-- **Ctrl/Cmd + C:** copies the selection to the clipboard and shows the marching ants border.
-- **Ctrl/Cmd + X:** same as copy, but pasting will also clear the original cells (cut semantics).
-- **Ctrl/Cmd + V:** pastes at the active cell. If the clipboard still holds the original copied
-  content and the operation was a cut, the source cells are cleared. If you copied something else
-  between copying and pasting, the ants are dismissed and source cells are left untouched.
-- **Escape:** dismisses the ants without pasting.
+- `Ctrl/Cmd + C`: Copy the selection to the clipboard and show the marching ants border.
+- `Ctrl/Cmd + X`: Cut the selection to the clipboard and show the marching ants border.
+- `Ctrl/Cmd + V`: Pastes the clipboard content. If the original cut selection is pasted, the source cells are cleared.
+- `Esc`: Dismiss the marching ants border without pasting.
 
-The ants persist while focus stays within the grid, including when you click other cells. They are
-cleared when focus moves to a different part of the page, but not when you switch to another
-application, so you can copy, Alt-Tab to check something, and return to paste without losing the
-indicator.
+The marching ants border remains visible as long as focus stays within the grid,
+including when the user clicks another cell. Moving focus outside the grid to another
+part of the page clears the border. However, switching applications preserves the border,
+allowing users to navigate away and return to paste.
 
-The animation itself is an SVG `<rect>` with `stroke-dasharray` driven by a CSS `@keyframes` rule
-that increments `stroke-dashoffset`, creating the illusion of movement along the border.
+The animation itself is an SVG `<rect>` with `stroke-dasharray` driven by a CSS `@keyframes` rule that
+increments `stroke-dashoffset`, creating the illusion of movement along the border.
 
 ::demo[Marching Ants="./demos/grid-annotations-clipboard"]
 
