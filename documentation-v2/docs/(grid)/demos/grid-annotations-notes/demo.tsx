@@ -110,7 +110,9 @@ function NoteEditContent({
         style={{
           display: "block",
           width: "100%",
-          resize: "vertical",
+          minWidth: 220,
+          minHeight: 60,
+          resize: "both",
           border: "1px solid var(--ln-border-field-and-button)",
           borderRadius: 4,
           padding: "5px 8px",
@@ -126,24 +128,11 @@ function NoteEditContent({
           if (e.key === "Escape") onCancel();
         }}
       />
-      <div style={{ display: "flex", gap: 6, marginTop: 8, justifyContent: "flex-end" }}>
-        <button
-          onClick={onCancel}
-          style={{
-            padding: "3px 10px",
-            borderRadius: 4,
-            border: "1px solid var(--ln-border-button-light)",
-            background: "var(--ln-bg-button-light)",
-            color: "var(--ln-text)",
-            fontSize: 12,
-            cursor: "pointer",
-          }}
-        >
-          Cancel
-        </button>
+      <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
         <button
           onClick={() => onAccept(value)}
           style={{
+            flex: 1,
             padding: "3px 10px",
             borderRadius: 4,
             border: "none",
@@ -155,6 +144,21 @@ function NoteEditContent({
         >
           Save
         </button>
+        <button
+          onClick={onCancel}
+          style={{
+            flex: 1,
+            padding: "3px 10px",
+            borderRadius: 4,
+            border: "1px solid var(--ln-border-button-light)",
+            background: "var(--ln-bg-button-light)",
+            color: "var(--ln-text)",
+            fontSize: 12,
+            cursor: "pointer",
+          }}
+        >
+          Cancel
+        </button>
       </div>
     </>
   );
@@ -164,13 +168,62 @@ function getCellEl(target: EventTarget | null): HTMLElement | null {
   return (target as HTMLElement | null)?.closest?.("[data-ln-cell]") as HTMLElement | null;
 }
 
+const INITIAL_NOTES: Map<string, NoteEntry> = new Map([
+  [
+    "leaf-0|country",
+    {
+      text: "Canada is our strongest market for premium accessories this quarter.",
+      rowIndex: 0,
+      colIndex: 4,
+    },
+  ],
+  ["leaf-0|age", { text: "Youth segment — bulk order of 8 units at full price.", rowIndex: 0, colIndex: 1 }],
+  [
+    "leaf-1|age",
+    {
+      text: "Same SKU, different customer, quantity dropped to 3. Worth investigating.",
+      rowIndex: 1,
+      colIndex: 1,
+    },
+  ],
+  [
+    "leaf-2|country",
+    {
+      text: "Australia showing strong demand for bike stands. Potential growth market.",
+      rowIndex: 2,
+      colIndex: 4,
+    },
+  ],
+  [
+    "leaf-3|orderQuantity",
+    { text: "19 units of a $5 item, France is bulk-buying water bottles.", rowIndex: 3, colIndex: 5 },
+  ],
+  [
+    "leaf-5|ageGroup",
+    {
+      text: "Youth female segment in France, 14 units. Higher than the male equivalent.",
+      rowIndex: 5,
+      colIndex: 2,
+    },
+  ],
+  [
+    "leaf-6|country",
+    {
+      text: "Germany showing repeat demand for low-cost accessories. Low margin but consistent volume.",
+      rowIndex: 6,
+      colIndex: 4,
+    },
+  ],
+]);
+const INITIAL_PINNED: Set<string> = new Set();
+
 export default function GridDemo() {
-  const [notes, setNotes] = useState<Map<string, NoteEntry>>(new Map());
+  const [notes, setNotes] = useState<Map<string, NoteEntry>>(INITIAL_NOTES);
   const [hovered, setHovered] = useState<CellRef | null>(null);
   const [hoveredEl, setHoveredEl] = useState<HTMLElement | null>(null);
   const [editing, setEditing] = useState<CellRef | null>(null);
   const [editingEl, setEditingEl] = useState<HTMLElement | null>(null);
-  const [pinnedKeys, setPinnedKeys] = useState<Set<string>>(new Set());
+  const [pinnedKeys, setPinnedKeys] = useState<Set<string>>(INITIAL_PINNED);
   const [pinnedEls, setPinnedEls] = useState<Map<string, HTMLElement>>(new Map());
   const [menu, setMenu] = useState<CellRef | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<Grid.T.VirtualTarget | null>(null);
@@ -179,6 +232,8 @@ export default function GridDemo() {
   editingRef.current = editing;
   // Cell element of the last right-clicked cell; read when menu items are actioned.
   const menuElRef = useRef<HTMLElement | null>(null);
+  const setPinnedElsRef = useRef(setPinnedEls);
+  setPinnedElsRef.current = setPinnedEls;
 
   const clearHoveredTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -192,10 +247,12 @@ export default function GridDemo() {
   }, []);
 
   // Annotations render only the triangle marker — all floating UI is handled by Popover below.
+  // For pinned notes, a wrapper div captures the cell element via ref so the Popover can anchor to it.
   const annotations = useMemo<Grid.Annotation<GridSpec>[]>(() => {
     const result: Grid.Annotation<GridSpec>[] = [];
     for (const [key, entry] of notes) {
       const { rowIndex, colIndex } = entry;
+      const isPinned = pinnedKeys.has(key);
       result.push({
         id: `note-${key}`,
         anchor: {
@@ -205,11 +262,30 @@ export default function GridDemo() {
           colStart: colIndex,
           colEnd: colIndex + 1,
         },
-        render: () => <NoteMarker />,
+        render: () => (
+          <div
+            ref={
+              isPinned
+                ? (el) => {
+                    if (!el) return;
+                    const cellEl = getCellEl(el);
+                    if (cellEl)
+                      setPinnedElsRef.current((p) => {
+                        if (p.get(key) === cellEl) return p;
+                        return new Map(p).set(key, cellEl);
+                      });
+                  }
+                : undefined
+            }
+            style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+          >
+            <NoteMarker />
+          </div>
+        ),
       });
     }
     return result;
-  }, [notes]);
+  }, [notes, pinnedKeys]);
 
   const events = useMemo<Grid.Events<GridSpec>>(
     () => ({
@@ -229,6 +305,19 @@ export default function GridDemo() {
             rowIndex: layout.rowIndex,
             colIndex: layout.colIndex,
           });
+        },
+        keyDown: ({ event, row, column, layout }) => {
+          if (event.key !== "F2" || editingRef.current) return;
+          event.preventDefault();
+          event.stopPropagation();
+          const el = getCellEl(event.target);
+          setEditing({
+            rowId: row.id,
+            colId: column.id,
+            rowIndex: layout.rowIndex,
+            colIndex: layout.colIndex,
+          });
+          setEditingEl(el);
         },
         mouseEnter: ({ layout, row, column, event }) => {
           if (editingRef.current) return;
@@ -385,33 +474,41 @@ export default function GridDemo() {
         focusTrap={false}
         focusInitial={false}
         hide
-        placement="top"
-        sideOffset={4}
+        placement="top-end"
+        sideOffset={8}
       >
         <Popover.Container
-          style={panelStyle}
-          onMouseEnter={cancelClear}
-          onMouseLeave={() => {
-            setHovered(null);
-            setHoveredEl(null);
-          }}
+          style={{ ...panelStyle, borderRadius: 2, pointerEvents: menu ? "none" : undefined }}
+          onMouseEnter={!menu ? cancelClear : undefined}
+          onMouseLeave={
+            !menu
+              ? () => {
+                  setHovered(null);
+                  setHoveredEl(null);
+                }
+              : undefined
+          }
         >
+          <Popover.Arrow />
           <p style={noteTextStyle}>{tooltipNote?.text ?? ""}</p>
         </Popover.Container>
       </Popover>
 
-      {/* Edit / add popover */}
+      {/* Edit / add popover — modal so focus is trapped inside */}
       <Popover
         anchor={editingEl}
         open={!!editing}
-        modal={false}
-        focusTrap={false}
-        hide
-        placement="top"
-        sideOffset={4}
+        lockScroll={false}
+        lightDismiss={false}
+        onOpenChange={(open) => {
+          if (!open) closeEditing();
+        }}
+        placement="top-end"
+        sideOffset={8}
       >
         {editing && (
-          <Popover.Container style={panelStyle}>
+          <Popover.Container style={{ ...panelStyle, maxWidth: "none" }}>
+            <Popover.Arrow />
             <NoteEditContent
               key={cellKey(editing.rowId, editing.colId)}
               initialValue={notes.get(cellKey(editing.rowId, editing.colId))?.text ?? ""}
@@ -451,10 +548,11 @@ export default function GridDemo() {
             modal={false}
             focusTrap={false}
             hide
-            placement="top"
-            sideOffset={4}
+            placement="top-end"
+            sideOffset={8}
           >
             <Popover.Container style={panelStyle}>
+              <Popover.Arrow />
               <p style={noteTextStyle}>{note.text}</p>
             </Popover.Container>
           </Popover>
