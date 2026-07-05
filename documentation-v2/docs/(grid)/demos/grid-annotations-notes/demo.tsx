@@ -63,7 +63,7 @@ function NoteMarker() {
         insetInlineEnd: 0,
         width: 0,
         height: 0,
-        borderTop: "8px solid #f59e0b",
+        borderTop: "8px solid #ef4444",
         borderInlineStart: "8px solid transparent",
       }}
     />
@@ -132,7 +132,10 @@ function NoteEditContent({
           if (e.key === "Escape") onCancel();
         }}
       />
-      <div style={{ display: "flex", gap: 6, marginTop: 8, justifyContent: "flex-end" }}>
+      <p style={{ margin: "6px 0 0", fontSize: 11, color: "var(--ln-text-secondary)" }}>
+        Tip: Press Ctrl/Cmd + Enter to commit
+      </p>
+      <div style={{ display: "flex", gap: 6, marginTop: 6, justifyContent: "flex-end" }}>
         <button
           onClick={() => onAccept(value)}
           className="duration-120 bg-ln-primary-50 hover:bg-ln-primary-70 cursor-pointer transition-colors"
@@ -224,7 +227,6 @@ export default function GridDemo() {
   const [editing, setEditing] = useState<CellRef | null>(null);
   const [editingEl, setEditingEl] = useState<HTMLElement | null>(null);
   const [pinnedKeys, setPinnedKeys] = useState<Set<string>>(INITIAL_PINNED);
-  const [pinnedEls, setPinnedEls] = useState<Map<string, HTMLElement>>(new Map());
   const [menu, setMenu] = useState<CellRef | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<Grid.T.VirtualTarget | null>(null);
 
@@ -232,8 +234,7 @@ export default function GridDemo() {
   editingRef.current = editing;
   // Cell element of the last right-clicked cell; read when menu items are actioned.
   const menuElRef = useRef<HTMLElement | null>(null);
-  const setPinnedElsRef = useRef(setPinnedEls);
-  setPinnedElsRef.current = setPinnedEls;
+  const annotationElsRef = useRef(new Map<string, HTMLElement>());
 
   const clearHoveredTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -247,12 +248,12 @@ export default function GridDemo() {
   }, []);
 
   // Annotations render only the triangle marker — all floating UI is handled by Popover below.
-  // For pinned notes, a wrapper div captures the cell element via ref so the Popover can anchor to it.
+  // Each annotation captures the [data-ln-annotation-id] element (always in the DOM, positioned
+  // via CSS transform) so pinned Popovers survive virtualization.
   const annotations = useMemo<Grid.Annotation<GridSpec>[]>(() => {
     const result: Grid.Annotation<GridSpec>[] = [];
     for (const [key, entry] of notes) {
       const { rowIndex, colIndex } = entry;
-      const isPinned = pinnedKeys.has(key);
       result.push({
         id: `note-${key}`,
         anchor: {
@@ -264,19 +265,14 @@ export default function GridDemo() {
         },
         render: () => (
           <div
-            ref={
-              isPinned
-                ? (el) => {
-                    if (!el) return;
-                    const cellEl = getCellEl(el);
-                    if (cellEl)
-                      setPinnedElsRef.current((p) => {
-                        if (p.get(key) === cellEl) return p;
-                        return new Map(p).set(key, cellEl);
-                      });
-                  }
-                : undefined
-            }
+            ref={(el) => {
+              if (el) {
+                const annotationEl = el.closest("[data-ln-annotation-id]") as HTMLElement | null;
+                if (annotationEl) annotationElsRef.current.set(key, annotationEl);
+              } else {
+                annotationElsRef.current.delete(key);
+              }
+            }}
             style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
           >
             <NoteMarker />
@@ -285,7 +281,7 @@ export default function GridDemo() {
       });
     }
     return result;
-  }, [notes, pinnedKeys]);
+  }, [notes]);
 
   const events = useMemo<Grid.Events<GridSpec>>(
     () => ({
@@ -307,7 +303,7 @@ export default function GridDemo() {
           });
         },
         keyDown: ({ event, row, column, layout }) => {
-          if (event.key !== "F2" || editingRef.current) return;
+          if (event.key !== "F2" || !event.shiftKey || event.ctrlKey || event.metaKey || editingRef.current) return;
           event.preventDefault();
           event.stopPropagation();
           const el = getCellEl(event.target);
@@ -357,6 +353,9 @@ export default function GridDemo() {
         ? (notes.get(hovKey) ?? null)
         : null;
   const tooltipAnchor = menu && menuHasNote ? menuElRef.current : hoveredEl;
+
+  const editKey = editing ? cellKey(editing.rowId, editing.colId) : null;
+  const editAnchor = (editKey && annotationElsRef.current.get(editKey)) ?? editingEl;
 
   const closeEditing = () => {
     setEditing(null);
@@ -418,11 +417,6 @@ export default function GridDemo() {
                       n.delete(key);
                       return n;
                     });
-                    setPinnedEls((p) => {
-                      const n = new Map(p);
-                      n.delete(key);
-                      return n;
-                    });
                     setMenu(null);
                     setMenuAnchor(null);
                   }}
@@ -432,28 +426,12 @@ export default function GridDemo() {
                 <Menu.Item
                   onAction={() => {
                     const key = menuKey!;
-                    const el = menuElRef.current;
-                    if (menuIsPinned) {
-                      setPinnedKeys((p) => {
-                        const n = new Set(p);
-                        n.delete(key);
-                        return n;
-                      });
-                      setPinnedEls((p) => {
-                        const n = new Map(p);
-                        n.delete(key);
-                        return n;
-                      });
-                    } else {
-                      setPinnedKeys((p) => {
-                        const n = new Set(p);
-                        n.add(key);
-                        return n;
-                      });
-                      if (el) {
-                        setPinnedEls((p) => new Map(p).set(key, el));
-                      }
-                    }
+                    setPinnedKeys((p) => {
+                      const n = new Set(p);
+                      if (menuIsPinned) n.delete(key);
+                      else n.add(key);
+                      return n;
+                    });
                     setMenu(null);
                     setMenuAnchor(null);
                   }}
@@ -473,6 +451,7 @@ export default function GridDemo() {
         modal={false}
         focusTrap={false}
         focusInitial={false}
+        lightDismiss={false}
         hide
         placement="top-end"
         sideOffset={8}
@@ -496,7 +475,7 @@ export default function GridDemo() {
 
       {/* Edit / add popover — modal so focus is trapped inside */}
       <Popover
-        anchor={editingEl}
+        anchor={editAnchor}
         open={!!editing}
         lockScroll={false}
         lightDismiss={false}
@@ -507,13 +486,20 @@ export default function GridDemo() {
         sideOffset={8}
       >
         {editing && (
-          <Popover.Container style={{ ...panelStyle, maxWidth: "none" }}>
+          <Popover.Container style={{ ...panelStyle, maxWidth: "none", padding: 8 }}>
             <Popover.Arrow />
             <NoteEditContent
               key={cellKey(editing.rowId, editing.colId)}
               initialValue={notes.get(cellKey(editing.rowId, editing.colId))?.text ?? ""}
               onAccept={(text) => {
                 const key = cellKey(editing.rowId, editing.colId);
+                if (!text.trim()) {
+                  setPinnedKeys((p) => {
+                    const n = new Set(p);
+                    n.delete(key);
+                    return n;
+                  });
+                }
                 setNotes((prev) => {
                   const next = new Map(prev);
                   if (text.trim()) {
@@ -535,10 +521,11 @@ export default function GridDemo() {
         )}
       </Popover>
 
-      {/* One Popover per pinned note, each anchored to its cell element */}
+      {/* One Popover per pinned note, anchored to the annotation element which is always
+          in the DOM (positioned via CSS transform) so it survives row virtualization. */}
       {[...pinnedKeys].map((key) => {
         const note = notes.get(key);
-        const el = pinnedEls.get(key);
+        const el = annotationElsRef.current.get(key);
         if (!note || !el) return null;
         return (
           <Popover
@@ -547,6 +534,7 @@ export default function GridDemo() {
             open
             modal={false}
             focusTrap={false}
+            lightDismiss={false}
             hide
             placement="top-end"
             sideOffset={8}

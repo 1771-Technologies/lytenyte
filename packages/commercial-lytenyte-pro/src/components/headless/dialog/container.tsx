@@ -224,6 +224,14 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
               return;
             }
 
+            // If the click lands inside another open <dialog> (e.g. a modal edit popover),
+            // let the event reach it — don't swallow clicks meant for its buttons.
+            const insideOtherDialog = targetEl.closest?.("dialog[open]");
+            if (insideOtherDialog && insideOtherDialog !== dialog) {
+              setTimeout(() => onOpenChange(false));
+              return;
+            }
+
             ev.stopPropagation();
             ev.stopImmediatePropagation();
 
