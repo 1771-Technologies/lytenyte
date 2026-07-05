@@ -250,6 +250,18 @@ export default function ExportDemo() {
                   setCopiedRect(sel);
                 } else if (p.event.key === "v") {
                   const content = await navigator.clipboard.readText();
+
+                  // If the clipboard content differs from what this grid wrote, the user
+                  // copied something externally — discard our copy/cut context.
+                  if (copiedTextRef.current !== null && content !== copiedTextRef.current) {
+                    cutRectRef.current = null;
+                    copiedTextRef.current = null;
+                    copiedRectRef.current = null;
+                    setCopiedRect(null);
+                    setSelections([]);
+                    return;
+                  }
+
                   if (!content) return;
 
                   const cut = cutRectRef.current;
@@ -268,9 +280,7 @@ export default function ExportDemo() {
                   let pasteRowStart = -1;
                   let pasteColStart = -1;
                   if (apiRef.current && document.activeElement) {
-                    const pos = apiRef.current.positionFromElement(
-                      document.activeElement as HTMLElement,
-                    );
+                    const pos = apiRef.current.positionFromElement(document.activeElement as HTMLElement);
                     if (pos?.kind === "cell") {
                       pasteRowStart = pos.rowIndex;
                       pasteColStart = pos.colIndex;
@@ -307,12 +317,9 @@ export default function ExportDemo() {
                   // skipped — the paste values should win over the clear.
                   if (cut && apiRef.current) {
                     const api = apiRef.current;
-                    const pasteRowEnd =
-                      pasteRowStart >= 0 ? pasteRowStart + updates.length : -1;
+                    const pasteRowEnd = pasteRowStart >= 0 ? pasteRowStart + updates.length : -1;
                     const pasteColEnd =
-                      pasteColStart >= 0
-                        ? pasteColStart + Math.max(...updates.map((r) => r.length))
-                        : -1;
+                      pasteColStart >= 0 ? pasteColStart + Math.max(...updates.map((r) => r.length)) : -1;
 
                     const rowClears = new Map<number, string[]>();
                     for (let r = cut.rowStart; r < cut.rowEnd; r++) {
