@@ -123,7 +123,11 @@ function NoteEditContent({
           background: "var(--ln-bg-form-field)",
           color: "var(--ln-text)",
         }}
-        onKeyDown={(e) => {
+        onFocus={(e) => {
+          const len = e.target.value.length;
+          e.target.setSelectionRange(len, len);
+        }}
+        onKeyDownCapture={(e) => {
           if ((e.metaKey || e.ctrlKey) && e.key === "Enter") onAccept(value);
           if (e.key === "Escape") onCancel();
         }}
