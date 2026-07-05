@@ -233,7 +233,7 @@ export default function ExportDemo() {
                   setSelections([]);
                   if (ourText) {
                     navigator.clipboard.readText().then((current) => {
-                      if (current === ourText) navigator.clipboard.writeText("");
+                      if (normalizeNewlines(current) === ourText) navigator.clipboard.writeText("");
                     });
                   }
                   return;
@@ -249,7 +249,7 @@ export default function ExportDemo() {
                   cutRectRef.current = sel;
                   setCopiedRect(sel);
                 } else if (p.event.key === "v") {
-                  const content = await navigator.clipboard.readText();
+                  const content = normalizeNewlines(await navigator.clipboard.readText());
 
                   // If the clipboard content differs from what this grid wrote, the user
                   // copied something externally — discard our copy/cut context.
@@ -388,6 +388,10 @@ export default function ExportDemo() {
     </div>
   );
 }
+function normalizeNewlines(s: string) {
+  return s.replace(/\r\n/g, "\n");
+}
+
 type Rect = { rows: number; cols: number };
 type Repeat = { x: number; y: number };
 
