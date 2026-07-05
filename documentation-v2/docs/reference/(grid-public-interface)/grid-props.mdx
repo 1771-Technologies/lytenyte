@@ -177,8 +177,9 @@ Provide these props to the `Grid` component to configure the grid.
   type={[
     {
       name: "rowAlternateAttr",
-      description: `Whether the grid applies the \`data-ln-row-alternate\` attribute to odd rows.`,
-      type: "boolean",
+      description: `Whether the grid applies the \`data-ln-alternate\` attribute to odd rows. Set to \`"root"\` to assign the attribute to the grid root element instead, which enables CSS-only alternating styles.`,
+      type: 'boolean | "root"',
+      see: ["/docs/row-banding"],
     },
     {
       name: "rowScanDistance",
@@ -366,6 +367,18 @@ Provide these props to the `Grid` component to configure the grid.
       type: "boolean",
       see: ["/docs/grid-virtualization"],
     },
+    {
+      name: "viewportInitialWidth",
+      description: `The initial width of the viewport in pixels. Providing this value improves SSR by allowing the grid to pre-compute column positions and render visible cell content before the browser has measured the viewport.`,
+      type: "number",
+      see: ["/docs/grid-virtualization"],
+    },
+    {
+      name: "viewportInitialHeight",
+      description: `The initial height of the viewport in pixels. Providing this value improves SSR by allowing the grid to pre-compute row positions and render visible cell content before the browser has measured the viewport.`,
+      type: "number",
+      see: ["/docs/grid-virtualization"],
+    },
   ]}
 />
 
@@ -463,4 +476,43 @@ Provide these props to the `Grid` component to configure the grid.
     },
 
 ]}
+/>
+
+### Animations
+
+<TypeTable
+  type={[
+    {
+      name: "rowAnimate",
+      description: `Controls row enter, exit, and move animations. Set to \`true\` to enable all row animations
+      with default settings, or provide an object to configure easing,
+      duration, and which animation types are active.`,
+      type: "boolean | RowAnimate",
+      see: ["/docs/grid-animations"],
+    },
+    {
+      name: "columnAnimate",
+      description: `Controls column enter, exit, and move animations. Set to \`true\` to enable all
+      column animations with default settings, or provide an object to configure easing,
+      duration, and which animation types are active.`,
+      type: "boolean | ColumnAnimate",
+      see: ["/docs/grid-animations"],
+    },
+  ]}
+/>
+
+### Annotations
+
+<TypeTable
+  type={[
+    {
+      name: "annotations",
+      description: `An array of annotation definitions that the grid renders over its cells and
+      headers. Each annotation declares an anchor (a cell range, column header range, or
+      absolute point) and a render function that returns the content to display.
+      The grid handles positioning automatically.`,
+      type: "Annotation[]",
+      see: ["/docs/grid-annotations"],
+    },
+  ]}
 />
