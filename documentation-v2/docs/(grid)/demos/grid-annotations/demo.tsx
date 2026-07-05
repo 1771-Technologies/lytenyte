@@ -12,6 +12,7 @@ import {
   NumberCell,
   ProfitCell,
 } from "./components.jsx";
+import { useMemo, useState } from "react";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -19,56 +20,132 @@ export interface GridSpec {
 
 export const columns: Grid.Column<GridSpec>[] = [
   { id: "date", name: "Date", cellRenderer: DateCell, width: 110 },
+  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell },
   { id: "age", name: "Age", type: "number", width: 80 },
+  { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell },
   { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 160 },
   { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 100 },
+  { id: "profit", name: "Profit", width: 80, type: "number", cellRenderer: ProfitCell },
   { id: "country", name: "Country", cellRenderer: CountryCell, width: 150 },
   { id: "orderQuantity", name: "Quantity", type: "number", width: 60 },
   { id: "unitPrice", name: "Price", type: "number", width: 80, cellRenderer: NumberCell },
-  { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell },
-  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell },
-  { id: "profit", name: "Profit", width: 80, type: "number", cellRenderer: ProfitCell },
   { id: "state", name: "State", width: 150 },
   { id: "product", name: "Product", width: 160 },
   { id: "productCategory", name: "Category", width: 120 },
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
-const borderAnnotation: Grid.Annotation<GridSpec> = {
-  id: "range-highlight",
-  anchor: {
-    kind: "range",
-    rowStart: 2,
-    rowEnd: 4,
-    colStart: 1,
-    colEnd: 3,
-  },
-  render: () => (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        border: "2px dashed #3b82f6",
-        background: "rgba(59, 130, 246, 0.08)",
-        boxSizing: "border-box",
-      }}
-    />
-  ),
-};
-
-const annotations: Grid.Annotation<GridSpec>[] = [borderAnnotation];
-
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
+const colIndexMap = new Map(columns.map((c, i) => [c.id, i]));
+
+const HIGHLIGHTS = [
+  {
+    colId: "orderQuantity",
+    render: () => (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          border: "1px solid #3b82f6",
+          background: "rgba(59, 130, 246, 0.1)",
+          boxSizing: "border-box",
+        }}
+      />
+    ),
+  },
+  {
+    colId: "unitPrice",
+    render: () => (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          border: "1px solid #8b5cf6",
+          background: "rgba(139, 92, 246, 0.1)",
+          boxSizing: "border-box",
+        }}
+      />
+    ),
+  },
+  {
+    colId: "cost",
+    render: () => (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          border: "1px solid #f97316",
+          background: "rgba(249, 115, 22, 0.1)",
+          boxSizing: "border-box",
+        }}
+      />
+    ),
+  },
+  {
+    colId: "revenue",
+    render: () => (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          border: "1px solid #22c55e",
+          background: "rgba(34, 197, 94, 0.1)",
+          boxSizing: "border-box",
+        }}
+      />
+    ),
+  },
+  {
+    colId: "profit",
+    render: () => (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          border: "1px solid #10b981",
+          background: "rgba(16, 185, 129, 0.1)",
+          boxSizing: "border-box",
+        }}
+      />
+    ),
+  },
+] satisfies { colId: string; render: Grid.Annotation<GridSpec>["render"] }[];
+
 export default function GridDemo() {
-  const ds = useClientDataSource<GridSpec>({
-    data: salesData,
-  });
+  const [annotations, setAnnotations] = useState<Grid.Annotation<GridSpec>[]>([]);
+  const ds = useClientDataSource<GridSpec>({ data: salesData });
 
   return (
     <div className="ln-grid" style={{ height: 500 }}>
-      {/*!next */}
-      <Grid columns={columns} columnBase={base} rowSource={ds} annotations={annotations} />
+      <Grid
+        columns={columns}
+        columnBase={base}
+        rowSource={ds}
+        annotations={annotations}
+        events={useMemo<Grid.Events<GridSpec>>(() => {
+          return {
+            cell: {
+              mouseEnter: ({ layout }) => {
+                const rowStart = layout.rowIndex;
+                const rowEnd = rowStart + 1;
+
+                setAnnotations(
+                  HIGHLIGHTS.map(({ colId, render }) => {
+                    const colStart = colIndexMap.get(colId)!;
+                    return {
+                      id: `highlight-${colId}`,
+                      anchor: { kind: "range", rowStart, rowEnd, colStart, colEnd: colStart + 1 },
+                      render,
+                    };
+                  }),
+                );
+              },
+              mouseLeave: () => setAnnotations([]),
+            },
+          };
+        }, [])}
+      />
     </div>
   );
 }
