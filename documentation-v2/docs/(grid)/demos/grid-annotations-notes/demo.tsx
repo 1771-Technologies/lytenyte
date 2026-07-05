@@ -177,7 +177,7 @@ const INITIAL_NOTES: Map<string, NoteEntry> = new Map([
       colIndex: 4,
     },
   ],
-  ["leaf-0|age", { text: "Youth segment — bulk order of 8 units at full price.", rowIndex: 0, colIndex: 1 }],
+  ["leaf-0|age", { text: "Youth segment, bulk order of 8 units at full price.", rowIndex: 0, colIndex: 1 }],
   [
     "leaf-1|age",
     {

@@ -96,7 +96,7 @@ export function AnnotationRect({
       position: "absolute",
       pointerEvents: "none",
       top: 0,
-      zIndex: 1,
+      zIndex: annotation.zIndex ?? 1,
 
       gridRowStart: "1",
       gridRowEnd: "2",
@@ -107,13 +107,13 @@ export function AnnotationRect({
     if (pinnedCell) {
       style.insetInlineStart = "0px";
       style.position = "sticky";
-      style.zIndex = pinnedRow ? 6 : 3;
+      style.zIndex = annotation.zIndex ?? (pinnedRow ? 6 : 3);
     }
 
     if (pinnedRow) {
       style.position = "sticky";
       style.top = "0px";
-      style.zIndex = pinnedCell ? 6 : 3;
+      style.zIndex = annotation.zIndex ?? (pinnedCell ? 6 : 3);
     }
 
     return style;

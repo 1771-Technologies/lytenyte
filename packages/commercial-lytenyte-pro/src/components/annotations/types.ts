@@ -29,4 +29,5 @@ export type Annotation<Spec extends Root.GridSpec = Root.GridSpec> = {
   readonly id: string;
   readonly anchor: AnnotationAnchor;
   readonly render: (params: { readonly api: Root.API<Spec> }) => ReactNode;
+  readonly zIndex?: number;
 };

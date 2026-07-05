@@ -101,6 +101,8 @@ export default function ExportDemo() {
   const [api, setApi] = useState<Grid.API<GridSpec> | null>(null);
   const apiRef = useRef(api);
   apiRef.current = api;
+  const setDataRef = useRef(setData);
+  setDataRef.current = setData;
 
   const getFirstSelection = useCallback(() => {
     return selections.at(0) ?? null;
@@ -178,7 +180,6 @@ export default function ExportDemo() {
         for (let j = 0; j < data.length; j++) {
           const colI = j + position.colIndex;
 
-          console.log(position.colIndex);
           const column = api.columnByIndex(colI);
           if (!column) continue;
 
@@ -202,6 +203,7 @@ export default function ExportDemo() {
     return [
       {
         id: "marching-ants",
+        zIndex: 10,
         anchor: {
           kind: "range",
           rowStart: copiedRect.rowStart,
@@ -222,9 +224,16 @@ export default function ExportDemo() {
             viewport: {
               keyDown: async (p) => {
                 if (p.event.key === "Escape") {
+                  const ourText = copiedTextRef.current;
                   cutRectRef.current = null;
                   copiedTextRef.current = null;
                   setCopiedRect(null);
+                  setSelections([]);
+                  if (ourText) {
+                    navigator.clipboard.readText().then((current) => {
+                      if (current === ourText) navigator.clipboard.writeText("");
+                    });
+                  }
                   return;
                 }
 
@@ -237,40 +246,83 @@ export default function ExportDemo() {
                   copiedTextRef.current = text;
                   cutRectRef.current = sel;
                   setCopiedRect(sel);
-                  setSelections([]);
                 } else if (p.event.key === "v") {
                   const content = await navigator.clipboard.readText();
-                  const sameContent = content === copiedTextRef.current;
+                  if (!content) return;
+
                   const cut = cutRectRef.current;
+                  cutRectRef.current = null;
+                  copiedTextRef.current = null;
+                  setCopiedRect(null);
 
-                  // If the clipboard changed since we copied, clear ants but skip source clear.
-                  if (!sameContent || cut) {
-                    cutRectRef.current = null;
-                    copiedTextRef.current = null;
-                    setCopiedRect(null);
-                  }
-
-                  // If it was a cut and clipboard still has our content, null out source cells.
-                  if (sameContent && cut && apiRef.current) {
-                    const clearMap = new Map<number, { column: number; value: any }[]>();
-                    for (let r = cut.rowStart; r < cut.rowEnd; r++) {
-                      const cols = [];
-                      for (let c = cut.columnStart; c < cut.columnEnd; c++) {
-                        cols.push({ column: c, value: null });
-                      }
-                      clearMap.set(r, cols);
-                    }
-                    apiRef.current.editUpdateCells(clearMap);
-                  }
-
-                  // If your data needs some parsing handle it here or via the editSetter on the column.
                   const updates = content.split("\n").map((c) => {
                     return c
                       .trim()
                       .split("\t")
                       .map((x) => x.trim());
                   });
+
+                  // Capture paste start position before calling handleGridUpdate so we can
+                  // detect overlap with the cut source and avoid clearing pasted values.
+                  let pasteRowStart = -1;
+                  let pasteColStart = -1;
+                  if (apiRef.current && document.activeElement) {
+                    const pos = apiRef.current.positionFromElement(
+                      document.activeElement as HTMLElement,
+                    );
+                    if (pos?.kind === "cell") {
+                      pasteRowStart = pos.rowIndex;
+                      pasteColStart = pos.colIndex;
+                    }
+                  }
+
                   handleGridUpdate(updates);
+
+                  // Clear source cells. Cells that overlap with the paste destination are
+                  // skipped — the paste values should win over the clear.
+                  if (cut && apiRef.current) {
+                    const api = apiRef.current;
+                    const pasteRowEnd =
+                      pasteRowStart >= 0 ? pasteRowStart + updates.length : -1;
+                    const pasteColEnd =
+                      pasteColStart >= 0
+                        ? pasteColStart + Math.max(...updates.map((r) => r.length))
+                        : -1;
+
+                    const rowClears = new Map<number, string[]>();
+                    for (let r = cut.rowStart; r < cut.rowEnd; r++) {
+                      const row = api.rowByIndex(r).get() as any;
+                      if (row?.__srcIndex == null) continue;
+                      const fields: string[] = [];
+                      for (let c = cut.columnStart; c < cut.columnEnd; c++) {
+                        if (
+                          pasteRowStart >= 0 &&
+                          r >= pasteRowStart &&
+                          r < pasteRowEnd &&
+                          c >= pasteColStart &&
+                          c < pasteColEnd
+                        )
+                          continue;
+                        const col = api.columnByIndex(c) as any;
+                        if (col) fields.push(col.field ?? col.id);
+                      }
+                      if (fields.length > 0) rowClears.set(row.__srcIndex, fields);
+                    }
+
+                    if (rowClears.size > 0) {
+                      setDataRef.current((prev) => {
+                        const next = [...prev];
+                        for (const [idx, fields] of rowClears) {
+                          const row = next[idx] as any;
+                          if (!row) continue;
+                          const cleared = { ...row };
+                          for (const field of fields) cleared[field] = null;
+                          next[idx] = cleared;
+                        }
+                        return next;
+                      });
+                    }
+                  }
                 } else if (p.event.key === "c") {
                   const sel = getFirstSelection();
                   if (!sel) return;
@@ -278,15 +330,13 @@ export default function ExportDemo() {
                   copiedTextRef.current = text;
                   cutRectRef.current = null;
                   setCopiedRect(sel);
-                  setSelections([]);
                 }
               },
               blur: ({ viewport }) => {
                 setTimeout(() => {
                   if (!document.hasFocus()) return; // switched apps — keep ants
                   if (document.activeElement && viewport.contains(document.activeElement)) return; // focus came back into grid
-                  cutRectRef.current = null;
-                  copiedTextRef.current = null;
+                  // Only hide the ants — preserve cut state so paste can still clear source cells.
                   setCopiedRect(null);
                 }, 0);
               },
