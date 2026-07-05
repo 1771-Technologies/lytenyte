@@ -10,6 +10,7 @@ import { useRowDetailContext } from "./row-detail.js";
 
 const xCoordinates = createContext<Uint32Array>(null as unknown as Uint32Array);
 const yCoordinates = createContext<Uint32Array>(null as unknown as Uint32Array);
+const oddEvenIndicesCtx = createContext<Uint32Array | null>(null);
 
 type Picks =
   | "columnBase"
@@ -17,7 +18,8 @@ type Picks =
   | "rowAutoHeightGuess"
   | "rowDetailAutoHeightGuess"
   | "rowDetailHeight"
-  | "rowHeight";
+  | "rowHeight"
+  | "rowAlternateAttr";
 
 type Props = Pick<PartialMandatory<Root.Props>, Picks> & { readonly source: RowSource };
 
@@ -27,7 +29,7 @@ export const CoordinatesProvider = (props: PropsWithChildren<Props>) => {
   const { totalHeaderHeight } = useHeaderLayoutContext();
   const { detailExpansions, detailCache } = useRowDetailContext();
 
-  const yPositions = useYPositions(
+  const { positions: yPositions, oddEvenIndices } = useYPositions(
     props,
     props.source,
     dimensions.innerHeight - totalHeaderHeight,
@@ -37,11 +39,14 @@ export const CoordinatesProvider = (props: PropsWithChildren<Props>) => {
   const xPositions = useXPositions(props, view, dimensions.innerWidth);
 
   return (
-    <xCoordinates.Provider value={xPositions}>
-      <yCoordinates.Provider value={yPositions}>{props.children}</yCoordinates.Provider>
-    </xCoordinates.Provider>
+    <oddEvenIndicesCtx.Provider value={oddEvenIndices}>
+      <xCoordinates.Provider value={xPositions}>
+        <yCoordinates.Provider value={yPositions}>{props.children}</yCoordinates.Provider>
+      </xCoordinates.Provider>
+    </oddEvenIndicesCtx.Provider>
   );
 };
 
 export const useXCoordinates = () => useContext(xCoordinates);
 export const useYCoordinates = () => useContext(yCoordinates);
+export const useOddEvenIndices = () => useContext(oddEvenIndicesCtx);

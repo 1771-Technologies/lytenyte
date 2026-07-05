@@ -214,6 +214,24 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
             ev.clientY < bb.top ||
             ev.clientY > bb.bottom
           ) {
+            // If the click lands inside a sibling overlay (e.g. a menu that opened on top
+            // of this popover), let the event reach it and close this dialog quietly
+            // instead of swallowing the click with stopImmediatePropagation.
+            const targetEl = ev.target as HTMLElement;
+            const insideOtherDismissable = targetEl.closest?.("[data-ln-light-dismiss='true']");
+            if (insideOtherDismissable && insideOtherDismissable !== dialog) {
+              setTimeout(() => onOpenChange(false));
+              return;
+            }
+
+            // If the click lands inside another open <dialog> (e.g. a modal edit popover),
+            // let the event reach it — don't swallow clicks meant for its buttons.
+            const insideOtherDialog = targetEl.closest?.("dialog[open]");
+            if (insideOtherDialog && insideOtherDialog !== dialog) {
+              setTimeout(() => onOpenChange(false));
+              return;
+            }
+
             ev.stopPropagation();
             ev.stopImmediatePropagation();
 

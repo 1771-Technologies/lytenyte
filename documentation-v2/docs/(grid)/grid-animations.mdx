@@ -1,0 +1,98 @@
+---
+title: Grid Animations
+description: Animate row and column insertions, deletions, and repositioning within the grid.
+step: Learn how to animate rows and columns within the grid.
+---
+
+## Animations Overview
+
+LyteNyte Grid can animate rows and columns when they are added, removed, or
+reordered. Animations use the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API)
+and run outside the React render cycle, so they do not affect grid rendering performance.
+
+Animations have three separate parts:
+
+- **Enter:** Runs when a row or column first appears in the grid.
+- **Exit:** Runs when a row or column leaves the grid.
+- **Move:** Runs when a row or column changes position.
+
+Enable animations by setting `rowAnimate` or `columnAnimate` to
+one of the following values:
+
+- `true`: Use the default animation settings.
+- **Animation Configuration:** Customize the default behavior and enable or disable specific animation parts.
+
+The demo below illustrates basic animations using the default configuration settings.
+
+::demo[Animation Basics="./demos/grid-animations"]
+
+## Custom Animations
+
+Passing `true` enables the enter, exit, and move phases with the default fade animation and
+duration. For more control, pass an animation config object to customize or disable each phase independently.
+
+```tsx
+const rowAnimate = {
+  move: {
+    duration: 500,
+    easing: "cubic-bezier(0.34, 1.56, 0.64, 1)", // spring overshoot
+  },
+  enter: {
+    duration: 300,
+    easing: "ease-out",
+    type: () => [
+      { opacity: 0, transform: "translateY(20px)" },
+      { opacity: 1, transform: "translateY(0)" },
+    ],
+  },
+  exit: {
+    duration: 200,
+    easing: "ease-in",
+    type: () => [
+      { opacity: 1, transform: "translateY(0)" },
+      { opacity: 0, transform: "translateY(-20px)" },
+    ],
+  },
+};
+
+const columnAnimate = {
+  move: {
+    duration: 500,
+    easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+  },
+  enter: {
+    duration: 250,
+    easing: "ease-out",
+    type: () => [
+      { opacity: 0, transform: "translateX(-12px)" },
+      { opacity: 1, transform: "translateX(0)" },
+    ],
+  },
+  exit: {
+    duration: 200,
+    easing: "ease-in",
+    type: () => [
+      { opacity: 1, transform: "translateX(0)" },
+      { opacity: 0, transform: "translateX(12px)" },
+    ],
+  },
+};
+
+<Grid rowAnimate={rowAnimate} columnAnimate={columnAnimate} />;
+```
+
+The `type` field on `enter` and `exit` accepts a function that receives
+the animated element and returns a `Keyframe[]` in the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API)
+format. The `move` phase always uses a `translate` transform and does not accept a `type` property.
+
+The demo below uses a custom animation configuration. The `enter` and `exit` phases use
+custom keyframes to create a spring effect, while the `move` phase continues to use
+the built-in `translate` transform.
+
+::demo[Custom Animations="./demos/grid-animations-custom"]
+
+## Next Steps
+
+::next[/docs/grid-annotations]
+::next[/docs/grid-container]
+::next[/docs/grid-reactivity]

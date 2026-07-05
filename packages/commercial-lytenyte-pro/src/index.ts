@@ -61,6 +61,7 @@ export namespace Grid {
   export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["rowGroupColumn"];
   export type Events<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["events"];
   export type Style = LnTypes.GridStyle;
+  export type Annotation<Spec extends GridSpec = GridSpec> = LnTypes.Annotation<Spec>;
 
   export namespace Components {
     export type Header = GridCore.Components.Header;

@@ -152,10 +152,24 @@ See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-o
 <summary><b>🚀&nbsp; Virtualization</b></summary>
 <br>
 
-| Feature                                                                            | Core | PRO |
-| ---------------------------------------------------------------------------------- | :--: | :-: |
-| [Row Virtualization](https://www.1771technologies.com/docs/grid-virtualization)    |  ✅  | ✅  |
-| [Column Virtualization](https://www.1771technologies.com/docs/grid-virtualization) |  ✅  | ✅  |
+| Feature                                                                                                             | Core | PRO |
+| ------------------------------------------------------------------------------------------------------------------- | :--: | :-: |
+| [Row Virtualization](https://www.1771technologies.com/docs/grid-virtualization)                                     |  ✅  | ✅  |
+| [Column Virtualization](https://www.1771technologies.com/docs/grid-virtualization)                                  |  ✅  | ✅  |
+| [Scroll Flash Suppression](https://www.1771technologies.com/docs/grid-virtualization#scroll-flash-suppression)      |  ✅  | ✅  |
+| [Initial Viewport Dimensions](https://www.1771technologies.com/docs/grid-virtualization#initial-viewport-rendering) |  ✅  | ✅  |
+
+</details>
+
+<details>
+<summary><b>🎬&nbsp; Animations</b></summary>
+<br>
+
+| Feature                                                                                               | Core | PRO |
+| ----------------------------------------------------------------------------------------------------- | :--: | :-: |
+| [Row Animations](https://www.1771technologies.com/docs/grid-animations)                               |  ✅  | ✅  |
+| [Column Animations](https://www.1771technologies.com/docs/grid-animations)                            |  ✅  | ✅  |
+| [Custom Animation Keyframes](https://www.1771technologies.com/docs/grid-animations#custom-animations) |  ✅  | ✅  |
 
 </details>
 
@@ -183,6 +197,7 @@ See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-o
 | **Basic Row Operations**                                                                                                  |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Row Pinning](https://www.1771technologies.com/docs/row-pinning)                                      |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Row Spanning](https://www.1771technologies.com/docs/row-spanning)                                    |  ✅  | ✅  |
+| &nbsp;&nbsp;&nbsp;↳ [Row Banding](https://www.1771technologies.com/docs/row-banding)                                      |  ✅  | ✅  |
 | **Row Height**                                                                                                            |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Variable Row Height](https://www.1771technologies.com/docs/row-height#variable-row-height)           |  ✅  | ✅  |
 | &nbsp;&nbsp;&nbsp;↳ [Fixed Row Height](https://www.1771technologies.com/docs/row-height#number-row-heights)               |  ✅  | ✅  |
@@ -229,6 +244,18 @@ See our [AI Skills Overview guide](https://1771technologies.com/docs/ai-skills-o
 | [Cell Rendering](https://www.1771technologies.com/docs/cell-renderers)          |  ✅  | ✅  |
 | [Cell Diff Flashing](https://www.1771technologies.com/docs/cell-diff-flashing)  |  ✅  | ✅  |
 | [Cell Tooltips & Popovers](https://www.1771technologies.com/docs/cell-tooltips) |  ✅  | ✅  |
+
+</details>
+
+<details>
+<summary><b>📌&nbsp; Annotations</b> &nbsp;</summary>
+<br>
+
+| Feature                                                                               | Core | PRO |
+| ------------------------------------------------------------------------------------- | :--: | :-: |
+| [Grid Annotations](https://www.1771technologies.com/docs/grid-annotations)            |  —   | ✅  |
+| [Cell Notes](https://www.1771technologies.com/docs/grid-annotations#cell-notes)       |  —   | ✅  |
+| [Marching Ants](https://www.1771technologies.com/docs/grid-annotations#marching-ants) |  —   | ✅  |
 
 </details>
 

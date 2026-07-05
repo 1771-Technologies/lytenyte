@@ -83,6 +83,43 @@ but that approach causes frame drops and reduces overall application performance
 
 :::
 
+## Scroll Flash Suppression
+
+Modern browsers can process scrolling independently of the main thread.
+If a user scrolls faster than the grid can render the next viewport,
+such as by rapidly dragging the scrollbar to the bottom, the
+grid may briefly display blank areas.
+
+Enable `suppressScrollFlash` to prevent blank flashes during fast scrolling.
+The demo below shows how the grid behaves with scroll flash suppression enabled.
+
+::demo[Suppress Scroll Flash="./demos/grid-no-flash"]
+
+Drag the scroll bar as quickly as possible. The grid content remains visible
+regardless of how fast you scroll.
+
+:::note
+Enabling `suppressScrollFlash` has a performance cost. On lower-powered devices,
+users may notice dropped frames while scrolling very quickly.
+:::
+
+## Initial Viewport Rendering
+
+When virtualization is enabled, LyteNyte Grid must observe the viewport size
+before it can render rows and columns. As a result, the initial render is
+empty until the viewport has been measured.
+
+Set `viewportInitialWidth` and `viewportInitialHeight` to provide an estimated
+viewport size for the initial render. This is particularly useful for SSR
+applications, as the initial HTML can include rendered rows before the
+client measures the viewport.
+
+The following demo sets both properties to `500px`. The benefit is not obvious
+in this demo because the examples are lazily rendered, but it can significantly
+improve the initial render in Next.js and other SSR applications.
+
+::demo[Initial Viewport Dimensions="./demos/grid-initial"]
+
 ## Next Steps
 
 ::next[/docs/grid-container]

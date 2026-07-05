@@ -1,9 +1,14 @@
 import type * as Core from "@1771technologies/lytenyte-core/types";
-import { Root as RootCore } from "@1771technologies/lytenyte-core/internal";
-import { forwardRef, memo, useEffect, type PropsWithChildren, type ReactNode } from "react";
+import { Root as RootCore, OverlaySlotsProvider } from "@1771technologies/lytenyte-core/internal";
+import { forwardRef, memo, useEffect, useMemo, type PropsWithChildren, type ReactNode } from "react";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
 import { hasAValidLicense, licenseState } from "../license.js";
 import type { Grid } from "@1771technologies/lytenyte-core";
+import { AnnotationRowSectionTop } from "../components/annotations/annotation-row-sections.js";
+import { AnnotationRowSectionCenter } from "../components/annotations/annotation-row-sections.js";
+import { AnnotationRowSectionBottom } from "../components/annotations/annotation-row-sections.js";
+import { AnnotationHeaderOverlay } from "../components/annotations/annotation-header-overlay.js";
+import type { Annotation } from "../components/annotations/types.js";
 
 const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
   props: PropsWithChildren<
@@ -11,6 +16,19 @@ const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
   >,
   forwarded: Root.Props<Spec>["ref"],
 ) => {
+  const { annotations, ...rest } = props as typeof props & { annotations?: Annotation<Spec>[] };
+
+  const overlaySlots = useMemo(() => {
+    if (!annotations || annotations.length === 0) return {};
+
+    return {
+      rowsTop: <AnnotationRowSectionTop annotations={annotations} />,
+      rowsCenter: <AnnotationRowSectionCenter annotations={annotations} />,
+      rowsBottom: <AnnotationRowSectionBottom annotations={annotations} />,
+      header: <AnnotationHeaderOverlay annotations={annotations} />,
+    };
+  }, [annotations]);
+
   useEffect(() => {
     if (hasAValidLicense) return;
 
@@ -42,7 +60,11 @@ const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
     return () => invalidLicenseWatermark.remove();
   }, []);
 
-  return <RootCore ref={forwarded as any} {...(props as any)} />;
+  return (
+    <OverlaySlotsProvider value={overlaySlots}>
+      <RootCore ref={forwarded as any} {...(rest as any)} />
+    </OverlaySlotsProvider>
+  );
 };
 
 export const Root = memo(forwardRef(RootWrapper)) as <Spec extends Root.GridSpec = Root.GridSpec>(
@@ -59,7 +81,9 @@ export namespace Root {
     E extends Record<string, any> = object,
   > = Grid.GridSpec<T, C, S, E>;
 
-  export type Props<Spec extends GridSpec = GridSpec> = Grid.Props<Spec>;
+  export type Props<Spec extends GridSpec = GridSpec> = Grid.Props<Spec> & {
+    readonly annotations?: Annotation<Spec>[];
+  };
   export type API<Spec extends GridSpec = GridSpec> = Core.API<Spec>;
   export type Column<Spec extends GridSpec = GridSpec> = Core.Column<Spec>;
 }

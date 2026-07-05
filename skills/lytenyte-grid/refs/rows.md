@@ -234,6 +234,33 @@ const { props, placeholder } = api.useRowDrag({
 return <div {...props}>{placeholder}</div>;
 ```
 
+## Row Banding (Zebra Striping)
+
+LyteNyte Grid applies a `data-ln-alternate="true"` attribute to every other row by default.
+Target this in CSS to create alternating row backgrounds:
+
+```css
+[data-ln-alternate="true"] [data-ln-cell] {
+  background-color: var(--ln-row-alternate-bg);
+}
+```
+
+Disable it entirely:
+
+```tsx
+<Grid rowAlternateAttr={false} />
+```
+
+### Root-Level Banding for Grouped Rows
+
+Pass `"root"` to assign the alternate attribute based on the **top-level group's index** rather than
+each individual row's index. All children in a group share the same `data-ln-alternate` value as
+their root ancestor — useful when groups should visually stripe as a unit:
+
+```tsx
+<Grid rowAlternateAttr="root" />
+```
+
 ## Gotchas
 
 - **Row detail height `"auto"` can cause layout jank** — auto-sizing measures the content after render, then adjusts height. This causes a two-phase render that can visibly shift other rows. Use a fixed pixel height when possible.

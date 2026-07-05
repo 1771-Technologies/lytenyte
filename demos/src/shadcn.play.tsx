@@ -347,7 +347,8 @@ export default function ShadcnPortfolioDemo() {
             rowSource={ds}
             rowGroupColumn={rowGroupColumn}
             onRowGroupColumnChange={setRowGroupColumn}
-            rowAlternateAttr
+            rowAlternateAttr="root"
+            rowAnimate
           />
         </div>
       </div>

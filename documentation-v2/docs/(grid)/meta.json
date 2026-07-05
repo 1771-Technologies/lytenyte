@@ -6,7 +6,9 @@
     "grid-headless-parts",
     "grid-api-extensions",
     "grid-react-compiler",
-    "grid-virtualization"
+    "grid-virtualization",
+    "grid-animations",
+    "grid-annotations"
   ],
   "defaultOpen": true
 }

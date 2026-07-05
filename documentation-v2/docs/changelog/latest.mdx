@@ -1,10 +1,49 @@
 ---
-title: v2.1.0 (Latest)
+title: v2.2.0 (Latest)
 changelog: true
 description: LyteNyte Grid 2 Changelog. Track new features, improvements, and the latest changes.
 ---
 
 import { DateTag } from "./components/date-tag";
+
+## v2.2.0
+
+<DateTag>July 05, 2026</DateTag>
+
+### Official Release Article
+
+Read the [press release](/blog/lytenyte-version-2.2) for in-depth details on the new features.
+
+### Release Highlights
+
+#### General Enhancements
+
+LyteNyte Grid 2.2 ships with updated [AI Skills](/docs/ai-skills-overview),
+refined pill drag-and-drop behavior, and general quality improvements.
+
+#### Core Edition Updates
+
+Introduces grid animations, scroll-flash suppression, and initial viewport dimensions, giving developers more control over how the grid renders, animates, and responds during scrolling.
+
+- [Grid Animations](/docs/grid-animations): Animate rows and columns as they are added, removed, or repositioned.
+- [Scroll Flash Suppression](/docs/grid-virtualization#suppress-scroll-flash): Prevent white flashes during rapid scrolling.
+  - Added `suppressScrollFlash` to keep rendered content visually stable during fast scrolls.
+- [Initial Viewport Dimensions](/docs/grid-virtualization#initial-width-and-height): Preload cell content for faster initial page loads.
+  - Added `viewportInitialWidth` and `viewportInitialHeight` to provide an initial container size before measurement, improving SSR output with meaningful initial grid content.
+- [Row Banding](/docs/row-banding): Added "root" as a new `rowAlternateAttr` value to stripe grouped rows based on the topmost row in each group.
+
+#### PRO Edition Updates
+
+Introduces [Grid Annotations](/docs/grid-annotations) capabilities for
+rendering custom content in headers, cells, and other grid areas.
+
+- Added annotation support for notes, comments, visual cues, and custom overlays.
+- Supports cell comments, cell notes, and marching ants selection indicators.
+- Reduces manual positioning logic by anchoring annotations to ranges, headers, or points in the grid.
+
+#### Breaking Changes
+
+There are no breaking changes for this release.
 
 ## v2.1.3
 

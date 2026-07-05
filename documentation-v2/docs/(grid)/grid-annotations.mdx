@@ -1,0 +1,164 @@
+---
+title: Grid Annotations
+description: Mark and highlight specific areas of the grid to attract the user's attention using grid annotations.
+step: Use grid annotations to draw attention to specific areas of the grid.
+pro: true
+---
+
+Annotations overlay custom React content on top of the grid. Each annotation requires two properties:
+
+- `anchor`: Defines where to position the annotation.
+- `renderer`: function that returns the content to display at the anchor position.
+
+LyteNyte Grid accepts an array of annotations via the `annotations` property.
+
+The demo below shows a basic annotation that appears when the user hovers over
+a cell in the **Price**, **Quantity**, **Revenue**, **Cost**, or **Profit** columns.
+The annotation highlights how these columns are related.
+
+::demo[Basic Grid Annotations="./demos/grid-annotations"]
+
+The content rendered by an annotation can be anything your application requires. LyteNyte Grid provides
+the positioning system, your application provides the content to render.
+
+## Annotation Anchor Types
+
+LyteNyte Grid supports three anchor types: `range`, `header`, and `point`. Use the `kind`
+field to select how the annotation is positioned.
+
+### Range Anchor
+
+A `range` annotation covers a cell range. `rowStart`, `rowEnd`, `colStart`,
+and `colEnd` accept either a numeric index or a row or column ID.
+
+```tsx
+anchor: {
+  kind: "range",
+  rowStart: 0,        // row index or row ID
+  rowEnd: 5,          // row index or row ID
+  colStart: "revenue", // column index or column ID
+  colEnd: "profit",    // column index or column ID
+}
+```
+
+LyteNyte Grid automatically splits a `range` annotation across pinned and unpinned grid sections, including:
+
+- Start-pinned, center, and end-pinned columns.
+- Top-pinned, center, and bottom-pinned rows.
+
+A single `range` annotation renders correctly even when
+it spans multiple pinned sections.
+
+### Header Anchor
+
+A `header` annotation spans one or more columns in the column header area.
+
+```tsx
+anchor: {
+  kind: "header",
+  colStart: "revenue", // column index or column ID
+  colEnd: "profit",    // column index or column ID
+}
+```
+
+Header annotations are split across the start-pinned, center, and end-pinned header sections, just
+like range annotations.
+
+### Point Anchor
+
+A `point` annotation places content at an absolute `x` and `y` coordinate in the
+scrollable data area. The `x` and `y` values are pixel offsets from
+the top-left corner of the first non-pinned row in the center scroll area.
+
+This uses the same coordinate space as the virtual row layout.
+
+```tsx
+anchor: {
+  kind: "point",
+  x: 400,
+  y: 300,
+}
+```
+
+By default, the annotation container applies `pointer-events: none`. If the
+annotation content needs to respond to pointer events, such as a clickable
+badge or tooltip trigger, set `pointerEvents: "auto"` on the
+element that should receive events.
+
+## Annotations Render Function
+
+The `render` function receives `{ api }` and returns a React node. The annotation
+container is already positioned and sized to match the anchor. Use `position: "absolute"` with
+`inset: 0` to fill the container, or use any CSS positioning approach to place content within it.
+
+```tsx
+render: ({ api }) => {
+  // api gives you access to the full grid API
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        border: "2px solid #ef4444",
+        background: "rgba(239, 68, 68, 0.08)",
+        boxSizing: "border-box",
+        pointerEvents: "none",
+      }}
+    />
+  );
+},
+```
+
+By default, the annotation container has `pointer-events: none` applied. If your
+rendered content needs to respond to mouse events, such as a clickable badge or
+a tooltip trigger, set `pointerEvents: "auto"` on
+the element that should receive events.
+
+## Cell Notes
+
+Cell notes are another common use case for annotations, allowing users to add
+context to a specific cell.
+
+When a user hovers over a cell with a note, the grid displays the note content.
+Cells with notes show a small red triangle in the top-right corner.
+
+**Right-click** any cell in the demo below to add or edit a note.
+Alternatively, select a cell and press `Shift + F2` to open the note box.
+
+::demo[Cell Note Annotation="./demos/grid-annotations-notes"]
+
+:::note
+Cell notes use positioned popovers. You can customize every aspect of the note,
+including theming, timing, and visibility. To show notes only when opened,
+rather than on hover, or to adjust note timing, see
+the [Popover guide](/docs/component-popover).
+:::
+
+## Marching Ants
+
+The [marching ants](https://en.wikipedia.org/wiki/Marching_ants) effect is an animated dashed border
+indicating an active copied or cut selection, a familiar pattern from spreadsheet applications like
+Excel and Google Sheets. Annotations make this straightforward to implement in LyteNyte Grid.
+
+The demo below supports standard clipboard shortcuts. Select a range of cells, then press:
+
+- `Ctrl/Cmd + C`: Copy the selection to the clipboard and show the marching ants border.
+- `Ctrl/Cmd + X`: Cut the selection to the clipboard and show the marching ants border.
+- `Ctrl/Cmd + V`: Pastes the clipboard content. If the original cut selection is pasted, the source cells are cleared.
+- `Esc`: Dismiss the marching ants border without pasting.
+
+The marching ants border remains visible as long as focus stays within the grid,
+including when the user clicks another cell. Moving focus outside the grid to another
+part of the page clears the border. However, switching applications preserves the border,
+allowing users to navigate away and return to paste.
+
+The animation itself is an SVG `<rect>` with `stroke-dasharray` driven by a CSS `@keyframes` rule that
+increments `stroke-dashoffset`, creating the illusion of movement along the border.
+
+::demo[Marching Ants Annotation="./demos/grid-annotations-clipboard"]
+
+## Next Steps
+
+::next[/docs/grid-container]
+::next[/docs/grid-api-extensions]
+::next[/docs/grid-animations]

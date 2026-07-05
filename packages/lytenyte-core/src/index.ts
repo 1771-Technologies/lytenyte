@@ -147,7 +147,7 @@ export namespace Grid {
     readonly colOverscanStart?: number;
     readonly colOverscanEnd?: number;
 
-    readonly rowAlternateAttr?: boolean;
+    readonly rowAlternateAttr?: boolean | "root";
     readonly rowScanDistance?: number;
     readonly rowSource?: Spec["source"];
     readonly rowHeight?: RowHeight;
@@ -160,6 +160,9 @@ export namespace Grid {
 
     readonly virtualizeCols?: boolean;
     readonly virtualizeRows?: boolean;
+
+    readonly rowAnimate?: boolean | RowAnimate;
+    readonly columnAnimate?: boolean | ColumnAnimate;
 
     readonly rowSelectionMode?: "single" | "multiple" | "none";
     readonly rowSelectionActivator?: "single-click" | "double-click" | "none";
@@ -418,6 +421,36 @@ export namespace Grid {
       readonly className?: string;
     };
   };
+
+  export type AnimateKeyframesFn = (element: HTMLElement) => Keyframe[];
+  export type AnimateEnterExitType = "fade" | AnimateKeyframesFn;
+
+  export type AnimateMove = {
+    readonly duration?: number;
+    readonly easing?: string;
+  };
+
+  export type AnimateEnterExit = {
+    readonly type?: AnimateEnterExitType;
+    readonly duration?: number;
+    readonly easing?: string;
+  };
+
+  export type Animate = {
+    readonly move?: AnimateMove | boolean;
+    readonly enter?: AnimateEnterExit | boolean;
+    readonly exit?: AnimateEnterExit | boolean;
+  };
+
+  export type RowAnimateEnterExitType = AnimateEnterExitType;
+  export type RowAnimateMove = AnimateMove;
+  export type RowAnimateEnterExit = AnimateEnterExit;
+  export type RowAnimate = Animate;
+
+  export type ColumnAnimateEnterExitType = AnimateEnterExitType;
+  export type ColumnAnimateMove = AnimateMove;
+  export type ColumnAnimateEnterExit = AnimateEnterExit;
+  export type ColumnAnimate = Animate;
 
   export namespace Components {
     export type Header = Header.Props;
