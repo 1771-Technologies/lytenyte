@@ -103,6 +103,8 @@ export default function ExportDemo() {
   apiRef.current = api;
   const setDataRef = useRef(setData);
   setDataRef.current = setData;
+  const copiedRectRef = useRef(copiedRect);
+  copiedRectRef.current = copiedRect;
 
   const getFirstSelection = useCallback(() => {
     return selections.at(0) ?? null;
@@ -251,9 +253,8 @@ export default function ExportDemo() {
                   if (!content) return;
 
                   const cut = cutRectRef.current;
+                  const wascut = !!cut;
                   cutRectRef.current = null;
-                  copiedTextRef.current = null;
-                  setCopiedRect(null);
 
                   const updates = content.split("\n").map((c) => {
                     return c
@@ -263,7 +264,7 @@ export default function ExportDemo() {
                   });
 
                   // Capture paste start position before calling handleGridUpdate so we can
-                  // detect overlap with the cut source and avoid clearing pasted values.
+                  // detect overlap with both the cut source and the copied rect.
                   let pasteRowStart = -1;
                   let pasteColStart = -1;
                   if (apiRef.current && document.activeElement) {
@@ -274,6 +275,30 @@ export default function ExportDemo() {
                       pasteRowStart = pos.rowIndex;
                       pasteColStart = pos.colIndex;
                     }
+                  }
+
+                  // For copy (not cut), check if the paste destination overlaps the copied rect.
+                  // If it does, treat it as a "consume" — clear clipboard, ants, and selection.
+                  let overlapsCopy = false;
+                  if (!wascut && pasteRowStart >= 0) {
+                    const snap = copiedRectRef.current;
+                    if (snap) {
+                      const pasteRowEnd = pasteRowStart + updates.length;
+                      const pasteColEnd = pasteColStart + Math.max(...updates.map((r) => r.length));
+                      overlapsCopy =
+                        pasteRowStart < snap.rowEnd &&
+                        pasteRowEnd > snap.rowStart &&
+                        pasteColStart < snap.columnEnd &&
+                        pasteColEnd > snap.columnStart;
+                    }
+                  }
+
+                  const shouldConsume = wascut || overlapsCopy;
+                  if (shouldConsume) {
+                    copiedTextRef.current = null;
+                    setCopiedRect(null);
+                    setSelections([]);
+                    navigator.clipboard.writeText("");
                   }
 
                   handleGridUpdate(updates);
