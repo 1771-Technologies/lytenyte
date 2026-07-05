@@ -133,14 +133,27 @@ function NoteEditContent({
         }}
       />
       <p style={{ margin: "6px 0 0", fontSize: 11, color: "var(--ln-text-secondary)" }}>
-        Tip: Press Ctrl/Cmd + Enter to commit
+        Tip: Press Ctrl/Cmd + Enter to commit.
       </p>
-      <div style={{ display: "flex", gap: 6, marginTop: 6, justifyContent: "flex-end" }}>
+      <div
+        style={{ display: "flex", gap: 6, marginTop: 10, justifyContent: "flex-end" }}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") onCancel();
+          if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+          const buttons = e.currentTarget.querySelectorAll<HTMLButtonElement>("button");
+          const idx = Array.from(buttons).indexOf(e.target as HTMLButtonElement);
+          if (idx === -1) return;
+          e.preventDefault();
+          const next = e.key === "ArrowRight" ? buttons[idx + 1] : buttons[idx - 1];
+          next?.focus();
+        }}
+      >
         <button
           onClick={() => onAccept(value)}
           className="duration-120 bg-ln-primary-50 hover:bg-ln-primary-70 cursor-pointer transition-colors"
           style={{
             padding: "6px 14px",
+            minWidth: 64,
             borderRadius: 4,
             border: "none",
             color: "white",
@@ -154,6 +167,7 @@ function NoteEditContent({
           className="bg-ln-bg-button-light hover:bg-ln-gray-30 duration-120 cursor-pointer transition-colors"
           style={{
             padding: "6px 14px",
+            minWidth: 64,
             borderRadius: 4,
             border: "1px solid var(--ln-border-button-light)",
             color: "var(--ln-text)",
@@ -303,7 +317,8 @@ export default function GridDemo() {
           });
         },
         keyDown: ({ event, row, column, layout }) => {
-          if (event.key !== "F2" || !event.shiftKey || event.ctrlKey || event.metaKey || editingRef.current) return;
+          if (event.key !== "F2" || !event.shiftKey || event.ctrlKey || event.metaKey || editingRef.current)
+            return;
           event.preventDefault();
           event.stopPropagation();
           const el = getCellEl(event.target);
