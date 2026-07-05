@@ -77,10 +77,10 @@ export default function GridDemo() {
           Shuffle Columns
         </button>
         <button data-ln-button="website" data-ln-size="mx" onClick={() => setHideAdults((h) => !h)}>
-          {hideAdults ? "Show Adults (25-64)" : "Hide Adults (25-64)"}
+          {hideAdults ? "Show: Adults (35-64)" : "Hide: Adults (35-64)"}
         </button>
         <button data-ln-button="website" data-ln-size="mx" onClick={() => setHideCountry((h) => !h)}>
-          {hideCountry ? "Show Country" : "Hide Country"}
+          {hideCountry ? "Show: Country" : "Hide: Country"}
         </button>
       </div>
       <div className="ln-grid" style={{ height: 500 }}>
