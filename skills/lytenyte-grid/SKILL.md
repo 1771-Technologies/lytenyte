@@ -3,15 +3,16 @@ name: lytenyte-grid
 description: >
   Use this skill when the user is working with LyteNyte Grid (@1771technologies/lytenyte-pro
   or @1771technologies/lytenyte-core), a headless React data grid. Activate for tasks like:
-  installing or licensing  LyteNyte Grid, configuring columns or rows, building cell renderers or
+  installing or licensing LyteNyte Grid, configuring columns or rows, building cell renderers or
   editors, adding filters or sort controls, grouping or aggregating rows, pivoting, exporting
   to CSV/Excel/Parquet/Arrow, row selection, cell range selection, theming or styling,
-  TypeScript GridSpec patterns, server-side or tree data, and any PRO component (SmartSelect,
+  TypeScript GridSpec patterns, server-side or tree data, annotations, cell notes, marching ants,
+  row/column animations, row banding, scroll flash suppression, and any PRO component (SmartSelect,
   PillManager, Menu, Dialog, TreeView, RowGroupCell). Also activate when the user describes
   grid problems without naming the package — e.g. "my rows won't group", "cells aren't
   editable", "add a loading overlay", "pin this column", "the filter isn't working",
   "how do I export this table", "select a range of cells", "copy cells to clipboard",
-  "build me a grid".
+  "build me a grid", "animate rows", "highlight cells", "add a note to a cell".
 compatibility: React 18+. Designed for Claude Code and similar AI coding agents.
 metadata:
   author: 1771 Technologies
@@ -97,10 +98,10 @@ Read a reference file only when the task requires it. Do not load all files upfr
 | When the task involves…                                                                                                                               | Load this file                                                         |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | Installing, licensing, CSS imports, CDN, watermark errors                                                                                             | [refs/installation.md](refs/installation.md)                           |
-| Grid setup, container sizing, reactivity, API ref, `apiExtension`, `usePiece`, headless mode, events system (`cell`/`row`/`viewport` events)          | [refs/grid-core.md](refs/grid-core.md)                                 |
+| Grid setup, container sizing, reactivity, API ref, `apiExtension`, `usePiece`, headless mode, events system (`cell`/`row`/`viewport` events), row/column animations, `suppressScrollFlash`, `viewportInitialWidth`/`viewportInitialHeight` | [refs/grid-core.md](refs/grid-core.md) |
 | TypeScript, `GridSpec`, renderer types, `RowNode` type guards                                                                                         | [refs/typescript.md](refs/typescript.md)                               |
 | Columns — `id`/`name`/`field`, sizing, pinning, groups, header renderers, spanning                                                                    | [refs/columns.md](refs/columns.md)                                     |
-| Rows — height, master-detail (row detail), full-width rows, row spanning, row drag                                                                    | [refs/rows.md](refs/rows.md)                                           |
+| Rows — height, master-detail (row detail), full-width rows, row spanning, row drag, row banding, zebra striping, `rowAlternateAttr`                   | [refs/rows.md](refs/rows.md)                                           |
 | Row selection — checkboxes, `SelectAll`, linked vs isolated, controlled state                                                                         | [refs/row-selection.md](refs/row-selection.md)                         |
 | Client-side data — `useClientDataSource`, sort, filter, group, aggregation, pivot, add/delete rows                                                    | [refs/client-data-source.md](refs/client-data-source.md)               |
 | Server-side data — `useServerDataSource`, `DataRequest`/`DataResponse`, loading state, refresh                                                        | [refs/server-data-source.md](refs/server-data-source.md)               |
@@ -112,6 +113,7 @@ Read a reference file only when the task requires it. Do not load all files upfr
 | Expression DSL — `Evaluator`, `ExpressionEditor`, expression filters                                                                                  | [refs/expressions.md](refs/expressions.md)                             |
 | Pivoting — `pivotMode`, `PivotModel`, measures, grand totals                                                                                          | [refs/pivoting.md](refs/pivoting.md)                                   |
 | Exporting data — CSV, Excel, Parquet, Arrow, clipboard                                                                                                | [refs/export.md](refs/export.md)                                       |
+| Annotations — highlighting cells, cell notes, marching ants, custom overlays, `annotations` prop                                                      | [refs/annotations.md](refs/annotations.md)                             |
 | UI components — `SmartSelect`, `Menu`, `Popover`, `Dialog`, `PillManager`, `ColumnManager`, `TreeView`, `RowGroupCell`, overlays, `ViewportShadows`   | [refs/components.md](refs/components.md)                               |
 | Theming — pre-built themes, `data-ln-*` attributes, CSS tokens, Tailwind, CSS Modules, Emotion                                                        | [refs/theming.md](refs/theming.md)                                     |
 | shadcn/ui — CLI install, `ln-shadcn` theme, using shadcn components as renderers/editors/filters, dark mode, `cn` utility                             | [refs/shadcn.md](refs/shadcn.md)                                       |
@@ -141,16 +143,17 @@ Use this file first when deciding:
 | expressions, expression filters, expression editor                                       |     PRO | `refs/expressions.md`               |
 | label filters, having filters                                                            |     PRO | `refs/filtering.md`                 |
 | SmartSelect, PillManager, Menu, Dialog, TreeView, ColumnManager, RowGroupCell, SelectAll |     PRO | `refs/components.md`                |
+| annotations, cell notes, marching ants, custom overlays, `annotations` prop              |     PRO | `refs/annotations.md`               |
 
 ## Core-Compatible Features
 
 | User asks for                                                            |  Edition | Load                         |
 | ------------------------------------------------------------------------ | -------: | ---------------------------- |
 | install, license, watermark, package manager, CDN                        | Core/PRO | `refs/installation.md`       |
-| grid setup, reactivity, events, API extensions, headless mode            | Core/PRO | `refs/grid-core.md`          |
+| grid setup, reactivity, events, API extensions, headless mode, animations, scroll flash, initial viewport | Core/PRO | `refs/grid-core.md` |
 | TypeScript, `GridSpec`, row node types                                   | Core/PRO | `refs/typescript.md`         |
 | columns, sizing, pinning, visibility, groups, headers                    | Core/PRO | `refs/columns.md`            |
-| row height, row pinning, row drag, full-width rows, master-detail        | Core/PRO | `refs/rows.md`               |
+| row height, row pinning, row drag, full-width rows, master-detail, row banding, zebra striping | Core/PRO | `refs/rows.md`      |
 | row selection, checkbox selection, linked/isolated selection             | Core/PRO | `refs/row-selection.md`      |
 | client data, sorting, filtering, grouping, aggregation                   | Core/PRO | `refs/client-data-source.md` |
 | cell renderers, tooltips, diff flashing, cell/range selection, clipboard | Core/PRO | `refs/cells.md`              |

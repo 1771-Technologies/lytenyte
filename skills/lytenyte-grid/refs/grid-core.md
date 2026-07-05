@@ -349,6 +349,94 @@ Disable for small datasets or print scenarios:
 <Grid virtualizeRows={false} virtualizeCols={false} />
 ```
 
+### Suppress Scroll Flash
+
+Fast scrolling (e.g. dragging the scrollbar) can briefly show blank areas before new content paints.
+Enable `suppressScrollFlash` to prevent this by using a synchronous scroll strategy:
+
+```tsx
+<Grid suppressScrollFlash />
+```
+
+> **Note:** This has a performance cost on lower-powered devices — users may notice dropped frames during very fast scrolling.
+
+### Initial Viewport Dimensions
+
+Before the viewport is measured, the grid renders nothing. Provide estimated dimensions to pre-render
+content on the first paint, which is useful for SSR (Next.js, Remix):
+
+```tsx
+<Grid viewportInitialWidth={1200} viewportInitialHeight={600} />
+```
+
+## Animations
+
+LyteNyte Grid can animate rows and columns when they are added, removed, or reordered. Animations
+use the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API)
+and run outside the React render cycle.
+
+### Enable with Defaults
+
+```tsx
+<Grid rowAnimate columnAnimate />
+```
+
+This enables enter, exit, and move phases with a default fade/translate animation.
+
+### Custom Animation Config
+
+Pass a config object to control each phase independently:
+
+```tsx
+const rowAnimate = {
+  move: {
+    duration: 500,
+    easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+  },
+  enter: {
+    duration: 300,
+    easing: "ease-out",
+    type: () => [
+      { opacity: 0, transform: "translateY(20px)" },
+      { opacity: 1, transform: "translateY(0)" },
+    ],
+  },
+  exit: {
+    duration: 200,
+    easing: "ease-in",
+    type: () => [
+      { opacity: 1, transform: "translateY(0)" },
+      { opacity: 0, transform: "translateY(-20px)" },
+    ],
+  },
+};
+
+const columnAnimate = {
+  move: { duration: 400, easing: "ease-in-out" },
+  enter: {
+    duration: 250,
+    easing: "ease-out",
+    type: () => [
+      { opacity: 0, transform: "translateX(-12px)" },
+      { opacity: 1, transform: "translateX(0)" },
+    ],
+  },
+  exit: {
+    duration: 200,
+    easing: "ease-in",
+    type: () => [
+      { opacity: 1, transform: "translateX(0)" },
+      { opacity: 0, transform: "translateX(12px)" },
+    ],
+  },
+};
+
+<Grid rowAnimate={rowAnimate} columnAnimate={columnAnimate} />;
+```
+
+The `type` field on `enter` and `exit` is a function returning `Keyframe[]` (Web Animations API format).
+The `move` phase always uses a `translate` transform and does not accept a `type`.
+
 ## Gotchas
 
 - **The API ref is stable, not reactive** — `ref.current` always points to the same object.
@@ -363,4 +451,5 @@ Disable for small datasets or print scenarios:
 - [Headless Parts](https://www.1771technologies.com/docs/grid-headless-parts)
 - [API Extensions](https://www.1771technologies.com/docs/grid-api-extensions)
 - [Virtualization](https://www.1771technologies.com/docs/grid-virtualization)
+- [Animations](https://www.1771technologies.com/docs/grid-animations)
 - [React Compiler](https://www.1771technologies.com/docs/grid-react-compiler)
