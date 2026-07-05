@@ -368,6 +368,13 @@ Provide these props to the `Grid` component to configure the grid.
       see: ["/docs/grid-virtualization"],
     },
     {
+      name: "suppressScrollFlash",
+      description: `When enabled, the grid uses a synchronous scroll strategy that eliminates the white flash
+      that can appear during fast scrolling in Chromium-based browsers. This trades native browser scroll
+      momentum for flash-free rendering. Enable this when visual consistency during scroll is a priority.`,
+      type: "boolean",
+    },
+    {
       name: "viewportInitialWidth",
       description: `The initial width of the viewport in pixels. Providing this value improves SSR by allowing the grid to pre-compute column positions and render visible cell content before the browser has measured the viewport.`,
       type: "number",

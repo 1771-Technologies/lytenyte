@@ -1,34 +1,37 @@
 ---
 title: Row Banding
-step: Alternate odd and even row backgrounds to create visual separation between rows.
-description: Alternate odd and even row backgrounds to create visual separation between rows.
+step: Alternate row backgrounds to create visual separation.
+description: Use alternating row background to improve visual separation between rows.
 ---
 
 Row banding, also known as zebra striping, alternates row background colors to improve
 readability in dense tables. By default, LyteNyte Grid adds a `data-ln-alternate="true"`
 attribute to every other row. Target this attribute in CSS to apply alternating styles.
 
-## Odd Even Alternates
+## Alternate Row Shading
 
-Set `rowAlternateAttr` to `false` to disable alternating row attributes. The demo below
-shows the effect, toggle the switch off to give all rows the same background, or on to
-restore the alternating pattern.
+Set `rowAlternateAttr` to `false` to disable alternating row backgrounds.
 
-::demo[Alternating Row Stripes="./demos/row-alternating"]
+In the demo below, turn the switch off to give all rows the same
+background, or turn it on to restore the alternating pattern.
+
+::demo[Striped Rows="./demos/row-alternating"]
 
 :::note
-`rowAlternateAttr` only controls whether LyteNyte Grid applies the `data-ln-alternate`
-attribute. You still need to target it in CSS to produce visible striping.
+`rowAlternateAttr` only controls whether LyteNyte Grid applies the `data-ln-alternate` attribute.
+To create visible row striping, target the `data-ln-alternate` attribute in your CSS.
 :::
 
-### Root Row Alternates
+### Alternate Root Row Shading
 
-Passing `"root"` to `rowAlternateAttr` makes LyteNyte Grid assign the `data-ln-alternate`
-value based on the root row's index rather than each individual row's index. When row groups
-are present, all children in a group inherit the same `data-ln-alternate` value as their
-top-level parent row.
+You can apply alternate shading at the root row level. Passing `"root"` to
+`rowAlternateAttr` makes LyteNyte Grid assign the `data-ln-alternate` value
+based on the root row's index rather than each individual row's index.
 
-::demo[Root Row Alternating="./demos/row-alternating-group"]
+When row groups are present, all children in a group inherit the
+same `data-ln-alternate` value as their top-level parent row.
+
+::demo[Striped Root Rows="./demos/row-alternating-group"]
 
 ## Next Steps
 

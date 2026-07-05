@@ -88,7 +88,7 @@ export default function RowDemo() {
     <>
       <div className="border-ln-border flex w-full border-b px-2 py-2">
         <SwitchToggle
-          label="Toggle Alternate Row Coloring"
+          label="Row Shading Alternation"
           checked={alternate}
           onChange={() => {
             setAlternate((prev) => !prev);

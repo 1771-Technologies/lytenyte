@@ -486,7 +486,7 @@ export default function GridDemo() {
         sideOffset={8}
       >
         {editing && (
-          <Popover.Container style={{ ...panelStyle, maxWidth: "none", padding: 8 }}>
+          <Popover.Container style={{ ...panelStyle, maxWidth: "none", padding: 4 }}>
             <Popover.Arrow />
             <NoteEditContent
               key={cellKey(editing.rowId, editing.colId)}
