@@ -12,9 +12,9 @@ Annotations overlay custom React content on top of the grid. Each annotation req
 
 LyteNyte Grid accepts an array of annotations via the `annotations` property.
 
-The demo below shows a basic annotation that will be displayed whenever you hover
-a cell in the **Price**, **Quantity**, **Revenue**, **Cost**, **Revenue**, or **Profit** columns.
-This is done to draw the users attention to how these columns are related.
+The demo below shows a basic annotation that appears when the user hovers over
+a cell in the **Price**, **Quantity**, **Revenue**, **Cost**, or **Profit** columns.
+The annotation highlights how these columns are related.
 
 ::demo[Basic Grid Annotations="./demos/grid-annotations"]
 
@@ -109,9 +109,10 @@ render: ({ api }) => {
 },
 ```
 
-By default, the annotation container has `pointer-events: none` applied. If your render content
-needs to respond to mouse events — for example, a clickable badge or tooltip trigger, set
-`pointerEvents: "auto"` on the element that should receive events.
+By default, the annotation container has `pointer-events: none` applied. If your
+rendered content needs to respond to mouse events, such as a clickable badge or
+a tooltip trigger, set `pointerEvents: "auto"` on
+the element that should receive events.
 
 ## Cell Notes
 

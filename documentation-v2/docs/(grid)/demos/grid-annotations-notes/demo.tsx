@@ -132,33 +132,29 @@ function NoteEditContent({
           if (e.key === "Escape") onCancel();
         }}
       />
-      <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+      <div style={{ display: "flex", gap: 6, marginTop: 8, justifyContent: "flex-end" }}>
         <button
           onClick={() => onAccept(value)}
+          className="duration-120 bg-ln-primary-50 hover:bg-ln-primary-70 cursor-pointer transition-colors"
           style={{
-            flex: 1,
-            padding: "3px 10px",
+            padding: "6px 14px",
             borderRadius: 4,
             border: "none",
-            background: "var(--ln-primary-50)",
             color: "white",
             fontSize: 12,
-            cursor: "pointer",
           }}
         >
           Save
         </button>
         <button
           onClick={onCancel}
+          className="bg-ln-bg-button-light hover:bg-ln-gray-30 duration-120 cursor-pointer transition-colors"
           style={{
-            flex: 1,
-            padding: "3px 10px",
+            padding: "6px 14px",
             borderRadius: 4,
             border: "1px solid var(--ln-border-button-light)",
-            background: "var(--ln-bg-button-light)",
             color: "var(--ln-text)",
             fontSize: 12,
-            cursor: "pointer",
           }}
         >
           Cancel
@@ -507,7 +503,7 @@ export default function GridDemo() {
         onOpenChange={(open) => {
           if (!open) closeEditing();
         }}
-        placement="top-end"
+        placement="right-start"
         sideOffset={8}
       >
         {editing && (

@@ -20,18 +20,18 @@ export interface GridSpec {
 
 export const columns: Grid.Column<GridSpec>[] = [
   { id: "date", name: "Date", cellRenderer: DateCell, width: 110 },
-  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell },
-  { id: "age", name: "Age", type: "number", width: 80 },
-  { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell },
-  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 160 },
-  { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 100 },
-  { id: "profit", name: "Profit", width: 80, type: "number", cellRenderer: ProfitCell },
-  { id: "country", name: "Country", cellRenderer: CountryCell, width: 150 },
-  { id: "orderQuantity", name: "Quantity", type: "number", width: 60 },
-  { id: "unitPrice", name: "Price", type: "number", width: 80, cellRenderer: NumberCell },
-  { id: "state", name: "State", width: 150 },
   { id: "product", name: "Product", width: 160 },
+  { id: "unitPrice", name: "Price", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "country", name: "Country", cellRenderer: CountryCell, width: 150 },
+  { id: "revenue", name: "Revenue", width: 80, type: "number", cellRenderer: ProfitCell },
+  { id: "profit", name: "Profit", width: 80, type: "number", cellRenderer: ProfitCell },
   { id: "productCategory", name: "Category", width: 120 },
+  { id: "cost", name: "Cost", width: 80, type: "number", cellRenderer: CostCell },
+  { id: "orderQuantity", name: "Quantity", type: "number", width: 60 },
+  { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 100 },
+  { id: "age", name: "Age", type: "number", width: 80 },
+  { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 160 },
+  { id: "state", name: "State", width: 150 },
   { id: "subCategory", name: "Sub-Category", width: 160 },
 ];
 
@@ -75,7 +75,7 @@ const HIGHLIGHTS = [
         style={{
           position: "absolute",
           inset: 0,
-          border: "1px solid #f97316",
+          border: "1px solid #f91616",
           background: "rgba(249, 115, 22, 0.1)",
           boxSizing: "border-box",
         }}
