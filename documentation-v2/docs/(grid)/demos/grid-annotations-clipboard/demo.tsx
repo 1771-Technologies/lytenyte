@@ -110,25 +110,15 @@ export default function ExportDemo() {
     return selections.at(0) ?? null;
   }, [selections]);
 
-  const handleCopy = useCallback(async (): Promise<string | null> => {
+  const handleCopy = useCallback(async (sel: Grid.T.DataRect): Promise<string | null> => {
     if (!api) return null;
 
-    const selectionToCopy = getFirstSelection();
-    if (!selectionToCopy) return null;
+    const data = await api.exportData({ rect: sel });
 
-    const data = await api.exportData({
-      rect: selectionToCopy,
-    });
-
-    const stringToCopy = data.data
-      .map((row) => {
-        return row.map((cell) => `${cell ?? ""}`).join("\t");
-      })
+    return data.data
+      .map((row) => row.map((cell) => `${cell ?? ""}`).join("\t"))
       .join("\n");
-
-    await navigator.clipboard.writeText(stringToCopy);
-    return stringToCopy;
-  }, [api, getFirstSelection]);
+  }, [api]);
 
   const handleGridUpdate = useCallback(
     async (updates: unknown[][]) => {
@@ -244,7 +234,15 @@ export default function ExportDemo() {
                 if (p.event.key === "x") {
                   const sel = getFirstSelection();
                   if (!sel) return;
-                  const text = await handleCopy();
+                  const textPromise = handleCopy(sel);
+                  // Call clipboard.write() synchronously — before any await — so Safari
+                  // counts this as within the user gesture and allows the clipboard write.
+                  navigator.clipboard.write([
+                    new ClipboardItem({
+                      "text/plain": textPromise.then((t) => new Blob([t ?? ""], { type: "text/plain" })),
+                    }),
+                  ]);
+                  const text = await textPromise;
                   copiedTextRef.current = text;
                   cutRectRef.current = sel;
                   setCopiedRect(sel);
@@ -356,9 +354,19 @@ export default function ExportDemo() {
                     }
                   }
                 } else if (p.event.key === "c") {
+                  // Prevent Safari's native copy event from firing after keydown and
+                  // overwriting our clipboard data with the (empty) DOM selection.
+                  p.event.preventDefault();
                   const sel = getFirstSelection();
                   if (!sel) return;
-                  const text = await handleCopy();
+                  const textPromise = handleCopy(sel);
+                  // Same synchronous write pattern as cut above.
+                  navigator.clipboard.write([
+                    new ClipboardItem({
+                      "text/plain": textPromise.then((t) => new Blob([t ?? ""], { type: "text/plain" })),
+                    }),
+                  ]);
+                  const text = await textPromise;
                   copiedTextRef.current = text;
                   cutRectRef.current = null;
                   setCopiedRect(sel);
