@@ -61,19 +61,14 @@ export function moveRelative<T>(
   if (destIndex < 0 || destIndex >= length) return [...items];
   if (srcIndex === destIndex) return [...items];
 
-  const itemsToFilter = [srcIndex, ...additional].sort((l, r) => l - r);
+  const itemsToInsert = [srcIndex, ...additional].sort((l, r) => l - r);
+  const moveSet = new Set(itemsToInsert);
 
-  const set = new Set(itemsToFilter.map((x) => items[x]));
-
-  const result = items.filter((x) => !set.has(x));
+  const result = items.filter((_, index) => !moveSet.has(index));
 
   const dest = items[destIndex];
   const newTarget = result.indexOf(dest);
 
-  result.splice(
-    newTarget + (srcIndex < destIndex ? 1 : 0),
-    0,
-    ...[srcIndex, ...additional].sort((l, r) => l - r).map((x) => items[x]),
-  );
+  result.splice(newTarget + (srcIndex < destIndex ? 1 : 0), 0, ...itemsToInsert.map((x) => items[x]));
   return result;
 }
