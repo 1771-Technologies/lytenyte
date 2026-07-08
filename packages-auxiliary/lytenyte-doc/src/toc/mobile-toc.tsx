@@ -34,7 +34,7 @@ export function MobileToc({ toc }: { toc: MarkdownHeading[] }) {
   }, [open]);
 
   return (
-    <div className="bg-xd-background border-xd-border relative border-b px-4 py-2 md:hidden" ref={ref}>
+    <div className="bg-xd-background border-xd-border relative border-b px-4 py-2 lg:hidden" ref={ref}>
       <button
         className="text-xd-muted-foreground flex w-full items-center gap-2 text-sm"
         onClick={() => setOpen((prev) => !prev)}
