@@ -103,7 +103,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
   const rowsBetween = useRowsBetween<T>(source);
   const rowChildren = useRowChildren<T>(source);
 
-  const onViewChange = useOnViewChange(source, state.requestsForView, state.setRequestsForView);
+  // TODO @Lee expose a scroll debounce prop.
+  const onViewChange = useOnViewChange(source, state.requestsForView, state.setRequestsForView, 200);
 
   const idSpec = useEvent((id: string) => {
     const node = source.tree.rowIdToNode.get(id);
