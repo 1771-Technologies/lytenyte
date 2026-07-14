@@ -119,3 +119,50 @@ describe("moveRelative", () => {
     expect(result).toEqual([20, 30, 40, 50, 10]);
   });
 });
+
+describe("moveRelative with duplicate values", () => {
+  test("Should not remove other elements that share the moved element's value", () => {
+    const items = ["x", "b", "x", "d", "e"];
+    const result = moveRelative(items, 0, 4);
+
+    expect(result).toEqual(["b", "x", "d", "e", "x"]);
+  });
+
+  test("Should preserve all elements when moving a duplicate value forward", () => {
+    const items = [1, 2, 1, 3, 4];
+    const result = moveRelative(items, 0, 3);
+
+    expect(result).toHaveLength(5);
+    expect(result).toEqual([2, 1, 3, 1, 4]);
+  });
+
+  test("Should preserve all elements when moving a duplicate value with additional indices", () => {
+    const items = ["x", "b", "x", "d", "x"];
+    const result = moveRelative(items, 0, 4, [2]);
+
+    expect(result).toHaveLength(5);
+    expect(result).toEqual(["b", "d", "x", "x", "x"]);
+  });
+
+  test("Should drop into the correct occurrence when destIndex's value repeats", () => {
+    const items = ["a", "a", "b", "a"];
+    const result = moveRelative(items, 2, 3);
+
+    expect(result).toEqual(["a", "a", "a", "b"]);
+  });
+
+  test("Should drop into the correct occurrence with additional indices when destIndex's value repeats", () => {
+    const items = ["a", "b", "a", "c", "a"];
+    const result = moveRelative(items, 0, 4, [1]);
+
+    expect(result).toEqual(["a", "c", "a", "a", "b"]);
+  });
+
+  test("Should not splice an element multiple times when additional repeats srcIndex", () => {
+    const items = ["a", "b", "c", "d", "e"];
+    const result = moveRelative(items, 1, 4, [1, 3]);
+
+    expect(result).toHaveLength(5);
+    expect(result).toEqual(["a", "c", "e", "b", "d"]);
+  });
+});

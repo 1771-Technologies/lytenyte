@@ -61,19 +61,28 @@ export function moveRelative<T>(
   if (destIndex < 0 || destIndex >= length) return [...items];
   if (srcIndex === destIndex) return [...items];
 
-  const itemsToFilter = [srcIndex, ...additional].sort((l, r) => l - r);
+  // Build the set of source indices to move. `additional` is deduped via Set
+  // so a caller passing a repeated `srcIndex` (e.g. `[1, 3, 1]`) doesn't cause
+  // the same element to be removed once but spliced in multiple times.
+  const itemsToInsert = [srcIndex, ...additional];
+  const moveSet = new Set(itemsToInsert);
 
-  const set = new Set(itemsToFilter.map((x) => items[x]));
+  // Filter the source array by index, not by value, so duplicate values stay
+  // distinct (see the `moveRelative` regression tests in
+  // `move-relative.test.ts`).
+  const result = items.filter((_, index) => !moveSet.has(index));
 
-  const result = items.filter((x) => !set.has(x));
+  // Compute `newTarget` from `destIndex` adjusted by the number of source
+  // indices that were *removed before it*. Anchoring via `indexOf(dest)` would
+  // resolve to the wrong occurrence when `dest`'s value appears multiple times
+  // in the result.
+  const removedBeforeDest = [...moveSet].filter((index) => index < destIndex).length;
+  const newTarget = destIndex - removedBeforeDest + (srcIndex < destIndex ? 1 : 0);
 
-  const dest = items[destIndex];
-  const newTarget = result.indexOf(dest);
+  // Re-derive insertion indices against the original array so we don't depend
+  // on a possibly-duplicate `additional` argument.
+  const insertIndices = [...moveSet].sort((l, r) => l - r);
 
-  result.splice(
-    newTarget + (srcIndex < destIndex ? 1 : 0),
-    0,
-    ...[srcIndex, ...additional].sort((l, r) => l - r).map((x) => items[x]),
-  );
+  result.splice(newTarget, 0, ...insertIndices.map((x) => items[x]));
   return result;
 }
